@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "platform": "android",
+  "backend": "paparazzi",
+  "target": {
+    "description": "ReplyEmailListItem / long",
+    "sources": [
+      "app/src/main/java/com/example/reply/ui/components/ReplyEmailListItem.kt",
+      "app/src/main/java/com/example/reply/ui/components/ReplyProfileImage.kt",
+      "app/src/main/java/com/example/reply/ui/theme",
+      "app/src/main/java/com/example/reply/data/local",
+      "app/src/main/res",
+      "app/src/test/java/com/example/reply/ReplyNativeUiTest.kt",
+      "app/build.gradle.kts",
+      "gradle/libs.versions.toml"
+    ]
+  },
+  "environment": {
+    "renderer": "Paparazzi 2.0.0-alpha02 / Layoutlib",
+    "device": "PIXEL_5, 1080x1200 physical pixels, no system UI",
+    "theme": "light",
+    "font_scale": 1,
+    "jdk": "JBR 21.0.11",
+    "agp": "8.13.0",
+    "kotlin": "2.2.21",
+    "compose_bom": "2025.10.01",
+    "local_inspection_mode": true,
+    "preview_view_edit_mode": true,
+    "render_output": "900x1000 PNG; device configuration is 1080x1200 with renderer default scaling"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/adapters/capture_android.py",
+        "--project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/checkouts/compose-samples/Reply",
+        "--output",
+        "{output}",
+        "--scenario",
+        "long"
+      ],
+      "env": {
+        "ANDROID_HOME": "/Users/rex/Library/Android/sdk",
+        "JAVA_HOME": "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home"
+      },
+      "timeout_seconds": 1200
+    }
+  ],
+  "artifacts": [
+    {
+      "base": "output",
+      "glob": "native/actual.png",
+      "role": "actual"
+    },
+    {
+      "base": "output",
+      "glob": "native/measurements.json",
+      "role": "measurement"
+    },
+    {
+      "base": "output",
+      "glob": "native/native-test.json",
+      "role": "native-report"
+    },
+    {
+      "base": "output",
+      "glob": "native/junit.xml",
+      "role": "native-report"
+    }
+  ],
+  "checks": [
+    {
+      "id": "card-hierarchy",
+      "kind": "visual",
+      "description": "邮件卡片的发件人、主题、正文、头像和收藏按钮均按原有层级可读，卡片保留原有内边距",
+      "source": "未修改的上游 ReplyEmailListItem 及本试验要求保留原有视觉设计"
+    },
+    {
+      "id": "approved-appearance",
+      "kind": "pixel",
+      "description": "保持已冻结的上游组件视觉设计",
+      "source": "本次修改前、真实上游组件的已查看本机渲染参考",
+      "reference": "native-ui-baselines/long.png",
+      "channel_tolerance": 0,
+      "max_changed_fraction": 0
+    },
+    {
+      "id": "card-height",
+      "kind": "numeric",
+      "description": "保留同一状态下原有组件布局高度",
+      "source": "修改前真实生产组件 LayoutCoordinates 实测",
+      "measurement": "card_height",
+      "expected": 195.27272,
+      "unit": "dp",
+      "tolerance": 0.1
+    },
+    {
+      "id": "card-width",
+      "kind": "numeric",
+      "description": "同一宿主下组件宽度保持不变",
+      "source": "修改前真实生产组件 LayoutCoordinates 实测",
+      "measurement": "card_width",
+      "expected": 392.72726,
+      "unit": "dp",
+      "tolerance": 0.1
+    }
+  ],
+  "protected_paths": [
+    "native-ui-baselines"
+  ]
+}

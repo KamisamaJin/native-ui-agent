@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "purpose": "真实生产组件的受控视觉回归与修复试验；非盲测，无无-Skill对照组，不代表总体PR质量提升的因果验证",
+  "projects": [
+    {
+      "platform": "ios",
+      "url": "https://github.com/elai950/AlertToast",
+      "revision": "76a1c1793cd3443001c20c6033beb84453b25d9f",
+      "license": "MIT",
+      "component": "AlertToast.hud",
+      "initial_environment_status": "Xcode首次许可未接受，simctl尚不能执行"
+    },
+    {
+      "platform": "android",
+      "url": "https://github.com/android/compose-samples",
+      "revision": "53dccc7836952e3a04ed4bc1ec7afa7c8e27ff79",
+      "license": "Apache-2.0",
+      "subproject": "Reply",
+      "component": "ReplyEmailListItem",
+      "revision_reason": "选择2025-10的真实历史版本，继承AGP 8.13、SDK 36及Kotlin 2.2.21，避免为测试升级产品工程"
+    }
+  ],
+  "acceptance": [
+    "测试调用克隆工程内真实组件，不复制重画UI",
+    "源码修改前捕获固定环境原始参考，并在之后保护参考不变",
+    "实际组件源码产生视觉回归后，保存失败截图、差异和判定",
+    "AI读取实际图后解释问题并修改生产组件，重新构建渲染验证",
+    "修正后检查正常、长文本和深色场景；报告未完成范围",
+    "缺环境或未执行不计为通过"
+  ],
+  "planned_faults": {
+    "android": [
+      "组件内边距收窄",
+      "主题文字层级错误"
+    ],
+    "ios": [
+      "HUD内边距收窄",
+      "默认标题字号异常放大"
+    ]
+  },
+  "observations": [
+    {
+      "phase": "android original build",
+      "status": "passed",
+      "command": "./gradlew :app:assembleDebug --console=plain --stacktrace",
+      "duration": "1m34s",
+      "revision": "53dccc7836952e3a04ed4bc1ec7afa7c8e27ff79"
+    },
+    {
+      "phase": "Android host integration",
+      "finding": "Android Kotlin unit-test compile classpath does not expose java.awt BufferedImage for a custom SnapshotHandler",
+      "resolution": "Use the framework HtmlReportWriter and export exactly its reported native snapshot"
+    },
+    {
+      "phase": "Android theme integration",
+      "finding": "LocalInspectionMode and View.isInEditMode are separate guards; upstream theme casts LocalView.context to Activity outside edit mode",
+      "resolution": "Declare explicit Preview/LocalView environment in test host; preserve upstream production theme; test real Activity separately"
+    }
+  ]
+}

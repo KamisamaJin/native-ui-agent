@@ -1,0 +1,87 @@
+{
+  "experiment": "Controlled regression and repair on real upstream components",
+  "date": "2026-10-18",
+  "platforms": {
+    "android": {
+      "regression_report": "evidence/android-regression-normal-review/report.json",
+      "regression_changed_fraction": 0.23609,
+      "repair_rounds": 1,
+      "scenarios": {
+        "normal": {
+          "status": "passed",
+          "native_tests_passed": 1,
+          "changed_pixels": 0,
+          "capture_seconds": 4.151,
+          "actual": "evidence/android-repaired-normal-1/artifacts/000-actual.png",
+          "report": "evidence/android-repaired-normal-review/report.json",
+          "reference_sha256": "32e34577ddc8f2922f3058930010b768f344241a44e841e68fb4336e00e7b310"
+        },
+        "long": {
+          "status": "passed",
+          "native_tests_passed": 1,
+          "changed_pixels": 0,
+          "capture_seconds": 3.762,
+          "actual": "evidence/android-repaired-long-1/artifacts/000-actual.png",
+          "report": "evidence/android-repaired-long-review/report.json",
+          "reference_sha256": "dfd4d941cfe00920763291e1122774e4f63a44bbea7524d732060b460506ef12"
+        },
+        "dark": {
+          "status": "passed",
+          "native_tests_passed": 1,
+          "changed_pixels": 0,
+          "capture_seconds": 2.955,
+          "actual": "evidence/android-repaired-dark-1/artifacts/000-actual.png",
+          "report": "evidence/android-repaired-dark-review/report.json",
+          "reference_sha256": "974d6190cfab2615860c6e03694661829bf9eb1376e35f425c14e936deeb37fe"
+        }
+      }
+    },
+    "ios": {
+      "regression_report": "evidence/ios-regression-normal-review/report.json",
+      "regression_changed_fraction": 0.21748130341880342,
+      "repair_rounds": 1,
+      "scenarios": {
+        "normal": {
+          "status": "passed",
+          "native_tests_passed": 1,
+          "changed_pixels": 0,
+          "capture_seconds": 6.134,
+          "actual": "evidence/ios-repaired-normal-1/artifacts/000-actual.png",
+          "report": "evidence/ios-repaired-normal-review/report.json",
+          "reference_sha256": "05172a4f0c169d1bb61a79c8c679d96863becc8f4d804b30fe549600a36bf47a"
+        },
+        "long": {
+          "status": "passed",
+          "native_tests_passed": 1,
+          "changed_pixels": 0,
+          "capture_seconds": 4.97,
+          "actual": "evidence/ios-repaired-long-1/artifacts/000-actual.png",
+          "report": "evidence/ios-repaired-long-review/report.json",
+          "reference_sha256": "36b4a8bc667e25ce734feb0fc40cfdf61eefefdf8796f434b528eedfc9ede326"
+        },
+        "dark": {
+          "status": "passed",
+          "native_tests_passed": 1,
+          "changed_pixels": 0,
+          "capture_seconds": 5.374,
+          "actual": "evidence/ios-repaired-dark-1/artifacts/000-actual.png",
+          "report": "evidence/ios-repaired-dark-review/report.json",
+          "reference_sha256": "bf55bf6626b77270ebf31ca5ad7cd8eba258f8e13595b30a3a3d3396357f1cd9"
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Not blind; agent knew the planned faults",
+    "No without-Skill control group",
+    "No generic SwiftUI/Compose style property tree was implemented",
+    "Single runtime/device configuration per platform"
+  ],
+  "android_page_smoke": {
+    "status": "passed",
+    "scope": "Real Activity inbox -> email detail -> Back",
+    "report": "evidence/android-page-repaired/report.json"
+  },
+  "ios_page_integration": "Component library hosted in real simulator XCTest; no full business app/navigation tested",
+  "status": "passed_with_stated_scope"
+}

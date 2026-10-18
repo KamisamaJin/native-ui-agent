@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "status": "captured",
+  "project": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/checkouts/alerttoast",
+  "profile": {
+    "version": 1,
+    "platform": "ios",
+    "backend": "snapshot-testing",
+    "target": {
+      "description": "AlertToast.hud / normal",
+      "sources": [
+        "Package.swift",
+        "Sources/AlertToast",
+        "Tests/AlertToastTests/AlertToastNativeUiTests.swift"
+      ]
+    },
+    "environment": {
+      "xcode": "27.1 (27A9275)",
+      "runtime": "iOS 26.5",
+      "device": "NativeUIPilot-iPhone17Pro / AB66271B-29BD-4D14-9C9B-71579E147DCA",
+      "snapshot_testing": "1.19.2",
+      "canvas_pt": [
+        390,
+        240
+      ],
+      "trait_display_scale": 2,
+      "theme": "light",
+      "content_size_category": "large"
+    },
+    "commands": [
+      {
+        "argv": [
+          "python3",
+          "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/adapters/capture_ios.py",
+          "--project",
+          "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/checkouts/alerttoast",
+          "--output",
+          "{output}",
+          "--cache",
+          "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/cache/ios",
+          "--device-id",
+          "AB66271B-29BD-4D14-9C9B-71579E147DCA",
+          "--scenario",
+          "normal"
+        ],
+        "env": {
+          "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+        },
+        "timeout_seconds": 1200
+      }
+    ],
+    "artifacts": [
+      {
+        "base": "output",
+        "glob": "native/actual.png",
+        "role": "actual"
+      },
+      {
+        "base": "output",
+        "glob": "native/native-test.json",
+        "role": "native-report"
+      },
+      {
+        "base": "output",
+        "glob": "native/xcresult-summary.json",
+        "role": "native-report"
+      }
+    ],
+    "checks": [
+      {
+        "id": "hud-hierarchy",
+        "kind": "visual",
+        "description": "HUD的图标、标题、副标题有清楚的层级和留白，长文本可读，保持原有组件视觉设计",
+        "source": "未修改的上游 AlertToast HUD；本试验要求保留原设计"
+      },
+      {
+        "id": "approved-appearance",
+        "kind": "pixel",
+        "description": "保留冻结的真实上游HUD布局与文字层级",
+        "source": "本次修改前已查看的上游组件本机渲染",
+        "reference": "native-ui-baselines/normal.png",
+        "channel_tolerance": 0,
+        "max_changed_fraction": 0
+      }
+    ],
+    "protected_paths": [
+      "native-ui-baselines"
+    ]
+  },
+  "started_at": "2026-10-18T08:05:17.865067+00:00",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/adapters/capture_ios.py",
+        "--project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/checkouts/alerttoast",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/evidence/ios-regression-normal-1/native",
+        "--cache",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/cache/ios",
+        "--device-id",
+        "AB66271B-29BD-4D14-9C9B-71579E147DCA",
+        "--scenario",
+        "normal"
+      ],
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/checkouts/alerttoast",
+      "status": "passed",
+      "log": "command-1.log",
+      "exit_code": 0,
+      "duration_seconds": 5.993
+    }
+  ],
+  "artifacts": [
+    {
+      "role": "actual",
+      "original": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/evidence/ios-regression-normal-1/native/actual.png",
+      "path": "artifacts/000-actual.png",
+      "sha256": "f4db3c65e0127db9cae995b10e42906c9bb88d5a6d2dfc194698d14bde45ffa7"
+    },
+    {
+      "role": "native-report",
+      "original": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/evidence/ios-regression-normal-1/native/native-test.json",
+      "path": "artifacts/001-native-test.json",
+      "sha256": "bc9848ec1c4de2c4fcd29fdf04e8eb57e4df8017d1dea204cf4d1a7eb2999d8e"
+    },
+    {
+      "role": "native-report",
+      "original": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/native-ui-pilot/evidence/ios-regression-normal-1/native/xcresult-summary.json",
+      "path": "artifacts/002-xcresult-summary.json",
+      "sha256": "03a29866eed89cb8cb548c97b45f1df453a7c49af3c4c39cd92d01aa363973d1"
+    }
+  ],
+  "source_fingerprint": {
+    "Package.swift": {
+      "Package.swift": "5e86dd20e5699843572d22cb75a336d7139787ad47b43bd5f2ed8f511d0c9b5c"
+    },
+    "Sources/AlertToast": {
+      "Sources/AlertToast/._ActivityIndicator.swift": "2b3dd9bf691dd7f52021349348850ed65620f42d1ef17ce2607e6d96a8146834",
+      "Sources/AlertToast/._AlertToast.swift": "e1b931181a5272bf74d3b6233fd60f514ddc2db9b9d4d171e6bdd77b0d5eedb1",
+      "Sources/AlertToast/._BlurView.swift": "a3c7d01f3e3bad2a5d8b04934340d8b54fa98afab40c7ee921f96b099a3652ec",
+      "Sources/AlertToast/ActivityIndicator.swift": "ee38455e25f4ec10dbbdd082f4f197faca2435c19e3c0cef5507b0323ab57955",
+      "Sources/AlertToast/AlertToast.swift": "76134c2358b25b080984019a34c77f7957d3cda3638b20b311503ea802861d0b",
+      "Sources/AlertToast/BlurView.swift": "ea6157cfd37ed417b4ee11e6083d0788a1c95bf46c478a3d1b484b0ece95edd2"
+    },
+    "Tests/AlertToastTests/AlertToastNativeUiTests.swift": {
+      "Tests/AlertToastTests/AlertToastNativeUiTests.swift": "cb6f16121080e36e90c84a6b9ba420dbf432fc7430269c036749120d597d3863"
+    }
+  },
+  "protected_fingerprint": {
+    "native-ui-baselines": {
+      "native-ui-baselines/dark.png": "bf55bf6626b77270ebf31ca5ad7cd8eba258f8e13595b30a3a3d3396357f1cd9",
+      "native-ui-baselines/long.png": "36b4a8bc667e25ce734feb0fc40cfdf61eefefdf8796f434b528eedfc9ede326",
+      "native-ui-baselines/normal.png": "05172a4f0c169d1bb61a79c8c679d96863becc8f4d804b30fe549600a36bf47a"
+    },
+    "native-ui-baselines/normal.png": {
+      "native-ui-baselines/normal.png": "05172a4f0c169d1bb61a79c8c679d96863becc8f4d804b30fe549600a36bf47a"
+    }
+  },
+  "interpretation": "Captured evidence is not a UI acceptance verdict.",
+  "errors": [],
+  "finished_at": "2026-10-18T08:05:23.880778+00:00"
+}

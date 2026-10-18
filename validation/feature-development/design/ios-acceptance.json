@@ -1,0 +1,34 @@
+{
+  "feature": "Optional upload-progress HUD in AlertToast",
+  "business": "New optional progress argument; original callers remain valid and visually unchanged. Determinate progress uses existing HUD title/style API.",
+  "design": {
+    "host_inset_pt": 20,
+    "card_radius_pt": 20,
+    "card_padding_pt": 16,
+    "icon_size_pt": 24,
+    "header_gap_pt": 12,
+    "title_style": "body.bold",
+    "subtitle_style": "footnote, opacity 0.7",
+    "percentage_style": "footnote.bold.monospacedDigit",
+    "bar_gap_pt": 12,
+    "bar_height_pt": 4,
+    "fill": "SwiftUI Color.blue",
+    "maximum_card_width_pt": 360
+  },
+  "acceptance": [
+    "Use real production AlertToast; no test-only redraw",
+    "Show 42% for 0.42; clamp finite values to [0,1], nonfinite -> 0; progress absent keeps old HUD branch",
+    "Actual native PNG blue fill width / independently specified bar width must match progress ±0.025; left inset matches card inset+padding ±2pt",
+    "Normal, long title, dark, 320pt narrow, complete and legacy no-progress states render without clipping/overlap",
+    "Progress label is present and readable; title/subtitle keep hierarchy; no inline control interaction claimed",
+    "Legacy normal screenshot remains pixel-identical to frozen upstream reference on the same machine"
+  ],
+  "scenarios": [
+    "normal",
+    "long",
+    "dark",
+    "narrow",
+    "complete",
+    "legacy"
+  ]
+}

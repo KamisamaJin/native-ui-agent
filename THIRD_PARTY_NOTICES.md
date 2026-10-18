@@ -1,0 +1,12 @@
+# Third-party material
+
+The root MIT license covers original Skill, runner, documentation and harness code. It does not replace upstream licenses.
+
+| Material | Source | License / notice |
+| --- | --- | --- |
+| Reply component patches and screenshots containing its UI/assets | [android/compose-samples](https://github.com/android/compose-samples), revision `53dccc7836952e3a04ed4bc1ec7afa7c8e27ff79` | Copyright The Android Open Source Project; Apache-2.0. See [full license](validation/native-ui-pilot/licenses/android-LICENSE). Preserve source headers when applying or distributing patches. |
+| AlertToast component patches and UI screenshots | [elai950/AlertToast](https://github.com/elai950/AlertToast), revision `76a1c1793cd3443001c20c6033beb84453b25d9f` | Copyright (c) 2021 Elai Zuberman; MIT. See [full license](validation/native-ui-pilot/licenses/ios-LICENSE); original source notice is retained. |
+
+Native dependencies are fetched by the example projects, not vendored: [Paparazzi](https://github.com/cashapp/paparazzi) (Apache-2.0), [SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing) (MIT), AndroidX/Compose and other upstream dependencies under their respective terms. The Python runner depends on Pillow; see its [license](https://github.com/python-pillow/Pillow/blob/main/LICENSE).
+
+Simulator runtimes, SDKs, Xcode, Gradle caches, signing material and upstream checkouts are excluded from this repository. Screenshots document local test runs; they do not imply endorsement by upstream maintainers. This repository is an independent experiment, not an official Android, Apple or Point-Free product.

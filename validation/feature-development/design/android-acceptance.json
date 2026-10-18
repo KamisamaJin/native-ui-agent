@@ -1,0 +1,33 @@
+{
+  "feature": "Attachment summary in existing Reply email card",
+  "business": "Use existing Email.attachments. Show summary only when non-empty. Entire card still opens email.",
+  "design": {
+    "body_to_summary_dp": 12,
+    "summary_padding_dp": 12,
+    "icon_size_dp": 24,
+    "icon_to_text_dp": 8,
+    "count_font_sp": 14,
+    "description_font_sp": 12,
+    "text_vertical_gap_dp": 4,
+    "count_to_body_x_dp": 44,
+    "light_text_argb": "FF4F4539",
+    "dark_text_argb": "FFD3C4B4",
+    "shape_radius_dp": 12
+  },
+  "acceptance": [
+    "Use real production ReplyEmailListItem with upstream theme/assets/data",
+    "Correct plural count, first description; no duplicate or phantom summary for zero attachments",
+    "One-line description with ellipsis for long content; count must never clip",
+    "Text layout-result count font=14sp and description=12sp; count color from current theme",
+    "Count left offset from body=44dp ±1 and count/description vertical gap=4dp ±1 measured in same root coordinates",
+    "320dp viewport, dark and normal states remain readable; no attachment summary for empty fixture",
+    "Real Activity can open attachment-bearing email and return; no added business IDs"
+  ],
+  "scenarios": [
+    "normal",
+    "long",
+    "dark",
+    "narrow",
+    "empty"
+  ]
+}
