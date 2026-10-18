@@ -140,6 +140,8 @@ python3 validation/observer-probes/verify_preflight.py
 python3 validation/fresh-blind/verify_evidence.py
 ```
 
+已在不含本机缓存的异地Git归档中通过38项单元测试和四套归档审计，见[核验记录](validation/fresh-blind/verification.json)。
+
 第一条验证 runner、覆盖账本和观测器的38项协议/失效行为；后续命令跨机器审计归档图片、报告、原生测试数、冻结哈希、盲测封存与统计运算，不运行原生 SDK 或模型。GitHub CI 执行这些检查，不声称重新运行双端模拟器。
 
 ## 目录

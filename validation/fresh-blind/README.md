@@ -144,6 +144,8 @@ python3 validation/observer-probes/verify_preflight.py
 python3 validation/fresh-blind/verify_evidence.py
 ```
 
+已从提交 `af88014` 的纯Git归档解压到新路径，在没有任何忽略目录的条件下通过38项单元测试与上述四套归档审计；[核验记录](verification.json)保留命令和源提交。
+
 跨机器审计只重算哈希、原生测试数、输入/源码绑定、评分覆盖与统计，**不重新运行 Xcode/Gradle、AI 实现或视觉判断**。原始绝对路径保留供追溯，报告引用可按 `validation/`锚点映射到当前检出目录。完整 SDK/DerivedData/xcresult 缓存留在本地忽略目录，便携 PNG、JSON、日志和源码指纹保留。
 
 设计和评分均由独立上下文的 AI agent 完成，并非人工金标准；规则、原始证据与裁决理由公开供复核。一个新任务、每组一次运行、双端相关、共享硬件缓存，结果是描述性证据。不能据此给出普适提升率、统计显著性或可靠提速结论；零缺陷分母记 N/A，未评估不算通过。

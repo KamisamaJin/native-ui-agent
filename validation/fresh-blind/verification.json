@@ -1,0 +1,56 @@
+{
+  "verifiedAtUTC": "2026-10-18T13:57:55.281543+00:00",
+  "sourceCommit": "af880144dbcb4a68e19156c0cf4f01c026c7b5c1",
+  "method": "git archive HEAD, extract to a new directory without ignored checkouts/SDK/build caches, execute from that relocated directory",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "native-ui-agent/tests",
+        "-v"
+      ],
+      "tests": 38,
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "validation/feature-development/verify_evidence.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "validation/blind-comparison/verify_evidence.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "validation/observer-probes/verify_preflight.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "validation/fresh-blind/verify_evidence.py"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "skillSchemaValidation": {
+    "command": "skill-creator/scripts/quick_validate.py native-ui-agent",
+    "result": "Skill is valid!",
+    "environment": "local reference-renderer Python with PyYAML"
+  },
+  "nativeEvidenceSummarySha256": "9956c93f6ec1ae07e696c97f5e6f02faedd652ad59d360b5191551bacbaa1d56",
+  "scope": "Portable unit/protocol and archive-integrity verification. Does not repeat native SDK execution, model implementation or independent image/semantic decisions. Native captures and clean upstream replays are archived separately."
+}
