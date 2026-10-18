@@ -1,0 +1,151 @@
+{
+  "phase": "D0",
+  "status": "source_sealed",
+  "begin_utc": "2026-10-18T11:48:46Z",
+  "end_utc": "2026-10-18T11:54:41Z",
+  "active_wall_seconds": 355.032,
+  "wall_budget_seconds": 1500,
+  "paused_seconds": 0,
+  "files": [
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt",
+      "sha256": "f386b192ea123890406a08d408127de9b37637d65984340e7ed9d852f525700a"
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+      "sha256": "7ab1e032cb9c57b79bf42db32cb7e8f713b225bf7644fbde129ec880685e438d"
+    }
+  ],
+  "implementation": {
+    "android": "New native Compose component, public data classes/enums/actions, caller-owned values, native selectable radio rows, controlled checkbox row and native buttons.",
+    "apple": "New native SwiftUI component, Codable public stored models and explicit public initializers, caller-owned values, selected/disabled native button rows with radio affordances, native controlled Toggle and buttons.",
+    "source_review": [
+      "All four modes render shared context and isolate their conditional content.",
+      "Effective selection resolves only eligible selected IDs from current caller data. No local selection or fee state is retained.",
+      "Every callback occurs only in a control action. Selected rows emit no selection callback, unavailable rows and confirm are disabled as required.",
+      "Source uses growing non-lazy vertical stacks/columns, wrapping text without line limits, scaled system fonts, dynamic color tokens, and leading/trailing layout."
+    ],
+    "scope": "Two new production files only; no existing upstream production, bridge, host, support, manifests, or reference files edited."
+  },
+  "builds": [
+    {
+      "platform": "android",
+      "attempt": 1,
+      "status": "passed",
+      "exit_code": 0,
+      "test": "com.example.reply.VisitPanelUiTest.capture",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "log": "scratch/android-build-1.log",
+      "output": "scratch/android-integration-1"
+    },
+    {
+      "platform": "android",
+      "attempt": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "test": "com.example.reply.VisitPanelUiTest.capture",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "log": "scratch/android-build-2.log",
+      "output": "scratch/android-integration-2",
+      "final_source": true,
+      "junit": "reports/d0-android-junit.xml"
+    },
+    {
+      "platform": "ios",
+      "attempt": 1,
+      "status": "host_integration_error",
+      "exit_code": 65,
+      "log": "scratch/ios-build-1/build.log",
+      "cause": "Common generated ObserverApp compiled x86_64 while local AlertToast package compiled arm64; cannot resolve arm64-only module. Product file compiled with no source errors.",
+      "host_or_bridge_modified": false
+    },
+    {
+      "platform": "ios",
+      "attempt": 2,
+      "status": "passed",
+      "exit_code": 0,
+      "log": "scratch/ios-build-2.log",
+      "final_source": true,
+      "command_adjustment": "Parent-approved command-only -configuration Debug ARCHS=arm64 ONLY_ACTIVE_ARCH=YES, using unchanged generated project/bridge and fresh DerivedData.",
+      "test_execution": false
+    },
+    {
+      "platform": "ios14",
+      "status": "passed",
+      "exit_code": 0,
+      "method": "swiftc -typecheck -target arm64-apple-ios14.0-simulator on new production file",
+      "log": "scratch/ios14-typecheck.log",
+      "final_source": true
+    },
+    {
+      "platform": "macos11",
+      "status": "passed",
+      "exit_code": 0,
+      "method": "swiftc -typecheck -target arm64-apple-macosx11.0 on new production file",
+      "log": "scratch/macos11-typecheck.log",
+      "final_source": true
+    }
+  ],
+  "host_issue": {
+    "reported_to_parent": true,
+    "resolved_for_build_check_by": "approved command-only architecture selection",
+    "production_defect": false,
+    "queue_seconds": "not separately instrumented; all elapsed time is included in active_wall_seconds"
+  },
+  "evidence_plan": "reports/d0-evidence-plan.json",
+  "logs": [
+    {
+      "path": "scratch/android-build-1.log",
+      "sha256": "1aada1a9eadca9db84281dbd4e751e94a6d65855c0057353bf54f89da016373a"
+    },
+    {
+      "path": "scratch/android-build-2.log",
+      "sha256": "c4b606a3404e192b0e18053cc914830c674ea5b035a212157c2bd2d46e662ecc"
+    },
+    {
+      "path": "scratch/ios-build-1/build.log",
+      "sha256": "0c7c4e92edfc4375de86149e1f6d762045c23ce60f833c42e07318d92a252ff2"
+    },
+    {
+      "path": "scratch/ios-build-2.log",
+      "sha256": "2421eb1fe246c225186bfe1749ca4be52a095e068fe88cb2fad29b6510b3ebaf"
+    },
+    {
+      "path": "scratch/ios14-typecheck.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scratch/macos11-typecheck.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "visual_review": {
+    "executed": false,
+    "rendered_image_opened": false,
+    "image_feedback_repairs": 0,
+    "score": null,
+    "note": "Android integration generated images; none were viewed or analyzed. No iOS rendering test ran."
+  },
+  "runtime_evidence_limits": [
+    "Build and public-example integration success do not establish visual correctness.",
+    "No screenshots or rendered pixels inspected.",
+    "No native accessibility tree, callback traces, state-update observations or scroll observations inspected during D0.",
+    "Long strings, width 288/358, large fonts, all mode/selection transitions, dark theme and RTL have source reasoning only; runtime evidence is missing.",
+    "No minimum-OS device execution; iOS14/macOS11 compatibility evidence is source type checking."
+  ],
+  "defect_cluster_counts": {
+    "android": null,
+    "ios": null,
+    "reason": "Not assessed in D0"
+  },
+  "failing_case_rule_counts": {
+    "android": null,
+    "ios": null,
+    "reason": "Not assessed in D0"
+  },
+  "next_phase": "Await separate review instruction; no further production edits after this seal."
+}
