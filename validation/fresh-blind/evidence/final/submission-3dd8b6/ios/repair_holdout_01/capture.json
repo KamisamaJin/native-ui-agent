@@ -1,0 +1,163 @@
+{
+  "platform": "ios",
+  "status": "captured_not_graded",
+  "fixture_sha256": "10289cc43e2b002431f62d57af38c575b1d300432d24a0a47ced713c5065f4c4",
+  "sources": {
+    "Sources/AlertToast/VisitRescheduleModels.swift": "ce35e2b95c0ea34fa1e08ca7636080d82724ccd5aa4b3657d31d0ad1f180d54c",
+    "Sources/AlertToast/VisitReschedulePanel.swift": "18797a7577937931e322ca0f9442be018927b351ff53126f58eb8ee467c5a90a"
+  },
+  "harness": {
+    "capture.py": "f00ba74363fe6d030d5f0e5b97fb63c0d1a216be8405b3d9693e9188c829fa16",
+    "VisitPanelUiTest.kt": "9144d1c7d0dd918428cfcc28efafea4e3c34709d1831fa7480133b13ba89686d",
+    "VisitBridge.swift": "37ed351edd21cb4526dfd319a021198518a829dda21e4188d96ec77d426ab33c"
+  },
+  "seconds": 153.088,
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/harness/observer/scripts/ios_observe.py",
+        "run",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/harness/VisitBridge.swift",
+        "--package",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-a9c359/alerttoast",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/native-final/submission-3dd8b6/ios/repair_holdout_01-inputs/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/native-final/submission-3dd8b6/ios/repair_holdout_01-inputs/actions.json",
+        "--simulator",
+        "AB66271B-29BD-4D14-9C9B-71579E147DCA",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/native-final/submission-3dd8b6/ios/repair_holdout_01"
+      ],
+      "seconds": 153.083,
+      "exit_code": 0
+    }
+  ],
+  "checkpoint_aliases": {
+    "initial": "top"
+  },
+  "protocol": [
+    {
+      "type": "capture",
+      "checkpoint": "initial"
+    },
+    {
+      "type": "update",
+      "checkpoint": "after_update_1",
+      "model": {
+        "mode": "choosing",
+        "serviceTitle": "Kitchen extractor inspection",
+        "location": "57 Copper Lane, Building C",
+        "currentAppointment": {
+          "dayLabel": "Thursday, 5 November",
+          "timeLabel": "14:00\u201316:00"
+        },
+        "groups": [
+          {
+            "id": "dec",
+            "dayLabel": "Tuesday, 8 December",
+            "slots": [
+              {
+                "id": "d08",
+                "timeLabel": "08:15\u201310:15",
+                "detail": "Reserved early access window.",
+                "availability": "unavailable",
+                "feeLabel": "$27.00",
+                "unavailableReason": "The engineer assigned to this window is no longer available."
+              },
+              {
+                "id": "d12",
+                "timeLabel": "12:15\u201314:15",
+                "detail": "Standard arrival window.",
+                "availability": "available",
+                "feeLabel": null,
+                "unavailableReason": null
+              }
+            ]
+          }
+        ],
+        "selectedSlotId": "d08",
+        "feeAccepted": true,
+        "unavailableMessage": null,
+        "confirmation": null
+      }
+    },
+    {
+      "type": "scroll_until",
+      "identifier": "visit.slot.d08"
+    },
+    {
+      "type": "tap",
+      "identifier": "visit.slot.d08"
+    },
+    {
+      "type": "scroll_until",
+      "identifier": "visit.confirm"
+    },
+    {
+      "type": "tap",
+      "identifier": "visit.confirm"
+    },
+    {
+      "type": "update",
+      "checkpoint": "after_update_2",
+      "model": {
+        "mode": "choosing",
+        "serviceTitle": "Kitchen extractor inspection",
+        "location": "57 Copper Lane, Building C",
+        "currentAppointment": {
+          "dayLabel": "Thursday, 5 November",
+          "timeLabel": "14:00\u201316:00"
+        },
+        "groups": [
+          {
+            "id": "dec",
+            "dayLabel": "Tuesday, 8 December",
+            "slots": [
+              {
+                "id": "d12",
+                "timeLabel": "12:15\u201314:15",
+                "detail": "Standard arrival window.",
+                "availability": "available",
+                "feeLabel": null,
+                "unavailableReason": null
+              }
+            ]
+          }
+        ],
+        "selectedSlotId": "d08",
+        "feeAccepted": true,
+        "unavailableMessage": null,
+        "confirmation": null
+      }
+    },
+    {
+      "type": "scroll_until",
+      "identifier": "visit.confirm"
+    },
+    {
+      "type": "tap",
+      "identifier": "visit.confirm"
+    },
+    {
+      "type": "scroll_until",
+      "identifier": "visit.slot.d12"
+    },
+    {
+      "type": "tap",
+      "identifier": "visit.slot.d12",
+      "checkpoint": "after_select"
+    },
+    {
+      "type": "scroll_until",
+      "identifier": "visit.confirm"
+    },
+    {
+      "type": "tap",
+      "identifier": "visit.confirm",
+      "checkpoint": "after_confirm"
+    }
+  ]
+}
