@@ -1,0 +1,78 @@
+{
+  "platform": "android",
+  "status": "captured_not_graded",
+  "fixture_sha256": "b4970021bf3edbe17ef1e8fd0fd477547ba310a5ccd1e7961e8d017bc8502756",
+  "sources": {
+    "app/src/main/java/com/example/reply/ui/components/VisitRescheduleModels.kt": "a5c36c2179c05d62e080bd6c49ac6f0ef6ae7f27feaaba5b3a493c930a5d028d",
+    "app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt": "4af59d6ec62f75656573d0a87300e46a2f7596b38e8a59c68a979920ba86c4d4"
+  },
+  "harness": {
+    "capture.py": "f00ba74363fe6d030d5f0e5b97fb63c0d1a216be8405b3d9693e9188c829fa16",
+    "VisitPanelUiTest.kt": "9144d1c7d0dd918428cfcc28efafea4e3c34709d1831fa7480133b13ba89686d",
+    "VisitBridge.swift": "37ed351edd21cb4526dfd319a021198518a829dda21e4188d96ec77d426ab33c"
+  },
+  "seconds": 10.614,
+  "commands": [
+    {
+      "argv": [
+        "./gradlew",
+        ":app:testDebugUnitTest",
+        "--tests",
+        "com.example.reply.VisitPanelUiTest.capture",
+        "--console=plain"
+      ],
+      "seconds": 10.608,
+      "exit_code": 0
+    }
+  ],
+  "checkpoint_aliases": {},
+  "protocol": [
+    {
+      "type": "capture",
+      "checkpoint": "initial"
+    },
+    {
+      "type": "scroll_until",
+      "identifier": "visit.confirm"
+    },
+    {
+      "type": "tap",
+      "identifier": "visit.confirm"
+    },
+    {
+      "type": "scroll_until",
+      "identifier": "visit.fee_consent"
+    },
+    {
+      "type": "tap",
+      "identifier": "visit.fee_consent",
+      "checkpoint": "after_fee_on"
+    },
+    {
+      "type": "scroll_until",
+      "identifier": "visit.confirm"
+    },
+    {
+      "type": "tap",
+      "identifier": "visit.confirm",
+      "checkpoint": "after_confirm"
+    },
+    {
+      "type": "scroll_until",
+      "identifier": "visit.slot.e08"
+    },
+    {
+      "type": "tap",
+      "identifier": "visit.slot.e08",
+      "checkpoint": "after_select"
+    },
+    {
+      "type": "scroll_until",
+      "identifier": "visit.confirm"
+    },
+    {
+      "type": "capture",
+      "checkpoint": "scroll_1"
+    }
+  ]
+}
