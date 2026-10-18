@@ -1,0 +1,2623 @@
+{
+  "schemaVersion": 1,
+  "publicContract": "public/brief.md",
+  "publicReference": "public/reference.svg",
+  "fixtureCounts": {
+    "initial": 6,
+    "repair_holdout": 2
+  },
+  "cases": [
+    {
+      "caseId": "initial_01",
+      "phase": "initial",
+      "fixture": {
+        "caseId": "initial_01",
+        "environment": {
+          "width": 390,
+          "viewportHeight": 600,
+          "theme": "light",
+          "fontScale": 1.0,
+          "direction": "ltr",
+          "outerHorizontalMargin": 16,
+          "outerTopMargin": 24
+        },
+        "model": {
+          "mode": "choosing",
+          "serviceTitle": "Annual home ventilation service",
+          "location": "44 Rowan Court, Unit 8",
+          "currentAppointment": {
+            "dayLabel": "Thursday, 5 November",
+            "timeLabel": "14:00–16:00"
+          },
+          "groups": [
+            {
+              "id": "fri",
+              "dayLabel": "Friday, 6 November",
+              "slots": [
+                {
+                  "id": "f09",
+                  "timeLabel": "09:30–11:30",
+                  "detail": "Two-hour arrival window.",
+                  "availability": "available",
+                  "feeLabel": null,
+                  "unavailableReason": null
+                },
+                {
+                  "id": "f13",
+                  "timeLabel": "13:30–15:30",
+                  "detail": "A few appointments remain.",
+                  "availability": "limited",
+                  "feeLabel": "$18.00",
+                  "unavailableReason": null
+                }
+              ]
+            },
+            {
+              "id": "sat",
+              "dayLabel": "Saturday, 7 November",
+              "slots": [
+                {
+                  "id": "s10",
+                  "timeLabel": "10:00–12:00",
+                  "detail": "Weekend arrival window.",
+                  "availability": "unavailable",
+                  "feeLabel": null,
+                  "unavailableReason": "All engineers are booked for this window."
+                }
+              ]
+            }
+          ],
+          "selectedSlotId": null,
+          "feeAccepted": false,
+          "unavailableMessage": null,
+          "confirmation": null
+        }
+      },
+      "updates": [],
+      "protocol": [
+        {
+          "type": "capture",
+          "checkpoint": "initial",
+          "expectedEvents": []
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.slot.s10"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.slot.s10",
+          "expectedEvents": [],
+          "allowDeniedActivation": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.confirm"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.confirm",
+          "expectedEvents": [],
+          "allowDeniedActivation": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.slot.f09"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.slot.f09",
+          "checkpoint": "after_select",
+          "expectedEvents": [
+            "select_slot:f09"
+          ],
+          "echoControlledState": true
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.slot.f09",
+          "expectedEvents": [],
+          "allowDeniedActivation": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.confirm"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.confirm",
+          "checkpoint": "after_confirm",
+          "expectedEvents": [
+            "confirm:f09"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "ruleId": "R02",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "title": "Reschedule visit",
+            "serviceTitle": "Annual home ventilation service",
+            "location": "44 Rowan Court, Unit 8",
+            "currentLabel": "Current appointment",
+            "currentAppointment": {
+              "dayLabel": "Thursday, 5 November",
+              "timeLabel": "14:00–16:00"
+            }
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R13",
+          "at": [
+            "initial"
+          ],
+          "expected": "Required rendered IDs are meaningful native nodes. Real controls expose relevant selected/disabled/value/enabled states; no duplicate activatable row children. Native reading order follows brief.",
+          "methods": [
+            "native_ax",
+            "native_semantics",
+            "source_review"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R14",
+          "at": [
+            "initial"
+          ],
+          "expected": "Rendered state follows public reference hierarchy, palette, spacing, type and state treatment.",
+          "methods": [
+            "screenshot"
+          ],
+          "tolerance": "Spacing±2, baseline typography±1.5, flat RGB±8; normal native glyph/line-break differences allowed."
+        },
+        {
+          "ruleId": "R15",
+          "at": [
+            "initial"
+          ],
+          "expected": "Complete fixed and supplied text wraps without truncation, horizontal overflow, clipped lines or overlapping controls. Inspect additional scroll checkpoints for offscreen content.",
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Text integrity exact; natural native wrapping/accumulated heights may vary."
+        },
+        {
+          "ruleId": "R17",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "theme": "light",
+            "fontScale": 1.0,
+            "direction": "ltr",
+            "rtl": "Semantic leading and radio mirror when RTL; dates/times/amounts remain readable."
+          },
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Public palette tolerances; direction/meaning exact; Apple uses nearest accessibility category and records it."
+        },
+        {
+          "ruleId": "R03",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "groupOrder": [
+              "fri",
+              "sat"
+            ],
+            "slotOrder": [
+              "f09",
+              "f13",
+              "s10"
+            ],
+            "metadata": {
+              "f09": "Available · No fee",
+              "f13": "Few left · $18.00 fee",
+              "s10": "Unavailable; All engineers are booked for this window."
+            }
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R04",
+          "at": [
+            "initial",
+            "after_select"
+          ],
+          "expected": {
+            "initialSelected": null,
+            "afterSelect": "f09"
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R05",
+          "at": [
+            "initial",
+            "after_select"
+          ],
+          "expected": "s10 natively disabled and no event; f09 emits one select_slot:f09; reactivating f09 emits no further event.",
+          "methods": [
+            "native_ax",
+            "native_action",
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R06",
+          "at": [
+            "initial",
+            "after_select"
+          ],
+          "expected": {
+            "initialGuidance": "Choose one appointment to continue.",
+            "initialSummaryAbsent": true,
+            "selectedSummary": {
+              "day": "Friday, 6 November",
+              "time": "09:30–11:30",
+              "fee": "No rescheduling fee"
+            },
+            "selectedGuidance": "Your current time stays reserved until you confirm."
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R07",
+          "at": [
+            "initial",
+            "after_select"
+          ],
+          "expected": "Consent absent with no selection and with free f09.",
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R08",
+          "at": [
+            "initial",
+            "after_select",
+            "after_confirm"
+          ],
+          "expected": {
+            "initialEnabled": false,
+            "afterSelectEnabled": true,
+            "confirmEvent": "confirm:f09",
+            "count": 1
+          },
+          "methods": [
+            "native_ax",
+            "native_action",
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R09",
+          "at": [
+            "after_select"
+          ],
+          "expected": "Caller echo immediately selects f09, preserves order and shows free summary.",
+          "methods": [
+            "native_ax",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        }
+      ],
+      "applicableRuleIds": [
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R13",
+        "R14",
+        "R15",
+        "R17"
+      ]
+    },
+    {
+      "caseId": "initial_02",
+      "phase": "initial",
+      "fixture": {
+        "caseId": "initial_02",
+        "environment": {
+          "width": 320,
+          "viewportHeight": 600,
+          "theme": "dark",
+          "fontScale": 1.0,
+          "direction": "ltr",
+          "outerHorizontalMargin": 16,
+          "outerTopMargin": 24
+        },
+        "model": {
+          "mode": "choosing",
+          "serviceTitle": "Radiator balance and heating check",
+          "location": "6 Birch Lane, Ground floor",
+          "currentAppointment": {
+            "dayLabel": "Thursday, 5 November",
+            "timeLabel": "14:00–16:00"
+          },
+          "groups": [
+            {
+              "id": "eve",
+              "dayLabel": "Tuesday, 10 November",
+              "slots": [
+                {
+                  "id": "e17",
+                  "timeLabel": "17:00–19:00",
+                  "detail": "After-work appointment window.",
+                  "availability": "limited",
+                  "feeLabel": "€32.50",
+                  "unavailableReason": null
+                },
+                {
+                  "id": "e08",
+                  "timeLabel": "08:00–10:00",
+                  "detail": "Standard morning arrival.",
+                  "availability": "available",
+                  "feeLabel": null,
+                  "unavailableReason": null
+                }
+              ]
+            }
+          ],
+          "selectedSlotId": "e17",
+          "feeAccepted": false,
+          "unavailableMessage": null,
+          "confirmation": null
+        }
+      },
+      "updates": [],
+      "protocol": [
+        {
+          "type": "capture",
+          "checkpoint": "initial",
+          "expectedEvents": []
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.confirm"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.confirm",
+          "expectedEvents": [],
+          "allowDeniedActivation": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.fee_consent"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.fee_consent",
+          "checkpoint": "after_fee_on",
+          "expectedEvents": [
+            "fee_accepted:true"
+          ],
+          "echoControlledState": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.confirm"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.confirm",
+          "checkpoint": "after_confirm",
+          "expectedEvents": [
+            "confirm:e17"
+          ]
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.slot.e08"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.slot.e08",
+          "checkpoint": "after_select",
+          "expectedEvents": [
+            "select_slot:e08"
+          ],
+          "echoControlledState": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.confirm"
+        },
+        {
+          "type": "capture",
+          "checkpoint": "scroll_1",
+          "expectedEvents": []
+        }
+      ],
+      "checks": [
+        {
+          "ruleId": "R02",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "title": "Reschedule visit",
+            "serviceTitle": "Radiator balance and heating check",
+            "location": "6 Birch Lane, Ground floor",
+            "currentLabel": "Current appointment",
+            "currentAppointment": {
+              "dayLabel": "Thursday, 5 November",
+              "timeLabel": "14:00–16:00"
+            }
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R13",
+          "at": [
+            "initial"
+          ],
+          "expected": "Required rendered IDs are meaningful native nodes. Real controls expose relevant selected/disabled/value/enabled states; no duplicate activatable row children. Native reading order follows brief.",
+          "methods": [
+            "native_ax",
+            "native_semantics",
+            "source_review"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R14",
+          "at": [
+            "initial"
+          ],
+          "expected": "Rendered state follows public reference hierarchy, palette, spacing, type and state treatment.",
+          "methods": [
+            "screenshot"
+          ],
+          "tolerance": "Spacing±2, baseline typography±1.5, flat RGB±8; normal native glyph/line-break differences allowed."
+        },
+        {
+          "ruleId": "R15",
+          "at": [
+            "initial"
+          ],
+          "expected": "Complete fixed and supplied text wraps without truncation, horizontal overflow, clipped lines or overlapping controls. Inspect additional scroll checkpoints for offscreen content.",
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Text integrity exact; natural native wrapping/accumulated heights may vary."
+        },
+        {
+          "ruleId": "R17",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "theme": "dark",
+            "fontScale": 1.0,
+            "direction": "ltr",
+            "rtl": "Semantic leading and radio mirror when RTL; dates/times/amounts remain readable."
+          },
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Public palette tolerances; direction/meaning exact; Apple uses nearest accessibility category and records it."
+        },
+        {
+          "ruleId": "R03",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "groupOrder": [
+              "eve"
+            ],
+            "slotOrder": [
+              "e17",
+              "e08"
+            ],
+            "selectedMetadata": "Few left · €32.50 fee"
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R04",
+          "at": [
+            "initial"
+          ],
+          "expected": "Only e17 selected and eligible.",
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R05",
+          "at": [
+            "after_select"
+          ],
+          "expected": "e08 activation emits exactly select_slot:e08.",
+          "methods": [
+            "native_action",
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R06",
+          "at": [
+            "initial",
+            "after_fee_on",
+            "after_select"
+          ],
+          "expected": {
+            "initialSummary": {
+              "day": "Tuesday, 10 November",
+              "time": "17:00–19:00",
+              "fee": "€32.50"
+            },
+            "initialGuidance": "Agree to the fee to continue.",
+            "afterFeeGuidance": "Your current time stays reserved until you confirm.",
+            "afterSelectSummary": {
+              "day": "Tuesday, 10 November",
+              "time": "08:00–10:00",
+              "fee": "No rescheduling fee"
+            }
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R07",
+          "at": [
+            "initial",
+            "after_fee_on",
+            "after_select"
+          ],
+          "expected": {
+            "label": "I agree to the rescheduling fee of €32.50.",
+            "initialValue": false,
+            "afterFeeValue": true,
+            "afterSelectAbsent": true,
+            "event": "fee_accepted:true",
+            "count": 1
+          },
+          "methods": [
+            "native_ax",
+            "native_action",
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R08",
+          "at": [
+            "initial",
+            "after_fee_on",
+            "after_confirm",
+            "after_select"
+          ],
+          "expected": {
+            "initialEnabled": false,
+            "afterFeeEnabled": true,
+            "event": "confirm:e17",
+            "afterFreeSelectEnabled": true
+          },
+          "methods": [
+            "native_ax",
+            "native_action",
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R09",
+          "at": [
+            "after_fee_on",
+            "after_select"
+          ],
+          "expected": "Echo fee true immediately; different free selection echoes false and hides consent.",
+          "methods": [
+            "native_ax",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        }
+      ],
+      "applicableRuleIds": [
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R13",
+        "R14",
+        "R15",
+        "R17"
+      ]
+    },
+    {
+      "caseId": "initial_03",
+      "phase": "initial",
+      "fixture": {
+        "caseId": "initial_03",
+        "environment": {
+          "width": 320,
+          "viewportHeight": 600,
+          "theme": "light",
+          "fontScale": 1.8,
+          "direction": "ltr",
+          "outerHorizontalMargin": 16,
+          "outerTopMargin": 24
+        },
+        "model": {
+          "mode": "choosing",
+          "serviceTitle": "Whole-home heat recovery ventilation inspection and filter replacement",
+          "location": "Flat 1206, East Observatory Building, 275 Longwater Promenade, accessible entrance beside the community garden",
+          "currentAppointment": {
+            "dayLabel": "Thursday, 5 November",
+            "timeLabel": "14:00–16:00"
+          },
+          "groups": [
+            {
+              "id": "wed",
+              "dayLabel": "Wednesday, 18 November — morning and early afternoon",
+              "slots": [
+                {
+                  "id": "w07",
+                  "timeLabel": "07:00–09:30",
+                  "detail": "The engineer will telephone the building concierge before arriving; please keep your phone nearby.",
+                  "availability": "available",
+                  "feeLabel": null,
+                  "unavailableReason": null
+                },
+                {
+                  "id": "w11",
+                  "timeLabel": "11:30–14:00",
+                  "detail": "A two-person service team needs access to the cupboard behind the kitchen.",
+                  "availability": "unavailable",
+                  "feeLabel": null,
+                  "unavailableReason": "This team is reserved for a larger building inspection and cannot accept another visit."
+                }
+              ]
+            },
+            {
+              "id": "thu",
+              "dayLabel": "Thursday, 19 November",
+              "slots": [
+                {
+                  "id": "t09",
+                  "timeLabel": "09:00–11:30",
+                  "detail": "Please allow extra time for entry checks at reception.",
+                  "availability": "limited",
+                  "feeLabel": null,
+                  "unavailableReason": null
+                },
+                {
+                  "id": "t14",
+                  "timeLabel": "14:30–17:00",
+                  "detail": "Afternoon visit with the same engineer who handled your previous annual service.",
+                  "availability": "available",
+                  "feeLabel": "£45.00",
+                  "unavailableReason": null
+                }
+              ]
+            },
+            {
+              "id": "fri2",
+              "dayLabel": "Friday, 20 November",
+              "slots": [
+                {
+                  "id": "v10",
+                  "timeLabel": "10:15–12:45",
+                  "detail": "Step-free access is available through the courtyard entrance.",
+                  "availability": "available",
+                  "feeLabel": null,
+                  "unavailableReason": null
+                }
+              ]
+            }
+          ],
+          "selectedSlotId": "t09",
+          "feeAccepted": true,
+          "unavailableMessage": null,
+          "confirmation": null
+        }
+      },
+      "updates": [],
+      "protocol": [
+        {
+          "type": "capture",
+          "checkpoint": "initial",
+          "expectedEvents": []
+        },
+        {
+          "type": "scroll",
+          "checkpoint": "scroll_1",
+          "direction": "down",
+          "amount": "one viewport"
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.confirm"
+        },
+        {
+          "type": "capture",
+          "checkpoint": "scroll_2",
+          "expectedEvents": []
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.confirm",
+          "checkpoint": "after_confirm",
+          "expectedEvents": [
+            "confirm:t09"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "ruleId": "R02",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "title": "Reschedule visit",
+            "serviceTitle": "Whole-home heat recovery ventilation inspection and filter replacement",
+            "location": "Flat 1206, East Observatory Building, 275 Longwater Promenade, accessible entrance beside the community garden",
+            "currentLabel": "Current appointment",
+            "currentAppointment": {
+              "dayLabel": "Thursday, 5 November",
+              "timeLabel": "14:00–16:00"
+            }
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R13",
+          "at": [
+            "initial"
+          ],
+          "expected": "Required rendered IDs are meaningful native nodes. Real controls expose relevant selected/disabled/value/enabled states; no duplicate activatable row children. Native reading order follows brief.",
+          "methods": [
+            "native_ax",
+            "native_semantics",
+            "source_review"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R14",
+          "at": [
+            "initial"
+          ],
+          "expected": "Rendered state follows public reference hierarchy, palette, spacing, type and state treatment.",
+          "methods": [
+            "screenshot"
+          ],
+          "tolerance": "Spacing±2, baseline typography±1.5, flat RGB±8; normal native glyph/line-break differences allowed."
+        },
+        {
+          "ruleId": "R15",
+          "at": [
+            "initial"
+          ],
+          "expected": "Complete fixed and supplied text wraps without truncation, horizontal overflow, clipped lines or overlapping controls. Inspect additional scroll checkpoints for offscreen content.",
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Text integrity exact; natural native wrapping/accumulated heights may vary."
+        },
+        {
+          "ruleId": "R17",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "theme": "light",
+            "fontScale": 1.8,
+            "direction": "ltr",
+            "rtl": "Semantic leading and radio mirror when RTL; dates/times/amounts remain readable."
+          },
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Public palette tolerances; direction/meaning exact; Apple uses nearest accessibility category and records it."
+        },
+        {
+          "ruleId": "R16",
+          "at": [
+            "initial",
+            "scroll_1",
+            "scroll_2"
+          ],
+          "expected": "Ordinary parent scrolling exposes all long text and final action; intrinsic panel has no nested/fixed viewport.",
+          "methods": [
+            "native_action",
+            "screenshot",
+            "source_review"
+          ],
+          "tolerance": "Extra parent scrolls allowed; record progression and footer."
+        },
+        {
+          "ruleId": "R03",
+          "at": [
+            "initial",
+            "scroll_1",
+            "scroll_2"
+          ],
+          "expected": {
+            "groupOrder": [
+              "wed",
+              "thu",
+              "fri2"
+            ],
+            "slotOrder": [
+              "w07",
+              "w11",
+              "t09",
+              "t14",
+              "v10"
+            ],
+            "fullDetails": true,
+            "fullUnavailableReason": true
+          },
+          "methods": [
+            "native_ax",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R04",
+          "at": [
+            "initial",
+            "scroll_1"
+          ],
+          "expected": "Only t09 selected; feeAccepted=true does not create a fee for this free slot.",
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R06",
+          "at": [
+            "scroll_2"
+          ],
+          "expected": {
+            "day": "Thursday, 19 November",
+            "time": "09:00–11:30",
+            "fee": "No rescheduling fee",
+            "guidance": "Your current time stays reserved until you confirm."
+          },
+          "methods": [
+            "native_ax",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R07",
+          "at": [
+            "scroll_2"
+          ],
+          "expected": "Consent absent because selected t09 has no fee despite feeAccepted=true.",
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R08",
+          "at": [
+            "scroll_2",
+            "after_confirm"
+          ],
+          "expected": "Enabled confirm produces exactly confirm:t09 after ordinary scrolling.",
+          "methods": [
+            "native_ax",
+            "native_action",
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        }
+      ],
+      "applicableRuleIds": [
+        "R02",
+        "R03",
+        "R04",
+        "R06",
+        "R07",
+        "R08",
+        "R13",
+        "R14",
+        "R15",
+        "R16",
+        "R17"
+      ]
+    },
+    {
+      "caseId": "initial_04",
+      "phase": "initial",
+      "fixture": {
+        "caseId": "initial_04",
+        "environment": {
+          "width": 390,
+          "viewportHeight": 600,
+          "theme": "dark",
+          "fontScale": 1.0,
+          "direction": "ltr",
+          "outerHorizontalMargin": 16,
+          "outerTopMargin": 24
+        },
+        "model": {
+          "mode": "loading",
+          "serviceTitle": "Water softener maintenance",
+          "location": "91 Acorn Road, Garage entrance",
+          "currentAppointment": {
+            "dayLabel": "Thursday, 5 November",
+            "timeLabel": "14:00–16:00"
+          },
+          "groups": [
+            {
+              "id": "eve",
+              "dayLabel": "Tuesday, 10 November",
+              "slots": [
+                {
+                  "id": "e17",
+                  "timeLabel": "17:00–19:00",
+                  "detail": "After-work appointment window.",
+                  "availability": "limited",
+                  "feeLabel": "€32.50",
+                  "unavailableReason": null
+                },
+                {
+                  "id": "e08",
+                  "timeLabel": "08:00–10:00",
+                  "detail": "Standard morning arrival.",
+                  "availability": "available",
+                  "feeLabel": null,
+                  "unavailableReason": null
+                }
+              ]
+            }
+          ],
+          "selectedSlotId": "e17",
+          "feeAccepted": true,
+          "unavailableMessage": null,
+          "confirmation": null
+        }
+      },
+      "updates": [],
+      "protocol": [
+        {
+          "type": "capture",
+          "checkpoint": "initial",
+          "expectedEvents": []
+        }
+      ],
+      "checks": [
+        {
+          "ruleId": "R02",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "title": "Reschedule visit",
+            "serviceTitle": "Water softener maintenance",
+            "location": "91 Acorn Road, Garage entrance",
+            "currentLabel": "Current appointment",
+            "currentAppointment": {
+              "dayLabel": "Thursday, 5 November",
+              "timeLabel": "14:00–16:00"
+            }
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R13",
+          "at": [
+            "initial"
+          ],
+          "expected": "Required rendered IDs are meaningful native nodes. Real controls expose relevant selected/disabled/value/enabled states; no duplicate activatable row children. Native reading order follows brief.",
+          "methods": [
+            "native_ax",
+            "native_semantics",
+            "source_review"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R14",
+          "at": [
+            "initial"
+          ],
+          "expected": "Rendered state follows public reference hierarchy, palette, spacing, type and state treatment.",
+          "methods": [
+            "screenshot"
+          ],
+          "tolerance": "Spacing±2, baseline typography±1.5, flat RGB±8; normal native glyph/line-break differences allowed."
+        },
+        {
+          "ruleId": "R15",
+          "at": [
+            "initial"
+          ],
+          "expected": "Complete fixed and supplied text wraps without truncation, horizontal overflow, clipped lines or overlapping controls. Inspect additional scroll checkpoints for offscreen content.",
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Text integrity exact; natural native wrapping/accumulated heights may vary."
+        },
+        {
+          "ruleId": "R17",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "theme": "dark",
+            "fontScale": 1.0,
+            "direction": "ltr",
+            "rtl": "Semantic leading and radio mirror when RTL; dates/times/amounts remain readable."
+          },
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Public palette tolerances; direction/meaning exact; Apple uses nearest accessibility category and records it."
+        },
+        {
+          "ruleId": "R10",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "visible": [
+              "visit.loading"
+            ],
+            "text": "Checking available appointments…",
+            "absent": [
+              "visit.group.eve",
+              "visit.slot.e17",
+              "visit.selection_summary",
+              "visit.selection_warning",
+              "visit.fee_consent",
+              "visit.guidance",
+              "visit.confirm",
+              "visit.retry",
+              "visit.done"
+            ]
+          },
+          "methods": [
+            "native_ax",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R09",
+          "at": [
+            "initial"
+          ],
+          "expected": "Loading mode ignores stale chooser input.",
+          "methods": [
+            "native_ax",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R08",
+          "at": [
+            "initial"
+          ],
+          "expected": "Render emits no confirm/retry/done.",
+          "methods": [
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        }
+      ],
+      "applicableRuleIds": [
+        "R02",
+        "R08",
+        "R09",
+        "R10",
+        "R13",
+        "R14",
+        "R15",
+        "R17"
+      ]
+    },
+    {
+      "caseId": "initial_05",
+      "phase": "initial",
+      "fixture": {
+        "caseId": "initial_05",
+        "environment": {
+          "width": 390,
+          "viewportHeight": 600,
+          "theme": "dark",
+          "fontScale": 1.3,
+          "direction": "rtl",
+          "outerHorizontalMargin": 16,
+          "outerTopMargin": 24
+        },
+        "model": {
+          "mode": "unavailable",
+          "serviceTitle": "Door entry system inspection",
+          "location": "South reception, 30 Riverside Apartments",
+          "currentAppointment": {
+            "dayLabel": "Thursday, 5 November",
+            "timeLabel": "14:00–16:00"
+          },
+          "groups": [
+            {
+              "id": "fri",
+              "dayLabel": "Friday, 6 November",
+              "slots": [
+                {
+                  "id": "f09",
+                  "timeLabel": "09:30–11:30",
+                  "detail": "Two-hour arrival window.",
+                  "availability": "available",
+                  "feeLabel": null,
+                  "unavailableReason": null
+                },
+                {
+                  "id": "f13",
+                  "timeLabel": "13:30–15:30",
+                  "detail": "A few appointments remain.",
+                  "availability": "limited",
+                  "feeLabel": "$18.00",
+                  "unavailableReason": null
+                }
+              ]
+            },
+            {
+              "id": "sat",
+              "dayLabel": "Saturday, 7 November",
+              "slots": [
+                {
+                  "id": "s10",
+                  "timeLabel": "10:00–12:00",
+                  "detail": "Weekend arrival window.",
+                  "availability": "unavailable",
+                  "feeLabel": null,
+                  "unavailableReason": "All engineers are booked for this window."
+                }
+              ]
+            }
+          ],
+          "selectedSlotId": "f13",
+          "feeAccepted": true,
+          "unavailableMessage": "We could not find another visit while the communal entrance is being repaired. Your existing appointment remains reserved. Check again after the building manager confirms access.",
+          "confirmation": null
+        }
+      },
+      "updates": [],
+      "protocol": [
+        {
+          "type": "capture",
+          "checkpoint": "initial",
+          "expectedEvents": []
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.retry"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.retry",
+          "checkpoint": "after_retry",
+          "expectedEvents": [
+            "retry"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "ruleId": "R02",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "title": "Reschedule visit",
+            "serviceTitle": "Door entry system inspection",
+            "location": "South reception, 30 Riverside Apartments",
+            "currentLabel": "Current appointment",
+            "currentAppointment": {
+              "dayLabel": "Thursday, 5 November",
+              "timeLabel": "14:00–16:00"
+            }
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R13",
+          "at": [
+            "initial"
+          ],
+          "expected": "Required rendered IDs are meaningful native nodes. Real controls expose relevant selected/disabled/value/enabled states; no duplicate activatable row children. Native reading order follows brief.",
+          "methods": [
+            "native_ax",
+            "native_semantics",
+            "source_review"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R14",
+          "at": [
+            "initial"
+          ],
+          "expected": "Rendered state follows public reference hierarchy, palette, spacing, type and state treatment.",
+          "methods": [
+            "screenshot"
+          ],
+          "tolerance": "Spacing±2, baseline typography±1.5, flat RGB±8; normal native glyph/line-break differences allowed."
+        },
+        {
+          "ruleId": "R15",
+          "at": [
+            "initial"
+          ],
+          "expected": "Complete fixed and supplied text wraps without truncation, horizontal overflow, clipped lines or overlapping controls. Inspect additional scroll checkpoints for offscreen content.",
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Text integrity exact; natural native wrapping/accumulated heights may vary."
+        },
+        {
+          "ruleId": "R17",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "theme": "dark",
+            "fontScale": 1.3,
+            "direction": "rtl",
+            "rtl": "Semantic leading and radio mirror when RTL; dates/times/amounts remain readable."
+          },
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Public palette tolerances; direction/meaning exact; Apple uses nearest accessibility category and records it."
+        },
+        {
+          "ruleId": "R11",
+          "at": [
+            "initial",
+            "after_retry"
+          ],
+          "expected": {
+            "heading": "No appointments available",
+            "message": "We could not find another visit while the communal entrance is being repaired. Your existing appointment remains reserved. Check again after the building manager confirms access.",
+            "retryLabel": "Check again",
+            "event": "retry",
+            "count": 1,
+            "absent": [
+              "visit.slot.f09",
+              "visit.selection_summary",
+              "visit.selection_warning",
+              "visit.fee_consent",
+              "visit.guidance",
+              "visit.confirm",
+              "visit.done"
+            ]
+          },
+          "methods": [
+            "native_ax",
+            "native_action",
+            "callback_trace",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R09",
+          "at": [
+            "initial"
+          ],
+          "expected": "Unavailable mode ignores stale chooser input.",
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R08",
+          "at": [
+            "initial"
+          ],
+          "expected": "Initial render emits no confirm/retry/done.",
+          "methods": [
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        }
+      ],
+      "applicableRuleIds": [
+        "R02",
+        "R08",
+        "R09",
+        "R11",
+        "R13",
+        "R14",
+        "R15",
+        "R17"
+      ]
+    },
+    {
+      "caseId": "initial_06",
+      "phase": "initial",
+      "fixture": {
+        "caseId": "initial_06",
+        "environment": {
+          "width": 390,
+          "viewportHeight": 600,
+          "theme": "light",
+          "fontScale": 1.0,
+          "direction": "ltr",
+          "outerHorizontalMargin": 16,
+          "outerTopMargin": 24
+        },
+        "model": {
+          "mode": "confirmed",
+          "serviceTitle": "Annual smoke and heat alarm test",
+          "location": "22 Hazelnut Way, Second floor",
+          "currentAppointment": {
+            "dayLabel": "Thursday, 5 November",
+            "timeLabel": "14:00–16:00"
+          },
+          "groups": [
+            {
+              "id": "eve",
+              "dayLabel": "Tuesday, 10 November",
+              "slots": [
+                {
+                  "id": "e17",
+                  "timeLabel": "17:00–19:00",
+                  "detail": "After-work appointment window.",
+                  "availability": "limited",
+                  "feeLabel": "€32.50",
+                  "unavailableReason": null
+                },
+                {
+                  "id": "e08",
+                  "timeLabel": "08:00–10:00",
+                  "detail": "Standard morning arrival.",
+                  "availability": "available",
+                  "feeLabel": null,
+                  "unavailableReason": null
+                }
+              ]
+            }
+          ],
+          "selectedSlotId": "e17",
+          "feeAccepted": true,
+          "unavailableMessage": null,
+          "confirmation": {
+            "appointment": {
+              "dayLabel": "Monday, 30 November",
+              "timeLabel": "12:30–14:30"
+            },
+            "reference": "VISIT-90Q7-REV2",
+            "note": "Your original afternoon appointment has been released. The engineer will use the rear service entrance and call you when parking nearby."
+          }
+        }
+      },
+      "updates": [],
+      "protocol": [
+        {
+          "type": "capture",
+          "checkpoint": "initial",
+          "expectedEvents": []
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.done"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.done",
+          "checkpoint": "after_done",
+          "expectedEvents": [
+            "done"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "ruleId": "R02",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "title": "Visit rescheduled",
+            "serviceTitle": "Annual smoke and heat alarm test",
+            "location": "22 Hazelnut Way, Second floor",
+            "currentLabel": "Previous appointment",
+            "currentAppointment": {
+              "dayLabel": "Thursday, 5 November",
+              "timeLabel": "14:00–16:00"
+            }
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R13",
+          "at": [
+            "initial"
+          ],
+          "expected": "Required rendered IDs are meaningful native nodes. Real controls expose relevant selected/disabled/value/enabled states; no duplicate activatable row children. Native reading order follows brief.",
+          "methods": [
+            "native_ax",
+            "native_semantics",
+            "source_review"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R14",
+          "at": [
+            "initial"
+          ],
+          "expected": "Rendered state follows public reference hierarchy, palette, spacing, type and state treatment.",
+          "methods": [
+            "screenshot"
+          ],
+          "tolerance": "Spacing±2, baseline typography±1.5, flat RGB±8; normal native glyph/line-break differences allowed."
+        },
+        {
+          "ruleId": "R15",
+          "at": [
+            "initial"
+          ],
+          "expected": "Complete fixed and supplied text wraps without truncation, horizontal overflow, clipped lines or overlapping controls. Inspect additional scroll checkpoints for offscreen content.",
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Text integrity exact; natural native wrapping/accumulated heights may vary."
+        },
+        {
+          "ruleId": "R17",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "theme": "light",
+            "fontScale": 1.0,
+            "direction": "ltr",
+            "rtl": "Semantic leading and radio mirror when RTL; dates/times/amounts remain readable."
+          },
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Public palette tolerances; direction/meaning exact; Apple uses nearest accessibility category and records it."
+        },
+        {
+          "ruleId": "R12",
+          "at": [
+            "initial",
+            "after_done"
+          ],
+          "expected": {
+            "heading": "New appointment confirmed",
+            "newAppointment": {
+              "dayLabel": "Monday, 30 November",
+              "timeLabel": "12:30–14:30"
+            },
+            "reference": "Reference: VISIT-90Q7-REV2",
+            "note": "Your original afternoon appointment has been released. The engineer will use the rear service entrance and call you when parking nearby.",
+            "event": "done",
+            "count": 1,
+            "absent": [
+              "visit.slot.e17",
+              "visit.selection_summary",
+              "visit.selection_warning",
+              "visit.fee_consent",
+              "visit.guidance",
+              "visit.confirm",
+              "visit.retry"
+            ]
+          },
+          "methods": [
+            "native_ax",
+            "native_action",
+            "callback_trace",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R09",
+          "at": [
+            "initial"
+          ],
+          "expected": "Confirmed mode ignores stale chooser input.",
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R08",
+          "at": [
+            "initial"
+          ],
+          "expected": "Initial render emits no confirm/retry/done.",
+          "methods": [
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        }
+      ],
+      "applicableRuleIds": [
+        "R02",
+        "R08",
+        "R09",
+        "R12",
+        "R13",
+        "R14",
+        "R15",
+        "R17"
+      ]
+    },
+    {
+      "caseId": "repair_holdout_01",
+      "phase": "repair_holdout",
+      "fixture": {
+        "caseId": "repair_holdout_01",
+        "environment": {
+          "width": 320,
+          "viewportHeight": 600,
+          "theme": "light",
+          "fontScale": 1.0,
+          "direction": "ltr",
+          "outerHorizontalMargin": 16,
+          "outerTopMargin": 24
+        },
+        "model": {
+          "mode": "choosing",
+          "serviceTitle": "Kitchen extractor inspection",
+          "location": "57 Copper Lane, Building C",
+          "currentAppointment": {
+            "dayLabel": "Thursday, 5 November",
+            "timeLabel": "14:00–16:00"
+          },
+          "groups": [
+            {
+              "id": "dec",
+              "dayLabel": "Tuesday, 8 December",
+              "slots": [
+                {
+                  "id": "d08",
+                  "timeLabel": "08:15–10:15",
+                  "detail": "Reserved early access window.",
+                  "availability": "limited",
+                  "feeLabel": "$27.00",
+                  "unavailableReason": null
+                },
+                {
+                  "id": "d12",
+                  "timeLabel": "12:15–14:15",
+                  "detail": "Standard arrival window.",
+                  "availability": "available",
+                  "feeLabel": null,
+                  "unavailableReason": null
+                }
+              ]
+            }
+          ],
+          "selectedSlotId": "d08",
+          "feeAccepted": true,
+          "unavailableMessage": null,
+          "confirmation": null
+        }
+      },
+      "updates": [
+        {
+          "caseId": "repair_holdout_01_update_1",
+          "environment": {
+            "width": 320,
+            "viewportHeight": 600,
+            "theme": "light",
+            "fontScale": 1.0,
+            "direction": "ltr",
+            "outerHorizontalMargin": 16,
+            "outerTopMargin": 24
+          },
+          "model": {
+            "mode": "choosing",
+            "serviceTitle": "Kitchen extractor inspection",
+            "location": "57 Copper Lane, Building C",
+            "currentAppointment": {
+              "dayLabel": "Thursday, 5 November",
+              "timeLabel": "14:00–16:00"
+            },
+            "groups": [
+              {
+                "id": "dec",
+                "dayLabel": "Tuesday, 8 December",
+                "slots": [
+                  {
+                    "id": "d08",
+                    "timeLabel": "08:15–10:15",
+                    "detail": "Reserved early access window.",
+                    "availability": "unavailable",
+                    "feeLabel": "$27.00",
+                    "unavailableReason": "The engineer assigned to this window is no longer available."
+                  },
+                  {
+                    "id": "d12",
+                    "timeLabel": "12:15–14:15",
+                    "detail": "Standard arrival window.",
+                    "availability": "available",
+                    "feeLabel": null,
+                    "unavailableReason": null
+                  }
+                ]
+              }
+            ],
+            "selectedSlotId": "d08",
+            "feeAccepted": true,
+            "unavailableMessage": null,
+            "confirmation": null
+          }
+        },
+        {
+          "caseId": "repair_holdout_01_update_2",
+          "environment": {
+            "width": 320,
+            "viewportHeight": 600,
+            "theme": "light",
+            "fontScale": 1.0,
+            "direction": "ltr",
+            "outerHorizontalMargin": 16,
+            "outerTopMargin": 24
+          },
+          "model": {
+            "mode": "choosing",
+            "serviceTitle": "Kitchen extractor inspection",
+            "location": "57 Copper Lane, Building C",
+            "currentAppointment": {
+              "dayLabel": "Thursday, 5 November",
+              "timeLabel": "14:00–16:00"
+            },
+            "groups": [
+              {
+                "id": "dec",
+                "dayLabel": "Tuesday, 8 December",
+                "slots": [
+                  {
+                    "id": "d12",
+                    "timeLabel": "12:15–14:15",
+                    "detail": "Standard arrival window.",
+                    "availability": "available",
+                    "feeLabel": null,
+                    "unavailableReason": null
+                  }
+                ]
+              }
+            ],
+            "selectedSlotId": "d08",
+            "feeAccepted": true,
+            "unavailableMessage": null,
+            "confirmation": null
+          }
+        }
+      ],
+      "protocol": [
+        {
+          "type": "capture",
+          "checkpoint": "initial",
+          "expectedEvents": []
+        },
+        {
+          "type": "update",
+          "checkpoint": "after_update_1",
+          "model": {
+            "mode": "choosing",
+            "serviceTitle": "Kitchen extractor inspection",
+            "location": "57 Copper Lane, Building C",
+            "currentAppointment": {
+              "dayLabel": "Thursday, 5 November",
+              "timeLabel": "14:00–16:00"
+            },
+            "groups": [
+              {
+                "id": "dec",
+                "dayLabel": "Tuesday, 8 December",
+                "slots": [
+                  {
+                    "id": "d08",
+                    "timeLabel": "08:15–10:15",
+                    "detail": "Reserved early access window.",
+                    "availability": "unavailable",
+                    "feeLabel": "$27.00",
+                    "unavailableReason": "The engineer assigned to this window is no longer available."
+                  },
+                  {
+                    "id": "d12",
+                    "timeLabel": "12:15–14:15",
+                    "detail": "Standard arrival window.",
+                    "availability": "available",
+                    "feeLabel": null,
+                    "unavailableReason": null
+                  }
+                ]
+              }
+            ],
+            "selectedSlotId": "d08",
+            "feeAccepted": true,
+            "unavailableMessage": null,
+            "confirmation": null
+          },
+          "expectedEvents": []
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.slot.d08"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.slot.d08",
+          "expectedEvents": [],
+          "allowDeniedActivation": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.confirm"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.confirm",
+          "expectedEvents": [],
+          "allowDeniedActivation": true
+        },
+        {
+          "type": "update",
+          "checkpoint": "after_update_2",
+          "model": {
+            "mode": "choosing",
+            "serviceTitle": "Kitchen extractor inspection",
+            "location": "57 Copper Lane, Building C",
+            "currentAppointment": {
+              "dayLabel": "Thursday, 5 November",
+              "timeLabel": "14:00–16:00"
+            },
+            "groups": [
+              {
+                "id": "dec",
+                "dayLabel": "Tuesday, 8 December",
+                "slots": [
+                  {
+                    "id": "d12",
+                    "timeLabel": "12:15–14:15",
+                    "detail": "Standard arrival window.",
+                    "availability": "available",
+                    "feeLabel": null,
+                    "unavailableReason": null
+                  }
+                ]
+              }
+            ],
+            "selectedSlotId": "d08",
+            "feeAccepted": true,
+            "unavailableMessage": null,
+            "confirmation": null
+          },
+          "expectedEvents": []
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.confirm"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.confirm",
+          "expectedEvents": [],
+          "allowDeniedActivation": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.slot.d12"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.slot.d12",
+          "checkpoint": "after_select",
+          "expectedEvents": [
+            "select_slot:d12"
+          ],
+          "echoControlledState": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.confirm"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.confirm",
+          "checkpoint": "after_confirm",
+          "expectedEvents": [
+            "confirm:d12"
+          ]
+        }
+      ],
+      "checks": [
+        {
+          "ruleId": "R02",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "title": "Reschedule visit",
+            "serviceTitle": "Kitchen extractor inspection",
+            "location": "57 Copper Lane, Building C",
+            "currentLabel": "Current appointment",
+            "currentAppointment": {
+              "dayLabel": "Thursday, 5 November",
+              "timeLabel": "14:00–16:00"
+            }
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R13",
+          "at": [
+            "initial"
+          ],
+          "expected": "Required rendered IDs are meaningful native nodes. Real controls expose relevant selected/disabled/value/enabled states; no duplicate activatable row children. Native reading order follows brief.",
+          "methods": [
+            "native_ax",
+            "native_semantics",
+            "source_review"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R14",
+          "at": [
+            "initial"
+          ],
+          "expected": "Rendered state follows public reference hierarchy, palette, spacing, type and state treatment.",
+          "methods": [
+            "screenshot"
+          ],
+          "tolerance": "Spacing±2, baseline typography±1.5, flat RGB±8; normal native glyph/line-break differences allowed."
+        },
+        {
+          "ruleId": "R15",
+          "at": [
+            "initial"
+          ],
+          "expected": "Complete fixed and supplied text wraps without truncation, horizontal overflow, clipped lines or overlapping controls. Inspect additional scroll checkpoints for offscreen content.",
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Text integrity exact; natural native wrapping/accumulated heights may vary."
+        },
+        {
+          "ruleId": "R17",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "theme": "light",
+            "fontScale": 1.0,
+            "direction": "ltr",
+            "rtl": "Semantic leading and radio mirror when RTL; dates/times/amounts remain readable."
+          },
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Public palette tolerances; direction/meaning exact; Apple uses nearest accessibility category and records it."
+        },
+        {
+          "ruleId": "R03",
+          "at": [
+            "after_update_1",
+            "after_update_2"
+          ],
+          "expected": {
+            "afterUpdate1Reason": "The engineer assigned to this window is no longer available.",
+            "afterUpdate2SlotOrder": [
+              "d12"
+            ]
+          },
+          "methods": [
+            "native_ax",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R04",
+          "at": [
+            "initial",
+            "after_update_1",
+            "after_update_2",
+            "after_select"
+          ],
+          "expected": {
+            "initialSelected": "d08",
+            "afterUpdate1Selected": null,
+            "afterUpdate2Selected": null,
+            "afterSelectSelected": "d12"
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R05",
+          "at": [
+            "after_update_1",
+            "after_select"
+          ],
+          "expected": "Disabled d08 emits nothing; d12 emits exactly select_slot:d12.",
+          "methods": [
+            "native_ax",
+            "native_action",
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R06",
+          "at": [
+            "after_update_1",
+            "after_update_2",
+            "after_select"
+          ],
+          "expected": {
+            "updateWarning": "That appointment is no longer available. Choose another time.",
+            "updateSummaryAbsent": true,
+            "updateOrdinaryGuidanceAbsent": true,
+            "afterSelectSummary": {
+              "day": "Tuesday, 8 December",
+              "time": "12:15–14:15",
+              "fee": "No rescheduling fee"
+            }
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R07",
+          "at": [
+            "initial",
+            "after_update_1",
+            "after_update_2",
+            "after_select"
+          ],
+          "expected": {
+            "initialValue": true,
+            "updatesConsentAbsent": true,
+            "afterSelectConsentAbsent": true
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R08",
+          "at": [
+            "initial",
+            "after_update_1",
+            "after_update_2",
+            "after_select",
+            "after_confirm"
+          ],
+          "expected": {
+            "initialEnabled": true,
+            "update1Enabled": false,
+            "update2Enabled": false,
+            "afterSelectEnabled": true,
+            "event": "confirm:d12"
+          },
+          "methods": [
+            "native_ax",
+            "native_action",
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R09",
+          "at": [
+            "after_update_1",
+            "after_update_2",
+            "after_select"
+          ],
+          "expected": "Replacing models immediately clears effective invalid selection/summary/consent and disables confirm; callback echo recovers with free d12.",
+          "methods": [
+            "native_ax",
+            "native_action",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        }
+      ],
+      "applicableRuleIds": [
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R13",
+        "R14",
+        "R15",
+        "R17"
+      ]
+    },
+    {
+      "caseId": "repair_holdout_02",
+      "phase": "repair_holdout",
+      "fixture": {
+        "caseId": "repair_holdout_02",
+        "environment": {
+          "width": 320,
+          "viewportHeight": 600,
+          "theme": "dark",
+          "fontScale": 2.0,
+          "direction": "rtl",
+          "outerHorizontalMargin": 16,
+          "outerTopMargin": 24
+        },
+        "model": {
+          "mode": "choosing",
+          "serviceTitle": "Specialist air quality assessment for the whole apartment",
+          "location": "Apartment 304, North Crescent Residence, reception entrance opposite the sheltered courtyard seating area",
+          "currentAppointment": {
+            "dayLabel": "Thursday, 5 November",
+            "timeLabel": "14:00–16:00"
+          },
+          "groups": [
+            {
+              "id": "sun",
+              "dayLabel": "Sunday, 13 December — limited specialist appointments",
+              "slots": [
+                {
+                  "id": "x10",
+                  "timeLabel": "10:45–13:15",
+                  "detail": "A specialist will inspect the system and explain the replacement options before starting any additional work.",
+                  "availability": "limited",
+                  "feeLabel": "AED 1,250.00",
+                  "unavailableReason": null
+                },
+                {
+                  "id": "x15",
+                  "timeLabel": "15:30–18:00",
+                  "detail": "Evening access requires a signed visitor pass from your building reception.",
+                  "availability": "available",
+                  "feeLabel": "AED 975.50",
+                  "unavailableReason": null
+                },
+                {
+                  "id": "x19",
+                  "timeLabel": "19:00–21:00",
+                  "detail": "Late service window.",
+                  "availability": "unavailable",
+                  "feeLabel": null,
+                  "unavailableReason": "This visit requires daylight access to the external intake and cannot be booked after sunset."
+                }
+              ]
+            }
+          ],
+          "selectedSlotId": "x10",
+          "feeAccepted": true,
+          "unavailableMessage": null,
+          "confirmation": null
+        }
+      },
+      "updates": [],
+      "protocol": [
+        {
+          "type": "capture",
+          "checkpoint": "initial",
+          "expectedEvents": []
+        },
+        {
+          "type": "scroll",
+          "checkpoint": "scroll_1",
+          "direction": "down",
+          "amount": "one viewport"
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.confirm"
+        },
+        {
+          "type": "capture",
+          "checkpoint": "scroll_2",
+          "expectedEvents": []
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.fee_consent"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.fee_consent",
+          "checkpoint": "after_fee_off",
+          "expectedEvents": [
+            "fee_accepted:false"
+          ],
+          "echoControlledState": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.confirm"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.confirm",
+          "expectedEvents": [],
+          "allowDeniedActivation": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.fee_consent"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.fee_consent",
+          "checkpoint": "after_fee_on",
+          "expectedEvents": [
+            "fee_accepted:true"
+          ],
+          "echoControlledState": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.slot.x15"
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.slot.x15",
+          "checkpoint": "after_select",
+          "expectedEvents": [
+            "select_slot:x15"
+          ],
+          "echoControlledState": true
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.confirm"
+        },
+        {
+          "type": "capture",
+          "checkpoint": "scroll_3",
+          "expectedEvents": []
+        }
+      ],
+      "checks": [
+        {
+          "ruleId": "R02",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "title": "Reschedule visit",
+            "serviceTitle": "Specialist air quality assessment for the whole apartment",
+            "location": "Apartment 304, North Crescent Residence, reception entrance opposite the sheltered courtyard seating area",
+            "currentLabel": "Current appointment",
+            "currentAppointment": {
+              "dayLabel": "Thursday, 5 November",
+              "timeLabel": "14:00–16:00"
+            }
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R13",
+          "at": [
+            "initial"
+          ],
+          "expected": "Required rendered IDs are meaningful native nodes. Real controls expose relevant selected/disabled/value/enabled states; no duplicate activatable row children. Native reading order follows brief.",
+          "methods": [
+            "native_ax",
+            "native_semantics",
+            "source_review"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R14",
+          "at": [
+            "initial"
+          ],
+          "expected": "Rendered state follows public reference hierarchy, palette, spacing, type and state treatment.",
+          "methods": [
+            "screenshot"
+          ],
+          "tolerance": "Spacing±2, baseline typography±1.5, flat RGB±8; normal native glyph/line-break differences allowed."
+        },
+        {
+          "ruleId": "R15",
+          "at": [
+            "initial"
+          ],
+          "expected": "Complete fixed and supplied text wraps without truncation, horizontal overflow, clipped lines or overlapping controls. Inspect additional scroll checkpoints for offscreen content.",
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Text integrity exact; natural native wrapping/accumulated heights may vary."
+        },
+        {
+          "ruleId": "R17",
+          "at": [
+            "initial"
+          ],
+          "expected": {
+            "theme": "dark",
+            "fontScale": 2.0,
+            "direction": "rtl",
+            "rtl": "Semantic leading and radio mirror when RTL; dates/times/amounts remain readable."
+          },
+          "methods": [
+            "screenshot",
+            "native_ax",
+            "source_review"
+          ],
+          "tolerance": "Public palette tolerances; direction/meaning exact; Apple uses nearest accessibility category and records it."
+        },
+        {
+          "ruleId": "R16",
+          "at": [
+            "initial",
+            "scroll_1",
+            "scroll_2"
+          ],
+          "expected": "Ordinary parent scrolling exposes all long text and final action; intrinsic panel has no nested/fixed viewport.",
+          "methods": [
+            "native_action",
+            "screenshot",
+            "source_review"
+          ],
+          "tolerance": "Extra parent scrolls allowed; record progression and footer."
+        },
+        {
+          "ruleId": "R03",
+          "at": [
+            "initial",
+            "scroll_1"
+          ],
+          "expected": {
+            "slotOrder": [
+              "x10",
+              "x15",
+              "x19"
+            ],
+            "selectedFee": "AED 1,250.00",
+            "unavailableReason": "This visit requires daylight access to the external intake and cannot be booked after sunset."
+          },
+          "methods": [
+            "native_ax",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R04",
+          "at": [
+            "initial",
+            "after_select"
+          ],
+          "expected": {
+            "initialSelected": "x10",
+            "afterSelectSelected": "x15"
+          },
+          "methods": [
+            "native_ax"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R05",
+          "at": [
+            "after_select"
+          ],
+          "expected": "x15 activation emits exactly select_slot:x15.",
+          "methods": [
+            "native_action",
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R06",
+          "at": [
+            "scroll_2",
+            "after_fee_off",
+            "after_fee_on",
+            "after_select"
+          ],
+          "expected": {
+            "initialSummaryFee": "AED 1,250.00",
+            "afterFeeOffGuidance": "Agree to the fee to continue.",
+            "afterSelectSummaryFee": "AED 975.50",
+            "afterSelectGuidance": "Agree to the fee to continue."
+          },
+          "methods": [
+            "native_ax",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R07",
+          "at": [
+            "scroll_2",
+            "after_fee_off",
+            "after_fee_on",
+            "after_select"
+          ],
+          "expected": {
+            "initialLabel": "I agree to the rescheduling fee of AED 1,250.00.",
+            "initialValue": true,
+            "afterFeeOff": false,
+            "afterFeeOn": true,
+            "afterSelectValue": false,
+            "afterSelectLabel": "I agree to the rescheduling fee of AED 975.50.",
+            "toggleEvents": [
+              "fee_accepted:false",
+              "fee_accepted:true"
+            ]
+          },
+          "methods": [
+            "native_ax",
+            "native_action",
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R08",
+          "at": [
+            "scroll_2",
+            "after_fee_off",
+            "after_fee_on",
+            "after_select"
+          ],
+          "expected": {
+            "initialEnabled": true,
+            "afterFeeOffEnabled": false,
+            "afterFeeOnEnabled": true,
+            "afterSelectEnabled": false,
+            "forbiddenEvent": "confirm"
+          },
+          "methods": [
+            "native_ax",
+            "native_action",
+            "callback_trace"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        },
+        {
+          "ruleId": "R09",
+          "at": [
+            "after_fee_off",
+            "after_fee_on",
+            "after_select"
+          ],
+          "expected": "Echoed consent/selection is immediately authoritative; second paid slot shows new price and false acceptance despite previously accepted first slot.",
+          "methods": [
+            "native_ax",
+            "screenshot"
+          ],
+          "tolerance": "Exact business content/state/IDs; allow native whitespace joining, role names and punctuation joining that preserve the complete meaning."
+        }
+      ],
+      "applicableRuleIds": [
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R13",
+        "R14",
+        "R15",
+        "R16",
+        "R17"
+      ]
+    }
+  ],
+  "hostReducer": {
+    "select_slot": "Replace selectedSlotId; clear feeAccepted only when ID changes.",
+    "fee_accepted": "Replace Boolean with emitted value.",
+    "confirm_retry_done": "Record event only; do not alter model.",
+    "callerUpdate": "Replace complete model through same production component instance."
+  },
+  "evidenceRules": {
+    "sourceReview": "Separate source intent from actual runtime proof.",
+    "missingEvidence": "Unobserved / missing evidence is distinct from pass/fail. Broken evidence acquisition does not prove product absence.",
+    "negativeAction": "Native disabled state plus rejected activation/no callback is valid; script failure before activation is missing evidence.",
+    "scroll": "scroll_until uses ordinary parent gestures only; record progression, allow extra gestures; never invoke handlers directly.",
+    "nativeDifference": "Record actual Apple accessibility category for requested scales; grade content/hierarchy, not identical line breaks.",
+    "callback": "No event during render/update; exactly one per enabled activation; bridge echoes only selection/consent."
+  },
+  "sourceReviewChecks": [
+    {
+      "ruleId": "R01",
+      "method": "compile_and_source_review",
+      "expected": "New public API/models; Swift Codable/public init; compile iOS14/macOS11; existing Compose dependencies."
+    },
+    {
+      "ruleId": "R09",
+      "method": "source_review",
+      "expected": "No competing cached selection/consent; derive validity from current model."
+    },
+    {
+      "ruleId": "R13",
+      "method": "source_review",
+      "expected": "Native controls/IDs/state and target minimum sizes; declarations are not runtime exposure proof."
+    },
+    {
+      "ruleId": "R15",
+      "method": "source_review",
+      "expected": "Flexible wrapping and supported font scaling; no line-limit/ellipsis/shrink-to-fit."
+    },
+    {
+      "ruleId": "R16",
+      "method": "source_review",
+      "expected": "Content-growing panel with no nested/fixed-height scroll viewport."
+    },
+    {
+      "ruleId": "R17",
+      "method": "source_review",
+      "expected": "Theme-aware colors and semantic native leading/trailing direction."
+    }
+  ],
+  "visualRubric": {
+    "5": "Reference hierarchy, spacing, colors; complete readable content; normal native differences.",
+    "4": "Minor cosmetic deviations with no material hierarchy/readability harm.",
+    "3": "Material hierarchy/spacing/color deviation but usable content/actions.",
+    "2": "Severe clipping/overlap/contrast/layout disruption obscures important information/action.",
+    "1": "Intended state largely absent or unusable.",
+    "missing": "No screenshot -> unscored; callback-only defects do not automatically lower visual score."
+  },
+  "measurement": {
+    "caseRuleUnit": "One platform × case × public rule; any observed required-checkpoint failure fails the pair; retain all evidence. Source-only R01 is separate, not multiplied per case.",
+    "initialApplicableCaseRulePairsPerPlatform": 59,
+    "holdoutApplicableCaseRulePairsPerPlatform": 25,
+    "report": "Separate initial/holdout, platform, source/runtime, pass/fail/unobserved and observed denominator.",
+    "defectClusters": "Count distinct demonstrated shared implementation causes separately from case×rule manifestations. Do not count each case as a new root cause.",
+    "detectionVsAttribution": "Detailed shared-cause observation can count cluster detection without crediting every related exact rule. Attribute only explicitly identified supported rule violations.",
+    "clusterRecordFields": [
+      "clusterId",
+      "description",
+      "rootCauseEvidence",
+      "affectedCaseRulePairs",
+      "reportedRootCauseDetected",
+      "explicitlyReportedRulePairs",
+      "unobservedRulePairs"
+    ]
+  },
+  "protocolSchema": {
+    "tap": {
+      "type": "tap",
+      "identifier": "native product ID",
+      "checkpoint": "optional observation ID",
+      "expectedEvents": "event delta array",
+      "allowDeniedActivation": "optional true for disabled/no-op attempts",
+      "echoControlledState": "optional true for selection/fee reducer"
+    },
+    "update": {
+      "type": "update",
+      "model": "full replacement model",
+      "checkpoint": "observation ID",
+      "expectedEvents": []
+    },
+    "capture": {
+      "type": "capture",
+      "checkpoint": "observation ID",
+      "expectedEvents": []
+    },
+    "scroll_until": {
+      "type": "scroll_until",
+      "identifier": "native target ID; operator performs ordinary parent gestures"
+    },
+    "scroll": {
+      "type": "scroll",
+      "direction": "down|up",
+      "amount": "one viewport",
+      "checkpoint": "optional observation ID"
+    }
+  }
+}

@@ -146,3 +146,5 @@ python3 validation/blind-comparison/metrics.py --check
 本轮支持“这套流程能交付证据并修复组件”，尚未支持“加载 Skill 就比具备同等设计和工具的普通 Agent 更会发现问题”。最有价值的后续改进是先验证宿主的外观、宽度、字号及采样契约，补齐 iOS 原生交互与滚动观测，再扩充独立需求/项目/重复运行；继续保留分离的 oracle、盲评和缺证据统计。不能把更多提示词或更多截图次数直接当成质量收益。
 
 原创文档、脚本、宿主和新增组件按根目录 [MIT](../../LICENSE) 许可；上游项目及相关截图许可见 [THIRD_PARTY_NOTICES](../../THIRD_PARTY_NOTICES.md)。SDK、克隆工程、构建缓存与签名材料不入库。
+
+本次冻结的 Skill v1 现独立保存在 [skill-v1/](skill-v1/SKILL.md)，逐文件匹配原 [freeze.json](freeze.json)。仓库根目录的 Skill 后续演进不改变本次试验材料与得分；审计入口核验此归档版本。

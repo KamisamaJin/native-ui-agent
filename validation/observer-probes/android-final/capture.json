@@ -1,0 +1,95 @@
+{
+  "platform": "android",
+  "status": "captured_not_graded",
+  "fixture_sha256": "ca18466bf4143b97baff22e55db45ee909e65866afbb747237ec4a73bdcf49cf",
+  "sources": {
+    "app/src/main/java/com/example/reply/ui/components/VisitProbe.kt": "fc4cdc1471fa90afdbe821a60f5112cb217903ad249dedd4cf7c115eb0781697"
+  },
+  "harness": {
+    "capture.py": "f00ba74363fe6d030d5f0e5b97fb63c0d1a216be8405b3d9693e9188c829fa16",
+    "VisitPanelUiTest.kt": "8096303713a3809c7fd38991cc12be6f05fb441fd57133e25804ad7b9493a3b7",
+    "VisitBridge.swift": "37ed351edd21cb4526dfd319a021198518a829dda21e4188d96ec77d426ab33c"
+  },
+  "seconds": 7.11,
+  "commands": [
+    {
+      "argv": [
+        "./gradlew",
+        ":app:testDebugUnitTest",
+        "--tests",
+        "com.example.reply.VisitPanelUiTest.capture",
+        "--console=plain"
+      ],
+      "seconds": 7.107,
+      "exit_code": 0
+    }
+  ],
+  "checkpoint_aliases": {},
+  "protocol": [
+    {
+      "type": "tap",
+      "identifier": "visit.confirm",
+      "checkpoint": "after_confirm"
+    },
+    {
+      "type": "update",
+      "model": {
+        "mode": "choosing",
+        "serviceTitle": "Generic caller update",
+        "location": "18 Maple Street, Apartment 4B",
+        "currentAppointment": {
+          "dayLabel": "Friday, 23 October",
+          "timeLabel": "15:00\u201317:00"
+        },
+        "groups": [
+          {
+            "id": "mon",
+            "dayLabel": "Monday, 26 October",
+            "slots": [
+              {
+                "id": "mon_am",
+                "timeLabel": "09:00\u201311:00",
+                "detail": "Your engineer will call before arrival.",
+                "availability": "available",
+                "feeLabel": null,
+                "unavailableReason": null
+              },
+              {
+                "id": "mon_pm",
+                "timeLabel": "13:00\u201315:00",
+                "detail": "Priority afternoon window.",
+                "availability": "limited",
+                "feeLabel": "$20.00",
+                "unavailableReason": null
+              }
+            ]
+          },
+          {
+            "id": "tue",
+            "dayLabel": "Tuesday, 27 October",
+            "slots": [
+              {
+                "id": "tue_am",
+                "timeLabel": "10:00\u201312:00",
+                "detail": "Standard morning window.",
+                "availability": "unavailable",
+                "feeLabel": null,
+                "unavailableReason": "This window is fully booked."
+              }
+            ]
+          }
+        ],
+        "selectedSlotId": "mon_pm",
+        "feeAccepted": false,
+        "unavailableMessage": null,
+        "confirmation": null
+      },
+      "checkpoint": "after_update_1"
+    },
+    {
+      "type": "tap",
+      "identifier": "probe.top",
+      "checkpoint": "after_top"
+    }
+  ]
+}

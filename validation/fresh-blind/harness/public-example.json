@@ -1,0 +1,78 @@
+{
+  "caseId": "public_example",
+  "environment": {
+    "width": 390,
+    "viewportHeight": 600,
+    "theme": "light",
+    "fontScale": 1.0,
+    "direction": "ltr"
+  },
+  "model": {
+    "mode": "choosing",
+    "serviceTitle": "Boiler safety inspection",
+    "location": "18 Maple Street, Apartment 4B",
+    "currentAppointment": {
+      "dayLabel": "Friday, 23 October",
+      "timeLabel": "15:00\u201317:00"
+    },
+    "groups": [
+      {
+        "id": "mon",
+        "dayLabel": "Monday, 26 October",
+        "slots": [
+          {
+            "id": "mon_am",
+            "timeLabel": "09:00\u201311:00",
+            "detail": "Your engineer will call before arrival.",
+            "availability": "available",
+            "feeLabel": null,
+            "unavailableReason": null
+          },
+          {
+            "id": "mon_pm",
+            "timeLabel": "13:00\u201315:00",
+            "detail": "Priority afternoon window.",
+            "availability": "limited",
+            "feeLabel": "$20.00",
+            "unavailableReason": null
+          }
+        ]
+      },
+      {
+        "id": "tue",
+        "dayLabel": "Tuesday, 27 October",
+        "slots": [
+          {
+            "id": "tue_am",
+            "timeLabel": "10:00\u201312:00",
+            "detail": "Standard morning window.",
+            "availability": "unavailable",
+            "feeLabel": null,
+            "unavailableReason": "This window is fully booked."
+          }
+        ]
+      }
+    ],
+    "selectedSlotId": "mon_pm",
+    "feeAccepted": false,
+    "unavailableMessage": null,
+    "confirmation": null
+  },
+  "actions": [
+    {
+      "type": "tap",
+      "identifier": "visit.fee_consent",
+      "checkpoint": "after_fee_on"
+    },
+    {
+      "type": "tap",
+      "identifier": "visit.confirm",
+      "checkpoint": "after_confirm"
+    },
+    {
+      "type": "tap",
+      "identifier": "visit.slot.mon_am",
+      "checkpoint": "after_select"
+    }
+  ]
+}

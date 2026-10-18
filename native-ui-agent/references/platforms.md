@@ -61,6 +61,14 @@ UIKit 创建真实 View/VC 并运行实际配置入口，完成布局后截图�
 
 本仓库 AlertToast 试验采用 build-for-testing 生成 xctestrun，在目标测试的 EnvironmentVariables 中写入本轮输出路径及场景，再 test-without-building。复制 xctestrun 到证据目录时，要保留 __TESTROOT__ 对原构建产物目录的含义。此方法已在试验使用的 Xcode 27.1 验证；其他版本先读本机 xctestrun 文档并确认格式。核对 xcresult 的目标测试、执行数及失败数，并确认测试宿主实际写出了本轮 PNG；仅 xcodebuild 成功不足以证明目标测试执行。
 
+## iOS 原生观测与受控状态
+
+单测 UIHostingController 可以生成图片，但不能假设其 AX 树或点击链路与实际 App 相同。需要这些证据时，使用 [iOS observer 契约](../assets/ios-observer/CONTRACT.md)接入真实生产包/组件，再运行 `scripts/ios_observe.py`。先在独立简单探针中验证真实 AX、回调、调用方更新和完整滚动；适配器会生成薄 App 与 XCUITest，不会生成业务组件。
+
+桥接层负责将真实回调交给调用方并按组件原契约更新数据。验证父级替换输入时保留被测 View 身份；重建页面/重新启动的两个状态不能证明同一实例收到更新。记录实际环境、进程、采样位置与事件差值。AX 框、原生触控框、图片中的字形框分开解释；AX 没有暴露的 SwiftUI 字号/颜色/padding 不能被包装成已读出的属性。
+
+同样，Android 截图结束后调用旧语义闭包，只能证明该闭包当时被调用；不能证明仍挂载的组件完成重组。状态型需求需要连续挂载的采集或 instrumentation，先验证当前渲染器的帧循环及状态更新，未执行的部分保留待评估。
+
 ## 页面反馈
 
 有 MobileBuildMCP、agent-device、项目既有 UI/E2E 工具时，使用已验证存在的能力来构建、启动、导航和截图；没有相应工具时不编造调用名称。固定页面状态并确认截图中是本次目标，再把对应命令包装进 profile。

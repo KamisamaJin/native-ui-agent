@@ -29,7 +29,7 @@ def main():
     for name,digest in frozen["design_files"].items():
         require(sha(ROOT/"design-team"/name)==digest,"Frozen design changed: "+name)
     for name,digest in frozen["skill_files"].items():
-        require(sha(ROOT.parent.parent/"native-ui-agent"/name)==digest,"Experimental Skill changed: "+name)
+        require(sha(ROOT/"skill-v1"/name)==digest,"Archived experimental Skill changed: "+name)
     require(sha(ROOT/"preregistration.md")==frozen["preregistration_sha256"],"Preregistration changed")
     require(sha(ROOT/"unblinding/assignment.json")==frozen["assignment_sha256"],"Assignment commitment changed")
     assignments=read(ROOT/"unblinding/assignment.json");mapping=read(ROOT/"unblinding/grading-map.json")
