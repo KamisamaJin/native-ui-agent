@@ -1,0 +1,36 @@
+--- a/Sources/AlertToast/AlertToast.swift
++++ b/Sources/AlertToast/AlertToast.swift
+@@ -83,6 +83,24 @@
+             percentage = 1.0
+         }
+         .frame(width: width, height: height, alignment: .center)
++    }
++}
++
++/// Upload progress uses an explicit track from the design instead of OS-default gray.
++@available(iOS 14, macOS 11, *)
++fileprivate struct UploadProgressStyle: ProgressViewStyle {
++    @Environment(\.colorScheme) private var colorScheme
++
++    func makeBody(configuration: Configuration) -> some View {
++        GeometryReader { geometry in
++            ZStack(alignment: .leading) {
++                Capsule().fill(colorScheme == .dark
++                    ? Color.blue.opacity(0.25)
++                    : Color(red: 221 / 255, green: 234 / 255, blue: 1))
++                Capsule().fill(Color.blue)
++                    .frame(width: geometry.size.width * CGFloat(configuration.fractionCompleted ?? 0))
++            }
++        }
+     }
+ }
+ 
+@@ -379,7 +397,7 @@
+                     .fixedSize()
+             }
+             ProgressView(value: normalizedProgress)
+-                .progressViewStyle(LinearProgressViewStyle(tint: .blue))
++                .progressViewStyle(UploadProgressStyle())
+                 .frame(height: 4)
+                 .accessibilityLabel(Text("Upload progress"))
+         }

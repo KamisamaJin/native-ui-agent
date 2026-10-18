@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "status": "passed",
+  "capture": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feature-development/evidence/android-initial-empty-1/capture.json",
+  "capture_sha256": "f12d7959bf0369b9d159c6f832b3528427a48d73d309ddf54429b412ed1259c5",
+  "platform": "android",
+  "target": {
+    "description": "Attachment summary in existing Reply email card / empty",
+    "sources": [
+      "app/src/main/java/com/example/reply/ui/components",
+      "app/src/main/java/com/example/reply/data",
+      "app/src/main/java/com/example/reply/ui/theme",
+      "app/src/main/res",
+      "app/src/test/java/com/example/reply/ReplyFeatureUiTest.kt",
+      "app/build.gradle.kts",
+      "gradle/libs.versions.toml",
+      ".native-ui/capture.py"
+    ]
+  },
+  "environment": {
+    "scenario": "empty",
+    "theme": "light",
+    "renderer": "Paparazzi 2.0.0-alpha02",
+    "width": "default",
+    "font_scale": 1,
+    "preview_mode": true
+  },
+  "checks": [
+    {
+      "id": "design-hierarchy",
+      "kind": "visual",
+      "description": "Read actual native image against frozen independent SVG and acceptance, including readability and clipping",
+      "source": "Initial design commit / design/android-reference.svg and acceptance.json",
+      "required": true,
+      "status": "passed",
+      "observed": "已查看实际原生图并对照冻结设计。附件计数与首个描述层级清楚，长描述单行省略、320dp仍有留白，深色可读；empty图没有附件摘要和空白占位。数值来自原生语义/文字布局结果。",
+      "method": "Model/human visual judgment; not an exact native measurement",
+      "evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feature-development/evidence/android-initial-empty-1/artifacts/000-actual.png"
+    },
+    {
+      "id": "summary-visible",
+      "kind": "numeric",
+      "description": "summary_visible",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README",
+      "required": true,
+      "status": "passed",
+      "actual": 0,
+      "expected": 0,
+      "unit": "boolean",
+      "tolerance": 0,
+      "method": "Actual unmerged production Compose text semantics; no test tags",
+      "measurement": "summary_visible"
+    }
+  ],
+  "created_at": "2026-10-18T08:22:39.285573+00:00",
+  "scope": "Configured component checks only; page integration is a separate verification."
+}

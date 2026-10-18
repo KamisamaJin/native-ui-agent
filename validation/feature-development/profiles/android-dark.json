@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "platform": "android",
+  "backend": "paparazzi",
+  "target": {
+    "description": "Attachment summary in existing Reply email card / dark",
+    "sources": [
+      "app/src/main/java/com/example/reply/ui/components",
+      "app/src/main/java/com/example/reply/data",
+      "app/src/main/java/com/example/reply/ui/theme",
+      "app/src/main/res",
+      "app/src/test/java/com/example/reply/ReplyFeatureUiTest.kt",
+      "app/build.gradle.kts",
+      "gradle/libs.versions.toml",
+      ".native-ui/capture.py"
+    ]
+  },
+  "environment": {
+    "scenario": "dark",
+    "theme": "dark",
+    "renderer": "Paparazzi 2.0.0-alpha02",
+    "width": "default",
+    "font_scale": 1,
+    "preview_mode": true
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        ".native-ui/capture.py",
+        "--project",
+        ".",
+        "--output",
+        "{output}",
+        "--scenario",
+        "dark"
+      ],
+      "env": {
+        "ANDROID_HOME": "/Users/rex/Library/Android/sdk",
+        "JAVA_HOME": "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home"
+      },
+      "timeout_seconds": 1200
+    }
+  ],
+  "artifacts": [
+    {
+      "base": "output",
+      "glob": "native/actual.png",
+      "role": "actual"
+    },
+    {
+      "base": "output",
+      "glob": "native/measurements.json",
+      "role": "measurement"
+    },
+    {
+      "base": "output",
+      "glob": "native/native-test.json",
+      "role": "native-report"
+    },
+    {
+      "base": "output",
+      "glob": "native/junit.xml",
+      "role": "native-report"
+    },
+    {
+      "base": "output",
+      "glob": "native/semantics.json",
+      "role": "native-report"
+    }
+  ],
+  "protected_paths": [
+    ".native-ui/design"
+  ],
+  "checks": [
+    {
+      "id": "design-hierarchy",
+      "kind": "visual",
+      "description": "Read actual native image against frozen independent SVG and acceptance, including readability and clipping",
+      "source": "Initial design commit / design/android-reference.svg and acceptance.json"
+    },
+    {
+      "id": "summary-visible",
+      "kind": "numeric",
+      "measurement": "summary_visible",
+      "expected": 1,
+      "unit": "boolean",
+      "tolerance": 0,
+      "description": "summary_visible",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README"
+    },
+    {
+      "id": "count-font",
+      "kind": "numeric",
+      "measurement": "count_font",
+      "expected": 14,
+      "unit": "sp",
+      "tolerance": 0,
+      "description": "count_font",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README"
+    },
+    {
+      "id": "description-font",
+      "kind": "numeric",
+      "measurement": "description_font",
+      "expected": 12,
+      "unit": "sp",
+      "tolerance": 0,
+      "description": "description_font",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README"
+    },
+    {
+      "id": "text-gap",
+      "kind": "numeric",
+      "measurement": "text_gap",
+      "expected": 4,
+      "unit": "dp",
+      "tolerance": 1,
+      "description": "text_gap",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README"
+    },
+    {
+      "id": "count-body-offset",
+      "kind": "numeric",
+      "measurement": "count_body_offset",
+      "expected": 44,
+      "unit": "dp",
+      "tolerance": 1,
+      "description": "count_body_offset",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README"
+    },
+    {
+      "id": "body-count-gap",
+      "kind": "numeric",
+      "measurement": "body_count_gap",
+      "expected": 24,
+      "unit": "dp",
+      "tolerance": 1,
+      "description": "body_count_gap",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README"
+    },
+    {
+      "id": "count-color",
+      "kind": "numeric",
+      "measurement": "count_color",
+      "expected": 4292068532,
+      "unit": "ARGB",
+      "tolerance": 0,
+      "description": "count_color",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README"
+    },
+    {
+      "id": "count-ellipsized",
+      "kind": "numeric",
+      "measurement": "count_ellipsized",
+      "expected": 0,
+      "unit": "boolean",
+      "tolerance": 0,
+      "description": "count_ellipsized",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README"
+    },
+    {
+      "id": "description-ellipsized",
+      "kind": "numeric",
+      "measurement": "description_ellipsized",
+      "expected": 0,
+      "unit": "boolean",
+      "tolerance": 0,
+      "description": "description_ellipsized",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README"
+    }
+  ]
+}

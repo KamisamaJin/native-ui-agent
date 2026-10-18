@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "platform": "ios",
+  "backend": "snapshot-testing",
+  "target": {
+    "description": "Optional upload-progress HUD in AlertToast / legacy",
+    "sources": [
+      "Package.swift",
+      "Sources/AlertToast",
+      "Tests/AlertToastTests/AlertToastFeatureUiTests.swift",
+      ".native-ui/capture.py"
+    ]
+  },
+  "environment": {
+    "scenario": "legacy",
+    "theme": "light",
+    "renderer": "SnapshotTesting 1.19.2 / iOS 26.5 / Xcode 27.1",
+    "width": "default",
+    "font_scale": 1,
+    "preview_mode": false
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        ".native-ui/capture.py",
+        "--project",
+        ".",
+        "--output",
+        "{output}",
+        "--scenario",
+        "legacy",
+        "--cache",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feature-development/cache/ios",
+        "--device-id",
+        "AB66271B-29BD-4D14-9C9B-71579E147DCA"
+      ],
+      "env": {
+        "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+      },
+      "timeout_seconds": 1200
+    }
+  ],
+  "artifacts": [
+    {
+      "base": "output",
+      "glob": "native/actual.png",
+      "role": "actual"
+    },
+    {
+      "base": "output",
+      "glob": "native/measurements.json",
+      "role": "measurement"
+    },
+    {
+      "base": "output",
+      "glob": "native/native-test.json",
+      "role": "native-report"
+    },
+    {
+      "base": "output",
+      "glob": "native/xcresult-summary.json",
+      "role": "native-report"
+    }
+  ],
+  "protected_paths": [
+    ".native-ui/design",
+    ".native-ui/references"
+  ],
+  "checks": [
+    {
+      "id": "design-hierarchy",
+      "kind": "visual",
+      "description": "Read actual native image against frozen independent SVG and acceptance, including readability and clipping",
+      "source": "Initial design commit / design/ios-reference.svg and acceptance.json"
+    },
+    {
+      "id": "legacy-appearance",
+      "kind": "pixel",
+      "reference": ".native-ui/references/legacy.png",
+      "description": "No-progress initializer preserves original HUD",
+      "source": "Frozen upstream legacy reference from original pilot",
+      "channel_tolerance": 0,
+      "max_changed_fraction": 0
+    }
+  ]
+}

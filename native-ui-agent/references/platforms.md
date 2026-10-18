@@ -41,6 +41,8 @@ recordPaparazzi<Variant> 会写 golden。验证流程使用普通渲染/verify�
 
 存在现成 modifier 参数时，可在测试调用点增加 onGloballyPositioned，读取实际 LayoutCoordinates，无需修改生产组件或增加业务 ID。说明测量包含哪层 modifier；外层尺寸不能直接称为内部 padding、文字字号或字形边界。
 
+Reply 新增附件摘要的试验还在 Compose 1.9.4 的测试宿主中，从真实 LocalView 对应 ViewRootForTest 获取 semanticsOwner.unmergedRootSemanticsNode，按实际文字筛选节点，读取 boundsInRoot 和 GetTextLayoutResult。后者对本次普通 Text 提供 layoutInput.style 的字号/颜色及 isLineEllipsized，成功测得 14sp/12sp、当前主题 ARGB、文字框间距和省略状态。需要确认当前版本 API、读取时机及采样对象；这不是通用完整样式树，不能据此推断富文本 run、brush、绘制覆盖或所有 Compose 版本也提供同样数据。
+
 ## iOS SnapshotTesting
 
 确认 workspace/project、scheme、测试 target、SDK/部署版本、实际模拟器标识与已安装 SnapshotTesting API。将依赖添加到测试 target，继承现有 UIKit/SwiftUI 架构。

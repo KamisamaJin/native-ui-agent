@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "status": "passed",
+  "capture": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feature-development/evidence/ios-initial-normal-1/capture.json",
+  "capture_sha256": "b59bd3b74fb4a13d55697e46dde4d3dd6b3eeea22507e40417eb6d845afc1ede",
+  "platform": "ios",
+  "target": {
+    "description": "Optional upload-progress HUD in AlertToast / normal",
+    "sources": [
+      "Package.swift",
+      "Sources/AlertToast",
+      "Tests/AlertToastTests/AlertToastFeatureUiTests.swift",
+      ".native-ui/capture.py"
+    ]
+  },
+  "environment": {
+    "scenario": "normal",
+    "theme": "light",
+    "renderer": "SnapshotTesting 1.19.2 / iOS 26.5 / Xcode 27.1",
+    "width": "default",
+    "font_scale": 1,
+    "preview_mode": false
+  },
+  "checks": [
+    {
+      "id": "design-hierarchy",
+      "kind": "visual",
+      "description": "Read actual native image against frozen independent SVG and acceptance, including readability and clipping",
+      "source": "Initial design commit / design/ios-reference.svg and acceptance.json",
+      "required": true,
+      "status": "passed",
+      "observed": "已阅读本轮真实原生截图并对照实现前冻结的SVG。Android附件摘要位于正文下方，图标、数量、首个描述与留白清晰；iOS上传标题、副标题、42%和蓝色进度条清晰，无重叠。字体与平台自身渲染差异不按SVG像素比对。",
+      "method": "Model/human visual judgment; not an exact native measurement",
+      "evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feature-development/evidence/ios-initial-normal-1/artifacts/000-actual.png"
+    },
+    {
+      "id": "bar-fill-ratio",
+      "kind": "numeric",
+      "description": "bar_fill_ratio",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README",
+      "required": true,
+      "status": "passed",
+      "actual": 0.42138364779874216,
+      "expected": 0.42,
+      "unit": "ratio",
+      "tolerance": 0.025,
+      "method": "Native PNG contiguous saturated-blue bottom bar; geometry from frozen independent design",
+      "measurement": "bar_fill_ratio"
+    },
+    {
+      "id": "bar-left",
+      "kind": "numeric",
+      "description": "bar_left",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README",
+      "required": true,
+      "status": "passed",
+      "actual": 36.0,
+      "expected": 36,
+      "unit": "pt",
+      "tolerance": 2,
+      "method": "Native PNG contiguous saturated-blue bottom bar; geometry from frozen independent design",
+      "measurement": "bar_left"
+    },
+    {
+      "id": "bar-height",
+      "kind": "numeric",
+      "description": "bar_height",
+      "source": "Frozen design/acceptance in initial design commit; derived geometry documented in README",
+      "required": true,
+      "status": "passed",
+      "actual": 4.0,
+      "expected": 4,
+      "unit": "pt",
+      "tolerance": 1,
+      "method": "Native PNG contiguous saturated-blue bottom bar; geometry from frozen independent design",
+      "measurement": "bar_height"
+    }
+  ],
+  "created_at": "2026-10-18T08:20:55.948309+00:00",
+  "scope": "Configured component checks only; page integration is a separate verification."
+}

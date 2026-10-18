@@ -1,0 +1,124 @@
+diff --git a/Sources/AlertToast/AlertToast.swift b/Sources/AlertToast/AlertToast.swift
+index 17bf751..3cf6b1a 100644
+--- a/Sources/AlertToast/AlertToast.swift
++++ b/Sources/AlertToast/AlertToast.swift
+@@ -86,6 +86,24 @@ fileprivate struct AnimatedXmark: View {
+     }
+ }
+ 
++/// Upload progress uses an explicit track from the design instead of OS-default gray.
++@available(iOS 14, macOS 11, *)
++fileprivate struct UploadProgressStyle: ProgressViewStyle {
++    @Environment(\.colorScheme) private var colorScheme
++
++    func makeBody(configuration: Configuration) -> some View {
++        GeometryReader { geometry in
++            ZStack(alignment: .leading) {
++                Capsule().fill(colorScheme == .dark
++                    ? Color.blue.opacity(0.25)
++                    : Color(red: 221 / 255, green: 234 / 255, blue: 1))
++                Capsule().fill(Color.blue)
++                    .frame(width: geometry.size.width * CGFloat(configuration.fractionCompleted ?? 0))
++            }
++        }
++    }
++}
++
+ //MARK: - Main View
+ 
+ @available(iOS 14, macOS 11, *)
+@@ -207,18 +225,29 @@ public struct AlertToast: View{
+     ///Customize your alert appearance
+     public var style: AlertStyle? = nil
+     
++    /// Optional determinate upload progress for HUD mode. Nil preserves the legacy HUD.
++    public var progress: Double? = nil
++
++    /// Non-finite values are treated as zero; finite values are clamped to 0...1.
++    var normalizedProgress: Double {
++        guard let progress = progress, progress.isFinite else { return 0 }
++        return min(1, max(0, progress))
++    }
++
+     ///Full init
+     public init(displayMode: DisplayMode = .alert,
+                 type: AlertType,
+                 title: String? = nil,
+                 subTitle: String? = nil,
+-                style: AlertStyle? = nil){
++                style: AlertStyle? = nil,
++                progress: Double? = nil){
+         
+         self.displayMode = displayMode
+         self.type = type
+         self.title = title
+         self.subTitle = subTitle
+         self.style = style
++        self.progress = progress
+     }
+     
+     ///Short init with most used parameters
+@@ -281,6 +310,9 @@ public struct AlertToast: View{
+     ///HUD View
+     public var hud: some View{
+         Group{
++            if progress != nil {
++                progressHUD
++            } else {
+             HStack(spacing: 16){
+                 switch type{
+                 case .complete(let color):
+@@ -331,10 +363,53 @@ public struct AlertToast: View{
+             .overlay(Capsule().stroke(Color.gray.opacity(0.2), lineWidth: 1))
+             .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 6)
+             .compositingGroup()
++            }
+         }
+         .padding(.top)
+     }
+     
++    /// The progress presentation grows vertically instead of clipping content into a capsule.
++    private var progressHUD: some View {
++        VStack(alignment: .leading, spacing: 12) {
++            HStack(spacing: 12) {
++                Image(systemName: "arrow.up.doc.fill")
++                    .resizable()
++                    .scaledToFit()
++                    .frame(width: 24, height: 24)
++                    .foregroundColor(.blue)
++                VStack(alignment: .leading, spacing: 2) {
++                    if let title = title {
++                        Text(LocalizedStringKey(title))
++                            .font(style?.titleFont ?? Font.body.bold())
++                            .textColor(style?.titleColor ?? nil)
++                    }
++                    if let subTitle = subTitle {
++                        Text(LocalizedStringKey(subTitle))
++                            .font(style?.subTitleFont ?? Font.footnote)
++                            .opacity(0.7)
++                            .textColor(style?.subtitleColor ?? nil)
++                    }
++                }
++                .frame(maxWidth: .infinity, alignment: .leading)
++                Text("\(Int((normalizedProgress * 100).rounded()))%")
++                    .font(Font.footnote.bold().monospacedDigit())
++                    .foregroundColor(.blue)
++                    .fixedSize()
++            }
++            ProgressView(value: normalizedProgress)
++                .progressViewStyle(UploadProgressStyle())
++                .frame(height: 4)
++                .accessibilityLabel(Text("Upload progress"))
++        }
++        .padding(16)
++        .frame(maxWidth: 360)
++        .alertBackground(style?.backgroundColor ?? nil)
++        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
++        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous)
++            .stroke(Color.gray.opacity(0.2), lineWidth: 1))
++        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 6)
++    }
++
+     ///Alert View
+     public var alert: some View{
+         VStack{
