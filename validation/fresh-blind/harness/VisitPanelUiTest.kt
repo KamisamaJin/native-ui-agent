@@ -78,7 +78,7 @@ class VisitPanelUiTest {
   all.filter{visible(it)}.map{tag(it)}.filter{it.isNotBlank()}.forEach{observed.add(it)}
   bottomReached=bottomReached || all.any{tag(it)=="__observer.bottom" && fullyVisible(it)}
   records.add(buildJsonObject{
-   put("name",name);put("screenshot",imageName);put("frame",frame);put("scroll_offset_dp",scroll.value/density)
+   put("screenshot_pixels",buildJsonObject{put("width",image.width);put("height",image.height)});put("logical_viewport_dp",buildJsonObject{put("width",view.width/density);put("height",view.height/density)});put("name",name);put("screenshot",imageName);put("frame",frame);put("scroll_offset_dp",scroll.value/density)
    put("scroll_max_dp",scroll.maxValue/density);put("viewport_height_dp",viewportHeight/density)
    put("nodes",buildJsonArray{all.forEach{node->
     val c=node.config;val layouts=mutableListOf<TextLayoutResult>();c.getOrNull(SemanticsActions.GetTextLayoutResult)?.action?.invoke(layouts)
@@ -91,7 +91,7 @@ class VisitPanelUiTest {
      put("role",c.getOrNull(SemanticsProperties.Role)?.toString() ?: "");put("clickable",c.getOrNull(SemanticsActions.OnClick)?.action!=null)
      put("intersects_viewport",visible(node));put("fully_visible",fullyVisible(node))
      fun bounds(r:androidx.compose.ui.geometry.Rect)=buildJsonArray{add(r.left/density);add(r.top/density);add(r.right/density);add(r.bottom/density)}
-     put("unclipped_bounds_dp",bounds(rawBounds(node)));put("bounds_dp",bounds(node.boundsInRoot));put("touch_bounds_dp",bounds(node.touchBoundsInRoot))
+     put("image_bounds_px",buildJsonArray{val r=rawBounds(node);val sx=image.width/(view.width/density);val sy=image.height/(view.height/density);add(r.left*sx);add(r.top*sy);add(r.right*sx);add(r.bottom*sy)});put("unclipped_bounds_dp",bounds(rawBounds(node)));put("bounds_dp",bounds(node.boundsInRoot));put("touch_bounds_dp",bounds(node.touchBoundsInRoot))
      layouts.firstOrNull()?.let{t->
       if(t.layoutInput.style.fontSize.value.isFinite())put("font_sp",t.layoutInput.style.fontSize.value)
       put("font_weight",t.layoutInput.style.fontWeight?.weight ?: -1)
@@ -105,7 +105,7 @@ class VisitPanelUiTest {
  }
  private fun scrollBy(delta:Float){scroll.dispatchRawDelta(delta)}
  private fun advance(image:BufferedImage){
-  if(frame++ % 2==1 || phase=="complete")return
+  if(frame++ % 8!=0 || phase=="complete")return
   if(phase=="initial"){capture("initial",image);phase="sweep";attempts=0;return}
   if(phase=="sweep"){
    capture("scroll_${attempts}",image)
@@ -162,7 +162,7 @@ class VisitPanelUiTest {
     }
    }
   }
-  paparazzi.gif(view,"session",0L,120_000L,4)
+  paparazzi.gif(view,"session",0L,240_000L,4)
   File(output,"observation.json").writeText(buildJsonObject{
    put("native_test","VisitPanelUiTest.capture");put("phase",phase);put("snapshots",JsonArray(records));put("steps",JsonArray(steps));put("events",buildJsonArray{events.forEach{add(it)}})
    put("coverage",buildJsonObject{put("bottom_reached",bottomReached);put("observed_identifiers",buildJsonArray{observed.sorted().forEach{add(it)}})})

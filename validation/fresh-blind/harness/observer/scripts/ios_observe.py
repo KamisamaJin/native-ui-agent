@@ -154,7 +154,7 @@ def run(args) -> int:
         boot = command(["xcrun", "simctl", "bootstatus", args.simulator, "-b"], env, output / "bootstatus.log")
         if boot.returncode: raise RuntimeError("Simulator did not boot; see bootstatus.log")
         build_args = ["xcodebuild", "build-for-testing", "-project", str(project), "-scheme", "Observer", "-configuration", "Debug", "-sdk", args.sdk,
-                      "-destination", f"platform=iOS Simulator,id={args.simulator}", "-derivedDataPath", str(derived), "-resultBundlePath", str(output / "build.xcresult"), "CODE_SIGNING_ALLOWED=NO"]
+                      "-destination", f"platform=iOS Simulator,id={args.simulator}", "-derivedDataPath", str(derived), "-resultBundlePath", str(output / "build.xcresult"), "CODE_SIGNING_ALLOWED=NO", "ARCHS=arm64", "ONLY_ACTIVE_ARCH=YES"]
         manifest["build_command"] = build_args
         build = command(build_args, env, output / "build.log")
         manifest["build_exit_code"] = build.returncode

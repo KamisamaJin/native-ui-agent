@@ -10,6 +10,7 @@ final class ObserverTests: XCTestCase {
     var bottomReached = false
     var counter = 0
     var viewportFrame = CGRect.zero
+    var revealDiagnostics: [[String: Any]] = []
 
     func decode(_ value: String) -> Any? { guard let data = value.data(using: .utf8) else { return nil }; return try? JSONSerialization.jsonObject(with: data) }
     func rect(_ frame: CGRect) -> [String: Double] { ["x": frame.origin.x, "y": frame.origin.y, "width": frame.width, "height": frame.height] }
@@ -64,6 +65,43 @@ final class ObserverTests: XCTestCase {
         guard values.count == 1 else { issues.append("identifier \(identifier) matched \(values.count) nodes; expected exactly one"); return nil }
         return values[0]
     }
+    func nativeState(_ target: XCUIElement, path: [String: Any]) -> [String: Any] {
+        ["identifier": target.identifier, "label": target.label, "value": target.value.map { String(describing: $0) } ?? NSNull(),
+         "role": String(describing: target.elementType), "role_raw": target.elementType.rawValue,
+         "enabled": target.isEnabled, "selected": target.isSelected, "hittable": target.isHittable,
+         "frame": rect(target.frame), "fully_within_viewport": fullyVisible(target), "path": path]
+    }
+    func activation(_ semantic: XCUIElement) -> (XCUIElement, [String: Any])? {
+        guard semantic.elementType == .switch else {
+            return (semantic, ["selector": "semantic_target(self)", "strategy": "native_target"])
+        }
+        let descendants = semantic.descendants(matching: .switch).allElementsBoundByIndex.filter { $0.exists }
+        let leaves = descendants.enumerated().filter { $0.element.descendants(matching: .switch).count == 0 }
+        if leaves.count == 1 {
+            let (index, leaf) = leaves[0]
+            guard leaf.isEnabled && leaf.isHittable && fullyVisible(leaf) else {
+                issues.append("native Switch activation leaf is disabled, not hittable, or outside the measured viewport"); return nil
+            }
+            return (leaf, ["selector": "semantic_target.descendants(matching:switch)", "index": index,
+                           "native_switch_descendant_count": descendants.count, "strategy": "native_switch_leaf"])
+        }
+        if descendants.isEmpty && semantic.children(matching: .any).count == 0 {
+            return (semantic, ["selector": "semantic_target(self)", "strategy": "native_switch_self_leaf"])
+        }
+        issues.append("native Switch activation requires exactly one leaf; found \(leaves.count) leaves among \(descendants.count) native Switch descendants")
+        return nil
+    }
+    func unavailable(_ identifier: String, reason: String, direction: String, scrolls: Int, present: Bool, sentinel: XCUIElement? = nil) {
+        var diagnostic: [String: Any] = ["identifier": identifier, "classification": present ? "unavailable" : "unobserved",
+            "reason": reason, "direction": direction, "scroll_steps": scrolls, "native_target_present": present,
+            "evidence_snapshot_index": records.last?["index"] ?? NSNull(),
+            "scope": "bounded observer search; not proof of product absence"]
+        if let sentinel {
+            diagnostic["native_boundary"] = nativeState(sentinel, path: ["selector": "application.staticTexts", "identifier": "__observer.bottom"])
+        }
+        revealDiagnostics.append(diagnostic)
+        issues.append("observer target \(identifier) \(present ? "unavailable" : "unobserved"): \(reason), after \(scrolls) native scroll steps")
+    }
     func reveal(_ identifier: String, maxSteps: Int, initialDirection: String, prefix: String) -> XCUIElement? {
         let limit = min(max(maxSteps, 1), 24)
         for n in 0...limit {
@@ -74,15 +112,22 @@ final class ObserverTests: XCTestCase {
             if let target, target.frame.height > viewportFrame.height + 0.5 || target.frame.width > viewportFrame.width + 0.5 {
                 issues.append("reveal target \(identifier) is larger than the measured viewport"); return nil
             }
-            if n == limit { break }
             var direction = initialDirection == "up" ? "up" : "down"
             if let target {
                 if target.frame.minY < viewportFrame.minY { direction = "up" }
                 else if target.frame.maxY > viewportFrame.maxY { direction = "down" }
             }
+            let sentinel = app.staticTexts["__observer.bottom"]
+            if target == nil && direction == "down" && sentinel.exists && sentinel.isHittable && fullyVisible(sentinel) {
+                unavailable(identifier, reason: "native_bottom_boundary_target_unobserved", direction: direction, scrolls: n, present: false, sentinel: sentinel)
+                return nil
+            }
+            if n == limit {
+                unavailable(identifier, reason: "reveal_step_limit_reached", direction: direction, scrolls: n, present: target != nil)
+                return nil
+            }
             scroll(direction); _ = capture("\(prefix)-reveal-\(n)-\(direction)")
         }
-        issues.append("reveal target \(identifier) not fully visible/hittable after \(limit) native scroll steps")
         return nil
     }
     func testObserve() throws {
@@ -105,9 +150,11 @@ final class ObserverTests: XCTestCase {
             let before = capture("action-\(i)-before")
             let callbacksBefore = receipt().count
             let oldIndex = runtime()["fixture_index"] as? Int ?? -1
+            let diagnosticsBefore = revealDiagnostics.count
             let kind = action["type"] as? String ?? ""
             var outcome = "completed"
             var targetState: [String: Any] = [:]
+            var activationState: [String: Any] = [:]
             switch kind {
             case "tap":
                 if let id = action["identifier"] as? String {
@@ -115,12 +162,14 @@ final class ObserverTests: XCTestCase {
                         ? reveal(id, maxSteps: action["max_steps"] as? Int ?? 18, initialDirection: action["direction"] as? String ?? "down", prefix: "action-\(i)")
                         : select(id)
                     if let target {
-                        targetState = ["identifier": id, "enabled": target.isEnabled, "selected": target.isSelected,
-                                       "hittable": target.isHittable, "frame": rect(target.frame), "fully_within_viewport": fullyVisible(target)]
+                        targetState = nativeState(target, path: ["selector": "application.descendants(matching:any).matching(identifier:)", "identifier": id, "match_count": 1])
                         if !target.isEnabled && action["allow_disabled"] as? Bool == true && fullyVisible(target) {
                             outcome = "blocked_disabled"
                         } else if target.isEnabled && target.isHittable && fullyVisible(target) {
-                            target.tap(); outcome = "tapped"
+                            if let (actual, path) = activation(target) {
+                                activationState = nativeState(actual, path: path)
+                                actual.tap(); outcome = "tapped"
+                            } else { outcome = "unavailable" }
                         } else {
                             outcome = "unavailable"; issues.append("tap target \(id) is disabled, not hittable, or not fully within the viewport")
                         }
@@ -157,7 +206,9 @@ final class ObserverTests: XCTestCase {
             if let expected = action["expect_callback"] as? String, !delta.contains(where: { $0["event"] as? String == expected }) {
                 issues.append("expected real callback \(expected) was not received")
             }
-            steps.append(["action": action, "outcome": outcome, "target": targetState, "before": before["index"]!, "after": after["index"]!, "callback_delta": delta, "same_process": sameProcess])
+            steps.append(["action": action, "outcome": outcome, "target": targetState, "semantic_target": targetState,
+                          "activation_target": activationState, "reveal_diagnostics": Array(revealDiagnostics.dropFirst(diagnosticsBefore)),
+                          "before": before["index"]!, "after": after["index"]!, "callback_delta": delta, "same_process": sameProcess])
         }
         let maxScrolls = min(max(config["max_scrolls"] as? Int ?? 18, 1), 40)
         for n in 0..<maxScrolls {
@@ -172,7 +223,7 @@ final class ObserverTests: XCTestCase {
         if !missing.isEmpty { issues.append("required identifiers never visible: \(missing.joined(separator: ", "))") }
         let result: [String: Any] = ["schema_version": 1, "measurement_kind": "XCUIElement runtime accessibility; frames in logical screen points",
             "snapshots": records, "steps": steps, "coverage": ["bottom_reached": bottomReached, "required_identifiers": required, "missing_identifiers": missing, "observed_identifiers": seen.sorted()],
-            "issues": issues, "status": issues.isEmpty ? "passed" : "failed", "original_runtime": originalRuntime]
+            "issues": issues, "reveal_diagnostics": revealDiagnostics, "status": issues.isEmpty ? "passed" : "failed", "original_runtime": originalRuntime]
         let resultAttachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: result, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
         resultAttachment.name = "observer-result.json"; resultAttachment.lifetime = .keepAlways; add(resultAttachment)
         XCTAssertTrue(issues.isEmpty, issues.joined(separator: "; "))
