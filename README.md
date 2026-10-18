@@ -4,7 +4,26 @@
 
 这个仓库包含可加载的 **Skill**、确定性的 **证据 runner**，以及两个真实开源工程的接入代码和实跑记录。模型由宿主 coding agent 提供；runner 不内置 LLM，也不假装提供通用完整的原生样式树。
 
-## 最新：复杂新增 UI 的盲测对照
+## 新一轮三臂盲测：未证实新版额外收益
+
+先冻结通用改进，再由独立上下文设计全新的服务预约改期组件；比较无 Skill、冻结 v1、改进 v2。完成84组原生采集、1,086张快照及双端各1次干净检出复跑，先封存评分和自查匹配再揭盲。
+
+| 指标，双端合计 | 无 Skill | v1 | v2 |
+| --- | ---: | ---: | ---: |
+| 首版确认缺陷簇 | 3 | 2 | 2 |
+| 精确规则检出 TP / FN | 13 / 0 | 7 / 0 | 7 / 0 |
+| 首版确认失败修复 | 13/13 | 7/7 | 7/7 |
+| 确认误报规则项 | 0* | 3 | 4 |
+| 最终 iOS 原始评分：通过/失败/未评估 | 82/0/2 | 76/0/8 | 76/0/8 |
+| 实现＋自查＋修复 | 24:09.5 | 21:58.1 | 20:50.0 |
+
+*无 Skill 另有2项未裁定发现，含类似AX包装节点质疑；0项确认误报不代表没有可疑误判。原始评分里的部分通过还带有未测子方面，例如R13的物理触摸区域，**不能解释为整条要求完整通过**。独立覆盖附录进一步列明范围：完整要求通过率无法得出；排除已知触摸区域缺证据后，最终iOS可能完整支持的项数至多为75/69/69，这些仍不是已验证通过数。
+
+三组都找全并修复了各自已确认的缺陷；两组 Skill 的极端长内容目标搜索留下额外6项未评估。新观测器是三组共享能力，不能把其收益算作 v2 独享收益。一个任务、每组一次运行、共享硬件和缓存，也不足以证明质量或速度的因果提升。
+
+[完整新报告、图片与覆盖附录](validation/fresh-blind/README.md)、[可复算统计](validation/fresh-blind/result-summary.json)、[首轮原因分析](validation/improvement-analysis.md)。本轮保留了负面结果，没有针对新隐藏用例继续调优后重算。
+
+## 首轮盲测：未观察到额外收益
 
 2026-10-18，独立固定附件传输队列的设计与验收，以相同模型设置、宿主和工具，对比有/无 Skill。首版自查封存后才执行隐藏场景，匿名评分封存后才揭盲；完成 56 次有效原生采集和 4 次干净检出复跑。
 
@@ -36,6 +55,14 @@
 完整的[新增功能开发报告](validation/feature-development/README.md)、[设计冻结清单](validation/feature-development/design/freeze.json)、[机器可读结果](validation/feature-development/result-summary.json)。之前的[受控回归试验](validation/native-ui-pilot/README.md)单独保留，不能与新增开发试验混为一谈。
 
 这一轮新增功能试验本身没有无 Skill 对照组，不能单独据此声称提升了某个百分比的 PR 质量。首次快速视觉检查曾漏过轨道色，详细设计核对才发现；原始通过、后续失败及修正记录均保留。字号、颜色、间距能否精确观测取决于平台和采样对象。
+
+## 本轮改进
+
+[首轮分析](validation/improvement-analysis.md)把“一个缺陷簇的规则归因遗漏”与“缺少原生运行时证据”分开。新版增加需求×场景×检查方面的证据账本、完整滚动采样要求，以及可接入真实生产 View 的独立 iOS App + XCUITest 观测器。旧版材料和原始得分继续保留，未用旧失败条件定义新版成功。
+
+`coverage.py`检查计划缺项、证据指纹和方法约束；运行时动作不能由源码或视觉判断代替。它不会判断证据的语义真实性。iOS观测器记录实际 AX、屏幕点坐标、截图映射、真实点击和回调，以及同进程调用方更新；它不提供通用 SwiftUI 字号、padding、颜色树。缺失属性继续保留为未评估。
+
+接入方式见[覆盖协议](native-ui-agent/references/coverage.md)、[iOS观测器契约](native-ui-agent/assets/ios-observer/CONTRACT.md)。[独立能力探针](validation/observer-probes/README.md)保留成功与失败记录；生产接入还需让桥接真正导入并调用目标模块，不能只验证一份未使用生产包的简单 View。
 
 ## 工作方式
 
@@ -109,16 +136,20 @@ python3 validation/feature-development/prepare.py \
 python3 -B -m unittest discover -s native-ui-agent/tests -v
 python3 validation/feature-development/verify_evidence.py
 python3 validation/blind-comparison/verify_evidence.py
+python3 validation/observer-probes/verify_preflight.py
+python3 validation/fresh-blind/verify_evidence.py
 ```
 
-第一条验证 runner 的 25 项协议/失效行为；后两条跨机器审计归档图片、报告、原生测试数、冻结哈希、盲测封存与统计运算，不运行原生 SDK 或模型。GitHub CI 执行这些检查，不声称重新运行双端模拟器。
+第一条验证 runner、覆盖账本和观测器的38项协议/失效行为；后续命令跨机器审计归档图片、报告、原生测试数、冻结哈希、盲测封存与统计运算，不运行原生 SDK 或模型。GitHub CI 执行这些检查，不声称重新运行双端模拟器。
 
 ## 目录
 
 ```text
 native-ui-agent/                  可复制的 Skill、runner、协议与测试
 validation/feature-development/  新增 UI：冻结设计、功能补丁、宿主、复跑入口与证据
-validation/blind-comparison/     复杂新增 UI：有/无 Skill 盲测、冻结源码与统计证据
+validation/blind-comparison/     首轮有/无 Skill 盲测及冻结v1
+validation/fresh-blind/          全新预约UI：无Skill/v1/v2、预注册与原生证据
+validation/observer-probes/      独立通用观测能力探针及原始失败
 validation/native-ui-pilot/       历史受控回归试验、宿主接入记录及上游许可
 ```
 

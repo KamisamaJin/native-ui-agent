@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Recalculate descriptive trial metrics from sealed independent decisions."""
-import json
+import json,hashlib
 from collections import Counter
 from pathlib import Path
 R=Path(__file__).resolve().parent
@@ -11,6 +11,10 @@ def pairs(value):return {(x['caseId'],x['ruleId'])for x in value}
 def ratio(a,b):return round(a/b,6)if b else None
 def counts(values):
  c=Counter(values);return {k:c[k]for k in ['passed','failed','unassessed']}
+
+def coverage_scope():
+ p=R/'design/grader/coverage-scope-addendum.json';d=read(p)
+ return {'path':str(p.relative_to(R)),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'postDetectionReportingAudit':True,'exhaustiveFullRequirementRollupAvailable':d['conservativeFullRequirementCoverageRollup']['fullRequirementCoverageRollupAvailable'],'documentedScopeSummary':d['documentedScopeSummary'],'knownExclusionUpperBounds':{x['artifactId']:{k:c[k]for k in ['sealedCountsUnchanged','knownPassedEntriesWithRequiredTouchRegionGap','maximumPossibleFullySupportedPassEntriesAfterKnownExclusions']}for x in d['conservativeFullRequirementCoverageRollup']['knownScopeExclusionBounds']for c in x['cohorts']if c['cohort']=='all'},'meaning':'Upper bounds only, not fully verified pass counts; no original grades/detection/repair credit changed.'}
 
 def calculate():
  release=read(R/'unblinding.json');matches=read(R/'design/grader/review-match.json');out={}
@@ -34,7 +38,7 @@ def calculate():
     'initialCaseTransitions':dict(Counter(v+'->'+last.get(k,'unassessed')for k,v in first.items())),'regressions':len(regressions),'newlyObservedInitialFailures':len(newly_observed),'holdout':counts(heldout.values()),
     'visualScores':visual,'visualRationales':{p:{c['caseId']:c.get('visualRationale')for c in grade['platforms'][platform]['cases']}for p,grade in [('d0',d0),('final',final)]},'visualScoreScope':'Observed regions only; partial case rationale is retained. A numeric visual score does not pass unobserved requirements.','visualMeanD0':round(sum(visual['d0'].values())/len(visual['d0']),3),'visualMeanFinal':round(sum(visual['final'].values())/len(visual['final']),3)}
   out[arm]={'submission':sub,'platforms':result}
- return {'schemaVersion':1,'task':'service_visit_rescheduling','nativeCaptures':84,'cleanReplayCapturesOutsideTrial':2,'initialCaseRulePairsPerPlatform':59,'finalCaseRulePairsPerPlatform':84,'arms':out,'timing':read(R/'timing.json'),'limits':['One task, one run per arm, correlated platforms; descriptive, no causal or statistical generalization.','Common improved native observers available in all arms; observer gains are not a v2-only advantage.','Shared hardware/cache and unmeasured service/model seeds; timings are descriptive.','Source checks are separate from runtime case-rule counts; unavailable evidence is not a pass.','Android semantic activation is not physical OS touch; iOS runtime26.5 does not prove runtime14 compatibility.']}
+ return {'schemaVersion':1,'task':'service_visit_rescheduling','nativeCaptures':84,'cleanReplayCapturesOutsideTrial':2,'initialCaseRulePairsPerPlatform':59,'finalCaseRulePairsPerPlatform':84,'arms':out,'timing':read(R/'timing.json'),'coverageScopeAudit':coverage_scope(),'limits':['One task, one run per arm, correlated platforms; descriptive, no causal or statistical generalization.','Common improved native observers available in all arms; observer gains are not a v2-only advantage.','Shared hardware/cache and unmeasured service/model seeds; timings are descriptive.','Source checks are separate from runtime case-rule counts; unavailable evidence is not a pass.','Android semantic activation is not physical OS touch; iOS runtime26.5 does not prove runtime14 compatibility.']}
 
 def main():
  result=calculate();p=R/'result-summary.json';p.write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\n');print(json.dumps({'status':'recalculated','output':str(p)}))
