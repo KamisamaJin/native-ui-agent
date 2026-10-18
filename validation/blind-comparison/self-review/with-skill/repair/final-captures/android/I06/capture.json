@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "status": "captured",
+  "project": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638",
+  "profile": {
+    "version": 1,
+    "platform": "android",
+    "backend": "paparazzi",
+    "target": {
+      "description": "I06 disclosed-input repair verification",
+      "sources": [
+        "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReplyTransferPanel.kt",
+        "public/brief.md",
+        "public/reference.svg",
+        "feedback/initial-inputs/I06-input.json"
+      ]
+    },
+    "environment": {
+      "theme": "light",
+      "font_scale": 1.0,
+      "layout_direction": "RTL",
+      "viewport": "320 x 620",
+      "native_output_transport": "common capture.py and warmed native host; iOS AX unavailable",
+      "ios_category": "large"
+    },
+    "commands": [
+      {
+        "argv": [
+          "python3",
+          "capture.py",
+          "--platform",
+          "android",
+          "--project",
+          "reply/Reply",
+          "--fixture",
+          "feedback/initial-inputs/I06-input.json",
+          "--output",
+          "{output}"
+        ],
+        "timeout_seconds": 600
+      }
+    ],
+    "artifacts": [
+      {
+        "base": "output",
+        "glob": "native/actual.png",
+        "role": "actual"
+      },
+      {
+        "base": "output",
+        "glob": "native/native-report.json",
+        "role": "native-report"
+      },
+      {
+        "base": "output",
+        "glob": "native/capture.json",
+        "role": "native-report"
+      }
+    ],
+    "protected_paths": [],
+    "checks": [
+      {
+        "id": "queue-hierarchy",
+        "kind": "visual",
+        "description": "Quiet card hierarchy, public TQ-LAYOUT and TQ-VIS rules; native-image inspection deferred by D0 protocol",
+        "source": "public/brief.md and public/reference.svg"
+      },
+      {
+        "id": "adaptive-colors",
+        "kind": "visual",
+        "description": "Public palette and state mapping in native rendering; inspection deferred by D0 protocol",
+        "source": "public/brief.md TQ-COLOR-01 and TQ-COLOR-02"
+      }
+    ]
+  },
+  "started_at": "2026-10-18T09:25:18.022981+00:00",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "capture.py",
+        "--platform",
+        "android",
+        "--project",
+        "reply/Reply",
+        "--fixture",
+        "feedback/initial-inputs/I06-input.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/android/I06/native"
+      ],
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638",
+      "status": "passed",
+      "log": "command-1.log",
+      "exit_code": 0,
+      "duration_seconds": 2.776
+    }
+  ],
+  "artifacts": [
+    {
+      "role": "actual",
+      "original": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/android/I06/native/actual.png",
+      "path": "artifacts/000-actual.png",
+      "sha256": "5bbe71a8c38337dcf421c635884ac7f85c0691d14116e24bb3f2cdc3583f7f63"
+    },
+    {
+      "role": "native-report",
+      "original": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/android/I06/native/native-report.json",
+      "path": "artifacts/001-native-report.json",
+      "sha256": "df270430f2c6e8da7c913e0ad0761e5f08b6d484ebf5dbd86ebba834cc43b76d"
+    },
+    {
+      "role": "native-report",
+      "original": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/android/I06/native/capture.json",
+      "path": "artifacts/002-capture.json",
+      "sha256": "842239b62c044bdfa1cc59f87d96d40e2bcf6d35d3b7552e66729d4fa8e6e774"
+    }
+  ],
+  "source_fingerprint": {
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReplyTransferPanel.kt": {
+      "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReplyTransferPanel.kt": "4c08f21fec67a4a72ee7d57b619ba7861be51adb768109ffaba1c27a17fe8eaf"
+    },
+    "public/brief.md": {
+      "public/brief.md": "aa22accbc2cc8a091aae994c80c6506a47e4f6d2a9b5526872b8211c3fdb2fbf"
+    },
+    "public/reference.svg": {
+      "public/reference.svg": "9b36e9e272461f2932e401ae927fe391be6c6692b59ca56e40f294dd3b438b71"
+    },
+    "feedback/initial-inputs/I06-input.json": {
+      "feedback/initial-inputs/I06-input.json": "4a7ba5805d7a76cfa59dcf7865ae7f8bac4688f7f00a9c110e6ecde50afd3926"
+    }
+  },
+  "protected_fingerprint": {},
+  "interpretation": "Captured evidence is not a UI acceptance verdict.",
+  "errors": [],
+  "finished_at": "2026-10-18T09:25:20.818988+00:00"
+}

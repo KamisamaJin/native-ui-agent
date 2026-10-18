@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "status": "error",
+  "project": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638",
+  "profile": {
+    "version": 1,
+    "platform": "ios",
+    "backend": "snapshot-testing",
+    "target": {
+      "description": "Public collapsed attachment transfer queue, caller-owned state",
+      "sources": [
+        "alerttoast/Sources/AlertToast/TransferToastPanel.swift",
+        "public/brief.md",
+        "public/reference.svg",
+        "public-smoke.json"
+      ]
+    },
+    "environment": {
+      "theme": "light",
+      "font_scale": 1,
+      "layout_direction": "LTR",
+      "viewport": "390 x 620 logical units",
+      "native_output_transport": "common capture.py and warmed native host; iOS AX unavailable"
+    },
+    "commands": [
+      {
+        "argv": [
+          "python3",
+          "capture.py",
+          "--platform",
+          "ios",
+          "--project",
+          "alerttoast",
+          "--fixture",
+          "public-smoke.json",
+          "--output",
+          "{output}/native"
+        ],
+        "timeout_seconds": 600
+      }
+    ],
+    "artifacts": [
+      {
+        "base": "output",
+        "glob": "native/actual.png",
+        "role": "actual"
+      },
+      {
+        "base": "output",
+        "glob": "native/native-report.json",
+        "role": "native-report"
+      },
+      {
+        "base": "output",
+        "glob": "native/capture.json",
+        "role": "native-report"
+      }
+    ],
+    "protected_paths": [],
+    "checks": [
+      {
+        "id": "queue-hierarchy",
+        "kind": "visual",
+        "description": "Quiet card hierarchy, public TQ-LAYOUT and TQ-VIS rules; native-image inspection deferred by D0 protocol",
+        "source": "public/brief.md and public/reference.svg"
+      },
+      {
+        "id": "adaptive-colors",
+        "kind": "visual",
+        "description": "Public palette and state mapping in native rendering; inspection deferred by D0 protocol",
+        "source": "public/brief.md TQ-COLOR-01 and TQ-COLOR-02"
+      }
+    ]
+  },
+  "started_at": "2026-10-18T08:58:46.641839+00:00",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "capture.py",
+        "--platform",
+        "ios",
+        "--project",
+        "alerttoast",
+        "--fixture",
+        "public-smoke.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/draft/ios/native/native"
+      ],
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638",
+      "status": "passed",
+      "log": "command-1.log",
+      "exit_code": 0,
+      "duration_seconds": 6.767
+    }
+  ],
+  "artifacts": [],
+  "source_fingerprint": {
+    "alerttoast/Sources/AlertToast/TransferToastPanel.swift": {
+      "alerttoast/Sources/AlertToast/TransferToastPanel.swift": "beaa570010b06b9469b7406d3712f2421dcec322523c25f399b4572f6c4acdf5"
+    },
+    "public/brief.md": {
+      "public/brief.md": "aa22accbc2cc8a091aae994c80c6506a47e4f6d2a9b5526872b8211c3fdb2fbf"
+    },
+    "public/reference.svg": {
+      "public/reference.svg": "9b36e9e272461f2932e401ae927fe391be6c6692b59ca56e40f294dd3b438b71"
+    },
+    "public-smoke.json": {
+      "public-smoke.json": "e73ed199f2484bafeb6aa335b65401c739a763a5d2ef9f79ace376ec73032b92"
+    }
+  },
+  "protected_fingerprint": {},
+  "interpretation": "Captured evidence is not a UI acceptance verdict.",
+  "errors": [
+    "Expected exactly one fresh actual image; found 0"
+  ],
+  "finished_at": "2026-10-18T08:58:53.410153+00:00"
+}

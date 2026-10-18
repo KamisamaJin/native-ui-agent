@@ -1,0 +1,54 @@
+{
+  "anonymous_id": "submission-bab86f",
+  "observed_issues": [
+    {
+      "issue_id": "SR-ANDROID-001",
+      "rule_id": "TQ-COLOR-01",
+      "platform": "android",
+      "triggering_input_condition": {
+        "fixtures": [
+          "submission-bab86f/self-review/fixtures/narrow-dark-rtl.json",
+          "submission-bab86f/self-review/fixtures/large-compact.json"
+        ],
+        "dark": true
+      },
+      "actual_observation": "Both fresh dark-host captures render the component with the light palette: the panel interior is RGB (255,255,255), with dark primary text and light accent/error colors. The host background is dark.",
+      "public_requirement": "In dark appearance the panel must use #182235 (RGB 24,34,53), primary #F2F5FB, and the specified dark tone/track colors.",
+      "evidence_paths": [
+        "submission-bab86f/SR-ANDROID-001/00-actual.png",
+        "submission-bab86f/SR-ANDROID-001/01-actual.png",
+        "submission-bab86f/SR-ANDROID-001/02-semantics.json",
+        "submission-bab86f/SR-ANDROID-001/03-measured-checks.json"
+      ],
+      "execution_method": "Real production Compose capture under the common dark fixture; full-image inspection and Pillow flat-interior RGB sampling. Native semantic text colors independently show light-palette values.",
+      "execution": "observed"
+    },
+    {
+      "issue_id": "SR-IOS-001",
+      "rule_id": "TQ-LAYOUT-04",
+      "platform": "ios",
+      "triggering_input_condition": {
+        "fixtures": [
+          "submission-bab86f/self-review/fixtures/narrow-light.json",
+          "submission-bab86f/self-review/fixtures/narrow-dark-rtl.json"
+        ],
+        "viewport_width": 320,
+        "supplied_panel_width": 288,
+        "font_category": "large",
+        "expanded": true
+      },
+      "actual_observation": "In both LTR light and RTL dark native captures, Show less remains beside the title, forcing Attachment transfers onto two lines; the failed Retry button remains in the trailing column beside the file name/status. In the LTR capture OCR places Show less glyphs around y=59–71 while title glyphs span y=43–85; Retry glyphs are around y=336–352 and the failed status is below them around y=364–391.",
+      "public_requirement": "At supplied width 340 or less, the toggle must be on its own line below the title at logical leading; Retry must be below the status with an 8-point gap at the text column leading edge.",
+      "evidence_paths": [
+        "submission-bab86f/SR-IOS-001/00-actual.png",
+        "submission-bab86f/SR-IOS-001/01-actual.png",
+        "submission-bab86f/SR-IOS-001/02-ios-ocr.json",
+        "submission-bab86f/SR-IOS-001/03-ios-narrow-glyph-measurements.json"
+      ],
+      "execution_method": "Fresh real SwiftUI simulator captures using the unchanged common host, full-image inspection and Apple Vision OCR glyph-position evidence. OCR boxes are not SwiftUI layout frames.",
+      "execution": "observed"
+    }
+  ],
+  "source_review_sha256": "acd2f950d2cb965e63c5e8054b5aaeb865388559eff533f45c539b425fe8c947",
+  "redactions": "Worker absolute path replaced by anonymous ID; tool names neutralized. Product observations/rules/numeric values unchanged. Only observed issues disclosed; workflow and passing-check counts withheld to reduce treatment clues."
+}

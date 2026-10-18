@@ -1,0 +1,56 @@
+[
+  {
+    "time": "2026-10-18T08:57:05.438587+00:00",
+    "stage": "before any D0 submission/hidden scoring",
+    "type": "symmetric infrastructure correction",
+    "reason": "Frozen designer fixture categories include accessibilityExtraLarge and accessibilityExtraExtraLarge, while common prototype mapped all >=1.6 to accessibilityExtraExtraExtraLarge. Added explicit ios_category input to honor frozen oracle, same host in both arms. Public normal input unchanged; no criteria/production source edits.",
+    "files": [
+      "harness/BlindPanelUiTests.swift",
+      "harness/capture.py"
+    ],
+    "new_harness_sha256": "d4df98946d76b88b3772cf339cc994c6d35a53d861d2205b8cf276d40e84dbf2"
+  },
+  {
+    "time": "2026-10-18T09:08:56.873585+00:00",
+    "stage": "after both self-inspections sealed, before any hidden scoring",
+    "type": "symmetric infrastructure correction",
+    "reason": "Android fixture dark flag configured Compose theme but not system Configuration night mode. Public design requires native system appearance. Set DeviceConfig.nightMode and export observed native uiMode mask for both arms. Preserve original self-reviews; host-induced dark claims are not charged as component false positives. No production, design or oracle edits.",
+    "previous_harness_saved": "cache/harness-before-night-mode-fix",
+    "new_test_sha256": "d7acc95d0482e23f643c01287e110b3f2203b8df4cf1c4570b60e308ecb298e7",
+    "verification": {
+      "both_native_night_mode_mask": 32,
+      "both_actual_title_argb": "FFF2F5FB",
+      "public_probe_no_production_changes": true
+    }
+  },
+  {
+    "time": "2026-10-18T09:10:09.245528+00:00",
+    "stage": "after both self-inspections sealed, before any hidden scoring",
+    "type": "symmetric native sampling correction",
+    "reason": "Add a discarded native warmup snapshot and 0.3s main-run-loop settlement before final sampling for both arms. This sampling hardening did NOT change the public narrow-probe wide layout; no claim that the narrow defect was caused or fixed by the harness. Source/design/oracle unchanged.",
+    "previous_harness_saved": "cache/harness-before-settlement-fix",
+    "new_test_sha256": "3c359e18b1cba4de44761d63174c9275c6faab69ada230e04a20bdff8854e5cb",
+    "verification": {
+      "both_public_probe_native_test_passed": true,
+      "narrow_layout_unchanged": true
+    },
+    "additional_infrastructure_probe": {
+      "generic_PreferenceKey_view_measured_width_pt": 288,
+      "same_without_and_with_explicit_UIWindow": true,
+      "source": "infrastructure/lifecycle-probe",
+      "not_product_evidence": true
+    }
+  },
+  {
+    "time": "2026-10-18T09:11:41.359361+00:00",
+    "stage": "first hidden capture batch; no grading or feedback yet",
+    "type": "coordinator fixture transport error",
+    "reason": "Oracle encodes nonfinite Doubles as {double_special: value}; coordinator input adapter initially forwarded objects instead of converting to harness string encoding. Android rejected primitives, iOS fallback converted to NaN. Entire first batch excluded from product scoring, preserved under d0-transport-invalid, all fixtures rerun identically on both arms. Native production/design/oracle unchanged.",
+    "excluded_attempts": 24
+  },
+  {
+    "stage": "D0 and final evidence scope",
+    "type": "sampling coverage gap",
+    "reason": "Common host captures the top fixed viewport only. The frozen sampling plan requested native bottom-scroll evidence for tall content; this was not implemented in the common harness. Offscreen visual branches remain not_assessed in both arms and are excluded from no-defect/pass claims. Native semantics can still assess offscreen Compose text/data, but not visual legibility. This coverage gap limits the comparison."
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "status": "failed",
+  "capture": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/self-review/captures/ios/narrow-light/capture.json",
+  "capture_sha256": "8b0572732c33e1b90a5f692ef8c174f134fb22976fdf451172ff67478524463f",
+  "platform": "ios",
+  "target": {
+    "description": "narrow-light",
+    "sources": [
+      "alerttoast/Sources/AlertToast/TransferToastPanel.swift",
+      "public/brief.md",
+      "public/reference.svg",
+      "self-review/fixtures/narrow-light.json"
+    ]
+  },
+  "environment": {
+    "theme": "light",
+    "font_scale": 1,
+    "layout_direction": "LTR",
+    "viewport": "320 x 800",
+    "native_output_transport": "common capture.py and warmed native host; iOS AX unavailable",
+    "ios_category": "large"
+  },
+  "checks": [
+    {
+      "id": "queue-hierarchy",
+      "kind": "visual",
+      "description": "Quiet card hierarchy, public TQ-LAYOUT and TQ-VIS rules; native-image inspection deferred by D0 protocol",
+      "source": "public/brief.md and public/reference.svg",
+      "required": true,
+      "status": "failed",
+      "observed": "At 288-point supplied panel width the title and toggle share the header, and Retry remains beside the failed text; compact controls are required.",
+      "method": "Model/human visual judgment; not an exact native measurement",
+      "evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/self-review/captures/ios/narrow-light/artifacts/000-actual.png"
+    },
+    {
+      "id": "adaptive-colors",
+      "kind": "visual",
+      "description": "Public palette and state mapping in native rendering; inspection deferred by D0 protocol",
+      "source": "public/brief.md TQ-COLOR-01 and TQ-COLOR-02",
+      "required": true,
+      "status": "passed",
+      "observed": "Native flat panel RGB matches the specified appearance; visible track and status colors follow the requested palette by visual inspection.",
+      "method": "Model/human visual judgment; not an exact native measurement",
+      "evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/self-review/captures/ios/narrow-light/artifacts/000-actual.png"
+    }
+  ],
+  "created_at": "2026-10-18T09:07:43.665664+00:00",
+  "scope": "Configured component checks only; page integration is a separate verification."
+}

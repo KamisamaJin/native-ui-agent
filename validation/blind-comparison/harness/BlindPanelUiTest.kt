@@ -16,6 +16,7 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import app.cash.paparazzi.*
+import com.android.resources.NightMode
 import com.example.reply.ui.components.ReplyTransferPanel
 import com.example.reply.ui.components.TransferItem
 import com.example.reply.ui.theme.ContrastAwareReplyTheme
@@ -33,11 +34,14 @@ class BlindPanelUiTest {
     private var rawNodes: List<SemanticsNode> = emptyList()
     private var exported: List<JsonObject> = emptyList()
     private val events = mutableListOf<String>()
+    private var actualNightMask = -1
+    private var actualDensity = 0f
 
     @get:Rule val paparazzi = Paparazzi(
         deviceConfig = DeviceConfig.PIXEL_5.copy(
             screenWidth = (number("width",390f) * 2.75f).toInt(),
             screenHeight = (number("height",620f) * 2.75f).toInt(),
+            nightMode = if(flag("dark")) NightMode.NIGHT else NightMode.NOTNIGHT,
             fontScale = number("font_scale",1f), softButtons = false),
         showSystemUi = false,
         snapshotHandler = HtmlReportWriter(runName="capture",rootDirectory=File(output,"paparazzi-report")))
@@ -56,6 +60,8 @@ class BlindPanelUiTest {
         paparazzi.snapshot(name="capture") {
             val root = LocalView.current as ViewRootForTest
             val density = LocalDensity.current.density
+            actualDensity = density
+            actualNightMask = LocalConfiguration.current.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
             CompositionLocalProvider(LocalInspectionMode provides true, LocalView provides preview,
                 LocalLayoutDirection provides if(flag("rtl")) LayoutDirection.Rtl else LayoutDirection.Ltr) {
                 ContrastAwareReplyTheme(darkTheme=flag("dark"),dynamicColor=false) {
@@ -112,6 +118,8 @@ class BlindPanelUiTest {
         File(output,"semantics.json").writeText(JsonArray(exported).toString())
         File(output,"native-report.json").writeText(buildJsonObject {
             put("native_test","BlindPanelUiTest.capture");put("nodes",exported.size)
+            put("native_night_mode_mask",actualNightMask);put("density",actualDensity)
+            put("font_scale",number("font_scale",1f));put("rtl",flag("rtl"));put("scroll_offset",0)
             put("activation_requested",actionTag ?: "");put("activation_executed",activated)
             put("events",buildJsonArray { events.forEach { add(it) } })
             put("action_method","native Compose accessibility OnClick action after layout; not physical touch")

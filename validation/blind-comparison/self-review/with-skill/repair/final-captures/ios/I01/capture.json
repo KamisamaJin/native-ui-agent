@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "status": "captured",
+  "project": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638",
+  "profile": {
+    "version": 1,
+    "platform": "ios",
+    "backend": "snapshot-testing",
+    "target": {
+      "description": "I01 disclosed-input repair verification",
+      "sources": [
+        "alerttoast/Sources/AlertToast/TransferToastPanel.swift",
+        "public/brief.md",
+        "public/reference.svg",
+        "feedback/initial-inputs/I01-input.json"
+      ]
+    },
+    "environment": {
+      "theme": "light",
+      "font_scale": 1.0,
+      "layout_direction": "LTR",
+      "viewport": "390 x 620",
+      "native_output_transport": "common capture.py and warmed native host; iOS AX unavailable",
+      "ios_category": "large"
+    },
+    "commands": [
+      {
+        "argv": [
+          "python3",
+          "capture.py",
+          "--platform",
+          "ios",
+          "--project",
+          "alerttoast",
+          "--fixture",
+          "feedback/initial-inputs/I01-input.json",
+          "--output",
+          "{output}"
+        ],
+        "timeout_seconds": 600
+      }
+    ],
+    "artifacts": [
+      {
+        "base": "output",
+        "glob": "native/actual.png",
+        "role": "actual"
+      },
+      {
+        "base": "output",
+        "glob": "native/native-report.json",
+        "role": "native-report"
+      },
+      {
+        "base": "output",
+        "glob": "native/capture.json",
+        "role": "native-report"
+      }
+    ],
+    "protected_paths": [],
+    "checks": [
+      {
+        "id": "queue-hierarchy",
+        "kind": "visual",
+        "description": "Quiet card hierarchy, public TQ-LAYOUT and TQ-VIS rules; native-image inspection deferred by D0 protocol",
+        "source": "public/brief.md and public/reference.svg"
+      },
+      {
+        "id": "adaptive-colors",
+        "kind": "visual",
+        "description": "Public palette and state mapping in native rendering; inspection deferred by D0 protocol",
+        "source": "public/brief.md TQ-COLOR-01 and TQ-COLOR-02"
+      }
+    ]
+  },
+  "started_at": "2026-10-18T09:25:03.657699+00:00",
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "capture.py",
+        "--platform",
+        "ios",
+        "--project",
+        "alerttoast",
+        "--fixture",
+        "feedback/initial-inputs/I01-input.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/ios/I01/native"
+      ],
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638",
+      "status": "passed",
+      "log": "command-1.log",
+      "exit_code": 0,
+      "duration_seconds": 5.579
+    }
+  ],
+  "artifacts": [
+    {
+      "role": "actual",
+      "original": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/ios/I01/native/actual.png",
+      "path": "artifacts/000-actual.png",
+      "sha256": "b7450d9534b4db4f410d22aba8486b04aea057b87e127f4977d21b987b393be1"
+    },
+    {
+      "role": "native-report",
+      "original": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/ios/I01/native/native-report.json",
+      "path": "artifacts/001-native-report.json",
+      "sha256": "605db8e690781572c8ab164cf609f38ce02d87d9c2010f039e9f730d44220c86"
+    },
+    {
+      "role": "native-report",
+      "original": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/ios/I01/native/capture.json",
+      "path": "artifacts/002-capture.json",
+      "sha256": "f3e2ca2c2e19c5678ebdf06d2333dfa423be0c9f2ab5b84b39a64eae91153834"
+    }
+  ],
+  "source_fingerprint": {
+    "alerttoast/Sources/AlertToast/TransferToastPanel.swift": {
+      "alerttoast/Sources/AlertToast/TransferToastPanel.swift": "9d4d3dc100e34651951b64f386b5b08fd4aae36c7716f73a7c070bed5627c7e6"
+    },
+    "public/brief.md": {
+      "public/brief.md": "aa22accbc2cc8a091aae994c80c6506a47e4f6d2a9b5526872b8211c3fdb2fbf"
+    },
+    "public/reference.svg": {
+      "public/reference.svg": "9b36e9e272461f2932e401ae927fe391be6c6692b59ca56e40f294dd3b438b71"
+    },
+    "feedback/initial-inputs/I01-input.json": {
+      "feedback/initial-inputs/I01-input.json": "aa0d1790e4f6ad7d0d9cd2aa21cf82a4c7ea19a7a0aa3690cfecbb981e1e65f1"
+    }
+  },
+  "protected_fingerprint": {},
+  "interpretation": "Captured evidence is not a UI acceptance verdict.",
+  "errors": [],
+  "finished_at": "2026-10-18T09:25:09.257663+00:00"
+}

@@ -83,6 +83,8 @@ def main():
     if not (output/"actual.png").exists() or not (output/"native-report.json").exists():raise SystemExit("Missing native output")
     sources=list((project/("app/src/main/java/com/example/reply/ui/components" if a.platform=="android" else "Sources/AlertToast")).glob("*Transfer*"))
     manifest={"platform":a.platform,"fixture_sha256":hashlib.sha256(fixture.read_bytes()).hexdigest(),
+        "harness_sha256":hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "test_harness_sha256":hashlib.sha256((project/("app/src/test/java/com/example/reply/BlindPanelUiTest.kt" if a.platform=="android" else "Tests/AlertToastTests/BlindPanelUiTests.swift")).read_bytes()).hexdigest(),
         "actual_sha256":hashlib.sha256((output/"actual.png").read_bytes()).hexdigest(),
         "production_sources":{str(path.relative_to(project)):hashlib.sha256(path.read_bytes()).hexdigest() for path in sources if path.is_file()},
         "duration_seconds":round(time.monotonic()-started,3),"commands":commands,"status":"captured_not_graded"}

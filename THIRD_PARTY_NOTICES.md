@@ -2,6 +2,8 @@
 
 The root MIT license covers original Skill, runner, documentation and harness code. It does not replace upstream licenses.
 
+The blind-comparison transfer queue components and independent design/oracle are original additions covered by the root MIT license. Their Reply/AlertToast test hosts still use the upstream projects and native dependencies below. Screenshots and archived native reports document those integrations; they do not relicense upstream assets or dependencies.
+
 | Material | Source | License / notice |
 | --- | --- | --- |
 | Reply component patches and screenshots containing its UI/assets | [android/compose-samples](https://github.com/android/compose-samples), revision `53dccc7836952e3a04ed4bc1ec7afa7c8e27ff79` | Copyright The Android Open Source Project; Apache-2.0. See [full license](validation/native-ui-pilot/licenses/android-LICENSE). Preserve source headers when applying or distributing patches. |

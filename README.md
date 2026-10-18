@@ -4,7 +4,23 @@
 
 这个仓库包含可加载的 **Skill**、确定性的 **证据 runner**，以及两个真实开源工程的接入代码和实跑记录。模型由宿主 coding agent 提供；runner 不内置 LLM，也不假装提供通用完整的原生样式树。
 
-## 已实际验证
+## 最新：复杂新增 UI 的盲测对照
+
+2026-10-18，独立固定附件传输队列的设计与验收，以相同模型设置、宿主和工具，对比有/无 Skill。首版自查封存后才执行隐藏场景，匿名评分封存后才揭盲；完成 56 次有效原生采集和 4 次干净检出复跑。
+
+| 指标 | 无 Skill | 有 Skill |
+| --- | ---: | ---: |
+| iOS 首版失败规则项 | 3 | 3 |
+| 自查漏检 | 1/3，33.3% | 1/3，33.3% |
+| 一轮修复 | 3/3 | 3/3 |
+| 保留场景确认新失败 | 0 | 0 |
+| 实现＋自查＋修复耗时 | 14:05.7 | 13:37.7 |
+
+三个失败项来自一个窄屏重排缺陷簇。Android 未确认首版缺陷，漏检/修复率分母为零，记 N/A。每组最终 368 个规则项中 223 通过、145 未完整评估，不能称为全部通过。**本轮没有观察到 Skill 的额外检出或修复优势**；单次小样本与共享缓存也不支持提速结论。
+
+完整[盲测报告与前后图片](validation/blind-comparison/README.md)、[可复算统计](validation/blind-comparison/result-summary.json)、[冻结源码](validation/blind-comparison/implementations/)和[独立设计/验收](validation/blind-comparison/design-team/public/brief.md)已归档。报告保留程序性盲法、基础设施修正、iOS 交互和屏幕外视觉的证据限制。Skill 在实验中保持原样。
+
+## 之前的新增功能验证
 
 2026-10-18 在固定上游提交上开发两个新增功能，独立设计与验收标准先于实现提交到 Git，未向生产代码注入已知错误：
 
@@ -19,7 +35,7 @@
 
 完整的[新增功能开发报告](validation/feature-development/README.md)、[设计冻结清单](validation/feature-development/design/freeze.json)、[机器可读结果](validation/feature-development/result-summary.json)。之前的[受控回归试验](validation/native-ui-pilot/README.md)单独保留，不能与新增开发试验混为一谈。
 
-这不是独立盲测，也没有无 Skill 对照组，不能据此声称提升了某个百分比的 PR 质量。首次快速视觉检查曾漏过轨道色，详细设计核对才发现；原始通过、后续失败及修正记录均保留。字号、颜色、间距能否精确观测取决于平台和采样对象。
+这一轮新增功能试验本身没有无 Skill 对照组，不能单独据此声称提升了某个百分比的 PR 质量。首次快速视觉检查曾漏过轨道色，详细设计核对才发现；原始通过、后续失败及修正记录均保留。字号、颜色、间距能否精确观测取决于平台和采样对象。
 
 ## 工作方式
 
@@ -92,15 +108,17 @@ python3 validation/feature-development/prepare.py \
 ```sh
 python3 -B -m unittest discover -s native-ui-agent/tests -v
 python3 validation/feature-development/verify_evidence.py
+python3 validation/blind-comparison/verify_evidence.py
 ```
 
-第一条验证 runner 的 25 项协议/失效行为；第二条跨机器审计归档图片、报告、原生测试数、独立设计哈希和已发现的轨道颜色差异，不运行原生 SDK 或模型。GitHub CI 只执行这两类检查，不声称重新运行双端模拟器。
+第一条验证 runner 的 25 项协议/失效行为；后两条跨机器审计归档图片、报告、原生测试数、冻结哈希、盲测封存与统计运算，不运行原生 SDK 或模型。GitHub CI 执行这些检查，不声称重新运行双端模拟器。
 
 ## 目录
 
 ```text
 native-ui-agent/                  可复制的 Skill、runner、协议与测试
 validation/feature-development/  新增 UI：冻结设计、功能补丁、宿主、复跑入口与证据
+validation/blind-comparison/     复杂新增 UI：有/无 Skill 盲测、冻结源码与统计证据
 validation/native-ui-pilot/       历史受控回归试验、宿主接入记录及上游许可
 ```
 

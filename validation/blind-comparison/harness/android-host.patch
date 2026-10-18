@@ -1,0 +1,35 @@
+diff --git a/Reply/app/build.gradle.kts b/Reply/app/build.gradle.kts
+index 7207aa4..f3bb371 100644
+--- a/Reply/app/build.gradle.kts
++++ b/Reply/app/build.gradle.kts
+@@ -16,6 +16,7 @@
+ 
+ 
+ plugins {
++    id("app.cash.paparazzi") version "2.0.0-alpha02"
+     alias(libs.plugins.android.application)
+     alias(libs.plugins.kotlin.android)
+     alias(libs.plugins.kotlin.serialization)
+@@ -97,6 +98,7 @@ android {
+ }
+ 
+ dependencies {
++    testImplementation(libs.junit)
+     val composeBom = platform(libs.androidx.compose.bom)
+     implementation(composeBom)
+     androidTestImplementation(composeBom)
+@@ -135,3 +137,14 @@ dependencies {
+ 
+     debugImplementation(libs.androidx.compose.ui.test.manifest)
+ }
++
++// Native UI pilot: explicitly bridge this invocation into the test worker.
++tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
++    val captureOutput = System.getenv("NATIVE_UI_OUTPUT")
++    if (captureOutput != null) {
++        environment("NATIVE_UI_OUTPUT", captureOutput)
++        environment("BENCH_FIXTURE", System.getenv("BENCH_FIXTURE") ?: "")
++        environment("NATIVE_UI_SCENARIO", System.getenv("NATIVE_UI_SCENARIO") ?: "normal")
++        outputs.upToDateWhen { false }
++    }
++}

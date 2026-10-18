@@ -14,6 +14,17 @@ final class BlindPanelUiTests: XCTestCase {
         let dark=fixture["dark"] as? Bool ?? false
         let rtl=fixture["rtl"] as? Bool ?? false
         let large=((fixture["font_scale"] as? NSNumber)?.doubleValue ?? 1) >= 1.6
+        let categoryName=fixture["ios_category"] as? String ?? (large ? "accessibilityExtraExtraExtraLarge":"large")
+        let swiftCategories:[String:ContentSizeCategory] = ["large":.large,
+            "accessibilityExtraLarge":.accessibilityExtraLarge,
+            "accessibilityExtraExtraLarge":.accessibilityExtraExtraLarge,
+            "accessibilityExtraExtraExtraLarge":.accessibilityExtraExtraExtraLarge]
+        let uiCategories:[String:UIContentSizeCategory] = ["large":.large,
+            "accessibilityExtraLarge":.accessibilityExtraLarge,
+            "accessibilityExtraExtraLarge":.accessibilityExtraExtraLarge,
+            "accessibilityExtraExtraExtraLarge":.accessibilityExtraExtraExtraLarge]
+        let swiftCategory=try XCTUnwrap(swiftCategories[categoryName])
+        let uiCategory=try XCTUnwrap(uiCategories[categoryName])
         let items=(fixture["items"] as! [[String:Any]]).map { item -> TransferToastItem in
             let raw=item["progress"]
             let progress=(raw as? NSNumber)?.doubleValue ?? Double(raw as? String ?? "nan") ?? .nan
@@ -30,13 +41,21 @@ final class BlindPanelUiTests: XCTestCase {
             }
         }.environment(\.colorScheme,dark ? .dark:.light)
          .environment(\.layoutDirection,rtl ? .rightToLeft:.leftToRight)
-         .environment(\.sizeCategory,large ? .accessibilityExtraExtraExtraLarge:.large)
+         .environment(\.sizeCategory,swiftCategory)
          .frame(width:width,height:height)
         let hosting=UIHostingController(rootView:view)
         let traits=UITraitCollection(traitsFrom:[UITraitCollection(displayScale:2),
             UITraitCollection(userInterfaceStyle:dark ? .dark:.light),
-            UITraitCollection(preferredContentSizeCategory:large ? .accessibilityExtraExtraExtraLarge:.large)])
+            UITraitCollection(preferredContentSizeCategory:uiCategory)])
         let strategy=Snapshotting<UIViewController,UIImage>.image(size:CGSize(width:width,height:height),traits:traits)
+        // Allow the first native layout/preference pass to commit before sampling.
+        // The first image is warm-up only, never product evidence.
+        let warmup=expectation(description:"initial native layout")
+        strategy.snapshot(hosting).run {_ in warmup.fulfill()}
+        wait(for:[warmup],timeout:10)
+        let settled=expectation(description:"native layout settlement")
+        DispatchQueue.main.asyncAfter(deadline:.now()+0.3) { settled.fulfill() }
+        wait(for:[settled],timeout:2)
         let ready=expectation(description:"native render")
         var image:UIImage?
         strategy.snapshot(hosting).run {image=$0;ready.fulfill()}
@@ -68,7 +87,8 @@ final class BlindPanelUiTests: XCTestCase {
         let report:[String:Any]=["native_test":"BlindPanelUiTests.testCapture","ax_elements":ax,
             "activation_requested":wanted ?? "","activation_executed":activated,"events":events,
             "action_method":"UIAccessibilityElement.accessibilityActivate if an exposed element exists; otherwise not executed",
-            "font_category":large ? "accessibilityExtraExtraExtraLarge":"large",
+            "font_category":categoryName,
+            "layout_settlement_seconds":0.3,"warmup_snapshot_discarded":true,
             "layout_scope":"Real simulator XCTest component host; no full business app navigation"]
         try JSONSerialization.data(withJSONObject:report,options:[.prettyPrinted]).write(to:output.appendingPathComponent("native-report.json"))
     }

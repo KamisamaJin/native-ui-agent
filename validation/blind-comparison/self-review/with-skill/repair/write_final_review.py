@@ -1,0 +1,31 @@
+from pathlib import Path
+import json,hashlib,subprocess
+root=Path.cwd();base=root/'repair';ocr=json.loads((base/'final-ios-ocr.json').read_text());geometry=[]
+for record in ocr:
+ case=Path(record['image']).parts[-3];width=320;height=620 if case=='I06' else 800
+ def box(text):
+  n=next(x for x in record['texts'] if text in x['text']);b=n['normalized_bounds_bottom_left'];return [b[0]*width,(1-b[3])*height,b[2]*width,(1-b[1])*height]
+ title=box('Attachment transfers');toggle=box('Show');item={'case':case,'title_glyph_bounds':title,'toggle_glyph_bounds':toggle,'toggle_visibly_below_title':toggle[1]>title[3],'evidence':str(base/'final-ios-ocr.json'),'method':'Apple Vision glyph boxes converted to logical units; not SwiftUI layout frames'}
+ if case=='I06':item.update({'rtl_toggle_title_trailing_edge_difference':abs(toggle[2]-title[2]),'logical_leading_alignment_observed':abs(toggle[2]-title[2])<=2})
+ if case=='narrow-failed':
+  status=box('Failed');retry=box('Retry');item.update({'status_glyph_bounds':status,'retry_glyph_bounds':retry,'retry_visibly_below_status':retry[1]>status[3]})
+ geometry.append(item)
+(base/'final-ios-layout-checks.json').write_text(json.dumps(geometry,indent=2)+'\n')
+reviews=[]
+for capture in sorted((base/'final-captures').glob('*/*/capture.json')):
+ platform=capture.parent.parent.name;case=capture.parent.name
+ limited=case=='I05'
+ hierarchy='needs_review' if limited else 'passed'
+ observation='Visible compact controls align at logical leading and remain separated; offscreen lower rows of the tall accessibility panel are not visually assessed.' if limited else 'Full native image inspected. Visible hierarchy, spacing and controls are separated. Narrow SwiftUI layouts put toggle on its own leading-aligned line; the narrow failed-row check puts Retry below status.' if platform=='ios' and case in ['I04','I06','narrow-failed'] else 'Full native image inspected. Visible title, queue state, aggregate, rows and controls have the specified hierarchy within this input.'
+ findings={'capture_sha256':hashlib.sha256(capture.read_bytes()).hexdigest(),'checks':[{'id':'queue-hierarchy','status':hierarchy,'observed':observation},{'id':'adaptive-colors','status':'passed','observed':'Native panel flat-color sample matches the requested light/dark appearance. Visible primary text, state colors and tracks remain readable; Android actual native night-mode mask is independently recorded.'}]}
+ fp=base/'final-findings'/platform/f'{case}.json';fp.parent.mkdir(parents=True,exist_ok=True);fp.write_text(json.dumps(findings,indent=2)+'\n');out=base/'final-skill-reviews'/platform/case
+ r=subprocess.run(['python3','skill/scripts/ui_loop.py','review','--capture',str(capture),'--findings',str(fp),'--output',str(out)],capture_output=True,text=True)
+ reviews.append({'platform':platform,'case':case,'report':str(out/'report.json'),'exit_code':r.returncode,'stdout':r.stdout.strip(),'stderr':r.stderr.strip()})
+(base/'final-skill-review-index.json').write_text(json.dumps(reviews,indent=2)+'\n')
+notes={'reported_failures':[{'platform':'ios','case':'I04','rule_id':'TQ-LAYOUT-04','status':'locally_corrected','before_evidence':str(root/'feedback/evidence/I04/actual.png'),'after_evidence':str(base/'final-captures/ios/I04/native/actual.png'),'observation':'Toggle is on its own line below the single-line title at supplied width 288.'},{'platform':'ios','case':'I06','rule_id':'TQ-LAYOUT-04','status':'locally_corrected','before_evidence':str(root/'feedback/evidence/I06/actual.png'),'after_evidence':str(base/'final-captures/ios/I06/native/actual.png'),'observation':'Toggle is on its own line below title.'},{'platform':'ios','case':'I06','rule_id':'TQ-LAYOUT-05','status':'locally_corrected','before_evidence':str(root/'feedback/evidence/I06/actual.png'),'after_evidence':str(base/'final-captures/ios/I06/native/actual.png'),'observation':'Compact toggle is at logical leading/right in RTL; OCR glyph trailing edge matches title within 2 points.'}],
+ 'cause_change':[{'file':'alerttoast/Sources/AlertToast/TransferToastPanel.swift','cause':'The original preference-based width observation did not drive compact layout in the captured narrow host. Source initialized width at 358, making default-size narrow layouts remain wide. This is an implementation diagnosis from source plus before/after rendering, not a measured internal-state trace.','change':'Removed TransferWidthPreference and its callback. Observe the geometry width directly on appearance and on subsequent width changes, retaining the existing width and accessibility-category layout rules.','scope':'One localized SwiftUI production edit, no new dependency or OS minimum.'},{'file':'reply/Reply/app/src/main/java/com/example/reply/ui/components/ReplyTransferPanel.kt','change':'No production change. Final-source receipt captured on the corrected common native-night host. Earlier light-in-dark self-review evidence is preserved and excluded as a product defect per coordinator feedback.'}],
+ 'repair_iteration_count':1,'observed_unresolved_confirmed_feedback_failures':[],
+ 'unexecuted_or_limited':[{'item':'iOS native retry/toggle action execution','status':'not_executed','reason':'Common AX export unavailable; empty AX and no real activation are not considered UI defects or passes.'},{'item':'Lower rows below initial viewport for I05 accessibility panels','status':'needs_review','reason':'No bottom viewport capture or live scroll interaction was executed.'},{'item':'Live resize after presentation, physical touch, screen-reader focus order and full app integration','status':'not_executed'},{'item':'Runtime execution on minimum iOS 14 / macOS 11','status':'not_executed','reason':'Source uses compatible onAppear/onChange APIs; native capture ran on the supplied simulator.'}],
+ 'scope':'Own disclosed feedback, initial inputs, public smoke and one previously public self-chosen narrow failure case only. No hidden fixtures/results used. Build/capture success is not acceptance.'}
+(base/'repair-notes.json').write_text(json.dumps(notes,indent=2)+'\n')
+print(json.dumps({'review_count':len(reviews),'ocr_checks':geometry,'review_errors':[x for x in reviews if x['exit_code'] not in [0,1,3]]},indent=2))

@@ -1,0 +1,5909 @@
+{
+  "schema_version": "1.0",
+  "artifact_role": "expected_oracle_not_run_results",
+  "frozen_date": "2026-10-18",
+  "confidentiality": "Private fixture combinations/sampling. All evaluated requirements are in public/brief.md. Do not disclose group or Skill mappings to designer/reviewer.",
+  "scope": {
+    "initial_fixture_count": 6,
+    "repair_holdout_fixture_count": 2,
+    "platforms": [
+      "compose_android",
+      "swiftui_ios"
+    ],
+    "initial_platform_cases": 12,
+    "holdout_platform_cases": 4,
+    "no_claimed_execution_results": true
+  },
+  "api_contract": {
+    "android": {
+      "file": "ReplyTransferPanel.kt",
+      "package": "com.example.reply.ui.components",
+      "item": "TransferItem(id:String,name:String,status:String,progress:Double)",
+      "composable": "ReplyTransferPanel(items:List<TransferItem>,expanded:Boolean,onToggle:()->Unit,onRetry:(String)->Unit,modifier:Modifier=Modifier)"
+    },
+    "swift": {
+      "file": "TransferToastPanel.swift",
+      "module": "AlertToast",
+      "item": "public TransferToastItem(id:String,name:String,status:String,progress:Double)",
+      "view": "public TransferToastPanel(items:[TransferToastItem],expanded:Bool,onToggle:@escaping()->Void,onRetry:@escaping(String)->Void)",
+      "stored_properties_public": true,
+      "public_item_init": true,
+      "min_iOS": "14",
+      "min_macOS": "11"
+    }
+  },
+  "input_encoding": {
+    "double_special": "Decode {double_special: NaN|Infinity|-Infinity} as native Double. Fixture transport only; production signature is unchanged.",
+    "measurement_paths": "Opaque keys, not slash-separated parsers; IDs preserve punctuation/slashes.",
+    "status_tokens": [
+      "queued",
+      "running",
+      "failed",
+      "done"
+    ]
+  },
+  "host": {
+    "viewport_widths": [
+      390,
+      320
+    ],
+    "viewport_heights": [
+      620,
+      800
+    ],
+    "horizontal_margin": 16,
+    "top": 24,
+    "panel_widths": [
+      358,
+      288
+    ],
+    "height": "natural content",
+    "scroll_owner": "common native parent",
+    "theme": "original project theme, native appearance, internal palette",
+    "android_evidence": [
+      "unmerged native semantics with bounds",
+      "TextLayoutResult",
+      "native PNG",
+      "actual events if executable"
+    ],
+    "ios_evidence": [
+      "native PNG",
+      "OCR",
+      "AX if available",
+      "source_review for unavailable semantics/actions"
+    ],
+    "offscreen_without_evidence": "not_assessed"
+  },
+  "tolerances": {
+    "geometry_logical_default_text": 2,
+    "rgb_per_channel": 12,
+    "native_fraction": 0.002,
+    "text": "exact published strings; native wrapping permitted",
+    "cross_platform_glyph_identity": false
+  },
+  "rules": [
+    {
+      "rule_id": "TQ-API-01",
+      "public_requirement": "Exact public APIs, Android package, library membership, iOS 14/macOS 11 compatibility",
+      "measurement_methods": [
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-API-02",
+      "public_requirement": "Caller-owned state, no mutation/reorder/autonomous changes; new input reflected",
+      "measurement_methods": [
+        "native_semantics",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-STATE-01",
+      "public_requirement": "Input order and status-token authority",
+      "measurement_methods": [
+        "native_semantics",
+        "native_pixels",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-STATE-02",
+      "public_requirement": "Nonfinite zero; clamp; status contribution; floor(v*100+.5) rounding",
+      "measurement_methods": [
+        "native_semantics",
+        "native_pixels",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-STATE-03",
+      "public_requirement": "Full queue summary priority and exact copy",
+      "measurement_methods": [
+        "native_semantics",
+        "native_pixels"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-STATE-04",
+      "public_requirement": "Full queue mean, done-only count and aggregate percentage",
+      "measurement_methods": [
+        "native_semantics",
+        "native_pixels",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-STATE-05",
+      "public_requirement": "Exact empty copy; no count, aggregate, list, toggle, hint or enabled action",
+      "measurement_methods": [
+        "native_semantics",
+        "native_pixels"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-STATE-06",
+      "public_requirement": "Exact row status text; progress running only; retry failed only",
+      "measurement_methods": [
+        "native_semantics",
+        "native_pixels"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-LIST-01",
+      "public_requirement": "First two collapsed, all expanded; N<=2 no toggle; hidden semantics absent; singular/plural hint; parent scroll",
+      "measurement_methods": [
+        "native_semantics",
+        "native_pixels",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-ACT-01",
+      "public_requirement": "Toggle label/state and exactly one callback; external expansion control",
+      "measurement_methods": [
+        "native_semantics",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-ACT-02",
+      "public_requirement": "Failed retry original unchanged ID exactly once; no optimistic change",
+      "measurement_methods": [
+        "native_semantics",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-ACT-03",
+      "public_requirement": "Inert information, independent button roles and 48-square hit bounds",
+      "measurement_methods": [
+        "native_semantics",
+        "native_pixels",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-LAYOUT-01",
+      "public_requirement": "16 padding, 20 corner, 1 border, width fill/max560, natural height, no shadow/gradient",
+      "measurement_methods": [
+        "native_pixels",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-LAYOUT-02",
+      "public_requirement": "Published ordering, gaps, 32 cell, track sizes, separators and alignment",
+      "measurement_methods": [
+        "native_pixels",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-LAYOUT-03",
+      "public_requirement": "Published scalable native type and plain/outlined button styling",
+      "measurement_methods": [
+        "native_pixels",
+        "source_review",
+        "blinded_visual"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-LAYOUT-04",
+      "public_requirement": "2/3 name lines plus full accessibility; wrapping; compact at width<=340 or native accessibility scale; retry/toggle below",
+      "measurement_methods": [
+        "native_semantics",
+        "native_pixels",
+        "source_review",
+        "blinded_visual"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-LAYOUT-05",
+      "public_requirement": "Native RTL placement, right-origin fill, preserved bidi text",
+      "measurement_methods": [
+        "native_semantics",
+        "native_pixels",
+        "source_review",
+        "blinded_visual"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-COLOR-01",
+      "public_requirement": "Published adaptive palette",
+      "measurement_methods": [
+        "native_pixels",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-COLOR-02",
+      "public_requirement": "State tone mapping; visible neutral tracks at zero",
+      "measurement_methods": [
+        "native_pixels",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-VIS-01",
+      "public_requirement": "Reference-consistent quiet card, hierarchy, alignment and native finish",
+      "measurement_methods": [
+        "blinded_visual"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-VIS-02",
+      "public_requirement": "Legibility; no overlap, accidental clipping, broken glyph or out-of-border content",
+      "measurement_methods": [
+        "native_pixels",
+        "blinded_visual"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-A11Y-01",
+      "public_requirement": "Exact identifiers on real visible elements, no hidden duplicate elements",
+      "measurement_methods": [
+        "native_semantics",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    },
+    {
+      "rule_id": "TQ-A11Y-02",
+      "public_requirement": "Full names, button labels/roles, normalized native progress, no decorative focus, visible read order",
+      "measurement_methods": [
+        "native_semantics",
+        "source_review"
+      ],
+      "public_spec": "public/brief.md",
+      "pass_policy": "Only applicable checks with observed evidence can pass. Listed methods are available methods, not execution claims. A source-reviewed action is not an executed callback pass."
+    }
+  ],
+  "palette": {
+    "light": {
+      "panel": "#FFFFFF",
+      "border": "#D7DFEB",
+      "primary": "#17243B",
+      "secondary": "#526279",
+      "neutral_surface": "#F1F4F9",
+      "track": "#E2E8F2",
+      "accent": "#275DD8",
+      "error": "#B3313B",
+      "success": "#13795B",
+      "host": "#EDF2F8"
+    },
+    "dark": {
+      "panel": "#182235",
+      "border": "#34445F",
+      "primary": "#F2F5FB",
+      "secondary": "#B9C5D9",
+      "neutral_surface": "#24324A",
+      "track": "#34445F",
+      "accent": "#9DBDFF",
+      "error": "#FFADB3",
+      "success": "#7CDDBB",
+      "host": "#0C1424"
+    }
+  },
+  "geometry_and_typography": {
+    "TQ-LAYOUT-01": {
+      "padding_all": 16,
+      "corner_radius": 20,
+      "border_width": 1,
+      "max_width": 560,
+      "fixed_height": false,
+      "shadow": false,
+      "gradient": false
+    },
+    "TQ-LAYOUT-02": {
+      "header_min_height": 48,
+      "header_summary_gap": 4,
+      "summary_count_gap": 12,
+      "count_track_gap": 6,
+      "aggregate_track_height": 6,
+      "track_list_gap": 16,
+      "row_vertical_padding": 12,
+      "separator_height": 1,
+      "document_cell": [
+        32,
+        32
+      ],
+      "glyph_size_range": [
+        20,
+        24
+      ],
+      "cell_radius": 8,
+      "cell_text_gap": 12,
+      "name_status_gap": 4,
+      "status_running_track_gap": 8,
+      "running_track_height": 4,
+      "wide_retry_gap": 12,
+      "list_more_gap": 8,
+      "summary_empty_helper_gap": 12
+    },
+    "TQ-LAYOUT-03": {
+      "title": [
+        20,
+        600
+      ],
+      "summary": [
+        14,
+        600
+      ],
+      "count": [
+        13,
+        400
+      ],
+      "aggregate_percent": [
+        13,
+        600
+      ],
+      "file_name": [
+        16,
+        500
+      ],
+      "file_status": [
+        13,
+        400
+      ],
+      "toggle_retry": [
+        14,
+        600
+      ],
+      "overflow": [
+        12,
+        400
+      ],
+      "empty_helper": [
+        13,
+        400
+      ],
+      "retry_corner_radius": 10,
+      "retry_border_width": 1,
+      "retry_min_width": 72,
+      "retry_min_height": 48,
+      "retry_horizontal_padding_min": 12,
+      "chevron_size": 12,
+      "scale_with_system": true
+    },
+    "TQ-LAYOUT-04": {
+      "compact_width_lte": 340,
+      "compact_android_scale_gte": 1.6,
+      "compact_ios_isAccessibilityCategory": true,
+      "compact_toggle": "below_title_leading",
+      "compact_retry": "below_status_text_column_leading",
+      "compact_retry_gap": 8,
+      "default_name_lines": 2,
+      "accessibility_name_lines": 3,
+      "name_overflow": "end_ellipsis"
+    },
+    "TQ-ACT-03": {
+      "min_native_hit_width": 48,
+      "min_native_hit_height": 48
+    }
+  },
+  "pixel_measurement_checks": [
+    {
+      "rule_id": "TQ-LAYOUT-01",
+      "measurement_path": "geometry/padding_top",
+      "operator": "near",
+      "expected": 16,
+      "accepted_methods": [
+        "native_pixels"
+      ],
+      "tolerance": 2
+    },
+    {
+      "rule_id": "TQ-LAYOUT-01",
+      "measurement_path": "geometry/padding_bottom",
+      "operator": "near",
+      "expected": 16,
+      "accepted_methods": [
+        "native_pixels"
+      ],
+      "tolerance": 2
+    },
+    {
+      "rule_id": "TQ-LAYOUT-01",
+      "measurement_path": "geometry/padding_leading",
+      "operator": "near",
+      "expected": 16,
+      "accepted_methods": [
+        "native_pixels"
+      ],
+      "tolerance": 2
+    },
+    {
+      "rule_id": "TQ-LAYOUT-01",
+      "measurement_path": "geometry/padding_trailing",
+      "operator": "near",
+      "expected": 16,
+      "accepted_methods": [
+        "native_pixels"
+      ],
+      "tolerance": 2
+    },
+    {
+      "rule_id": "TQ-LAYOUT-01",
+      "measurement_path": "geometry/corner_radius",
+      "operator": "near",
+      "expected": 20,
+      "accepted_methods": [
+        "native_pixels"
+      ],
+      "tolerance": 2
+    },
+    {
+      "rule_id": "TQ-LAYOUT-01",
+      "measurement_path": "geometry/border_width",
+      "operator": "near",
+      "expected": 1,
+      "accepted_methods": [
+        "native_pixels"
+      ],
+      "tolerance": 2
+    },
+    {
+      "rule_id": "TQ-LAYOUT-02",
+      "measurement_path": "geometry/aggregate_track_height",
+      "operator": "near",
+      "expected": 6,
+      "accepted_methods": [
+        "native_pixels"
+      ],
+      "tolerance": 2
+    },
+    {
+      "rule_id": "TQ-LAYOUT-02",
+      "measurement_path": "geometry/running_track_height",
+      "operator": "near",
+      "expected": 4,
+      "accepted_methods": [
+        "native_pixels"
+      ],
+      "tolerance": 2
+    },
+    {
+      "rule_id": "TQ-ACT-03",
+      "measurement_path": "geometry/button_hit_width",
+      "operator": "gte",
+      "expected": 48,
+      "accepted_methods": [
+        "native_semantics"
+      ]
+    },
+    {
+      "rule_id": "TQ-ACT-03",
+      "measurement_path": "geometry/button_hit_height",
+      "operator": "gte",
+      "expected": 48,
+      "accepted_methods": [
+        "native_semantics"
+      ]
+    }
+  ],
+  "palette_sampling": {
+    "operator": "rgb_near",
+    "tolerance": 12,
+    "sample": "3x3 flat interior median away from text/antialias boundaries; record coordinate and density",
+    "tone_mapping": {
+      "neutral": "secondary",
+      "accent": "accent",
+      "error": "error",
+      "success": "success"
+    }
+  },
+  "fixtures": [
+    {
+      "fixture_id": "I01",
+      "stage": "initial",
+      "expanded": true,
+      "environment": {
+        "viewport_width": 390,
+        "viewport_height": 620,
+        "panel_width": 358,
+        "host_horizontal_margin": 16,
+        "host_top": 24,
+        "appearance": "light",
+        "layout_direction": "ltr",
+        "android_font_scale": 1.0,
+        "ios_content_size_category": "large",
+        "parent_scroll": true
+      },
+      "items": [],
+      "platforms": [
+        "compose_android",
+        "swiftui_ios"
+      ],
+      "expected": {
+        "title_text": "Attachment transfers",
+        "summary_text": "No transfers",
+        "summary_tone": "neutral",
+        "count_text": null,
+        "aggregate_visible": false,
+        "aggregate_fraction": null,
+        "aggregate_percent_text": null,
+        "aggregate_label": null,
+        "aggregate_tone": null,
+        "list_visible": false,
+        "visible_row_ids": [],
+        "hidden_row_ids": [],
+        "toggle_visible": false,
+        "toggle_text": null,
+        "toggle_label": null,
+        "toggle_state": null,
+        "more_text": null,
+        "empty_text": "Add an attachment to get started.",
+        "compact": false,
+        "name_line_limit": 2,
+        "rows": [],
+        "required_identifiers": [
+          "transfer.panel",
+          "transfer.title",
+          "transfer.summary",
+          "transfer.empty"
+        ],
+        "progress_origin": "left"
+      },
+      "assertions": [
+        {
+          "rule_id": "TQ-API-01",
+          "measurement_path": "title_text",
+          "operator": "eq",
+          "expected": "Attachment transfers",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-03",
+          "measurement_path": "summary_text",
+          "operator": "eq",
+          "expected": "No transfers",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "count_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "aggregate_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_percent_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "list_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "visible_row_ids",
+          "operator": "eq",
+          "expected": [],
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "toggle_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "more_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "empty_text",
+          "operator": "eq",
+          "expected": "Add an attachment to get started.",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "compact",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "name_line_limit",
+          "operator": "eq",
+          "expected": 2,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-05",
+          "measurement_path": "progress_origin",
+          "operator": "eq",
+          "expected": "left",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_label",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_state",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-01",
+          "measurement_path": "required_identifiers",
+          "operator": "contains_all",
+          "expected": [
+            "transfer.panel",
+            "transfer.title",
+            "transfer.summary",
+            "transfer.empty"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "source_review"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "hidden_row_ids_absent",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        }
+      ],
+      "sampling": {
+        "baseline": "fixed viewport native PNG at top; actual unmerged Android semantics including bounds if available",
+        "overflow": "Use native parent scroll for bottom capture with one overlapping row. Missing lower evidence is not_assessed, never component-clipping failure or pass.",
+        "record": [
+          "density",
+          "scroll_offset",
+          "actual_font_setting",
+          "actual_direction",
+          "appearance",
+          "revision",
+          "build_status",
+          "render_status"
+        ]
+      },
+      "actions": [
+        {
+          "action_id": "I01-inert-transfer.title",
+          "target_identifier": "transfer.title",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I01-inert-transfer.summary",
+          "target_identifier": "transfer.summary",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        }
+      ],
+      "applicable_rule_ids": [
+        "TQ-API-01",
+        "TQ-API-02",
+        "TQ-STATE-01",
+        "TQ-STATE-02",
+        "TQ-STATE-03",
+        "TQ-STATE-04",
+        "TQ-STATE-05",
+        "TQ-STATE-06",
+        "TQ-LIST-01",
+        "TQ-ACT-01",
+        "TQ-ACT-02",
+        "TQ-ACT-03",
+        "TQ-LAYOUT-01",
+        "TQ-LAYOUT-02",
+        "TQ-LAYOUT-03",
+        "TQ-LAYOUT-04",
+        "TQ-LAYOUT-05",
+        "TQ-COLOR-01",
+        "TQ-COLOR-02",
+        "TQ-VIS-01",
+        "TQ-VIS-02",
+        "TQ-A11Y-01",
+        "TQ-A11Y-02"
+      ],
+      "applicability_notes": "Evaluate empty/nonempty or row-state branches only where applicable. Absent controls are assessed for absence; a nonexistent callback has no activation success check. Known iOS AX limitation is not a component failure. Offscreen content lacking native scroll evidence is not_assessed."
+    },
+    {
+      "fixture_id": "I02",
+      "stage": "initial",
+      "expanded": false,
+      "environment": {
+        "viewport_width": 390,
+        "viewport_height": 620,
+        "panel_width": 358,
+        "host_horizontal_margin": 16,
+        "host_top": 24,
+        "appearance": "light",
+        "layout_direction": "ltr",
+        "android_font_scale": 1.0,
+        "ios_content_size_category": "large",
+        "parent_scroll": true
+      },
+      "items": [
+        {
+          "id": "d9",
+          "name": "Quarterly review final-approved copy.pdf",
+          "status": "done",
+          "progress": -2.0
+        },
+        {
+          "id": "d2",
+          "name": "Completed-audio-recording-with-a-long-unbroken-filename-2026.wav",
+          "status": "done",
+          "progress": {
+            "double_special": "NaN"
+          }
+        }
+      ],
+      "platforms": [
+        "compose_android",
+        "swiftui_ios"
+      ],
+      "expected": {
+        "title_text": "Attachment transfers",
+        "summary_text": "All transfers complete",
+        "summary_tone": "success",
+        "count_text": "2 of 2 complete",
+        "aggregate_visible": true,
+        "aggregate_fraction": 1.0,
+        "aggregate_percent_text": "100%",
+        "aggregate_label": "Overall transfer progress",
+        "aggregate_tone": "success",
+        "list_visible": true,
+        "visible_row_ids": [
+          "d9",
+          "d2"
+        ],
+        "hidden_row_ids": [],
+        "toggle_visible": false,
+        "toggle_text": null,
+        "toggle_label": null,
+        "toggle_state": null,
+        "more_text": null,
+        "empty_text": null,
+        "compact": false,
+        "name_line_limit": 2,
+        "rows": [
+          {
+            "id": "d9",
+            "name": "Quarterly review final-approved copy.pdf",
+            "status_token": "done",
+            "status_text": "Complete",
+            "tone": "success",
+            "effective_fraction": 1.0,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "trailing",
+            "name_line_limit": 2
+          },
+          {
+            "id": "d2",
+            "name": "Completed-audio-recording-with-a-long-unbroken-filename-2026.wav",
+            "status_token": "done",
+            "status_text": "Complete",
+            "tone": "success",
+            "effective_fraction": 1.0,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "trailing",
+            "name_line_limit": 2
+          }
+        ],
+        "required_identifiers": [
+          "transfer.panel",
+          "transfer.title",
+          "transfer.summary",
+          "transfer.count",
+          "transfer.percent",
+          "transfer.progress",
+          "transfer.list",
+          "transfer.row.d9",
+          "transfer.name.d9",
+          "transfer.status.d9",
+          "transfer.row.d2",
+          "transfer.name.d2",
+          "transfer.status.d2"
+        ],
+        "progress_origin": "left"
+      },
+      "assertions": [
+        {
+          "rule_id": "TQ-API-01",
+          "measurement_path": "title_text",
+          "operator": "eq",
+          "expected": "Attachment transfers",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-03",
+          "measurement_path": "summary_text",
+          "operator": "eq",
+          "expected": "All transfers complete",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "count_text",
+          "operator": "eq",
+          "expected": "2 of 2 complete",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "aggregate_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_percent_text",
+          "operator": "eq",
+          "expected": "100%",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "list_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "visible_row_ids",
+          "operator": "eq",
+          "expected": [
+            "d9",
+            "d2"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "toggle_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "more_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "empty_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "compact",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "name_line_limit",
+          "operator": "eq",
+          "expected": 2,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-05",
+          "measurement_path": "progress_origin",
+          "operator": "eq",
+          "expected": "left",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_label",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_state",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-01",
+          "measurement_path": "required_identifiers",
+          "operator": "contains_all",
+          "expected": [
+            "transfer.panel",
+            "transfer.title",
+            "transfer.summary",
+            "transfer.count",
+            "transfer.percent",
+            "transfer.progress",
+            "transfer.list",
+            "transfer.row.d9",
+            "transfer.name.d9",
+            "transfer.status.d9",
+            "transfer.row.d2",
+            "transfer.name.d2",
+            "transfer.status.d2"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "source_review"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "hidden_row_ids_absent",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_fraction",
+          "operator": "near",
+          "expected": 1.0,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "aggregate_label",
+          "operator": "eq",
+          "expected": "Overall transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/d9/status_text",
+          "operator": "eq",
+          "expected": "Complete",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/d9/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/d9/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/d9/full_name_semantics",
+          "operator": "eq",
+          "expected": "Quarterly review final-approved copy.pdf",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/d2/status_text",
+          "operator": "eq",
+          "expected": "Complete",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/d2/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/d2/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/d2/full_name_semantics",
+          "operator": "eq",
+          "expected": "Completed-audio-recording-with-a-long-unbroken-filename-2026.wav",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        }
+      ],
+      "sampling": {
+        "baseline": "fixed viewport native PNG at top; actual unmerged Android semantics including bounds if available",
+        "overflow": "Use native parent scroll for bottom capture with one overlapping row. Missing lower evidence is not_assessed, never component-clipping failure or pass.",
+        "record": [
+          "density",
+          "scroll_offset",
+          "actual_font_setting",
+          "actual_direction",
+          "appearance",
+          "revision",
+          "build_status",
+          "render_status"
+        ]
+      },
+      "actions": [
+        {
+          "action_id": "I02-inert-transfer.title",
+          "target_identifier": "transfer.title",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I02-inert-transfer.summary",
+          "target_identifier": "transfer.summary",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I02-inert-transfer.name.d9",
+          "target_identifier": "transfer.name.d9",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        }
+      ],
+      "applicable_rule_ids": [
+        "TQ-API-01",
+        "TQ-API-02",
+        "TQ-STATE-01",
+        "TQ-STATE-02",
+        "TQ-STATE-03",
+        "TQ-STATE-04",
+        "TQ-STATE-05",
+        "TQ-STATE-06",
+        "TQ-LIST-01",
+        "TQ-ACT-01",
+        "TQ-ACT-02",
+        "TQ-ACT-03",
+        "TQ-LAYOUT-01",
+        "TQ-LAYOUT-02",
+        "TQ-LAYOUT-03",
+        "TQ-LAYOUT-04",
+        "TQ-LAYOUT-05",
+        "TQ-COLOR-01",
+        "TQ-COLOR-02",
+        "TQ-VIS-01",
+        "TQ-VIS-02",
+        "TQ-A11Y-01",
+        "TQ-A11Y-02"
+      ],
+      "applicability_notes": "Evaluate empty/nonempty or row-state branches only where applicable. Absent controls are assessed for absence; a nonexistent callback has no activation success check. Known iOS AX limitation is not a component failure. Offscreen content lacking native scroll evidence is not_assessed."
+    },
+    {
+      "fixture_id": "I03",
+      "stage": "initial",
+      "expanded": false,
+      "environment": {
+        "viewport_width": 390,
+        "viewport_height": 800,
+        "panel_width": 358,
+        "host_horizontal_margin": 16,
+        "host_top": 24,
+        "appearance": "light",
+        "layout_direction": "ltr",
+        "android_font_scale": 1.0,
+        "ios_content_size_category": "large",
+        "parent_scroll": true
+      },
+      "items": [
+        {
+          "id": "m8",
+          "name": "Camera originals 03.mov",
+          "status": "running",
+          "progress": 0.43
+        },
+        {
+          "id": "m1",
+          "name": "Read-me first.txt",
+          "status": "queued",
+          "progress": 1.0
+        },
+        {
+          "id": "m7",
+          "name": "Signed consent forms.pdf",
+          "status": "failed",
+          "progress": 0.8
+        },
+        {
+          "id": "m3",
+          "name": "Reception map.png",
+          "status": "done",
+          "progress": 0.0
+        }
+      ],
+      "transition_to_expanded": true,
+      "platforms": [
+        "compose_android",
+        "swiftui_ios"
+      ],
+      "expected": {
+        "title_text": "Attachment transfers",
+        "summary_text": "1 needs retry",
+        "summary_tone": "error",
+        "count_text": "1 of 4 complete",
+        "aggregate_visible": true,
+        "aggregate_fraction": 0.5575,
+        "aggregate_percent_text": "56%",
+        "aggregate_label": "Overall transfer progress",
+        "aggregate_tone": "error",
+        "list_visible": true,
+        "visible_row_ids": [
+          "m8",
+          "m1"
+        ],
+        "hidden_row_ids": [
+          "m7",
+          "m3"
+        ],
+        "toggle_visible": true,
+        "toggle_text": "Show all",
+        "toggle_label": "Show all attachments",
+        "toggle_state": "Collapsed",
+        "more_text": "+2 more attachments",
+        "empty_text": null,
+        "compact": false,
+        "name_line_limit": 2,
+        "rows": [
+          {
+            "id": "m8",
+            "name": "Camera originals 03.mov",
+            "status_token": "running",
+            "status_text": "43% sent",
+            "tone": "accent",
+            "effective_fraction": 0.43,
+            "progress_visible": true,
+            "progress_fraction": 0.43,
+            "progress_accessible_percent": "43%",
+            "progress_label": "Camera originals 03.mov transfer progress",
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "trailing",
+            "name_line_limit": 2
+          },
+          {
+            "id": "m1",
+            "name": "Read-me first.txt",
+            "status_token": "queued",
+            "status_text": "Waiting",
+            "tone": "neutral",
+            "effective_fraction": 0.0,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "trailing",
+            "name_line_limit": 2
+          }
+        ],
+        "required_identifiers": [
+          "transfer.panel",
+          "transfer.title",
+          "transfer.summary",
+          "transfer.count",
+          "transfer.percent",
+          "transfer.progress",
+          "transfer.list",
+          "transfer.toggle",
+          "transfer.more",
+          "transfer.row.m8",
+          "transfer.name.m8",
+          "transfer.status.m8",
+          "transfer.progress.m8",
+          "transfer.row.m1",
+          "transfer.name.m1",
+          "transfer.status.m1"
+        ],
+        "progress_origin": "left"
+      },
+      "assertions": [
+        {
+          "rule_id": "TQ-API-01",
+          "measurement_path": "title_text",
+          "operator": "eq",
+          "expected": "Attachment transfers",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-03",
+          "measurement_path": "summary_text",
+          "operator": "eq",
+          "expected": "1 needs retry",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "count_text",
+          "operator": "eq",
+          "expected": "1 of 4 complete",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "aggregate_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_percent_text",
+          "operator": "eq",
+          "expected": "56%",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "list_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "visible_row_ids",
+          "operator": "eq",
+          "expected": [
+            "m8",
+            "m1"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "toggle_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_text",
+          "operator": "eq",
+          "expected": "Show all",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "more_text",
+          "operator": "eq",
+          "expected": "+2 more attachments",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "empty_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "compact",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "name_line_limit",
+          "operator": "eq",
+          "expected": 2,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-05",
+          "measurement_path": "progress_origin",
+          "operator": "eq",
+          "expected": "left",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_label",
+          "operator": "eq",
+          "expected": "Show all attachments",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_state",
+          "operator": "eq",
+          "expected": "Collapsed",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-01",
+          "measurement_path": "required_identifiers",
+          "operator": "contains_all",
+          "expected": [
+            "transfer.panel",
+            "transfer.title",
+            "transfer.summary",
+            "transfer.count",
+            "transfer.percent",
+            "transfer.progress",
+            "transfer.list",
+            "transfer.toggle",
+            "transfer.more",
+            "transfer.row.m8",
+            "transfer.name.m8",
+            "transfer.status.m8",
+            "transfer.progress.m8",
+            "transfer.row.m1",
+            "transfer.name.m1",
+            "transfer.status.m1"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "source_review"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "hidden_row_ids_absent",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_fraction",
+          "operator": "near",
+          "expected": 0.5575,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "aggregate_label",
+          "operator": "eq",
+          "expected": "Overall transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/m8/status_text",
+          "operator": "eq",
+          "expected": "43% sent",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/m8/progress_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/m8/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/m8/full_name_semantics",
+          "operator": "eq",
+          "expected": "Camera originals 03.mov",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-02",
+          "measurement_path": "rows/m8/progress_fraction",
+          "operator": "near",
+          "expected": 0.43,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/m8/progress_label",
+          "operator": "eq",
+          "expected": "Camera originals 03.mov transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/m8/progress_accessible_percent",
+          "operator": "eq",
+          "expected": "43%",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/m1/status_text",
+          "operator": "eq",
+          "expected": "Waiting",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/m1/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/m1/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/m1/full_name_semantics",
+          "operator": "eq",
+          "expected": "Read-me first.txt",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        }
+      ],
+      "sampling": {
+        "baseline": "fixed viewport native PNG at top; actual unmerged Android semantics including bounds if available",
+        "overflow": "Use native parent scroll for bottom capture with one overlapping row. Missing lower evidence is not_assessed, never component-clipping failure or pass.",
+        "record": [
+          "density",
+          "scroll_offset",
+          "actual_font_setting",
+          "actual_direction",
+          "appearance",
+          "revision",
+          "build_status",
+          "render_status"
+        ]
+      },
+      "actions": [
+        {
+          "action_id": "I03-toggle",
+          "target_identifier": "transfer.toggle",
+          "event": "native_activate_once",
+          "expected_callback_delta": [
+            {
+              "callback": "onToggle"
+            }
+          ],
+          "rule_ids": [
+            "TQ-ACT-01",
+            "TQ-API-02"
+          ],
+          "before_caller_update_expected": {
+            "title_text": "Attachment transfers",
+            "summary_text": "1 needs retry",
+            "summary_tone": "error",
+            "count_text": "1 of 4 complete",
+            "aggregate_visible": true,
+            "aggregate_fraction": 0.5575,
+            "aggregate_percent_text": "56%",
+            "aggregate_label": "Overall transfer progress",
+            "aggregate_tone": "error",
+            "list_visible": true,
+            "visible_row_ids": [
+              "m8",
+              "m1"
+            ],
+            "hidden_row_ids": [
+              "m7",
+              "m3"
+            ],
+            "toggle_visible": true,
+            "toggle_text": "Show all",
+            "toggle_label": "Show all attachments",
+            "toggle_state": "Collapsed",
+            "more_text": "+2 more attachments",
+            "empty_text": null,
+            "compact": false,
+            "name_line_limit": 2,
+            "rows": [
+              {
+                "id": "m8",
+                "name": "Camera originals 03.mov",
+                "status_token": "running",
+                "status_text": "43% sent",
+                "tone": "accent",
+                "effective_fraction": 0.43,
+                "progress_visible": true,
+                "progress_fraction": 0.43,
+                "progress_accessible_percent": "43%",
+                "progress_label": "Camera originals 03.mov transfer progress",
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "trailing",
+                "name_line_limit": 2
+              },
+              {
+                "id": "m1",
+                "name": "Read-me first.txt",
+                "status_token": "queued",
+                "status_text": "Waiting",
+                "tone": "neutral",
+                "effective_fraction": 0.0,
+                "progress_visible": false,
+                "progress_fraction": null,
+                "progress_accessible_percent": null,
+                "progress_label": null,
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "trailing",
+                "name_line_limit": 2
+              }
+            ],
+            "required_identifiers": [
+              "transfer.panel",
+              "transfer.title",
+              "transfer.summary",
+              "transfer.count",
+              "transfer.percent",
+              "transfer.progress",
+              "transfer.list",
+              "transfer.toggle",
+              "transfer.more",
+              "transfer.row.m8",
+              "transfer.name.m8",
+              "transfer.status.m8",
+              "transfer.progress.m8",
+              "transfer.row.m1",
+              "transfer.name.m1",
+              "transfer.status.m1"
+            ],
+            "progress_origin": "left"
+          },
+          "caller_update": {
+            "expanded": true
+          },
+          "after_caller_update_expected": {
+            "title_text": "Attachment transfers",
+            "summary_text": "1 needs retry",
+            "summary_tone": "error",
+            "count_text": "1 of 4 complete",
+            "aggregate_visible": true,
+            "aggregate_fraction": 0.5575,
+            "aggregate_percent_text": "56%",
+            "aggregate_label": "Overall transfer progress",
+            "aggregate_tone": "error",
+            "list_visible": true,
+            "visible_row_ids": [
+              "m8",
+              "m1",
+              "m7",
+              "m3"
+            ],
+            "hidden_row_ids": [],
+            "toggle_visible": true,
+            "toggle_text": "Show less",
+            "toggle_label": "Show fewer attachments",
+            "toggle_state": "Expanded",
+            "more_text": null,
+            "empty_text": null,
+            "compact": false,
+            "name_line_limit": 2,
+            "rows": [
+              {
+                "id": "m8",
+                "name": "Camera originals 03.mov",
+                "status_token": "running",
+                "status_text": "43% sent",
+                "tone": "accent",
+                "effective_fraction": 0.43,
+                "progress_visible": true,
+                "progress_fraction": 0.43,
+                "progress_accessible_percent": "43%",
+                "progress_label": "Camera originals 03.mov transfer progress",
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "trailing",
+                "name_line_limit": 2
+              },
+              {
+                "id": "m1",
+                "name": "Read-me first.txt",
+                "status_token": "queued",
+                "status_text": "Waiting",
+                "tone": "neutral",
+                "effective_fraction": 0.0,
+                "progress_visible": false,
+                "progress_fraction": null,
+                "progress_accessible_percent": null,
+                "progress_label": null,
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "trailing",
+                "name_line_limit": 2
+              },
+              {
+                "id": "m7",
+                "name": "Signed consent forms.pdf",
+                "status_token": "failed",
+                "status_text": "Failed · retry available",
+                "tone": "error",
+                "effective_fraction": 0.8,
+                "progress_visible": false,
+                "progress_fraction": null,
+                "progress_accessible_percent": null,
+                "progress_label": null,
+                "retry_visible": true,
+                "retry_label": "Retry Signed consent forms.pdf",
+                "retry_position": "trailing",
+                "name_line_limit": 2
+              },
+              {
+                "id": "m3",
+                "name": "Reception map.png",
+                "status_token": "done",
+                "status_text": "Complete",
+                "tone": "success",
+                "effective_fraction": 1.0,
+                "progress_visible": false,
+                "progress_fraction": null,
+                "progress_accessible_percent": null,
+                "progress_label": null,
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "trailing",
+                "name_line_limit": 2
+              }
+            ],
+            "required_identifiers": [
+              "transfer.panel",
+              "transfer.title",
+              "transfer.summary",
+              "transfer.count",
+              "transfer.percent",
+              "transfer.progress",
+              "transfer.list",
+              "transfer.toggle",
+              "transfer.row.m8",
+              "transfer.name.m8",
+              "transfer.status.m8",
+              "transfer.progress.m8",
+              "transfer.row.m1",
+              "transfer.name.m1",
+              "transfer.status.m1",
+              "transfer.row.m7",
+              "transfer.name.m7",
+              "transfer.status.m7",
+              "transfer.retry.m7",
+              "transfer.row.m3",
+              "transfer.name.m3",
+              "transfer.status.m3"
+            ],
+            "progress_origin": "left"
+          },
+          "if_no_real_event": "not_executed; source_review may identify a defect but cannot pass execution"
+        },
+        {
+          "action_id": "I03-retry-m7",
+          "target_identifier": "transfer.retry.m7",
+          "event": "native_activate_once",
+          "expected_callback_delta": [
+            {
+              "callback": "onRetry",
+              "id": "m7"
+            }
+          ],
+          "expected_ui_unchanged_until_caller_update": true,
+          "rule_ids": [
+            "TQ-ACT-02",
+            "TQ-API-02"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I03-inert-transfer.title",
+          "target_identifier": "transfer.title",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I03-inert-transfer.summary",
+          "target_identifier": "transfer.summary",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I03-inert-transfer.name.m8",
+          "target_identifier": "transfer.name.m8",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        }
+      ],
+      "applicable_rule_ids": [
+        "TQ-API-01",
+        "TQ-API-02",
+        "TQ-STATE-01",
+        "TQ-STATE-02",
+        "TQ-STATE-03",
+        "TQ-STATE-04",
+        "TQ-STATE-05",
+        "TQ-STATE-06",
+        "TQ-LIST-01",
+        "TQ-ACT-01",
+        "TQ-ACT-02",
+        "TQ-ACT-03",
+        "TQ-LAYOUT-01",
+        "TQ-LAYOUT-02",
+        "TQ-LAYOUT-03",
+        "TQ-LAYOUT-04",
+        "TQ-LAYOUT-05",
+        "TQ-COLOR-01",
+        "TQ-COLOR-02",
+        "TQ-VIS-01",
+        "TQ-VIS-02",
+        "TQ-A11Y-01",
+        "TQ-A11Y-02"
+      ],
+      "applicability_notes": "Evaluate empty/nonempty or row-state branches only where applicable. Absent controls are assessed for absence; a nonexistent callback has no activation success check. Known iOS AX limitation is not a component failure. Offscreen content lacking native scroll evidence is not_assessed."
+    },
+    {
+      "fixture_id": "I04",
+      "stage": "initial",
+      "expanded": true,
+      "environment": {
+        "viewport_width": 320,
+        "viewport_height": 800,
+        "panel_width": 288,
+        "host_horizontal_margin": 16,
+        "host_top": 24,
+        "appearance": "dark",
+        "layout_direction": "ltr",
+        "android_font_scale": 1.0,
+        "ios_content_size_category": "large",
+        "parent_scroll": true
+      },
+      "items": [
+        {
+          "id": "b4",
+          "name": "Field-notes-supercalifragilistic-transfer-session-010203040506070809.txt",
+          "status": "running",
+          "progress": -0.25
+        },
+        {
+          "id": "b9",
+          "name": "Line check.flac",
+          "status": "running",
+          "progress": 1.75
+        },
+        {
+          "id": "b1",
+          "name": "Nearly finished.mov",
+          "status": "running",
+          "progress": 0.999
+        },
+        {
+          "id": "b6",
+          "name": "Supporting documents.zip",
+          "status": "queued",
+          "progress": 0.9
+        }
+      ],
+      "platforms": [
+        "compose_android",
+        "swiftui_ios"
+      ],
+      "expected": {
+        "title_text": "Attachment transfers",
+        "summary_text": "3 transferring",
+        "summary_tone": "accent",
+        "count_text": "0 of 4 complete",
+        "aggregate_visible": true,
+        "aggregate_fraction": 0.49975,
+        "aggregate_percent_text": "50%",
+        "aggregate_label": "Overall transfer progress",
+        "aggregate_tone": "accent",
+        "list_visible": true,
+        "visible_row_ids": [
+          "b4",
+          "b9",
+          "b1",
+          "b6"
+        ],
+        "hidden_row_ids": [],
+        "toggle_visible": true,
+        "toggle_text": "Show less",
+        "toggle_label": "Show fewer attachments",
+        "toggle_state": "Expanded",
+        "more_text": null,
+        "empty_text": null,
+        "compact": true,
+        "name_line_limit": 2,
+        "rows": [
+          {
+            "id": "b4",
+            "name": "Field-notes-supercalifragilistic-transfer-session-010203040506070809.txt",
+            "status_token": "running",
+            "status_text": "0% sent",
+            "tone": "accent",
+            "effective_fraction": 0.0,
+            "progress_visible": true,
+            "progress_fraction": 0.0,
+            "progress_accessible_percent": "0%",
+            "progress_label": "Field-notes-supercalifragilistic-transfer-session-010203040506070809.txt transfer progress",
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "below_status",
+            "name_line_limit": 2
+          },
+          {
+            "id": "b9",
+            "name": "Line check.flac",
+            "status_token": "running",
+            "status_text": "100% sent",
+            "tone": "accent",
+            "effective_fraction": 1.0,
+            "progress_visible": true,
+            "progress_fraction": 1.0,
+            "progress_accessible_percent": "100%",
+            "progress_label": "Line check.flac transfer progress",
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "below_status",
+            "name_line_limit": 2
+          },
+          {
+            "id": "b1",
+            "name": "Nearly finished.mov",
+            "status_token": "running",
+            "status_text": "100% sent",
+            "tone": "accent",
+            "effective_fraction": 0.999,
+            "progress_visible": true,
+            "progress_fraction": 0.999,
+            "progress_accessible_percent": "100%",
+            "progress_label": "Nearly finished.mov transfer progress",
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "below_status",
+            "name_line_limit": 2
+          },
+          {
+            "id": "b6",
+            "name": "Supporting documents.zip",
+            "status_token": "queued",
+            "status_text": "Waiting",
+            "tone": "neutral",
+            "effective_fraction": 0.0,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "below_status",
+            "name_line_limit": 2
+          }
+        ],
+        "required_identifiers": [
+          "transfer.panel",
+          "transfer.title",
+          "transfer.summary",
+          "transfer.count",
+          "transfer.percent",
+          "transfer.progress",
+          "transfer.list",
+          "transfer.toggle",
+          "transfer.row.b4",
+          "transfer.name.b4",
+          "transfer.status.b4",
+          "transfer.progress.b4",
+          "transfer.row.b9",
+          "transfer.name.b9",
+          "transfer.status.b9",
+          "transfer.progress.b9",
+          "transfer.row.b1",
+          "transfer.name.b1",
+          "transfer.status.b1",
+          "transfer.progress.b1",
+          "transfer.row.b6",
+          "transfer.name.b6",
+          "transfer.status.b6"
+        ],
+        "progress_origin": "left"
+      },
+      "assertions": [
+        {
+          "rule_id": "TQ-API-01",
+          "measurement_path": "title_text",
+          "operator": "eq",
+          "expected": "Attachment transfers",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-03",
+          "measurement_path": "summary_text",
+          "operator": "eq",
+          "expected": "3 transferring",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "count_text",
+          "operator": "eq",
+          "expected": "0 of 4 complete",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "aggregate_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_percent_text",
+          "operator": "eq",
+          "expected": "50%",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "list_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "visible_row_ids",
+          "operator": "eq",
+          "expected": [
+            "b4",
+            "b9",
+            "b1",
+            "b6"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "toggle_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_text",
+          "operator": "eq",
+          "expected": "Show less",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "more_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "empty_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "compact",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "name_line_limit",
+          "operator": "eq",
+          "expected": 2,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-05",
+          "measurement_path": "progress_origin",
+          "operator": "eq",
+          "expected": "left",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_label",
+          "operator": "eq",
+          "expected": "Show fewer attachments",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_state",
+          "operator": "eq",
+          "expected": "Expanded",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-01",
+          "measurement_path": "required_identifiers",
+          "operator": "contains_all",
+          "expected": [
+            "transfer.panel",
+            "transfer.title",
+            "transfer.summary",
+            "transfer.count",
+            "transfer.percent",
+            "transfer.progress",
+            "transfer.list",
+            "transfer.toggle",
+            "transfer.row.b4",
+            "transfer.name.b4",
+            "transfer.status.b4",
+            "transfer.progress.b4",
+            "transfer.row.b9",
+            "transfer.name.b9",
+            "transfer.status.b9",
+            "transfer.progress.b9",
+            "transfer.row.b1",
+            "transfer.name.b1",
+            "transfer.status.b1",
+            "transfer.progress.b1",
+            "transfer.row.b6",
+            "transfer.name.b6",
+            "transfer.status.b6"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "source_review"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "hidden_row_ids_absent",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_fraction",
+          "operator": "near",
+          "expected": 0.49975,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "aggregate_label",
+          "operator": "eq",
+          "expected": "Overall transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/b4/status_text",
+          "operator": "eq",
+          "expected": "0% sent",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/b4/progress_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/b4/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/b4/full_name_semantics",
+          "operator": "eq",
+          "expected": "Field-notes-supercalifragilistic-transfer-session-010203040506070809.txt",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-02",
+          "measurement_path": "rows/b4/progress_fraction",
+          "operator": "near",
+          "expected": 0.0,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/b4/progress_label",
+          "operator": "eq",
+          "expected": "Field-notes-supercalifragilistic-transfer-session-010203040506070809.txt transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/b4/progress_accessible_percent",
+          "operator": "eq",
+          "expected": "0%",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/b9/status_text",
+          "operator": "eq",
+          "expected": "100% sent",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/b9/progress_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/b9/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/b9/full_name_semantics",
+          "operator": "eq",
+          "expected": "Line check.flac",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-02",
+          "measurement_path": "rows/b9/progress_fraction",
+          "operator": "near",
+          "expected": 1.0,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/b9/progress_label",
+          "operator": "eq",
+          "expected": "Line check.flac transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/b9/progress_accessible_percent",
+          "operator": "eq",
+          "expected": "100%",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/b1/status_text",
+          "operator": "eq",
+          "expected": "100% sent",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/b1/progress_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/b1/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/b1/full_name_semantics",
+          "operator": "eq",
+          "expected": "Nearly finished.mov",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-02",
+          "measurement_path": "rows/b1/progress_fraction",
+          "operator": "near",
+          "expected": 0.999,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/b1/progress_label",
+          "operator": "eq",
+          "expected": "Nearly finished.mov transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/b1/progress_accessible_percent",
+          "operator": "eq",
+          "expected": "100%",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/b6/status_text",
+          "operator": "eq",
+          "expected": "Waiting",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/b6/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/b6/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/b6/full_name_semantics",
+          "operator": "eq",
+          "expected": "Supporting documents.zip",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        }
+      ],
+      "sampling": {
+        "baseline": "fixed viewport native PNG at top; actual unmerged Android semantics including bounds if available",
+        "overflow": "Use native parent scroll for bottom capture with one overlapping row. Missing lower evidence is not_assessed, never component-clipping failure or pass.",
+        "record": [
+          "density",
+          "scroll_offset",
+          "actual_font_setting",
+          "actual_direction",
+          "appearance",
+          "revision",
+          "build_status",
+          "render_status"
+        ]
+      },
+      "actions": [
+        {
+          "action_id": "I04-inert-transfer.title",
+          "target_identifier": "transfer.title",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I04-inert-transfer.summary",
+          "target_identifier": "transfer.summary",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I04-inert-transfer.name.b4",
+          "target_identifier": "transfer.name.b4",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        }
+      ],
+      "applicable_rule_ids": [
+        "TQ-API-01",
+        "TQ-API-02",
+        "TQ-STATE-01",
+        "TQ-STATE-02",
+        "TQ-STATE-03",
+        "TQ-STATE-04",
+        "TQ-STATE-05",
+        "TQ-STATE-06",
+        "TQ-LIST-01",
+        "TQ-ACT-01",
+        "TQ-ACT-02",
+        "TQ-ACT-03",
+        "TQ-LAYOUT-01",
+        "TQ-LAYOUT-02",
+        "TQ-LAYOUT-03",
+        "TQ-LAYOUT-04",
+        "TQ-LAYOUT-05",
+        "TQ-COLOR-01",
+        "TQ-COLOR-02",
+        "TQ-VIS-01",
+        "TQ-VIS-02",
+        "TQ-A11Y-01",
+        "TQ-A11Y-02"
+      ],
+      "applicability_notes": "Evaluate empty/nonempty or row-state branches only where applicable. Absent controls are assessed for absence; a nonexistent callback has no activation success check. Known iOS AX limitation is not a component failure. Offscreen content lacking native scroll evidence is not_assessed."
+    },
+    {
+      "fixture_id": "I05",
+      "stage": "initial",
+      "expanded": true,
+      "environment": {
+        "viewport_width": 320,
+        "viewport_height": 800,
+        "panel_width": 288,
+        "host_horizontal_margin": 16,
+        "host_top": 24,
+        "appearance": "dark",
+        "layout_direction": "rtl",
+        "android_font_scale": 1.8,
+        "ios_content_size_category": "accessibilityExtraLarge",
+        "parent_scroll": true
+      },
+      "items": [
+        {
+          "id": "a6",
+          "name": "عقد المراجعة النهائية — Project 17 signed 🗂️.pdf",
+          "status": "failed",
+          "progress": -1.0
+        },
+        {
+          "id": "a2",
+          "name": "Budget notes.xlsx",
+          "status": "running",
+          "progress": {
+            "double_special": "NaN"
+          }
+        },
+        {
+          "id": "a9",
+          "name": "Archive waiting.zip",
+          "status": "queued",
+          "progress": {
+            "double_special": "Infinity"
+          }
+        },
+        {
+          "id": "a1",
+          "name": "المخطط النهائي 2026.png",
+          "status": "done",
+          "progress": -4.0
+        },
+        {
+          "id": "a8",
+          "name": "Long-departmental-approval-document-following-multiple-review-cycles.pdf",
+          "status": "failed",
+          "progress": 0.675
+        },
+        {
+          "id": "a4",
+          "name": "Voice memo 12.m4a",
+          "status": "running",
+          "progress": 0.125
+        }
+      ],
+      "platforms": [
+        "compose_android",
+        "swiftui_ios"
+      ],
+      "expected": {
+        "title_text": "Attachment transfers",
+        "summary_text": "2 need retry",
+        "summary_tone": "error",
+        "count_text": "1 of 6 complete",
+        "aggregate_visible": true,
+        "aggregate_fraction": 0.3,
+        "aggregate_percent_text": "30%",
+        "aggregate_label": "Overall transfer progress",
+        "aggregate_tone": "error",
+        "list_visible": true,
+        "visible_row_ids": [
+          "a6",
+          "a2",
+          "a9",
+          "a1",
+          "a8",
+          "a4"
+        ],
+        "hidden_row_ids": [],
+        "toggle_visible": true,
+        "toggle_text": "Show less",
+        "toggle_label": "Show fewer attachments",
+        "toggle_state": "Expanded",
+        "more_text": null,
+        "empty_text": null,
+        "compact": true,
+        "name_line_limit": 3,
+        "rows": [
+          {
+            "id": "a6",
+            "name": "عقد المراجعة النهائية — Project 17 signed 🗂️.pdf",
+            "status_token": "failed",
+            "status_text": "Failed · retry available",
+            "tone": "error",
+            "effective_fraction": 0.0,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": true,
+            "retry_label": "Retry عقد المراجعة النهائية — Project 17 signed 🗂️.pdf",
+            "retry_position": "below_status",
+            "name_line_limit": 3
+          },
+          {
+            "id": "a2",
+            "name": "Budget notes.xlsx",
+            "status_token": "running",
+            "status_text": "0% sent",
+            "tone": "accent",
+            "effective_fraction": 0.0,
+            "progress_visible": true,
+            "progress_fraction": 0.0,
+            "progress_accessible_percent": "0%",
+            "progress_label": "Budget notes.xlsx transfer progress",
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "below_status",
+            "name_line_limit": 3
+          },
+          {
+            "id": "a9",
+            "name": "Archive waiting.zip",
+            "status_token": "queued",
+            "status_text": "Waiting",
+            "tone": "neutral",
+            "effective_fraction": 0.0,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "below_status",
+            "name_line_limit": 3
+          },
+          {
+            "id": "a1",
+            "name": "المخطط النهائي 2026.png",
+            "status_token": "done",
+            "status_text": "Complete",
+            "tone": "success",
+            "effective_fraction": 1.0,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "below_status",
+            "name_line_limit": 3
+          },
+          {
+            "id": "a8",
+            "name": "Long-departmental-approval-document-following-multiple-review-cycles.pdf",
+            "status_token": "failed",
+            "status_text": "Failed · retry available",
+            "tone": "error",
+            "effective_fraction": 0.675,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": true,
+            "retry_label": "Retry Long-departmental-approval-document-following-multiple-review-cycles.pdf",
+            "retry_position": "below_status",
+            "name_line_limit": 3
+          },
+          {
+            "id": "a4",
+            "name": "Voice memo 12.m4a",
+            "status_token": "running",
+            "status_text": "13% sent",
+            "tone": "accent",
+            "effective_fraction": 0.125,
+            "progress_visible": true,
+            "progress_fraction": 0.125,
+            "progress_accessible_percent": "13%",
+            "progress_label": "Voice memo 12.m4a transfer progress",
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "below_status",
+            "name_line_limit": 3
+          }
+        ],
+        "required_identifiers": [
+          "transfer.panel",
+          "transfer.title",
+          "transfer.summary",
+          "transfer.count",
+          "transfer.percent",
+          "transfer.progress",
+          "transfer.list",
+          "transfer.toggle",
+          "transfer.row.a6",
+          "transfer.name.a6",
+          "transfer.status.a6",
+          "transfer.retry.a6",
+          "transfer.row.a2",
+          "transfer.name.a2",
+          "transfer.status.a2",
+          "transfer.progress.a2",
+          "transfer.row.a9",
+          "transfer.name.a9",
+          "transfer.status.a9",
+          "transfer.row.a1",
+          "transfer.name.a1",
+          "transfer.status.a1",
+          "transfer.row.a8",
+          "transfer.name.a8",
+          "transfer.status.a8",
+          "transfer.retry.a8",
+          "transfer.row.a4",
+          "transfer.name.a4",
+          "transfer.status.a4",
+          "transfer.progress.a4"
+        ],
+        "progress_origin": "right"
+      },
+      "assertions": [
+        {
+          "rule_id": "TQ-API-01",
+          "measurement_path": "title_text",
+          "operator": "eq",
+          "expected": "Attachment transfers",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-03",
+          "measurement_path": "summary_text",
+          "operator": "eq",
+          "expected": "2 need retry",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "count_text",
+          "operator": "eq",
+          "expected": "1 of 6 complete",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "aggregate_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_percent_text",
+          "operator": "eq",
+          "expected": "30%",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "list_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "visible_row_ids",
+          "operator": "eq",
+          "expected": [
+            "a6",
+            "a2",
+            "a9",
+            "a1",
+            "a8",
+            "a4"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "toggle_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_text",
+          "operator": "eq",
+          "expected": "Show less",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "more_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "empty_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "compact",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "name_line_limit",
+          "operator": "eq",
+          "expected": 3,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-05",
+          "measurement_path": "progress_origin",
+          "operator": "eq",
+          "expected": "right",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_label",
+          "operator": "eq",
+          "expected": "Show fewer attachments",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_state",
+          "operator": "eq",
+          "expected": "Expanded",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-01",
+          "measurement_path": "required_identifiers",
+          "operator": "contains_all",
+          "expected": [
+            "transfer.panel",
+            "transfer.title",
+            "transfer.summary",
+            "transfer.count",
+            "transfer.percent",
+            "transfer.progress",
+            "transfer.list",
+            "transfer.toggle",
+            "transfer.row.a6",
+            "transfer.name.a6",
+            "transfer.status.a6",
+            "transfer.retry.a6",
+            "transfer.row.a2",
+            "transfer.name.a2",
+            "transfer.status.a2",
+            "transfer.progress.a2",
+            "transfer.row.a9",
+            "transfer.name.a9",
+            "transfer.status.a9",
+            "transfer.row.a1",
+            "transfer.name.a1",
+            "transfer.status.a1",
+            "transfer.row.a8",
+            "transfer.name.a8",
+            "transfer.status.a8",
+            "transfer.retry.a8",
+            "transfer.row.a4",
+            "transfer.name.a4",
+            "transfer.status.a4",
+            "transfer.progress.a4"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "source_review"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "hidden_row_ids_absent",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_fraction",
+          "operator": "near",
+          "expected": 0.3,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "aggregate_label",
+          "operator": "eq",
+          "expected": "Overall transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/a6/status_text",
+          "operator": "eq",
+          "expected": "Failed · retry available",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/a6/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/a6/retry_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/a6/full_name_semantics",
+          "operator": "eq",
+          "expected": "عقد المراجعة النهائية — Project 17 signed 🗂️.pdf",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/a6/retry_label",
+          "operator": "eq",
+          "expected": "Retry عقد المراجعة النهائية — Project 17 signed 🗂️.pdf",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "rows/a6/retry_position",
+          "operator": "eq",
+          "expected": "below_status",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/a2/status_text",
+          "operator": "eq",
+          "expected": "0% sent",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/a2/progress_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/a2/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/a2/full_name_semantics",
+          "operator": "eq",
+          "expected": "Budget notes.xlsx",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-02",
+          "measurement_path": "rows/a2/progress_fraction",
+          "operator": "near",
+          "expected": 0.0,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/a2/progress_label",
+          "operator": "eq",
+          "expected": "Budget notes.xlsx transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/a2/progress_accessible_percent",
+          "operator": "eq",
+          "expected": "0%",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/a9/status_text",
+          "operator": "eq",
+          "expected": "Waiting",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/a9/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/a9/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/a9/full_name_semantics",
+          "operator": "eq",
+          "expected": "Archive waiting.zip",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/a1/status_text",
+          "operator": "eq",
+          "expected": "Complete",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/a1/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/a1/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/a1/full_name_semantics",
+          "operator": "eq",
+          "expected": "المخطط النهائي 2026.png",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/a8/status_text",
+          "operator": "eq",
+          "expected": "Failed · retry available",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/a8/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/a8/retry_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/a8/full_name_semantics",
+          "operator": "eq",
+          "expected": "Long-departmental-approval-document-following-multiple-review-cycles.pdf",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/a8/retry_label",
+          "operator": "eq",
+          "expected": "Retry Long-departmental-approval-document-following-multiple-review-cycles.pdf",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "rows/a8/retry_position",
+          "operator": "eq",
+          "expected": "below_status",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/a4/status_text",
+          "operator": "eq",
+          "expected": "13% sent",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/a4/progress_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/a4/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/a4/full_name_semantics",
+          "operator": "eq",
+          "expected": "Voice memo 12.m4a",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-02",
+          "measurement_path": "rows/a4/progress_fraction",
+          "operator": "near",
+          "expected": 0.125,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/a4/progress_label",
+          "operator": "eq",
+          "expected": "Voice memo 12.m4a transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/a4/progress_accessible_percent",
+          "operator": "eq",
+          "expected": "13%",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        }
+      ],
+      "sampling": {
+        "baseline": "fixed viewport native PNG at top; actual unmerged Android semantics including bounds if available",
+        "overflow": "Use native parent scroll for bottom capture with one overlapping row. Missing lower evidence is not_assessed, never component-clipping failure or pass.",
+        "record": [
+          "density",
+          "scroll_offset",
+          "actual_font_setting",
+          "actual_direction",
+          "appearance",
+          "revision",
+          "build_status",
+          "render_status"
+        ]
+      },
+      "actions": [
+        {
+          "action_id": "I05-retry-a6",
+          "target_identifier": "transfer.retry.a6",
+          "event": "native_activate_once",
+          "expected_callback_delta": [
+            {
+              "callback": "onRetry",
+              "id": "a6"
+            }
+          ],
+          "expected_ui_unchanged_until_caller_update": true,
+          "rule_ids": [
+            "TQ-ACT-02",
+            "TQ-API-02"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I05-retry-a8",
+          "target_identifier": "transfer.retry.a8",
+          "event": "native_activate_once",
+          "expected_callback_delta": [
+            {
+              "callback": "onRetry",
+              "id": "a8"
+            }
+          ],
+          "expected_ui_unchanged_until_caller_update": true,
+          "rule_ids": [
+            "TQ-ACT-02",
+            "TQ-API-02"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I05-inert-transfer.title",
+          "target_identifier": "transfer.title",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I05-inert-transfer.summary",
+          "target_identifier": "transfer.summary",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I05-inert-transfer.name.a6",
+          "target_identifier": "transfer.name.a6",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        }
+      ],
+      "applicable_rule_ids": [
+        "TQ-API-01",
+        "TQ-API-02",
+        "TQ-STATE-01",
+        "TQ-STATE-02",
+        "TQ-STATE-03",
+        "TQ-STATE-04",
+        "TQ-STATE-05",
+        "TQ-STATE-06",
+        "TQ-LIST-01",
+        "TQ-ACT-01",
+        "TQ-ACT-02",
+        "TQ-ACT-03",
+        "TQ-LAYOUT-01",
+        "TQ-LAYOUT-02",
+        "TQ-LAYOUT-03",
+        "TQ-LAYOUT-04",
+        "TQ-LAYOUT-05",
+        "TQ-COLOR-01",
+        "TQ-COLOR-02",
+        "TQ-VIS-01",
+        "TQ-VIS-02",
+        "TQ-A11Y-01",
+        "TQ-A11Y-02"
+      ],
+      "applicability_notes": "Evaluate empty/nonempty or row-state branches only where applicable. Absent controls are assessed for absence; a nonexistent callback has no activation success check. Known iOS AX limitation is not a component failure. Offscreen content lacking native scroll evidence is not_assessed."
+    },
+    {
+      "fixture_id": "I06",
+      "stage": "initial",
+      "expanded": false,
+      "environment": {
+        "viewport_width": 320,
+        "viewport_height": 620,
+        "panel_width": 288,
+        "host_horizontal_margin": 16,
+        "host_top": 24,
+        "appearance": "light",
+        "layout_direction": "rtl",
+        "android_font_scale": 1.0,
+        "ios_content_size_category": "large",
+        "parent_scroll": true
+      },
+      "items": [
+        {
+          "id": "q8",
+          "name": "قائمة المرفقات 42.txt",
+          "status": "queued",
+          "progress": 1.7
+        },
+        {
+          "id": "q3",
+          "name": "Meeting follow-up draft.docx",
+          "status": "queued",
+          "progress": -2.0
+        },
+        {
+          "id": "q1",
+          "name": "Queue backup.zip",
+          "status": "queued",
+          "progress": {
+            "double_special": "-Infinity"
+          }
+        }
+      ],
+      "transition_to_expanded": true,
+      "platforms": [
+        "compose_android",
+        "swiftui_ios"
+      ],
+      "expected": {
+        "title_text": "Attachment transfers",
+        "summary_text": "3 waiting",
+        "summary_tone": "neutral",
+        "count_text": "0 of 3 complete",
+        "aggregate_visible": true,
+        "aggregate_fraction": 0.0,
+        "aggregate_percent_text": "0%",
+        "aggregate_label": "Overall transfer progress",
+        "aggregate_tone": "neutral",
+        "list_visible": true,
+        "visible_row_ids": [
+          "q8",
+          "q3"
+        ],
+        "hidden_row_ids": [
+          "q1"
+        ],
+        "toggle_visible": true,
+        "toggle_text": "Show all",
+        "toggle_label": "Show all attachments",
+        "toggle_state": "Collapsed",
+        "more_text": "+1 more attachment",
+        "empty_text": null,
+        "compact": true,
+        "name_line_limit": 2,
+        "rows": [
+          {
+            "id": "q8",
+            "name": "قائمة المرفقات 42.txt",
+            "status_token": "queued",
+            "status_text": "Waiting",
+            "tone": "neutral",
+            "effective_fraction": 0.0,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "below_status",
+            "name_line_limit": 2
+          },
+          {
+            "id": "q3",
+            "name": "Meeting follow-up draft.docx",
+            "status_token": "queued",
+            "status_text": "Waiting",
+            "tone": "neutral",
+            "effective_fraction": 0.0,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "below_status",
+            "name_line_limit": 2
+          }
+        ],
+        "required_identifiers": [
+          "transfer.panel",
+          "transfer.title",
+          "transfer.summary",
+          "transfer.count",
+          "transfer.percent",
+          "transfer.progress",
+          "transfer.list",
+          "transfer.toggle",
+          "transfer.more",
+          "transfer.row.q8",
+          "transfer.name.q8",
+          "transfer.status.q8",
+          "transfer.row.q3",
+          "transfer.name.q3",
+          "transfer.status.q3"
+        ],
+        "progress_origin": "right"
+      },
+      "assertions": [
+        {
+          "rule_id": "TQ-API-01",
+          "measurement_path": "title_text",
+          "operator": "eq",
+          "expected": "Attachment transfers",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-03",
+          "measurement_path": "summary_text",
+          "operator": "eq",
+          "expected": "3 waiting",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "count_text",
+          "operator": "eq",
+          "expected": "0 of 3 complete",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "aggregate_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_percent_text",
+          "operator": "eq",
+          "expected": "0%",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "list_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "visible_row_ids",
+          "operator": "eq",
+          "expected": [
+            "q8",
+            "q3"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "toggle_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_text",
+          "operator": "eq",
+          "expected": "Show all",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "more_text",
+          "operator": "eq",
+          "expected": "+1 more attachment",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "empty_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "compact",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "name_line_limit",
+          "operator": "eq",
+          "expected": 2,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-05",
+          "measurement_path": "progress_origin",
+          "operator": "eq",
+          "expected": "right",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_label",
+          "operator": "eq",
+          "expected": "Show all attachments",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_state",
+          "operator": "eq",
+          "expected": "Collapsed",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-01",
+          "measurement_path": "required_identifiers",
+          "operator": "contains_all",
+          "expected": [
+            "transfer.panel",
+            "transfer.title",
+            "transfer.summary",
+            "transfer.count",
+            "transfer.percent",
+            "transfer.progress",
+            "transfer.list",
+            "transfer.toggle",
+            "transfer.more",
+            "transfer.row.q8",
+            "transfer.name.q8",
+            "transfer.status.q8",
+            "transfer.row.q3",
+            "transfer.name.q3",
+            "transfer.status.q3"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "source_review"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "hidden_row_ids_absent",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_fraction",
+          "operator": "near",
+          "expected": 0.0,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "aggregate_label",
+          "operator": "eq",
+          "expected": "Overall transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/q8/status_text",
+          "operator": "eq",
+          "expected": "Waiting",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/q8/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/q8/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/q8/full_name_semantics",
+          "operator": "eq",
+          "expected": "قائمة المرفقات 42.txt",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/q3/status_text",
+          "operator": "eq",
+          "expected": "Waiting",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/q3/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/q3/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/q3/full_name_semantics",
+          "operator": "eq",
+          "expected": "Meeting follow-up draft.docx",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        }
+      ],
+      "sampling": {
+        "baseline": "fixed viewport native PNG at top; actual unmerged Android semantics including bounds if available",
+        "overflow": "Use native parent scroll for bottom capture with one overlapping row. Missing lower evidence is not_assessed, never component-clipping failure or pass.",
+        "record": [
+          "density",
+          "scroll_offset",
+          "actual_font_setting",
+          "actual_direction",
+          "appearance",
+          "revision",
+          "build_status",
+          "render_status"
+        ]
+      },
+      "actions": [
+        {
+          "action_id": "I06-toggle",
+          "target_identifier": "transfer.toggle",
+          "event": "native_activate_once",
+          "expected_callback_delta": [
+            {
+              "callback": "onToggle"
+            }
+          ],
+          "rule_ids": [
+            "TQ-ACT-01",
+            "TQ-API-02"
+          ],
+          "before_caller_update_expected": {
+            "title_text": "Attachment transfers",
+            "summary_text": "3 waiting",
+            "summary_tone": "neutral",
+            "count_text": "0 of 3 complete",
+            "aggregate_visible": true,
+            "aggregate_fraction": 0.0,
+            "aggregate_percent_text": "0%",
+            "aggregate_label": "Overall transfer progress",
+            "aggregate_tone": "neutral",
+            "list_visible": true,
+            "visible_row_ids": [
+              "q8",
+              "q3"
+            ],
+            "hidden_row_ids": [
+              "q1"
+            ],
+            "toggle_visible": true,
+            "toggle_text": "Show all",
+            "toggle_label": "Show all attachments",
+            "toggle_state": "Collapsed",
+            "more_text": "+1 more attachment",
+            "empty_text": null,
+            "compact": true,
+            "name_line_limit": 2,
+            "rows": [
+              {
+                "id": "q8",
+                "name": "قائمة المرفقات 42.txt",
+                "status_token": "queued",
+                "status_text": "Waiting",
+                "tone": "neutral",
+                "effective_fraction": 0.0,
+                "progress_visible": false,
+                "progress_fraction": null,
+                "progress_accessible_percent": null,
+                "progress_label": null,
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "below_status",
+                "name_line_limit": 2
+              },
+              {
+                "id": "q3",
+                "name": "Meeting follow-up draft.docx",
+                "status_token": "queued",
+                "status_text": "Waiting",
+                "tone": "neutral",
+                "effective_fraction": 0.0,
+                "progress_visible": false,
+                "progress_fraction": null,
+                "progress_accessible_percent": null,
+                "progress_label": null,
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "below_status",
+                "name_line_limit": 2
+              }
+            ],
+            "required_identifiers": [
+              "transfer.panel",
+              "transfer.title",
+              "transfer.summary",
+              "transfer.count",
+              "transfer.percent",
+              "transfer.progress",
+              "transfer.list",
+              "transfer.toggle",
+              "transfer.more",
+              "transfer.row.q8",
+              "transfer.name.q8",
+              "transfer.status.q8",
+              "transfer.row.q3",
+              "transfer.name.q3",
+              "transfer.status.q3"
+            ],
+            "progress_origin": "right"
+          },
+          "caller_update": {
+            "expanded": true
+          },
+          "after_caller_update_expected": {
+            "title_text": "Attachment transfers",
+            "summary_text": "3 waiting",
+            "summary_tone": "neutral",
+            "count_text": "0 of 3 complete",
+            "aggregate_visible": true,
+            "aggregate_fraction": 0.0,
+            "aggregate_percent_text": "0%",
+            "aggregate_label": "Overall transfer progress",
+            "aggregate_tone": "neutral",
+            "list_visible": true,
+            "visible_row_ids": [
+              "q8",
+              "q3",
+              "q1"
+            ],
+            "hidden_row_ids": [],
+            "toggle_visible": true,
+            "toggle_text": "Show less",
+            "toggle_label": "Show fewer attachments",
+            "toggle_state": "Expanded",
+            "more_text": null,
+            "empty_text": null,
+            "compact": true,
+            "name_line_limit": 2,
+            "rows": [
+              {
+                "id": "q8",
+                "name": "قائمة المرفقات 42.txt",
+                "status_token": "queued",
+                "status_text": "Waiting",
+                "tone": "neutral",
+                "effective_fraction": 0.0,
+                "progress_visible": false,
+                "progress_fraction": null,
+                "progress_accessible_percent": null,
+                "progress_label": null,
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "below_status",
+                "name_line_limit": 2
+              },
+              {
+                "id": "q3",
+                "name": "Meeting follow-up draft.docx",
+                "status_token": "queued",
+                "status_text": "Waiting",
+                "tone": "neutral",
+                "effective_fraction": 0.0,
+                "progress_visible": false,
+                "progress_fraction": null,
+                "progress_accessible_percent": null,
+                "progress_label": null,
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "below_status",
+                "name_line_limit": 2
+              },
+              {
+                "id": "q1",
+                "name": "Queue backup.zip",
+                "status_token": "queued",
+                "status_text": "Waiting",
+                "tone": "neutral",
+                "effective_fraction": 0.0,
+                "progress_visible": false,
+                "progress_fraction": null,
+                "progress_accessible_percent": null,
+                "progress_label": null,
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "below_status",
+                "name_line_limit": 2
+              }
+            ],
+            "required_identifiers": [
+              "transfer.panel",
+              "transfer.title",
+              "transfer.summary",
+              "transfer.count",
+              "transfer.percent",
+              "transfer.progress",
+              "transfer.list",
+              "transfer.toggle",
+              "transfer.row.q8",
+              "transfer.name.q8",
+              "transfer.status.q8",
+              "transfer.row.q3",
+              "transfer.name.q3",
+              "transfer.status.q3",
+              "transfer.row.q1",
+              "transfer.name.q1",
+              "transfer.status.q1"
+            ],
+            "progress_origin": "right"
+          },
+          "if_no_real_event": "not_executed; source_review may identify a defect but cannot pass execution"
+        },
+        {
+          "action_id": "I06-inert-transfer.title",
+          "target_identifier": "transfer.title",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I06-inert-transfer.summary",
+          "target_identifier": "transfer.summary",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "I06-inert-transfer.name.q8",
+          "target_identifier": "transfer.name.q8",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        }
+      ],
+      "applicable_rule_ids": [
+        "TQ-API-01",
+        "TQ-API-02",
+        "TQ-STATE-01",
+        "TQ-STATE-02",
+        "TQ-STATE-03",
+        "TQ-STATE-04",
+        "TQ-STATE-05",
+        "TQ-STATE-06",
+        "TQ-LIST-01",
+        "TQ-ACT-01",
+        "TQ-ACT-02",
+        "TQ-ACT-03",
+        "TQ-LAYOUT-01",
+        "TQ-LAYOUT-02",
+        "TQ-LAYOUT-03",
+        "TQ-LAYOUT-04",
+        "TQ-LAYOUT-05",
+        "TQ-COLOR-01",
+        "TQ-COLOR-02",
+        "TQ-VIS-01",
+        "TQ-VIS-02",
+        "TQ-A11Y-01",
+        "TQ-A11Y-02"
+      ],
+      "applicability_notes": "Evaluate empty/nonempty or row-state branches only where applicable. Absent controls are assessed for absence; a nonexistent callback has no activation success check. Known iOS AX limitation is not a component failure. Offscreen content lacking native scroll evidence is not_assessed."
+    },
+    {
+      "fixture_id": "H01",
+      "stage": "repair_holdout",
+      "expanded": false,
+      "environment": {
+        "viewport_width": 390,
+        "viewport_height": 800,
+        "panel_width": 358,
+        "host_horizontal_margin": 16,
+        "host_top": 24,
+        "appearance": "dark",
+        "layout_direction": "ltr",
+        "android_font_scale": 2.0,
+        "ios_content_size_category": "accessibilityExtraExtraLarge",
+        "parent_scroll": true
+      },
+      "items": [
+        {
+          "id": "z:71",
+          "name": "Transcription session with an exceptionally descriptive original recording filename.aiff",
+          "status": "running",
+          "progress": {
+            "double_special": "NaN"
+          }
+        },
+        {
+          "id": "z:12",
+          "name": "字幕与审阅意见 — final 08.txt",
+          "status": "running",
+          "progress": {
+            "double_special": "Infinity"
+          }
+        },
+        {
+          "id": "z:94",
+          "name": "Waiting attachments 7.zip",
+          "status": "queued",
+          "progress": 0.4
+        },
+        {
+          "id": "z:05",
+          "name": "Export complete.jpeg",
+          "status": "done",
+          "progress": 0.0
+        }
+      ],
+      "transition_to_expanded": true,
+      "platforms": [
+        "compose_android",
+        "swiftui_ios"
+      ],
+      "expected": {
+        "title_text": "Attachment transfers",
+        "summary_text": "2 transferring",
+        "summary_tone": "accent",
+        "count_text": "1 of 4 complete",
+        "aggregate_visible": true,
+        "aggregate_fraction": 0.25,
+        "aggregate_percent_text": "25%",
+        "aggregate_label": "Overall transfer progress",
+        "aggregate_tone": "accent",
+        "list_visible": true,
+        "visible_row_ids": [
+          "z:71",
+          "z:12"
+        ],
+        "hidden_row_ids": [
+          "z:94",
+          "z:05"
+        ],
+        "toggle_visible": true,
+        "toggle_text": "Show all",
+        "toggle_label": "Show all attachments",
+        "toggle_state": "Collapsed",
+        "more_text": "+2 more attachments",
+        "empty_text": null,
+        "compact": true,
+        "name_line_limit": 3,
+        "rows": [
+          {
+            "id": "z:71",
+            "name": "Transcription session with an exceptionally descriptive original recording filename.aiff",
+            "status_token": "running",
+            "status_text": "0% sent",
+            "tone": "accent",
+            "effective_fraction": 0.0,
+            "progress_visible": true,
+            "progress_fraction": 0.0,
+            "progress_accessible_percent": "0%",
+            "progress_label": "Transcription session with an exceptionally descriptive original recording filename.aiff transfer progress",
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "below_status",
+            "name_line_limit": 3
+          },
+          {
+            "id": "z:12",
+            "name": "字幕与审阅意见 — final 08.txt",
+            "status_token": "running",
+            "status_text": "0% sent",
+            "tone": "accent",
+            "effective_fraction": 0.0,
+            "progress_visible": true,
+            "progress_fraction": 0.0,
+            "progress_accessible_percent": "0%",
+            "progress_label": "字幕与审阅意见 — final 08.txt transfer progress",
+            "retry_visible": false,
+            "retry_label": null,
+            "retry_position": "below_status",
+            "name_line_limit": 3
+          }
+        ],
+        "required_identifiers": [
+          "transfer.panel",
+          "transfer.title",
+          "transfer.summary",
+          "transfer.count",
+          "transfer.percent",
+          "transfer.progress",
+          "transfer.list",
+          "transfer.toggle",
+          "transfer.more",
+          "transfer.row.z:71",
+          "transfer.name.z:71",
+          "transfer.status.z:71",
+          "transfer.progress.z:71",
+          "transfer.row.z:12",
+          "transfer.name.z:12",
+          "transfer.status.z:12",
+          "transfer.progress.z:12"
+        ],
+        "progress_origin": "left"
+      },
+      "assertions": [
+        {
+          "rule_id": "TQ-API-01",
+          "measurement_path": "title_text",
+          "operator": "eq",
+          "expected": "Attachment transfers",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-03",
+          "measurement_path": "summary_text",
+          "operator": "eq",
+          "expected": "2 transferring",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "count_text",
+          "operator": "eq",
+          "expected": "1 of 4 complete",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "aggregate_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_percent_text",
+          "operator": "eq",
+          "expected": "25%",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "list_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "visible_row_ids",
+          "operator": "eq",
+          "expected": [
+            "z:71",
+            "z:12"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "toggle_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_text",
+          "operator": "eq",
+          "expected": "Show all",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "more_text",
+          "operator": "eq",
+          "expected": "+2 more attachments",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "empty_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "compact",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "name_line_limit",
+          "operator": "eq",
+          "expected": 3,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-05",
+          "measurement_path": "progress_origin",
+          "operator": "eq",
+          "expected": "left",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_label",
+          "operator": "eq",
+          "expected": "Show all attachments",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_state",
+          "operator": "eq",
+          "expected": "Collapsed",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-01",
+          "measurement_path": "required_identifiers",
+          "operator": "contains_all",
+          "expected": [
+            "transfer.panel",
+            "transfer.title",
+            "transfer.summary",
+            "transfer.count",
+            "transfer.percent",
+            "transfer.progress",
+            "transfer.list",
+            "transfer.toggle",
+            "transfer.more",
+            "transfer.row.z:71",
+            "transfer.name.z:71",
+            "transfer.status.z:71",
+            "transfer.progress.z:71",
+            "transfer.row.z:12",
+            "transfer.name.z:12",
+            "transfer.status.z:12",
+            "transfer.progress.z:12"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "source_review"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "hidden_row_ids_absent",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_fraction",
+          "operator": "near",
+          "expected": 0.25,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "aggregate_label",
+          "operator": "eq",
+          "expected": "Overall transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/z:71/status_text",
+          "operator": "eq",
+          "expected": "0% sent",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/z:71/progress_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/z:71/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/z:71/full_name_semantics",
+          "operator": "eq",
+          "expected": "Transcription session with an exceptionally descriptive original recording filename.aiff",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-02",
+          "measurement_path": "rows/z:71/progress_fraction",
+          "operator": "near",
+          "expected": 0.0,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/z:71/progress_label",
+          "operator": "eq",
+          "expected": "Transcription session with an exceptionally descriptive original recording filename.aiff transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/z:71/progress_accessible_percent",
+          "operator": "eq",
+          "expected": "0%",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/z:12/status_text",
+          "operator": "eq",
+          "expected": "0% sent",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/z:12/progress_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/z:12/retry_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/z:12/full_name_semantics",
+          "operator": "eq",
+          "expected": "字幕与审阅意见 — final 08.txt",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-02",
+          "measurement_path": "rows/z:12/progress_fraction",
+          "operator": "near",
+          "expected": 0.0,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/z:12/progress_label",
+          "operator": "eq",
+          "expected": "字幕与审阅意见 — final 08.txt transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/z:12/progress_accessible_percent",
+          "operator": "eq",
+          "expected": "0%",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        }
+      ],
+      "sampling": {
+        "baseline": "fixed viewport native PNG at top; actual unmerged Android semantics including bounds if available",
+        "overflow": "Use native parent scroll for bottom capture with one overlapping row. Missing lower evidence is not_assessed, never component-clipping failure or pass.",
+        "record": [
+          "density",
+          "scroll_offset",
+          "actual_font_setting",
+          "actual_direction",
+          "appearance",
+          "revision",
+          "build_status",
+          "render_status"
+        ]
+      },
+      "actions": [
+        {
+          "action_id": "H01-toggle",
+          "target_identifier": "transfer.toggle",
+          "event": "native_activate_once",
+          "expected_callback_delta": [
+            {
+              "callback": "onToggle"
+            }
+          ],
+          "rule_ids": [
+            "TQ-ACT-01",
+            "TQ-API-02"
+          ],
+          "before_caller_update_expected": {
+            "title_text": "Attachment transfers",
+            "summary_text": "2 transferring",
+            "summary_tone": "accent",
+            "count_text": "1 of 4 complete",
+            "aggregate_visible": true,
+            "aggregate_fraction": 0.25,
+            "aggregate_percent_text": "25%",
+            "aggregate_label": "Overall transfer progress",
+            "aggregate_tone": "accent",
+            "list_visible": true,
+            "visible_row_ids": [
+              "z:71",
+              "z:12"
+            ],
+            "hidden_row_ids": [
+              "z:94",
+              "z:05"
+            ],
+            "toggle_visible": true,
+            "toggle_text": "Show all",
+            "toggle_label": "Show all attachments",
+            "toggle_state": "Collapsed",
+            "more_text": "+2 more attachments",
+            "empty_text": null,
+            "compact": true,
+            "name_line_limit": 3,
+            "rows": [
+              {
+                "id": "z:71",
+                "name": "Transcription session with an exceptionally descriptive original recording filename.aiff",
+                "status_token": "running",
+                "status_text": "0% sent",
+                "tone": "accent",
+                "effective_fraction": 0.0,
+                "progress_visible": true,
+                "progress_fraction": 0.0,
+                "progress_accessible_percent": "0%",
+                "progress_label": "Transcription session with an exceptionally descriptive original recording filename.aiff transfer progress",
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "below_status",
+                "name_line_limit": 3
+              },
+              {
+                "id": "z:12",
+                "name": "字幕与审阅意见 — final 08.txt",
+                "status_token": "running",
+                "status_text": "0% sent",
+                "tone": "accent",
+                "effective_fraction": 0.0,
+                "progress_visible": true,
+                "progress_fraction": 0.0,
+                "progress_accessible_percent": "0%",
+                "progress_label": "字幕与审阅意见 — final 08.txt transfer progress",
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "below_status",
+                "name_line_limit": 3
+              }
+            ],
+            "required_identifiers": [
+              "transfer.panel",
+              "transfer.title",
+              "transfer.summary",
+              "transfer.count",
+              "transfer.percent",
+              "transfer.progress",
+              "transfer.list",
+              "transfer.toggle",
+              "transfer.more",
+              "transfer.row.z:71",
+              "transfer.name.z:71",
+              "transfer.status.z:71",
+              "transfer.progress.z:71",
+              "transfer.row.z:12",
+              "transfer.name.z:12",
+              "transfer.status.z:12",
+              "transfer.progress.z:12"
+            ],
+            "progress_origin": "left"
+          },
+          "caller_update": {
+            "expanded": true
+          },
+          "after_caller_update_expected": {
+            "title_text": "Attachment transfers",
+            "summary_text": "2 transferring",
+            "summary_tone": "accent",
+            "count_text": "1 of 4 complete",
+            "aggregate_visible": true,
+            "aggregate_fraction": 0.25,
+            "aggregate_percent_text": "25%",
+            "aggregate_label": "Overall transfer progress",
+            "aggregate_tone": "accent",
+            "list_visible": true,
+            "visible_row_ids": [
+              "z:71",
+              "z:12",
+              "z:94",
+              "z:05"
+            ],
+            "hidden_row_ids": [],
+            "toggle_visible": true,
+            "toggle_text": "Show less",
+            "toggle_label": "Show fewer attachments",
+            "toggle_state": "Expanded",
+            "more_text": null,
+            "empty_text": null,
+            "compact": true,
+            "name_line_limit": 3,
+            "rows": [
+              {
+                "id": "z:71",
+                "name": "Transcription session with an exceptionally descriptive original recording filename.aiff",
+                "status_token": "running",
+                "status_text": "0% sent",
+                "tone": "accent",
+                "effective_fraction": 0.0,
+                "progress_visible": true,
+                "progress_fraction": 0.0,
+                "progress_accessible_percent": "0%",
+                "progress_label": "Transcription session with an exceptionally descriptive original recording filename.aiff transfer progress",
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "below_status",
+                "name_line_limit": 3
+              },
+              {
+                "id": "z:12",
+                "name": "字幕与审阅意见 — final 08.txt",
+                "status_token": "running",
+                "status_text": "0% sent",
+                "tone": "accent",
+                "effective_fraction": 0.0,
+                "progress_visible": true,
+                "progress_fraction": 0.0,
+                "progress_accessible_percent": "0%",
+                "progress_label": "字幕与审阅意见 — final 08.txt transfer progress",
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "below_status",
+                "name_line_limit": 3
+              },
+              {
+                "id": "z:94",
+                "name": "Waiting attachments 7.zip",
+                "status_token": "queued",
+                "status_text": "Waiting",
+                "tone": "neutral",
+                "effective_fraction": 0.0,
+                "progress_visible": false,
+                "progress_fraction": null,
+                "progress_accessible_percent": null,
+                "progress_label": null,
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "below_status",
+                "name_line_limit": 3
+              },
+              {
+                "id": "z:05",
+                "name": "Export complete.jpeg",
+                "status_token": "done",
+                "status_text": "Complete",
+                "tone": "success",
+                "effective_fraction": 1.0,
+                "progress_visible": false,
+                "progress_fraction": null,
+                "progress_accessible_percent": null,
+                "progress_label": null,
+                "retry_visible": false,
+                "retry_label": null,
+                "retry_position": "below_status",
+                "name_line_limit": 3
+              }
+            ],
+            "required_identifiers": [
+              "transfer.panel",
+              "transfer.title",
+              "transfer.summary",
+              "transfer.count",
+              "transfer.percent",
+              "transfer.progress",
+              "transfer.list",
+              "transfer.toggle",
+              "transfer.row.z:71",
+              "transfer.name.z:71",
+              "transfer.status.z:71",
+              "transfer.progress.z:71",
+              "transfer.row.z:12",
+              "transfer.name.z:12",
+              "transfer.status.z:12",
+              "transfer.progress.z:12",
+              "transfer.row.z:94",
+              "transfer.name.z:94",
+              "transfer.status.z:94",
+              "transfer.row.z:05",
+              "transfer.name.z:05",
+              "transfer.status.z:05"
+            ],
+            "progress_origin": "left"
+          },
+          "if_no_real_event": "not_executed; source_review may identify a defect but cannot pass execution"
+        },
+        {
+          "action_id": "H01-inert-transfer.title",
+          "target_identifier": "transfer.title",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "H01-inert-transfer.summary",
+          "target_identifier": "transfer.summary",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "H01-inert-transfer.name.z:71",
+          "target_identifier": "transfer.name.z:71",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        }
+      ],
+      "applicable_rule_ids": [
+        "TQ-API-01",
+        "TQ-API-02",
+        "TQ-STATE-01",
+        "TQ-STATE-02",
+        "TQ-STATE-03",
+        "TQ-STATE-04",
+        "TQ-STATE-05",
+        "TQ-STATE-06",
+        "TQ-LIST-01",
+        "TQ-ACT-01",
+        "TQ-ACT-02",
+        "TQ-ACT-03",
+        "TQ-LAYOUT-01",
+        "TQ-LAYOUT-02",
+        "TQ-LAYOUT-03",
+        "TQ-LAYOUT-04",
+        "TQ-LAYOUT-05",
+        "TQ-COLOR-01",
+        "TQ-COLOR-02",
+        "TQ-VIS-01",
+        "TQ-VIS-02",
+        "TQ-A11Y-01",
+        "TQ-A11Y-02"
+      ],
+      "applicability_notes": "Evaluate empty/nonempty or row-state branches only where applicable. Absent controls are assessed for absence; a nonexistent callback has no activation success check. Known iOS AX limitation is not a component failure. Offscreen content lacking native scroll evidence is not_assessed."
+    },
+    {
+      "fixture_id": "H02",
+      "stage": "repair_holdout",
+      "expanded": true,
+      "environment": {
+        "viewport_width": 390,
+        "viewport_height": 800,
+        "panel_width": 358,
+        "host_horizontal_margin": 16,
+        "host_top": 24,
+        "appearance": "light",
+        "layout_direction": "rtl",
+        "android_font_scale": 1.0,
+        "ios_content_size_category": "large",
+        "parent_scroll": true
+      },
+      "items": [
+        {
+          "id": "hold:gamma/7",
+          "name": "Signed-release-forms-for-the-entire-production-department.pdf",
+          "status": "failed",
+          "progress": 1.7
+        },
+        {
+          "id": "hold:beta/2",
+          "name": "المراجعة 24 — take two.mov",
+          "status": "failed",
+          "progress": 0.02
+        },
+        {
+          "id": "hold:alpha/9",
+          "name": "Error log.txt",
+          "status": "failed",
+          "progress": {
+            "double_special": "-Infinity"
+          }
+        }
+      ],
+      "platforms": [
+        "compose_android",
+        "swiftui_ios"
+      ],
+      "expected": {
+        "title_text": "Attachment transfers",
+        "summary_text": "3 need retry",
+        "summary_tone": "error",
+        "count_text": "0 of 3 complete",
+        "aggregate_visible": true,
+        "aggregate_fraction": 0.34,
+        "aggregate_percent_text": "34%",
+        "aggregate_label": "Overall transfer progress",
+        "aggregate_tone": "error",
+        "list_visible": true,
+        "visible_row_ids": [
+          "hold:gamma/7",
+          "hold:beta/2",
+          "hold:alpha/9"
+        ],
+        "hidden_row_ids": [],
+        "toggle_visible": true,
+        "toggle_text": "Show less",
+        "toggle_label": "Show fewer attachments",
+        "toggle_state": "Expanded",
+        "more_text": null,
+        "empty_text": null,
+        "compact": false,
+        "name_line_limit": 2,
+        "rows": [
+          {
+            "id": "hold:gamma/7",
+            "name": "Signed-release-forms-for-the-entire-production-department.pdf",
+            "status_token": "failed",
+            "status_text": "Failed · retry available",
+            "tone": "error",
+            "effective_fraction": 1.0,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": true,
+            "retry_label": "Retry Signed-release-forms-for-the-entire-production-department.pdf",
+            "retry_position": "trailing",
+            "name_line_limit": 2
+          },
+          {
+            "id": "hold:beta/2",
+            "name": "المراجعة 24 — take two.mov",
+            "status_token": "failed",
+            "status_text": "Failed · retry available",
+            "tone": "error",
+            "effective_fraction": 0.02,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": true,
+            "retry_label": "Retry المراجعة 24 — take two.mov",
+            "retry_position": "trailing",
+            "name_line_limit": 2
+          },
+          {
+            "id": "hold:alpha/9",
+            "name": "Error log.txt",
+            "status_token": "failed",
+            "status_text": "Failed · retry available",
+            "tone": "error",
+            "effective_fraction": 0.0,
+            "progress_visible": false,
+            "progress_fraction": null,
+            "progress_accessible_percent": null,
+            "progress_label": null,
+            "retry_visible": true,
+            "retry_label": "Retry Error log.txt",
+            "retry_position": "trailing",
+            "name_line_limit": 2
+          }
+        ],
+        "required_identifiers": [
+          "transfer.panel",
+          "transfer.title",
+          "transfer.summary",
+          "transfer.count",
+          "transfer.percent",
+          "transfer.progress",
+          "transfer.list",
+          "transfer.toggle",
+          "transfer.row.hold:gamma/7",
+          "transfer.name.hold:gamma/7",
+          "transfer.status.hold:gamma/7",
+          "transfer.retry.hold:gamma/7",
+          "transfer.row.hold:beta/2",
+          "transfer.name.hold:beta/2",
+          "transfer.status.hold:beta/2",
+          "transfer.retry.hold:beta/2",
+          "transfer.row.hold:alpha/9",
+          "transfer.name.hold:alpha/9",
+          "transfer.status.hold:alpha/9",
+          "transfer.retry.hold:alpha/9"
+        ],
+        "progress_origin": "right"
+      },
+      "assertions": [
+        {
+          "rule_id": "TQ-API-01",
+          "measurement_path": "title_text",
+          "operator": "eq",
+          "expected": "Attachment transfers",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-03",
+          "measurement_path": "summary_text",
+          "operator": "eq",
+          "expected": "3 need retry",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "count_text",
+          "operator": "eq",
+          "expected": "0 of 3 complete",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "aggregate_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_percent_text",
+          "operator": "eq",
+          "expected": "34%",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "list_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "visible_row_ids",
+          "operator": "eq",
+          "expected": [
+            "hold:gamma/7",
+            "hold:beta/2",
+            "hold:alpha/9"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "toggle_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_text",
+          "operator": "eq",
+          "expected": "Show less",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "more_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-05",
+          "measurement_path": "empty_text",
+          "operator": "eq",
+          "expected": null,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "compact",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "name_line_limit",
+          "operator": "eq",
+          "expected": 2,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-05",
+          "measurement_path": "progress_origin",
+          "operator": "eq",
+          "expected": "right",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_label",
+          "operator": "eq",
+          "expected": "Show fewer attachments",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-01",
+          "measurement_path": "toggle_state",
+          "operator": "eq",
+          "expected": "Expanded",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-01",
+          "measurement_path": "required_identifiers",
+          "operator": "contains_all",
+          "expected": [
+            "transfer.panel",
+            "transfer.title",
+            "transfer.summary",
+            "transfer.count",
+            "transfer.percent",
+            "transfer.progress",
+            "transfer.list",
+            "transfer.toggle",
+            "transfer.row.hold:gamma/7",
+            "transfer.name.hold:gamma/7",
+            "transfer.status.hold:gamma/7",
+            "transfer.retry.hold:gamma/7",
+            "transfer.row.hold:beta/2",
+            "transfer.name.hold:beta/2",
+            "transfer.status.hold:beta/2",
+            "transfer.retry.hold:beta/2",
+            "transfer.row.hold:alpha/9",
+            "transfer.name.hold:alpha/9",
+            "transfer.status.hold:alpha/9",
+            "transfer.retry.hold:alpha/9"
+          ],
+          "accepted_methods": [
+            "native_semantics",
+            "source_review"
+          ]
+        },
+        {
+          "rule_id": "TQ-LIST-01",
+          "measurement_path": "hidden_row_ids_absent",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-04",
+          "measurement_path": "aggregate_fraction",
+          "operator": "near",
+          "expected": 0.34,
+          "accepted_methods": [
+            "native_semantics"
+          ],
+          "tolerance": 0.002
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "aggregate_label",
+          "operator": "eq",
+          "expected": "Overall transfer progress",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/hold:gamma/7/status_text",
+          "operator": "eq",
+          "expected": "Failed · retry available",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/hold:gamma/7/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/hold:gamma/7/retry_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/hold:gamma/7/full_name_semantics",
+          "operator": "eq",
+          "expected": "Signed-release-forms-for-the-entire-production-department.pdf",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/hold:gamma/7/retry_label",
+          "operator": "eq",
+          "expected": "Retry Signed-release-forms-for-the-entire-production-department.pdf",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "rows/hold:gamma/7/retry_position",
+          "operator": "eq",
+          "expected": "trailing",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/hold:beta/2/status_text",
+          "operator": "eq",
+          "expected": "Failed · retry available",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/hold:beta/2/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/hold:beta/2/retry_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/hold:beta/2/full_name_semantics",
+          "operator": "eq",
+          "expected": "المراجعة 24 — take two.mov",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/hold:beta/2/retry_label",
+          "operator": "eq",
+          "expected": "Retry المراجعة 24 — take two.mov",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "rows/hold:beta/2/retry_position",
+          "operator": "eq",
+          "expected": "trailing",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/hold:alpha/9/status_text",
+          "operator": "eq",
+          "expected": "Failed · retry available",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-STATE-06",
+          "measurement_path": "rows/hold:alpha/9/progress_visible",
+          "operator": "eq",
+          "expected": false,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/hold:alpha/9/retry_visible",
+          "operator": "eq",
+          "expected": true,
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        },
+        {
+          "rule_id": "TQ-A11Y-02",
+          "measurement_path": "rows/hold:alpha/9/full_name_semantics",
+          "operator": "eq",
+          "expected": "Error log.txt",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-ACT-02",
+          "measurement_path": "rows/hold:alpha/9/retry_label",
+          "operator": "eq",
+          "expected": "Retry Error log.txt",
+          "accepted_methods": [
+            "native_semantics"
+          ]
+        },
+        {
+          "rule_id": "TQ-LAYOUT-04",
+          "measurement_path": "rows/hold:alpha/9/retry_position",
+          "operator": "eq",
+          "expected": "trailing",
+          "accepted_methods": [
+            "native_semantics",
+            "native_pixels"
+          ]
+        }
+      ],
+      "sampling": {
+        "baseline": "fixed viewport native PNG at top; actual unmerged Android semantics including bounds if available",
+        "overflow": "Use native parent scroll for bottom capture with one overlapping row. Missing lower evidence is not_assessed, never component-clipping failure or pass.",
+        "record": [
+          "density",
+          "scroll_offset",
+          "actual_font_setting",
+          "actual_direction",
+          "appearance",
+          "revision",
+          "build_status",
+          "render_status"
+        ]
+      },
+      "actions": [
+        {
+          "action_id": "H02-retry-hold:gamma/7",
+          "target_identifier": "transfer.retry.hold:gamma/7",
+          "event": "native_activate_once",
+          "expected_callback_delta": [
+            {
+              "callback": "onRetry",
+              "id": "hold:gamma/7"
+            }
+          ],
+          "expected_ui_unchanged_until_caller_update": true,
+          "rule_ids": [
+            "TQ-ACT-02",
+            "TQ-API-02"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "H02-retry-hold:beta/2",
+          "target_identifier": "transfer.retry.hold:beta/2",
+          "event": "native_activate_once",
+          "expected_callback_delta": [
+            {
+              "callback": "onRetry",
+              "id": "hold:beta/2"
+            }
+          ],
+          "expected_ui_unchanged_until_caller_update": true,
+          "rule_ids": [
+            "TQ-ACT-02",
+            "TQ-API-02"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "H02-retry-hold:alpha/9",
+          "target_identifier": "transfer.retry.hold:alpha/9",
+          "event": "native_activate_once",
+          "expected_callback_delta": [
+            {
+              "callback": "onRetry",
+              "id": "hold:alpha/9"
+            }
+          ],
+          "expected_ui_unchanged_until_caller_update": true,
+          "rule_ids": [
+            "TQ-ACT-02",
+            "TQ-API-02"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "H02-inert-transfer.title",
+          "target_identifier": "transfer.title",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "H02-inert-transfer.summary",
+          "target_identifier": "transfer.summary",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        },
+        {
+          "action_id": "H02-inert-transfer.name.hold:gamma/7",
+          "target_identifier": "transfer.name.hold:gamma/7",
+          "event": "native_coordinate_tap_center_once",
+          "expected_callback_delta": [],
+          "rule_ids": [
+            "TQ-ACT-03"
+          ],
+          "if_no_real_event": "not_executed"
+        }
+      ],
+      "applicable_rule_ids": [
+        "TQ-API-01",
+        "TQ-API-02",
+        "TQ-STATE-01",
+        "TQ-STATE-02",
+        "TQ-STATE-03",
+        "TQ-STATE-04",
+        "TQ-STATE-05",
+        "TQ-STATE-06",
+        "TQ-LIST-01",
+        "TQ-ACT-01",
+        "TQ-ACT-02",
+        "TQ-ACT-03",
+        "TQ-LAYOUT-01",
+        "TQ-LAYOUT-02",
+        "TQ-LAYOUT-03",
+        "TQ-LAYOUT-04",
+        "TQ-LAYOUT-05",
+        "TQ-COLOR-01",
+        "TQ-COLOR-02",
+        "TQ-VIS-01",
+        "TQ-VIS-02",
+        "TQ-A11Y-01",
+        "TQ-A11Y-02"
+      ],
+      "applicability_notes": "Evaluate empty/nonempty or row-state branches only where applicable. Absent controls are assessed for absence; a nonexistent callback has no activation success check. Known iOS AX limitation is not a component failure. Offscreen content lacking native scroll evidence is not_assessed."
+    }
+  ],
+  "observation_contract": {
+    "statuses": [
+      "passed",
+      "failed",
+      "not_executed",
+      "not_assessed",
+      "unscorable",
+      "blocked",
+      "infrastructure_error"
+    ],
+    "methods": [
+      "native_semantics",
+      "native_pixels",
+      "blinded_visual",
+      "source_review"
+    ],
+    "measurements": "Object keyed by exact measurement_path. Values contain value, method, evidence path, execution=observed|not_executed. OCR is native_pixels. Missing offscreen evidence is not_assessed. A source declaration cannot pass an executed action assertion.",
+    "not_assessed": "No sufficient artifact for this check (e.g. lower rows outside captured viewport with no scroll capture); neither pass nor fail.",
+    "unscorable": "Evidence exists but cannot establish a valid measurement or uses an incompatible method.",
+    "no_expected_values_as_observations": true
+  },
+  "checker_python": "def evaluate_checks(checks, observation):\n    import math\n    if observation.get('build_status') == 'failed' or observation.get('render_status') == 'failed':\n        return {'blocking_defect': True, 'checks': [dict(rule_id=c['rule_id'], path=c['measurement_path'], status='blocked') for c in checks]}\n    results=[]\n    for c in checks:\n        m=observation.get('measurements',{}).get(c['measurement_path'])\n        r=dict(rule_id=c['rule_id'],path=c['measurement_path'])\n        if not m: r['status']='not_assessed'\n        elif m.get('execution')!='observed':r['status']='not_executed'\n        elif m.get('method') not in c['accepted_methods'] or not m.get('evidence'):r['status']='unscorable'\n        else:\n            a,e,op=m.get('value'),c['expected'],c['operator']\n            try:\n                if op=='eq':ok=a==e\n                elif op=='near':ok=math.isfinite(float(a)) and abs(float(a)-float(e))<=c['tolerance']\n                elif op=='contains_all':ok=all(v in a for v in e)\n                elif op=='gte':ok=float(a)>=float(e)\n                elif op=='rgb_near':ok=len(a)==3 and max(abs(int(x)-int(y)) for x,y in zip(a,e))<=c['tolerance']\n                else:raise ValueError('unknown operator')\n                r.update(status='passed' if ok else 'failed',actual=a,expected=e,method=m['method'],evidence=m['evidence'])\n            except (TypeError,ValueError,KeyError):r['status']='unscorable'\n        results.append(r)\n    return {'blocking_defect':False,'checks':results}\n",
+  "action_trace_contract": {
+    "entries": [
+      {
+        "callback": "onToggle"
+      },
+      {
+        "callback": "onRetry",
+        "id": "original-id"
+      }
+    ],
+    "execution": "Actual native activations and host callback trace only. If unavailable, source review may flag defects but execution remains not_executed.",
+    "controlled_state": "Log callbacks without changing inputs; capture unchanged UI, then perform explicit caller_update.",
+    "inert_taps": "Tap native informational text/row area outside buttons; expected zero callback delta."
+  },
+  "blinded_visual_rubric": {
+    "rule_ids": [
+      "TQ-VIS-01",
+      "TQ-VIS-02"
+    ],
+    "anchors": {
+      "1": "Unusable/unstructured or illegible",
+      "2": "Major visible hierarchy/alignment/clipping flaws",
+      "3": "Usable with conspicuous inconsistencies",
+      "4": "Coherent with small flaws",
+      "5": "Coherent, clear, polished, reference-consistent"
+    },
+    "record": [
+      "anonymous_id",
+      "platform",
+      "fixture_pseudonym",
+      "rule_id",
+      "rating",
+      "specific_observation",
+      "evidence_path"
+    ],
+    "do_not_penalize": [
+      "native OS font glyph differences",
+      "simple document glyph choice",
+      "content below viewport when parent scroll can expose it"
+    ],
+    "mandatory_review": [
+      "large text full content evidence",
+      "long name ellipsis/wrapping",
+      "RTL arrangement and fractional fill direction",
+      "retry legibility",
+      "title-summary-progress-list hierarchy"
+    ]
+  },
+  "stages": [
+    "D0 frozen",
+    "read-only self-review on public/self-chosen examples; no D0 edit",
+    "anonymous initial hidden review",
+    "own factual failed-rule feedback only",
+    "one equal-budget repair D1",
+    "initial rerun plus unrevealed holdouts"
+  ],
+  "aggregation": "Separate build/render blocking defects, per-rule conformance, blinded visual quality, and evidence coverage. A rule passes only if all applicable required checks were observed and passed. Missing evidence never passes. Any actual applicable failure fails the rule. No component clipping failure solely because parent-scroll content is below the viewport.",
+  "platform_method_policy": {
+    "capability_report_origin": "Harness operator, reported before freeze; not an independently executed designer result.",
+    "compose_android": {
+      "native_semantics": "Full real unmerged nodes, bounds and TextLayoutResult available. Actual native OnClick and recorded callback traces can be executed.",
+      "native_pixels": "Real native PNG.",
+      "callback_pass": "Requires an actual native activation plus callback trace."
+    },
+    "swiftui_ios": {
+      "native_pixels": "Real native PNG plus Apple Vision OCR available.",
+      "native_semantics": "Unavailable in common UIHostingController unit-test host: known identifier-bearing Button probe also exports zero AX elements.",
+      "a11y_contract": "Use source_review for public identifiers, labels, progress declarations and roles; do not claim a native-semantic pass. Empty AX export alone is infrastructure evidence limitation, never a component failure.",
+      "runtime_a11y": "not_assessed without another actual native evidence path.",
+      "runtime_action": "not_executed without actual UI events. Source review may identify a defect but cannot pass callback execution.",
+      "native_fraction": "not_assessed when native numerical evidence unavailable; visible percentage and track rendering may still be assessed by native_pixels/OCR."
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "platform": "android",
+  "backend": "paparazzi",
+  "target": {
+    "description": "Final public smoke",
+    "sources": [
+      "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReplyTransferPanel.kt",
+      "public/brief.md",
+      "public/reference.svg",
+      "public-smoke.json"
+    ]
+  },
+  "environment": {
+    "theme": "light",
+    "font_scale": 1,
+    "layout_direction": "LTR",
+    "viewport": "390 x 620",
+    "native_output_transport": "common capture.py and warmed native host; iOS AX unavailable",
+    "ios_category": "large"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "capture.py",
+        "--platform",
+        "android",
+        "--project",
+        "reply/Reply",
+        "--fixture",
+        "public-smoke.json",
+        "--output",
+        "{output}"
+      ],
+      "timeout_seconds": 600
+    }
+  ],
+  "artifacts": [
+    {
+      "base": "output",
+      "glob": "native/actual.png",
+      "role": "actual"
+    },
+    {
+      "base": "output",
+      "glob": "native/native-report.json",
+      "role": "native-report"
+    },
+    {
+      "base": "output",
+      "glob": "native/capture.json",
+      "role": "native-report"
+    }
+  ],
+  "protected_paths": [],
+  "checks": [
+    {
+      "id": "queue-hierarchy",
+      "kind": "visual",
+      "description": "Quiet card hierarchy, public TQ-LAYOUT and TQ-VIS rules; native-image inspection deferred by D0 protocol",
+      "source": "public/brief.md and public/reference.svg"
+    },
+    {
+      "id": "adaptive-colors",
+      "kind": "visual",
+      "description": "Public palette and state mapping in native rendering; inspection deferred by D0 protocol",
+      "source": "public/brief.md TQ-COLOR-01 and TQ-COLOR-02"
+    }
+  ]
+}

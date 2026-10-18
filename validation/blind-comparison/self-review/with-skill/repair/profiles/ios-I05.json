@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "platform": "ios",
+  "backend": "snapshot-testing",
+  "target": {
+    "description": "I05 disclosed-input repair verification",
+    "sources": [
+      "alerttoast/Sources/AlertToast/TransferToastPanel.swift",
+      "public/brief.md",
+      "public/reference.svg",
+      "feedback/initial-inputs/I05-input.json"
+    ]
+  },
+  "environment": {
+    "theme": "dark",
+    "font_scale": 1.8,
+    "layout_direction": "RTL",
+    "viewport": "320 x 800",
+    "native_output_transport": "common capture.py and warmed native host; iOS AX unavailable",
+    "ios_category": "accessibilityExtraLarge"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "capture.py",
+        "--platform",
+        "ios",
+        "--project",
+        "alerttoast",
+        "--fixture",
+        "feedback/initial-inputs/I05-input.json",
+        "--output",
+        "{output}"
+      ],
+      "timeout_seconds": 600
+    }
+  ],
+  "artifacts": [
+    {
+      "base": "output",
+      "glob": "native/actual.png",
+      "role": "actual"
+    },
+    {
+      "base": "output",
+      "glob": "native/native-report.json",
+      "role": "native-report"
+    },
+    {
+      "base": "output",
+      "glob": "native/capture.json",
+      "role": "native-report"
+    }
+  ],
+  "protected_paths": [],
+  "checks": [
+    {
+      "id": "queue-hierarchy",
+      "kind": "visual",
+      "description": "Quiet card hierarchy, public TQ-LAYOUT and TQ-VIS rules; native-image inspection deferred by D0 protocol",
+      "source": "public/brief.md and public/reference.svg"
+    },
+    {
+      "id": "adaptive-colors",
+      "kind": "visual",
+      "description": "Public palette and state mapping in native rendering; inspection deferred by D0 protocol",
+      "source": "public/brief.md TQ-COLOR-01 and TQ-COLOR-02"
+    }
+  ]
+}

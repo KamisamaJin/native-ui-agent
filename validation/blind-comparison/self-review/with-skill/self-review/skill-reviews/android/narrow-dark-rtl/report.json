@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "status": "failed",
+  "capture": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/self-review/captures/android/narrow-dark-rtl/capture.json",
+  "capture_sha256": "032a0b01d04afa819ce08b7c1fd31caa2b8c3583b3576d51c7879ffb8ea80755",
+  "platform": "android",
+  "target": {
+    "description": "narrow-dark-rtl public-rule self-inspection",
+    "sources": [
+      "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReplyTransferPanel.kt",
+      "public/brief.md",
+      "public/reference.svg",
+      "self-review/fixtures/narrow-dark-rtl.json"
+    ]
+  },
+  "environment": {
+    "theme": "dark",
+    "font_scale": 1,
+    "layout_direction": "RTL",
+    "viewport": "320 x 800",
+    "native_output_transport": "common capture.py and warmed native host; iOS AX unavailable",
+    "ios_category": "large"
+  },
+  "checks": [
+    {
+      "id": "queue-hierarchy",
+      "kind": "visual",
+      "description": "Quiet card hierarchy, public TQ-LAYOUT and TQ-VIS rules; native-image inspection deferred by D0 protocol",
+      "source": "public/brief.md and public/reference.svg",
+      "required": true,
+      "status": "passed",
+      "observed": "Inspected native render (or exact identical empty-state counterpart) has separated title, summary, aggregate, file rows and controls in the inspected viewport. This is visual judgment within this case only.",
+      "method": "Model/human visual judgment; not an exact native measurement",
+      "evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/self-review/captures/android/narrow-dark-rtl/artifacts/000-actual.png"
+    },
+    {
+      "id": "adaptive-colors",
+      "kind": "visual",
+      "description": "Public palette and state mapping in native rendering; inspection deferred by D0 protocol",
+      "source": "public/brief.md TQ-COLOR-01 and TQ-COLOR-02",
+      "required": true,
+      "status": "failed",
+      "observed": "Dark host surrounds a white component: sampled panel RGB 255,255,255; specified dark panel RGB 24,34,53. Light primary/state colors are also present.",
+      "method": "Model/human visual judgment; not an exact native measurement",
+      "evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/self-review/captures/android/narrow-dark-rtl/artifacts/000-actual.png"
+    }
+  ],
+  "created_at": "2026-10-18T09:07:43.335110+00:00",
+  "scope": "Configured component checks only; page integration is a separate verification."
+}

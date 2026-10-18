@@ -1,0 +1,70 @@
+{
+  "anonymous_id": "submission-06e6f6",
+  "observed_issues": [
+    {
+      "issue_id": "ANDROID-COLOR-001",
+      "rule_id": "TQ-COLOR-01",
+      "platform": "android",
+      "triggering_input": {
+        "fixture": "self-review/empty.json",
+        "dark": true,
+        "width": 390,
+        "font_scale": 1
+      },
+      "actual_observation": "In the common dark host, the panel interior remains #FFFFFF, with light-palette primary text #17243B and neutral text #526279. A second dark RTL/accessibility capture also has a white panel.",
+      "public_requirement": "The dark panel must be #182235, primary text #F2F5FB, and neutral text #B9C5D9.",
+      "evidence_paths": [
+        "submission-06e6f6/ANDROID-COLOR-001/00-actual.png",
+        "submission-06e6f6/ANDROID-COLOR-001/01-semantics.json",
+        "submission-06e6f6/ANDROID-COLOR-001/02-actual.png",
+        "submission-06e6f6/ANDROID-COLOR-001/03-color-samples.json"
+      ],
+      "measured_evidence": {
+        "panel_sample_logical_xy": [
+          200,
+          40
+        ],
+        "actual_panel_rgb": [
+          255,
+          255,
+          255
+        ],
+        "expected_panel_rgb": [
+          24,
+          34,
+          53
+        ],
+        "host_background_rgb": [
+          12,
+          20,
+          36
+        ]
+      },
+      "execution_method": "Observed native PNGs, Pillow flat-color sampling, and native Compose text-color semantics. The fixture uses the common host’s original Reply dark theme; global OS night-mode switching was not independently exercised."
+    },
+    {
+      "issue_id": "IOS-REFLOW-001",
+      "rule_id": "TQ-LAYOUT-04",
+      "platform": "ios",
+      "triggering_input": {
+        "fixture": "self-review/narrow-normal.json",
+        "viewport_width": 320,
+        "supplied_panel_width": 288,
+        "font_category": "large",
+        "expanded": true,
+        "dark": true
+      },
+      "actual_observation": "At 288 points supplied width, Show less remains trailing beside the two-line title. The failed row Retry remains trailing beside its file text. Both controls retain the wide arrangement.",
+      "public_requirement": "At supplied width 340 or less, put toggle on its own leading-aligned line below the title and retry below the failed status with an 8-point gap, aligned to the text column’s leading edge.",
+      "evidence_paths": [
+        "submission-06e6f6/IOS-REFLOW-001/00-actual.png",
+        "submission-06e6f6/IOS-REFLOW-001/01-narrow-normal.json",
+        "submission-06e6f6/IOS-REFLOW-001/02-ios-ocr.json",
+        "submission-06e6f6/IOS-REFLOW-001/03-TransferToastPanel.swift"
+      ],
+      "execution_method": "Observed simulator native PNG and Apple Vision OCR positions, corroborated by read-only production source inspection. The common snapshot captures the native component’s rendered state; no later event-loop settling behavior was separately measured."
+    }
+  ],
+  "source_review_sha256": "a07053146bda1ca1af4e60bfd16298c4edb244eb07b27ec9d3abfe659bc709cb",
+  "redactions": "Worker absolute path replaced by anonymous ID; tool names neutralized. Product observations/rules/numeric values unchanged. Only observed issues disclosed; workflow and passing-check counts withheld to reduce treatment clues."
+}

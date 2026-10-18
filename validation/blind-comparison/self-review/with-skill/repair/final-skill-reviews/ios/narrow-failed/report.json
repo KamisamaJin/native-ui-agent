@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "status": "passed",
+  "capture": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/ios/narrow-failed/capture.json",
+  "capture_sha256": "03038528d473654e68462628b935395181523ab807f3cc4a77f25ce8885d5db9",
+  "platform": "ios",
+  "target": {
+    "description": "narrow-light",
+    "sources": [
+      "alerttoast/Sources/AlertToast/TransferToastPanel.swift",
+      "public/brief.md",
+      "public/reference.svg",
+      "self-review/fixtures/narrow-light.json"
+    ]
+  },
+  "environment": {
+    "theme": "light",
+    "font_scale": 1,
+    "layout_direction": "LTR",
+    "viewport": "320 x 800",
+    "native_output_transport": "common capture.py and warmed native host; iOS AX unavailable",
+    "ios_category": "large"
+  },
+  "checks": [
+    {
+      "id": "queue-hierarchy",
+      "kind": "visual",
+      "description": "Quiet card hierarchy, public TQ-LAYOUT and TQ-VIS rules; native-image inspection deferred by D0 protocol",
+      "source": "public/brief.md and public/reference.svg",
+      "required": true,
+      "status": "passed",
+      "observed": "Full native image inspected. Visible hierarchy, spacing and controls are separated. Narrow SwiftUI layouts put toggle on its own leading-aligned line; the narrow failed-row check puts Retry below status.",
+      "method": "Model/human visual judgment; not an exact native measurement",
+      "evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/ios/narrow-failed/artifacts/000-actual.png"
+    },
+    {
+      "id": "adaptive-colors",
+      "kind": "visual",
+      "description": "Public palette and state mapping in native rendering; inspection deferred by D0 protocol",
+      "source": "public/brief.md TQ-COLOR-01 and TQ-COLOR-02",
+      "required": true,
+      "status": "passed",
+      "observed": "Native panel flat-color sample matches the requested light/dark appearance. Visible primary text, state colors and tracks remain readable; Android actual native night-mode mask is independently recorded.",
+      "method": "Model/human visual judgment; not an exact native measurement",
+      "evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/ios/narrow-failed/artifacts/000-actual.png"
+    }
+  ],
+  "created_at": "2026-10-18T09:27:56.993763+00:00",
+  "scope": "Configured component checks only; page integration is a separate verification."
+}

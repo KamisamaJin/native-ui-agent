@@ -1,0 +1,27 @@
+--- a/Sources/AlertToast/TransferToastPanel.swift
++++ b/Sources/AlertToast/TransferToastPanel.swift
+@@ -43,11 +43,6 @@
+     var accent: Color { color(0x275DD8, 0x9DBDFF) }
+     var error: Color { color(0xB3313B, 0xFFADB3) }
+     var success: Color { color(0x13795B, 0x7CDDBB) }
+-}
+-
+-private struct TransferWidthPreference: PreferenceKey {
+-    static var defaultValue: CGFloat = 358
+-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
+ }
+ 
+ public struct TransferToastPanel: View {
+@@ -140,9 +135,10 @@
+         .background(RoundedRectangle(cornerRadius: 20).fill(colors.panel))
+         .overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(colors.border, lineWidth: 1))
+         .background(GeometryReader { geometry in
+-            Color.clear.preference(key: TransferWidthPreference.self, value: geometry.size.width)
++            Color.clear
++                .onAppear { panelWidth = geometry.size.width }
++                .onChange(of: geometry.size.width) { panelWidth = $0 }
+         })
+-        .onPreferenceChange(TransferWidthPreference.self) { panelWidth = $0 }
+         .accessibilityElement(children: .contain)
+         .accessibilityIdentifier("transfer.panel")
+         .frame(maxWidth: .infinity, alignment: .center)

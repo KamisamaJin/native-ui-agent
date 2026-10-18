@@ -1,0 +1,20 @@
+diff --git a/Package.swift b/Package.swift
+index b259d6f..9991a7c 100644
+--- a/Package.swift
++++ b/Package.swift
+@@ -16,6 +16,7 @@ let package = Package(
+             targets: ["AlertToast"]),
+     ],
+     dependencies: [
++        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", .exact("1.19.2")),
+         // Dependencies declare other packages that this package depends on.
+         // .package(url: /* package url */, from: "1.0.0"),
+     ],
+@@ -27,6 +28,6 @@ let package = Package(
+             dependencies: []),
+         .testTarget(
+             name: "AlertToastTests",
+-            dependencies: ["AlertToast"]),
++            dependencies: ["AlertToast", .product(name: "SnapshotTesting", package: "swift-snapshot-testing")]),
+     ]
+ )

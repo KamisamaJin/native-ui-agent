@@ -1,0 +1,67 @@
+{
+  "reported_failures": [
+    {
+      "platform": "ios",
+      "case": "I04",
+      "rule_id": "TQ-LAYOUT-04",
+      "status": "locally_corrected",
+      "before_evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/feedback/evidence/I04/actual.png",
+      "after_evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/ios/I04/native/actual.png",
+      "observation": "Toggle is on its own line below the single-line title at supplied width 288."
+    },
+    {
+      "platform": "ios",
+      "case": "I06",
+      "rule_id": "TQ-LAYOUT-04",
+      "status": "locally_corrected",
+      "before_evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/feedback/evidence/I06/actual.png",
+      "after_evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/ios/I06/native/actual.png",
+      "observation": "Toggle is on its own line below title."
+    },
+    {
+      "platform": "ios",
+      "case": "I06",
+      "rule_id": "TQ-LAYOUT-05",
+      "status": "locally_corrected",
+      "before_evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/feedback/evidence/I06/actual.png",
+      "after_evidence": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/blind-comparison/cache/unit-07b638/repair/final-captures/ios/I06/native/actual.png",
+      "observation": "Compact toggle is at logical leading/right in RTL; OCR glyph trailing edge matches title within 2 points."
+    }
+  ],
+  "cause_change": [
+    {
+      "file": "alerttoast/Sources/AlertToast/TransferToastPanel.swift",
+      "cause": "The original preference-based width observation did not drive compact layout in the captured narrow host. Source initialized width at 358, making default-size narrow layouts remain wide. This is an implementation diagnosis from source plus before/after rendering, not a measured internal-state trace.",
+      "change": "Removed TransferWidthPreference and its callback. Observe the geometry width directly on appearance and on subsequent width changes, retaining the existing width and accessibility-category layout rules.",
+      "scope": "One localized SwiftUI production edit, no new dependency or OS minimum."
+    },
+    {
+      "file": "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReplyTransferPanel.kt",
+      "change": "No production change. Final-source receipt captured on the corrected common native-night host. Earlier light-in-dark self-review evidence is preserved and excluded as a product defect per coordinator feedback."
+    }
+  ],
+  "repair_iteration_count": 1,
+  "observed_unresolved_confirmed_feedback_failures": [],
+  "unexecuted_or_limited": [
+    {
+      "item": "iOS native retry/toggle action execution",
+      "status": "not_executed",
+      "reason": "Common AX export unavailable; empty AX and no real activation are not considered UI defects or passes."
+    },
+    {
+      "item": "Lower rows below initial viewport for I05 accessibility panels",
+      "status": "needs_review",
+      "reason": "No bottom viewport capture or live scroll interaction was executed."
+    },
+    {
+      "item": "Live resize after presentation, physical touch, screen-reader focus order and full app integration",
+      "status": "not_executed"
+    },
+    {
+      "item": "Runtime execution on minimum iOS 14 / macOS 11",
+      "status": "not_executed",
+      "reason": "Source uses compatible onAppear/onChange APIs; native capture ran on the supplied simulator."
+    }
+  ],
+  "scope": "Own disclosed feedback, initial inputs, public smoke and one previously public self-chosen narrow failure case only. No hidden fixtures/results used. Build/capture success is not acceptance."
+}
