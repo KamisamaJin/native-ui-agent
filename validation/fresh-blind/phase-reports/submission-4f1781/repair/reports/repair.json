@@ -1,0 +1,254 @@
+{
+  "schemaVersion": 1,
+  "phase": "one repair interval",
+  "startedAtUTC": "2026-10-18T12:50:33Z",
+  "endedAtUTC": "2026-10-18T13:05:33.855810Z",
+  "durationSeconds": 900.856,
+  "budgetSeconds": 900,
+  "basis": "Only own sealed self-review and public design, own source, initial fixtures and native evidence. No independent grader feedback or hidden cases.",
+  "status": "ready_for_final_source_sealing; production edits stopped",
+  "timeline": [
+    {
+      "atUTC": "2026-10-18T12:50:33Z",
+      "activity": "Read complete common repair prompt and own sealed review."
+    },
+    {
+      "activity": "Change Android direction fallback; Swift accessibility containment, native row exposure, disabled button style and consent hit area."
+    },
+    {
+      "activity": "Recapture Android initial_05 and iOS initial_01/02; inspect native geometry, events and screenshots."
+    },
+    {
+      "activity": "Extend same containment repair to confirmation card and ensure short consent labels also contribute a minimum target height."
+    },
+    {
+      "activity": "Final-source iOS14/macOS11 typechecks and recaptures of initial_06, initial_02 and initial_03 as available."
+    },
+    {
+      "activity": "Inspect evidence, preserve self-review, record final hashes and stop production edits."
+    }
+  ],
+  "productionFiles": [
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitRescheduleModels.kt",
+      "beforeSha256": "59b34c73ec496dfe43c646f984661e304e79ec036583b4ce69abfbf449b55303",
+      "afterSha256": "59b34c73ec496dfe43c646f984661e304e79ec036583b4ce69abfbf449b55303",
+      "changed": false
+    },
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt",
+      "beforeSha256": "b437649c9ad36b06581bcd51f021644d3a2a3fc1027f3be9dec4e22b9792e2a3",
+      "afterSha256": "89c94e328998c1768bb60c16563e179ad5e5e39d0504e45ddf37c46880615be9",
+      "changed": true
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitRescheduleModels.swift",
+      "beforeSha256": "18d648375416ce751840e7d2d9b0af94bcc850a3fa110a99e7d0f494df162a07",
+      "afterSha256": "18d648375416ce751840e7d2d9b0af94bcc850a3fa110a99e7d0f494df162a07",
+      "changed": false
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+      "beforeSha256": "5a79e6c42f5fdeb91dbde7fa54b9252fdce80effa869933e65836d7fa0d8e54e",
+      "afterSha256": "cb4b4c98ba8d3052d12e2e25bead715f7ccc5f820f0af9cc1fe581f90a0d911e",
+      "changed": true
+    }
+  ],
+  "changedFiles": [
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt",
+    "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift"
+  ],
+  "selfReview": {
+    "path": "reports/self-review.json",
+    "sha256": "ad97a0a9de3f9259f40e7c9a4026c72ea741f825e485919c59bfdb9261e6c205",
+    "checkpointSha256": "ad97a0a9de3f9259f40e7c9a4026c72ea741f825e485919c59bfdb9261e6c205",
+    "unchanged": true,
+    "modifiedDuringInterval": false
+  },
+  "scope": {
+    "onlyNewVisitProductionFilesEdited": true,
+    "modelsAndPublicSignaturesUnchanged": true,
+    "upstreamProductionOrHostOrSupportModified": false,
+    "independentFeedbackRead": false,
+    "holdoutsRead": false,
+    "simulatorUsed": "BB2FFB37-F844-433C-A2BD-C82DFF842B07"
+  },
+  "findingsAddressed": [
+    {
+      "findingId": "A-RTL-01",
+      "platform": "Android",
+      "status": "confirmed_fixed_in_observed_case",
+      "caseIds": [
+        "initial_05"
+      ],
+      "ruleIds": [
+        "R17"
+      ],
+      "change": "Use TextDirection.ContentOrLtr so numeric-only display strings keep their supplied order while strong RTL content still uses its native direction.",
+      "evidence": [
+        "scratch/repair-android-05/000-initial.png",
+        "scratch/repair-android-05/observation.json"
+      ],
+      "result": "Actual image reads14:00–16:00 in RTL. Shared context remains right-aligned. Retry emits exactly one retry; bottom reached."
+    },
+    {
+      "findingId": "I-ID-01",
+      "platform": "iOS",
+      "status": "confirmed_fixed_in_recaptured_cases; remaining modes pending independent final capture",
+      "caseIds": [
+        "initial_01",
+        "initial_02",
+        "initial_06"
+      ],
+      "ruleIds": [
+        "R13"
+      ],
+      "change": "Give the panel and nested confirmation card explicit accessibility containment before setting their container identifiers, preventing inheritance from replacing descendant IDs.",
+      "evidence": [
+        "scratch/repair-ios-01/observation.json",
+        "scratch/repair-ios-02-final/observation.json",
+        "scratch/repair-ios-06/observation.json"
+      ],
+      "result": "Rows, controls, text/context and containers retain distinct required native IDs. Confirmation and reference are distinct. Scripted native targets resolve uniquely and activations execute. Loading/unavailable modes were not recaptured during this interval."
+    },
+    {
+      "findingId": "I-ROW-02",
+      "platform": "iOS",
+      "status": "confirmed_fixed_in_observed_rows",
+      "caseIds": [
+        "initial_01",
+        "initial_02"
+      ],
+      "ruleIds": [
+        "R05",
+        "R13"
+      ],
+      "change": "Remove the accessibilityElement(children:.ignore) replacement around each Button; retain native Button role/disabled state and add only selected trait and coherent label.",
+      "evidence": [
+        "scratch/repair-ios-01/observation.json",
+        "scratch/repair-ios-02-final/observation.json"
+      ],
+      "result": "Rows expose native role_raw9. Unavailable s10 is enabled=false and blocked with no event. Eligible f09 emits select_slot:f09 once; repeated selected activation emits none; confirm emits confirm:f09. Selected rows remain selected=true."
+    },
+    {
+      "findingId": "I-CONTRAST-03",
+      "platform": "iOS",
+      "status": "confirmed_fixed_in_observed_light_and_dark_controls",
+      "caseIds": [
+        "initial_01",
+        "initial_02"
+      ],
+      "ruleIds": [
+        "R14",
+        "R17"
+      ],
+      "change": "Replace PlainButtonStyle with a small native ButtonStyle that preserves the specified idle palette and applies opacity only while pressed. Native disabled semantics remain on the actual Button.",
+      "evidence": [
+        "scratch/repair-review/ios-unavailable-row.png",
+        "scratch/repair-review/ios-disabled-confirm.png",
+        "scratch/repair-review/ios-dark-disabled-confirm.png",
+        "scratch/repair-review/ios-01-checkpoints.jpg",
+        "scratch/repair-review/ios-02-final-checkpoints.jpg"
+      ],
+      "result": "Light unavailable row dominant foreground/fill pixels areRGB82,97,116 /244,246,249. Light disabled confirm isRGB102,112,133 /228,231,236. Dark disabled confirm isRGB184,196,212 /52,64,84. These match the public tokens and eliminate the extra disabled fade."
+    },
+    {
+      "findingId": "I-TARGET-04",
+      "platform": "iOS",
+      "status": "native_geometry_resolved_in_observed_case; boundary_touch_unassessed",
+      "caseIds": [
+        "initial_02"
+      ],
+      "ruleIds": [
+        "R13"
+      ],
+      "change": "Add vertical padding around Toggle, a full rectangular content shape, and a36pt minimum label height so content plus padding supplies at least44pt without replacing native toggle semantics.",
+      "evidence": [
+        "scratch/repair-ios-02-final/observation.json",
+        "scratch/repair-review/ios-02-final-checkpoints.jpg"
+      ],
+      "result": "Native switch remains role_raw40 with frame256×44.6667pt. Value changes0→1 after one fee_accepted:true callback; confirmation enables and emits confirm:e17. Selecting e08 emits once and hides consent. Physical edge-hit testing was not performed."
+    },
+    {
+      "findingId": "I-ACTION-EVIDENCE-05",
+      "platform": "iOS",
+      "status": "evidence_gap_resolved_for_recaptured_actions; retry remains unassessed",
+      "caseIds": [
+        "initial_01",
+        "initial_02",
+        "initial_06"
+      ],
+      "ruleIds": [],
+      "change": "The identifier/control repairs allow common native scripted actions to execute instead of stopping at missing target searches.",
+      "evidence": [
+        "scratch/repair-ios-01/observation.json",
+        "scratch/repair-ios-02-final/observation.json",
+        "scratch/repair-ios-06/observation.json"
+      ],
+      "result": "Observed native select/selected-repeat/fee/confirm/Done actions now have callback evidence. Done emits exactly once. Disabled activations are blocked. iOS Retry was not recaptured."
+    }
+  ],
+  "verification": {
+    "nativeCaptures": [
+      {
+        "folder": "scratch/repair-android-05",
+        "status": "complete",
+        "seconds": 9.871,
+        "observation": "scratch/repair-android-05/observation.json"
+      },
+      {
+        "folder": "scratch/repair-ios-01",
+        "status": "passed",
+        "seconds": 165.387,
+        "observation": "scratch/repair-ios-01/observation.json"
+      },
+      {
+        "folder": "scratch/repair-ios-02",
+        "status": "passed",
+        "seconds": 157.614,
+        "observation": "scratch/repair-ios-02/observation.json"
+      },
+      {
+        "folder": "scratch/repair-ios-02-final",
+        "status": "passed",
+        "seconds": 145.162,
+        "observation": "scratch/repair-ios-02-final/observation.json"
+      },
+      {
+        "folder": "scratch/repair-ios-06",
+        "status": "passed",
+        "seconds": 35.558,
+        "observation": "scratch/repair-ios-06/observation.json"
+      }
+    ],
+    "nativeEvidenceLedger": "reports/repair-evidence-ledger.json",
+    "minimumVersionTypechecks": [
+      {
+        "target": "arm64-apple-ios14.0-simulator",
+        "status": "pass",
+        "log": "scratch/repair-final-ios14-typecheck.log"
+      },
+      {
+        "target": "arm64-apple-macos11.0",
+        "status": "pass",
+        "log": "scratch/repair-final-macos11-typecheck.log"
+      }
+    ],
+    "commands": "Each fresh capture used python3 support/common/capture.py --platform <platform> --project <own project> --fixture operator-inputs/d0/<initial case>.json --output <listed fresh scratch path>, with the assigned simulator for iOS. Complete argv, elapsed times, source hashes and native build/test commands are retained in each capture.json and the repair evidence ledger. Direct minimum-version swiftc commands are recorded in the tool transcript.",
+    "sourceVersionNote": "Early01/02 evidence preceded the confirmation-only containment and final label minimum additions. Final02,06 and03 capture manifests carry the sealed final Swift source hash. Shared style/row fixes did not change after their initial verification."
+  },
+  "largeTextCapture": {
+    "path": "scratch/repair-ios-03",
+    "status": "Started within interval; full exported records not reviewed before sealing. Live screenshot scratch/repair-ios-live-03.png shows expanded text, summary and final action reachable; callback evidence unassessed. Any completed outputs are supplemental unreviewed material."
+  },
+  "remainingLimits": [
+    "Large-text initial_03 complete recapture records were not reviewed before sealing; no repaired03 runtime claim is made.",
+    "Independent final capture of all initial and unseen cases remains pending.",
+    "No caller replacement-model sequences, invalid selection warning transitions or fee-off action were supplied in the exercised initial actions.",
+    "iOS loading/unavailable modes and Retry callback were not recaptured during repair.",
+    "No actual VoiceOver/TalkBack session, physical edge-hit testing, macOS runtime or oldest-OS runtime testing.",
+    "Android capture uses common Compose semantics activation/ScrollState evidence, not OS physical gestures.",
+    "The consent44.6667pt geometry is confirmed in the supplied fee case; minimum short-label behavior is additionally established by the content-sized native layout source."
+  ],
+  "finalStatement": "Production edits stopped. Self-review is unchanged. Ready for independent final source sealing and capture."
+}

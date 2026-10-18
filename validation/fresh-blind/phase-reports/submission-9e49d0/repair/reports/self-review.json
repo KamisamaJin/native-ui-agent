@@ -1,0 +1,686 @@
+{
+  "phase": "read-only self-review",
+  "startedAtUTC": "2026-10-18T12:43:42Z",
+  "endedAtUTC": "2026-10-18T12:49:41Z",
+  "durationSeconds": 359.671,
+  "activeWallBudgetSeconds": 720,
+  "timeline": [
+    {
+      "atUTC": "2026-10-18T12:43:42Z",
+      "activity": "Read common prompt and six initial fixtures; inventory supplied native observations."
+    },
+    {
+      "order": 2,
+      "activity": "Reviewed native callback/state records and contact sheets for all six cases on each platform."
+    },
+    {
+      "order": 3,
+      "activity": "Reviewed overlapping long-content scroll screenshots and inspected iOS wrapper/control node pairs; sampled disabled colors from supplied PNGs."
+    },
+    {
+      "atUTC": "2026-10-18T12:49:41Z",
+      "activity": "Saved findings and evidence ledger; verified D0 production fingerprints unchanged."
+    }
+  ],
+  "findings": [
+    {
+      "id": "android-rtl-time-order",
+      "platform": "android",
+      "caseIds": [
+        "initial_05"
+      ],
+      "ruleIds": [
+        "R17"
+      ],
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseCluster": "android-bidi-display-strings",
+      "description": "The RTL current appointment visibly renders 16:00–14:00 although the caller supplied 14:00–16:00. Date/time display strings are not kept in their intact endpoint order. The native text remains the original string, so this is a visual bidi-order failure, not caller-data mutation.",
+      "evidence": [
+        {
+          "path": "review-evidence/android/initial_05/000-initial.png",
+          "sha256": "fadf5360d42ee36ebec53395721189ca04fa853e2cf1bbb287031884effcf8f3",
+          "checkpoint": "initial",
+          "snapshotIndex": 0
+        },
+        {
+          "path": "review-evidence/android/initial_05/observation.json",
+          "sha256": "114eb4da96dc235cd86633c5fe04485efd9d19cc8e1d84ba094bdfd5433b9de2",
+          "snapshotIndex": 0
+        },
+        {
+          "path": "operator-inputs/d0/initial_05.json",
+          "sha256": "1a020d2159fceb888fcd55724005dfc0b83a3dbd5ce8a0b2f2ab198fc7d8d802"
+        }
+      ],
+      "sourceLocation": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt:103",
+      "causeHypothesis": "VisitText uses inherited RTL paragraph direction for neutral/numeric time ranges; no display-string bidi isolation or content direction is supplied."
+    },
+    {
+      "id": "ios-row-accessibility-split",
+      "platform": "ios",
+      "caseIds": [
+        "initial_01",
+        "initial_02",
+        "initial_03"
+      ],
+      "ruleIds": [
+        "R05",
+        "R13"
+      ],
+      "ruleCasePairs": [
+        {
+          "caseId": "initial_01",
+          "ruleIds": [
+            "R05",
+            "R13"
+          ]
+        },
+        {
+          "caseId": "initial_02",
+          "ruleIds": [
+            "R13"
+          ]
+        },
+        {
+          "caseId": "initial_03",
+          "ruleIds": [
+            "R05",
+            "R13"
+          ]
+        }
+      ],
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseCluster": "ios-row-accessibility-wrapper",
+      "description": "Each visit.slot ID is on an XCUI Other wrapper rather than its actual Button. The unavailable labelled row s10 is enabled=true at snapshot 3, while the separate unlabelled Button at the same frame is enabled=false. After selecting f09, its wrapper is selected=true while its actual Button remains selected=false and has no visit.slot ID or group-day context. The same wrapper/control split occurs in the fee and long-content cases, including w11 being exposed enabled=true. The disabled callback remains safely absent; the failure is native row state and meaningful control exposure.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_01/observation.json",
+          "sha256": "01d3ffcaf1cd00428df36c5144d99883162eaff29b7655f4df808565352c3571",
+          "snapshotIndex": 3
+        },
+        {
+          "path": "review-evidence/ios/initial_01/observation.json",
+          "sha256": "01d3ffcaf1cd00428df36c5144d99883162eaff29b7655f4df808565352c3571",
+          "snapshotIndex": 7
+        },
+        {
+          "path": "review-evidence/ios/initial_02/observation.json",
+          "sha256": "14522ff788057b2588cfda806584249149156ff0c5bec29e95353eabfabd06ae",
+          "snapshotIndex": 0
+        },
+        {
+          "path": "review-evidence/ios/initial_03/observation.json",
+          "sha256": "4ad90caa9a3bcc0c9bb07cf6f71b5145d5be29346d314495d02c9a6e39430d7f",
+          "snapshotIndex": 7
+        }
+      ],
+      "nativeDetails": {
+        "initial_01_snapshot_3": {
+          "row_wrapper_node": 22,
+          "wrapper_role_raw": 1,
+          "wrapper_enabled": true,
+          "button_node": 30,
+          "button_role_raw": 9,
+          "button_enabled": false,
+          "button_identifier": ""
+        },
+        "initial_01_snapshot_7": {
+          "selected_wrapper_node": 19,
+          "wrapper_selected": true,
+          "button_node": 29,
+          "button_selected": false,
+          "button_identifier": ""
+        }
+      },
+      "sourceLocation": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift:361",
+      "causeHypothesis": "Applying accessibilityElement(children: .ignore), label and selected traits outside the disabled Button creates an extra accessibility wrapper instead of annotating the native control."
+    },
+    {
+      "id": "ios-disabled-palette-faded",
+      "platform": "ios",
+      "caseIds": [
+        "initial_01",
+        "initial_02",
+        "initial_03"
+      ],
+      "ruleIds": [
+        "R14",
+        "R17"
+      ],
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseCluster": "ios-disabled-button-rendering",
+      "description": "Unavailable rows and disabled confirmation buttons are faded by native disabled styling in addition to the explicitly chosen readable disabled palette. In initial_01 the row text is visibly pale: common solid text pixels are #A6AEB8 against #FAFBFC (about 2.16:1), instead of specified secondary #526174 on #F4F6F9. Disabled primary text/fill are #ABB1BD/#F1F3F5 (about 1.94:1), instead of #667085/#E4E7EC. The long unavailable reason in initial_03 receives the same fade. The dark disabled primary in initial_02 is also altered to #6F7989/#252E3E. This breaks the full-opacity readable unavailable treatment and disabled contrast/tokens.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_01/attachments/BAE9E5DC-1E3A-4F20-941A-585C403BE42E.png",
+          "sha256": "144556f8a71ff0b5578181e59b726e09e589e77f36100609a82dce5531785647",
+          "checkpoint": "step_2",
+          "snapshotIndex": 3
+        },
+        {
+          "path": "review-evidence/ios/initial_02/attachments/A9A59B1E-DF7C-4A69-9B49-CDCAB6B8032A.png",
+          "sha256": "a639405c458f4fa7ab10a45541d0cf70eb345d6207f8f11ed698b70298717d4b",
+          "checkpoint": "step_2",
+          "snapshotIndex": 3
+        },
+        {
+          "path": "review-evidence/ios/initial_03/attachments/4AB49554-6440-4811-8895-44A70C5AC30D.png",
+          "sha256": "5116be266d34a492bfab0bbd492c2628b9cbca39f6aa3b36451cc2ef40ecc2b5",
+          "checkpoint": "action-1-reveal-2-down",
+          "snapshotIndex": 7
+        },
+        {
+          "path": "reports/review-pixel-observations.json",
+          "sha256": "f2f1debaddf721a832dddd25fb66c09327d9e562ef2b116904faf0f335e3fa8a"
+        },
+        {
+          "path": "reports/review-initial_01-visit-slot-s10.png",
+          "sha256": "47d5c68ae70ebf127132e0e376447ae70f5faff5338fc69972d739909c97ec99"
+        },
+        {
+          "path": "reports/review-initial_01-visit-confirm.png",
+          "sha256": "534e36327d08bc8719962faf8a3c6a78f3c1dc6a91753c27e31e6da855a2d9fb"
+        },
+        {
+          "path": "reports/review-initial_02-visit-confirm.png",
+          "sha256": "02e259bd825d90f3d3f4b2970b99dd5644582a358e6d3ba9c9f2c890496a24dc"
+        }
+      ],
+      "sourceLocation": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift:361",
+      "causeHypothesis": "PlainButtonStyle responds to disabled environment by fading the already token-colored label and surface; the same style is used by primaryButton."
+    },
+    {
+      "id": "ios-consent-touch-size-unresolved",
+      "platform": "ios",
+      "caseIds": [
+        "initial_02"
+      ],
+      "ruleIds": [
+        "R13"
+      ],
+      "status": "suspected_issue",
+      "certainty": "low",
+      "rootCauseCluster": "ios-consent-native-target-size-unresolved",
+      "description": "The exposed consent Switch has an AX frame about 36.67pt high and its native switch leaf is 28pt high, below the requested 44pt target. Source adds frame(minHeight: 44), so these AX bounds do not prove the actual touch target is undersized. A physical edge-target test or hit-region measurement is needed before calling this a confirmed failure. The supplied native switch tap does succeed and updates value 0→1.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_02/observation.json",
+          "sha256": "14522ff788057b2588cfda806584249149156ff0c5bec29e95353eabfabd06ae",
+          "snapshotIndex": 4
+        },
+        {
+          "path": "review-evidence/ios/initial_02/observation.json",
+          "sha256": "14522ff788057b2588cfda806584249149156ff0c5bec29e95353eabfabd06ae",
+          "snapshotIndex": 5
+        }
+      ],
+      "sourceLocation": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift:291",
+      "limits": "AX frame, visual glyph bounds and actual native touch bounds differ. No confirmed case×rule failure is counted."
+    }
+  ],
+  "rootCauseClusters": [
+    {
+      "id": "android-bidi-display-strings",
+      "platform": "android",
+      "findingIds": [
+        "android-rtl-time-order"
+      ],
+      "status": "confirmed_failure"
+    },
+    {
+      "id": "ios-row-accessibility-wrapper",
+      "platform": "ios",
+      "findingIds": [
+        "ios-row-accessibility-split"
+      ],
+      "status": "confirmed_failure"
+    },
+    {
+      "id": "ios-disabled-button-rendering",
+      "platform": "ios",
+      "findingIds": [
+        "ios-disabled-palette-faded"
+      ],
+      "status": "confirmed_failure"
+    },
+    {
+      "id": "ios-consent-native-target-size-unresolved",
+      "platform": "ios",
+      "findingIds": [
+        "ios-consent-touch-size-unresolved"
+      ],
+      "status": "suspected_issue"
+    }
+  ],
+  "counts": {
+    "initial": {
+      "android": {
+        "confirmedRootCauseClusters": 1,
+        "confirmedFindings": 1,
+        "suspectedFindings": 0,
+        "failingCaseRulePairs": 1
+      },
+      "ios": {
+        "confirmedRootCauseClusters": 2,
+        "confirmedFindings": 2,
+        "suspectedFindings": 1,
+        "failingCaseRulePairs": 11
+      }
+    },
+    "holdout": {
+      "android": null,
+      "ios": null,
+      "reason": "Not supplied or accessed in this review."
+    }
+  },
+  "visualAssessments": [
+    {
+      "platform": "android",
+      "caseId": "initial_01",
+      "score": 5,
+      "rationale": "Reference hierarchy, rounded surfaces, generous section spacing, native typography and full-width action treatment are retained in the reviewed views; no visible clipping or overlap found.",
+      "screenshots": [
+        {
+          "path": "review-evidence/android/initial_01/000-initial.png",
+          "sha256": "b04c3da1ba7b9358ce724761fd7ad42ec6cae4b687ea90d52cc7854c994abefe",
+          "checkpoint": "initial",
+          "snapshotIndex": 0
+        },
+        {
+          "path": "review-evidence/android/initial_01/005-after_2.png",
+          "sha256": "798fdf2e3100f07bee11923d55e77820a81270a5e56fe54c004a024a1329cdf7",
+          "checkpoint": "after_2",
+          "snapshotIndex": 5
+        },
+        {
+          "path": "review-evidence/android/initial_01/009-after_select.png",
+          "sha256": "bb02f1a57a823e232195ed6bbf229b0ad233f9daa7f577c3d17846644db336ef",
+          "checkpoint": "after_select",
+          "snapshotIndex": 9
+        },
+        {
+          "path": "review-evidence/android/initial_01/012-after_confirm.png",
+          "sha256": "fae270d691a7f422f32844a5580a3905cbc20998bfcca7499fb461a8e33d4999",
+          "checkpoint": "after_confirm",
+          "snapshotIndex": 12
+        }
+      ]
+    },
+    {
+      "platform": "android",
+      "caseId": "initial_02",
+      "score": 5,
+      "rationale": "Reference hierarchy, rounded surfaces, generous section spacing, native typography and full-width action treatment are retained in the reviewed views; no visible clipping or overlap found.",
+      "screenshots": [
+        {
+          "path": "review-evidence/android/initial_02/000-initial.png",
+          "sha256": "01ae824e3efeeaad535dd9025d3002d2f26af9c01195d223417ca86c2d7e2789",
+          "checkpoint": "initial",
+          "snapshotIndex": 0
+        },
+        {
+          "path": "review-evidence/android/initial_02/007-after_fee_on.png",
+          "sha256": "826a9cb01d1b56c7896f49ae4e88efadad4b6c12c8f959540a2e78738b4628af",
+          "checkpoint": "after_fee_on",
+          "snapshotIndex": 7
+        },
+        {
+          "path": "review-evidence/android/initial_02/011-after_select.png",
+          "sha256": "13207f045085a51097042104c8db628b4280ed09a8fccf73f8ba16e7481da532",
+          "checkpoint": "after_select",
+          "snapshotIndex": 11
+        },
+        {
+          "path": "review-evidence/android/initial_02/014-final.png",
+          "sha256": "13207f045085a51097042104c8db628b4280ed09a8fccf73f8ba16e7481da532",
+          "checkpoint": "final",
+          "snapshotIndex": 14
+        }
+      ]
+    },
+    {
+      "platform": "android",
+      "caseId": "initial_03",
+      "score": 5,
+      "rationale": "Reference hierarchy, rounded surfaces, generous section spacing, native typography and full-width action treatment are retained in the reviewed views; no visible clipping or overlap found.",
+      "screenshots": [
+        {
+          "path": "review-evidence/android/initial_03/000-initial.png",
+          "sha256": "3a3a911c453c7148460aa47b92964d83d0c6e60504f4e55ec85bd9ba91434bda",
+          "checkpoint": "initial",
+          "snapshotIndex": 0
+        },
+        {
+          "path": "review-evidence/android/initial_03/001-scroll_0.png",
+          "sha256": "3a3a911c453c7148460aa47b92964d83d0c6e60504f4e55ec85bd9ba91434bda",
+          "checkpoint": "scroll_0",
+          "snapshotIndex": 1
+        },
+        {
+          "path": "review-evidence/android/initial_03/002-scroll_1.png",
+          "sha256": "b128d53b7e2411ad77cd4230a780fc7138d5309ab2b88afe26e2da949f358901",
+          "checkpoint": "scroll_1",
+          "snapshotIndex": 2
+        },
+        {
+          "path": "review-evidence/android/initial_03/003-scroll_2.png",
+          "sha256": "93a40f43f4e1c22b1f69efbb9876c5fc57fbc983038e4536e412e94d36680906",
+          "checkpoint": "scroll_2",
+          "snapshotIndex": 3
+        },
+        {
+          "path": "review-evidence/android/initial_03/004-scroll_3.png",
+          "sha256": "3fc67006579f0e834c3a9e31d4bc4837e42e9bec73865e19ee2caaca0306a24c",
+          "checkpoint": "scroll_3",
+          "snapshotIndex": 4
+        },
+        {
+          "path": "review-evidence/android/initial_03/005-scroll_4.png",
+          "sha256": "be5b6c743c4f0a951475dd1af804f8686b125196a5f05fbd69270a160b50ee22",
+          "checkpoint": "scroll_4",
+          "snapshotIndex": 5
+        },
+        {
+          "path": "review-evidence/android/initial_03/006-scroll_5.png",
+          "sha256": "454e187a0657fc8c16fd3d2fa4a8a4b304901d79a769a70d4260cf2aea28dea3",
+          "checkpoint": "scroll_5",
+          "snapshotIndex": 6
+        },
+        {
+          "path": "review-evidence/android/initial_03/007-scroll_6.png",
+          "sha256": "bf29f872b32949fa3ad0ffb9bc2d12a1530bc4e6c97feff970cf6772c7a97e82",
+          "checkpoint": "scroll_6",
+          "snapshotIndex": 7
+        },
+        {
+          "path": "review-evidence/android/initial_03/008-scroll_7.png",
+          "sha256": "8705ec128715d18ac953c15debf7d9222d8337b400d316529a2aa3947ad736e5",
+          "checkpoint": "scroll_7",
+          "snapshotIndex": 8
+        },
+        {
+          "path": "review-evidence/android/initial_03/009-scroll_8.png",
+          "sha256": "c77b650e314e75571d551fe4f439c01499300f0765375c1e21e4320a280e2745",
+          "checkpoint": "scroll_8",
+          "snapshotIndex": 9
+        },
+        {
+          "path": "review-evidence/android/initial_03/010-scroll_9.png",
+          "sha256": "54e271badddbd46082b1c4ebd985de45ce8333a01e7695f38702ac3db3838082",
+          "checkpoint": "scroll_9",
+          "snapshotIndex": 10
+        },
+        {
+          "path": "review-evidence/android/initial_03/011-scroll_10.png",
+          "sha256": "3dc693916bf3e5addf3accc0b732b2bd0f95a4c16ca8cd4d283afcac17e1faa6",
+          "checkpoint": "scroll_10",
+          "snapshotIndex": 11
+        }
+      ]
+    },
+    {
+      "platform": "android",
+      "caseId": "initial_04",
+      "score": 5,
+      "rationale": "Reference hierarchy, rounded surfaces, generous section spacing, native typography and full-width action treatment are retained in the reviewed views; no visible clipping or overlap found.",
+      "screenshots": [
+        {
+          "path": "review-evidence/android/initial_04/000-initial.png",
+          "sha256": "e5897057778b4b63b80fbd06c4c37f5a8204647fb64f32c81e7535d8f3c93536",
+          "checkpoint": "initial",
+          "snapshotIndex": 0
+        }
+      ]
+    },
+    {
+      "platform": "android",
+      "caseId": "initial_05",
+      "score": 4,
+      "rationale": "Hierarchy, dark colors and RTL alignment are sound; current appointment time has reversed visual endpoint order.",
+      "screenshots": [
+        {
+          "path": "review-evidence/android/initial_05/000-initial.png",
+          "sha256": "fadf5360d42ee36ebec53395721189ca04fa853e2cf1bbb287031884effcf8f3",
+          "checkpoint": "initial",
+          "snapshotIndex": 0
+        }
+      ]
+    },
+    {
+      "platform": "android",
+      "caseId": "initial_06",
+      "score": 5,
+      "rationale": "Reference hierarchy, rounded surfaces, generous section spacing, native typography and full-width action treatment are retained in the reviewed views; no visible clipping or overlap found.",
+      "screenshots": [
+        {
+          "path": "review-evidence/android/initial_06/000-initial.png",
+          "sha256": "11470ace7e1c52e6d89780469692d9c6970b926193ade687cbf08d7cc4e93d29",
+          "checkpoint": "initial",
+          "snapshotIndex": 0
+        }
+      ]
+    },
+    {
+      "platform": "ios",
+      "caseId": "initial_01",
+      "score": 3,
+      "rationale": "Layout and scrolling remain usable, but the unavailable row and full reason are materially too pale. Initial_01 also has an excessively faded disabled primary.",
+      "screenshots": [
+        {
+          "path": "review-evidence/ios/initial_01/attachments/CE3F0080-8A1F-4038-9E98-26A46882CCB6.png",
+          "sha256": "9b38b9e9e158c523d0d6558126a22ac38fc3463d8b58ddf9db7b01466da14c23",
+          "checkpoint": "top",
+          "snapshotIndex": 0
+        },
+        {
+          "path": "review-evidence/ios/initial_01/attachments/BAE9E5DC-1E3A-4F20-941A-585C403BE42E.png",
+          "sha256": "144556f8a71ff0b5578181e59b726e09e589e77f36100609a82dce5531785647",
+          "checkpoint": "step_2",
+          "snapshotIndex": 3
+        },
+        {
+          "path": "review-evidence/ios/initial_01/attachments/E70EF3E3-3C6B-4F14-A9BD-246D05A2FCE3.png",
+          "sha256": "014abbc6021f028c7455df11252d9d1cdfed21ed69ae7e74126bfdfb834de8d9",
+          "checkpoint": "after_select",
+          "snapshotIndex": 7
+        },
+        {
+          "path": "review-evidence/ios/initial_01/attachments/13E888F4-31DE-4B9A-9BE2-C03E5219A18C.png",
+          "sha256": "86a706ed2b285df2abbf31cf74ccb260434ce88b8e2afc9449dda5ef856229a9",
+          "checkpoint": "after_confirm",
+          "snapshotIndex": 12
+        }
+      ]
+    },
+    {
+      "platform": "ios",
+      "caseId": "initial_02",
+      "score": 4,
+      "rationale": "Dark selected surface, summary and native fee switch are usable and wrap; disabled primary differs materially from the specified disabled palette.",
+      "screenshots": [
+        {
+          "path": "review-evidence/ios/initial_02/attachments/18E3B5D3-8EDE-4DA1-B834-850D6093EE63.png",
+          "sha256": "8ba49d629194d3c0833dcfec7417ad3cbc4a863392f7f6e60fae204300858484",
+          "checkpoint": "top",
+          "snapshotIndex": 0
+        },
+        {
+          "path": "review-evidence/ios/initial_02/attachments/A9A59B1E-DF7C-4A69-9B49-CDCAB6B8032A.png",
+          "sha256": "a639405c458f4fa7ab10a45541d0cf70eb345d6207f8f11ed698b70298717d4b",
+          "checkpoint": "step_2",
+          "snapshotIndex": 3
+        },
+        {
+          "path": "review-evidence/ios/initial_02/attachments/D3C3D6D1-527C-49EC-AED4-550642FCBB79.png",
+          "sha256": "79a8523a244ba59e7ee200ef35ecab5b106bd474c08f0cf940f463ca37dbe52d",
+          "checkpoint": "after_fee_on",
+          "snapshotIndex": 5
+        },
+        {
+          "path": "review-evidence/ios/initial_02/attachments/104A6CAE-7C4A-4492-B701-6C1AD99AC982.png",
+          "sha256": "89918cde9879eb2240b019107908ec6b1a316764d9bbb0022da881f57973f028",
+          "checkpoint": "after_select",
+          "snapshotIndex": 9
+        },
+        {
+          "path": "review-evidence/ios/initial_02/attachments/BB28E5AE-59F7-4672-A8BB-FA46614B8398.png",
+          "sha256": "e6f7fa49b3f272055469cd63599bc55c6ed48b466e6f0783e6da0920d322ed86",
+          "checkpoint": "bottom",
+          "snapshotIndex": 14
+        }
+      ]
+    },
+    {
+      "platform": "ios",
+      "caseId": "initial_03",
+      "score": 3,
+      "rationale": "Layout and scrolling remain usable, but the unavailable row and full reason are materially too pale. Initial_01 also has an excessively faded disabled primary.",
+      "screenshots": [
+        {
+          "path": "review-evidence/ios/initial_03/attachments/D3160E33-0D7F-4638-9861-3D0F2BA38DD1.png",
+          "sha256": "7306597510c3280cef121b88cc4c0cad364ec9bf00d1026d8d21b91f89e77df1",
+          "checkpoint": "top",
+          "snapshotIndex": 0
+        },
+        {
+          "path": "review-evidence/ios/initial_03/attachments/89F277B9-E3FD-4431-9B87-511D297B0BFC.png",
+          "sha256": "87b41767756293f40e6dd9fe6400e037e15a1b35e90a02f418a8e0c30960e7a5",
+          "checkpoint": "action-0-scroll-0",
+          "snapshotIndex": 2
+        },
+        {
+          "path": "review-evidence/ios/initial_03/attachments/DFA81E1F-0DA3-4E16-B802-5969B57C54EA.png",
+          "sha256": "a7a9a2b314b3eb66ffd9bd546863348afe75d24516c73ca2053ffcfa6c7f5eca",
+          "checkpoint": "action-1-reveal-0-down",
+          "snapshotIndex": 5
+        },
+        {
+          "path": "review-evidence/ios/initial_03/attachments/BED8F6E5-F35B-4A36-B846-BFA1E114BA5F.png",
+          "sha256": "fe167f5b8ed05068fff48500efe9c0c704ad4dde40d531ade1d687801dbea28e",
+          "checkpoint": "action-1-reveal-1-down",
+          "snapshotIndex": 6
+        },
+        {
+          "path": "review-evidence/ios/initial_03/attachments/4AB49554-6440-4811-8895-44A70C5AC30D.png",
+          "sha256": "5116be266d34a492bfab0bbd492c2628b9cbca39f6aa3b36451cc2ef40ecc2b5",
+          "checkpoint": "action-1-reveal-2-down",
+          "snapshotIndex": 7
+        },
+        {
+          "path": "review-evidence/ios/initial_03/attachments/26B90003-E6FB-465D-A609-EAA50CE982EE.png",
+          "sha256": "45c526312400c0c76a786b0c6d40b3cc3bc86b2ff8408a53ba0a338bfdf634c7",
+          "checkpoint": "action-1-reveal-3-down",
+          "snapshotIndex": 8
+        },
+        {
+          "path": "review-evidence/ios/initial_03/attachments/4123FC7B-9762-4AAB-A4D7-57E3A3C7377B.png",
+          "sha256": "867000a230584498c4e3dfa75ca7a77dbb3fa1a4af0d85d5d441bd416baa680f",
+          "checkpoint": "action-1-reveal-4-down",
+          "snapshotIndex": 9
+        },
+        {
+          "path": "review-evidence/ios/initial_03/attachments/96727B02-C9BF-4F71-A3C0-745115D7EE85.png",
+          "sha256": "fb081dba892abe4ff16dc3f7ecaccf691852b8682c448e7939748f21afbe5639",
+          "checkpoint": "action-1-reveal-5-down",
+          "snapshotIndex": 10
+        },
+        {
+          "path": "review-evidence/ios/initial_03/attachments/8BFA95B5-B092-43CB-BE2F-301C541EA719.png",
+          "sha256": "78d35094c42117c7e6ca84396eba1fe70d2c133ceecaace12cc169327c5d4659",
+          "checkpoint": "action-1-reveal-6-down",
+          "snapshotIndex": 11
+        },
+        {
+          "path": "review-evidence/ios/initial_03/attachments/4DC42E6C-93C4-4154-8257-472A532AB681.png",
+          "sha256": "ed76a881437c4401a4d86e39d8570ccd9e07fd91295b05507eb673b7b0749374",
+          "checkpoint": "step_2",
+          "snapshotIndex": 12
+        }
+      ]
+    },
+    {
+      "platform": "ios",
+      "caseId": "initial_04",
+      "score": 5,
+      "rationale": "Reference hierarchy, rounded surfaces, generous section spacing, native typography and full-width action treatment are retained in the reviewed views; no visible clipping or overlap found.",
+      "screenshots": [
+        {
+          "path": "review-evidence/ios/initial_04/attachments/C80D27D2-8075-4080-8D84-C5251902A4D6.png",
+          "sha256": "807a7c766ad785ccb976468b30a660a1ee5e0d121c86118d9ddebff7017f7f0d",
+          "checkpoint": "top",
+          "snapshotIndex": 0
+        }
+      ]
+    },
+    {
+      "platform": "ios",
+      "caseId": "initial_05",
+      "score": 5,
+      "rationale": "Reference hierarchy, rounded surfaces, generous section spacing, native typography and full-width action treatment are retained in the reviewed views; no visible clipping or overlap found.",
+      "screenshots": [
+        {
+          "path": "review-evidence/ios/initial_05/attachments/0E13B3DD-A8AB-4A15-8F71-997C9D012C03.png",
+          "sha256": "b97d29524e00e44bb76f75291e2db003391132385b763c79cacee44a96988722",
+          "checkpoint": "top",
+          "snapshotIndex": 0
+        }
+      ]
+    },
+    {
+      "platform": "ios",
+      "caseId": "initial_06",
+      "score": 5,
+      "rationale": "Reference hierarchy, rounded surfaces, generous section spacing, native typography and full-width action treatment are retained in the reviewed views; no visible clipping or overlap found.",
+      "screenshots": [
+        {
+          "path": "review-evidence/ios/initial_06/attachments/61DC5B8E-E8C1-4A57-BE80-EA5FD681F19D.png",
+          "sha256": "07cf00a213c4543340f750489a7a8fdbe6a64fd05481d9d8d415790ea5f7133a",
+          "checkpoint": "top",
+          "snapshotIndex": 0
+        }
+      ]
+    }
+  ],
+  "positiveEvidenceSummary": [
+    "Native records show only the expected select, fee accepted, confirm, retry and done events in all supplied action sequences.",
+    "Repeated selected-row activation emits no selection event. Disabled confirm produces no event in supplied cases.",
+    "Caller echo changes selection/fee state in the same process and hides fee consent after selecting the free slot.",
+    "Loading, unavailable and confirmed modes ignore stale chooser data.",
+    "Long content wraps and final action is reachable in supplied parent viewport on both platforms."
+  ],
+  "remainingUnassessed": [
+    "Invalid/missing/unavailable selected ID transitions and amber warning behavior have no supplied runtime case.",
+    "No arbitrary external replacement-model update actions are supplied; full R09 behavior beyond select/fee echoes is unobserved.",
+    "Fee off activation, repeated fee selection changes, long fee labels, and choosing-mode RTL radio mirroring are unexecuted.",
+    "Android scale 2.0 was not supplied; observed maximum is 1.8. iOS accessibility2 is observed, without inferred exact SwiftUI point sizes.",
+    "iOS physical consent hit-region size and VoiceOver focus traversal require further native evidence. AX bounds are not touch bounds.",
+    "Android uses semantic OnClick invocation and native ScrollState displacement, not physical OS touch/scroll gestures.",
+    "No macOS runtime review or minimum-OS device execution.",
+    "Native SwiftUI font/line-height/padding attributes were not available. Pixel colors, AX frames and source declarations remain distinct."
+  ],
+  "ledger": {
+    "plan": "reports/review-evidence-plan.json",
+    "observations": "reports/review-observations.json",
+    "coverage": "reports/review-coverage-final.json"
+  },
+  "productionUnchanged": true,
+  "productionFingerprints": [
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt",
+      "d0_sha256": "f386b192ea123890406a08d408127de9b37637d65984340e7ed9d852f525700a",
+      "current_sha256": "f386b192ea123890406a08d408127de9b37637d65984340e7ed9d852f525700a",
+      "unchanged": true
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+      "d0_sha256": "7ab1e032cb9c57b79bf42db32cb7e8f713b225bf7644fbde129ec880685e438d",
+      "current_sha256": "7ab1e032cb9c57b79bf42db32cb7e8f713b225bf7644fbde129ec880685e438d",
+      "unchanged": true
+    }
+  ],
+  "repairsStarted": false,
+  "status": "review complete; awaiting separate repair dispatch"
+}

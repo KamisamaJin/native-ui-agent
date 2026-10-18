@@ -1,0 +1,410 @@
+{
+  "phase": "read-only self-review",
+  "startedAtUTC": "2026-10-18T12:43:45Z",
+  "endedAtUTC": "2026-10-18T12:46:55.252268Z",
+  "durationSeconds": 190.252,
+  "limitSeconds": 720,
+  "timeline": [
+    {
+      "atUTC": "2026-10-18T12:43:45Z",
+      "activity": "Read common prompt and enumerated supplied inputs/evidence."
+    },
+    {
+      "atUTC": "2026-10-18T12:44:10Z",
+      "activity": "Read all six inputs/actions, runtime traces, initial images and independent reference."
+    },
+    {
+      "atUTC": "2026-10-18T12:44:45Z",
+      "activity": "Inspected action checkpoints and large-font scroll screenshots; compared native row/control states."
+    },
+    {
+      "atUTC": "2026-10-18T12:45:17Z",
+      "activity": "Confirmed RTL visual reversal and disabled appearance with crops and pixel observations; checked source causes."
+    },
+    {
+      "atUTC": "2026-10-18T12:46:55.252268Z",
+      "activity": "Saved findings, evidence ledger, visual scores and production-hash verification; stopped."
+    }
+  ],
+  "workflow": "Assigned native-ui-agent protocol applied to supplied frozen native evidence. No capture command was rerun and no production sources were edited.",
+  "findings": [
+    {
+      "id": "ANDROID-001",
+      "platform": "android",
+      "caseIds": [
+        "initial_05"
+      ],
+      "ruleIds": [
+        "R17"
+      ],
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseCluster": "android-display-string-bidi",
+      "description": "In RTL, the supplied current time 14:00\u201316:00 is visibly rendered as 16:00\u201314:00. The native label retains the source string, so native semantic text alone conceals the visual reordering.",
+      "evidence": [
+        {
+          "path": "review-evidence/android/initial_05/actual.png",
+          "checkpoint": "initial",
+          "channel": "screenshot",
+          "observed": "Current appointment visibly reads 16:00\u201314:00."
+        },
+        {
+          "path": "reports/review/android-rtl-time-detail.png",
+          "channel": "derived screenshot crop"
+        },
+        {
+          "path": "review-evidence/android/initial_05/observation.json",
+          "checkpoint": "initial",
+          "channel": "native semantic text",
+          "observed": "Unidentified time Text label is 14:00\u201316:00 while Local direction is Rtl."
+        }
+      ],
+      "sourceLocation": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt:53",
+      "causeHypothesis": "VisitText inherits paragraph direction for a numeric display-ready time without directional isolation."
+    },
+    {
+      "id": "IOS-001",
+      "platform": "ios",
+      "caseIds": [
+        "initial_01",
+        "initial_03"
+      ],
+      "ruleIds": [
+        "R05",
+        "R13"
+      ],
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseCluster": "ios-row-accessibility-element",
+      "description": "Unavailable rows are not exposed as disabled native targets: visit.slot.s10 and visit.slot.w11 have enabled=true and native role Other. The s10 tap is attempted as enabled and emits no callback. Callback suppression is correct, but native disabled state is wrong.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_01/observation.json",
+          "checkpoint": "top and step_2",
+          "channel": "native accessibility and action",
+          "observed": "s10 enabled=true, role_raw=1; step0 outcome tapped with empty callback_delta."
+        },
+        {
+          "path": "review-evidence/ios/initial_03/observation.json",
+          "checkpoint": "top",
+          "channel": "native accessibility",
+          "observed": "w11 enabled=true despite unavailable availability in supplied model."
+        }
+      ],
+      "sourceLocation": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift:225",
+      "causeHypothesis": "accessibilityElement(children: .ignore) after disabled creates an accessible wrapper rather than preserving the disabled Button semantics."
+    },
+    {
+      "id": "IOS-002",
+      "platform": "ios",
+      "caseIds": [
+        "initial_01",
+        "initial_02",
+        "initial_03"
+      ],
+      "ruleIds": [
+        "R14",
+        "R17"
+      ],
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseCluster": "ios-disabled-style-compositing",
+      "description": "Disabled rows and confirmation buttons are additionally dimmed, violating full-opacity disabled row treatment and the specified disabled palette. Light unavailable row text is pale and low contrast; dark disabled confirm text is also dimmed beyond the intended readable secondary color.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_01/attachments/E6F8E9EB-25A4-484B-839A-15134744CC87.png",
+          "checkpoint": "step_2",
+          "channel": "screenshot",
+          "observed": "Unavailable row is visibly washed out relative to the independent reference."
+        },
+        {
+          "path": "reports/review/pixel-observations.json",
+          "channel": "composited screenshot pixels",
+          "observed": "Light unavailable fill dominant RGB250,251,252 versus specified244,246,249; row text interior dominant166,174,184 versus specified82,97,116. Light disabled confirm fill241,243,245 versus228,231,236 and text171,177,189 versus102,112,133. Dark disabled confirm fill37,46,62 versus52,64,84 and text111,121,137 versus184,196,212."
+        },
+        {
+          "path": "reports/review/ios-large-scroll.png",
+          "channel": "screenshot contact sheet",
+          "observed": "The same faded treatment affects w11 detail and long unavailable reason."
+        }
+      ],
+      "sourceLocation": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift:224 and :259",
+      "causeHypothesis": "PlainButtonStyle applies native disabled dimming to the already styled disabled label and its background. Pixel observations are composited appearance, not raw native style attributes."
+    },
+    {
+      "id": "IOS-003",
+      "platform": "ios",
+      "caseIds": [
+        "initial_02"
+      ],
+      "ruleIds": [
+        "R13"
+      ],
+      "status": "suspected_issue",
+      "certainty": "medium",
+      "rootCauseCluster": "ios-fee-target-frame",
+      "description": "Fee consent has a native semantic frame only36.67pt high and switch leaf28pt high, below44pt. The outer source frame(minHeight:44) does not appear in the exposed control frame. Actual physical hit area outside that frame was not tested, so a touch-target failure is suspected rather than confirmed.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_02/observation.json",
+          "checkpoint": "action-1-before / after_fee_on step",
+          "channel": "native accessibility geometry",
+          "observed": "visit.fee_consent frame width256 height36.666656; activation leaf width63 height28. Tap succeeds on the leaf."
+        }
+      ],
+      "sourceLocation": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift:147",
+      "causeHypothesis": "The minHeight modifier expands an outer layout wrapper while native Toggle semantic/hit geometry remains intrinsic."
+    }
+  ],
+  "perPlatform": {
+    "android": {
+      "confirmedRootCauseClusters": [
+        "android-display-string-bidi"
+      ],
+      "suspectedRootCauseClusters": [],
+      "confirmedDistinctCaseRulePairs": 1,
+      "findingIds": [
+        "ANDROID-001"
+      ]
+    },
+    "ios": {
+      "confirmedRootCauseClusters": [
+        "ios-row-accessibility-element",
+        "ios-disabled-style-compositing"
+      ],
+      "suspectedRootCauseClusters": [
+        "ios-fee-target-frame"
+      ],
+      "confirmedDistinctCaseRulePairs": 10,
+      "findingIds": [
+        "IOS-001",
+        "IOS-002",
+        "IOS-003"
+      ]
+    }
+  },
+  "rootCauseClusters": [
+    {
+      "id": "android-display-string-bidi",
+      "platform": "android",
+      "findingIds": [
+        "ANDROID-001"
+      ],
+      "status": "confirmed_failure"
+    },
+    {
+      "id": "ios-row-accessibility-element",
+      "platform": "ios",
+      "findingIds": [
+        "IOS-001"
+      ],
+      "status": "confirmed_failure"
+    },
+    {
+      "id": "ios-disabled-style-compositing",
+      "platform": "ios",
+      "findingIds": [
+        "IOS-002"
+      ],
+      "status": "confirmed_failure"
+    },
+    {
+      "id": "ios-fee-target-frame",
+      "platform": "ios",
+      "findingIds": [
+        "IOS-003"
+      ],
+      "status": "suspected_issue"
+    }
+  ],
+  "visualAssessments": [
+    {
+      "platform": "android",
+      "caseId": "initial_01",
+      "score": 5,
+      "screenshot": "review-evidence/android/initial_01/actual.png",
+      "rationale": "Reference hierarchy, inset surfaces, native system type, selection treatment and action layout are preserved; reviewed content is readable and wraps through the parent scroll.",
+      "supporting_visuals": [
+        "reports/review/android-initial-contact.png"
+      ]
+    },
+    {
+      "platform": "android",
+      "caseId": "initial_02",
+      "score": 5,
+      "screenshot": "review-evidence/android/initial_02/actual.png",
+      "rationale": "Reference hierarchy, inset surfaces, native system type, selection treatment and action layout are preserved; reviewed content is readable and wraps through the parent scroll.",
+      "supporting_visuals": [
+        "reports/review/android-initial-contact.png"
+      ]
+    },
+    {
+      "platform": "android",
+      "caseId": "initial_03",
+      "score": 5,
+      "screenshot": "review-evidence/android/initial_03/actual.png",
+      "rationale": "Reference hierarchy, inset surfaces, native system type, selection treatment and action layout are preserved; reviewed content is readable and wraps through the parent scroll.",
+      "supporting_visuals": [
+        "reports/review/android-initial-contact.png",
+        "reports/review/android-large-scroll.png"
+      ]
+    },
+    {
+      "platform": "android",
+      "caseId": "initial_04",
+      "score": 5,
+      "screenshot": "review-evidence/android/initial_04/actual.png",
+      "rationale": "Reference hierarchy, inset surfaces, native system type, selection treatment and action layout are preserved; reviewed content is readable and wraps through the parent scroll.",
+      "supporting_visuals": [
+        "reports/review/android-initial-contact.png"
+      ]
+    },
+    {
+      "platform": "android",
+      "caseId": "initial_05",
+      "score": 4,
+      "screenshot": "review-evidence/android/initial_05/actual.png",
+      "rationale": "Hierarchy and contrast are good; the RTL numeric range is visually reversed (ANDROID-001).",
+      "supporting_visuals": [
+        "reports/review/android-initial-contact.png"
+      ]
+    },
+    {
+      "platform": "android",
+      "caseId": "initial_06",
+      "score": 5,
+      "screenshot": "review-evidence/android/initial_06/actual.png",
+      "rationale": "Reference hierarchy, inset surfaces, native system type, selection treatment and action layout are preserved; reviewed content is readable and wraps through the parent scroll.",
+      "supporting_visuals": [
+        "reports/review/android-initial-contact.png"
+      ]
+    },
+    {
+      "platform": "ios",
+      "caseId": "initial_01",
+      "score": 3,
+      "screenshot": "review-evidence/ios/initial_01/actual.png",
+      "rationale": "Layout remains usable, but disabled row/button color treatment materially differs from reference and reduces readability (IOS-002).",
+      "supporting_visuals": [
+        "reports/review/ios-initial-contact.png"
+      ]
+    },
+    {
+      "platform": "ios",
+      "caseId": "initial_02",
+      "score": 3,
+      "screenshot": "review-evidence/ios/initial_02/actual.png",
+      "rationale": "Layout remains usable, but disabled row/button color treatment materially differs from reference and reduces readability (IOS-002).",
+      "supporting_visuals": [
+        "reports/review/ios-initial-contact.png"
+      ]
+    },
+    {
+      "platform": "ios",
+      "caseId": "initial_03",
+      "score": 3,
+      "screenshot": "review-evidence/ios/initial_03/actual.png",
+      "rationale": "Layout remains usable, but disabled row/button color treatment materially differs from reference and reduces readability (IOS-002).",
+      "supporting_visuals": [
+        "reports/review/ios-initial-contact.png",
+        "reports/review/ios-large-scroll.png"
+      ]
+    },
+    {
+      "platform": "ios",
+      "caseId": "initial_04",
+      "score": 5,
+      "screenshot": "review-evidence/ios/initial_04/actual.png",
+      "rationale": "Reference hierarchy, inset surfaces, native system type, selection treatment and action layout are preserved; reviewed content is readable and wraps through the parent scroll.",
+      "supporting_visuals": [
+        "reports/review/ios-initial-contact.png"
+      ]
+    },
+    {
+      "platform": "ios",
+      "caseId": "initial_05",
+      "score": 5,
+      "screenshot": "review-evidence/ios/initial_05/actual.png",
+      "rationale": "Reference hierarchy, inset surfaces, native system type, selection treatment and action layout are preserved; reviewed content is readable and wraps through the parent scroll.",
+      "supporting_visuals": [
+        "reports/review/ios-initial-contact.png"
+      ]
+    },
+    {
+      "platform": "ios",
+      "caseId": "initial_06",
+      "score": 5,
+      "screenshot": "review-evidence/ios/initial_06/actual.png",
+      "rationale": "Reference hierarchy, inset surfaces, native system type, selection treatment and action layout are preserved; reviewed content is readable and wraps through the parent scroll.",
+      "supporting_visuals": [
+        "reports/review/ios-initial-contact.png"
+      ]
+    }
+  ],
+  "evidenceLedger": "reports/review/evidence-ledger.json",
+  "supportedObservations": [
+    "Supplied Android traces show select_slot:f09 once, no repeat callback on selected row, no unavailable-row/disabled-confirm callback, confirm:f09 once; fee-on/confirm:e17/free-row selection behave as expected.",
+    "Supplied iOS physical tap traces have corresponding callbacks and selected row native state. Unavailable tap suppresses callback despite incorrect enabled accessibility state.",
+    "All twelve platform/case coverage records report bottom_reached=true. Large-font scroll screenshots show wrapping supplied text and reachable final actions.",
+    "Loading, unavailable and confirmed screenshots and observed identifiers omit stale chooser content. Retry and Done each emit one expected callback in both supplied platform traces."
+  ],
+  "remainingUnassessedAreas": [
+    {
+      "status": "evidence_limitation",
+      "description": "Initial inputs contain no invalid/unavailable selectedSlotId case or whole-model replacement action. Those R04/R06/R09 branches remain source-reviewed rather than runtime-proven."
+    },
+    {
+      "status": "evidence_limitation",
+      "description": "Fee-off callback and rapid caller-update sequences are not exercised in supplied inputs; fee-on and free selection only are observed."
+    },
+    {
+      "status": "evidence_limitation",
+      "description": "Android action records use semantic OnClick invocation and ScrollState displacement, not physical Android touch/OS gestures. Native physical touch and Activity lifecycle are unassessed."
+    },
+    {
+      "status": "evidence_limitation",
+      "description": "SwiftUI native raw font/color/padding properties are unavailable. Screenshot pixel values represent composited output only; unavailable attributes are not marked passed."
+    },
+    {
+      "status": "evidence_limitation",
+      "description": "Native accessibility frames do not by themselves establish all physical hit boundaries, particularly IOS-003."
+    },
+    {
+      "status": "evidence_limitation",
+      "description": "The supplied font case reaches1.8 Android/accessibility Apple equivalent; universal2.0 behavior and unprovided long amount/content variants are unassessed."
+    },
+    {
+      "status": "evidence_limitation",
+      "description": "Android observation overflow=true appears on many normal unellipsized Text nodes; this was not treated as clipping without matching visual evidence."
+    }
+  ],
+  "productionHashVerification": [
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitRescheduleModels.kt",
+      "d0_sha256": "a5c36c2179c05d62e080bd6c49ac6f0ef6ae7f27feaaba5b3a493c930a5d028d",
+      "review_sha256": "a5c36c2179c05d62e080bd6c49ac6f0ef6ae7f27feaaba5b3a493c930a5d028d",
+      "unchanged": true
+    },
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt",
+      "d0_sha256": "3afba23da25bc35ef4d130d7f5cf58572031f2d4dc75b7ad876bbfa451afb421",
+      "review_sha256": "3afba23da25bc35ef4d130d7f5cf58572031f2d4dc75b7ad876bbfa451afb421",
+      "unchanged": true
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitRescheduleModels.swift",
+      "d0_sha256": "ce35e2b95c0ea34fa1e08ca7636080d82724ccd5aa4b3657d31d0ad1f180d54c",
+      "review_sha256": "ce35e2b95c0ea34fa1e08ca7636080d82724ccd5aa4b3657d31d0ad1f180d54c",
+      "unchanged": true
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+      "d0_sha256": "9e59e91106e08fadd1ac0c7016852e43f2f820d8595e1aed8b5707d0241dc07d",
+      "review_sha256": "9e59e91106e08fadd1ac0c7016852e43f2f820d8595e1aed8b5707d0241dc07d",
+      "unchanged": true
+    }
+  ],
+  "productionBytesUnchanged": true,
+  "productionEdits": false,
+  "stoppedPendingRepairDispatch": true
+}

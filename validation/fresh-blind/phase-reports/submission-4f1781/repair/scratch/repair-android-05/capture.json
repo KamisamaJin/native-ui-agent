@@ -1,0 +1,44 @@
+{
+  "platform": "android",
+  "status": "captured_not_graded",
+  "fixture_sha256": "1a020d2159fceb888fcd55724005dfc0b83a3dbd5ce8a0b2f2ab198fc7d8d802",
+  "sources": {
+    "app/src/main/java/com/example/reply/ui/components/VisitRescheduleModels.kt": "59b34c73ec496dfe43c646f984661e304e79ec036583b4ce69abfbf449b55303",
+    "app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt": "89c94e328998c1768bb60c16563e179ad5e5e39d0504e45ddf37c46880615be9"
+  },
+  "harness": {
+    "capture.py": "f00ba74363fe6d030d5f0e5b97fb63c0d1a216be8405b3d9693e9188c829fa16",
+    "VisitPanelUiTest.kt": "9144d1c7d0dd918428cfcc28efafea4e3c34709d1831fa7480133b13ba89686d",
+    "VisitBridge.swift": "37ed351edd21cb4526dfd319a021198518a829dda21e4188d96ec77d426ab33c"
+  },
+  "seconds": 9.871,
+  "commands": [
+    {
+      "argv": [
+        "./gradlew",
+        ":app:testDebugUnitTest",
+        "--tests",
+        "com.example.reply.VisitPanelUiTest.capture",
+        "--console=plain"
+      ],
+      "seconds": 9.868,
+      "exit_code": 0
+    }
+  ],
+  "checkpoint_aliases": {},
+  "protocol": [
+    {
+      "type": "capture",
+      "checkpoint": "initial"
+    },
+    {
+      "type": "scroll_until",
+      "identifier": "visit.retry"
+    },
+    {
+      "type": "tap",
+      "identifier": "visit.retry",
+      "checkpoint": "after_retry"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+[
+  {
+    "label": "Android RTL native capture",
+    "command": "python3 support/common/capture.py --platform android --project reply/Reply --fixture operator-inputs/d0/initial_05.json --output scratch/repair-android-initial05-1",
+    "status": "passed",
+    "evidence": "scratch/repair-android-initial05-1"
+  },
+  {
+    "label": "Android large-font regression",
+    "command": "python3 support/common/capture.py --platform android --project reply/Reply --fixture operator-inputs/d0/initial_03.json --output scratch/repair-android-initial03-1",
+    "status": "passed",
+    "evidence": "scratch/repair-android-initial03-1"
+  },
+  {
+    "label": "iOS unavailable-row physical native capture",
+    "command": "python3 support/common/capture.py --platform ios --project alerttoast --fixture operator-inputs/d0/initial_01.json --output scratch/repair-ios-initial01-1 --simulator AB66271B-29BD-4D14-9C9B-71579E147DCA",
+    "status": "passed",
+    "evidence": "scratch/repair-ios-initial01-1"
+  },
+  {
+    "label": "iOS dark fee capture through evidence runner",
+    "command": "python3 support/skill/scripts/ui_loop.py capture --project . --profile reports/repair-evidence/ios-initial02.profile.json --output scratch/repair-loop-ios-initial02-1",
+    "status": "wrapper_artifact_collection_error_native_capture_passed",
+    "evidence": "scratch/repair-loop-ios-initial02-1",
+    "reason": "Profile glob used native/actual.png but command output resolved to native/native/actual.png. Native XCTest and original observation/screenshots completed successfully. No capture report was edited to hide the error."
+  },
+  {
+    "label": "Android RTL evidence runner capture/review",
+    "command": "python3 support/skill/scripts/ui_loop.py capture --project . --profile reports/repair-evidence/android-initial05.profile.json --output scratch/repair-loop-android-initial05-2; then review with bound findings",
+    "status": "passed",
+    "evidence": "scratch/repair-loop-android-initial05-review/report.json"
+  },
+  {
+    "label": "iOS14 compatibility",
+    "command": "swiftc -typecheck -parse-as-library -module-name VisitCompatibility -sdk iPhoneSimulator27.1.sdk -target arm64-apple-ios14.0-simulator -module-cache-path scratch/repair-ios14-cache VisitRescheduleModels.swift VisitReschedulePanel.swift",
+    "status": "passed",
+    "evidence": "scratch/repair-ios14-typecheck.log"
+  },
+  {
+    "label": "macOS11 compatibility",
+    "command": "swiftc -typecheck -parse-as-library -module-name VisitCompatibility -sdk MacOSX.sdk -target arm64-apple-macosx11.0 -module-cache-path scratch/repair-macos11-cache VisitRescheduleModels.swift VisitReschedulePanel.swift",
+    "status": "passed",
+    "evidence": "scratch/repair-macos11-typecheck.log"
+  }
+]

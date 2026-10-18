@@ -1,0 +1,102 @@
+{
+  "phase": "D0",
+  "status": "sealed",
+  "started_utc": "2026-10-18T11:49:01Z",
+  "ended_utc": "2026-10-18T11:54:35.760718Z",
+  "active_wall_seconds": 334.761,
+  "active_wall_limit_seconds": 1500,
+  "timing_method": "UTC wall clock from first task tool invocation through sealing; no pauses subtracted.",
+  "files": [
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitRescheduleModels.kt",
+      "sha256": "a5c36c2179c05d62e080bd6c49ac6f0ef6ae7f27feaaba5b3a493c930a5d028d"
+    },
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt",
+      "sha256": "3afba23da25bc35ef4d130d7f5cf58572031f2d4dc75b7ad876bbfa451afb421"
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitRescheduleModels.swift",
+      "sha256": "ce35e2b95c0ea34fa1e08ca7636080d82724ccd5aa4b3657d31d0ad1f180d54c"
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+      "sha256": "9e59e91106e08fadd1ac0c7016852e43f2f820d8595e1aed8b5707d0241dc07d"
+    }
+  ],
+  "builds": [
+    {
+      "platform": "android",
+      "kind": "common public-example integration",
+      "result": "passed",
+      "exit_code": 0,
+      "log": "scratch/android-build-1.log",
+      "fixture": "support/public/example.json",
+      "native_test": "com.example.reply.VisitPanelUiTest.capture",
+      "junit": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "images_generated_by_host": true,
+      "images_opened": false
+    },
+    {
+      "platform": "ios",
+      "kind": "unmodified common build-only integration",
+      "result": "host_integration_error",
+      "exit_code": 65,
+      "log": "scratch/ios-build-1/build.log",
+      "cause": "ObserverApp compiled x86_64 as well as arm64 while its package dependency was built only arm64; incompatible target at Bridge.swift import AlertToast.",
+      "production_compile_errors": false,
+      "host_modified": false
+    },
+    {
+      "platform": "ios",
+      "kind": "common generated project build-only integration with authorized command correction",
+      "result": "passed",
+      "exit_code": 0,
+      "log": "scratch/ios-build-2/build.log",
+      "command_override": [
+        "-configuration",
+        "Debug",
+        "ARCHS=arm64",
+        "ONLY_ACTIVE_ARCH=YES"
+      ],
+      "authorization": "Root authorized a uniform command-only architecture correction; generated host and bridge were not edited.",
+      "runtime_tests_executed": false
+    },
+    {
+      "platform": "ios",
+      "kind": "production-only iOS14 compatibility type-check",
+      "result": "passed",
+      "exit_code": 0,
+      "log": "scratch/swift-ios14-typecheck.log",
+      "target": "arm64-apple-ios14.0-simulator"
+    },
+    {
+      "platform": "macos",
+      "kind": "production-only macOS11 compatibility type-check",
+      "result": "passed",
+      "exit_code": 0,
+      "log": "scratch/swift-macos11-typecheck.log",
+      "target": "arm64-apple-macosx11.0"
+    }
+  ],
+  "host_issue_timing": {
+    "separate_queue_seconds": null,
+    "blocking_pause_seconds": 0,
+    "note": "Exact build queue duration was not measured. Compatibility checks and source review continued while the command correction was authorized; all elapsed time remains included in active_wall_seconds."
+  },
+  "untested_limits": [
+    "No rendered image was viewed; no visual self-review or image-feedback repair was performed.",
+    "Visual rubric is unscored pending the later review phase.",
+    "Runtime accessibility, callback/update sequences, touch delivery, large-font wrapping, RTL appearance and scroll reachability remain unverified beyond successful common Android public-example execution.",
+    "iOS common integration was build-only. No iOS simulator runtime or screenshot was inspected.",
+    "No actual application navigation, lifecycle, safe-area or keyboard claim is made."
+  ],
+  "scope": "Four new production files only; supporting reports and scratch evidence. No existing upstream production, dependency manifests, bridge, support files or references were edited.",
+  "source_sealed": true,
+  "next_phase": "Wait for separate review/repair authorization; no further source edits in D0."
+}

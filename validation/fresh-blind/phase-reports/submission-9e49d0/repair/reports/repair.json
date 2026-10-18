@@ -1,0 +1,858 @@
+{
+  "phase": "one repair interval",
+  "startedAtUTC": "2026-10-18T12:50:22Z",
+  "endedAtUTC": "2026-10-18T12:59:17Z",
+  "durationSeconds": 535.296,
+  "activeWallBudgetSeconds": 900,
+  "timeline": [
+    {
+      "atUTC": "2026-10-18T12:50:22Z",
+      "activity": "Read the common repair prompt and own sealed review; choose three confirmed findings for repair."
+    },
+    {
+      "order": 2,
+      "activity": "Change only new Visit production files: Android content direction/alignment, Apple row accessibility annotations and disabled rendering style."
+    },
+    {
+      "order": 3,
+      "activity": "Run fresh Android initial_05 capture; inspect actual image, correct newly exposed alignment regression, and capture again in a fresh directory."
+    },
+    {
+      "order": 4,
+      "activity": "Rebuild and run native iOS initial_01 then initial_02 on own simulator; inspect native button states, callbacks, scroll coverage and light/dark disabled colors."
+    },
+    {
+      "atUTC": "2026-10-18T12:59:17Z",
+      "activity": "Seal changed production hashes and this repair record; stop production edits."
+    }
+  ],
+  "selfReview": {
+    "path": "reports/self-review.json",
+    "sealedSHA256": "3a0ab45be02f7d50d882627483422aeb2e4e17a4770596439b568561aade26a8",
+    "currentSHA256": "3a0ab45be02f7d50d882627483422aeb2e4e17a4770596439b568561aade26a8",
+    "unchanged": true
+  },
+  "changedFiles": [
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt",
+      "d0SHA256": "f386b192ea123890406a08d408127de9b37637d65984340e7ed9d852f525700a",
+      "finalSHA256": "8a0ca0aac12bfb8044a48eb4437d95b14df13ea90a13122a00e995febadb20ea"
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+      "d0SHA256": "7ab1e032cb9c57b79bf42db32cb7e8f713b225bf7644fbde129ec880685e438d",
+      "finalSHA256": "afaf3ce7d5e89f63c49c1cf4646f3c0428a86eabf45b893f1452dcd97450c181"
+    }
+  ],
+  "findingsAddressed": [
+    {
+      "findingId": "android-rtl-time-order",
+      "status": "confirmed_fixed_in_rechecked_case",
+      "recheckedCaseIds": [
+        "initial_05"
+      ],
+      "ruleIds": [
+        "R17"
+      ],
+      "change": "Use content-derived paragraph direction with LTR fallback for neutral display strings, while explicitly resolving text alignment to the native layout direction.",
+      "reasoning": "Numeric ranges keep supplied endpoint order in RTL, while native leading alignment and RTL layout are preserved.",
+      "evidence": [
+        {
+          "path": "scratch/repair-android-05-r2/observation.json",
+          "sha256": "114eb4da96dc235cd86633c5fe04485efd9d19cc8e1d84ba094bdfd5433b9de2"
+        },
+        {
+          "path": "scratch/repair-android-05-r2/000-initial.png",
+          "sha256": "abfdafdbaf4ce822ed90cc95301fb82f39c36ec04d9e9dcfdf720d4bceaaf4b8",
+          "checkpoint": "initial",
+          "snapshotIndex": 0
+        }
+      ],
+      "observed": "Final screenshot displays 14:00–16:00; multiline location/message remain RTL-leading aligned. Native Rtl, dark and fontScale=1.3 are confirmed; retry emits once; bottom_reached=true.",
+      "iterations": [
+        {
+          "round": 1,
+          "result": "Time order fixed, but screenshot revealed multiline English text alignment had shifted to the left. Preserved as scratch/repair-android-05-r1."
+        },
+        {
+          "round": 2,
+          "result": "Added native layout-direction alignment and re-captured in a fresh directory. Both time order and leading alignment verified."
+        }
+      ]
+    },
+    {
+      "findingId": "ios-row-accessibility-split",
+      "status": "confirmed_fixed_in_rechecked_cases",
+      "recheckedCaseIds": [
+        "initial_01",
+        "initial_02"
+      ],
+      "pendingFinalCaptureCaseIds": [
+        "initial_03"
+      ],
+      "ruleIds": [
+        "R05",
+        "R13"
+      ],
+      "change": "Remove the additional accessibilityElement wrapper from slot Buttons; retain label, selected trait and identifier directly on each native Button.",
+      "reasoning": "The actual control now owns ID, full coherent row label, selected and disabled state.",
+      "evidence": [
+        {
+          "path": "scratch/repair-ios-01-r1/observation.json",
+          "sha256": "4a8a718b42838af0aa7ddaba71235cb85dd7a4a9ab08cd319b9f11e1cf138801"
+        },
+        {
+          "path": "scratch/repair-ios-02-r1/observation.json",
+          "sha256": "404b3e6f11f2b818c1f9326aa1b29f1e24d50efa46e23598e50c47ee995ad439"
+        }
+      ],
+      "observed": {
+        "initial_01_disabled": [
+          {
+            "identifier": "visit.slot.s10",
+            "role_raw": 9,
+            "role": "XCUIElementType(rawValue: 9)",
+            "enabled": false,
+            "selected": false,
+            "value": "",
+            "label": "Saturday, 7 November, 10:00–12:00, Weekend arrival window., Unavailable, All engineers are booked for this window.",
+            "frame": {
+              "height": 121,
+              "width": 326,
+              "x": 38,
+              "y": 387.6666666666667
+            }
+          }
+        ],
+        "initial_01_selected": [
+          {
+            "identifier": "visit.slot.f09",
+            "role_raw": 9,
+            "role": "XCUIElementType(rawValue: 9)",
+            "enabled": true,
+            "selected": true,
+            "value": "",
+            "label": "Friday, 6 November, 09:30–11:30, Two-hour arrival window., Available, No fee",
+            "frame": {
+              "height": 97,
+              "width": 326,
+              "x": 38,
+              "y": 133.66666666666666
+            }
+          }
+        ],
+        "initial_02_initial": [
+          {
+            "identifier": "visit.slot.e17",
+            "role_raw": 9,
+            "role": "XCUIElementType(rawValue: 9)",
+            "enabled": true,
+            "selected": true,
+            "value": "",
+            "label": "Tuesday, 10 November, 17:00–19:00, After-work appointment window., Few left, €32.50 fee",
+            "frame": {
+              "height": 113.66666666666669,
+              "width": 256,
+              "x": 73,
+              "y": 373.3333333333333
+            }
+          },
+          {
+            "identifier": "visit.slot.e08",
+            "role_raw": 9,
+            "role": "XCUIElementType(rawValue: 9)",
+            "enabled": true,
+            "selected": false,
+            "value": "",
+            "label": "Tuesday, 10 November, 08:00–10:00, Standard morning arrival., Available, No fee",
+            "frame": {
+              "height": 97,
+              "width": 256,
+              "x": 73,
+              "y": 497
+            }
+          }
+        ]
+      },
+      "callbackValidation": "Unavailable and disabled confirm actions are blocked natively with empty deltas. f09 selection emits once; repeat selected tap emits none; enabled confirm emits confirm:f09. Fee and free-selection sequences retain their expected callbacks in initial_02.",
+      "limit": "Long initial_03 was not re-captured in this interval; it uses the same repaired row implementation and remains for independent final capture."
+    },
+    {
+      "findingId": "ios-disabled-palette-faded",
+      "status": "confirmed_fixed_in_rechecked_cases",
+      "recheckedCaseIds": [
+        "initial_01",
+        "initial_02"
+      ],
+      "pendingFinalCaptureCaseIds": [
+        "initial_03"
+      ],
+      "ruleIds": [
+        "R14",
+        "R17"
+      ],
+      "change": "Replace PlainButtonStyle with a small native ButtonStyle that preserves label opacity when idle/disabled and gives only pressed-state feedback. Both slot rows and primary buttons use it.",
+      "reasoning": "The component already supplies readable disabled tokens. Avoiding a second native fade restores the designed full-opacity colors while keeping actual disabled controls.",
+      "evidence": [
+        {
+          "path": "scratch/repair-ios-01-r1/attachments/E392B17B-08A2-4032-AFE0-617F6569F3D2.png",
+          "sha256": "a1dc7c67430df15b6cd2bf8f7162732b338a3aa2b129c4532c0a9c748797805f",
+          "checkpoint": "step_2",
+          "snapshotIndex": 3
+        },
+        {
+          "path": "scratch/repair-ios-02-r1/attachments/EDAC9A95-6D2F-4D40-9693-059CB5C55787.png",
+          "sha256": "72ac53392bf737bc7c70720e873ac2ef9db866e774fc5368bdd98c75ac4ceb2a",
+          "checkpoint": "step_2",
+          "snapshotIndex": 3
+        },
+        {
+          "path": "reports/repair-pixel-observations.json",
+          "sha256": "2b540c2aca2089421cc5d47111eda0eaef8ee62047a04fa2d9564a39b91b4856"
+        }
+      ],
+      "observed": "Light unavailable row pixels match #F4F6F9 and #526174; light disabled primary matches #E4E7EC and #667085. Dark disabled primary pixels match #344054/#B8C4D4. Visual inspection confirms readable unavailable content and disabled action.",
+      "limit": "The same style should restore long unavailable content, but initial_03 final pixels are pending independent capture."
+    },
+    {
+      "findingId": "ios-consent-touch-size-unresolved",
+      "status": "unresolved_evidence_limitation_no_production_change",
+      "recheckedCaseIds": [
+        "initial_02"
+      ],
+      "ruleIds": [
+        "R13"
+      ],
+      "reasoning": "The sealed review only established small AX bounds, not an undersized native touch region. No speculative alteration was made.",
+      "evidence": [
+        {
+          "path": "scratch/repair-ios-02-r1/observation.json",
+          "sha256": "404b3e6f11f2b818c1f9326aa1b29f1e24d50efa46e23598e50c47ee995ad439"
+        }
+      ],
+      "remainingNeed": "Physical edge hit testing or native hit-region measurement. The native fee switch action and caller echo remain verified."
+    }
+  ],
+  "nativeEvidence": {
+    "android-initial_05-round1": {
+      "capture": {
+        "path": "scratch/repair-android-05-r1/capture.json",
+        "sha256": "989bbe422d0505fc4c1dfbd89cd6d47dc457663dd05538c8005b5a1ee0fa5792"
+      },
+      "observation": {
+        "path": "scratch/repair-android-05-r1/observation.json",
+        "sha256": "114eb4da96dc235cd86633c5fe04485efd9d19cc8e1d84ba094bdfd5433b9de2"
+      },
+      "commands": [
+        {
+          "argv": [
+            "./gradlew",
+            ":app:testDebugUnitTest",
+            "--tests",
+            "com.example.reply.VisitPanelUiTest.capture",
+            "--console=plain"
+          ],
+          "seconds": 10.162,
+          "exit_code": 0
+        }
+      ],
+      "seconds": 10.166,
+      "coverage": {
+        "bottom_reached": true,
+        "observed_identifiers": [
+          "__observer.bottom",
+          "visit.current",
+          "visit.location",
+          "visit.panel",
+          "visit.retry",
+          "visit.service",
+          "visit.title",
+          "visit.unavailable"
+        ]
+      },
+      "sources": {
+        "app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt": "467a802b4d48a1a07decd8c40850ce8c99690c0b6105c3e18481c7019159afc3"
+      },
+      "nativeScope": "One attached native ComposeView in continuous Paparazzi frame session. Semantic OnClick invocation, not physical touch; native parent ScrollState displacement, not OS gestures. No Activity/navigation/lifecycle claims.",
+      "events": [
+        "retry"
+      ],
+      "phase": "complete",
+      "steps": [
+        {
+          "type": "capture",
+          "execution": "observed",
+          "callback_delta": [],
+          "snapshot": 2
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.retry",
+          "matches": 1,
+          "enabled": true,
+          "execution": "observed",
+          "callback_delta": [],
+          "snapshot": 3
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.retry",
+          "matches": 1,
+          "enabled": true,
+          "execution": "observed",
+          "callback_delta": [
+            "retry"
+          ],
+          "snapshot": 4
+        }
+      ],
+      "junit": {
+        "path": "scratch/repair-android-05-r1/junit.xml",
+        "sha256": "53aa036ab81c825e9c1762fdc8feb4013ed3bea1051d222dbe20ccb1078c3691"
+      }
+    },
+    "android-initial_05-final": {
+      "capture": {
+        "path": "scratch/repair-android-05-r2/capture.json",
+        "sha256": "904df1686f5db28df385278e0be908bfc0646a65753016faba644745126b409e"
+      },
+      "observation": {
+        "path": "scratch/repair-android-05-r2/observation.json",
+        "sha256": "114eb4da96dc235cd86633c5fe04485efd9d19cc8e1d84ba094bdfd5433b9de2"
+      },
+      "commands": [
+        {
+          "argv": [
+            "./gradlew",
+            ":app:testDebugUnitTest",
+            "--tests",
+            "com.example.reply.VisitPanelUiTest.capture",
+            "--console=plain"
+          ],
+          "seconds": 11.357,
+          "exit_code": 0
+        }
+      ],
+      "seconds": 11.362,
+      "coverage": {
+        "bottom_reached": true,
+        "observed_identifiers": [
+          "__observer.bottom",
+          "visit.current",
+          "visit.location",
+          "visit.panel",
+          "visit.retry",
+          "visit.service",
+          "visit.title",
+          "visit.unavailable"
+        ]
+      },
+      "sources": {
+        "app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt": "8a0ca0aac12bfb8044a48eb4437d95b14df13ea90a13122a00e995febadb20ea"
+      },
+      "nativeScope": "One attached native ComposeView in continuous Paparazzi frame session. Semantic OnClick invocation, not physical touch; native parent ScrollState displacement, not OS gestures. No Activity/navigation/lifecycle claims.",
+      "events": [
+        "retry"
+      ],
+      "phase": "complete",
+      "steps": [
+        {
+          "type": "capture",
+          "execution": "observed",
+          "callback_delta": [],
+          "snapshot": 2
+        },
+        {
+          "type": "scroll_until",
+          "identifier": "visit.retry",
+          "matches": 1,
+          "enabled": true,
+          "execution": "observed",
+          "callback_delta": [],
+          "snapshot": 3
+        },
+        {
+          "type": "tap",
+          "identifier": "visit.retry",
+          "matches": 1,
+          "enabled": true,
+          "execution": "observed",
+          "callback_delta": [
+            "retry"
+          ],
+          "snapshot": 4
+        }
+      ],
+      "junit": {
+        "path": "scratch/repair-android-05-r2/junit.xml",
+        "sha256": "7767c26da4cc9946901950ed70f1f6f210997ddbd9f85e029361128dc4f4510f"
+      }
+    },
+    "ios-initial_01-final": {
+      "capture": {
+        "path": "scratch/repair-ios-01-r1/capture.json",
+        "sha256": "f0f4c1e134cfd9ac42627f1baeae2a70341596ec22774339dc5a3784c22d0641"
+      },
+      "observation": {
+        "path": "scratch/repair-ios-01-r1/observation.json",
+        "sha256": "4a8a718b42838af0aa7ddaba71235cb85dd7a4a9ab08cd319b9f11e1cf138801"
+      },
+      "commands": [
+        {
+          "argv": [
+            "python3",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-cf99de/support/common/observer/scripts/ios_observe.py",
+            "run",
+            "--bridge",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-cf99de/support/common/VisitBridge.swift",
+            "--package",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-cf99de/alerttoast",
+            "--fixtures",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-cf99de/scratch/repair-ios-01-r1-inputs/fixtures.json",
+            "--actions",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-cf99de/scratch/repair-ios-01-r1-inputs/actions.json",
+            "--simulator",
+            "6BD1B761-F036-4881-9014-2A053A4ED15D",
+            "--output",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-cf99de/scratch/repair-ios-01-r1"
+          ],
+          "seconds": 162.367,
+          "exit_code": 0
+        }
+      ],
+      "seconds": 162.372,
+      "coverage": {
+        "bottom_reached": true,
+        "missing_identifiers": [],
+        "observed_identifiers": [
+          "__observer.bottom",
+          "visit.confirm",
+          "visit.current",
+          "visit.group.fri",
+          "visit.group.sat",
+          "visit.guidance",
+          "visit.location",
+          "visit.selection_summary",
+          "visit.service",
+          "visit.slot.f09",
+          "visit.slot.f13",
+          "visit.slot.s10",
+          "visit.title"
+        ],
+        "required_identifiers": []
+      },
+      "sources": {
+        "Sources/AlertToast/VisitReschedulePanel.swift": "afaf3ce7d5e89f63c49c1cf4646f3c0428a86eabf45b893f1452dcd97450c181"
+      },
+      "nativeScope": "XCUIElement runtime accessibility; frames in logical screen points",
+      "nativeManifest": {
+        "path": "scratch/repair-ios-01-r1/manifest.json",
+        "sha256": "e27511bf33b2b5780460130ef7b06eb0d7c6bef0c7bd202346c83c2789e063a1"
+      },
+      "nativeTestCount": 1,
+      "buildExitCode": 0,
+      "testExitCode": 0,
+      "steps": [
+        {
+          "name": "step_2",
+          "target": {
+            "enabled": false,
+            "frame": {
+              "height": 121,
+              "width": 326,
+              "x": 38,
+              "y": 387.6666666666667
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "visit.slot.s10",
+            "label": "Saturday, 7 November, 10:00–12:00, Weekend arrival window., Unavailable, All engineers are booked for this window.",
+            "path": {
+              "identifier": "visit.slot.s10",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          },
+          "outcome": "blocked_disabled",
+          "callback_delta": [],
+          "same_process": true
+        },
+        {
+          "name": "step_4",
+          "target": {
+            "enabled": false,
+            "frame": {
+              "height": 48,
+              "width": 326,
+              "x": 38,
+              "y": 568.6666666666666
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "visit.confirm",
+            "label": "Confirm new time",
+            "path": {
+              "identifier": "visit.confirm",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          },
+          "outcome": "blocked_disabled",
+          "callback_delta": [],
+          "same_process": true
+        },
+        {
+          "name": "after_select",
+          "target": {
+            "enabled": true,
+            "frame": {
+              "height": 97,
+              "width": 326,
+              "x": 38,
+              "y": 133.66666666666666
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "visit.slot.f09",
+            "label": "Friday, 6 November, 09:30–11:30, Two-hour arrival window., Available, No fee",
+            "path": {
+              "identifier": "visit.slot.f09",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          },
+          "outcome": "tapped",
+          "callback_delta": [
+            {
+              "event": "select_slot:f09",
+              "fixture_index": 0,
+              "uptime": 2320244.2342358753
+            }
+          ],
+          "same_process": true
+        },
+        {
+          "name": "step_7",
+          "target": {
+            "enabled": true,
+            "frame": {
+              "height": 97,
+              "width": 326,
+              "x": 38,
+              "y": 133.66666666666666
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "visit.slot.f09",
+            "label": "Friday, 6 November, 09:30–11:30, Two-hour arrival window., Available, No fee",
+            "path": {
+              "identifier": "visit.slot.f09",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": true,
+            "value": ""
+          },
+          "outcome": "tapped",
+          "callback_delta": [],
+          "same_process": true
+        },
+        {
+          "name": "after_confirm",
+          "target": {
+            "enabled": true,
+            "frame": {
+              "height": 48,
+              "width": 326,
+              "x": 38,
+              "y": 568.6666666666667
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "visit.confirm",
+            "label": "Confirm new time",
+            "path": {
+              "identifier": "visit.confirm",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          },
+          "outcome": "tapped",
+          "callback_delta": [
+            {
+              "event": "confirm:f09",
+              "fixture_index": 0,
+              "uptime": 2320299.4341872917
+            }
+          ],
+          "same_process": true
+        }
+      ]
+    },
+    "ios-initial_02-final": {
+      "capture": {
+        "path": "scratch/repair-ios-02-r1/capture.json",
+        "sha256": "62966778b6cd30d4a6a1b9ffad344b331af75e349ce936b7d7dc5c95c4c0c6a2"
+      },
+      "observation": {
+        "path": "scratch/repair-ios-02-r1/observation.json",
+        "sha256": "404b3e6f11f2b818c1f9326aa1b29f1e24d50efa46e23598e50c47ee995ad439"
+      },
+      "commands": [
+        {
+          "argv": [
+            "python3",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-cf99de/support/common/observer/scripts/ios_observe.py",
+            "run",
+            "--bridge",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-cf99de/support/common/VisitBridge.swift",
+            "--package",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-cf99de/alerttoast",
+            "--fixtures",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-cf99de/scratch/repair-ios-02-r1-inputs/fixtures.json",
+            "--actions",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-cf99de/scratch/repair-ios-02-r1-inputs/actions.json",
+            "--simulator",
+            "6BD1B761-F036-4881-9014-2A053A4ED15D",
+            "--output",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-cf99de/scratch/repair-ios-02-r1"
+          ],
+          "seconds": 158.031,
+          "exit_code": 0
+        }
+      ],
+      "seconds": 158.036,
+      "coverage": {
+        "bottom_reached": true,
+        "missing_identifiers": [],
+        "observed_identifiers": [
+          "__observer.bottom",
+          "visit.confirm",
+          "visit.current",
+          "visit.fee_consent",
+          "visit.group.eve",
+          "visit.guidance",
+          "visit.location",
+          "visit.selection_summary",
+          "visit.service",
+          "visit.slot.e08",
+          "visit.slot.e17",
+          "visit.title"
+        ],
+        "required_identifiers": []
+      },
+      "sources": {
+        "Sources/AlertToast/VisitReschedulePanel.swift": "afaf3ce7d5e89f63c49c1cf4646f3c0428a86eabf45b893f1452dcd97450c181"
+      },
+      "nativeScope": "XCUIElement runtime accessibility; frames in logical screen points",
+      "nativeManifest": {
+        "path": "scratch/repair-ios-02-r1/manifest.json",
+        "sha256": "e4123026e6b86d7af44663bbab2f7652921c1a8009f8a804fecb7e48c5475054"
+      },
+      "nativeTestCount": 1,
+      "buildExitCode": 0,
+      "testExitCode": 0,
+      "steps": [
+        {
+          "name": "step_2",
+          "target": {
+            "enabled": false,
+            "frame": {
+              "height": 48,
+              "width": 256,
+              "x": 73,
+              "y": 590.6666666666666
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "visit.confirm",
+            "label": "Confirm new time",
+            "path": {
+              "identifier": "visit.confirm",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          },
+          "outcome": "blocked_disabled",
+          "callback_delta": [],
+          "same_process": true
+        },
+        {
+          "name": "after_fee_on",
+          "target": {
+            "enabled": true,
+            "frame": {
+              "height": 36.666656494140625,
+              "width": 256,
+              "x": 73,
+              "y": 490.3333435058594
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "visit.fee_consent",
+            "label": "I agree to the rescheduling fee of €32.50.",
+            "path": {
+              "identifier": "visit.fee_consent",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 40)",
+            "role_raw": 40,
+            "selected": false,
+            "value": "0"
+          },
+          "outcome": "tapped",
+          "callback_delta": [
+            {
+              "event": "fee_accepted:true",
+              "fixture_index": 0,
+              "uptime": 2320411.2947552083
+            }
+          ],
+          "same_process": true
+        },
+        {
+          "name": "after_confirm",
+          "target": {
+            "enabled": true,
+            "frame": {
+              "height": 48,
+              "width": 256,
+              "x": 73,
+              "y": 607.3333333333333
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "visit.confirm",
+            "label": "Confirm new time",
+            "path": {
+              "identifier": "visit.confirm",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          },
+          "outcome": "tapped",
+          "callback_delta": [
+            {
+              "event": "confirm:e17",
+              "fixture_index": 0,
+              "uptime": 2320433.6342455833
+            }
+          ],
+          "same_process": true
+        },
+        {
+          "name": "after_select",
+          "target": {
+            "enabled": true,
+            "frame": {
+              "height": 97,
+              "width": 256,
+              "x": 73,
+              "y": 207
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "visit.slot.e08",
+            "label": "Tuesday, 10 November, 08:00–10:00, Standard morning arrival., Available, No fee",
+            "path": {
+              "identifier": "visit.slot.e08",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          },
+          "outcome": "tapped",
+          "callback_delta": [
+            {
+              "event": "select_slot:e08",
+              "fixture_index": 0,
+              "uptime": 2320453.7008612086
+            }
+          ],
+          "same_process": true
+        },
+        {
+          "name": "step_9",
+          "target": {},
+          "outcome": "completed",
+          "callback_delta": [],
+          "same_process": true
+        },
+        {
+          "name": "scroll_1",
+          "target": {},
+          "outcome": "completed",
+          "callback_delta": [],
+          "same_process": true
+        }
+      ]
+    }
+  },
+  "pixelEvidence": "reports/repair-pixel-observations.json",
+  "evidenceLedger": {
+    "plan": "reports/repair-evidence-plan.json",
+    "observations": "reports/repair-observations.json",
+    "coverage": "reports/repair-coverage.json"
+  },
+  "compatibilityChecks": [
+    {
+      "target": "arm64-apple-ios14.0-simulator",
+      "method": "swiftc -typecheck new production Swift file",
+      "exitCode": 0,
+      "log": {
+        "path": "scratch/repair-ios14-typecheck.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "target": "arm64-apple-macosx11.0",
+      "method": "swiftc -typecheck new production Swift file",
+      "exitCode": 0,
+      "log": {
+        "path": "scratch/repair-macos11-typecheck.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "remainingLimits": [
+    "Only Android initial_05 and iOS initial_01/initial_02 were re-captured; other initial states and unseen cases await independent final capture.",
+    "iOS consent actual touch-region size remains unmeasured; native switch action/state succeed.",
+    "Android actions are semantic OnClick invocation and native ScrollState displacement, rather than physical OS touch/scroll.",
+    "No SwiftUI native font/padding attributes or exact hit regions are claimed from AX/pixels.",
+    "Minimum OS compatibility is type-check evidence, not execution on iOS14/macOS11."
+  ],
+  "hostOrAdapterEdits": false,
+  "publicAPIChanged": false,
+  "productionEditsStopped": true,
+  "readyForFinalSourceSealing": true
+}

@@ -1,0 +1,295 @@
+{
+  "phase": "one repair interval",
+  "startedAtUTC": "2026-10-18T12:50:29Z",
+  "endedAtUTC": "2026-10-18T13:03:42.053818Z",
+  "durationSeconds": 793.054,
+  "limitSeconds": 900,
+  "timeline": [
+    {
+      "atUTC": "2026-10-18T12:50:29Z",
+      "activity": "Read repair prompt and own sealed review; fixed the three confirmed clusters and attempted defensive consent sizing."
+    },
+    {
+      "atUTC": "2026-10-18T12:51:16.097987Z",
+      "activity": "Completed the only production edit pass; no later production edits."
+    },
+    {
+      "atUTC": "2026-10-18T12:54:03.635761Z",
+      "activity": "iOS initial_01 native collection finished: passed",
+      "evidence": "scratch/repair-ios-initial01-1/manifest.json",
+      "nativeTestCount": 1
+    },
+    {
+      "atUTC": "2026-10-18T12:57:20.113517Z",
+      "activity": "iOS initial_02 native collection finished: passed",
+      "evidence": "scratch/repair-loop-ios-initial02-1/native/native/manifest.json",
+      "nativeTestCount": 1
+    },
+    {
+      "atUTC": "2026-10-18T13:02:04.075282Z",
+      "activity": "iOS initial_03 native collection finished: passed",
+      "evidence": "scratch/repair-loop-ios-initial03-1/native/session/manifest.json",
+      "nativeTestCount": 1
+    },
+    {
+      "atUTC": "2026-10-18T13:03:42.053818Z",
+      "activity": "Saved repair report and final production hashes; stopped production edits for independent final sealing."
+    }
+  ],
+  "basis": "Only own sealed self-review findings, public design, own source and six initial fixtures/actions. No independent grader feedback or unseen inputs were accessed.",
+  "findingResults": [
+    {
+      "findingId": "ANDROID-001",
+      "platform": "android",
+      "ruleIds": [
+        "R17"
+      ],
+      "caseIds": [
+        "initial_05"
+      ],
+      "status": "confirmed_fixed",
+      "reasoning": "Use TextDirection.ContentOrLtr to retain numeric-only display-string order, with paragraph alignment explicitly following native layout direction. Text is not parsed, rewritten or calculated.",
+      "evidence": [
+        {
+          "path": "scratch/repair-android-initial05-1/actual.png",
+          "channel": "native screenshot",
+          "observed": "Current time visibly14:00\u201316:00 in RTL."
+        },
+        {
+          "path": "scratch/repair-loop-android-initial05-review/report.json",
+          "channel": "bound visual review",
+          "observed": "passed on a second fresh native capture with unchanged production fingerprint."
+        },
+        {
+          "path": "scratch/repair-android-initial03-1/observation.json",
+          "channel": "native semantics/event/scroll regression",
+          "observed": "Large-font case reaches bottom and emits exactly confirm:t09."
+        }
+      ],
+      "independentFinalCapturePending": true
+    },
+    {
+      "findingId": "IOS-001",
+      "platform": "ios",
+      "ruleIds": [
+        "R05",
+        "R13"
+      ],
+      "caseIds": [
+        "initial_01",
+        "initial_03"
+      ],
+      "status": "confirmed_fixed",
+      "reasoning": "Remove the accessibility-only row wrapper and keep the contextual label, selected trait and identifier on the real native Button. Its disabled environment is then exposed by the native control.",
+      "evidence": [
+        {
+          "path": "scratch/repair-ios-initial01-1/observation.json",
+          "channel": "native accessibility and physical action",
+          "observed": "s10 role_raw9(Button), enabled=false; unavailable tap blocked_disabled and no callback. f09 becomes selected; repeated activation emits nothing; confirm emits confirm:f09 once."
+        },
+        {
+          "path": "scratch/repair-loop-ios-initial03-1/native/session/observation.json",
+          "channel": "native accessibility",
+          "observed": "w11 role_raw9, enabled=false at large fonts."
+        }
+      ],
+      "independentFinalCapturePending": true
+    },
+    {
+      "findingId": "IOS-002",
+      "platform": "ios",
+      "ruleIds": [
+        "R14",
+        "R17"
+      ],
+      "caseIds": [
+        "initial_01",
+        "initial_02",
+        "initial_03"
+      ],
+      "status": "confirmed_fixed",
+      "reasoning": "A custom ButtonStyle returns the explicitly styled label without PlainButtonStyle disabled dimming. Native Button disabling continues to block activation and expose enabled=false.",
+      "evidence": [
+        {
+          "path": "reports/repair-evidence/ios-initial01-pixels.json",
+          "channel": "composited native screenshot pixels",
+          "observed": "Unavailable row fill244,246,249 and text82,97,116; light disabled confirm fill228,231,236 and text102,112,133, matching public tokens."
+        },
+        {
+          "path": "reports/repair-evidence/ios-initial02-pixels.json",
+          "channel": "composited native screenshot pixels",
+          "observed": "Dark disabled confirm fill52,64,84 and text184,196,212, matching public tokens."
+        },
+        {
+          "path": "reports/repair-evidence/ios-initial03-unavailable-scroll.png",
+          "channel": "native screenshot crops",
+          "observed": "Large-font unavailable detail/reason remain readable at full opacity through ordinary parent scrolling."
+        }
+      ],
+      "independentFinalCapturePending": true
+    },
+    {
+      "findingId": "IOS-003",
+      "platform": "ios",
+      "ruleIds": [
+        "R13"
+      ],
+      "caseIds": [
+        "initial_02"
+      ],
+      "status": "not_confirmed_fixed",
+      "initialFindingStatus": "suspected_issue",
+      "reasoning": "Added minimum44pt height to the Toggle label itself as well as the outer control. This does not change the exposed native Toggle accessibility frame, which remains36.67pt; its physical hit boundary is still unmeasured. The evidence does not establish whether the native Switch hit region is actually below44pt.",
+      "evidence": [
+        {
+          "path": "scratch/repair-loop-ios-initial02-1/native/native/observation.json",
+          "channel": "native accessibility geometry and physical action",
+          "observed": "visit.fee_consent height36.666656pt; leaf switch28pt. Native switch activation emits fee_accepted:true and enables confirm; no edge-of-target physical touch test."
+        }
+      ],
+      "independentFinalCapturePending": true,
+      "remainingWork": "Measure native physical hit boundary before declaring this suspected size issue fixed or dismissing it."
+    }
+  ],
+  "changedFiles": [
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt",
+      "beforeSHA256": "3afba23da25bc35ef4d130d7f5cf58572031f2d4dc75b7ad876bbfa451afb421",
+      "afterSHA256": "4af59d6ec62f75656573d0a87300e46a2f7596b38e8a59c68a979920ba86c4d4",
+      "changed": true,
+      "lastModifiedUTC": "2026-10-18T12:51:16.097855Z"
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+      "beforeSHA256": "9e59e91106e08fadd1ac0c7016852e43f2f820d8595e1aed8b5707d0241dc07d",
+      "afterSHA256": "18797a7577937931e322ca0f9442be018927b351ff53126f58eb8ee467c5a90a",
+      "changed": true,
+      "lastModifiedUTC": "2026-10-18T12:51:16.097987Z"
+    }
+  ],
+  "allProductionFiles": [
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitRescheduleModels.kt",
+      "beforeSHA256": "a5c36c2179c05d62e080bd6c49ac6f0ef6ae7f27feaaba5b3a493c930a5d028d",
+      "afterSHA256": "a5c36c2179c05d62e080bd6c49ac6f0ef6ae7f27feaaba5b3a493c930a5d028d",
+      "changed": false,
+      "lastModifiedUTC": "2026-10-18T11:50:37.718826Z"
+    },
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt",
+      "beforeSHA256": "3afba23da25bc35ef4d130d7f5cf58572031f2d4dc75b7ad876bbfa451afb421",
+      "afterSHA256": "4af59d6ec62f75656573d0a87300e46a2f7596b38e8a59c68a979920ba86c4d4",
+      "changed": true,
+      "lastModifiedUTC": "2026-10-18T12:51:16.097855Z"
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitRescheduleModels.swift",
+      "beforeSHA256": "ce35e2b95c0ea34fa1e08ca7636080d82724ccd5aa4b3657d31d0ad1f180d54c",
+      "afterSHA256": "ce35e2b95c0ea34fa1e08ca7636080d82724ccd5aa4b3657d31d0ad1f180d54c",
+      "changed": false,
+      "lastModifiedUTC": "2026-10-18T11:51:59.133517Z"
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+      "beforeSHA256": "9e59e91106e08fadd1ac0c7016852e43f2f820d8595e1aed8b5707d0241dc07d",
+      "afterSHA256": "18797a7577937931e322ca0f9442be018927b351ff53126f58eb8ee467c5a90a",
+      "changed": true,
+      "lastModifiedUTC": "2026-10-18T12:51:16.097987Z"
+    }
+  ],
+  "commandsAndEvidence": [
+    {
+      "label": "Android RTL native capture",
+      "command": "python3 support/common/capture.py --platform android --project reply/Reply --fixture operator-inputs/d0/initial_05.json --output scratch/repair-android-initial05-1",
+      "status": "passed",
+      "evidence": "scratch/repair-android-initial05-1"
+    },
+    {
+      "label": "Android large-font regression",
+      "command": "python3 support/common/capture.py --platform android --project reply/Reply --fixture operator-inputs/d0/initial_03.json --output scratch/repair-android-initial03-1",
+      "status": "passed",
+      "evidence": "scratch/repair-android-initial03-1"
+    },
+    {
+      "label": "iOS unavailable-row physical native capture",
+      "command": "python3 support/common/capture.py --platform ios --project alerttoast --fixture operator-inputs/d0/initial_01.json --output scratch/repair-ios-initial01-1 --simulator AB66271B-29BD-4D14-9C9B-71579E147DCA",
+      "status": "passed",
+      "evidence": "scratch/repair-ios-initial01-1"
+    },
+    {
+      "label": "iOS dark fee capture through evidence runner",
+      "command": "python3 support/skill/scripts/ui_loop.py capture --project . --profile reports/repair-evidence/ios-initial02.profile.json --output scratch/repair-loop-ios-initial02-1",
+      "status": "wrapper_artifact_collection_error_native_capture_passed",
+      "evidence": "scratch/repair-loop-ios-initial02-1",
+      "reason": "Profile glob used native/actual.png but command output resolved to native/native/actual.png. Native XCTest and original observation/screenshots completed successfully. No capture report was edited to hide the error."
+    },
+    {
+      "label": "Android RTL evidence runner capture/review",
+      "command": "python3 support/skill/scripts/ui_loop.py capture --project . --profile reports/repair-evidence/android-initial05.profile.json --output scratch/repair-loop-android-initial05-2; then review with bound findings",
+      "status": "passed",
+      "evidence": "scratch/repair-loop-android-initial05-review/report.json"
+    },
+    {
+      "label": "iOS14 compatibility",
+      "command": "swiftc -typecheck -parse-as-library -module-name VisitCompatibility -sdk iPhoneSimulator27.1.sdk -target arm64-apple-ios14.0-simulator -module-cache-path scratch/repair-ios14-cache VisitRescheduleModels.swift VisitReschedulePanel.swift",
+      "status": "passed",
+      "evidence": "scratch/repair-ios14-typecheck.log"
+    },
+    {
+      "label": "macOS11 compatibility",
+      "command": "swiftc -typecheck -parse-as-library -module-name VisitCompatibility -sdk MacOSX.sdk -target arm64-apple-macosx11.0 -module-cache-path scratch/repair-macos11-cache VisitRescheduleModels.swift VisitReschedulePanel.swift",
+      "status": "passed",
+      "evidence": "scratch/repair-macos11-typecheck.log"
+    },
+    {
+      "label": "iOS large-font native capture and bound visual review",
+      "command": "python3 support/skill/scripts/ui_loop.py capture --project . --profile reports/repair-evidence/ios-initial03.profile.json --output scratch/repair-loop-ios-initial03-1; then review with bound findings",
+      "status": "passed",
+      "evidence": "scratch/repair-loop-ios-initial03-review/report.json"
+    }
+  ],
+  "nativeCasesRetested": {
+    "android": [
+      "initial_05",
+      "initial_03"
+    ],
+    "ios": [
+      "initial_01",
+      "initial_02",
+      "initial_03"
+    ]
+  },
+  "compatibility": {
+    "iOS14": "passed production-only type-check",
+    "macOS11": "passed production-only type-check",
+    "android": "Common native test compiled existing Compose dependencies successfully."
+  },
+  "evidenceReviewed": [
+    "scratch/repair-android-initial05-1/actual.png",
+    "scratch/repair-loop-android-initial05-2/artifacts/000-actual.png",
+    "reports/repair-evidence/android-large-contact.png",
+    "reports/repair-evidence/ios-initial01-disabled-contact.png",
+    "reports/repair-evidence/ios-initial02-contact.png",
+    "reports/repair-evidence/ios-initial03-contact.png",
+    "reports/repair-evidence/ios-initial03-unavailable-scroll.png",
+    "reports/repair-evidence/ios-initial03-native.json"
+  ],
+  "evidencePackagingIssue": {
+    "path": "scratch/repair-loop-ios-initial02-1/capture.json",
+    "status": "error",
+    "cause": "Profile selected native/actual.png while its argv produced native/native/actual.png. Native common capture completed with passed XCTest and intact native observation/images under native/native. The wrapper error is retained and is not a product failure or acceptance pass. Subsequent Android and iOS03 profiles used corrected artifact paths and passed capture/review."
+  },
+  "remainingLimits": [
+    "IOS-003 remains suspected and not confirmed fixed: native accessibility height is36.67pt while physical hit area is unmeasured.",
+    "SwiftUI raw style attributes are unavailable; reported color values are composited screenshot pixels, not native raw properties.",
+    "Android callbacks are semantic OnClick invocation and scroll displacement in Paparazzi, not physical Android touch/OS gestures.",
+    "All initial and unseen final cases are pending independent final recapture. This repair retested only cases relevant to the observed changes.",
+    "Invalid selection, whole-model replacement sequences, fee-off action, unprovided long amount variants and universal2.0 scaling remain beyond this repair evidence."
+  ],
+  "selfReviewSHA256Before": "e3d51505cef45652da68b6c42228710deff2fc7b6a8b2b6f175f738c5a1e988e",
+  "selfReviewSHA256After": "e3d51505cef45652da68b6c42228710deff2fc7b6a8b2b6f175f738c5a1e988e",
+  "selfReviewUnchanged": true,
+  "productionEditsStopped": true,
+  "readyForFinalSourceSealing": true,
+  "scope": "Only VisitReschedulePanel.kt and VisitReschedulePanel.swift production files were edited. Models, host/adapters, dependencies, public references and earlier reports were preserved."
+}

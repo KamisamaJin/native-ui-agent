@@ -1,0 +1,126 @@
+{
+  "phase": "D0",
+  "status": "source_sealed",
+  "begin_utc": "2026-10-18T11:49:13Z",
+  "end_utc": "2026-10-18T11:54:09.429288Z",
+  "active_wall_seconds": 296.429,
+  "budget_seconds": 1500,
+  "timing_notes": "One continuous active interval including local compiler/build waits. No paused interval or externally blocked queue. Original host architecture failure and corrected-command build are included in active wall time.",
+  "production_files": [
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitRescheduleModels.kt",
+      "sha256": "59b34c73ec496dfe43c646f984661e304e79ec036583b4ce69abfbf449b55303",
+      "bytes": 1421
+    },
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt",
+      "sha256": "b437649c9ad36b06581bcd51f021644d3a2a3fc1027f3be9dec4e22b9792e2a3",
+      "bytes": 13079
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitRescheduleModels.swift",
+      "sha256": "18d648375416ce751840e7d2d9b0af94bcc850a3fa110a99e7d0f494df162a07",
+      "bytes": 4472
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+      "sha256": "5a79e6c42f5fdeb91dbde7fa54b9252fdce80effa869933e65836d7fa0d8e54e",
+      "bytes": 13877
+    }
+  ],
+  "scope": {
+    "new_production_files_only": true,
+    "upstream_production_modified": false,
+    "host_or_support_modified": false,
+    "dependency_manifests_modified": false,
+    "images_opened_or_reviewed": false,
+    "visual_repairs_performed": false
+  },
+  "source_review": {
+    "public_models": "Kotlin data classes/enums/actions; Swift Codable types, explicit public initializers, stored public properties and lowercase raw enum values.",
+    "component": "Controlled native Compose and SwiftUI panels. Effective selection is derived from the replacement model; selection/consent have no internal retained copy. State-specific branches suppress stale chooser fields. Native row controls, consent toggles, and buttons carry identifiers/state.",
+    "layout_intent": "Content-sized native stacks/columns, no internal scroll or text line limits, wrapping text, scalable system typography, palette variants and leading/trailing layouts."
+  },
+  "build_outcomes": [
+    {
+      "platform": "Android",
+      "kind": "common public-example compile/integration",
+      "status": "pass",
+      "command": "JAVA_HOME=<provided JDK> ANDROID_HOME=<provided SDK> NATIVE_UI_OUTPUT=<workspace>/scratch/android-build-1 BENCH_FIXTURE=<workspace>/support/public/example.json ./gradlew :app:testDebugUnitTest --tests com.example.reply.VisitPanelUiTest.capture --console=plain",
+      "log": "scratch/android-build-1.log",
+      "evidence": "BUILD SUCCESSFUL; observation phase complete. No rendered images inspected.",
+      "integration_events": [
+        "fee_accepted:true",
+        "confirm:mon_pm",
+        "select_slot:mon_am"
+      ],
+      "integration_channel": "Common host semantic OnClick invocation; each public-example action produced one callback.",
+      "observation_log": "scratch/android-build-1/observation.json"
+    },
+    {
+      "platform": "iOS",
+      "kind": "common build-only attempt1",
+      "status": "failed_then_fixed",
+      "log": "scratch/ios-build-1/build.log",
+      "cause": "New VisitText ScaledMetric declaration needed an initial wrappedValue; corrected before sealing."
+    },
+    {
+      "platform": "iOS",
+      "kind": "common build-only attempt2",
+      "status": "host_integration_failure",
+      "log": "scratch/ios-build-2/build.log",
+      "cause": "Generated ObserverApp compiled x86_64 as well as arm64 while package emitted arm64 module only; incompatible target and unresolved AlertToast dependency. Reported to root; no host edits."
+    },
+    {
+      "platform": "iOS",
+      "kind": "common generated project command-only architecture correction",
+      "status": "pass",
+      "log": "scratch/ios-build-3/build.log",
+      "command": "xcodebuild build-for-testing -project scratch/ios-build-2/project/Observer.xcodeproj -scheme Observer -sdk iphonesimulator -destination platform=iOS Simulator,id=BB2FFB37-F844-433C-A2BD-C82DFF842B07 -derivedDataPath scratch/ios-build-3/DerivedData -configuration Debug ARCHS=arm64 ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO",
+      "evidence": "TEST BUILD SUCCEEDED. Correction authorized by root and limited to command arguments."
+    },
+    {
+      "platform": "iOS",
+      "kind": "new production Swift files direct minimum-version typecheck",
+      "status": "pass",
+      "target": "arm64-apple-ios14.0-simulator",
+      "log": "scratch/ios14-typecheck.log"
+    },
+    {
+      "platform": "macOS",
+      "kind": "new production Swift files direct minimum-version typecheck",
+      "status": "pass",
+      "target": "arm64-apple-macos11.0",
+      "log": "scratch/macos11-typecheck.log"
+    }
+  ],
+  "runtime_evidence_limits": {
+    "Android": "Only the common public example integration callbacks were inspected. Generated screenshots and layout/accessibility measurements were not reviewed. No OS gesture, accessibility service, device lifecycle, alternate mode, font, RTL, dark-theme or replacement-model runtime claim.",
+    "iOS": "Build/typecheck evidence only. No app runtime, callbacks, native accessibility exposure, reachability, scrolling or screenshot evidence.",
+    "visual_scores": {
+      "Android": "missing evidence / unscored",
+      "iOS": "missing evidence / unscored"
+    },
+    "initial_and_holdout_defects": {
+      "Android": {
+        "distinct_product_clusters": null,
+        "case_rule_failures": null,
+        "status": "unobserved"
+      },
+      "iOS": {
+        "distinct_product_clusters": null,
+        "case_rule_failures": null,
+        "status": "unobserved"
+      }
+    },
+    "untested_limits": [
+      "Visual fidelity and wrapping at all required widths/font sizes",
+      "Full alternate-mode and caller-update behavior at runtime",
+      "Disabled-row and repeated-selection activation runtime evidence",
+      "Native accessibility hierarchy/traits on Apple and service exposure on Android",
+      "RTL, dark theme and complete ordinary-scroll runtime evidence",
+      "All undisclosed cases and holdouts"
+    ]
+  },
+  "next_step": "Stop production edits after this seal; await separate review/repair instruction."
+}

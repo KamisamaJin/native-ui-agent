@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "platform": "android",
+  "backend": "paparazzi",
+  "target": {
+    "description": "Repair ANDROID-001: preserved numeric time order with native RTL alignment.",
+    "sources": [
+      "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt",
+      "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitRescheduleModels.kt"
+    ]
+  },
+  "environment": {
+    "width": 390,
+    "viewportHeight": 600,
+    "theme": "dark",
+    "fontScale": 1.3,
+    "direction": "rtl"
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-a9c359/support/common/capture.py",
+        "--platform",
+        "android",
+        "--project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-a9c359/reply/Reply",
+        "--fixture",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/fresh-blind/cache/unit-a9c359/operator-inputs/d0/initial_05.json",
+        "--output",
+        "{output}/session"
+      ],
+      "cwd": ".",
+      "timeout_seconds": 120
+    }
+  ],
+  "artifacts": [
+    {
+      "base": "output",
+      "glob": "native/session/actual.png",
+      "role": "actual"
+    },
+    {
+      "base": "output",
+      "glob": "native/session/observation.json",
+      "role": "native-report"
+    },
+    {
+      "base": "output",
+      "glob": "native/session/junit.xml",
+      "role": "native-report"
+    }
+  ],
+  "protected_paths": [
+    "support/public/reference.png",
+    "support/public/reference.svg"
+  ],
+  "checks": [
+    {
+      "id": "android-rtl-time-order",
+      "kind": "visual",
+      "description": "The supplied time 14:00\u201316:00 remains in that visual order in RTL; right alignment and readable disabled treatment remain coherent.",
+      "source": "support/public/brief.md R17; reports/self-review.json ANDROID-001."
+    }
+  ]
+}

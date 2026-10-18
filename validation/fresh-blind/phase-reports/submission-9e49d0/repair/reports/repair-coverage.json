@@ -1,0 +1,334 @@
+{
+  "version": 1,
+  "status": "needs_review",
+  "planned_cells": 11,
+  "observed_decisions": 8,
+  "requirements": [
+    {
+      "requirement": "R17-rtl-time",
+      "case": "android.initial_05",
+      "status": "passed",
+      "complete": true
+    },
+    {
+      "requirement": "R13-native-row",
+      "case": "ios.initial_01",
+      "status": "passed",
+      "complete": true
+    },
+    {
+      "requirement": "R13-native-row",
+      "case": "ios.initial_02",
+      "status": "passed",
+      "complete": true
+    },
+    {
+      "requirement": "R13-native-row",
+      "case": "ios.initial_03",
+      "status": "needs_review",
+      "complete": false
+    },
+    {
+      "requirement": "R14-R17-disabled-palette",
+      "case": "ios.initial_01",
+      "status": "passed",
+      "complete": true
+    },
+    {
+      "requirement": "R14-R17-disabled-palette",
+      "case": "ios.initial_02",
+      "status": "passed",
+      "complete": true
+    },
+    {
+      "requirement": "R14-R17-disabled-palette",
+      "case": "ios.initial_03",
+      "status": "needs_review",
+      "complete": false
+    },
+    {
+      "requirement": "R05-R07-R08-callback-regression",
+      "case": "ios.initial_01",
+      "status": "passed",
+      "complete": true
+    },
+    {
+      "requirement": "R05-R07-R08-callback-regression",
+      "case": "ios.initial_02",
+      "status": "passed",
+      "complete": true
+    },
+    {
+      "requirement": "R11-retry-regression",
+      "case": "android.initial_05",
+      "status": "passed",
+      "complete": true
+    },
+    {
+      "requirement": "R13-consent-touch",
+      "case": "ios.initial_02",
+      "status": "needs_review",
+      "complete": false
+    }
+  ],
+  "cells": [
+    {
+      "requirement": "R17-rtl-time",
+      "case": "android.initial_05",
+      "aspect": "visual-order",
+      "status": "passed",
+      "observation": "Actual image reads 14:00–16:00 and multiline text remains native-leading aligned.",
+      "record": {
+        "requirement": "R17-rtl-time",
+        "case": "android.initial_05",
+        "aspect": "visual-order",
+        "method": "visual",
+        "status": "passed",
+        "execution": "observed",
+        "observation": "Actual image reads 14:00–16:00 and multiline text remains native-leading aligned.",
+        "evidence": [
+          {
+            "path": "scratch/repair-android-05-r2/actual.png",
+            "sha256": "abfdafdbaf4ce822ed90cc95301fb82f39c36ec04d9e9dcfdf720d4bceaaf4b8"
+          },
+          {
+            "path": "scratch/repair-android-05-r2/observation.json",
+            "sha256": "114eb4da96dc235cd86633c5fe04485efd9d19cc8e1d84ba094bdfd5433b9de2"
+          }
+        ]
+      }
+    },
+    {
+      "requirement": "R13-native-row",
+      "case": "ios.initial_01",
+      "aspect": "native-control",
+      "status": "passed",
+      "observation": "All visit.slot IDs are role_raw 9 Buttons; disabled and selected states reside on those actual controls.",
+      "record": {
+        "requirement": "R13-native-row",
+        "case": "ios.initial_01",
+        "aspect": "native-control",
+        "method": "native_ax",
+        "status": "passed",
+        "execution": "observed",
+        "observation": "All visit.slot IDs are role_raw 9 Buttons; disabled and selected states reside on those actual controls.",
+        "evidence": [
+          {
+            "path": "scratch/repair-ios-01-r1/observation.json",
+            "sha256": "4a8a718b42838af0aa7ddaba71235cb85dd7a4a9ab08cd319b9f11e1cf138801"
+          }
+        ]
+      }
+    },
+    {
+      "requirement": "R13-native-row",
+      "case": "ios.initial_02",
+      "aspect": "native-control",
+      "status": "passed",
+      "observation": "All visit.slot IDs are role_raw 9 Buttons; disabled and selected states reside on those actual controls.",
+      "record": {
+        "requirement": "R13-native-row",
+        "case": "ios.initial_02",
+        "aspect": "native-control",
+        "method": "native_ax",
+        "status": "passed",
+        "execution": "observed",
+        "observation": "All visit.slot IDs are role_raw 9 Buttons; disabled and selected states reside on those actual controls.",
+        "evidence": [
+          {
+            "path": "scratch/repair-ios-02-r1/observation.json",
+            "sha256": "404b3e6f11f2b818c1f9326aa1b29f1e24d50efa46e23598e50c47ee995ad439"
+          }
+        ]
+      }
+    },
+    {
+      "requirement": "R13-native-row",
+      "case": "ios.initial_03",
+      "aspect": "native-control",
+      "status": "not_executed",
+      "observation": "Final long case not re-captured; same repaired row/style applies in source, pending independent final capture.",
+      "record": {
+        "requirement": "R13-native-row",
+        "case": "ios.initial_03",
+        "aspect": "native-control",
+        "method": "native_ax",
+        "status": "not_executed",
+        "execution": "not_executed",
+        "observation": "Final long case not re-captured; same repaired row/style applies in source, pending independent final capture.",
+        "evidence": [
+          {
+            "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+            "sha256": "afaf3ce7d5e89f63c49c1cf4646f3c0428a86eabf45b893f1452dcd97450c181"
+          }
+        ]
+      }
+    },
+    {
+      "requirement": "R14-R17-disabled-palette",
+      "case": "ios.initial_01",
+      "aspect": "rendered-colors",
+      "status": "passed",
+      "observation": "Inspected actual images and flat rendered colors; light row and disabled primary, and dark disabled primary match specified RGB values.",
+      "record": {
+        "requirement": "R14-R17-disabled-palette",
+        "case": "ios.initial_01",
+        "aspect": "rendered-colors",
+        "method": "native_pixels",
+        "status": "passed",
+        "execution": "observed",
+        "observation": "Inspected actual images and flat rendered colors; light row and disabled primary, and dark disabled primary match specified RGB values.",
+        "evidence": [
+          {
+            "path": "scratch/repair-ios-01-r1/observation.json",
+            "sha256": "4a8a718b42838af0aa7ddaba71235cb85dd7a4a9ab08cd319b9f11e1cf138801"
+          },
+          {
+            "path": "reports/repair-pixel-observations.json",
+            "sha256": "2b540c2aca2089421cc5d47111eda0eaef8ee62047a04fa2d9564a39b91b4856"
+          }
+        ]
+      }
+    },
+    {
+      "requirement": "R14-R17-disabled-palette",
+      "case": "ios.initial_02",
+      "aspect": "rendered-colors",
+      "status": "passed",
+      "observation": "Inspected actual images and flat rendered colors; light row and disabled primary, and dark disabled primary match specified RGB values.",
+      "record": {
+        "requirement": "R14-R17-disabled-palette",
+        "case": "ios.initial_02",
+        "aspect": "rendered-colors",
+        "method": "native_pixels",
+        "status": "passed",
+        "execution": "observed",
+        "observation": "Inspected actual images and flat rendered colors; light row and disabled primary, and dark disabled primary match specified RGB values.",
+        "evidence": [
+          {
+            "path": "scratch/repair-ios-02-r1/observation.json",
+            "sha256": "404b3e6f11f2b818c1f9326aa1b29f1e24d50efa46e23598e50c47ee995ad439"
+          },
+          {
+            "path": "reports/repair-pixel-observations.json",
+            "sha256": "2b540c2aca2089421cc5d47111eda0eaef8ee62047a04fa2d9564a39b91b4856"
+          }
+        ]
+      }
+    },
+    {
+      "requirement": "R14-R17-disabled-palette",
+      "case": "ios.initial_03",
+      "aspect": "rendered-colors",
+      "status": "not_executed",
+      "observation": "Final long case not re-captured; same repaired row/style applies in source, pending independent final capture.",
+      "record": {
+        "requirement": "R14-R17-disabled-palette",
+        "case": "ios.initial_03",
+        "aspect": "rendered-colors",
+        "method": "native_pixels",
+        "status": "not_executed",
+        "execution": "not_executed",
+        "observation": "Final long case not re-captured; same repaired row/style applies in source, pending independent final capture.",
+        "evidence": [
+          {
+            "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+            "sha256": "afaf3ce7d5e89f63c49c1cf4646f3c0428a86eabf45b893f1452dcd97450c181"
+          }
+        ]
+      }
+    },
+    {
+      "requirement": "R05-R07-R08-callback-regression",
+      "case": "ios.initial_01",
+      "aspect": "callback-deltas",
+      "status": "passed",
+      "observation": "Native callback deltas match expected sequence; disabled actions blocked and repeated selected-row callback absent where supplied.",
+      "record": {
+        "requirement": "R05-R07-R08-callback-regression",
+        "case": "ios.initial_01",
+        "aspect": "callback-deltas",
+        "method": "native_action",
+        "status": "passed",
+        "execution": "observed",
+        "observation": "Native callback deltas match expected sequence; disabled actions blocked and repeated selected-row callback absent where supplied.",
+        "evidence": [
+          {
+            "path": "scratch/repair-ios-01-r1/observation.json",
+            "sha256": "4a8a718b42838af0aa7ddaba71235cb85dd7a4a9ab08cd319b9f11e1cf138801"
+          }
+        ]
+      }
+    },
+    {
+      "requirement": "R05-R07-R08-callback-regression",
+      "case": "ios.initial_02",
+      "aspect": "callback-deltas",
+      "status": "passed",
+      "observation": "Native callback deltas match expected sequence; disabled actions blocked and repeated selected-row callback absent where supplied.",
+      "record": {
+        "requirement": "R05-R07-R08-callback-regression",
+        "case": "ios.initial_02",
+        "aspect": "callback-deltas",
+        "method": "native_action",
+        "status": "passed",
+        "execution": "observed",
+        "observation": "Native callback deltas match expected sequence; disabled actions blocked and repeated selected-row callback absent where supplied.",
+        "evidence": [
+          {
+            "path": "scratch/repair-ios-02-r1/observation.json",
+            "sha256": "404b3e6f11f2b818c1f9326aa1b29f1e24d50efa46e23598e50c47ee995ad439"
+          }
+        ]
+      }
+    },
+    {
+      "requirement": "R11-retry-regression",
+      "case": "android.initial_05",
+      "aspect": "retry-callback",
+      "status": "passed",
+      "observation": "Exactly one retry, complete observation phase and bottom_reached=true.",
+      "record": {
+        "requirement": "R11-retry-regression",
+        "case": "android.initial_05",
+        "aspect": "retry-callback",
+        "method": "native_action",
+        "status": "passed",
+        "execution": "observed",
+        "observation": "Exactly one retry, complete observation phase and bottom_reached=true.",
+        "evidence": [
+          {
+            "path": "scratch/repair-android-05-r2/observation.json",
+            "sha256": "114eb4da96dc235cd86633c5fe04485efd9d19cc8e1d84ba094bdfd5433b9de2"
+          }
+        ]
+      }
+    },
+    {
+      "requirement": "R13-consent-touch",
+      "case": "ios.initial_02",
+      "aspect": "physical-hit-region",
+      "status": "needs_review",
+      "observation": "AX frames remain smaller than 44pt, while source supplies minimum layout height. Neither AX bounds nor successful center tap establishes edge hit region. No speculative repair.",
+      "record": {
+        "requirement": "R13-consent-touch",
+        "case": "ios.initial_02",
+        "aspect": "physical-hit-region",
+        "method": "native_bounds",
+        "status": "needs_review",
+        "execution": "observed",
+        "observation": "AX frames remain smaller than 44pt, while source supplies minimum layout height. Neither AX bounds nor successful center tap establishes edge hit region. No speculative repair.",
+        "evidence": [
+          {
+            "path": "scratch/repair-ios-02-r1/observation.json",
+            "sha256": "404b3e6f11f2b818c1f9326aa1b29f1e24d50efa46e23598e50c47ee995ad439"
+          }
+        ]
+      }
+    }
+  ],
+  "related_review_queue": [],
+  "limits": "Hashes establish artifact integrity, not semantic truth. Review producers, coordinate meaning, source/state binding and complete viewport/action evidence independently.",
+  "plan_sha256": "e068f4a079d65acd4e7fcf5f417579d699817f1265b430322f267e4d2812ea7f",
+  "observations_sha256": "7e6c4fad12d77ff613c8974752ece9a2075a22094e117d68beeb5eb93ecdb293"
+}
