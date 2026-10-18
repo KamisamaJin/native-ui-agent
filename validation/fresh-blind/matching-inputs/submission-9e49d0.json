@@ -1,0 +1,203 @@
+{
+  "submission": "submission-9e49d0",
+  "sourceReportSha256": "3a0ab45be02f7d50d882627483422aeb2e4e17a4770596439b568561aade26a8",
+  "findings": [
+    {
+      "id": "android-rtl-time-order",
+      "platform": "android",
+      "caseIds": [
+        "initial_05"
+      ],
+      "ruleIds": [
+        "R17"
+      ],
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseCluster": "android-bidi-display-strings",
+      "description": "The RTL current appointment visibly renders 16:00\u201314:00 although the caller supplied 14:00\u201316:00. Date/time display strings are not kept in their intact endpoint order. The native text remains the original string, so this is a visual bidi-order failure, not caller-data mutation.",
+      "evidence": [
+        {
+          "path": "review-evidence/android/initial_05/000-initial.png",
+          "sha256": "fadf5360d42ee36ebec53395721189ca04fa853e2cf1bbb287031884effcf8f3",
+          "checkpoint": "initial",
+          "snapshotIndex": 0
+        },
+        {
+          "path": "review-evidence/android/initial_05/observation.json",
+          "sha256": "114eb4da96dc235cd86633c5fe04485efd9d19cc8e1d84ba094bdfd5433b9de2",
+          "snapshotIndex": 0
+        },
+        {
+          "path": "operator-inputs/d0/initial_05.json",
+          "sha256": "1a020d2159fceb888fcd55724005dfc0b83a3dbd5ce8a0b2f2ab198fc7d8d802"
+        }
+      ],
+      "sourceLocation": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt:103",
+      "causeHypothesis": "VisitText uses inherited RTL paragraph direction for neutral/numeric time ranges; no display-string bidi isolation or content direction is supplied."
+    },
+    {
+      "id": "ios-row-accessibility-split",
+      "platform": "ios",
+      "caseIds": [
+        "initial_01",
+        "initial_02",
+        "initial_03"
+      ],
+      "ruleIds": [
+        "R05",
+        "R13"
+      ],
+      "ruleCasePairs": [
+        {
+          "caseId": "initial_01",
+          "ruleIds": [
+            "R05",
+            "R13"
+          ]
+        },
+        {
+          "caseId": "initial_02",
+          "ruleIds": [
+            "R13"
+          ]
+        },
+        {
+          "caseId": "initial_03",
+          "ruleIds": [
+            "R05",
+            "R13"
+          ]
+        }
+      ],
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseCluster": "ios-row-accessibility-wrapper",
+      "description": "Each visit.slot ID is on an XCUI Other wrapper rather than its actual Button. The unavailable labelled row s10 is enabled=true at snapshot 3, while the separate unlabelled Button at the same frame is enabled=false. After selecting f09, its wrapper is selected=true while its actual Button remains selected=false and has no visit.slot ID or group-day context. The same wrapper/control split occurs in the fee and long-content cases, including w11 being exposed enabled=true. The disabled callback remains safely absent; the failure is native row state and meaningful control exposure.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_01/observation.json",
+          "sha256": "01d3ffcaf1cd00428df36c5144d99883162eaff29b7655f4df808565352c3571",
+          "snapshotIndex": 3
+        },
+        {
+          "path": "review-evidence/ios/initial_01/observation.json",
+          "sha256": "01d3ffcaf1cd00428df36c5144d99883162eaff29b7655f4df808565352c3571",
+          "snapshotIndex": 7
+        },
+        {
+          "path": "review-evidence/ios/initial_02/observation.json",
+          "sha256": "14522ff788057b2588cfda806584249149156ff0c5bec29e95353eabfabd06ae",
+          "snapshotIndex": 0
+        },
+        {
+          "path": "review-evidence/ios/initial_03/observation.json",
+          "sha256": "4ad90caa9a3bcc0c9bb07cf6f71b5145d5be29346d314495d02c9a6e39430d7f",
+          "snapshotIndex": 7
+        }
+      ],
+      "nativeDetails": {
+        "initial_01_snapshot_3": {
+          "row_wrapper_node": 22,
+          "wrapper_role_raw": 1,
+          "wrapper_enabled": true,
+          "button_node": 30,
+          "button_role_raw": 9,
+          "button_enabled": false,
+          "button_identifier": ""
+        },
+        "initial_01_snapshot_7": {
+          "selected_wrapper_node": 19,
+          "wrapper_selected": true,
+          "button_node": 29,
+          "button_selected": false,
+          "button_identifier": ""
+        }
+      },
+      "sourceLocation": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift:361",
+      "causeHypothesis": "Applying accessibilityElement(children: .ignore), label and selected traits outside the disabled Button creates an extra accessibility wrapper instead of annotating the native control."
+    },
+    {
+      "id": "ios-disabled-palette-faded",
+      "platform": "ios",
+      "caseIds": [
+        "initial_01",
+        "initial_02",
+        "initial_03"
+      ],
+      "ruleIds": [
+        "R14",
+        "R17"
+      ],
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseCluster": "ios-disabled-button-rendering",
+      "description": "Unavailable rows and disabled confirmation buttons are faded by native disabled styling in addition to the explicitly chosen readable disabled palette. In initial_01 the row text is visibly pale: common solid text pixels are #A6AEB8 against #FAFBFC (about 2.16:1), instead of specified secondary #526174 on #F4F6F9. Disabled primary text/fill are #ABB1BD/#F1F3F5 (about 1.94:1), instead of #667085/#E4E7EC. The long unavailable reason in initial_03 receives the same fade. The dark disabled primary in initial_02 is also altered to #6F7989/#252E3E. This breaks the full-opacity readable unavailable treatment and disabled contrast/tokens.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_01/attachments/BAE9E5DC-1E3A-4F20-941A-585C403BE42E.png",
+          "sha256": "144556f8a71ff0b5578181e59b726e09e589e77f36100609a82dce5531785647",
+          "checkpoint": "step_2",
+          "snapshotIndex": 3
+        },
+        {
+          "path": "review-evidence/ios/initial_02/attachments/A9A59B1E-DF7C-4A69-9B49-CDCAB6B8032A.png",
+          "sha256": "a639405c458f4fa7ab10a45541d0cf70eb345d6207f8f11ed698b70298717d4b",
+          "checkpoint": "step_2",
+          "snapshotIndex": 3
+        },
+        {
+          "path": "review-evidence/ios/initial_03/attachments/4AB49554-6440-4811-8895-44A70C5AC30D.png",
+          "sha256": "5116be266d34a492bfab0bbd492c2628b9cbca39f6aa3b36451cc2ef40ecc2b5",
+          "checkpoint": "action-1-reveal-2-down",
+          "snapshotIndex": 7
+        },
+        {
+          "path": "reports/review-pixel-observations.json",
+          "sha256": "f2f1debaddf721a832dddd25fb66c09327d9e562ef2b116904faf0f335e3fa8a"
+        },
+        {
+          "path": "reports/review-initial_01-visit-slot-s10.png",
+          "sha256": "47d5c68ae70ebf127132e0e376447ae70f5faff5338fc69972d739909c97ec99"
+        },
+        {
+          "path": "reports/review-initial_01-visit-confirm.png",
+          "sha256": "534e36327d08bc8719962faf8a3c6a78f3c1dc6a91753c27e31e6da855a2d9fb"
+        },
+        {
+          "path": "reports/review-initial_02-visit-confirm.png",
+          "sha256": "02e259bd825d90f3d3f4b2970b99dd5644582a358e6d3ba9c9f2c890496a24dc"
+        }
+      ],
+      "sourceLocation": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift:361",
+      "causeHypothesis": "PlainButtonStyle responds to disabled environment by fading the already token-colored label and surface; the same style is used by primaryButton."
+    },
+    {
+      "id": "ios-consent-touch-size-unresolved",
+      "platform": "ios",
+      "caseIds": [
+        "initial_02"
+      ],
+      "ruleIds": [
+        "R13"
+      ],
+      "status": "suspected_issue",
+      "certainty": "low",
+      "rootCauseCluster": "ios-consent-native-target-size-unresolved",
+      "description": "The exposed consent Switch has an AX frame about 36.67pt high and its native switch leaf is 28pt high, below the requested 44pt target. Source adds frame(minHeight: 44), so these AX bounds do not prove the actual touch target is undersized. A physical edge-target test or hit-region measurement is needed before calling this a confirmed failure. The supplied native switch tap does succeed and updates value 0\u21921.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_02/observation.json",
+          "sha256": "14522ff788057b2588cfda806584249149156ff0c5bec29e95353eabfabd06ae",
+          "snapshotIndex": 4
+        },
+        {
+          "path": "review-evidence/ios/initial_02/observation.json",
+          "sha256": "14522ff788057b2588cfda806584249149156ff0c5bec29e95353eabfabd06ae",
+          "snapshotIndex": 5
+        }
+      ],
+      "sourceLocation": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift:291",
+      "limits": "AX frame, visual glyph bounds and actual native touch bounds differ. No confirmed case\u00d7rule failure is counted."
+    }
+  ]
+}

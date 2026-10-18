@@ -1,0 +1,285 @@
+{
+  "submission": "submission-4f1781",
+  "sourceReportSha256": "ad97a0a9de3f9259f40e7c9a4026c72ea741f825e485919c59bfdb9261e6c205",
+  "findings": [
+    {
+      "id": "A-RTL-01",
+      "platform": "Android",
+      "caseIds": [
+        "initial_05"
+      ],
+      "ruleIds": [
+        "R17"
+      ],
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseClusterId": "A-C1",
+      "description": "The RTL current appointment visually reads 16:00\u201314:00 although the supplied display-ready time is 14:00\u201316:00. Other context is aligned for RTL, but the numeric range has changed visual order.",
+      "rootCause": "VisitText uses TextDirection.Content for every string. A numeric-only time range has no strong direction and inherits RTL paragraph direction.",
+      "evidence": [
+        {
+          "path": "review-evidence/android/initial_05/000-initial.png",
+          "checkpoint": "initial",
+          "channel": "screenshot"
+        },
+        {
+          "path": "scratch/review/android-rtl-current.png",
+          "channel": "crop of supplied native screenshot"
+        },
+        {
+          "path": "review-evidence/android/initial_05/observation.json",
+          "checkpoint": "initial",
+          "channel": "Compose semantics/geometry and event record",
+          "details": "The text node retains semantic label 14:00\u201316:00 while the screenshot displays the endpoint groups reversed."
+        },
+        {
+          "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/VisitReschedulePanel.kt",
+          "channel": "declarative source",
+          "details": "VisitText TextDirection.Content, reused for appointment.timeLabel."
+        }
+      ]
+    },
+    {
+      "id": "I-ID-01",
+      "platform": "iOS",
+      "caseIds": [
+        "initial_01",
+        "initial_02",
+        "initial_03",
+        "initial_04",
+        "initial_05",
+        "initial_06"
+      ],
+      "ruleIds": [
+        "R13"
+      ],
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseClusterId": "I-C1",
+      "description": "Native child identifiers are overwritten by visit.panel. Titles, context, rows, consent and terminal buttons all report visit.panel instead of their required distinct IDs. Every supplied actionable iOS script consequently reports its intended target unobserved and does not execute the activation.",
+      "rootCause": "The outer VStack assigns accessibilityIdentifier visit.panel without an explicit accessibility containment element, propagating that identifier to native descendants.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_01/observation.json",
+          "checkpoint": "top and bottom",
+          "channel": "native accessibility/geometry and event record",
+          "details": "All product nodes carry visit.panel; descendant labels remain visible in the accessibility record."
+        },
+        {
+          "path": "review-evidence/ios/initial_02/observation.json",
+          "checkpoint": "top and bottom",
+          "channel": "native accessibility/geometry and event record",
+          "details": "All product nodes carry visit.panel; descendant labels remain visible in the accessibility record."
+        },
+        {
+          "path": "review-evidence/ios/initial_03/observation.json",
+          "checkpoint": "top and bottom",
+          "channel": "native accessibility/geometry and event record",
+          "details": "All product nodes carry visit.panel; descendant labels remain visible in the accessibility record."
+        },
+        {
+          "path": "review-evidence/ios/initial_04/observation.json",
+          "checkpoint": "top and bottom",
+          "channel": "native accessibility/geometry and event record",
+          "details": "All product nodes carry visit.panel; descendant labels remain visible in the accessibility record."
+        },
+        {
+          "path": "review-evidence/ios/initial_05/observation.json",
+          "checkpoint": "top and bottom",
+          "channel": "native accessibility/geometry and event record",
+          "details": "All product nodes carry visit.panel; descendant labels remain visible in the accessibility record."
+        },
+        {
+          "path": "review-evidence/ios/initial_06/observation.json",
+          "checkpoint": "top and bottom",
+          "channel": "native accessibility/geometry and event record",
+          "details": "All product nodes carry visit.panel; descendant labels remain visible in the accessibility record."
+        },
+        {
+          "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+          "channel": "declarative source",
+          "details": "Outer body ends with accessibilityIdentifier(\"visit.panel\")."
+        }
+      ],
+      "limits": "This establishes an identifier contract failure. It does not establish that physical touch callbacks fail: the scripted iOS activations were not executed."
+    },
+    {
+      "id": "I-ROW-02",
+      "platform": "iOS",
+      "caseIds": [
+        "initial_01",
+        "initial_02",
+        "initial_03"
+      ],
+      "ruleIds": [
+        "R05",
+        "R13"
+      ],
+      "ruleAttribution": {
+        "R05": [
+          "initial_01",
+          "initial_03"
+        ],
+        "R13": [
+          "initial_01",
+          "initial_02",
+          "initial_03"
+        ]
+      },
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseClusterId": "I-C2",
+      "description": "Rows expose a generic native Other element (role_raw 1) rather than a native button/control element. The unavailable s10 and w11 rows report enabled=true instead of native disabled state, despite being visually dimmed. Selected flags and coherent row labels do survive.",
+      "rootCause": "The row applies accessibilityElement(children: .ignore) after the Button and disabled modifier, then adds only selected traits. This replaces the native control exposure without restoring the button and not-enabled traits.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_01/observation.json",
+          "checkpoint": "top index19 / bottom row label Saturday, 7 November, 10:00\u201312:00",
+          "channel": "native accessibility/geometry and event record",
+          "details": "Unavailable s10 row: role_raw1, enabled=true. Eligible rows also role_raw1."
+        },
+        {
+          "path": "review-evidence/ios/initial_02/observation.json",
+          "checkpoint": "top index16 and17",
+          "channel": "native accessibility/geometry and event record",
+          "details": "Selected e17 and eligible e08 rows role_raw1; e17 selected=true."
+        },
+        {
+          "path": "review-evidence/ios/initial_03/observation.json",
+          "checkpoint": "top index17",
+          "channel": "native accessibility/geometry and event record",
+          "details": "Unavailable w11 row role_raw1, enabled=true; selected t09 is role_raw1, selected=true."
+        },
+        {
+          "path": "alerttoast/Sources/AlertToast/VisitReschedulePanel.swift",
+          "channel": "declarative source",
+          "details": "slotRow accessibilityElement(children:.ignore), accessibilityAddTraits(selected ? [.isSelected] : [])."
+        }
+      ],
+      "limits": "No unavailable-row activation was executed on iOS, so callback suppression is unassessed and is not reported as failed."
+    },
+    {
+      "id": "I-CONTRAST-03",
+      "platform": "iOS",
+      "caseIds": [
+        "initial_01",
+        "initial_02",
+        "initial_03"
+      ],
+      "ruleIds": [
+        "R14",
+        "R17"
+      ],
+      "status": "confirmed_failure",
+      "certainty": "high",
+      "rootCauseClusterId": "I-C3",
+      "description": "PlainButtonStyle applies an additional disabled fade to the fully styled labels/backgrounds. Unavailable row time, detail, status and reason are faded, and disabled confirmation buttons also have substantially weaker colors/contrast than specified.",
+      "rootCause": "The row and primary Button styles combine custom explicit palette colors with PlainButtonStyle and disabled, allowing native disabled opacity to alter the intended full-opacity treatment.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_01/attachments/6DB1236E-C50C-4C87-BD42-2B9149FFC3A7.png",
+          "checkpoint": "bottom",
+          "channel": "screenshot"
+        },
+        {
+          "path": "review-evidence/ios/initial_02/attachments/0F5E64BA-BDD8-41A1-809D-E088B982BFF9.png",
+          "checkpoint": "bottom",
+          "channel": "screenshot"
+        },
+        {
+          "path": "scratch/review/ios-disabled-row.png",
+          "channel": "screenshot crop and pixel histogram",
+          "details": "Unavailable row dominant text RGB166,174,184 on RGB250,251,252; measured contrast approximately2.16:1. Expected full-opacity secondary token RGB82,97,116 on inset RGB244,246,249."
+        },
+        {
+          "path": "scratch/review/ios-disabled-button.png",
+          "channel": "screenshot crop and pixel histogram",
+          "details": "Disabled light confirm text RGB171,177,189 on RGB241,243,245; approximately1.94:1. These differ from supplied disabled text/fill tokens."
+        },
+        {
+          "path": "scratch/review/ios-disabled-dark-button.png",
+          "channel": "screenshot crop and pixel histogram",
+          "details": "Disabled dark confirm text RGB111,121,137 on RGB37,46,62; approximately3.10:1."
+        },
+        {
+          "path": "scratch/review/ios-03-scrolls.jpg",
+          "channel": "contact sheet of supplied screenshots",
+          "details": "The unavailable long w11 reason is consistently faded throughout its complete row."
+        }
+      ],
+      "limits": "Contrast ratios are derived from dominant interior glyph/fill pixels, not unavailable native style metadata. Source mechanism is an inference supported by the screenshots."
+    },
+    {
+      "id": "I-TARGET-04",
+      "platform": "iOS",
+      "caseIds": [
+        "initial_02"
+      ],
+      "ruleIds": [
+        "R13"
+      ],
+      "status": "suspected_issue",
+      "certainty": "medium",
+      "rootCauseClusterId": "I-S1",
+      "description": "Fee consent native accessibility frame is256\u00d736.67pt, below the required44pt target height. The frame(minHeight:44) wrapper does not enlarge the exported native switch frame.",
+      "rootCause": "The minimum frame is outside the native Toggle semantic control, and no explicit full-row content shape is supplied.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_02/observation.json",
+          "checkpoint": "top index19 and bottom consent node",
+          "channel": "native accessibility/geometry and event record",
+          "details": "Native switch role_raw40, label I agree to the rescheduling fee of \u20ac32.50., value0, frame height36.6667pt; width256pt."
+        }
+      ],
+      "limits": "AX frame does not independently establish every physical touch hit region. No boundary touch test was executed, so this remains suspected rather than a confirmed target failure."
+    },
+    {
+      "id": "I-ACTION-EVIDENCE-05",
+      "platform": "iOS",
+      "caseIds": [
+        "initial_01",
+        "initial_02",
+        "initial_03",
+        "initial_05",
+        "initial_06"
+      ],
+      "ruleIds": [],
+      "status": "evidence_limitation",
+      "certainty": "high",
+      "rootCauseClusterId": "I-C1",
+      "description": "Supplied iOS semantic target searches stopped at the native bottom boundary with each requested identifier unobserved. All intended row/fee/confirm/retry/done activations were unavailable and callback arrays remained empty. Their callback semantics cannot be scored from these runs.",
+      "evidence": [
+        {
+          "path": "review-evidence/ios/initial_01/observation.json",
+          "checkpoint": "steps / reveal_diagnostics",
+          "channel": "native accessibility/geometry and event record",
+          "details": "Outcome unavailable; native_bottom_boundary_target_unobserved. No activation target; callback_delta[]."
+        },
+        {
+          "path": "review-evidence/ios/initial_02/observation.json",
+          "checkpoint": "steps / reveal_diagnostics",
+          "channel": "native accessibility/geometry and event record",
+          "details": "Outcome unavailable; native_bottom_boundary_target_unobserved. No activation target; callback_delta[]."
+        },
+        {
+          "path": "review-evidence/ios/initial_03/observation.json",
+          "checkpoint": "steps / reveal_diagnostics",
+          "channel": "native accessibility/geometry and event record",
+          "details": "Outcome unavailable; native_bottom_boundary_target_unobserved. No activation target; callback_delta[]."
+        },
+        {
+          "path": "review-evidence/ios/initial_05/observation.json",
+          "checkpoint": "steps / reveal_diagnostics",
+          "channel": "native accessibility/geometry and event record",
+          "details": "Outcome unavailable; native_bottom_boundary_target_unobserved. No activation target; callback_delta[]."
+        },
+        {
+          "path": "review-evidence/ios/initial_06/observation.json",
+          "checkpoint": "steps / reveal_diagnostics",
+          "channel": "native accessibility/geometry and event record",
+          "details": "Outcome unavailable; native_bottom_boundary_target_unobserved. No activation target; callback_delta[]."
+        }
+      ]
+    }
+  ]
+}
