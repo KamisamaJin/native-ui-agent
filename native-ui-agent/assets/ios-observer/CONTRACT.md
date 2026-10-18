@@ -74,7 +74,11 @@ bounded bottom coverage even if actions did not request scrolling. The required
 identifier list should include relevant lower content. Absent required identifiers
 or an unreached sentinel fail coverage; they cannot become a pass. Identifiers must
 select exactly one existing XCUI node before a tap. The target must be enabled and
-hittable. An event is recorded only when the bridge's real callback invokes onEvent.
+hittable. For native Switch containers, the runner resolves a unique native Switch leaf and
+records both `semantic_target` and `activation_target`, including roles, frames and
+selection paths, before activating the leaf. Ambiguous, disabled or inaccessible
+activation targets stop the action. Other targets retain native `.tap()`.
+An event is recorded only when the bridge's real callback invokes onEvent.
 An optional `expect_callback` requires the named callback in that action's real delta.
 Without it, an empty callback delta does not itself fail a tap; the caller must check
 expected callback semantics from `steps[*].callback_delta`.
@@ -89,7 +93,10 @@ Type category, layout direction and display scale, separately from requested fie
 uses the unique target's measured frame to choose up/down native parent scrolling,
 retaining every overlapping scroll screenshot. If a lazy target is absent, it searches
 downward by default; `direction: "up"` is an explicit search hint for an absent upper
-target. It fails plainly when the bound expires. `scroll` with `direction: "auto"`
+target. It records `reveal_diagnostics` when the bound expires or a missing target search
+reaches the fully visible native bottom sentinel. This is bounded observer evidence,
+not proof that the production target is absent. An unexecuted action cannot pass a
+business assertion. `scroll` with `direction: "auto"`
 and `until_identifier` uses the same helper. An element larger than the viewport
 cannot pass full-containment coverage.
 
@@ -110,7 +117,10 @@ python3 native-ui-agent/scripts/ios_observe.py run \
 Omit `--package` for a self-contained bridge/probe. For an app outside a Swift package,
 use the project's existing test host instead, or expose its production component as a
 local package; this adapter does not copy app source into a substitute implementation.
-Xcode is selected only per child-process `DEVELOPER_DIR`; no global settings change.
+The current build command targets an Apple Silicon simulator (`ARCHS=arm64`,
+`ONLY_ACTIVE_ARCH=YES`), including the real imported package. Intel simulator builds
+are outside this tested adapter configuration. Xcode is selected only per
+child-process `DEVELOPER_DIR`; no global settings change.
 `--developer-dir` and explicit `--sdk iphonesimulator` are supported.
 
 ## Evidence and limits
