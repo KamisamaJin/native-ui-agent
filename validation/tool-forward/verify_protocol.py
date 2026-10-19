@@ -45,6 +45,9 @@ def verify_references(value):
 def main():
     index = read(R / 'report-index.json')
     assert index['blindness_complete'] is True
+    for relative, expected in read(R / 'sealed-grading-commitments.json')['files'].items():
+        path = R / relative
+        assert sha(path) == expected['sha256'] and path.stat().st_size == expected['bytes'], str(path)
     seals = {}
     checked = 0
     for phase, entry in index['protocol']['seals'].items():
