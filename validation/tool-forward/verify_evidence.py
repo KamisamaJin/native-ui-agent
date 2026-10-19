@@ -31,7 +31,7 @@ def portable_path(recorded):
     return R / recorded.split(marker, 1)[1]
 
 
-def validate_grade(path, phase):
+def validate_grade(path, phase, submission=None, legacy=False):
     grade = read(path)
     plan = read(R / 'private' / (phase + '-required-assessments.json'))
     expected = {(r['platform'], r['key']): r for r in plan['assessments']}
@@ -55,6 +55,15 @@ def validate_grade(path, phase):
         for source in row['exactSources'] + row['consideredSources']:
             p = portable_path(source['path'])
             assert p.is_file(), (path, key, p)
+            if submission is not None:
+                parts = p.relative_to(R).parts
+                if parts[0] == 'evidence':
+                    assert parts[1:3] == (phase, submission), (path, key, 'wrong phase/arm evidence', p)
+                    assert not legacy or row['sourceOnly'], (path, key, 'legacy runtime borrowed current collector evidence', p)
+                if parts[0] == 'paired-evidence':
+                    assert legacy and parts[1] == 'd0', (path, key, 'main grade borrowed legacy evidence', p)
+                if parts[0] == 'implementations':
+                    assert parts[1:3] == (phase, submission), (path, key, 'wrong production capsule', p)
             if 'sha256' in source and (str(p), source['sha256']) not in checked:
                 assert sha(p) == source['sha256'], (path, key, p)
                 checked.add((str(p), source['sha256']))
@@ -161,7 +170,7 @@ def main():
         for phase, entry in phases.items():
             p = R / entry['path']
             assert sha(p) == entry['sha256']
-            counts.append(validate_grade(p, phase))
+            counts.append(validate_grade(p, phase, submission))
             n, s = validate_captures(R / 'evidence' / phase / submission, phase, submission)
             captures += n
             snapshots += s
@@ -171,7 +180,7 @@ def main():
     paired = index['paired_grade']
     paired_path = R / paired['path']
     assert sha(paired_path) == paired['sha256']
-    paired_assessments = validate_grade(paired_path, 'd0')
+    paired_assessments = validate_grade(paired_path, 'd0', index['paired_submission'], True)
     assert paired_assessments == 2209
     assert sorted(counts) == [2209, 2209, 2897, 2897]
     assert captures == 68
