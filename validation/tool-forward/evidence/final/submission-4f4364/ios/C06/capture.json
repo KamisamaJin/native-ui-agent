@@ -1,0 +1,168 @@
+{
+  "status": "captured_not_graded",
+  "platform": "ios",
+  "source_fixture_sha256": "215731d7cda207f3c4d37f5193d5252f6ea4a008fbc0e65455aa53e0be9b5ad3",
+  "command": [
+    "python3",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/runtime-tool-v3/scripts/ios_observe.py",
+    "run",
+    "--bridge",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/harness/ReturnBridge.swift",
+    "--package",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/final-hosts/submission-4f4364/even/alerttoast",
+    "--product",
+    "AlertToast",
+    "--simulator",
+    "D3FDD53C-10DC-488B-B6D7-618D0E191048",
+    "--developer-dir",
+    "/Applications/Xcode.app/Contents/Developer",
+    "--fixtures",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/ground-truth/final/submission-4f4364/ios/C06-inputs/fixtures.json",
+    "--actions",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/ground-truth/final/submission-4f4364/ios/C06-inputs/actions.json",
+    "--output",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/ground-truth/final/submission-4f4364/ios/C06"
+  ],
+  "exit_code": 1,
+  "seconds": 2843.545,
+  "action_protocol": [
+    {
+      "checkpoint": "initial",
+      "modelId": "initial",
+      "input_index": 0,
+      "trigger_action_index": null,
+      "capture_action_index": 0,
+      "native_state_id": "C06--initial",
+      "coverage": "full_content",
+      "requested_trigger": {
+        "type": "initial"
+      }
+    },
+    {
+      "checkpoint": "pending-close-echo",
+      "modelId": "initial",
+      "input_index": 0,
+      "trigger_action_index": 1,
+      "capture_action_index": 1,
+      "native_state_id": "action-1",
+      "coverage": "target",
+      "requested_trigger": {
+        "type": "activate",
+        "target": "rr.notes.toggle",
+        "method": "accessibilityActivate"
+      }
+    },
+    {
+      "checkpoint": "pending-refund-echo",
+      "modelId": "initial",
+      "input_index": 0,
+      "trigger_action_index": 2,
+      "capture_action_index": 2,
+      "native_state_id": "action-2",
+      "coverage": "target",
+      "requested_trigger": {
+        "type": "activate",
+        "target": "rr.option.cash",
+        "method": "tap"
+      }
+    },
+    {
+      "checkpoint": "caller-refund-and-notes-closed",
+      "modelId": "refund",
+      "input_index": 1,
+      "trigger_action_index": 3,
+      "capture_action_index": 4,
+      "native_state_id": "C06--caller-refund-and-notes-closed",
+      "coverage": "full_content",
+      "requested_trigger": {
+        "type": "replaceModel",
+        "modelId": "refund"
+      }
+    },
+    {
+      "checkpoint": "pending-submit-echo",
+      "modelId": "refund",
+      "input_index": 1,
+      "trigger_action_index": 5,
+      "capture_action_index": 5,
+      "native_state_id": "action-5",
+      "coverage": "target",
+      "requested_trigger": {
+        "type": "activate",
+        "target": "rr.primary",
+        "method": "tap"
+      }
+    },
+    {
+      "checkpoint": "caller-submitting",
+      "modelId": "submitting",
+      "input_index": 2,
+      "trigger_action_index": 6,
+      "capture_action_index": 7,
+      "native_state_id": "C06--caller-submitting",
+      "coverage": "full_content",
+      "requested_trigger": {
+        "type": "replaceModel",
+        "modelId": "submitting"
+      }
+    }
+  ],
+  "actual_actions": [
+    {
+      "type": "sweep",
+      "state_id": "C06--initial",
+      "max_steps": 80,
+      "name": "initial"
+    },
+    {
+      "type": "tap",
+      "identifier": "rr.notes.toggle",
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 40,
+      "name": "pending-close-echo"
+    },
+    {
+      "type": "tap",
+      "identifier": "rr.option.cash",
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 40,
+      "name": "pending-refund-echo"
+    },
+    {
+      "type": "apply_next_fixture",
+      "name": "caller-refund-and-notes-closed"
+    },
+    {
+      "type": "sweep",
+      "state_id": "C06--caller-refund-and-notes-closed",
+      "max_steps": 80,
+      "name": "caller-refund-and-notes-closed"
+    },
+    {
+      "type": "tap",
+      "identifier": "rr.primary",
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 40,
+      "name": "pending-submit-echo"
+    },
+    {
+      "type": "apply_next_fixture",
+      "name": "caller-submitting"
+    },
+    {
+      "type": "sweep",
+      "state_id": "C06--caller-submitting",
+      "max_steps": 80,
+      "name": "caller-submitting"
+    }
+  ],
+  "harness_sha256": {
+    "capture.py": "d3a6f65938d301b7610d5c73032a5c0492a010a91978bbf464c29b7a7c9393e6",
+    "ReturnBridge.swift": "651f2f97be474bdd3a8abd9e842a7b8ffbdde4590dc3e9d6f223942a9ae9b768",
+    "ObserverBridge.kt": "f4cd34a066f8f3942e50747342c5a7ca08697bf720b8549713bf6ba30b264279"
+  },
+  "native_method_limit": "iOS tap requests and accessibilityActivate requests both execute actual XCUI tap; no AX performAction proof. Android uses native semantic OnClick, not OS physical touch."
+}
