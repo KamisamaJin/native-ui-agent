@@ -183,7 +183,7 @@ python3 validation/tool-forward/build_failure_index.py
 python3 validation/tool-forward/verify_artifacts.py
 ```
 
-前一轮不含本机缓存的异地 Git 归档核验见[历史核验记录](validation/fresh-blind/verification.json)。当前工具包含 55 项单元测试，另有本轮封存、逐项评分、统计复算和完整性审计。
+前一轮不含本机缓存的异地 Git 归档核验见[历史核验记录](validation/fresh-blind/verification.json)。当前 55 项单元测试与全部 15 项验证命令已在不含 Git 元数据及本机缓存的异地归档中通过，见[本轮核验记录](validation/tool-forward-verification.json)。
 
 第一条验证 runner、覆盖账本和观测器的协议与失效行为；后续命令跨机器审计归档图片、报告、原生测试数、冻结哈希、盲测封存与统计运算，不运行原生 SDK 或模型。GitHub CI 执行这些检查，不声称重新运行双端模拟器。
 
