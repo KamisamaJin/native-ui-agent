@@ -37,6 +37,28 @@ def transitions(before,after):
  extra=[b[k]for k in b.keys()-a.keys()]
  return {'initial_to_final':matrix,'repair_success':fraction(len(fixed),len(fixed)+len(unresolved)),'fixed_confirmed_initial_failures':fixed,'unresolved_confirmed_initial_failures':unresolved,'confirmed_regressions':regressions,'newly_observed_failures':newly_observed,'additional_final_assessments':counts(extra)}
 
+def discovery_stats(grade,matching):
+ """Count independently classified matches; duplicates do not multiply credit."""
+ index=index_grade(grade);findings=matching['findings'];ids={f['id']for f in findings}
+ if len(ids)!=len(findings)or matching['originalFindingCount']!=len(findings):raise ValueError('Invalid original finding count/IDs')
+ sets={c:set()for c in ['TP','FP','UNCERTAIN']};duplicates=[]
+ for row in matching['atomicMatches']:
+  if row['findingId']not in ids or row['classification']not in sets:raise ValueError('Unmapped finding/classification')
+  if row.get('key')is None:
+   if row['classification']!='UNCERTAIN':raise ValueError('Confirmed match lacks assessment key')
+   continue
+  key=(row['platform'],row['key']);classification=row['classification']
+  if key not in index:raise ValueError('Match is outside frozen D0 assessments')
+  if classification in {'TP','FP'}and index[key]['outcome']!=('FAIL'if classification=='TP'else'PASS'):raise ValueError('Match contradicts independent grade')
+  if key in sets[classification]:duplicates.append(row)
+  sets[classification].add(key)
+ failures={key for key,row in index.items()if row['outcome']=='FAIL'};fn=failures-sets['TP']
+ def stats(selected):
+  tp=len(sets['TP']&selected);fp=len(sets['FP']&selected);miss=len(fn&selected)
+  return {'TP':tp,'FP':fp,'FN':miss,'confirmed_false_discovery_share':fraction(fp,tp+fp),'miss_rate':fraction(miss,tp+miss),'uncertain_assessment_keys':len(sets['UNCERTAIN']&selected),'classical_false_positive_rate':None,'classical_fpr_limitation':'No complete independently reviewed negative-claim universe.'}
+ refs=lambda keys:[{'platform':p,'key':k}for p,k in sorted(keys)]
+ return {'all':stats(set(index)),'by_platform':{p:stats({k for k in index if k[0]==p})for p in sorted({k[0]for k in index})},'runtime':stats({k for k,r in index.items()if not r['sourceOnly']}),'source':stats({k for k,r in index.items()if r['sourceOnly']}),'original_finding_count':len(findings),'finding_classifications':dict(collections.Counter(f['classification']for f in findings)),'duplicate_atomic_matches':duplicates,'TP_keys':refs(sets['TP']),'FP_keys':refs(sets['FP']),'FN_keys':refs(fn),'uncertain_keys':refs(sets['UNCERTAIN'])}
+
 def self_test():
  def row(key,outcome,source=False):return {'platform':'apple','key':key,'outcome':outcome,'sourceOnly':source,'expected':True,'aspect':'nativeSemantics'}
  before={'results':[row('fix','FAIL'),row('unknown','FAIL'),row('regress','PASS'),row('new','UNASSESSED'),row('api','PASS',True)]}
@@ -44,6 +66,11 @@ def self_test():
  s=grade_stats(before);assert s['runtime']['required']==4 and s['source']['required']==1 and s['runtime']['unassessed_ratio']['value']==.25
  t=transitions(before,after);assert t['repair_success']['value']==.5 and len(t['unresolved_confirmed_initial_failures'])==1 and len(t['confirmed_regressions'])==len(t['newly_observed_failures'])==1 and t['additional_final_assessments']['FAIL']==1
  assert fraction(0,0)['value']is None
+ matching={'originalFindingCount':3,'findings':[{'id':i,'classification':c}for i,c in [('a','TP_ONLY'),('b','FP_ONLY'),('c','UNCERTAIN')]],'atomicMatches':[{'findingId':i,'platform':'apple','key':k,'classification':c}for i,k,c in [('a','fix','TP'),('a','fix','TP'),('b','regress','FP'),('c','new','UNCERTAIN')]]}
+ d=discovery_stats(before,matching);assert d['all']['TP']==d['all']['FP']==d['all']['FN']==1 and d['all']['confirmed_false_discovery_share']['value']==.5 and len(d['duplicate_atomic_matches'])==1
+ try:discovery_stats(before,dict(matching,atomicMatches=[{'findingId':'a','platform':'apple','key':'unknown','classification':'FP'}]))
+ except ValueError:pass
+ else:raise AssertionError('Contradictory independent match was counted')
  try:transitions(before,{'results':after['results'][1:]})
  except ValueError:pass
  else:raise AssertionError('Lost assessment was silently ignored')
