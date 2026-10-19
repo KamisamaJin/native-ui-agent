@@ -45,7 +45,10 @@ def transitions(before,after):
   if x=='PASS'and y=='FAIL':regressions.append(ref)
   if x=='UNASSESSED'and y=='FAIL':newly_observed.append(ref)
  extra=[b[k]for k in b.keys()-a.keys()]
- return {'initial_to_final':matrix,'repair_success':fraction(len(fixed),len(fixed)+len(unresolved)),'fixed_confirmed_initial_failures':fixed,'unresolved_confirmed_initial_failures':unresolved,'confirmed_regressions':regressions,'newly_observed_failures':newly_observed,'additional_final_assessments':counts(extra)}
+ def subset(keys):
+  failures=[k for k in keys if a[k]['outcome']=='FAIL'];repaired=[k for k in failures if b[k]['outcome']=='PASS']
+  return {'repair_success':fraction(len(repaired),len(failures)),'initial_to_final':{x:{y:sum(a[k]['outcome']==x and b[k]['outcome']==y for k in keys)for y in OUTCOMES}for x in OUTCOMES}}
+ return {'initial_to_final':matrix,'repair_success':fraction(len(fixed),len(fixed)+len(unresolved)),'runtime':subset([k for k,r in a.items()if not r['sourceOnly']]),'source':subset([k for k,r in a.items()if r['sourceOnly']]),'by_platform':{p:subset([k for k in a if k[0]==p])for p in sorted({k[0]for k in a})},'fixed_confirmed_initial_failures':fixed,'unresolved_confirmed_initial_failures':unresolved,'confirmed_regressions':regressions,'newly_observed_failures':newly_observed,'additional_final_assessments':counts(extra)}
 
 def discovery_stats(grade,matching):
  """Count independently classified matches; duplicates do not multiply credit."""
