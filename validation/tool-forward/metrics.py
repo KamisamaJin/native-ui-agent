@@ -95,6 +95,7 @@ def self_test():
  assert fraction(0,0)['value']is None
  matching={'originalFindingCount':3,'findings':[{'id':i,'classification':c}for i,c in [('a','TP_ONLY'),('b','FP_ONLY'),('c','UNCERTAIN')]],'atomicMatches':[{'findingId':i,'platform':'apple','key':k,'classification':c}for i,k,c in [('a','fix','TP'),('a','fix','TP'),('b','regress','FP'),('c','new','UNCERTAIN')]]}
  d=discovery_stats(before,matching);assert d['all']['TP']==d['all']['FP']==d['all']['FN']==1 and d['all']['confirmed_false_discovery_share']['value']==.5 and len(d['duplicate_atomic_matches'])==1
+ pair=paired_observation_stats(before,{'results':after['results'][:-1]});assert len(pair['newly_assessed'])==len(pair['no_longer_assessed'])==1 and len(pair['confirmed_outcome_disagreements'])==2
  try:discovery_stats(before,dict(matching,atomicMatches=[{'findingId':'a','platform':'apple','key':'unknown','classification':'FP'}]))
  except ValueError:pass
  else:raise AssertionError('Contradictory independent match was counted')
