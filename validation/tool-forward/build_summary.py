@@ -4,6 +4,7 @@ import argparse
 import csv
 import hashlib
 import json
+from itertools import zip_longest
 from pathlib import Path
 
 from metrics import (discovery_stats, grade_stats, paired_observation_stats,
@@ -82,6 +83,11 @@ def main():
     output = R / 'result-summary.json'
     if a.check:
         assert output.read_text() == encoded, 'Published statistics do not reproduce'
+        with (R / 'assessment-ledger.csv').open(newline='') as file:
+            for actual, expected in zip_longest(csv.DictReader(file), csv_rows(grades, plans)):
+                assert actual is not None and expected is not None, 'Atomic ledger row count differs'
+                assert actual == {key: '' if value is None else str(value)
+                                  for key, value in expected.items()}, 'Atomic ledger differs from sealed grade'
         print(json.dumps({'status': 'passed_report_arithmetic_recomputation'}))
         return
     assert not output.exists(), 'Preserve the prior result; no silent overwrite'
