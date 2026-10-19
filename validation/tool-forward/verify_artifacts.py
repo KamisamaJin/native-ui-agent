@@ -23,15 +23,14 @@ def main():
         assert not MANIFEST.exists(), 'Retain the published artifact seal'
         assert json.loads((R / 'report-index.json').read_text())['blindness_complete']
         paths = subprocess.check_output(['git', 'ls-files', '-z'], cwd=REPO).decode().split('\0')
-        prefixes = ('validation/tool-forward/', 'validation/tool-capabilities/', 'native-ui-agent/', '.github/')
-        names = {'README.md', 'THIRD_PARTY_NOTICES.md', 'LICENSE', '.gitignore'}
-        selected = sorted(p for p in paths if p and (p.startswith(prefixes) or p in names)
+        prefixes = ('validation/tool-forward/', 'validation/tool-capabilities/')
+        selected = sorted(p for p in paths if p and p.startswith(prefixes)
                           and p != MANIFEST.relative_to(REPO).as_posix())
         assert selected and all((REPO / p).is_file() for p in selected)
         rows = {p: {'sha256': sha(REPO / p), 'bytes': (REPO / p).stat().st_size} for p in selected}
         assert all(row['bytes'] <= 100 * 1024 * 1024 for row in rows.values()), 'Split oversized derived tables; retain original evidence'
         MANIFEST.write_text(json.dumps({'schema_version': 1, 'files': rows,
-                                      'scope': 'Published tool, trial, private-now-released design/grades, capabilities, docs and CI. Build/SDK caches excluded. This manifest excludes itself; hashes establish byte integrity, not UI truth.'}, indent=2) + '\n')
+                                      'scope': 'Published immutable trial and capability archives, including frozen tool bundles, released design/grades, evidence and trial docs. Build/SDK caches and this manifest excluded. Live tool/root docs/CI can evolve independently; their publication is identified by the Git commit. Hashes establish byte integrity, not UI truth.'}, indent=2) + '\n')
     data = json.loads(MANIFEST.read_text())
     for relative, expected in data['files'].items():
         path = REPO / relative
