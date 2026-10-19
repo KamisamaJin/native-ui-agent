@@ -23,6 +23,16 @@ def grade_stats(grade):
  result['unassessed_missing_methods']=dict(collections.Counter(m for r in rows if r['outcome']=='UNASSESSED'for m in r.get('missingEvidenceMethod',[])))
  return result
 
+def stratified_stats(grade,plan):
+ """Stratify by frozen case/state metadata rather than parsing display names."""
+ actual=index_grade(grade);expected={(r['platform'],r['key']):r for r in plan['assessments']}
+ if set(actual)!=set(expected):raise ValueError('Stratification plan differs from required assessments')
+ cases=collections.defaultdict(list);states=collections.defaultdict(list)
+ for key,row in actual.items():
+  metadata=expected[key];cases[metadata['caseId']].append(row)
+  if not row['sourceOnly']:states[(row['platform'],metadata['caseId'],metadata['stateId'])].append(row)
+ return {'by_case':{case:counts(rows)for case,rows in sorted(cases.items())},'runtime_by_state':[{'platform':p,'caseId':c,'stateId':s,**counts(rows)}for(p,c,s),rows in sorted(states.items())]}
+
 def transitions(before,after):
  a=index_grade(before);b=index_grade(after)
  if not set(a)<=set(b):raise ValueError('Final grade lost initial assessment keys')
