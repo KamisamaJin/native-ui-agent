@@ -12,12 +12,15 @@ def main():
     for folder in ['evidence', 'paired-evidence']:
         for path in sorted((R / folder).rglob('capture.json')):
             capture = json.loads(path.read_text())
+            manifest_path = path.parent / 'manifest.json'
+            manifest = json.loads(manifest_path.read_text()) if manifest_path.is_file() else {}
             rows.append({
                 'capture': str(path.relative_to(R)),
                 'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
                 'status': capture.get('status'),
                 'exit_code': capture.get('exit_code'),
                 'seconds': capture.get('seconds'),
+                'known_native_test_count': manifest.get('native_test_count'),
                 'observation_available': (path.parent / 'observation.json').is_file(),
                 'raw_log': str((path.parent / 'operator.log').relative_to(R))
                 if (path.parent / 'operator.log').is_file() else None,
