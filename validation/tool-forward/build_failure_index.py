@@ -34,13 +34,13 @@ def main():
         'nonzero_exit_attempts': [row['capture'] for row in rows if row['exit_code'] != 0],
         'unavailable_observations': [row['capture'] for row in rows if not row['observation_available']],
         'builder_phase_archives': notes,
-        'common_transport_failures': 'transport-amendment/README.md',
+        'common_transport_repair': 'transport-amendment/freeze.json',
         'common_scheduler_pre_native_failures': 'operator-case-name-amendment.json',
         'public_integration_reports': [str(path.relative_to(R)) for path in
                                        sorted((R / 'implementations/d0').glob('*/reports/d0.json'))],
         'omitted_automatic_videos': [str(path.relative_to(R)) for folder in
                                     ['evidence', 'paired-evidence', 'phase-reports'] for path in
-                                    sorted((R / folder).rglob('*omitt*.json'))],
+                                    sorted((R / folder).rglob('portable-scope.json'))],
     }
     encoded = json.dumps(result, indent=2, ensure_ascii=False) + '\n'
     destination = R / 'failure-index.json'
