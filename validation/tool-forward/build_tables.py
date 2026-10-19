@@ -35,6 +35,7 @@ def render(data):
         ('精确检出 TP / FP / FN', [' / '.join(str(a['self_review']['all'][k]) for k in ['TP', 'FP', 'FN']) for a in arms]),
         ('漏检率 FN/(TP+FN)', [ratio(a['self_review']['all']['miss_rate']) for a in arms]),
         ('原始发现条数', [str(a['self_review']['original_finding_count']) for a in arms]),
+        ('原始发现分类', ['，'.join(f'{key}: {value}' for key, value in sorted(a['self_review']['finding_classifications'].items())) or '无发现' for a in arms]),
         ('未裁定原子项数', [str(a['self_review']['all']['uncertain_assessment_keys']) for a in arms]),
         ('首版确认失败修复 F→P/F', [ratio(a['repair']['repair_success']) for a in arms]),
         ('确认回归 P→F', [str(len(a['repair']['confirmed_regressions'])) for a in arms]),
