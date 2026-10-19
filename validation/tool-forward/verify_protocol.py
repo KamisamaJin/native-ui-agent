@@ -72,8 +72,13 @@ def main():
         review = read(review_root / 'reports/self-review.json')
         repair = read(R / 'phase-reports' / submission / 'repair/reports/repair.json')
         assert d0_time <= dispatch['readonly_review']['prepared_at'] <= timestamp(review['startedAt'])
+        assert timestamp(review['startedAt']) <= timestamp(review['finishedAt']) <= review_manifest['sealed_at']
+        assert 0 <= review['elapsedSeconds'] <= review['budgetSeconds'] == 720
         assert review_manifest['sealed_at'] <= dispatch['repair']['prepared_at'] <= timestamp(repair['startedAt'])
-        final_sources.append(read(R / 'implementations/final' / submission / 'manifest.json')['sealed_at'])
+        source_time = read(R / 'implementations/final' / submission / 'manifest.json')['sealed_at']
+        assert timestamp(repair['startedAt']) <= timestamp(repair['finishedAt']) <= source_time
+        assert 0 <= repair['elapsedSeconds'] <= repair['budgetSeconds'] == 900
+        final_sources.append(source_time)
         for path in (R / 'evidence/final' / submission).glob('*/*/manifest.json'):
             assert read(path)['finished_at'] <= final_time
     application = read(R / 'final-source-application.json')
