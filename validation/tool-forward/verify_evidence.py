@@ -81,8 +81,30 @@ def validate_captures(root, phase, submission=None, legacy=False):
                 continue
             manifest = read(folder / 'manifest.json')
             assert manifest['native_test_count'] == 1
-            for kind in ['fixtures', 'actions']:
-                assert sha(folder / (kind + '.json')) == manifest['input_hashes'][kind]
+            # Native runners normalize the transport JSON, and Android merges
+            # actions into fixtures. Compare values AND reconstruct the frozen
+            # harness's exact original transport bytes, rather than assuming the
+            # normalized archive has the original file's byte formatting.
+            config = read(folder / 'fixtures.json')
+            if platform == 'android':
+                assert config.pop('actions') == actions
+            else:
+                assert read(folder / 'actions.json') == actions
+            env = spec['environment']
+            expected_config = {'initial': {'model': spec['model']},
+                               'updates': [{'model': m} for m in spec.get('updates', [])],
+                               'width': env['offeredWidth'], 'theme': env['appearance'],
+                               'direction': env['layoutDirection'], 'fontScale': env['fontScale'],
+                               'viewportHeight': 600, 'state_capture': spec.get('state_capture', True),
+                               'max_scrolls': 80, 'required_identifiers': [],
+                               'observation_targets': spec.get('observation_targets', []),
+                               'canvas_color': '#101718' if env['appearance'] == 'dark' else '#FAF8F5',
+                               'dynamic_type': {'large': 'large', 'extraExtraExtraLarge': 'xxxLarge',
+                                                'accessibilityExtraExtraExtraLarge': 'accessibility5'}[env['appleContentSizeCategory']]}
+            assert config == expected_config
+            for kind, value in [('fixtures', expected_config), ('actions', actions)]:
+                encoded = (json.dumps(value, indent=2, ensure_ascii=False) + '\n').encode()
+                assert hashlib.sha256(encoded).hexdigest() == manifest['input_hashes'][kind]
             if submission:
                 capsule = R / 'implementations' / phase / submission
                 production = read(capsule / 'manifest.json')['files']
