@@ -1,0 +1,429 @@
+{
+  "phase": "D0",
+  "status": "sealed",
+  "startedAt": "2026-10-19T00:52:32Z",
+  "finishedAt": "2026-10-19T01:03:23Z",
+  "elapsedSeconds": 651.0,
+  "budgetSeconds": 1500,
+  "budgetAccounting": "Conservatively uses the full elapsed wall interval from the first work call; the 25-minute budget was not reset.",
+  "capacityOrQueuePauses": [
+    {
+      "reportedBy": "parent resume instruction",
+      "reportedAround": "2026-10-19T00:56:00Z",
+      "durationSeconds": null,
+      "locallyObservedServiceError": false,
+      "note": "Parent reported a capacity/queue interruption. No locally measurable pause interval was available; no time was subtracted. Existing native execution was recovered without launching a duplicate."
+    }
+  ],
+  "activeWallSecondsUpperBound": 651.0,
+  "nativeIntegrationSeconds": {
+    "android": 21.424,
+    "ios": 338.395
+  },
+  "changedFiles": [
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt",
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt",
+    "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+    "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift"
+  ],
+  "finalSourceSha256": {
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt": "c2d9cf3a9f57bb5af8c2ea334305d0f2fb6eb0c36e751a418d329b03b9f4c580",
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt": "b6670834791db6dd012220a1160ff1c97b4d4e522afa0dcf009815281152ef59",
+    "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift": "0f76b8538a0f7892d439239b70e8cbb8c923655970c673885789d636b8af006f",
+    "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift": "5b23b42bf3f8102c5cbb5502dfd168ec80de3108dc6a87c8a980c17e0df2edde"
+  },
+  "implementation": "Added public typed models/actions and controlled native card components for Android Compose and SwiftUI, with derived effective selection, gating, status-specific structure, dynamic text, light/dark tokens, directional layouts, and accessibility identifiers. Existing bridge demonstrates external construction of both APIs.",
+  "commands": [
+    {
+      "kind": "android-compile-launch",
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reply/Reply",
+      "shellCommand": "JAVA_HOME=/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home ANDROID_HOME=/Users/rex/Library/Android/sdk ./gradlew :app:compileDebugKotlin --console=plain --max-workers=2 > ../../../reports/android-compile.log 2>&1",
+      "exitCode": 1,
+      "outcome": "Shell redirection failed because the log path was incorrect; Gradle did not execute and no file was written."
+    },
+    {
+      "kind": "android-compile",
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reply/Reply",
+      "command": [
+        "./gradlew",
+        ":app:compileDebugKotlin",
+        "--console=plain",
+        "--max-workers=2"
+      ],
+      "environment": {
+        "JAVA_HOME": "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home",
+        "ANDROID_HOME": "/Users/rex/Library/Android/sdk"
+      },
+      "exitCode": 0,
+      "outcome": "BUILD SUCCESSFUL in 2s",
+      "log": "reports/android-compile.log"
+    },
+    {
+      "kind": "android-final-compile",
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a",
+      "command": [
+        "reply/Reply/gradlew",
+        "-p",
+        "reply/Reply",
+        ":app:compileDebugKotlin",
+        "--console=plain",
+        "--max-workers=2"
+      ],
+      "environment": {
+        "JAVA_HOME": "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home",
+        "ANDROID_HOME": "/Users/rex/Library/Android/sdk"
+      },
+      "exitCode": 0,
+      "outcome": "BUILD SUCCESSFUL in 1s after trailing amount alignment adjustment",
+      "log": "reports/android-final-compile.log"
+    },
+    {
+      "kind": "swift-new-source-minimum-typecheck",
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast",
+      "command": [
+        "xcrun",
+        "--sdk",
+        "iphonesimulator",
+        "swiftc",
+        "-typecheck",
+        "-swift-version",
+        "5",
+        "-target",
+        "arm64-apple-ios14.0-simulator",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk",
+        "Sources/AlertToast/ReturnResolutionModels.swift",
+        "Sources/AlertToast/ReturnResolutionCard.swift"
+      ],
+      "environment": {
+        "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+      },
+      "exitCode": 0,
+      "log": "reports/ios14-typecheck.log"
+    },
+    {
+      "kind": "swift-new-source-minimum-typecheck",
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast",
+      "command": [
+        "xcrun",
+        "--sdk",
+        "macosx",
+        "swiftc",
+        "-typecheck",
+        "-swift-version",
+        "5",
+        "-target",
+        "arm64-apple-macosx11.0",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+        "Sources/AlertToast/ReturnResolutionModels.swift",
+        "Sources/AlertToast/ReturnResolutionCard.swift"
+      ],
+      "environment": {
+        "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+      },
+      "exitCode": 0,
+      "log": "reports/macos11-typecheck.log"
+    },
+    {
+      "platform": "ios14",
+      "command": [
+        "xcrun",
+        "--sdk",
+        "iphonesimulator",
+        "swiftc",
+        "-typecheck",
+        "-swift-version",
+        "5",
+        "-module-name",
+        "AlertToast",
+        "-target",
+        "arm64-apple-ios14.0-simulator",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/._ActivityIndicator.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/._AlertToast.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/._BlurView.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ActivityIndicator.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/AlertToast.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/BlurView.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionModels.swift"
+      ],
+      "exitCode": 1,
+      "log": "reports/ios14-package-typecheck.log",
+      "kind": "swift-full-package-minimum-typecheck",
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a",
+      "environment": {
+        "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+      },
+      "outcome": "Invocation included pre-existing AppleDouble ._ metadata files as Swift source and failed; filtered invocation retained separately and passed."
+    },
+    {
+      "platform": "macos11",
+      "command": [
+        "xcrun",
+        "--sdk",
+        "macosx",
+        "swiftc",
+        "-typecheck",
+        "-swift-version",
+        "5",
+        "-module-name",
+        "AlertToast",
+        "-target",
+        "arm64-apple-macosx11.0",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/._ActivityIndicator.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/._AlertToast.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/._BlurView.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ActivityIndicator.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/AlertToast.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/BlurView.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionModels.swift"
+      ],
+      "exitCode": 1,
+      "log": "reports/macos11-package-typecheck.log",
+      "kind": "swift-full-package-minimum-typecheck",
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a",
+      "environment": {
+        "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+      },
+      "outcome": "Invocation included pre-existing AppleDouble ._ metadata files as Swift source and failed; filtered invocation retained separately and passed."
+    },
+    {
+      "platform": "ios14",
+      "command": [
+        "xcrun",
+        "--sdk",
+        "iphonesimulator",
+        "swiftc",
+        "-typecheck",
+        "-swift-version",
+        "5",
+        "-module-name",
+        "AlertToast",
+        "-target",
+        "arm64-apple-ios14.0-simulator",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ActivityIndicator.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/AlertToast.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/BlurView.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionModels.swift"
+      ],
+      "exitCode": 0,
+      "log": "reports/ios14-package-typecheck-filtered.log",
+      "kind": "swift-full-package-minimum-typecheck",
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a",
+      "environment": {
+        "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+      },
+      "outcome": "Passed for all real package Swift sources."
+    },
+    {
+      "platform": "macos11",
+      "command": [
+        "xcrun",
+        "--sdk",
+        "macosx",
+        "swiftc",
+        "-typecheck",
+        "-swift-version",
+        "5",
+        "-module-name",
+        "AlertToast",
+        "-target",
+        "arm64-apple-macosx11.0",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ActivityIndicator.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/AlertToast.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/BlurView.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionModels.swift"
+      ],
+      "exitCode": 0,
+      "log": "reports/macos11-package-typecheck-filtered.log",
+      "kind": "swift-full-package-minimum-typecheck",
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a",
+      "environment": {
+        "DEVELOPER_DIR": "/Applications/Xcode.app/Contents/Developer"
+      },
+      "outcome": "Passed for all real package Swift sources."
+    }
+  ],
+  "nativeIntegrations": [
+    {
+      "platform": "android",
+      "wrapperCommand": [
+        "python3",
+        "harness/capture.py",
+        "--platform",
+        "android",
+        "--project",
+        "reply/Reply",
+        "--fixture",
+        "design/public-example.json",
+        "--output",
+        "reports/d0-android-public"
+      ],
+      "nativeAdapterCommand": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/capability/scripts/android_observe.py",
+        "run",
+        "--project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reply/Reply",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/harness/ObserverBridge.kt",
+        "--java-home",
+        "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home",
+        "--android-sdk",
+        "/Users/rex/Library/Android/sdk",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/d0-android-public-inputs/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/d0-android-public-inputs/actions.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/d0-android-public"
+      ],
+      "exitCode": 0,
+      "seconds": 21.424,
+      "captureStatus": "captured_not_graded",
+      "nativeStatus": "captured_not_graded",
+      "nativeTestCount": 1,
+      "manifest": "reports/d0-android-public/manifest.json",
+      "capture": "reports/d0-android-public/capture.json",
+      "imagesOpenedOrReviewed": false,
+      "command": [
+        "./gradlew",
+        ":app:testDebugUnitTest",
+        "--tests",
+        "org.nativeobserver.NativeObserverTest.capture",
+        "--console=plain",
+        "--max-workers=2"
+      ],
+      "native_counts": {
+        "name": "org.nativeobserver.NativeObserverTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-10-19T00:55:48.148Z",
+        "hostname": "Rexs-MacBook-Pro.local",
+        "time": "17.916"
+      },
+      "finalSourceDifference": "Capture preceded a source-only adjustment to align Android amount values with TextAlign.End. Final production source compiled successfully; no second native integration was run."
+    },
+    {
+      "platform": "ios",
+      "wrapperCommand": [
+        "python3",
+        "harness/capture.py",
+        "--platform",
+        "ios",
+        "--project",
+        "alerttoast",
+        "--fixture",
+        "design/public-example.json",
+        "--output",
+        "reports/d0-ios-public",
+        "--simulator",
+        "6BD1B761-F036-4881-9014-2A053A4ED15D"
+      ],
+      "nativeAdapterCommand": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/capability/scripts/ios_observe.py",
+        "run",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/harness/ReturnBridge.swift",
+        "--package",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast",
+        "--product",
+        "AlertToast",
+        "--simulator",
+        "6BD1B761-F036-4881-9014-2A053A4ED15D",
+        "--developer-dir",
+        "/Applications/Xcode.app/Contents/Developer",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/d0-ios-public-inputs/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/d0-ios-public-inputs/actions.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/d0-ios-public"
+      ],
+      "exitCode": 1,
+      "seconds": 338.395,
+      "captureStatus": "unavailable",
+      "nativeStatus": "error",
+      "nativeTestCount": 1,
+      "manifest": "reports/d0-ios-public/manifest.json",
+      "capture": "reports/d0-ios-public/capture.json",
+      "imagesOpenedOrReviewed": false,
+      "build_command": [
+        "xcodebuild",
+        "build-for-testing",
+        "-project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/d0-ios-public/project/Observer.xcodeproj",
+        "-scheme",
+        "Observer",
+        "-configuration",
+        "Debug",
+        "-sdk",
+        "iphonesimulator",
+        "-destination",
+        "platform=iOS Simulator,id=6BD1B761-F036-4881-9014-2A053A4ED15D",
+        "-derivedDataPath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/d0-ios-public/DerivedData",
+        "-resultBundlePath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/d0-ios-public/build.xcresult",
+        "CODE_SIGNING_ALLOWED=NO",
+        "ARCHS=arm64",
+        "ONLY_ACTIVE_ARCH=YES"
+      ],
+      "test_command": [
+        "xcodebuild",
+        "test-without-building",
+        "-xctestrun",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/d0-ios-public/DerivedData/Build/Products/Observer_iphonesimulator27.1-arm64.xctestrun",
+        "-destination",
+        "platform=iOS Simulator,id=6BD1B761-F036-4881-9014-2A053A4ED15D",
+        "-resultBundlePath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/d0-ios-public/test.xcresult",
+        "-parallel-testing-enabled",
+        "NO",
+        "-maximum-concurrent-test-simulator-destinations",
+        "1"
+      ],
+      "build_exit_code": 0,
+      "test_exit_code": 65,
+      "error": "Native test produced no observation JSON; see test.log and attachments",
+      "failure": "ObserverTests/testObserve() failed at ObserverTests.swift:370 while serializing its final result: Invalid number value (infinite) in JSON write (NSInvalidArgumentException). No observation.json was produced.",
+      "failureAttribution": "Collector serialization failure is established; the source of the nonfinite numeric value is unassessed. No bridge or production API workaround was applied.",
+      "nativeSummary": "reports/d0-ios-public/native-summary.json"
+    }
+  ],
+  "sourceAndScope": {
+    "productionFilesAdded": 4,
+    "existingEntryPointsPreserved": true,
+    "bridgeChanged": false,
+    "capabilityChanged": false,
+    "publicDesignChanged": false,
+    "deploymentTargetsChanged": false,
+    "committedOrPushed": false,
+    "otherWorkspacesInspected": false
+  },
+  "limitations": [
+    "No product screenshot, generated image, or visual self-review was opened or performed before D0 sealing. No visual pass is claimed.",
+    "Only the public example was integrated once per platform. Alternate widths, themes, directions, text sizes, statuses, stale selections, long content, and availability combinations were not executed in D0.",
+    "The public example supplies no executable actions or caller replacements. Native callback traces, no-echo behavior, and same-instance replacement behavior therefore remain unassessed at runtime.",
+    "Android native observation is Paparazzi/Compose semantics, not physical OS touch. The final trailing amount alignment change has compile evidence but no fresh native capture.",
+    "iOS observer built successfully, but its one test failed during final JSON serialization of an infinite number. The harness reported unavailable because no observation JSON was produced. iOS native accessibility, geometry, and complete scroll evidence remain unassessed.",
+    "Swift 5 source availability was type-checked for iOS 14 and macOS 11 using installed current SDKs. Actual execution on the minimum OS versions was not performed.",
+    "Compiler success and capture status do not establish full P01-P07 acceptance. No hidden fixtures or prior implementations were accessed."
+  ],
+  "seal": "D0 is finished. No production source edits will be made after this seal until a newly authorized phase."
+}

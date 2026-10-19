@@ -1,0 +1,26 @@
+{
+ "version":1,
+ "states":[
+  {"id":"initial","input_index":0},
+  {"id":"updated","input_index":1,"after_action":3},
+  {"id":"expanded","input_index":1,"after_action":4},
+  {"id":"action-0","input_index":0,"after_action":0,"coverage":"target"},
+  {"id":"action-1","input_index":0,"after_action":1,"coverage":"target"},
+  {"id":"action-5","input_index":1,"after_action":5,"coverage":"target"},
+  {"id":"action-6","input_index":1,"after_action":6,"coverage":"target"}
+ ],
+ "required_assertion_ids":["L2.callback","L3.initial.callback","L3.updated.callback","L4.label.callback","L5.initial.title","L5.initial.not-expanded","L6.updated.title","L6.updated.not-expanded","L7.expand.callback","L7.expanded.marker","L7.expanded.end"],
+ "assertions":[
+  {"id":"L2.callback","state":"action-0","kind":"event","action_index":0,"expected":["cap.distant"]},
+  {"id":"L3.initial.callback","state":"action-1","kind":"event","action_index":1,"expected":["cap.top"]},
+  {"id":"L3.updated.callback","state":"action-5","kind":"event","action_index":5,"expected":["cap.top"]},
+  {"id":"L4.label.callback","state":"action-6","kind":"event","action_index":6,"expected":["cap.label.distant"]},
+  {"id":"L5.initial.title","state":"initial","kind":"control","target":{"identifier":"cap.title"},"property":"label","expected":"Capability initial"},
+  {"id":"L5.initial.not-expanded","state":"initial","kind":"control","target":{"identifier":"cap.expanded.marker"},"property":"present","expected":false},
+  {"id":"L6.updated.title","state":"updated","kind":"control","target":{"identifier":"cap.title"},"property":"label","expected":"Capability updated"},
+  {"id":"L6.updated.not-expanded","state":"updated","kind":"control","target":{"identifier":"cap.expanded.marker"},"property":"present","expected":false},
+  {"id":"L7.expand.callback","state":"expanded","kind":"event","action_index":4,"expected":["cap.expand"]},
+  {"id":"L7.expanded.marker","state":"expanded","kind":"control","target":{"identifier":"cap.expanded.marker"},"property":"label","expected":"Expanded state updated"},
+  {"id":"L7.expanded.end","state":"expanded","kind":"control","target":{"identifier":"cap.end"},"property":"label","op":"contains","expected":"expanded=true"}
+ ]
+}

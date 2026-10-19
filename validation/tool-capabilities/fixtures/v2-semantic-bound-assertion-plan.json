@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "states": [
+    {
+      "id": "initial",
+      "input_index": 0
+    },
+    {
+      "id": "final",
+      "input_index": 1
+    },
+    {
+      "id": "button-enabled",
+      "input_index": 1,
+      "after_action": 3
+    },
+    {
+      "id": "switch-enabled",
+      "input_index": 1,
+      "after_action": 4
+    }
+  ],
+  "required_assertion_ids": [
+    "S1.label",
+    "S1.selected",
+    "S2.label",
+    "S2.selected",
+    "S2.enabled.initial",
+    "S2.enabled.updated",
+    "S3.button.callbacks",
+    "S3.switch.callbacks",
+    "S4.button.callback",
+    "S4.switch.callback",
+    "S8.label.callback",
+    "S9",
+    "S10",
+    "S11"
+  ],
+  "assertions": [
+    {
+      "id": "S1.label",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "cap.button.semantic"
+      },
+      "property": "label",
+      "expected": "Selected semantic button group"
+    },
+    {
+      "id": "S1.selected",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "cap.button.semantic"
+      },
+      "property": "selected",
+      "expected": true
+    },
+    {
+      "id": "S2.label",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "cap.switch.semantic"
+      },
+      "property": "label",
+      "expected": "Selected semantic switch group"
+    },
+    {
+      "id": "S2.selected",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "cap.switch.semantic"
+      },
+      "property": "selected",
+      "expected": true
+    },
+    {
+      "id": "S2.enabled.initial",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "cap.switch.semantic"
+      },
+      "property": "enabled",
+      "expected": false
+    },
+    {
+      "id": "S2.enabled.updated",
+      "state": "final",
+      "kind": "control",
+      "target": {
+        "identifier": "cap.switch.semantic"
+      },
+      "property": "enabled",
+      "expected": true
+    },
+    {
+      "id": "S3.button.callbacks",
+      "state": "initial",
+      "kind": "event",
+      "action_index": 0,
+      "expected": []
+    },
+    {
+      "id": "S3.switch.callbacks",
+      "state": "initial",
+      "kind": "event",
+      "action_index": 1,
+      "expected": []
+    },
+    {
+      "id": "S4.button.callback",
+      "state": "button-enabled",
+      "kind": "event",
+      "action_index": 3,
+      "expected": [
+        "cap.button"
+      ]
+    },
+    {
+      "id": "S4.switch.callback",
+      "state": "switch-enabled",
+      "kind": "event",
+      "action_index": 4,
+      "expected": [
+        "cap.switch.on"
+      ]
+    },
+    {
+      "id": "S8.label.callback",
+      "state": "final",
+      "kind": "event",
+      "action_index": 5,
+      "expected": [
+        "cap.label"
+      ]
+    },
+    {
+      "id": "S9",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "cap.button.semantic"
+      },
+      "property": "enabled",
+      "expected": true
+    },
+    {
+      "id": "S10",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "cap.button.semantic"
+      },
+      "property": "enabled",
+      "expected": false
+    },
+    {
+      "id": "S11",
+      "state": "final",
+      "kind": "control",
+      "target": {
+        "identifier": "cap.button.semantic"
+      },
+      "property": "enabled",
+      "expected": true
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+# Independent native capability forward test
+
+This directory contains generic native probes and caller-owned expectations. It contains no business component. `expected/frozen.json` and its SHA-256 freeze manifest were written before observing the improved tool. `fixtures/v2-*` only map those frozen expectations to the separately proposed additive API.
+
+`baseline-observer/` is a byte-for-byte callable snapshot of the observer scripts and templates taken before implementation work; `baseline-observer.sha256` is immutable evidence. The frozen bridge produces real SwiftUI Button and Toggle controls, explicit semantic containing groups, selected traits and labels, duplicate identifiers, a label-only control, long vertical content, and a 940-point containing row. Fixture input `disabled` changes actual native control enablement. Fixture input `generation` changes visible text. A real native expand button adds eight native rows and emits its actual callback.
+
+Semantic expectations S1–S11 distinguish the semantic group's label/selection from the unique activation leaf's role and enablement. Disabled leaves must be known native Button/Switch leaves with enabled=false and zero callback delta; a group enabled=true does not satisfy the leaf assertion. S9 intentionally expects true for that disabled leaf and must yield a genuine failed assertion. S10/S11 establish known false/true positives so that an all-unknown resolver cannot satisfy the negative test.
+
+Long-content expectations L1–L9 require overlapping native viewport interval coverage separately for initial caller input, new caller input and action-expanded state. Session-global identifier or bottom visibility cannot prove those states. Tall content need not fit one screen to be completely captured by overlapping viewports. Real target taps require actual callback receipts. Geometry does not establish visual design correctness.
+
+Native runs use only simulator `133B5850-2ED9-4A34-8B3B-2C06471378A8` and child-process `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`. Builds and original xcresults live in ignored `cache/`; `helpers/portable.py` copies original JSON, screenshots, logs, native counts and hashes into `evidence/`. No source-only analysis is reported as a native pass. Unsupported baseline operations are unrepresentable rather than passed.
+
+`helpers/audit_raw.py` independently derives vertical coverage from the native title's screen frame, the measured viewport and native bottom visibility. For a fixed state, the title is a stable content-coordinate anchor even offscreen. Its viewport intervals are checked for gaps and independent top/bottom evidence. This audit is descriptive and never alters raw facts or callbacks.
+
+`helpers/reproduce.py CASE --output FRESH_CACHE_PATH` reruns any of the six named cases against the preserved baseline or candidate aaef source bundle, using only the assigned simulator. Expected negative collector exits remain nonzero. Typed assertion plans and independent helpers operate on exported native records separately.

@@ -1,0 +1,46 @@
+{
+  "native_test_count": 1,
+  "observer_status": "failed",
+  "checks": [
+    {
+      "id": "S1/S2 semantic facts",
+      "status": "passed",
+      "evidence": "snapshot 0 semantic group roles raw=1, exact labels and selected=true; actual child Button raw=9 and Switch raw=40 enabled=false"
+    },
+    {
+      "id": "S3 blocked disabled semantic activation",
+      "status": "failed",
+      "evidence": "steps 0 and 1 outcome tapped; activation_target is raw=1 enabled=true semantic group, while actual children are enabled=false; callback delta empty"
+    },
+    {
+      "id": "S4 enabled semantic activation",
+      "status": "failed",
+      "evidence": "step 5 Button semantic tap emits cap.button; step 6 Switch semantic tap emits zero callbacks and expected cap.switch.on missing"
+    },
+    {
+      "id": "S5 ambiguous descendants",
+      "status": "failed",
+      "evidence": "step 7 native containing group with two Button leaves is tapped, callback cap.ambiguous.right"
+    },
+    {
+      "id": "S6 duplicate selector",
+      "status": "passed",
+      "evidence": "step 8 unavailable; issue identifier cap.duplicate matched 2 nodes; no callback"
+    },
+    {
+      "id": "S7 missing selector",
+      "status": "passed",
+      "evidence": "step 9 unavailable; issue identifier cap.missing matched 0 nodes; no callback"
+    },
+    {
+      "id": "S8 label selector",
+      "status": "unrepresentable",
+      "evidence": "baseline requires identifier actions"
+    },
+    {
+      "id": "S9-S11 actual activation enabled assertions",
+      "status": "unrepresentable",
+      "evidence": "baseline stores semantic group itself as activation and disabled actual leaf steps omit activation target; cannot assert unique actual native leaf through semantic group"
+    }
+  ]
+}

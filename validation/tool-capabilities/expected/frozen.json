@@ -1,0 +1,30 @@
+{
+ "version":1,
+ "scope":"Generic native observation capability; assertions derive from caller fixtures and callbacks, never business design rules.",
+ "native_prerequisites":{"simulator":"133B5850-2ED9-4A34-8B3B-2C06471378A8","developer_dir":"/Applications/Xcode.app/Contents/Developer","native_test_count_minimum":1,"screenshots_required":true,"same_process_for_updates":true},
+ "semantic":[
+  {"id":"S1","target":"cap.button.semantic","expect":{"label":"Selected semantic button group","selected":true},"activation":{"native_role":"Button","identifier":"cap.button.leaf","enabled_initial":false,"enabled_updated":true}},
+  {"id":"S2","target":"cap.switch.semantic","expect":{"label":"Selected semantic switch group","selected":true},"activation":{"native_role":"Switch","enabled_initial":false,"enabled_updated":true}},
+  {"id":"S3","action":"activate disabled semantic groups","expect":"blocked_disabled; no native tap; zero callback delta; actual leaf enabled false independently of container enabled"},
+  {"id":"S4","action":"activate enabled semantic groups after caller fixture update","expect_callbacks":["cap.button","cap.switch.on"],"expect":"each unique real enabled activation leaf is tapped; leaf role Button/Switch; semantic label/selected remain available"},
+  {"id":"S5","target":"cap.ambiguous.semantic","expect":"ambiguous_activation; no tap and no callback; exactly two eligible Button leaves preserved as evidence"},
+  {"id":"S6","target":"cap.duplicate","expect":"ambiguous_selector; match_count 2; no tap and no callback"},
+  {"id":"S7","target":"cap.missing","expect":"missing or bounded-unobserved selector; match_count 0; no tap and no callback"},
+  {"id":"S8","selector":{"label":"Label only native action","role":"Button"},"expect_callback":"cap.label","expect":"label selector uniquely resolves actual native Button without an identifier"},
+  {"id":"S9","assertion":{"target":"cap.button.semantic","property":"enabled","source":"activation","expected":true,"fixture_index":0},"expect":"genuine failed assertion with actual false, known native Button leaf, no all-unknown resolver"},
+  {"id":"S10","assertion":{"target":"cap.button.semantic","property":"enabled","source":"activation","expected":false,"fixture_index":0},"expect":"pass with actual false and known native Button leaf"},
+  {"id":"S11","assertion":{"target":"cap.button.semantic","property":"enabled","source":"activation","expected":true,"fixture_index":1},"expect":"pass with actual true and known native Button leaf"}
+ ],
+ "long":[
+  {"id":"L1","expect":"all native screenshots preserve frames, label, role, enabled, selected and hit state; 940-point cap.tall exceeds measured viewport"},
+  {"id":"L2","target":"cap.distant","expect_callback":"cap.distant","expect":"bounded native downward reveal; overlapping capture chain; unique actual Button fully in viewport at tap"},
+  {"id":"L3","target":"cap.top","expect_callback":"cap.top","expect":"upward return from distant bottom; overlapping capture chain; fully visible native tap"},
+  {"id":"L4","selector":{"label":"Label only distant action","role":"Button"},"expect_callback":"cap.label.distant","expect":"identifier-free target resolved by label and native role after downward reveal"},
+  {"id":"L5","state":"initial","fixture_index":0,"expect":"coverage starts at top and independently reaches bottom with overlapping vertical intervals across entire content including cap.tall"},
+  {"id":"L6","state":"updated","fixture_index":1,"title":"Capability updated","expect":"same process and instance, explicit input advance; new independent top-to-bottom overlapping coverage, no inherited initial coverage"},
+  {"id":"L7","state":"expanded","fixture_index":1,"trigger":"cap.expand","expect_callback":"cap.expand","marker":"Expanded state updated","expect":"action increases native content with rows cap.expanded.0 through cap.expanded.7; new independent top-to-bottom overlapping coverage; no inherited updated coverage"},
+  {"id":"L8","negative_control":"stop early in a new state after previous state was fully covered","expect":"new-state coverage incomplete/failed, even with session-global sentinel and identifiers previously seen"},
+  {"id":"L9","negative_control":"coverage jumps over middle of tall row without overlapping native screenshots","expect":"coverage incomplete/failed or explicit native gap; tall row must never be falsely complete from endpoint visibility alone"}
+ ],
+ "baseline_expectations":{"semantic":"Known baseline resolves only Switch semantic types; generic Button/Switch containing groups may be tapped as containers, disabled activation leaf state may not be considered. Preserve evidence, classify individually.","long":"Baseline global seen/bottom set does not establish per-state continuous coverage. 940-point cap.tall cannot become fully visible and should cause required-identifier failure. Baseline cannot express label selectors or activation enabled assertions; mark unrepresentable rather than source-only runtime pass."}
+}
