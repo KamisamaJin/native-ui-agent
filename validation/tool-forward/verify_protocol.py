@@ -56,8 +56,9 @@ def main():
     d0_time = timestamp(seals['d0']['sealedAtUTC'])
     final_time = timestamp(seals['final']['sealedAtUTC'])
     matching_time = timestamp(seals['matching']['sealedAtUTC'])
+    paired_time = timestamp(seals['paired']['sealedAtUTC'])
     unblinding = read(R / 'unblinding.json')
-    assert final_time <= matching_time <= timestamp(unblinding['releasedAtUTC'])
+    assert final_time <= matching_time <= paired_time <= timestamp(unblinding['releasedAtUTC'])
     assignment = R / 'private/assignment.json'
     assert sha(assignment) == read(R / 'assignment-commitment.json')['sha256']
     assert unblinding['assignmentSHA256'] == sha(assignment)
