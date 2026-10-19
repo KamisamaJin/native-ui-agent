@@ -4,7 +4,7 @@
 
 这个仓库包含可加载的 **Skill**、确定性的 **证据 runner**，以及两个真实开源工程的接入代码和实跑记录。模型由宿主 coding agent 提供；runner 不内置 LLM，也不假装提供通用完整的原生样式树。
 
-## 新一轮三臂盲测：未证实新版额外收益
+## 前一轮三臂盲测：未证实新版额外收益
 
 先冻结通用改进，再由独立上下文设计全新的服务预约改期组件；比较无 Skill、冻结 v1、改进 v2。完成84组原生采集、1,086张快照及双端各1次干净检出复跑，先封存评分和自查匹配再揭盲。
 
@@ -56,7 +56,13 @@
 
 这一轮新增功能试验本身没有无 Skill 对照组，不能单独据此声称提升了某个百分比的 PR 质量。首次快速视觉检查曾漏过轨道色，详细设计核对才发现；原始通过、后续失败及修正记录均保留。字号、颜色、间距能否精确观测取决于平台和采样对象。
 
-## 本轮改进
+## 通用观测工具 v3
+
+新版把 AX 容器与实际控件叶节点判定、长内容反馈定位、输入与回调绑定、逐状态滚动覆盖，以及类型化断言做成可执行工具。歧义、覆盖缺口、无运行时依据的属性保留为未评估；源码声明不能替代实际生效的样式。实测通用控件包括 Button 和 Switch，Android 语义点击不等于操作系统物理触摸。
+
+接入与边界见[原生工具协议](native-ui-agent/references/native-tools.md)、[独立通用能力验证](validation/tool-capabilities/REPORT.md)与[新版两组试验](validation/tool-forward/README.md)。业务试验调用真实生产模块中的新增组件，但不覆盖原应用完整页面、导航或后端。
+
+## 前一轮覆盖能力改进
 
 [首轮分析](validation/improvement-analysis.md)把“一个缺陷簇的规则归因遗漏”与“缺少原生运行时证据”分开。新版增加需求×场景×检查方面的证据账本、完整滚动采样要求，以及可接入真实生产 View 的独立 iOS App + XCUITest 观测器。旧版材料和原始得分继续保留，未用旧失败条件定义新版成功。
 
@@ -145,11 +151,21 @@ python3 validation/feature-development/verify_evidence.py
 python3 validation/blind-comparison/verify_evidence.py
 python3 validation/observer-probes/verify_preflight.py
 python3 validation/fresh-blind/verify_evidence.py
+python3 validation/tool-forward/verify_capabilities.py
+python3 validation/tool-forward/verify_engineering.py
+python3 validation/tool-forward/verify_frozen.py --include-private
+python3 validation/tool-forward/metrics.py --self-test
+python3 validation/tool-forward/verify_evidence.py
+python3 validation/tool-forward/verify_protocol.py
+python3 validation/tool-forward/build_summary.py --check
+python3 validation/tool-forward/build_tables.py --check
+python3 validation/tool-forward/build_failure_index.py
+python3 validation/tool-forward/verify_artifacts.py
 ```
 
-已在不含本机缓存的异地Git归档中通过38项单元测试和四套归档审计，见[核验记录](validation/fresh-blind/verification.json)。
+前一轮不含本机缓存的异地 Git 归档核验见[历史核验记录](validation/fresh-blind/verification.json)。当前工具包含 55 项单元测试，另有本轮封存、逐项评分、统计复算和完整性审计。
 
-第一条验证 runner、覆盖账本和观测器的38项协议/失效行为；后续命令跨机器审计归档图片、报告、原生测试数、冻结哈希、盲测封存与统计运算，不运行原生 SDK 或模型。GitHub CI 执行这些检查，不声称重新运行双端模拟器。
+第一条验证 runner、覆盖账本和观测器的协议与失效行为；后续命令跨机器审计归档图片、报告、原生测试数、冻结哈希、盲测封存与统计运算，不运行原生 SDK 或模型。GitHub CI 执行这些检查，不声称重新运行双端模拟器。
 
 ## 目录
 
@@ -158,6 +174,8 @@ native-ui-agent/                  可复制的 Skill、runner、协议与测试
 validation/feature-development/  新增 UI：冻结设计、功能补丁、宿主、复跑入口与证据
 validation/blind-comparison/     首轮有/无 Skill 盲测及冻结v1
 validation/fresh-blind/          全新预约UI：无Skill/v1/v2、预注册与原生证据
+validation/tool-forward/         全新退款UI：旧v2/新v3、配对采集与完整评分
+validation/tool-capabilities/    通用叶节点、长内容与逐状态覆盖原生验证
 validation/observer-probes/      独立通用观测能力探针及原始失败
 validation/native-ui-pilot/       历史受控回归试验、宿主接入记录及上游许可
 ```
