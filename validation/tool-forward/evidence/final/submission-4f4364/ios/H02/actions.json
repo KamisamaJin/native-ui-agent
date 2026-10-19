@@ -1,0 +1,52 @@
+[
+  {
+    "type": "sweep",
+    "state_id": "H02--initial",
+    "max_steps": 80,
+    "name": "initial"
+  },
+  {
+    "type": "apply_next_fixture",
+    "name": "caller-offer-withdrawn"
+  },
+  {
+    "type": "sweep",
+    "state_id": "H02--caller-offer-withdrawn",
+    "max_steps": 80,
+    "name": "caller-offer-withdrawn"
+  },
+  {
+    "type": "tap",
+    "identifier": "rr.option.cash",
+    "reveal": true,
+    "allow_disabled": true,
+    "max_steps": 40,
+    "name": "pending-refund-echo"
+  },
+  {
+    "type": "apply_next_fixture",
+    "name": "caller-refund"
+  },
+  {
+    "type": "sweep",
+    "state_id": "H02--caller-refund",
+    "max_steps": 80,
+    "name": "caller-refund"
+  },
+  {
+    "type": "tap",
+    "identifier": "rr.notes.toggle",
+    "reveal": true,
+    "allow_disabled": true,
+    "max_steps": 40,
+    "name": "pending-open-echo"
+  },
+  {
+    "type": "tap",
+    "identifier": "rr.keep",
+    "reveal": true,
+    "allow_disabled": true,
+    "max_steps": 40,
+    "name": "pending-keep-echo"
+  }
+]
