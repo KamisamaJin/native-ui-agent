@@ -57,7 +57,7 @@ python3 validation/tool-forward/metrics.py --self-test
 
 这些命令检查已归档证据与确定性原生事实，**不会重新执行原生 SDK，也不重新做模型视觉评判**。
 
-真实重跑需要 macOS、Xcode/iOS Simulator、Android SDK 和 JDK 21。原环境为 Xcode 27.1 build 27A9275、JBR 21.0.11，固定上游如下：
+真实重跑需要 macOS、Xcode/iOS Simulator、Android SDK 和 JDK 21。原环境为 Xcode 27.1 build 27A9275、iOS 26.5 / iPhone 17 Pro 模拟器、JBR 21.0.11，固定上游如下：
 
 | 项目 | 固定提交 |
 | --- | --- |
