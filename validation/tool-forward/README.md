@@ -46,6 +46,8 @@ SwiftUI 不存在本工具可直接读取的通用运行时字号、padding、�
 
 所有断言截图、原始 JSON、原生命令与失败日志进入可携带档案。DerivedData、xcresult 和依赖缓存不入库；自动 XCTest 诊断录像的省略项目保留 SHA、大小和原因，原件仍在本机忽略缓存。它们不替代任何断言截图。
 
+`assessment-ledger.csv` 是逐原子项的紧凑索引，保留判定、原因、方法缺口、证据路径及来源数量。`grade_file` 与 `grade_result_pointer` 指向封存评分中的完整记录，包含全部精确证据、SHA 和字段/像素定位；完整依据保留在原始评分 JSON 中，不在 CSV 重复展开。
+
 不需要 SDK 的完整性检查：
 
 ```sh

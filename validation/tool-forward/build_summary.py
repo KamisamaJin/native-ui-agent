@@ -65,11 +65,11 @@ def build(index):
     return result, grades, plans
 
 
-def csv_rows(grades, plans):
+def csv_rows(grades, plans, index):
     for submission, phases in grades.items():
         for phase, grade in phases.items():
             metadata = {(r['platform'], r['key']): r for r in plans[phase]['assessments']}
-            for row in grade['results']:
+            for position, row in enumerate(grade['results']):
                 m = metadata[(row['platform'], row['key'])]
                 yield {'submission': submission, 'phase': phase, 'platform': row['platform'],
                        'case': m['caseId'], 'state': m['stateId'], 'key': row['key'],
@@ -77,7 +77,10 @@ def csv_rows(grades, plans):
                        'outcome': row['outcome'], 'reason': row['reason'],
                        'binding_status': row['bindingStatus'],
                        'missing_methods': json.dumps(row['missingEvidenceMethod'], ensure_ascii=False),
-                       'exact_sources': json.dumps(row['exactSources'], ensure_ascii=False, sort_keys=True)}
+                       'exact_source_paths': json.dumps(sorted({s['path'] for s in row['exactSources']}), ensure_ascii=False),
+                       'exact_source_count': len(row['exactSources']),
+                       'grade_file': index['grades'][submission][phase]['path'],
+                       'grade_result_pointer': '/results/' + str(position)}
 
 
 def main():
@@ -91,7 +94,7 @@ def main():
     if a.check:
         assert output.read_text() == encoded, 'Published statistics do not reproduce'
         with (R / 'assessment-ledger.csv').open(newline='') as file:
-            for actual, expected in zip_longest(csv.DictReader(file), csv_rows(grades, plans)):
+            for actual, expected in zip_longest(csv.DictReader(file), csv_rows(grades, plans, index)):
                 assert actual is not None and expected is not None, 'Atomic ledger row count differs'
                 assert actual == {key: '' if value is None else str(value)
                                   for key, value in expected.items()}, 'Atomic ledger differs from sealed grade'
@@ -99,7 +102,7 @@ def main():
         return
     assert not output.exists(), 'Preserve the prior result; no silent overwrite'
     output.write_text(encoded)
-    rows = list(csv_rows(grades, plans))
+    rows = list(csv_rows(grades, plans, index))
     with (R / 'assessment-ledger.csv').open('x', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=list(rows[0]), lineterminator='\n')
         writer.writeheader()
