@@ -68,6 +68,9 @@ def main():
     for manifest in sorted((R / 'phase-reports').glob('*/*/manifest.json')):
         checked += checked_files(manifest.parent, read(manifest)['files'])
         phases += 1
+    operator_manifest = R / 'operator-records/manifest.json'
+    if operator_manifest.is_file():
+        checked += checked_files(R, read(operator_manifest)['files'])
     print(json.dumps({'status': 'passed_frozen_byte_integrity', 'checked_files': checked,
                       'portable_capture_seals': portable, 'source_capsules': sources,
                       'phase_report_seals': phases,

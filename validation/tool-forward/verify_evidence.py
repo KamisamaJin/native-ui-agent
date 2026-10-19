@@ -168,10 +168,16 @@ def main():
     n, s = validate_captures(R / 'paired-evidence/d0', 'd0', index['paired_submission'], True)
     captures += n
     snapshots += s
+    paired = index['paired_grade']
+    paired_path = R / paired['path']
+    assert sha(paired_path) == paired['sha256']
+    paired_assessments = validate_grade(paired_path, 'd0')
+    assert paired_assessments == 2209
     assert sorted(counts) == [2209, 2209, 2897, 2897]
     assert captures == 68
     print(json.dumps({'status': 'passed_complete_portable_trial', 'native_capture_attempts': captures,
                       'native_snapshots': snapshots, 'independent_assessments': sum(counts),
+                      'same_source_paired_collector_assessments': paired_assessments,
                       'scope': 'Hashes, exact denominator and source/input bindings. Not a native SDK replay or new UI judgement.'}))
 
 
