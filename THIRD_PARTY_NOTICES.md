@@ -2,7 +2,7 @@
 
 The root MIT license covers original Skill, runner, documentation and harness code. It does not replace upstream licenses.
 
-The blind-comparison transfer queue and fresh-blind visit-rescheduling components, independent designs/oracles, generic observer probes and adapters are original additions covered by the root MIT license. Their Reply/AlertToast test hosts still use the upstream projects and native dependencies below. Screenshots and archived native reports document those integrations; they do not relicense upstream assets or dependencies.
+The blind-comparison transfer queue, fresh-blind visit-rescheduling components and tool-forward return-resolution components, independent designs/oracles, generic observer probes and adapters are original additions covered by the root MIT license. Their Reply/AlertToast test hosts still use the upstream projects and native dependencies below. Screenshots and archived native reports document those integrations; they do not relicense upstream assets or dependencies.
 
 | Material | Source | License / notice |
 | --- | --- | --- |
