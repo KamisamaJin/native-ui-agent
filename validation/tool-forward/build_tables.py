@@ -77,13 +77,16 @@ def render(data):
             for key, name in [('command_seconds_sum', '命令耗时之和'), ('recorded_span_seconds', '记录墙钟跨度')]:
                 rows.append((f'{label} {platform} {name}', [seconds(a['native_capture_times'][phase]['by_platform'][platform][key]) for a in arms]))
             rows.append((f'{label} {platform} 截图数', [str(a['native_capture_times'][phase]['by_platform'][platform]['native_snapshots']) for a in arms]))
+            if platform == 'ios':
+                for key, name in [('native_summary_test_span_seconds_sum', '原生摘要中的测试会话跨度之和'), ('post_test_finish_archive_seconds_sum', '测试结束后归档跨度之和')]:
+                    rows.append((f'{label} iOS {name}', [seconds(a['native_capture_times'][phase]['by_platform']['ios'][key]) for a in arms]))
     table('统一评分采集成本', rows)
     table('原生执行失败记录', [
         (f'{label} 原生命令非零退出', [str(sum(r['exit_code'] != 0 for r in a['native_capture_times'][phase]['captures'])) for a in arms])
         for phase, label in [('d0', '首版'), ('final', '最终')]] + [
         (f'{label} 完全缺少 observation', [str(sum(not r['observation_available'] for r in a['native_capture_times'][phase]['captures'])) for a in arms])
         for phase, label in [('d0', '首版'), ('final', '最终')]])
-    lines.extend(['两组质量测量均使用新版采集器。最终各两个 iOS 槽并行，首版串行；命令耗时之和不是总墙钟，也不能将初始与最终的墙钟差解释成 Skill 收益。逐条开始/结束、退出码与原始批次排程另存 operator-records/ 和 failure-index.json。', ''])
+    lines.extend(['两组质量测量均使用新版采集器。最终各两个 iOS 槽并行，首版串行；命令耗时之和不是总墙钟，也不能将初始与最终的墙钟差解释成 Skill 收益。测试会话跨度来自原生摘要，不是隔离的 AX CPU 时间；测试结束后归档包含摘要读取、附件导出和档案整理，不是隔离的导出 CPU 时间，缺时间戳保留 N/A。逐条开始/结束、退出码与原始批次排程另存 operator-records/ 和 failure-index.json。', ''])
     paired = data['paired_observation']
     lines.extend(['## 相同源码、相同输入的采集器配对', '',
                   '| 指标 | 旧采集器 | 新采集器 |', '| --- | ---: | ---: |',

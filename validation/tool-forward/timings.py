@@ -20,10 +20,18 @@ def captures(root):
         observation_path = path.parent / 'observation.json'
         manifest = read(manifest_path) if manifest_path.exists() else {}
         observation = read(observation_path) if observation_path.exists() else {}
+        summary = manifest.get('native_summary', {})
+        test_start, test_end = summary.get('startTime'), summary.get('finishTime')
+        native_span = test_end - test_start if isinstance(test_start, (int, float)) and isinstance(test_end, (int, float)) else None
+        archive_span = manifest['finished_at'] - test_end if isinstance(test_end, (int, float)) and manifest.get('finished_at') is not None else None
+        assert native_span is None or native_span >= 0, str(path)
+        assert archive_span is None or archive_span >= 0, str(path)
         rows.append({'platform': path.parent.parent.name, 'case': path.parent.name,
                      'seconds': capture['seconds'], 'exit_code': capture['exit_code'],
                      'started_at': manifest.get('started_at'),
                      'finished_at': manifest.get('finished_at'),
+                     'native_summary_test_span_seconds': round(native_span, 3) if native_span is not None else None,
+                     'post_test_finish_archive_seconds': round(archive_span, 3) if archive_span is not None else None,
                      'native_test_count': manifest.get('native_test_count'),
                      'snapshots': len(observation.get('snapshots', [])),
                      'observation_available': observation_path.is_file(),
@@ -36,6 +44,10 @@ def captures(root):
         by_platform[platform] = {'captures': len(selected),
                                  'command_seconds_sum': round(sum(r['seconds'] for r in selected), 3),
                                  'native_snapshots': sum(r['snapshots'] for r in selected),
+                                 'native_summary_test_span_seconds_sum': round(sum(r['native_summary_test_span_seconds'] for r in selected), 3)
+                                 if all(r['native_summary_test_span_seconds'] is not None for r in selected) else None,
+                                 'post_test_finish_archive_seconds_sum': round(sum(r['post_test_finish_archive_seconds'] for r in selected), 3)
+                                 if all(r['post_test_finish_archive_seconds'] is not None for r in selected) else None,
                                  'recorded_span_seconds': round(max(ends) - min(starts), 3)
                                  if len(starts) == len(ends) == len(selected) else None}
     starts = [r['started_at'] for r in rows if r['started_at'] is not None]
@@ -44,7 +56,7 @@ def captures(root):
             'recorded_span_seconds': round(max(ends) - min(starts), 3)
             if rows and len(starts) == len(ends) == len(rows) else None,
             'command_seconds_sum': round(sum(r['seconds'] for r in rows), 3),
-            'scope': 'Command sums include native build/test/export. Parallel sums are not total wall time; spans include inter-command overhead.'}
+            'scope': 'Command sums include native build/test/export. Parallel sums are not total wall time; spans include inter-command overhead. iOS summary test spans include the native test session, not isolated AX CPU time. Post-test-finish archive spans include summary reading, attachment export and archive assembly, not isolated export CPU time; unavailable timestamps remain null.'}
 
 
 def phases(submission):
