@@ -49,11 +49,12 @@ def transitions(before,after):
 
 def discovery_stats(grade,matching):
  """Count independently classified matches; duplicates do not multiply credit."""
- index=index_grade(grade);findings=matching['findings'];ids={f['id']for f in findings}
+ index=index_grade(grade);findings=matching['findings'];ids={f['id']for f in findings};by_id={f['id']:f for f in findings}
  if len(ids)!=len(findings)or matching['originalFindingCount']!=len(findings):raise ValueError('Invalid original finding count/IDs')
  sets={c:set()for c in ['TP','FP','UNCERTAIN']};duplicates=[]
  for row in matching['atomicMatches']:
   if row['findingId']not in ids or row['classification']not in sets:raise ValueError('Unmapped finding/classification')
+  if row['classification']in {'TP','FP'}and by_id[row['findingId']].get('certainty')!='confirmed':raise ValueError('Uncertain finding was counted as confirmed')
   if row.get('key')is None:
    if row['classification']!='UNCERTAIN':raise ValueError('Confirmed match lacks assessment key')
    continue
@@ -93,7 +94,7 @@ def self_test():
  s=grade_stats(before);assert s['runtime']['required']==4 and s['source']['required']==1 and s['runtime']['unassessed_ratio']['value']==.25
  t=transitions(before,after);assert t['repair_success']['value']==.5 and len(t['unresolved_confirmed_initial_failures'])==1 and len(t['confirmed_regressions'])==len(t['newly_observed_failures'])==1 and t['additional_final_assessments']['FAIL']==1
  assert fraction(0,0)['value']is None
- matching={'originalFindingCount':3,'findings':[{'id':i,'classification':c}for i,c in [('a','TP_ONLY'),('b','FP_ONLY'),('c','UNCERTAIN')]],'atomicMatches':[{'findingId':i,'platform':'apple','key':k,'classification':c}for i,k,c in [('a','fix','TP'),('a','fix','TP'),('b','regress','FP'),('c','new','UNCERTAIN')]]}
+ matching={'originalFindingCount':3,'findings':[{'id':i,'classification':c,'certainty':'suspected'if i=='c'else'confirmed'}for i,c in [('a','TP_ONLY'),('b','FP_ONLY'),('c','UNCERTAIN')]],'atomicMatches':[{'findingId':i,'platform':'apple','key':k,'classification':c}for i,k,c in [('a','fix','TP'),('a','fix','TP'),('b','regress','FP'),('c','new','UNCERTAIN')]]}
  d=discovery_stats(before,matching);assert d['all']['TP']==d['all']['FP']==d['all']['FN']==1 and d['all']['confirmed_false_discovery_share']['value']==.5 and len(d['duplicate_atomic_matches'])==1
  pair=paired_observation_stats(before,{'results':after['results'][:-1]});assert len(pair['newly_assessed'])==len(pair['no_longer_assessed'])==1 and len(pair['confirmed_outcome_disagreements'])==2
  try:discovery_stats(before,dict(matching,atomicMatches=[{'findingId':'a','platform':'apple','key':'unknown','classification':'FP'}]))
