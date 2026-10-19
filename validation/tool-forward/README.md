@@ -57,6 +57,11 @@ python3 validation/tool-forward/verify_capabilities.py
 python3 validation/tool-forward/verify_engineering.py
 python3 validation/tool-forward/verify_frozen.py --include-private
 python3 validation/tool-forward/metrics.py --self-test
+python3 validation/tool-forward/verify_evidence.py
+python3 validation/tool-forward/build_summary.py --check
+python3 validation/tool-forward/build_tables.py --check
+python3 validation/tool-forward/build_failure_index.py
+python3 validation/tool-forward/verify_artifacts.py
 ```
 
 这些命令检查已归档证据与确定性原生事实，**不会重新执行原生 SDK，也不重新做模型视觉评判**。

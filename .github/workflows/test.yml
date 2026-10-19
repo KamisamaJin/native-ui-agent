@@ -18,5 +18,10 @@ jobs:
       - run: python validation/fresh-blind/verify_evidence.py
       - run: python validation/tool-forward/verify_capabilities.py
       - run: python validation/tool-forward/verify_engineering.py
-      - run: python validation/tool-forward/verify_frozen.py
+      - run: python validation/tool-forward/verify_frozen.py --include-private
       - run: python validation/tool-forward/metrics.py --self-test
+      - run: python validation/tool-forward/verify_evidence.py
+      - run: python validation/tool-forward/build_summary.py --check
+      - run: python validation/tool-forward/build_tables.py --check
+      - run: python validation/tool-forward/build_failure_index.py
+      - run: python validation/tool-forward/verify_artifacts.py
