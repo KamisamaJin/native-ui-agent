@@ -1,0 +1,130 @@
+#!/usr/bin/env python3
+"""Cache-free checks of sealed trial inputs, complete grades and arithmetic.
+
+Requires the final report-index.json. This script validates provenance and exact
+denominators; it does not recreate the independent visual/semantic judgements.
+"""
+import hashlib
+import json
+from pathlib import Path
+
+from metrics import index_grade
+from verify_frozen import main as verify_frozen
+
+R = Path(__file__).resolve().parent
+
+
+def read(path):
+    return json.loads(path.read_text())
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def portable_path(recorded):
+    path = Path(recorded)
+    if not path.is_absolute():
+        return R / path
+    marker = '/validation/tool-forward/'
+    assert marker in recorded, 'Unmapped non-portable evidence path: ' + recorded
+    return R / recorded.split(marker, 1)[1]
+
+
+def validate_grade(path, phase):
+    grade = read(path)
+    plan = read(R / 'private' / (phase + '-required-assessments.json'))
+    expected = {(r['platform'], r['key']): r for r in plan['assessments']}
+    actual = index_grade(grade)
+    assert len(expected) == len(plan['assessments'])
+    assert set(actual) == set(expected), str(path)
+    assert grade['oracleSHA256'] == plan['oracle_sha256']
+    assert grade['phase'] == phase.upper()
+    checked = set()
+    for key, row in actual.items():
+        required = expected[key]
+        for field in ['expected', 'aspect', 'target', 'criterion']:
+            assert row[field] == required[field], (path, key, field)
+        assert row['sourceOnly'] == (required['scope'] == 'source')
+        assert row['reason']
+        if row['outcome'] in {'PASS', 'FAIL'}:
+            assert row['exactSources'], (path, key, 'unsupported decision')
+        for source in row['exactSources'] + row['consideredSources']:
+            p = portable_path(source['path'])
+            assert p.is_file(), (path, key, p)
+            if 'sha256' in source and (str(p), source['sha256']) not in checked:
+                assert sha(p) == source['sha256'], (path, key, p)
+                checked.add((str(p), source['sha256']))
+    return len(actual)
+
+
+def validate_captures(root, phase, submission=None, legacy=False):
+    fixture_root = R / 'private/inputs' / phase
+    fixture_manifest = read(fixture_root / 'manifest.json')
+    cases = {r['case']: r for r in fixture_manifest['cases']}
+    assert len(cases) == (6 if phase == 'd0' else 8)
+    found = list(root.glob('*/*/capture.json'))
+    assert len(found) == len(cases) * 2, str(root)
+    snapshots = 0
+    for platform in ['android', 'ios']:
+        for case, entry in cases.items():
+            folder = root / platform / case
+            capture = read(folder / 'capture.json')
+            spec = read(fixture_root / (case + '.json'))
+            assert sha(fixture_root / (case + '.json')) == entry['sha256'] == capture['source_fixture_sha256']
+            assert capture['action_protocol'] == spec['protocol']
+            actions = [dict(a, type='capture') if legacy and a['type'] == 'sweep' else a for a in spec['actions']]
+            assert capture['actual_actions'] == actions
+            observation = folder / 'observation.json'
+            if not observation.is_file():
+                assert capture['status'] == 'unavailable'
+                continue
+            manifest = read(folder / 'manifest.json')
+            assert manifest['native_test_count'] == 1
+            for kind in ['fixtures', 'actions']:
+                assert sha(folder / (kind + '.json')) == manifest['input_hashes'][kind]
+            if submission:
+                capsule = R / 'implementations' / phase / submission
+                production = read(capsule / 'manifest.json')['files']
+                hashes = manifest['source_hashes']
+                for relative, digest in production.items():
+                    prefix = 'reply/' if platform == 'android' else 'alerttoast/'
+                    if not relative.startswith(prefix):
+                        continue
+                    suffix = '/' + relative[len(prefix):]
+                    recorded = [v for k, v in hashes.items() if k.endswith(suffix)]
+                    assert recorded == [digest], (folder, relative, recorded)
+            data = read(observation)
+            for snapshot in data['snapshots']:
+                p = folder / snapshot['screenshot']
+                assert p.is_file()
+                assert manifest['image_hashes'][snapshot['screenshot']] == sha(p)
+            snapshots += len(data['snapshots'])
+    return len(found), snapshots
+
+
+def main():
+    index = read(R / 'report-index.json')
+    verify_frozen()
+    counts = []
+    captures = snapshots = 0
+    for submission, phases in index['grades'].items():
+        for phase, entry in phases.items():
+            p = R / entry['path']
+            assert sha(p) == entry['sha256']
+            counts.append(validate_grade(p, phase))
+            n, s = validate_captures(R / 'evidence' / phase / submission, phase, submission)
+            captures += n
+            snapshots += s
+    n, s = validate_captures(R / 'paired-evidence/d0', 'd0', index['paired_submission'], True)
+    captures += n
+    snapshots += s
+    assert sorted(counts) == [2209, 2209, 2897, 2897]
+    assert captures == 68
+    print(json.dumps({'status': 'passed_complete_portable_trial', 'native_capture_attempts': captures,
+                      'native_snapshots': snapshots, 'independent_assessments': sum(counts),
+                      'scope': 'Hashes, exact denominator and source/input bindings. Not a native SDK replay or new UI judgement.'}))
+
+
+if __name__ == '__main__':
+    main()
