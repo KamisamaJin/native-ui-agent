@@ -39,6 +39,7 @@ def main():
         'builder_phase_archives': notes,
         'common_transport_repair': 'transport-amendment/freeze.json',
         'common_scheduler_pre_native_failures': 'operator-case-name-amendment.json',
+        'original_scheduler_tracebacks': 'operator-failures/pre-native-case-name.json',
         'public_integration_reports': [str(path.relative_to(R)) for path in
                                        sorted((R / 'implementations/d0').glob('*/reports/d0.json'))],
         'omitted_automatic_videos': [str(path.relative_to(R)) for folder in
