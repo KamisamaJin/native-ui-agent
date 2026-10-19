@@ -255,6 +255,20 @@ final class ObserverTests: XCTestCase {
     func reveal(_ identifier: String, maxSteps: Int, initialDirection: String, prefix: String) -> XCUIElement? {
         revealTarget(["identifier": identifier], maxSteps: maxSteps, initialDirection: initialDirection, prefix: prefix, requireControl: false)
     }
+    var nonFiniteNumbers: [[String: String]] = []
+    func jsonSafe(_ value: Any, path: String = "$" ) -> Any {
+        if let number = value as? NSNumber, !number.doubleValue.isFinite {
+            nonFiniteNumbers.append(["path": path, "native_value": String(describing: number), "status": "unavailable_non_finite"])
+            return NSNull()
+        }
+        if let dictionary = value as? [String: Any] {
+            return dictionary.mapValues { entry in entry } .reduce(into: [String: Any]()) { result, entry in
+                result[entry.key] = jsonSafe(entry.value, path: path + "." + entry.key)
+            }
+        }
+        if let values = value as? [Any] { return values.enumerated().map { jsonSafe($0.element, path: path + "[\($0.offset)]") } }
+        return value
+    }
     func testObserve() throws {
         continueAfterFailure = false
         let env = ProcessInfo.processInfo.environment
@@ -367,7 +381,9 @@ final class ObserverTests: XCTestCase {
         let result: [String: Any] = ["schema_version": 2, "state_captures": stateCaptures, "measurement_kind": "XCUIElement runtime accessibility; frames in logical screen points",
             "snapshots": records, "steps": steps, "coverage": ["bottom_reached": bottomReached, "required_identifiers": required, "missing_identifiers": missing, "observed_identifiers": seen.sorted()],
             "issues": issues, "reveal_diagnostics": revealDiagnostics, "status": issues.isEmpty ? "passed" : "failed", "original_runtime": originalRuntime]
-        let resultAttachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: result, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
+        var export = jsonSafe(result) as! [String: Any]
+        export["serialization_diagnostics"] = nonFiniteNumbers
+        let resultAttachment = XCTAttachment(data: try JSONSerialization.data(withJSONObject: export, options: [.prettyPrinted, .sortedKeys]), uniformTypeIdentifier: "public.json")
         resultAttachment.name = "observer-result.json"; resultAttachment.lifetime = .keepAlways; add(resultAttachment)
         XCTAssertTrue(issues.isEmpty, issues.joined(separator: "; "))
     }

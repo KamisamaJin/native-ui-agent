@@ -9,6 +9,7 @@ import argparse
 import base64
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import plistlib
@@ -35,6 +36,11 @@ def unique_node(nodes: list[dict], identifier: str) -> dict:
 
 def point_to_pixels(frame: dict, app_frame: dict, pixels: dict) -> dict:
     """Convert measured screen-point frames to image coordinates; never infer styles."""
+    # Invalid native geometry is unavailable; never coerce it to zero pixels.
+    if any(not isinstance(app_frame.get(k), (int, float)) or not math.isfinite(app_frame[k]) for k in ("x", "y", "width", "height")):
+        raise ValueError("App frame must be finite")
+    if any(not isinstance(frame.get(k), (int, float)) or not math.isfinite(frame[k]) for k in ("x", "y", "width", "height")):
+        return None
     if app_frame["width"] <= 0 or app_frame["height"] <= 0:
         raise ValueError("App frame must have positive dimensions")
     sx, sy = pixels["width"] / app_frame["width"], pixels["height"] / app_frame["height"]

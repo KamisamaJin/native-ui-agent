@@ -80,6 +80,11 @@ fixture's footer cannot fill an earlier fixture's gap. No global observed-ID uni
 is substituted for per-state coverage. Dynamic content/height/binding problems stay
 visible. Complete pixel coverage is not style correctness.
 
+XCUI sometimes returns non-finite geometry. JSON transport retains those coordinates
+as null and lists their native values/paths in `serialization_diagnostics`; their
+pixel projection is unavailable. It never substitutes zero coordinates or drops all
+other native observations because one frame cannot be represented in JSON.
+
 ## Typed assertions
 
 `native_checks.py` consumes a frozen atomic plan and actual observation. Keep a

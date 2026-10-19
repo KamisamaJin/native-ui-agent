@@ -27,6 +27,14 @@ class ObserverInvariants(unittest.TestCase):
         self.assertEqual(observer.coverage_status({}), "failed")
         self.assertEqual(observer.coverage_status({"bottom_reached": True, "missing_identifiers": []}), "passed")
 
+    def test_invalid_native_geometry_is_unavailable_not_zero_pixels(self):
+        app = {"x": 0, "y": 0, "width": 390, "height": 844}
+        pixels = {"width": 1170, "height": 2532}
+        for invalid in [None, float("inf"), float("nan")]:
+            self.assertIsNone(observer.point_to_pixels({"x": invalid, "y": 0, "width": 0, "height": 0}, app, pixels))
+        with self.assertRaises(ValueError):
+            observer.point_to_pixels(app, dict(app, width=float("inf")), pixels)
+
     def test_exported_attachment_names_must_match_unique_native_prefix(self):
         self.assertEqual(observer.resolve_attachment("000-top.png", {"000-top_0_UUID.png": "actual.png"}), "actual.png")
         with self.assertRaises(ValueError): observer.resolve_attachment("000-top.png", {"001-top_0_UUID.png": "other.png"})
