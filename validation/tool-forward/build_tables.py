@@ -70,6 +70,11 @@ def render(data):
                 rows.append((f'{label} {platform} {name}', [seconds(a['native_capture_times'][phase]['by_platform'][platform][key]) for a in arms]))
             rows.append((f'{label} {platform} 截图数', [str(a['native_capture_times'][phase]['by_platform'][platform]['native_snapshots']) for a in arms]))
     table('统一评分采集成本', rows)
+    table('原生执行失败记录', [
+        (f'{label} 原生命令非零退出', [str(sum(r['exit_code'] != 0 for r in a['native_capture_times'][phase]['captures'])) for a in arms])
+        for phase, label in [('d0', '首版'), ('final', '最终')]] + [
+        (f'{label} 完全缺少 observation', [str(sum(not r['observation_available'] for r in a['native_capture_times'][phase]['captures'])) for a in arms])
+        for phase, label in [('d0', '首版'), ('final', '最终')]])
     lines.extend(['两组质量测量均使用新版采集器。最终各两个 iOS 槽并行，首版串行；命令耗时之和不是总墙钟，也不能将初始与最终的墙钟差解释成 Skill 收益。逐条开始/结束、退出码与原始批次排程另存 operator-records/ 和 failure-index.json。', ''])
     paired = data['paired_observation']
     lines.extend(['## 相同源码、相同输入的采集器配对', '',
