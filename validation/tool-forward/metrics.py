@@ -69,6 +69,23 @@ def discovery_stats(grade,matching):
  refs=lambda keys:[{'platform':p,'key':k}for p,k in sorted(keys)]
  return {'all':stats(set(index)),'by_platform':{p:stats({k for k in index if k[0]==p})for p in sorted({k[0]for k in index})},'runtime':stats({k for k,r in index.items()if not r['sourceOnly']}),'source':stats({k for k,r in index.items()if r['sourceOnly']}),'original_finding_count':len(findings),'finding_classifications':dict(collections.Counter(f['classification']for f in findings)),'duplicate_atomic_matches':duplicates,'TP_keys':refs(sets['TP']),'FP_keys':refs(sets['FP']),'FN_keys':refs(fn),'uncertain_keys':refs(sets['UNCERTAIN'])}
 
+def paired_observation_stats(legacy,current):
+ """Same-source evidence comparison, never interpreted as a source repair."""
+ a=index_grade(legacy);b=index_grade(current)
+ if set(a)!=set(b):raise ValueError('Paired collectors use different assessment universes')
+ matrix={x:{y:0 for y in OUTCOMES}for x in OUTCOMES};gained=[];lost=[];disagreements=[]
+ for key,old in a.items():
+  new=b[key]
+  if old['expected']!=new['expected']or old['sourceOnly']!=new['sourceOnly']:raise ValueError('Paired acceptance differs')
+  if old['sourceOnly']:
+   if old['outcome']!=new['outcome']:raise ValueError('Same-source API grades disagree')
+   continue
+  x,y=old['outcome'],new['outcome'];matrix[x][y]+=1;ref={'platform':key[0],'key':key[1],'legacy':x,'current':y}
+  if x=='UNASSESSED'and y!='UNASSESSED':gained.append(ref)
+  if x!='UNASSESSED'and y=='UNASSESSED':lost.append(ref)
+  if {x,y}=={'PASS','FAIL'}:disagreements.append(ref)
+ return {'runtime_outcome_matrix_legacy_to_current':matrix,'newly_assessed':gained,'no_longer_assessed':lost,'confirmed_outcome_disagreements':disagreements,'legacy':grade_stats(legacy),'current':grade_stats(current),'scope':'Identical production source and fixture inputs. Different collector actions/evidence may differ; these are not product fixes or proof of a coding-quality effect.'}
+
 def self_test():
  def row(key,outcome,source=False):return {'platform':'apple','key':key,'outcome':outcome,'sourceOnly':source,'expected':True,'aspect':'nativeSemantics'}
  before={'results':[row('fix','FAIL'),row('unknown','FAIL'),row('regress','PASS'),row('new','UNASSESSED'),row('api','PASS',True)]}
