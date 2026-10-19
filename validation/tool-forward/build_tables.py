@@ -44,6 +44,16 @@ def render(data):
     ])
     lines.extend(['这里的“误报率”为发现占比；没有完整已检查负例集合，经典 FP/(FP+TN) 无法得出。未裁定发现不硬算 TP/FP；F→U 不算修好。原始发现分类、重复映射和逐项清单保留在 result-summary.json 与独立匹配文件。', ''])
     rows = []
+    for scope, name in [('runtime', '运行时'), ('source', '源码/API')]:
+        rows.extend([
+            (f'{name} 确认误报发现占比', [ratio(a['self_review'][scope]['confirmed_false_discovery_share']) for a in arms]),
+            (f'{name} 精确检出 TP / FP / FN', [' / '.join(str(a['self_review'][scope][k]) for k in ['TP', 'FP', 'FN']) for a in arms]),
+            (f'{name} 漏检率', [ratio(a['self_review'][scope]['miss_rate']) for a in arms]),
+            (f'{name} 首版确认失败修复', [ratio(a['repair'][scope]['repair_success']) for a in arms]),
+            (f'{name} 未解决 F→F / F→U', [str(a['repair'][scope]['initial_to_final']['FAIL']['FAIL']) + ' / ' + str(a['repair'][scope]['initial_to_final']['FAIL']['UNASSESSED']) for a in arms]),
+        ])
+    table('运行时与源码/API的自查、修复分层', rows)
+    rows = []
     for phase, label in [('d0', '首版'), ('final', '最终')]:
         for scope, name in [('runtime', '运行时'), ('source', '源码/API'), ('all', '合计')]:
             rows.append((f'{label} {name} P/F/U', [outcomes(a['grades'][phase][scope]) for a in arms]))
