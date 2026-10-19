@@ -79,6 +79,13 @@
 
 将 [`native-ui-agent/`](native-ui-agent/SKILL.md) 作为宿主 coding agent 可加载的 Skill 目录，或让 agent 直接读取其 `SKILL.md`。该目录可独立复制；`validation/` 是工程接入及验证材料。
 
+只使用 Skill 源码时，可以稀疏拉取这个目录；完整验证档案包含大量原始截图和日志：
+
+```sh
+git clone --filter=blob:none --sparse https://github.com/KamisamaJin/native-ui-agent.git native-ui-agent-repo
+git -C native-ui-agent-repo sparse-checkout set native-ui-agent
+```
+
 示例需求：
 
 > 使用 native-ui-agent，在现有邮件卡片中增加附件摘要。先固定设计参考和验收，再复用工程主题、数据和组件生成测试宿主，渲染普通、长描述、深色和窄屏状态；按图与原生测量修正，提供页面复验及证据。
