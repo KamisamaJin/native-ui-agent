@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Extract recorded calendar/native costs without inventing active model time."""
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
@@ -59,10 +60,38 @@ def phases(submission):
     return result
 
 
+def engineering_costs():
+    groups = {
+        'generic_tool_engineering': list((R / 'engineering').glob('*/manifest.json')),
+        'independent_generic_validation': list((R.parent / 'tool-capabilities/evidence').glob('*/manifest.json')),
+        'common_numeric_transport_probe': [R / 'transport-amendment/native-probe/manifest.json']}
+    output = {}
+    for name, paths in groups.items():
+        rows = []
+        for path in sorted(paths):
+            m = read(path)
+            observation = read(path.parent / 'observation.json')
+            rows.append({'case': path.parent.name, 'manifest': str(path.relative_to(R.parent)),
+                         'manifest_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+                         'native_tests': m['native_test_count'],
+                         'seconds': round(m['finished_at'] - m['started_at'], 3),
+                         'snapshots': len(observation['snapshots'])})
+        output[name] = {'attempts': rows, 'native_tests': sum(r['native_tests'] for r in rows),
+                        'native_seconds_sum': round(sum(r['seconds'] for r in rows), 3),
+                        'snapshots': sum(r['snapshots'] for r in rows)}
+    output['scope'] = 'Recorded native build/test/export spans including failed/negative probes. Sums are not overall wall time or exact model engineering time; generic probes are not extra business trial samples.'
+    return output
+
+
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('--submission', required=True)
+    group = p.add_mutually_exclusive_group(required=True)
+    group.add_argument('--submission')
+    group.add_argument('--engineering', action='store_true')
     a = p.parse_args()
+    if a.engineering:
+        print(json.dumps(engineering_costs(), indent=2))
+        return
     output = {'submission': a.submission, 'phases': phases(a.submission),
               'independent_captures': {}, 'active_model_seconds': None,
               'limitation': 'Exact reasoning/queue split is unavailable. Do not equate calendar duration or interruption-subtracted estimates with measured active model time.'}
