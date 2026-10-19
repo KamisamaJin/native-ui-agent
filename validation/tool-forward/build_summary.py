@@ -101,7 +101,7 @@ def main():
     output.write_text(encoded)
     rows = list(csv_rows(grades, plans))
     with (R / 'assessment-ledger.csv').open('x', newline='') as file:
-        writer = csv.DictWriter(file, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(file, fieldnames=list(rows[0]), lineterminator='\n')
         writer.writeheader()
         writer.writerows(rows)
     print(json.dumps({'written': str(output), 'atomic_ledger_rows': len(rows)}))
