@@ -1,0 +1,140 @@
+{
+  "status": "captured_not_graded",
+  "platform": "android",
+  "source_fixture_sha256": "e466c81ae861dba0859add777333f5c1c87b87187390605c1ee81fa2c7dd744a",
+  "command": [
+    "python3",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/harness/android_run.py",
+    "run",
+    "--project",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/paired-collector/reply/Reply",
+    "--bridge",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/harness/ObserverBridge.kt",
+    "--java-home",
+    "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home",
+    "--android-sdk",
+    "/Users/rex/Library/Android/sdk",
+    "--fixtures",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/paired-collector-evidence/d0/android/C01-inputs/fixtures.json",
+    "--actions",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/paired-collector-evidence/d0/android/C01-inputs/actions.json",
+    "--output",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/paired-collector-evidence/d0/android/C01",
+    "--template",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/harness/baseline-android/NativeObserverTest.kt"
+  ],
+  "exit_code": 0,
+  "seconds": 24.739,
+  "action_protocol": [
+    {
+      "checkpoint": "initial",
+      "modelId": "initial",
+      "input_index": 0,
+      "trigger_action_index": null,
+      "capture_action_index": 0,
+      "native_state_id": "C01--initial",
+      "coverage": "full_content",
+      "requested_trigger": {
+        "type": "initial"
+      }
+    },
+    {
+      "checkpoint": "pending-option-echo",
+      "modelId": "initial",
+      "input_index": 0,
+      "trigger_action_index": 1,
+      "capture_action_index": 1,
+      "native_state_id": "action-1",
+      "coverage": "target",
+      "requested_trigger": {
+        "type": "activate",
+        "target": "rr.option.cash",
+        "method": "tap"
+      }
+    },
+    {
+      "checkpoint": "caller-cash-selected",
+      "modelId": "cashSelected",
+      "input_index": 1,
+      "trigger_action_index": 2,
+      "capture_action_index": 3,
+      "native_state_id": "C01--caller-cash-selected",
+      "coverage": "full_content",
+      "requested_trigger": {
+        "type": "replaceModel",
+        "modelId": "cashSelected"
+      }
+    },
+    {
+      "checkpoint": "pending-submit-echo",
+      "modelId": "cashSelected",
+      "input_index": 1,
+      "trigger_action_index": 4,
+      "capture_action_index": 4,
+      "native_state_id": "action-4",
+      "coverage": "target",
+      "requested_trigger": {
+        "type": "activate",
+        "target": "rr.primary",
+        "method": "accessibilityActivate"
+      }
+    },
+    {
+      "checkpoint": "caller-submitting",
+      "modelId": "submitting",
+      "input_index": 2,
+      "trigger_action_index": 5,
+      "capture_action_index": 5,
+      "native_state_id": "action-5",
+      "coverage": "target",
+      "requested_trigger": {
+        "type": "replaceModel",
+        "modelId": "submitting"
+      }
+    }
+  ],
+  "actual_actions": [
+    {
+      "type": "capture",
+      "state_id": "C01--initial",
+      "max_steps": 80,
+      "name": "initial"
+    },
+    {
+      "type": "tap",
+      "identifier": "rr.option.cash",
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 40,
+      "name": "pending-option-echo"
+    },
+    {
+      "type": "apply_next_fixture",
+      "name": "caller-cash-selected"
+    },
+    {
+      "type": "capture",
+      "state_id": "C01--caller-cash-selected",
+      "max_steps": 80,
+      "name": "caller-cash-selected"
+    },
+    {
+      "type": "tap",
+      "identifier": "rr.primary",
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 40,
+      "name": "pending-submit-echo"
+    },
+    {
+      "type": "apply_next_fixture",
+      "name": "caller-submitting"
+    }
+  ],
+  "harness_sha256": {
+    "capture.py": "d3a6f65938d301b7610d5c73032a5c0492a010a91978bbf464c29b7a7c9393e6",
+    "ReturnBridge.swift": "651f2f97be474bdd3a8abd9e842a7b8ffbdde4590dc3e9d6f223942a9ae9b768",
+    "ObserverBridge.kt": "f4cd34a066f8f3942e50747342c5a7ca08697bf720b8549713bf6ba30b264279"
+  },
+  "native_method_limit": "iOS tap requests and accessibilityActivate requests both execute actual XCUI tap; no AX performAction proof. Android uses native semantic OnClick, not OS physical touch."
+}
