@@ -94,6 +94,7 @@ def render(data):
                   f'| 运行时未评估比例 | {ratio(paired["legacy"]["runtime"]["unassessed_ratio"])} | {ratio(paired["current"]["runtime"]["unassessed_ratio"])} |', '',
                   f'新获得可评估证据 {len(paired["newly_assessed"])} 项，失去可评估证据 {len(paired["no_longer_assessed"])} 项，P/F 判定差异 {len(paired["confirmed_outcome_disagreements"])} 项。这是同一份旧组首版源码的观察差异，不是产品修复。旧原始图片若已经充分支持判断，仍获得同等信用。', '',
                   '旧/新采集器命令耗时之和分别为 ' + seconds(paired['native_capture_times']['command_seconds_sum']) + ' / ' + seconds(paired['current_native_capture_times']['command_seconds_sum']) + '；记录墙钟跨度为 ' + seconds(paired['native_capture_times']['recorded_span_seconds']) + ' / ' + seconds(paired['current_native_capture_times']['recorded_span_seconds']) + '。旧采集既用于旧组自查，也用于这项配对；新增采集覆盖和额外成本同时报告。这不是隔离硬件的性能基准。', '',
+                  '两者使用相同源码、业务数据和冻结的动作意图；旧接口不支持 sweep，冻结操作器将其映射为 capture。实际动作序列保留在各 capture.json 中，滚动和截图数量并不相同。', '',
                   '## 公共基础设施与通用能力验证成本', '',
                   '| 类别 | 原生测试数 | 原生命令跨度之和 | 截图数 |', '| --- | ---: | ---: | ---: |'])
     for key, label in [('generic_tool_engineering', '通用工具工程探针'), ('independent_generic_validation', '独立通用能力验证'), ('common_numeric_transport_probe', '两组共同数值传输补丁探针')]:
