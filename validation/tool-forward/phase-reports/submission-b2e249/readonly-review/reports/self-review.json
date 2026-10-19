@@ -1,0 +1,969 @@
+{
+  "phase": "read-only-self-review",
+  "startedAt": "2026-10-19T14:39:21Z",
+  "finishedAt": "2026-10-19T14:49:21Z",
+  "elapsedSeconds": 600.0,
+  "budgetSeconds": 720,
+  "timingLimitations": {
+    "clock": "UTC wall time from the first work call; no pause subtracted",
+    "serviceInterruptions": [],
+    "newNativeCaptureRuns": 0,
+    "scope": "Review of existing assigned initial-inputs and initial-evidence only. D0 remains sealed."
+  },
+  "commands": [
+    {
+      "command": [
+        "cat",
+        "design/brief.md",
+        "capability/SKILL.md"
+      ],
+      "purpose": "Read unchanged contract and assigned capability"
+    },
+    {
+      "command": [
+        "python3",
+        "reports/self-review-scratch/analyze.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "reports/self-review-scratch/montage.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "view_image"
+      ],
+      "paths": [
+        "reports/self-review-scratch/android-C01--initial.jpg",
+        "reports/self-review-scratch/android-C01--caller-cash-selected.jpg",
+        "reports/self-review-scratch/android-C02--initial.jpg",
+        "reports/self-review-scratch/android-C02--caller-accepted.jpg",
+        "reports/self-review-scratch/android-C03--initial.jpg",
+        "reports/self-review-scratch/android-C03--caller-notes-open.jpg",
+        "reports/self-review-scratch/android-C04--initial.jpg",
+        "reports/self-review-scratch/android-C04--caller-new-purchase.jpg",
+        "reports/self-review-scratch/android-C05--initial.jpg",
+        "reports/self-review-scratch/android-C05--caller-reopened.jpg",
+        "reports/self-review-scratch/android-C06--initial.jpg",
+        "reports/self-review-scratch/android-C06--caller-refund-and-notes-closed.jpg",
+        "reports/self-review-scratch/android-C06--caller-submitting.jpg",
+        "reports/self-review-scratch/ios-C01--initial.jpg",
+        "reports/self-review-scratch/ios-C01--caller-cash-selected.jpg",
+        "reports/self-review-scratch/ios-C02--initial.jpg",
+        "reports/self-review-scratch/ios-C02--caller-accepted.jpg",
+        "reports/self-review-scratch/ios-C03--initial.jpg",
+        "reports/self-review-scratch/ios-C03--caller-notes-open.jpg",
+        "reports/self-review-scratch/ios-C04--initial.jpg",
+        "reports/self-review-scratch/ios-C04--caller-new-purchase.jpg",
+        "reports/self-review-scratch/ios-C05--initial.jpg",
+        "reports/self-review-scratch/ios-C05--caller-reopened.jpg",
+        "reports/self-review-scratch/ios-C06--initial.jpg",
+        "reports/self-review-scratch/ios-C06--caller-refund-and-notes-closed.jpg",
+        "reports/self-review-scratch/ios-C06--caller-submitting.jpg",
+        "initial-evidence/android/C03/036-state_C03--initial_15.png",
+        "reports/self-review-scratch/android-C03-notes-input0-snapshot15.png",
+        "reports/self-review-scratch/android-C03-notes-input1-snapshot59.png",
+        "reports/self-review-scratch/android-C06-notes-input0-snapshot11.png",
+        "reports/self-review-scratch/android-C06-notes-input1-snapshot44.png"
+      ]
+    },
+    {
+      "command": [
+        "python3",
+        "reports/self-review-scratch/pixels.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "reports/self-review-scratch/check_contract.py"
+      ],
+      "firstExitCode": 1,
+      "firstFailure": "Scratch script syntax error else48; corrected and retained. First successful pass treated absent disclosure fields as mismatches, then correctly reclassified those unsupported fields as unassessed.",
+      "finalExitCode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "reports/self-review-scratch/check_actions.py"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "python3",
+        "inline read-only geometry, crop, summary and SHA analyses"
+      ],
+      "outputs": [
+        "reports/self-review-scratch/card-host-geometry.json",
+        "reports/self-review-scratch/ios-C06-height-drift.json",
+        "reports/self-review-scratch/notes-clipping.json",
+        "reports/self-review-scratch/review-summary.json"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "SR-ANDROID-NOTES-CLIPPING",
+      "platform": "android",
+      "caseIds": [
+        "C03",
+        "C06"
+      ],
+      "stateIds": [
+        "C03--initial",
+        "C03--caller-notes-open",
+        "C06--initial",
+        "C06--caller-refund-and-notes-closed"
+      ],
+      "aspect": "P01 complete readable wrapping; P05 notes control clipping",
+      "claim": "At fontScale 2.0, the notes disclosure clips caller title glyphs against its rounded clickable shape. C03 loses the leading R of Read and the leading letters of instructions; C06 clips the right ends of déposer and colis. The problem appears in both expanded and collapsed states.",
+      "certainty": "confirmed",
+      "method": [
+        "visual",
+        "native_text_layout"
+      ],
+      "evidence": [
+        {
+          "path": "initial-evidence/android/C03/observation.json",
+          "snapshotIndices": [
+            15,
+            36,
+            59
+          ],
+          "sha256": "015ba56f81a57bb0cc2ec8978a3cbdea19e2f34a40f7bbe62503b613e5000bf4"
+        },
+        {
+          "path": "initial-evidence/android/C03/015-state_initial_15.png",
+          "snapshotIndices": [
+            15
+          ],
+          "sha256": "6323a5e994ca70d2b7e9894b2e562a5bcb06caf97f57df33c630d916ad4ea6ab"
+        },
+        {
+          "path": "initial-evidence/android/C03/059-state_C03--caller-notes-open_15.png",
+          "snapshotIndices": [
+            59
+          ],
+          "sha256": "41b9f8bd54f7dbac88db630bc6d0daeefa84a654dc7e4f93bf876c25c68179d4"
+        },
+        {
+          "path": "initial-evidence/android/C06/011-state_initial_11.png",
+          "snapshotIndices": [
+            11
+          ],
+          "sha256": "509c76ff9169aa7f838ac197b797ab569fed251764592f1ba59952205938cea2"
+        },
+        {
+          "path": "initial-evidence/android/C06/044-state_C06--caller-refund-and-notes-closed_9.png",
+          "snapshotIndices": [
+            44
+          ],
+          "sha256": "09f5dc72917edd77a545034596111bb21c10456995c916388e6c119eae5d27e4"
+        },
+        {
+          "path": "reports/self-review-scratch/notes-clipping.json",
+          "sha256": "99810b9ba689e8750e05b05b4cb81b08d0ae40b78274284d8bc82b8bf2c627ab"
+        },
+        {
+          "path": "reports/self-review-scratch/android-C03-notes-input0-snapshot15.png",
+          "sha256": "4e7f6b93cb09099603e043b5a1bfff2e464feb9dd5596690d9ccae1d7579de18"
+        },
+        {
+          "path": "reports/self-review-scratch/android-C06-notes-input1-snapshot44.png",
+          "sha256": "6993a376c420d989db02cdbdf6f7acdc7fce0d8193cfad20f18f918b7dfc4edd"
+        },
+        {
+          "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt",
+          "line": 166
+        }
+      ],
+      "reasons": [
+        "The native C03 Text layout reports the full caller string, four lines, overflow=false and ellipsized=false, while actual pixels visibly omit glyph parts. Layout flags alone therefore do not establish unclipped drawing.",
+        "The TextButton has no explicit shape override and zero content padding; a rounded button clip is the suspected cause."
+      ],
+      "repairRecommendation": "Use a rectangular/unclipped text-led clickable Row, or explicitly give the disclosure a non-capsule shape while retaining its button role, 44-unit minimum target, full label and controlled callback. Check other multiline TextButton labels for the same clipping mechanism."
+    },
+    {
+      "id": "SR-IOS-DISABLED-TOKENS",
+      "platform": "ios",
+      "caseIds": [
+        "C01",
+        "C02",
+        "C03",
+        "C04"
+      ],
+      "stateIds": [
+        "C01--initial",
+        "C02--initial",
+        "C03--initial",
+        "C03--caller-notes-open",
+        "C04--initial",
+        "C04--caller-new-purchase"
+      ],
+      "aspect": "P05 disabled action colors and disabled option/size legibility",
+      "claim": "Native disabled buttons dim their entire custom content. The disabled primary does not render the prescribed fills/text, and unavailable options and sizes visibly fade their caller text and reason.",
+      "certainty": "confirmed",
+      "method": [
+        "native_pixels",
+        "visual"
+      ],
+      "evidence": [
+        {
+          "path": "initial-evidence/ios/C01/observation.json",
+          "snapshotIndices": [
+            5
+          ],
+          "sha256": "38657e65c5f3c234caa5b17db275f91475884d74d04aed2ff90e7583952ea96d"
+        },
+        {
+          "path": "initial-evidence/ios/C01/attachments/052816B1-5738-43D8-96DD-0515D577245A.png",
+          "snapshotIndices": [
+            5
+          ],
+          "sha256": "24b833e5c5f766a2c55c9b47f0d2fd51ddc9f36886a80933a305c542e1cd7666"
+        },
+        {
+          "path": "initial-evidence/ios/C02/attachments/61FFFA9D-2A45-4571-BB3E-3A642842CF22.png",
+          "snapshotIndices": [
+            7
+          ],
+          "sha256": "5f924d1dc7faf7dad0871411b301b8264fdce91e006b1531ef1b76d0570c59b2"
+        },
+        {
+          "path": "initial-evidence/ios/C04/attachments/4C42572A-15E6-41E0-8DED-6408178E379B.png",
+          "snapshotIndices": [
+            3
+          ],
+          "sha256": "a2ba0c23ea7e1a97d3cffdb8328127c2052686f2b2a54bf0fc78f38a1370fd89"
+        },
+        {
+          "path": "initial-evidence/ios/C04/attachments/40EBCACD-91E8-4E19-B931-45C595D53511.png",
+          "snapshotIndices": [
+            7
+          ],
+          "sha256": "2dc6b75efc321e172141df177a7eacc7797bb6767b7a77046758fec2930cd9a5"
+        },
+        {
+          "path": "reports/self-review-scratch/pixel-samples.json",
+          "sha256": "8a793aaffef794503a319d2f7984ee82a04c2f138632220270760313f081e823"
+        },
+        {
+          "path": "reports/self-review-scratch/ios-C03--initial.jpg",
+          "snapshotIndices": [
+            2,
+            13,
+            25,
+            36,
+            46,
+            47
+          ],
+          "sha256": "76fa6831a04b12b7eb14d8e32d566d0cf724f82d31594720767a1e3337cdfd06"
+        },
+        {
+          "path": "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+          "line": 361
+        }
+      ],
+      "reasons": [
+        "C01 disabled primary dominant fill is RGB(239,242,240), compared with required (223,230,225): maximum channel difference 16 exceeds 12. Its dominant glyph color is (164,171,167), compared with (89,101,94).",
+        "C02/C04 dark disabled primary fill is (39,51,48), compared with required (52,68,60); glyph color is (113,126,120), compared with (186,200,192).",
+        "C04 disabled option fill remains the card color (25,34,36), but secondary text resolves to (103,113,112) rather than (180,192,187), and main text to (134,140,140) rather than (242,246,243).",
+        "C02 unavailable size text/reason and C03 disabled action are visibly dimmed. The source combines PlainButtonStyle with .disabled; default disabled appearance is the likely mechanism."
+      ],
+      "repairRecommendation": "Use a custom ButtonStyle that preserves the authored label and fill colors when disabled, while retaining native disabled state and guards against callbacks. Apply it consistently to options, sizes, and primary actions."
+    },
+    {
+      "id": "SR-IOS-EXCHANGE-HEIGHT-DRIFT",
+      "platform": "ios",
+      "caseIds": [
+        "C06"
+      ],
+      "stateIds": [
+        "C06--initial"
+      ],
+      "aspect": "P01 natural-flow geometry; P07 per-state full-content evidence",
+      "claim": "With unchanged input and event binding, native content height changes during the initial scroll sweep from 8314.67 to 8266.67 points. The acknowledgement moves upward by 48 points in content coordinates. The supplied initial-state sweep is therefore not stable complete-content evidence.",
+      "certainty": "confirmed",
+      "method": [
+        "native_bounds"
+      ],
+      "evidence": [
+        {
+          "path": "initial-evidence/ios/C06/observation.json",
+          "snapshotIndices": [
+            2,
+            20,
+            21,
+            24,
+            29,
+            30,
+            31,
+            32
+          ],
+          "sha256": "899d5730e2e8fb02bd3439efd83d9a3120131f2f8fd9e24c7989b7fe340c609a"
+        },
+        {
+          "path": "reports/self-review-scratch/ios-C06-height-drift.json",
+          "sha256": "e0eef85428dd5ca44dcd8cf5813e1057103130decc7613d09ad44615a78c7b72"
+        },
+        {
+          "path": "reports/self-review-scratch/ios-C06--initial.jpg",
+          "snapshotIndices": [
+            2,
+            9,
+            17,
+            25,
+            31,
+            32
+          ],
+          "sha256": "9fb56524154b9176d1fc71b31986f0b6310f0407534dd4500de0c0f28a3bbb1b"
+        },
+        {
+          "path": "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+          "line": 220
+        }
+      ],
+      "reasons": [
+        "The state capture explicitly reports complete=false and stable_height=false, despite bottom_reached=true and max_gap=0.",
+        "The input hash, fixture index 0, event revision 0, process and instance remain unchanged throughout this sweep. rr.ack moves from content Y5649 to Y5601.",
+        "The size controls first obtain finite measured frames at snapshot21, when the first height change occurs. LazyVGrid measurement is a suspected cause, not established by the native export."
+      ],
+      "productViolationClaimed": false,
+      "repairRecommendation": "Investigate eager size layout, especially for the one-column accessibility mode, so reserving space does not change as offscreen cells appear. Re-capture this state before claiming complete visual coverage."
+    },
+    {
+      "id": "SR-ANDROID-HOST-CANVAS",
+      "platform": "android",
+      "caseIds": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06"
+      ],
+      "stateIds": [
+        "C01--caller-cash-selected",
+        "C01--initial",
+        "C02--caller-accepted",
+        "C02--initial",
+        "C03--caller-notes-open",
+        "C03--initial",
+        "C04--caller-new-purchase",
+        "C04--initial",
+        "C05--caller-reopened",
+        "C05--initial",
+        "C06--caller-refund-and-notes-closed",
+        "C06--initial"
+      ],
+      "aspect": "P01/P05 supplied host environment, separate from component colors",
+      "claim": "The Android collector paints a different outer canvas from the public demonstration token: sampled light background is RGB(237,241,246), and dark is (13,20,32), rather than (250,248,245)/(16,23,24).",
+      "certainty": "confirmed",
+      "method": [
+        "native_pixels"
+      ],
+      "evidence": [
+        {
+          "path": "reports/self-review-scratch/card-host-geometry.json",
+          "sha256": "7f00a6320c54e29e32352807a075c3c8beecc14ead3eba36589ea0126c7305e6"
+        },
+        {
+          "path": "initial-evidence/android/C01/000-state_initial_0.png",
+          "snapshotIndices": [
+            0
+          ],
+          "sha256": "8197f30afc6e5750643cd75959b3e3466dc958f59dd1d5a4bfec87e460c56f3d"
+        },
+        {
+          "path": "initial-evidence/android/C02/000-state_initial_0.png",
+          "snapshotIndices": [
+            0
+          ],
+          "sha256": "6aabe1f44623229ba263429d421db6412525f59da948efc80b97894c0746ca4e"
+        }
+      ],
+      "reasons": [
+        "Samples are outside rr.card at image coordinates (2,10), so this is a host/capture environment discrepancy. It is not attributed to ReturnResolutionCard.",
+        "The card itself starts at the required x16/y24 and its width is 288 or approximately357.82 logical units; outer canvas differences do not establish a component margin defect."
+      ],
+      "productViolationClaimed": false,
+      "repairRecommendation": "Keep this separate from component repair. The immutable collector/host should supply the declared canvas color if host styling is to be assessed."
+    },
+    {
+      "id": "SR-ANDROID-UNEXPORTED-SEMANTICS-FONTS",
+      "platform": "android",
+      "caseIds": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06"
+      ],
+      "stateIds": [
+        "C01--caller-cash-selected",
+        "C01--initial",
+        "C02--caller-accepted",
+        "C02--initial",
+        "C03--caller-notes-open",
+        "C03--initial",
+        "C04--caller-new-purchase",
+        "C04--initial",
+        "C05--caller-reopened",
+        "C05--initial",
+        "C06--caller-refund-and-notes-closed",
+        "C06--caller-submitting",
+        "C06--initial"
+      ],
+      "aspect": "P05 resolved native typography; P06 disclosure/busy/heading/decorative semantics",
+      "claim": "Actual disclosure state descriptions, progress busy descriptions, heading traits, decorative accessibility suppression, resolved font family and actual native scaling remain unassessed from this export.",
+      "certainty": "unassessed",
+      "method": [
+        "native_ax",
+        "native_text_layout"
+      ],
+      "evidence": [
+        {
+          "path": "reports/self-review-scratch/review-summary.json",
+          "sha256": "2ac60284d347833696870fec8f693f3b70721ecb1d4d801dbd4c690927551cc1"
+        },
+        {
+          "path": "reports/self-review-scratch/contract-checks.json",
+          "sha256": "dcf6b29fea655612a9f794e6f23a1f405a3227665f349c70aaab10cbf0c91f27"
+        },
+        {
+          "path": "initial-evidence/android/C01/observation.json",
+          "snapshotIndices": [
+            0,
+            20,
+            21
+          ],
+          "sha256": "93098d433b1dddf7b31a057e0981758dd9641365fa755b1eec9119ca96ad72fc"
+        }
+      ],
+      "reasons": [
+        "Exported node fields include font_sp/font_weight/color_argb, but no resolved font family or scaling metrics, heading flag, stateDescription, or generic value.",
+        "The 245 notes-value checks with absent export fields are explicitly null/unassessed, not product failures. Source declarations do not replace runtime observations.",
+        "Android activations are native semantic OnClick operations; physical OS touch and screen-reader activation were not demonstrated."
+      ]
+    },
+    {
+      "id": "SR-IOS-UNEXPORTED-FONTS-HIT-TRAITS",
+      "platform": "ios",
+      "caseIds": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06"
+      ],
+      "stateIds": [
+        "C01--caller-cash-selected",
+        "C01--initial",
+        "C02--caller-accepted",
+        "C02--initial",
+        "C03--caller-notes-open",
+        "C03--initial",
+        "C04--caller-new-purchase",
+        "C04--initial",
+        "C05--caller-reopened",
+        "C05--initial",
+        "C06--caller-refund-and-notes-closed",
+        "C06--caller-submitting",
+        "C06--initial"
+      ],
+      "aspect": "P05 resolved typography; P06 heading/decorative traits and actual hit regions/AX activation",
+      "claim": "Resolved font family, base glyph size and actual native scaling, heading traits, complete decorative-element suppression, physical hit regions, and accessibility performAction activation remain unassessed.",
+      "certainty": "unassessed",
+      "method": [
+        "native_ax",
+        "native_bounds"
+      ],
+      "evidence": [
+        {
+          "path": "reports/self-review-scratch/review-summary.json",
+          "sha256": "2ac60284d347833696870fec8f693f3b70721ecb1d4d801dbd4c690927551cc1"
+        },
+        {
+          "path": "reports/self-review-scratch/contract-checks.json",
+          "sha256": "dcf6b29fea655612a9f794e6f23a1f405a3227665f349c70aaab10cbf0c91f27"
+        },
+        {
+          "path": "initial-evidence/ios/C01/capture.json",
+          "sha256": "659d76b97a667214dbb862cd5b2852cb314ea5848e3ebcaada19ddfa4c435246"
+        },
+        {
+          "path": "initial-evidence/ios/C06/observation.json",
+          "snapshotIndices": [
+            2,
+            96
+          ],
+          "sha256": "899d5730e2e8fb02bd3439efd83d9a3120131f2f8fd9e24c7989b7fe340c609a"
+        }
+      ],
+      "reasons": [
+        "The iOS export contains AX labels, roles, values, selected/enabled state and frames, without resolved font metrics or heading traits.",
+        "Frame checks establish only AX boundary dimensions. They do not establish physical hit regions. The adapter executes XCUI tap, not accessibility performAction.",
+        "Requested/actual SwiftUI category and enlarged visible glyphs do not by themselves establish the required resolved native-font instrumentation."
+      ]
+    }
+  ],
+  "coverageSummary": {
+    "inputsExamined": {
+      "C01": 3,
+      "C02": 3,
+      "C03": 3,
+      "C04": 3,
+      "C05": 2,
+      "C06": 3
+    },
+    "allNativeSnapshotsExaminedByDerivedChecks": true,
+    "nativeSnapshotChecks": {
+      "android": {
+        "snapshotLevelChecks": 4721,
+        "confirmedMatching": 4476,
+        "confirmedMismatching": 0,
+        "unassessed": 245,
+        "actionSteps": 42,
+        "exactCallbackDeltasMatched": 42,
+        "allInputIndicesMatched": true,
+        "sameInstanceAcrossAllSteps": true,
+        "nativeOutcomes": {
+          "observed": 24,
+          "tapped": 15,
+          "blocked_disabled": 3
+        }
+      },
+      "ios": {
+        "snapshotLevelChecks": 6664,
+        "confirmedMatching": 6664,
+        "confirmedMismatching": 0,
+        "unassessed": 0,
+        "actionSteps": 42,
+        "exactCallbackDeltasMatched": 42,
+        "allInputIndicesMatched": true,
+        "sameInstanceAcrossAllSteps": true,
+        "nativeOutcomes": {
+          "completed": 24,
+          "tapped": 15,
+          "blocked_disabled": 3
+        }
+      }
+    },
+    "nativeCheckScope": "Counts are repeated snapshot-level assertions, not independent requirements and not a whole-contract pass. Checks cover gate labels, primary/keep names and enabled state, effective option/size selected and enabled states, complete accessible option/size names when native controls exist, acknowledgement state/name, iOS disclosure values, status exclusions, and minimum fully-visible native bounds within the exported measurement scope.",
+    "callbackAndControlScope": "Each platform has 42 observed steps: 15 actual callbacks and three disabled controls blocked with zero delta, plus 24 sweep/replacement steps. Exact expected callback payloads, current fixture index, and same-instance binding matched these supplied sequences. This does not cover actions or combinations absent from C01-C06.",
+    "nativeIdentifiers": "Expected identifiers were found in the per-input native node unions for all 17 supplied input states on each platform. This does not prove unique region wrapper geometry or visual readability, and lazy offscreen controls are not assumed to exist in every snapshot.",
+    "visualReviewed": [
+      {
+        "path": "android-C01--initial.jpg",
+        "platform": "android",
+        "caseId": "C01",
+        "stateId": "C01--initial",
+        "snapshotIndices": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "android-C01--caller-cash-selected.jpg",
+        "platform": "android",
+        "caseId": "C01",
+        "stateId": "C01--caller-cash-selected",
+        "snapshotIndices": [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "android-C02--initial.jpg",
+        "platform": "android",
+        "caseId": "C02",
+        "stateId": "C02--initial",
+        "snapshotIndices": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "android-C02--caller-accepted.jpg",
+        "platform": "android",
+        "caseId": "C02",
+        "stateId": "C02--caller-accepted",
+        "snapshotIndices": [
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "android-C03--initial.jpg",
+        "platform": "android",
+        "caseId": "C03",
+        "stateId": "C03--initial",
+        "snapshotIndices": [
+          21,
+          26,
+          31,
+          36,
+          40,
+          41
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "android-C03--caller-notes-open.jpg",
+        "platform": "android",
+        "caseId": "C03",
+        "stateId": "C03--caller-notes-open",
+        "snapshotIndices": [
+          44,
+          51,
+          58,
+          65,
+          70,
+          71
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "android-C04--initial.jpg",
+        "platform": "android",
+        "caseId": "C04",
+        "stateId": "C04--initial",
+        "snapshotIndices": [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "android-C04--caller-new-purchase.jpg",
+        "platform": "android",
+        "caseId": "C04",
+        "stateId": "C04--caller-new-purchase",
+        "snapshotIndices": [
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "android-C05--initial.jpg",
+        "platform": "android",
+        "caseId": "C05",
+        "stateId": "C05--initial",
+        "snapshotIndices": [
+          2,
+          3
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "android-C05--caller-reopened.jpg",
+        "platform": "android",
+        "caseId": "C05",
+        "stateId": "C05--caller-reopened",
+        "snapshotIndices": [
+          6,
+          7,
+          8,
+          9
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "android-C06--initial.jpg",
+        "platform": "android",
+        "caseId": "C06",
+        "stateId": "C06--initial",
+        "snapshotIndices": [
+          16,
+          20,
+          24,
+          28,
+          30,
+          31
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "android-C06--caller-refund-and-notes-closed.jpg",
+        "platform": "android",
+        "caseId": "C06",
+        "stateId": "C06--caller-refund-and-notes-closed",
+        "snapshotIndices": [
+          35,
+          38,
+          41,
+          44,
+          46,
+          47
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "android-C06--caller-submitting.jpg",
+        "platform": "android",
+        "caseId": "C06",
+        "stateId": "C06--caller-submitting",
+        "snapshotIndices": [
+          50,
+          51,
+          52,
+          53,
+          54,
+          55
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "ios-C01--initial.jpg",
+        "platform": "ios",
+        "caseId": "C01",
+        "stateId": "C01--initial",
+        "snapshotIndices": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "ios-C01--caller-cash-selected.jpg",
+        "platform": "ios",
+        "caseId": "C01",
+        "stateId": "C01--caller-cash-selected",
+        "snapshotIndices": [
+          14,
+          15,
+          16,
+          17,
+          18
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "ios-C02--initial.jpg",
+        "platform": "ios",
+        "caseId": "C02",
+        "stateId": "C02--initial",
+        "snapshotIndices": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "ios-C02--caller-accepted.jpg",
+        "platform": "ios",
+        "caseId": "C02",
+        "stateId": "C02--caller-accepted",
+        "snapshotIndices": [
+          21,
+          22,
+          23,
+          24,
+          25,
+          26
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "ios-C03--initial.jpg",
+        "platform": "ios",
+        "caseId": "C03",
+        "stateId": "C03--initial",
+        "snapshotIndices": [
+          2,
+          13,
+          25,
+          36,
+          46,
+          47
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "ios-C03--caller-notes-open.jpg",
+        "platform": "ios",
+        "caseId": "C03",
+        "stateId": "C03--caller-notes-open",
+        "snapshotIndices": [
+          63,
+          78,
+          94,
+          110,
+          124,
+          125
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "ios-C04--initial.jpg",
+        "platform": "ios",
+        "caseId": "C04",
+        "stateId": "C04--initial",
+        "snapshotIndices": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "ios-C04--caller-new-purchase.jpg",
+        "platform": "ios",
+        "caseId": "C04",
+        "stateId": "C04--caller-new-purchase",
+        "snapshotIndices": [
+          18,
+          19,
+          20,
+          21
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "ios-C05--initial.jpg",
+        "platform": "ios",
+        "caseId": "C05",
+        "stateId": "C05--initial",
+        "snapshotIndices": [
+          2,
+          3
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "ios-C05--caller-reopened.jpg",
+        "platform": "ios",
+        "caseId": "C05",
+        "stateId": "C05--caller-reopened",
+        "snapshotIndices": [
+          10,
+          11,
+          12
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "ios-C06--initial.jpg",
+        "platform": "ios",
+        "caseId": "C06",
+        "stateId": "C06--initial",
+        "snapshotIndices": [
+          2,
+          9,
+          17,
+          25,
+          31,
+          32
+        ],
+        "completeSweep": false
+      },
+      {
+        "path": "ios-C06--caller-refund-and-notes-closed.jpg",
+        "platform": "ios",
+        "caseId": "C06",
+        "stateId": "C06--caller-refund-and-notes-closed",
+        "snapshotIndices": [
+          65,
+          71,
+          77,
+          83,
+          88,
+          89
+        ],
+        "completeSweep": true
+      },
+      {
+        "path": "ios-C06--caller-submitting.jpg",
+        "platform": "ios",
+        "caseId": "C06",
+        "stateId": "C06--caller-submitting",
+        "snapshotIndices": [
+          96,
+          99,
+          102,
+          105,
+          106,
+          107
+        ],
+        "completeSweep": true
+      }
+    ],
+    "visualScope": "All 26 listed derived montage files were inspected. C01,C02,C04,C05 initial and explicitly swept replacement states use every snapshot of their listed sweeps. C03 and the long C06 editing states were sampled at six listed snapshots each, not reviewed at every scroll interval. Android C06 submitting uses all six supplied sweep snapshots. Full-content visual acceptance is withheld for sampled long states and for the unstable iOS C06 initial state. Additional direct native screenshot/crops confirmed notes clipping.",
+    "narrowSupportedObservations": [
+      "The examined normal-size frames show content and actions in natural card flow, without a visible fixed footer. Card width and outer position samples match offered margins within native fractional rounding.",
+      "The examined selected choices use distinct accent borders/tints and indicators; RTL samples mirror item tiles, option indicators, notes chevrons and amount alignment. These are visual observations for the listed images, not full directional acceptance.",
+      "C05 complete/result content and Done callback, reopening with stale irrelevant acknowledgement/size, C04 disabled/stale selected IDs and replacement content, and submitting exclusion of editing controls were checked against caller data.",
+      "iOS progress labels expose In progress in C01 and C06; Android busy value is unassessed because stateDescription is not exported."
+    ],
+    "unassessedAspects": [
+      "Every pixel/color/token across every long-content state; full visual coverage of C03/C06 editing; visual states without a listed inspected sweep.",
+      "Full resolved native typography and exact internal spacing/corner/border measurements beyond the limited samples.",
+      "Native heading traits, complete decorative accessibility suppression, read-order traversal under a screen reader, and accessibility performAction activation.",
+      "Physical OS touch on Android and physical hit-region geometry on iOS.",
+      "Actual minimum-iOS/macOS execution, app entry-point regression behavior, keyboard, navigation and other page lifecycle behavior; no new compile/runtime environment was launched.",
+      "Public model/action combinations not present in these six cases, including future caller text and availability replacements."
+    ],
+    "scratchArtifactsPreserved": true
+  },
+  "sourceFingerprintsBefore": {
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt": "c2d9cf3a9f57bb5af8c2ea334305d0f2fb6eb0c36e751a418d329b03b9f4c580",
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt": "b6670834791db6dd012220a1160ff1c97b4d4e522afa0dcf009815281152ef59",
+    "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift": "0f76b8538a0f7892d439239b70e8cbb8c923655970c673885789d636b8af006f",
+    "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift": "5b23b42bf3f8102c5cbb5502dfd168ec80de3108dc6a87c8a980c17e0df2edde"
+  },
+  "sourceFingerprintsAfter": {
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt": "c2d9cf3a9f57bb5af8c2ea334305d0f2fb6eb0c36e751a418d329b03b9f4c580",
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt": "b6670834791db6dd012220a1160ff1c97b4d4e522afa0dcf009815281152ef59",
+    "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift": "0f76b8538a0f7892d439239b70e8cbb8c923655970c673885789d636b8af006f",
+    "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift": "5b23b42bf3f8102c5cbb5502dfd168ec80de3108dc6a87c8a980c17e0df2edde"
+  },
+  "sourceFingerprintsUnchanged": true,
+  "mutations": "Only reports/self-review.json and analysis artifacts under reports/self-review-scratch were written. No source, host, bridge, capability, public design or fixture changes; no repair, commit or push."
+}
