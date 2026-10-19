@@ -31,7 +31,7 @@
 
 ## 可观测范围
 
-iOS 是真实 App + XCUITest，记录 AX、屏幕点、截图、实际 XCUI 点击与回调、同进程调用方更新。Android 是持续挂载的 ComposeView + Paparazzi，记录实际语义、TextLayout、触摸边界、ScrollState 和 OnClick。Android 语义动作不等于操作系统物理触摸；本轮 iOS 的 accessibilityActivate 请求实际路由到 XCUI tap，不证明执行了 AX performAction。
+iOS 是真实 App + XCUITest，记录 AX、屏幕点、截图、实际 XCUI 点击与回调、同进程调用方更新。容器与叶节点的通用原生回归以 Button、Switch 为实测控件。Android 是持续挂载的 ComposeView + Paparazzi，记录实际语义、TextLayout、触摸边界、ScrollState 和 OnClick。Android 语义动作不等于操作系统物理触摸；本轮 iOS 的 accessibilityActivate 请求实际路由到 XCUI tap，不证明执行了 AX performAction。
 
 SwiftUI 不存在本工具可直接读取的通用运行时字号、padding、颜色树。源码声明不替代运行时值，AX frame 不替代完整物理触摸区域；这些方面若缺少充分的像素或原生证据，保留未评估。被观察器拒绝分发的 disabled 动作也不能作为真实点击后无回调的证明。
 
@@ -83,4 +83,4 @@ python3 validation/tool-forward/verify_artifacts.py
 
 直接使用对应冻结包 `scripts/ios_observe.py` 或 `scripts/android_observe.py` 的 CLI 可指定本机路径。输入为所选阶段的封存 fixture/actions，桥为 `harness/ReturnBridge.swift` / `harness/ObserverBridge.kt`。旧 Android 接口为前一版采样器的 factory 适配，保留旧采集策略，不声称前一发行版已经提供通用 CLI。
 
-真机页面集成、旧 OS 运行时和人类金标准不在本轮验证范围内。部署版本检查只说明所用编译器接受指定最低目标，不等同于在相应旧系统上实际运行。
+本轮将新组件加入真实生产模块，再由独立宿主调用；原应用完整页面、导航、后端联调、真机、旧 OS 运行时和人类金标准不在验证范围内。部署版本检查只说明所用编译器接受指定最低目标，不等同于在相应旧系统上实际运行。
