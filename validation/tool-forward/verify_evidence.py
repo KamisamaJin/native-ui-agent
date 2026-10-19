@@ -41,6 +41,7 @@ def validate_grade(path, phase):
     assert grade['oracleSHA256'] == plan['oracle_sha256']
     assert grade['phase'] == phase.upper()
     checked = set()
+    locators = {}
     for key, row in actual.items():
         required = expected[key]
         for field in ['expected', 'aspect', 'target', 'criterion']:
@@ -55,6 +56,30 @@ def validate_grade(path, phase):
             if 'sha256' in source and (str(p), source['sha256']) not in checked:
                 assert sha(p) == source['sha256'], (path, key, p)
                 checked.add((str(p), source['sha256']))
+            if source.get('locator'):
+                locators.setdefault(p, {})[json.dumps(source['locator'], sort_keys=True)] = source['locator']
+    for p, values in locators.items():
+        pointers = [v for v in values.values() if v['kind'] == 'json-pointer']
+        if pointers:
+            document = read(p)
+            for locator in pointers:
+                value = document
+                pointer = locator['pointer']
+                assert pointer == '' or pointer.startswith('/')
+                for token in pointer.split('/')[1:] if pointer else []:
+                    token = token.replace('~1', '/').replace('~0', '~')
+                    value = value[int(token)] if isinstance(value, list) else value[token]
+        lines = [v for v in values.values() if v['kind'] == 'lines']
+        if lines:
+            count = len(p.read_text().splitlines())
+            assert all(1 <= v['start'] <= v.get('end', v['start']) <= count for v in lines)
+        regions = [v for v in values.values() if v['kind'] == 'pixel-region']
+        if regions:
+            from PIL import Image
+            with Image.open(p) as image:
+                width, height = image.size
+            assert all(v['x'] >= 0 and v['y'] >= 0 and v['width'] > 0 and v['height'] > 0
+                       and v['x'] + v['width'] <= width and v['y'] + v['height'] <= height for v in regions)
     return len(actual)
 
 
