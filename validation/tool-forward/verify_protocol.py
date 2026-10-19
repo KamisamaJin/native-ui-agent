@@ -99,6 +99,23 @@ def main():
         path = R / 'implementations/final' / host['submission'] / 'manifest.json'
         assert sha(path) == host['source_manifest_sha256']
         assert read(path)['files'] == host['files']
+    # This descriptive subset was explicitly added after unblinding. It must
+    # never replace or alter any frozen row/denominator in the main report.
+    from metrics import discovery_stats
+    subset = read(R / 'post-unblinding-noncallback-subset.json')
+    assert subset['sourceReportIndexSHA256'] == sha(R / 'report-index.json')
+    assert timestamp(subset['recordedAtUTC']) >= timestamp(unblinding['releasedAtUTC'])
+    for submission, label in index['arm_labels'].items():
+        grade = read(portable(index['grades'][submission]['d0']['path']))
+        matching = read(portable(index['matching'][submission]['path']))
+        found = discovery_stats(grade, matching)
+        failures = {(r['platform'], r['key']) for r in grade['results']
+                    if r['outcome'] == 'FAIL' and r['aspect'] != 'actualCallbacks'}
+        tp = failures & {(r['platform'], r['key']) for r in found['TP_keys']}
+        values = subset['arms'][label]
+        assert values['non_callback_confirmed_failures'] == len(failures)
+        assert values['TP'] == len(tp) and values['FN'] == len(failures - tp)
+        assert values['missRatio'] == (len(failures - tp) / len(failures) if failures else None)
     print(json.dumps({'status': 'passed_recorded_blind_protocol',
                       'sealed_references_checked': checked,
                       'scope': 'Recorded chronology, commitments and byte integrity. Shared-filesystem procedural blindness is not adversarial access isolation or proof of unread files.'}))

@@ -1,0 +1,447 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Complete independent member-expanded assessment",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "candidateId",
+    "phase",
+    "sourceSnapshotId",
+    "oracleSHA256",
+    "planSHA256",
+    "generatedAtUTC",
+    "requiredAssessmentCount",
+    "results",
+    "rollups"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "candidateId": {
+      "type": "string"
+    },
+    "phase": {
+      "enum": [
+        "D0",
+        "FINAL"
+      ]
+    },
+    "sourceSnapshotId": {
+      "type": "string"
+    },
+    "oracleSHA256": {
+      "const": "3728d2961548354f866dc0490cd4d05b5513a9bd81813b8e45234bc0620c875b"
+    },
+    "requiredAssessmentCount": {
+      "type": "integer"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "assessmentId",
+          "key",
+          "platform",
+          "phase",
+          "contextId",
+          "aspect",
+          "target",
+          "criterion",
+          "expected",
+          "requirementRefs",
+          "sourceOnly",
+          "outcome",
+          "exactSources",
+          "consideredSources",
+          "requiredBinding",
+          "binding",
+          "bindingStatus",
+          "observedCoverageIds",
+          "missingEvidenceMethod",
+          "reason"
+        ],
+        "properties": {
+          "assessmentId": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "platform": {
+            "enum": [
+              "android",
+              "apple"
+            ]
+          },
+          "phase": {
+            "enum": [
+              "D0",
+              "FINAL"
+            ]
+          },
+          "contextId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sourceOnly": {
+            "type": "boolean"
+          },
+          "outcome": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "UNASSESSED"
+            ]
+          },
+          "exactSources": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "path"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "pattern": "^/"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "locator": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "whole-file",
+                        "lines",
+                        "json-pointer",
+                        "pixel-region"
+                      ]
+                    },
+                    "start": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "end": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "pointer": {
+                      "type": "string"
+                    },
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    },
+                    "height": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "kind"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "consideredSources": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "path"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "pattern": "^/"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "locator": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "whole-file",
+                        "lines",
+                        "json-pointer",
+                        "pixel-region"
+                      ]
+                    },
+                    "start": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "end": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "pointer": {
+                      "type": "string"
+                    },
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    },
+                    "height": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "kind"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "requiredBinding": {
+            "type": "object",
+            "properties": {
+              "candidateId": {
+                "type": "string"
+              },
+              "sourceSnapshotId": {
+                "type": "string"
+              },
+              "platform": {
+                "enum": [
+                  "android",
+                  "apple"
+                ]
+              },
+              "caseId": {
+                "type": "string"
+              },
+              "stateId": {
+                "type": "string"
+              },
+              "modelId": {
+                "type": "string"
+              },
+              "modelSha256": {
+                "type": "string"
+              },
+              "environmentSha256": {
+                "type": "string"
+              },
+              "basis": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "explicitRawObservation",
+                    "executionSequence",
+                    "contentAndRunCorrelation",
+                    "anonymousSourceAudit",
+                    "combined"
+                  ]
+                },
+                "minItems": 1
+              },
+              "explanation": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": true
+          },
+          "binding": {
+            "type": "object",
+            "properties": {
+              "candidateId": {
+                "type": "string"
+              },
+              "sourceSnapshotId": {
+                "type": "string"
+              },
+              "platform": {
+                "enum": [
+                  "android",
+                  "apple"
+                ]
+              },
+              "caseId": {
+                "type": "string"
+              },
+              "stateId": {
+                "type": "string"
+              },
+              "modelId": {
+                "type": "string"
+              },
+              "modelSha256": {
+                "type": "string"
+              },
+              "environmentSha256": {
+                "type": "string"
+              },
+              "basis": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "explicitRawObservation",
+                    "executionSequence",
+                    "contentAndRunCorrelation",
+                    "anonymousSourceAudit",
+                    "combined"
+                  ]
+                },
+                "minItems": 1
+              },
+              "explanation": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": true
+          },
+          "bindingStatus": {
+            "enum": [
+              "ESTABLISHED",
+              "UNASSESSED"
+            ]
+          },
+          "observedCoverageIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "missingEvidenceMethod": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "renderedPixels",
+                "nativeBounds",
+                "nativeSemantics",
+                "callbackTrace",
+                "nativeInteraction",
+                "nativeTypography",
+                "sourceAudit"
+              ]
+            }
+          },
+          "missingEvidenceDetail": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "const": "UNASSESSED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "missingEvidenceMethod": {
+                  "minItems": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "PASS",
+                    "FAIL"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "exactSources": {
+                  "minItems": 1
+                },
+                "missingEvidenceMethod": {
+                  "maxItems": 0
+                },
+                "bindingStatus": {
+                  "const": "ESTABLISHED"
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": true
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "phase": {
+            "const": "D0"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "requiredAssessmentCount": {
+            "const": 2209
+          },
+          "results": {
+            "minItems": 2209,
+            "maxItems": 2209
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "phase": {
+            "const": "FINAL"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "requiredAssessmentCount": {
+            "const": 2897
+          },
+          "results": {
+            "minItems": 2897,
+            "maxItems": 2897
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": true
+}

@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Normalized raw-evidence index; does not constrain legacy native raw schemas",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "candidateId",
+    "phase",
+    "sourceSnapshotId",
+    "records"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "candidateId": {
+      "type": "string"
+    },
+    "phase": {
+      "enum": [
+        "D0",
+        "FINAL"
+      ]
+    },
+    "sourceSnapshotId": {
+      "type": "string"
+    },
+    "records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "method",
+          "kind",
+          "rawRefs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "method": {
+            "enum": [
+              "renderedPixels",
+              "nativeBounds",
+              "nativeSemantics",
+              "callbackTrace",
+              "nativeInteraction",
+              "nativeTypography",
+              "sourceAudit"
+            ]
+          },
+          "kind": {
+            "type": "string"
+          },
+          "rawRefs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "path"
+              ],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "pattern": "^/"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "locator": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "whole-file",
+                        "lines",
+                        "json-pointer",
+                        "pixel-region"
+                      ]
+                    },
+                    "start": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "end": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "pointer": {
+                      "type": "string"
+                    },
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "width": {
+                      "type": "number"
+                    },
+                    "height": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "kind"
+                  ],
+                  "additionalProperties": true
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "observedActivationMechanism": {
+            "type": "string"
+          },
+          "legacyShapeNotes": {
+            "type": "string"
+          },
+          "observation": {}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

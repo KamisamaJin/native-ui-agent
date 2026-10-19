@@ -1,0 +1,9 @@
+# Independent FINAL evaluator notes
+
+Uses the immutable selected oracle, pre-evidence preparation and sealed D0 method. FINAL has 2,897 mandatory platform-expanded rows per anonymous specimen. D0 grade/seal bytes remain untouched. New FINAL observations are entered only after reviewing the corresponding permitted raw images/native data; no D0 visual outcomes are reused.
+
+Only the production `files` section of each final manifest is used for source bindings. The permitted manifests also contain report filename/hash indexes; no report contents or those report artifacts are opened or used. Source reading is restricted to public API and source-only availability assertions. Native raw capture status, exit codes, method limits and every snapshot remain distinct from outcomes. A case is eligible only after capture.json plus portable-sha256.json are published. Pending cases are excluded from incremental decisions, never finalized as unknowns.
+
+The neutral final-source-application.json provides source-only byte linkage to four fresh hosts. Host/cache/tool implementation and orchestrator code are outside this evaluator scope. The common scheduler name correction changes no test expectation or method and is not a quality/performance outcome. No assignment, repair report or self-review is read before both FINAL grade seals.
+
+Native parent-sweep `complete` is retained verbatim but is not substituted for the frozen entire-component reach predicate. The summary can concern constant lazy height or full parent-content extent, including observer footer/padding beyond the component. Actual overlapping native intervals, component top/bottom, stable model binding and complete component-field pixel coverage establish the required scope; unrelated parent-tail pixels do not create a component defect.

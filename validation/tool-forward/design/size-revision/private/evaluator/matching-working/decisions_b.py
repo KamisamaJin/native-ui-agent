@@ -1,0 +1,40 @@
+def scoped(f,r):
+ platforms=['android','apple'] if f.get('platform')=='both' else [{'ios':'apple'}.get(f.get('platform'),f.get('platform'))]
+ return r['platform'] in platforms and r['contextId'] in {x.replace('--','/',1) for x in f.get('stateIds',[])}
+def manual_decisions(sub,review,rows):
+ assert sub=='submission-4f4364';out={}
+ for f in review['findings']:
+  fid=f['id'];matched=[];u=[];related=[];override=None
+  if fid=='RR-SR-IOS-001':
+   matched=[(r,'TP','The finding explicitly confirms required identifier propagation/loss in this exact named model state. Named missing descendant IDs supply a counterexample to this atomic documented-namespace set assertion. This does not claim every ID member separately, or any incorrect business callback.') for r in rows if scoped(f,r) and r['criterion']=='documentedIdentifierSetEquals']
+   u.append({'claim':'Required control targets cannot be found by the collector. This does not prove that a physically tapped name-selected button emits the wrong action.','certainty':'confirmed discovery observation; explicit handler limitation','atomicKeysClaimed':[],'rationale':'Do not convert identifier/discovery evidence into callbacks.count or callbacks.payload detections, or silently add unlisted pending-action checkpoints. Native nonzero exits alone are not product assertions.'})
+  elif fid=='RR-SR-IOS-002':
+   matched=[(r,'TP','The finding explicitly confirms disabled primary fill/text pixel mismatches for this named initial state, the same exact representative-color conditions independently FAIL in D0. No different-target text or color member is inferred.') for r in rows if scoped(f,r) and r['criterion']=='sampledFlatColorMatches' and r['target']=='rr.primary']
+   u.append({'claim':'Disabled reason colors in C02/C04 and primary colors in C02 caller-size-selected.','certainty':'confirmed','atomicKeysClaimed':[],'classification':'UNCERTAIN','rationale':'No same-target/state disabled-color atomic probes exist for these additional subclaims. Other header/normal text color, string readability and native-enabled members are different conditions and cannot become TP or FP.'})
+  elif fid=='RR-SR-ANDROID-003':
+   u.append({'claim':f['claim'],'certainty':'confirmed','atomicKeysClaimed':[],'classification':'UNCERTAIN','scopeOutsideFrozenAtomicMatrix':True,'rationale':'This is specifically summary totalValue base typography. The frozen runtime font probes target rr.header.title in C01/C03/C04, not totalValue; source/API assertions do not test total typography. A related typography key cannot receive detection credit or be called a contradictory PASS.'})
+  elif fid=='RR-SR-IOS-004':
+   u.append({'claim':f['claim'],'certainty':'confirmed source declaration only','atomicKeysClaimed':[],'classification':'UNCERTAIN','scopeOutsideFrozenAtomicMatrix':True,'rationale':'The review explicitly limits the claim to source-declared totalValue style and disclaims actual resolved runtime font size. There is no source-font-token atomic item, and a source concern cannot establish the runtime header font predicates.'})
+  elif fid=='RR-SR-IOS-005':
+   matched=[(r,'UNCERTAIN','The same named state and decorative-suppression property are suspected, with explicit lack of independent VoiceOver element/traversal proof. Native image presence/hittability cannot turn the D0 unassessed independent-accessibility condition into a confirmed failure.') for r in rows if scoped(f,r) and r['criterion']=='independentAccessibleDecorativeIconCount']
+  elif fid in ['RR-SR-ANDROID-006','RR-SR-IOS-007','RR-SR-BOTH-008']:
+   override='NO_CONFIRMED_CLAIM';u.append({'claim':f['claim'],'certainty':f['certainty'],'kind':'positive_observation','atomicKeysClaimed':[],'rationale':'A positive/equal observation is retained verbatim and does not allege a product failure. It is not forced into TP, FP or a zero-valued reviewed-negative denominator.'})
+  elif fid=='RR-SR-BOTH-009':
+   for r in rows:
+    if not scoped(f,r):continue
+    if r['platform']=='apple' and r['criterion']=='documentedIdentifierSetEquals':matched.append((r,'TP','The qualified positive observation also explicitly repeats that iOS region identifiers are overridden in these exact status states. That same-condition confirmed defect matches the D0 identifier-set FAIL; duplicate overlap with the identifier finding is retained and deduplicated only for arithmetic.'))
+    if r['platform']=='android' and (r['criterion']=='heading' or (r['criterion']=='accessibilityValueEquals' and r['target']=='rr.progress')):matched.append((r,'UNCERTAIN','The review explicitly states Android stateDescription/heading traits are not exported for this named status condition; this is an evidence limit, not a confirmed failure.'))
+   u.append({'claim':'The examined submitting/complete states show requested progress/result and total content, and iOS progress value In progress.','certainty':'confirmed positive observation','kind':'positive_observation','atomicKeysClaimed':[],'rationale':'Preserve the equal/positive scope separately; no whole P04/P06 status contract pass is inferred from these partial observations.'})
+  elif fid=='RR-SR-COLLECTOR-010':
+   override='NO_CONFIRMED_CLAIM';u.append({'claim':f['claim'],'certainty':'confirmed evidence-limit observation','kind':'evidence_limit','atomicKeysClaimed':[],'rationale':'The review explicitly identifies a measurement/collector concern and excludes a component layout failure. Collector source references are not opened. It is not a product FP or a component-margin/hit-bounds detection.'})
+  elif fid=='RR-SR-BOTH-011':
+   for r in rows:
+    if not scoped(f,r):continue
+    if r['criterion']=='resolvedFontFamilyIsNativeSystem' or (r['platform']=='apple' and r['criterion'] in ['unscaledPointOrSpRange','heading','independentAccessibleDecorativeIconCount']):matched.append((r,'UNCERTAIN','Explicit unresolved native font/Apple hidden-heading trait claim for this named state/property. No source font, AX boundary or sampled sheet substitutes for the requested native method; no confirmed failure is claimed.'))
+   u.extend([{'claim':'Physical touch dispatch/iOS physical touch rectangles remain unassessed.','certainty':'unassessed','atomicKeysClaimed':[],'rationale':'No individual touch-target members or exact action checkpoint states are claimed. Preserve the method-level limitation without a blanket parameterized-member expansion.'},{'claim':'Complete clipping/color acceptance and full updated long-content overlapping coverage are withheld.','certainty':'unassessed','atomicKeysClaimed':[],'rationale':'No particular missing/clipped field, color role or failing product reachability item is asserted. A sampled-review/collector limitation is not a product failure and does not automatically claim all visual group members.'},{'claim':'Minimum-deployment runtime/package compatibility was not rerun.','certainty':'unassessed','atomicKeysClaimed':[],'rationale':'Runtime rerun absence is distinct from the frozen source-only availability audit. No source API or availability failure is inferred.'}])
+  elif fid=='RR-SR-IOS-012':
+   matched=[(r,'UNCERTAIN','The finding specifically names Medium/Large in C06 initial, but explicitly suspects stronger word-flow readability and concedes all-character visibility may be satisfied. The D0 complete-glyph text condition is PASS; uncertainty is not a confirmed clipping FP or TP.') for r in rows if scoped(f,r) and r['criterion']=='fullyReadableTextEquals' and r['target'] in ['size.medium.label','size.large.label']]
+   u.append({'claim':'Prefer fewer columns for enlarged ordinary words; no missing glyph or overlap established.','certainty':'suspected/recommendation','atomicKeysClaimed':[],'rationale':'No normative minimum column width or word-fragmentation predicate exists. Do not match unrelated layout/hit-target or overlap assertions.'})
+  else:raise ValueError('Unreviewed original finding '+fid)
+  out[fid]={'matches':matched,'unverifiable':u,'related':related,'findingClassificationOverride':override}
+ return out

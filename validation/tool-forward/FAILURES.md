@@ -19,3 +19,5 @@
 旧版、原始失败、修复前源码、首次评分、未裁定发现、重复映射、未评估项及保留场景均保留。系统自动诊断录像按文件记录 SHA、大小和省略原因；原件仍在本机忽略缓存，断言截图和失败日志均入库。
 
 业务上的失败与证据缺口见 [完整统计](TABLES.md)、[逐原子项账本](assessment-ledger.csv)及封存评分。F→U 不算修好，未裁定不硬算误报，源码声明不填补原生观测缺口。独立评估产生的工作草稿与失败记录也保留在已公开 evaluator 目录，最终封条明确指定权威版本；不会用后续改写覆盖原结果。
+
+揭盲后发现的评分归因边界另见[独立回调前提审计](design/size-revision/private/evaluator/post-unblinding-callback-audit/POST-UNBLINDING-INTERPRETIVE-NOTE.md)：旧组首版 28 项、最终 2 项回调 FAIL 缺少成功派发前提，不能当作已证明 handler bug；原评分与分母保持原样。

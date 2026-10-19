@@ -23,7 +23,8 @@ def seconds(value):
 def render(data):
     arms = [data['arms'][key] for key in ['baseline_v2', 'candidate_v3']]
     lines = ['# 两组完整统计', '',
-             '按封存评分与匹配结果复算。列顺序固定为旧 v2、新 v3；两组均使用 Skill。P/F/U 分别表示通过、失败、未评估。百分比四舍五入，原始分子分母保留。', '']
+             '按封存评分与匹配结果复算。列顺序固定为旧 v2、新 v3；两组均使用 Skill。P/F/U 分别表示通过、失败、未评估。百分比四舍五入，原始分子分母保留。', '',
+             '**归因限制：**旧组首版 28 个回调区间 FAIL、最终 2 个同类 FAIL 的动作实际 unavailable；零回调不证明业务 handler 错误。原评分与分母不变，以下失败、漏检和修复原子计数不能当作独立业务 bug 数。解释及冻结口径的前提边界见 [RESULTS.md](RESULTS.md)。', '']
 
     def table(title, rows):
         lines.extend([f'## {title}', '', '| 指标 | 旧 v2 | 新 v3 |', '| --- | ---: | ---: |'])

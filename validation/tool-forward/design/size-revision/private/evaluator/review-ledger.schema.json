@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Independent reviewer decisions with exact actual observations",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "candidateId",
+    "phase",
+    "assessments"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "candidateId": {
+      "type": "string"
+    },
+    "phase": {
+      "enum": [
+        "D0",
+        "FINAL"
+      ]
+    },
+    "assessments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "assessmentId",
+          "outcome",
+          "reason"
+        ],
+        "properties": {
+          "assessmentId": {
+            "type": "string"
+          },
+          "outcome": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "UNASSESSED"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "binding": {
+            "type": "object",
+            "properties": {
+              "candidateId": {
+                "type": "string"
+              },
+              "sourceSnapshotId": {
+                "type": "string"
+              },
+              "platform": {
+                "enum": [
+                  "android",
+                  "apple"
+                ]
+              },
+              "caseId": {
+                "type": "string"
+              },
+              "stateId": {
+                "type": "string"
+              },
+              "modelId": {
+                "type": "string"
+              },
+              "modelSha256": {
+                "type": "string"
+              },
+              "environmentSha256": {
+                "type": "string"
+              },
+              "basis": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "explicitRawObservation",
+                    "executionSequence",
+                    "contentAndRunCorrelation",
+                    "anonymousSourceAudit",
+                    "combined"
+                  ]
+                },
+                "minItems": 1
+              },
+              "explanation": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": true
+          },
+          "evidenceRecordIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "observedCoverageIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "collectionCoverage": {
+            "type": "object",
+            "additionalProperties": {
+              "enum": [
+                "OBSERVED",
+                "ABSENT_OBSERVED",
+                "UNASSESSED"
+              ]
+            }
+          },
+          "actualObservedSet": {
+            "type": "array"
+          },
+          "counterexample": {
+            "type": "object",
+            "required": [
+              "description",
+              "targetIds",
+              "evidenceRecordIds"
+            ],
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "targetIds": {
+                "type": "array",
+                "minItems": 1
+              },
+              "evidenceRecordIds": {
+                "type": "array",
+                "minItems": 1
+              }
+            }
+          },
+          "conflictingEvidenceRecordIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}
