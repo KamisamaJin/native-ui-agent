@@ -38,7 +38,11 @@ def captures(root):
                                  'native_snapshots': sum(r['snapshots'] for r in selected),
                                  'recorded_span_seconds': round(max(ends) - min(starts), 3)
                                  if len(starts) == len(ends) == len(selected) else None}
+    starts = [r['started_at'] for r in rows if r['started_at'] is not None]
+    ends = [r['finished_at'] for r in rows if r['finished_at'] is not None]
     return {'captures': rows, 'by_platform': by_platform,
+            'recorded_span_seconds': round(max(ends) - min(starts), 3)
+            if rows and len(starts) == len(ends) == len(rows) else None,
             'command_seconds_sum': round(sum(r['seconds'] for r in rows), 3),
             'scope': 'Command sums include native build/test/export. Parallel sums are not total wall time; spans include inter-command overhead.'}
 

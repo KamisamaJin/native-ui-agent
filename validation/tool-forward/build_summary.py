@@ -55,6 +55,13 @@ def build(index):
     result['paired_observation'] = paired_observation_stats(sealed(index['paired_grade']),
                                                           grades[paired_submission]['d0'])
     result['paired_observation']['native_capture_times'] = captures(R / 'paired-evidence/d0')
+    result['paired_observation']['current_native_capture_times'] = captures(R / 'evidence/d0' / paired_submission)
+    for label, arm in result['arms'].items():
+        root = R / ('paired-evidence/d0' if label == 'baseline_v2'
+                    else 'evidence/d0/' + arm['submission'])
+        arm['self_review_evidence_corpus'] = {
+            'path': str(root.relative_to(R)), 'cost': captures(root),
+            'scope': 'Actual corpus supplied before the timed read-only review. Candidate reuses its main D0 grading captures; baseline uses the old-collector paired corpus. Production/grade evidence is not an extra free source of complete feedback, and overlapping/reused costs must not be counted twice.'}
     return result, grades, plans
 
 
