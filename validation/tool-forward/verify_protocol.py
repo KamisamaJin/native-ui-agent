@@ -54,6 +54,13 @@ def main():
     dispatch = read(R / 'private/phase-dispatch.json')
     assert sha(portable(index['protocol']['seals']['d0']['path'])) == dispatch['readonly_review']['joint_d0_seal_sha256']
     d0_time = timestamp(seals['d0']['sealedAtUTC'])
+    preparation_path = R / 'design/size-revision/private/evaluator/preparation-manifest.json'
+    assert sha(preparation_path) == seals['d0']['preparationManifestSHA256']
+    preparation = read(preparation_path)
+    checked += verify_references(preparation)
+    assert timestamp(preparation['preparedAtUTC']) <= d0_time
+    assert preparation['candidateSourcesReadBeforePreparationSeal'] == 0
+    assert preparation['rawCandidateEvidenceReadBeforePreparationSeal'] == 0
     final_time = timestamp(seals['final']['sealedAtUTC'])
     matching_time = timestamp(seals['matching']['sealedAtUTC'])
     paired_time = timestamp(seals['paired']['sealedAtUTC'])
