@@ -74,6 +74,11 @@ def render(data):
         for phase, label in [('d0', '首版实现'), ('readonly_review', '只读自查'), ('repair', '一次修复')]]
         + [('三阶段日历合计', [seconds(sum(a['phase_times'][p]['elapsedSeconds'] for p in ['d0', 'readonly_review', 'repair'])) for a in arms])])
     lines.extend(['旧 v2 首版报告跨越服务/容量中断，源码修改时间及原生命令完成记录在预算内；上表保留原始日历时间。精确活跃推理/排队拆分不可得，不能据此宣称工具提速。阶段内原生验证已经包含在阶段墙钟中；与命令耗时相加会重复计费。', ''])
+    table('首版公开集成尝试，已包含在阶段记录内', [
+        (platform, [seconds(next((r['seconds'] for r in a['phase_times']['d0']['native_integrations']
+                                if r['platform'].lower() == platform), None)) for a in arms])
+        for platform in ['android', 'ios']])
+    lines.extend(['两组公开 iOS 集成都遇到共同的非有限坐标传输异常；此处保留失败尝试成本，不计为新版独有修复，也不与阶段墙钟重复相加。', ''])
     table('自查实际收到的证据语料与采集成本', [
         ('采集命令数', [str(len(a['self_review_evidence_corpus']['cost']['captures'])) for a in arms]),
         ('截图数', [str(sum(r['snapshots'] for r in a['self_review_evidence_corpus']['cost']['captures'])) for a in arms]),
@@ -102,6 +107,7 @@ def render(data):
                   '| 指标 | 旧采集器 | 新采集器 |', '| --- | ---: | ---: |',
                   f'| 运行时 P/F/U | {outcomes(paired["legacy"]["runtime"])} | {outcomes(paired["current"]["runtime"])} |',
                   f'| 运行时未评估比例 | {ratio(paired["legacy"]["runtime"]["unassessed_ratio"])} | {ratio(paired["current"]["runtime"]["unassessed_ratio"])} |', '',
+                  '旧/新语料截图数分别为 ' + str(sum(r['snapshots'] for r in paired['native_capture_times']['captures'])) + ' / ' + str(sum(r['snapshots'] for r in paired['current_native_capture_times']['captures'])) + '。', '',
                   f'新获得可评估证据 {len(paired["newly_assessed"])} 项，失去可评估证据 {len(paired["no_longer_assessed"])} 项，P/F 判定差异 {len(paired["confirmed_outcome_disagreements"])} 项。这是同一份旧组首版源码的观察差异，不是产品修复。旧原始图片若已经充分支持判断，仍获得同等信用。', '',
                   '旧/新采集器命令耗时之和分别为 ' + seconds(paired['native_capture_times']['command_seconds_sum']) + ' / ' + seconds(paired['current_native_capture_times']['command_seconds_sum']) + '；记录墙钟跨度为 ' + seconds(paired['native_capture_times']['recorded_span_seconds']) + ' / ' + seconds(paired['current_native_capture_times']['recorded_span_seconds']) + '。旧采集既用于旧组自查，也用于这项配对；新增采集覆盖和额外成本同时报告。这不是隔离硬件的性能基准。', '',
                   '两者使用相同源码、业务数据和冻结的动作意图；旧接口不支持 sweep，冻结操作器将其映射为 capture。实际动作序列保留在各 capture.json 中，滚动和截图数量并不相同。', '',

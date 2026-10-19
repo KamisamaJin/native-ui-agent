@@ -73,6 +73,10 @@ def phases(submission):
             k: v for k, v in report.items()
             if any(word in k.lower() for word in ['timing', 'accounting', 'pause', 'interrupt', 'activewall'])}
         result[phase]['report'] = str(path.relative_to(R))
+        result[phase]['native_integrations'] = [
+            {key: row.get(key) for key in ['platform', 'seconds', 'exitCode',
+                                           'nativeTestCount', 'capture', 'manifest']}
+            for row in report.get('nativeIntegrations', [])]
     return result
 
 
