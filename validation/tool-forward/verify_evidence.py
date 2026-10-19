@@ -50,6 +50,8 @@ def validate_grade(path, phase):
         assert row['reason']
         if row['outcome'] in {'PASS', 'FAIL'}:
             assert row['exactSources'], (path, key, 'unsupported decision')
+            if not row['sourceOnly']:
+                assert row['bindingStatus'] == 'ESTABLISHED', (path, key, 'unbound runtime decision')
         for source in row['exactSources'] + row['consideredSources']:
             p = portable_path(source['path'])
             assert p.is_file(), (path, key, p)
