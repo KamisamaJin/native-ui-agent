@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import CryptoKit
 
 private func object(_ data: Data?) -> [String: Any] {
     guard let data, let value = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return [:] }
@@ -20,6 +21,7 @@ private struct ObserverHost: View {
     @State private var index = 0
     @State private var events: [[String: Any]] = []
     @State private var viewport = CGRect.zero
+    @State private var contentFrame = CGRect.zero
     private var fixtures: [[String: Any]] { [config["initial"] as? [String: Any] ?? [:]] + (config["updates"] as? [[String: Any]] ?? []) }
     private var offeredWidth: CGFloat { CGFloat(config["width"] as? Double ?? 390) }
     private var typeSize: DynamicTypeSize {
@@ -44,6 +46,8 @@ private struct ObserverHost: View {
     }
     private var runtime: [String: Any] {
         ["pid": ProcessInfo.processInfo.processIdentifier, "instance": instance, "fixture_index": index,
+              "input_sha256": SHA256.hash(data: Data(json(fixtures[index]).utf8)).map { String(format: "%02x", $0) }.joined(), "event_revision": events.count,
+              "content_frame": ["x": contentFrame.minX, "y": contentFrame.minY, "width": contentFrame.width, "height": contentFrame.height],
               "screen_scale": UIScreen.main.scale, "offered_width": offeredWidth, "viewport_height": 600,
               "viewport": ["x": viewport.minX, "y": viewport.minY, "width": viewport.width, "height": viewport.height],
               "theme": config["theme"] as? String ?? "light", "direction": config["direction"] as? String ?? "ltr",
@@ -61,6 +65,10 @@ private struct ObserverHost: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 16).padding(.top, 24)
+                .background(GeometryReader { proxy in
+                    Color.clear.onAppear { contentFrame = proxy.frame(in: .global) }
+                        .onChange(of: proxy.frame(in: .global)) { contentFrame = $0 }
+                })
             }
             .frame(width: offeredWidth, height: 600)
             .background(canvas)

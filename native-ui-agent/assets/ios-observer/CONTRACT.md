@@ -73,11 +73,11 @@ captures top, before/after every action, each scroll step, and bottom. It then a
 bounded bottom coverage even if actions did not request scrolling. The required
 identifier list should include relevant lower content. Absent required identifiers
 or an unreached sentinel fail coverage; they cannot become a pass. Identifiers must
-select exactly one existing XCUI node before a tap. The target must be enabled and
-hittable. For native Switch containers, the runner resolves a unique native Switch leaf and
+select exactly one existing XCUI node before a tap. The actual uniquely resolved native control must be enabled and
+hittable. For Button/Switch semantic containers, the runner resolves a unique native control leaf and
 records both `semantic_target` and `activation_target`, including roles, frames and
 selection paths, before activating the leaf. Ambiguous, disabled or inaccessible
-activation targets stop the action. Other targets retain native `.tap()`.
+activation targets stop the action. Multiple native leaves are unavailable. Selection/context traits remain on the semantic container when that is the actual native representation.
 An event is recorded only when the bridge's real callback invokes onEvent.
 An optional `expect_callback` requires the named callback in that action's real delta.
 Without it, an empty callback delta does not itself fail a tap; the caller must check
@@ -97,8 +97,7 @@ target. It records `reveal_diagnostics` when the bound expires or a missing targ
 reaches the fully visible native bottom sentinel. This is bounded observer evidence,
 not proof that the production target is absent. An unexecuted action cannot pass a
 business assertion. `scroll` with `direction: "auto"`
-and `until_identifier` uses the same helper. An element larger than the viewport
-cannot pass full-containment coverage.
+and `until_identifier` uses the same helper. An element larger than the viewport cannot be fully contained at once. Its actual native control can be activated at a measured visible intersection; the action records partial visibility, screen coordinate and real callback. Full visual content coverage uses overlapping state sweeps separately.
 
 `tap` with `allow_disabled: true` can observe a fully visible, unique native disabled
 target without issuing a tap. Its step has `outcome: "blocked_disabled"`, native
@@ -140,12 +139,12 @@ XCUIElement. Value is a string representation of XCUI's returned value or null.
 it is geometric evidence, not proof of lack of occlusion. The viewport is measured by
 a native GeometryReader in global points; the raw AX ScrollView frame is retained
 separately because SwiftUI can extend it into safe areas. The complete node list also
-contains offscreen nodes. `coverage.observed_identifiers` requires a complete native
-frame inside the viewport and native hittability (or an actually disabled target).
+contains offscreen nodes. `coverage.observed_identifiers` records nonempty native
+frames intersecting the viewport, including oversized content. It does not claim
+whole-element visibility, hittability or complete content coverage.
 The bottom sentinel must be fully contained and hittable.
 `fully_within_viewport` records that geometric check, with 0.5-point tolerance.
-A tap or a `scroll` target also requires complete containment. A target taller than the
-viewport therefore remains incomplete and requires a caller-specific inspection.
+A tap requires a usable native control point. Full-element visibility and actual activation are separate facts; partial activation does not prove internal styles or full physical hit geometry.
 Before/after snapshots permit
 independent checks of text changes and the same process identity for fixture updates.
 
@@ -159,3 +158,7 @@ observation session completed with coverage, not that business/visual requiremen
 48-point button, tall content and a last action. It is never used as a production UI
 substitute. Forward-test it with actual native builds, taps, callback receipt, scroll
 coverage and explicit caller update before relying on new adapter capabilities.
+
+## State and typed control protocol
+
+See [native-tools.md](../../references/native-tools.md) for exact label/role selectors, native semantic/control groups, automatic input-boundary sweeps, post-action state IDs and `native_checks.py` atomic assertions. Per-state content geometry is measured by the actual app; missing geometry stops coverage. Legacy `state_capture:false` retains limited session observation and cannot pass absent state evidence.

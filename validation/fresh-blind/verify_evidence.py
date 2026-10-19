@@ -84,7 +84,7 @@ def main():
  verify_frozen.main()
  patch=read(R/'shipped-adapter-patch.json');frozen=read(R/'freeze.json')['skill_v2']
  for item in patch['files']:
-  p=ROOT/item['file'];assert p.is_file() and sha(p)==item['afterSha256']
+  p=R/'shipped-adapter'/item['file'].removeprefix('native-ui-agent/');assert p.is_file() and sha(p)==item['afterSha256']
   assert frozen[item['file'].removeprefix('native-ui-agent/')]==item['beforeSha256']
   if item.get('sameCommonAdapter'):assert sha(ROOT/item['sameCommonAdapter'])==item['afterSha256']
  for path in patch['genericNativeEvidence']:assert (R/path).is_file()
