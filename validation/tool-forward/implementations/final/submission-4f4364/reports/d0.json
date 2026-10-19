@@ -1,0 +1,267 @@
+{
+  "phase": "D0",
+  "sealed": true,
+  "startedAt": "2026-10-19T00:52:39Z",
+  "finishedAt": "2026-10-19T12:56:39.695315Z",
+  "elapsedSeconds": 43440.695,
+  "budgetSeconds": 1500,
+  "timing": {
+    "budgetBasis": "Original wall time retained conservatively, including the reported capacity interruption. No budget reset.",
+    "capacityQueuePauses": [
+      {
+        "reportedBy": "coordinator",
+        "observedGapStart": "2026-10-19T00:56:15Z",
+        "observedGapEnd": "2026-10-19T00:59:41Z",
+        "observedGapSeconds": 206,
+        "exactPauseSeconds": null,
+        "note": "Coordinator reported a service-capacity interruption around 00:56 UTC. The tool-observed gap includes reasoning/dispatch time and is not a precise queue-duration measurement."
+      },
+      {
+        "reportedBy": "coordinator",
+        "observedGapStart": "2026-10-19T01:10:01Z",
+        "observedGapEnd": "2026-10-19T12:55:53Z",
+        "observedGapSeconds": 42352.0,
+        "exactPauseSeconds": null,
+        "note": "Extended service/capacity interruption between successive successful tool observations. No production edits occurred during or after this gap. Native integration was not restarted."
+      }
+    ],
+    "longObservedServiceGapSeconds": 42352.0,
+    "wallSecondsExcludingLongObservedServiceGap": 1088.695,
+    "activeWallSecondsExact": null,
+    "note": "Report sealing was delayed by service availability. Exact active/queue division is not independently measurable. Production changes and the native commands were completed before the original 25-minute wall deadline; only collection/report sealing occurred later. No claim is made that total elapsed calendar wall time stayed below 1500 seconds.",
+    "originalWallDeadline": "2026-10-19T01:17:39Z",
+    "nativeCommandSeconds": {
+      "android": 19.66,
+      "ios": 670.295
+    },
+    "sourceLastModifiedAt": {
+      "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt": "2026-10-19T00:53:27.536606Z",
+      "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt": "2026-10-19T00:55:56.785159Z",
+      "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift": "2026-10-19T00:53:27.536727Z",
+      "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift": "2026-10-19T00:55:36.990841Z"
+    }
+  },
+  "changedFiles": [
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt",
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt",
+    "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift",
+    "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift"
+  ],
+  "sourceFingerprints": [
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt",
+      "sha256": "93bbb8fdd68ed98402198d939bd6e4cda7c1a6f0335d61f9500bb3c78e3b6578",
+      "lines": 109
+    },
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt",
+      "sha256": "33a5b965a8d849a5bac575fe936eca269bee896b68c0ca4060e6788f75230367",
+      "lines": 250
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift",
+      "sha256": "01503f38650dfb1dadbaebba36c1196697fba70f6530ad53805166dd3544a183",
+      "lines": 195
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+      "sha256": "e5d42566303a7f6e682e02469264026ae634224fe514d4dcc9de5bd8972e3bec",
+      "lines": 311
+    }
+  ],
+  "compileCommands": [
+    {
+      "command": "JAVA_HOME=/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home ANDROID_HOME=/Users/rex/Library/Android/sdk ./reply/Reply/gradlew -p reply/Reply :app:compileDebugKotlin --console=plain --max-workers=2",
+      "outcome": "failed, then corrected a local effective-size variable shadowing DrawScope.size",
+      "exitCode": 1,
+      "log": "reports/android-compile.log"
+    },
+    {
+      "command": "JAVA_HOME=/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home ANDROID_HOME=/Users/rex/Library/Android/sdk ./reply/Reply/gradlew -p reply/Reply :app:compileDebugKotlin --console=plain --max-workers=2",
+      "outcome": "BUILD SUCCESSFUL",
+      "exitCode": 0,
+      "log": "reports/android-compile-2.log"
+    },
+    {
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swiftc -swift-version 5 -typecheck -target arm64-apple-ios14.0-simulator -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk alerttoast/Sources/AlertToast/ReturnResolutionModels.swift alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+      "outcome": "passed",
+      "exitCode": 0,
+      "log": "reports/ios14-typecheck.log",
+      "scope": "new public component and models"
+    },
+    {
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swiftc -swift-version 5 -typecheck -module-name AlertToast -target arm64-apple-ios14.0-simulator -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk alerttoast/Sources/AlertToast/*.swift",
+      "outcome": "passed",
+      "exitCode": 0,
+      "log": "reports/ios14-package-typecheck.log",
+      "scope": "full production package source"
+    },
+    {
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swiftc -swift-version 5 -typecheck -target arm64-apple-macos11.0 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk alerttoast/Sources/AlertToast/ReturnResolutionModels.swift alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+      "outcome": "passed",
+      "exitCode": 0,
+      "log": "reports/macos11-typecheck.log",
+      "scope": "new public component and models"
+    },
+    {
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swiftc -swift-version 5 -typecheck -module-name AlertToast -target arm64-apple-macos11.0 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk alerttoast/Sources/AlertToast/*.swift",
+      "outcome": "passed",
+      "exitCode": 0,
+      "log": "reports/macos11-package-typecheck.log",
+      "scope": "full production package source"
+    }
+  ],
+  "nativeIntegrations": [
+    {
+      "platform": "android",
+      "command": "python3 harness/capture.py --platform android --project reply/Reply --fixture reports/public-example-integration.json --output reports/native-android",
+      "actualNativeCommand": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/android_run.py",
+        "run",
+        "--project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reply/Reply",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/ObserverBridge.kt",
+        "--java-home",
+        "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home",
+        "--android-sdk",
+        "/Users/rex/Library/Android/sdk",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-android-inputs/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-android-inputs/actions.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-android",
+        "--template",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/baseline-android/NativeObserverTest.kt"
+      ],
+      "status": "captured_not_graded",
+      "exitCode": 0,
+      "seconds": 19.66,
+      "nativeTestCount": 1,
+      "manifest": "reports/native-android/manifest.json",
+      "capture": "reports/native-android/capture.json",
+      "testCommand": [
+        "./gradlew",
+        ":app:testDebugUnitTest",
+        "--tests",
+        "org.nativeobserver.NativeObserverTest.capture",
+        "--console=plain",
+        "--max-workers=2"
+      ],
+      "nativeCounts": {
+        "name": "org.nativeobserver.NativeObserverTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-10-19T01:00:02.282Z",
+        "hostname": "Rexs-MacBook-Pro.local",
+        "time": "10.968"
+      },
+      "observation": "reports/native-android/observation.json",
+      "summary": "reports/android-public-native-summary.json",
+      "bottomReached": true,
+      "allRequestedActionsObserved": true,
+      "actualEventCount": 10,
+      "method": "Attached ComposeView continuous frame session; native semantic OnClick, not physical OS touch."
+    },
+    {
+      "platform": "ios",
+      "command": "python3 harness/capture.py --platform ios --project alerttoast --fixture reports/public-example-integration.json --output reports/native-ios --simulator AB66271B-29BD-4D14-9C9B-71579E147DCA",
+      "actualNativeCommand": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/capability/scripts/ios_observe.py",
+        "run",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/ReturnBridge.swift",
+        "--package",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/alerttoast",
+        "--product",
+        "AlertToast",
+        "--simulator",
+        "AB66271B-29BD-4D14-9C9B-71579E147DCA",
+        "--developer-dir",
+        "/Applications/Xcode.app/Contents/Developer",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-ios-inputs/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-ios-inputs/actions.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-ios"
+      ],
+      "status": "unavailable",
+      "exitCode": 1,
+      "seconds": 670.295,
+      "nativeTestCount": 1,
+      "manifest": "reports/native-ios/manifest.json",
+      "capture": "reports/native-ios/capture.json",
+      "buildCommand": [
+        "xcodebuild",
+        "build-for-testing",
+        "-project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-ios/project/Observer.xcodeproj",
+        "-scheme",
+        "Observer",
+        "-configuration",
+        "Debug",
+        "-sdk",
+        "iphonesimulator",
+        "-destination",
+        "platform=iOS Simulator,id=AB66271B-29BD-4D14-9C9B-71579E147DCA",
+        "-derivedDataPath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-ios/DerivedData",
+        "-resultBundlePath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-ios/build.xcresult",
+        "CODE_SIGNING_ALLOWED=NO",
+        "ARCHS=arm64",
+        "ONLY_ACTIVE_ARCH=YES"
+      ],
+      "buildExitCode": 0,
+      "testCommand": [
+        "xcodebuild",
+        "test-without-building",
+        "-xctestrun",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-ios/DerivedData/Build/Products/Observer_iphonesimulator27.1-arm64.xctestrun",
+        "-destination",
+        "platform=iOS Simulator,id=AB66271B-29BD-4D14-9C9B-71579E147DCA",
+        "-resultBundlePath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-ios/test.xcresult",
+        "-parallel-testing-enabled",
+        "NO",
+        "-maximum-concurrent-test-simulator-destinations",
+        "1"
+      ],
+      "testExitCode": 65,
+      "failure": "Invalid number value (infinite) in JSON write (NSInvalidArgumentException)",
+      "classification": "common immutable host/export transport failure; production UI not altered and integration not repeated",
+      "error": "Native test produced no observation JSON; see test.log and attachments",
+      "nativeFinishedAt": "2026-10-19T01:11:04.580666Z",
+      "runtimeEvidence": "unavailable: exporter produced no observation JSON; screenshots were not opened"
+    }
+  ],
+  "scope": "Four new production source files. Existing entry points, package deployment targets, common host, bridges, public design and capability were not edited.",
+  "limitations": [
+    "No screenshots/images opened during D0. Color, clipping and visual layout remain unassessed.",
+    "Only the public-example integration is executed. Long arbitrary text, other widths, dark/RTL and enlarged native type are not runtime tested in D0.",
+    "Minimum deployment compatibility is established by Swift 5 package-source typecheck targeting iOS 14/macOS 11, not execution on those OS releases.",
+    "The immutable baseline Android observer source paints its host background with #EDF1F6/#0D1420 instead of the public demonstration host colors. Component card colors are independent; no production adaptation was made.",
+    "iOS host built successfully and executed one native test, but JSONSerialization failed with Invalid number value (infinite) in JSON write (NSInvalidArgumentException). No observation JSON was exported; iOS runtime controls, callbacks and geometry remain unassessed.",
+    "Original capability, host and bridges remained unchanged; the common numeric-transport repair mentioned by the coordinator was not applied in D0.",
+    "Extended service interruption delayed D0 report sealing beyond the original calendar wall deadline. Production source changes and both one-shot native commands completed before that deadline."
+  ],
+  "evidenceFiles": [
+    "reports/d0-plan.json",
+    "reports/d0-source-review.json",
+    "reports/d0-commands.json",
+    "reports/android-public-native-summary.json",
+    "reports/native-ios/test.log",
+    "reports/native-ios/native-summary.json",
+    "reports/native-ios/manifest.json",
+    "reports/native-android/manifest.json"
+  ],
+  "visualSelfReviewPerformed": false,
+  "status": "implemented_with_unassessed_visuals_and_ios_host_export_error",
+  "sourceFingerprintsUnchangedSinceSourceReview": true
+}

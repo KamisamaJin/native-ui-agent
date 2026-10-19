@@ -1,0 +1,140 @@
+{
+  "phase": "D0",
+  "sealed": false,
+  "startedAt": "2026-10-19T00:52:39Z",
+  "finishedAt": null,
+  "elapsedSeconds": null,
+  "budgetSeconds": 1500,
+  "timing": {
+    "budgetBasis": "Original wall time retained conservatively, including the reported capacity interruption. No budget reset.",
+    "capacityQueuePause": {
+      "reportedBy": "coordinator",
+      "observedGapStart": "2026-10-19T00:56:15Z",
+      "observedGapEnd": "2026-10-19T00:59:41Z",
+      "observedGapSeconds": 206,
+      "exactPauseSeconds": null,
+      "note": "Coordinator reported a service-capacity interruption around 00:56 UTC. The tool-observed gap includes reasoning/dispatch time and is not a precise queue-duration measurement."
+    }
+  },
+  "changedFiles": [
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt",
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt",
+    "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift",
+    "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift"
+  ],
+  "sourceFingerprints": [
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt",
+      "sha256": "93bbb8fdd68ed98402198d939bd6e4cda7c1a6f0335d61f9500bb3c78e3b6578",
+      "lines": 109
+    },
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt",
+      "sha256": "33a5b965a8d849a5bac575fe936eca269bee896b68c0ca4060e6788f75230367",
+      "lines": 250
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift",
+      "sha256": "01503f38650dfb1dadbaebba36c1196697fba70f6530ad53805166dd3544a183",
+      "lines": 195
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+      "sha256": "e5d42566303a7f6e682e02469264026ae634224fe514d4dcc9de5bd8972e3bec",
+      "lines": 311
+    }
+  ],
+  "compileCommands": [
+    {
+      "command": "JAVA_HOME=/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home ANDROID_HOME=/Users/rex/Library/Android/sdk ./reply/Reply/gradlew -p reply/Reply :app:compileDebugKotlin --console=plain --max-workers=2",
+      "outcome": "failed, then corrected a local effective-size variable shadowing DrawScope.size",
+      "exitCode": 1,
+      "log": "reports/android-compile.log"
+    },
+    {
+      "command": "JAVA_HOME=/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home ANDROID_HOME=/Users/rex/Library/Android/sdk ./reply/Reply/gradlew -p reply/Reply :app:compileDebugKotlin --console=plain --max-workers=2",
+      "outcome": "BUILD SUCCESSFUL",
+      "exitCode": 0,
+      "log": "reports/android-compile-2.log"
+    },
+    {
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swiftc -swift-version 5 -typecheck -target arm64-apple-ios14.0-simulator -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk alerttoast/Sources/AlertToast/ReturnResolutionModels.swift alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+      "outcome": "passed",
+      "exitCode": 0,
+      "log": "reports/ios14-typecheck.log",
+      "scope": "new public component and models"
+    },
+    {
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swiftc -swift-version 5 -typecheck -module-name AlertToast -target arm64-apple-ios14.0-simulator -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk alerttoast/Sources/AlertToast/*.swift",
+      "outcome": "passed",
+      "exitCode": 0,
+      "log": "reports/ios14-package-typecheck.log",
+      "scope": "full production package source"
+    },
+    {
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swiftc -swift-version 5 -typecheck -target arm64-apple-macos11.0 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk alerttoast/Sources/AlertToast/ReturnResolutionModels.swift alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+      "outcome": "passed",
+      "exitCode": 0,
+      "log": "reports/macos11-typecheck.log",
+      "scope": "new public component and models"
+    },
+    {
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swiftc -swift-version 5 -typecheck -module-name AlertToast -target arm64-apple-macos11.0 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk alerttoast/Sources/AlertToast/*.swift",
+      "outcome": "passed",
+      "exitCode": 0,
+      "log": "reports/macos11-package-typecheck.log",
+      "scope": "full production package source"
+    }
+  ],
+  "nativeIntegrations": [
+    {
+      "platform": "android",
+      "command": "python3 harness/capture.py --platform android --project reply/Reply --fixture reports/public-example-integration.json --output reports/native-android",
+      "output": "reports/native-android",
+      "status": "captured_not_graded",
+      "exitCode": 0,
+      "seconds": 19.66,
+      "actualNativeCommand": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/android_run.py",
+        "run",
+        "--project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reply/Reply",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/ObserverBridge.kt",
+        "--java-home",
+        "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home",
+        "--android-sdk",
+        "/Users/rex/Library/Android/sdk",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-android-inputs/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-android-inputs/actions.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/native-android",
+        "--template",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/baseline-android/NativeObserverTest.kt"
+      ]
+    },
+    {
+      "platform": "ios",
+      "command": "python3 harness/capture.py --platform ios --project alerttoast --fixture reports/public-example-integration.json --output reports/native-ios --simulator AB66271B-29BD-4D14-9C9B-71579E147DCA",
+      "output": "reports/native-ios",
+      "status": "running"
+    }
+  ],
+  "scope": "Four new production source files. Existing entry points, package deployment targets, common host, bridges, public design and capability were not edited.",
+  "limitations": [
+    "No screenshots/images opened during D0. Color, clipping and visual layout remain unassessed.",
+    "Only the public-example integration is executed. Long arbitrary text, other widths, dark/RTL and enlarged native type are not runtime tested in D0.",
+    "Minimum deployment compatibility is established by Swift 5 package-source typecheck targeting iOS 14/macOS 11, not execution on those OS releases.",
+    "The immutable baseline Android observer source paints its host background with #EDF1F6/#0D1420 instead of the public demonstration host colors. Component card colors are independent; no production adaptation was made."
+  ],
+  "evidenceFiles": [
+    "reports/d0-plan.json",
+    "reports/d0-source-review.json",
+    "reports/d0-commands.json",
+    "reports/android-public-native-summary.json"
+  ],
+  "visualSelfReviewPerformed": false
+}

@@ -1,0 +1,2651 @@
+{
+  "phase": "one-repair-iteration",
+  "sealed": true,
+  "startedAt": "2026-10-19T14:50:10Z",
+  "finishedAt": "2026-10-19T15:03:04.762405Z",
+  "elapsedSeconds": 774.762,
+  "budgetSeconds": 900,
+  "iterationCount": 1,
+  "timingLimitations": {
+    "serviceInterruptionsObserved": [],
+    "basis": "Original first-work-call UTC start preserved. Elapsed wall time is used conservatively as active time; no budget reset. Native commands overlap and their durations must not be summed as elapsed phase time.",
+    "nativeWorkIncompleteAtSeal": []
+  },
+  "changedFiles": [
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt",
+      "beforeSha256": "33a5b965a8d849a5bac575fe936eca269bee896b68c0ca4060e6788f75230367",
+      "afterSha256": "6a772540a909f4d366d68662d42739e0c4f18254e4225e4de5e9cf2f720cd638",
+      "lastModifiedAt": "2026-10-19T14:51:34.208770Z"
+    },
+    {
+      "path": "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+      "beforeSha256": "e5d42566303a7f6e682e02469264026ae634224fe514d4dcc9de5bd8972e3bec",
+      "afterSha256": "c50b53297ea66cff6b21ac2979edbf55a676d1d356b3c38135be12bed688a84a",
+      "lastModifiedAt": "2026-10-19T14:51:34.209114Z"
+    }
+  ],
+  "allTargetSourceFingerprintsBefore": {
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt": "33a5b965a8d849a5bac575fe936eca269bee896b68c0ca4060e6788f75230367",
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt": "93bbb8fdd68ed98402198d939bd6e4cda7c1a6f0335d61f9500bb3c78e3b6578",
+    "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift": "e5d42566303a7f6e682e02469264026ae634224fe514d4dcc9de5bd8972e3bec",
+    "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift": "01503f38650dfb1dadbaebba36c1196697fba70f6530ad53805166dd3544a183"
+  },
+  "allTargetSourceFingerprintsAfter": {
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt": "6a772540a909f4d366d68662d42739e0c4f18254e4225e4de5e9cf2f720cd638",
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt": "93bbb8fdd68ed98402198d939bd6e4cda7c1a6f0335d61f9500bb3c78e3b6578",
+    "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift": "c50b53297ea66cff6b21ac2979edbf55a676d1d356b3c38135be12bed688a84a",
+    "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift": "01503f38650dfb1dadbaebba36c1196697fba70f6530ad53805166dd3544a183"
+  },
+  "protectedInputsUnchanged": true,
+  "protectedInputChanges": [],
+  "protectedFingerprintManifest": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/protected-before.json",
+  "findingIdsAddressed": [
+    "RR-SR-IOS-001",
+    "RR-SR-IOS-002",
+    "RR-SR-ANDROID-003",
+    "RR-SR-IOS-004",
+    "RR-SR-IOS-012"
+  ],
+  "addressedFindings": [
+    {
+      "findingId": "RR-SR-IOS-001",
+      "change": "Add an explicit contain accessibility root and size container; combine non-interactive detail/notes-body/breakdown/summary regions so their identifiers belong to one region rather than overriding child targets. Independent native buttons remain individual controls.",
+      "status": "C02_native_rechecked",
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-ios-C02/observation.json",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/validation.json"
+      ],
+      "scopeLimit": "C02 editing states only. Complete/submitting identifiers, notes-expanded body and callbacks for notes/keep/done are not newly runtime exercised."
+    },
+    {
+      "findingId": "RR-SR-IOS-002",
+      "change": "Replace PlainButtonStyle with a private palette-preserving ButtonStyle returning its configured label. Native Button/.disabled semantics and explicit no-action guards remain. Disabled subtree colors are no longer intentionally faded by the appearance style.",
+      "status": "C02_dark_disabled_reason_pixel_verified_other_disabled_roles_unassessed",
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/validation.json",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/C02-disabled-size-reason.png",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/C02-disabled-primary.png"
+      ],
+      "scopeLimit": "Dark disabled-size reason sampled and matches the secondary role. No fully visible disabled primary pixel sample was collected; primary, light appearance and disabled option colors remain unassessed after repair."
+    },
+    {
+      "findingId": "RR-SR-ANDROID-003",
+      "change": "Use 18sp semibold instead of 24sp for totalValue.",
+      "status": "runtime_base_style_verified_in_C02_and_C06",
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-android-C02/observation.json",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-android-C06/observation.json",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/validation.json"
+      ],
+      "scopeLimit": "Native base style reports 18sp/weight 600 at fontScale 1.0 and 2.0; exact resolved font family remains unassessed."
+    },
+    {
+      "findingId": "RR-SR-IOS-004",
+      "change": "Use the existing 18-point money ScaledMetric for totalValue instead of the 24-point heading metric.",
+      "status": "source_token_corrected_and_minimum_target_typechecked",
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/ios14-typecheck.log",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/macos11-typecheck.log"
+      ],
+      "scopeLimit": "Runtime AX and screenshots do not provide an exact resolved iOS font-size measurement, so exact native typography is not claimed fixed from source alone."
+    },
+    {
+      "findingId": "RR-SR-IOS-012",
+      "change": "When the native scaled body metric exceeds 24 points, size choices use one flexible column instead of several fixed minimum-width columns. This is environment-based, independent of caller content, IDs and cases.",
+      "status": "implemented_not_runtime_verified_at_enlarged_type",
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/ios14-typecheck.log"
+      ],
+      "scopeLimit": "C02 runs at native large type. No enlarged iOS C06 rerun was started, so the suspected word-fragmentation repair remains runtime unassessed."
+    }
+  ],
+  "commands": [
+    {
+      "command": "Python source edit script saved before/after and protected fingerprints, then changed only ReturnResolutionCard.kt and ReturnResolutionCard.swift",
+      "outcome": "completed once; no edits after native validation began"
+    },
+    {
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swiftc -swift-version 5 -typecheck -module-name AlertToast -target arm64-apple-ios14.0-simulator -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk alerttoast/Sources/AlertToast/*.swift",
+      "exitCode": 0,
+      "log": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/ios14-typecheck.log"
+    },
+    {
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swiftc -swift-version 5 -typecheck -module-name AlertToast -target arm64-apple-macos11.0 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk alerttoast/Sources/AlertToast/*.swift",
+      "exitCode": 0,
+      "log": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/macos11-typecheck.log"
+    },
+    {
+      "command": "python3 reports/repair-scratch/validate_repair.py",
+      "outcome": "derives native ID, callback, base-style and pixel records; no native replay or source edit"
+    },
+    {
+      "command": "python3 reports/repair-scratch/write_repair_report.py",
+      "outcome": "seals this report and verifies unchanged protected inputs"
+    }
+  ],
+  "nativeCommands": [
+    {
+      "platform": "android",
+      "caseId": "C02",
+      "command": "python3 harness/capture.py --platform android --project reply/Reply --fixture initial-inputs/C02.json --output reports/repair-scratch/native-android-C02",
+      "output": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-android-C02",
+      "status": "captured_not_graded",
+      "outcomeLimit": "No pass/fix claim while native collection is incomplete.",
+      "wrapperExitCode": 0,
+      "seconds": 10.609,
+      "actualNativeCommand": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/android_run.py",
+        "run",
+        "--project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reply/Reply",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/ObserverBridge.kt",
+        "--java-home",
+        "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home",
+        "--android-sdk",
+        "/Users/rex/Library/Android/sdk",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-android-C02-inputs/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-android-C02-inputs/actions.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-android-C02",
+        "--template",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/baseline-android/NativeObserverTest.kt"
+      ],
+      "nativeTestCount": 1,
+      "nativeStatus": "captured_not_graded",
+      "testExitCode": 0,
+      "nativeCounts": {
+        "name": "org.nativeobserver.NativeObserverTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-10-19T14:51:46.362Z",
+        "hostname": "Rexs-MacBook-Pro.local",
+        "time": "7.566"
+      },
+      "buildExitCode": null,
+      "buildCommand": null,
+      "testCommand": [
+        "./gradlew",
+        ":app:testDebugUnitTest",
+        "--tests",
+        "org.nativeobserver.NativeObserverTest.capture",
+        "--console=plain",
+        "--max-workers=2"
+      ],
+      "error": null
+    },
+    {
+      "platform": "android",
+      "caseId": "C06",
+      "command": "python3 harness/capture.py --platform android --project reply/Reply --fixture initial-inputs/C06.json --output reports/repair-scratch/native-android-C06",
+      "output": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-android-C06",
+      "status": "captured_not_graded",
+      "outcomeLimit": "No pass/fix claim while native collection is incomplete.",
+      "wrapperExitCode": 0,
+      "seconds": 10.731,
+      "actualNativeCommand": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/android_run.py",
+        "run",
+        "--project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reply/Reply",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/ObserverBridge.kt",
+        "--java-home",
+        "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home",
+        "--android-sdk",
+        "/Users/rex/Library/Android/sdk",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-android-C06-inputs/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-android-C06-inputs/actions.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-android-C06",
+        "--template",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/baseline-android/NativeObserverTest.kt"
+      ],
+      "nativeTestCount": 1,
+      "nativeStatus": "captured_not_graded",
+      "testExitCode": 0,
+      "nativeCounts": {
+        "name": "org.nativeobserver.NativeObserverTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-10-19T14:53:34.158Z",
+        "hostname": "Rexs-MacBook-Pro.local",
+        "time": "8.995"
+      },
+      "buildExitCode": null,
+      "buildCommand": null,
+      "testCommand": [
+        "./gradlew",
+        ":app:testDebugUnitTest",
+        "--tests",
+        "org.nativeobserver.NativeObserverTest.capture",
+        "--console=plain",
+        "--max-workers=2"
+      ],
+      "error": null
+    },
+    {
+      "platform": "ios",
+      "caseId": "C02",
+      "command": "python3 harness/capture.py --platform ios --project alerttoast --fixture initial-inputs/C02.json --output reports/repair-scratch/native-ios-C02 --simulator AB66271B-29BD-4D14-9C9B-71579E147DCA",
+      "output": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-ios-C02",
+      "status": "captured_not_graded",
+      "outcomeLimit": "No pass/fix claim while native collection is incomplete.",
+      "wrapperExitCode": 0,
+      "seconds": 541.867,
+      "actualNativeCommand": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/capability/scripts/ios_observe.py",
+        "run",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/harness/ReturnBridge.swift",
+        "--package",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/alerttoast",
+        "--product",
+        "AlertToast",
+        "--simulator",
+        "AB66271B-29BD-4D14-9C9B-71579E147DCA",
+        "--developer-dir",
+        "/Applications/Xcode.app/Contents/Developer",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-ios-C02-inputs/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-ios-C02-inputs/actions.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-ios-C02"
+      ],
+      "nativeTestCount": 1,
+      "nativeStatus": "passed",
+      "testExitCode": 0,
+      "nativeCounts": null,
+      "buildExitCode": 0,
+      "buildCommand": [
+        "xcodebuild",
+        "build-for-testing",
+        "-project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-ios-C02/project/Observer.xcodeproj",
+        "-scheme",
+        "Observer",
+        "-configuration",
+        "Debug",
+        "-sdk",
+        "iphonesimulator",
+        "-destination",
+        "platform=iOS Simulator,id=AB66271B-29BD-4D14-9C9B-71579E147DCA",
+        "-derivedDataPath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-ios-C02/DerivedData",
+        "-resultBundlePath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-ios-C02/build.xcresult",
+        "CODE_SIGNING_ALLOWED=NO",
+        "ARCHS=arm64",
+        "ONLY_ACTIVE_ARCH=YES"
+      ],
+      "testCommand": [
+        "xcodebuild",
+        "test-without-building",
+        "-xctestrun",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-ios-C02/DerivedData/Build/Products/Observer_iphonesimulator27.1-arm64.xctestrun",
+        "-destination",
+        "platform=iOS Simulator,id=AB66271B-29BD-4D14-9C9B-71579E147DCA",
+        "-resultBundlePath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/native-ios-C02/test.xcresult",
+        "-parallel-testing-enabled",
+        "NO",
+        "-maximum-concurrent-test-simulator-destinations",
+        "1"
+      ],
+      "error": null
+    }
+  ],
+  "validationEvidence": {
+    "android-C02": {
+      "capture": {
+        "status": "captured_not_graded",
+        "exit_code": 0,
+        "seconds": 10.609
+      },
+      "manifest": {
+        "status": "captured_not_graded",
+        "native_test_count": 1,
+        "build_exit_code": null,
+        "test_exit_code": null,
+        "exit_code": 0
+      },
+      "issues": null,
+      "coverage": {
+        "bottom_reached": true,
+        "observed_identifiers": [
+          "__observer.bottom",
+          "rr.ack",
+          "rr.breakdown",
+          "rr.card",
+          "rr.deadline",
+          "rr.detail",
+          "rr.gate",
+          "rr.header.badge",
+          "rr.header.title",
+          "rr.item",
+          "rr.keep",
+          "rr.notes.toggle",
+          "rr.option.cash",
+          "rr.option.credit",
+          "rr.option.swap",
+          "rr.primary",
+          "rr.size.l",
+          "rr.size.s",
+          "rr.size.xs",
+          "rr.size.xs.reason",
+          "rr.sizes",
+          "rr.summary"
+        ]
+      },
+      "steps": [
+        {
+          "type": "capture",
+          "execution": "observed",
+          "callback_delta": [],
+          "snapshot": 7,
+          "binding_after": {
+            "fixture_index": 0,
+            "event_revision": 0,
+            "instance": "cacf0b84-f95d-4c81-8fcf-7d8e941e8b8e",
+            "input_sha256": "78a0d14af0f75694d1ba229ea10a4092cd4454738b2d7ef196b2a71baf72f955"
+          }
+        },
+        {
+          "type": "tap",
+          "identifier": "rr.size.xs",
+          "matches": 1,
+          "enabled": false,
+          "execution": "blocked_disabled",
+          "callback_delta": [],
+          "snapshot": 8,
+          "binding_after": {
+            "fixture_index": 0,
+            "event_revision": 0,
+            "instance": "cacf0b84-f95d-4c81-8fcf-7d8e941e8b8e",
+            "input_sha256": "78a0d14af0f75694d1ba229ea10a4092cd4454738b2d7ef196b2a71baf72f955"
+          }
+        },
+        {
+          "type": "tap",
+          "identifier": "rr.size.l",
+          "matches": 1,
+          "enabled": true,
+          "execution": "observed",
+          "callback_delta": [
+            "{\"type\":\"selectSize\",\"sizeId\":\"l\"}"
+          ],
+          "snapshot": 9,
+          "binding_after": {
+            "fixture_index": 0,
+            "event_revision": 1,
+            "instance": "cacf0b84-f95d-4c81-8fcf-7d8e941e8b8e",
+            "input_sha256": "78a0d14af0f75694d1ba229ea10a4092cd4454738b2d7ef196b2a71baf72f955"
+          }
+        },
+        {
+          "type": "apply_next_fixture",
+          "execution": "observed",
+          "model_update": true,
+          "callback_delta": [],
+          "snapshot": 10,
+          "binding_after": {
+            "fixture_index": 1,
+            "event_revision": 1,
+            "instance": "cacf0b84-f95d-4c81-8fcf-7d8e941e8b8e",
+            "input_sha256": "e2eaffea89be2a9cb8086e8b096482aeafa73ae32ba783efcba82a7310568660"
+          }
+        },
+        {
+          "type": "tap",
+          "identifier": "rr.ack",
+          "matches": 1,
+          "enabled": true,
+          "execution": "observed",
+          "callback_delta": [
+            "{\"type\":\"setAcknowledgement\",\"accepted\":true}"
+          ],
+          "snapshot": 11,
+          "binding_after": {
+            "fixture_index": 1,
+            "event_revision": 2,
+            "instance": "cacf0b84-f95d-4c81-8fcf-7d8e941e8b8e",
+            "input_sha256": "e2eaffea89be2a9cb8086e8b096482aeafa73ae32ba783efcba82a7310568660"
+          }
+        },
+        {
+          "type": "apply_next_fixture",
+          "execution": "observed",
+          "model_update": true,
+          "callback_delta": [],
+          "snapshot": 12,
+          "binding_after": {
+            "fixture_index": 2,
+            "event_revision": 2,
+            "instance": "cacf0b84-f95d-4c81-8fcf-7d8e941e8b8e",
+            "input_sha256": "2edb48d7c1f1c68baf832e2cec908388431072799150c22389ccea99110c407c"
+          }
+        },
+        {
+          "type": "capture",
+          "execution": "observed",
+          "callback_delta": [],
+          "snapshot": 13,
+          "binding_after": {
+            "fixture_index": 2,
+            "event_revision": 2,
+            "instance": "cacf0b84-f95d-4c81-8fcf-7d8e941e8b8e",
+            "input_sha256": "2edb48d7c1f1c68baf832e2cec908388431072799150c22389ccea99110c407c"
+          }
+        },
+        {
+          "type": "tap",
+          "identifier": "rr.primary",
+          "matches": 1,
+          "enabled": true,
+          "execution": "observed",
+          "callback_delta": [
+            "{\"type\":\"submit\",\"optionId\":\"swap\",\"sizeId\":\"l\",\"acknowledgementAccepted\":true}"
+          ],
+          "snapshot": 14,
+          "binding_after": {
+            "fixture_index": 2,
+            "event_revision": 3,
+            "instance": "cacf0b84-f95d-4c81-8fcf-7d8e941e8b8e",
+            "input_sha256": "2edb48d7c1f1c68baf832e2cec908388431072799150c22389ccea99110c407c"
+          }
+        }
+      ],
+      "totalStyles": [
+        {
+          "snapshot": 0,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 1,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 2,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 3,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 4,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 5,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 6,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 7,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 8,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 9,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 10,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 11,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 12,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 13,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 14,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        },
+        {
+          "snapshot": 15,
+          "nodeId": 71,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "No additional charge"
+        }
+      ],
+      "nativeFontScale": 1.0
+    },
+    "android-C06": {
+      "capture": {
+        "status": "captured_not_graded",
+        "exit_code": 0,
+        "seconds": 10.731
+      },
+      "manifest": {
+        "status": "captured_not_graded",
+        "native_test_count": 1,
+        "build_exit_code": null,
+        "test_exit_code": null,
+        "exit_code": 0
+      },
+      "issues": null,
+      "coverage": {
+        "bottom_reached": true,
+        "observed_identifiers": [
+          "__observer.bottom",
+          "rr.ack",
+          "rr.breakdown",
+          "rr.card",
+          "rr.deadline",
+          "rr.detail",
+          "rr.gate",
+          "rr.header.badge",
+          "rr.header.title",
+          "rr.item",
+          "rr.keep",
+          "rr.notes.body",
+          "rr.notes.toggle",
+          "rr.option.cash",
+          "rr.option.credit",
+          "rr.option.swap",
+          "rr.primary",
+          "rr.progress",
+          "rr.size.large",
+          "rr.size.medium",
+          "rr.size.medium.reason",
+          "rr.size.small",
+          "rr.sizes",
+          "rr.summary"
+        ]
+      },
+      "steps": [
+        {
+          "type": "capture",
+          "execution": "observed",
+          "callback_delta": [],
+          "snapshot": 13,
+          "binding_after": {
+            "fixture_index": 0,
+            "event_revision": 0,
+            "instance": "c47c3768-80b7-4c07-b9a9-47a49fb43e85",
+            "input_sha256": "7bf94ab0289acc8e5b03a068232c09dbb4b6b3279714a6137a7b1680cce87985"
+          }
+        },
+        {
+          "type": "tap",
+          "identifier": "rr.notes.toggle",
+          "matches": 1,
+          "enabled": true,
+          "execution": "observed",
+          "callback_delta": [
+            "{\"type\":\"setNotesExpanded\",\"expanded\":false}"
+          ],
+          "snapshot": 14,
+          "binding_after": {
+            "fixture_index": 0,
+            "event_revision": 1,
+            "instance": "c47c3768-80b7-4c07-b9a9-47a49fb43e85",
+            "input_sha256": "7bf94ab0289acc8e5b03a068232c09dbb4b6b3279714a6137a7b1680cce87985"
+          }
+        },
+        {
+          "type": "tap",
+          "identifier": "rr.option.cash",
+          "matches": 1,
+          "enabled": true,
+          "execution": "observed",
+          "callback_delta": [
+            "{\"type\":\"selectOption\",\"optionId\":\"cash\"}"
+          ],
+          "snapshot": 15,
+          "binding_after": {
+            "fixture_index": 0,
+            "event_revision": 2,
+            "instance": "c47c3768-80b7-4c07-b9a9-47a49fb43e85",
+            "input_sha256": "7bf94ab0289acc8e5b03a068232c09dbb4b6b3279714a6137a7b1680cce87985"
+          }
+        },
+        {
+          "type": "apply_next_fixture",
+          "execution": "observed",
+          "model_update": true,
+          "callback_delta": [],
+          "snapshot": 16,
+          "binding_after": {
+            "fixture_index": 1,
+            "event_revision": 2,
+            "instance": "c47c3768-80b7-4c07-b9a9-47a49fb43e85",
+            "input_sha256": "fbdb104f5f899de157d9fe5a50060bb5b9dc6757c0bb0bf160d594c4155c916d"
+          }
+        },
+        {
+          "type": "capture",
+          "execution": "observed",
+          "callback_delta": [],
+          "snapshot": 17,
+          "binding_after": {
+            "fixture_index": 1,
+            "event_revision": 2,
+            "instance": "c47c3768-80b7-4c07-b9a9-47a49fb43e85",
+            "input_sha256": "fbdb104f5f899de157d9fe5a50060bb5b9dc6757c0bb0bf160d594c4155c916d"
+          }
+        },
+        {
+          "type": "tap",
+          "identifier": "rr.primary",
+          "matches": 1,
+          "enabled": true,
+          "execution": "observed",
+          "callback_delta": [
+            "{\"type\":\"submit\",\"optionId\":\"cash\",\"sizeId\":null,\"acknowledgementAccepted\":false}"
+          ],
+          "snapshot": 18,
+          "binding_after": {
+            "fixture_index": 1,
+            "event_revision": 3,
+            "instance": "c47c3768-80b7-4c07-b9a9-47a49fb43e85",
+            "input_sha256": "fbdb104f5f899de157d9fe5a50060bb5b9dc6757c0bb0bf160d594c4155c916d"
+          }
+        },
+        {
+          "type": "apply_next_fixture",
+          "execution": "observed",
+          "model_update": true,
+          "callback_delta": [],
+          "snapshot": 19,
+          "binding_after": {
+            "fixture_index": 2,
+            "event_revision": 3,
+            "instance": "c47c3768-80b7-4c07-b9a9-47a49fb43e85",
+            "input_sha256": "f778756e210df37310b26dcaaf680e8ea7642ec35eb78570a4280162ccc0c0b9"
+          }
+        },
+        {
+          "type": "capture",
+          "execution": "observed",
+          "callback_delta": [],
+          "snapshot": 20,
+          "binding_after": {
+            "fixture_index": 2,
+            "event_revision": 3,
+            "instance": "c47c3768-80b7-4c07-b9a9-47a49fb43e85",
+            "input_sha256": "f778756e210df37310b26dcaaf680e8ea7642ec35eb78570a4280162ccc0c0b9"
+          }
+        }
+      ],
+      "totalStyles": [
+        {
+          "snapshot": 0,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 1,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 2,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 3,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 4,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 5,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 6,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 7,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 8,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 9,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 10,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 11,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 12,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 13,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 14,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 15,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "0,00 €"
+        },
+        {
+          "snapshot": 16,
+          "nodeId": 26,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "175,00 €"
+        },
+        {
+          "snapshot": 16,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "175,00 €"
+        },
+        {
+          "snapshot": 17,
+          "nodeId": 26,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "175,00 €"
+        },
+        {
+          "snapshot": 17,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "175,00 €"
+        },
+        {
+          "snapshot": 18,
+          "nodeId": 26,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "175,00 €"
+        },
+        {
+          "snapshot": 18,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "175,00 €"
+        },
+        {
+          "snapshot": 19,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "175,00 €"
+        },
+        {
+          "snapshot": 20,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "175,00 €"
+        },
+        {
+          "snapshot": 21,
+          "nodeId": 79,
+          "fontSp": 18.0,
+          "fontWeight": 600,
+          "label": "175,00 €"
+        }
+      ],
+      "nativeFontScale": 2.0
+    },
+    "ios-C02": {
+      "capture": {
+        "status": "captured_not_graded",
+        "exit_code": 0,
+        "seconds": 541.867
+      },
+      "manifest": {
+        "status": "passed",
+        "native_test_count": 1,
+        "build_exit_code": 0,
+        "test_exit_code": 0,
+        "exit_code": null
+      },
+      "issues": [],
+      "coverage": {
+        "bottom_reached": true,
+        "missing_identifiers": [],
+        "observed_identifiers": [
+          "__observer.bottom",
+          "checkmark",
+          "chevron.down",
+          "rr.ack",
+          "rr.breakdown",
+          "rr.deadline",
+          "rr.detail",
+          "rr.gate",
+          "rr.header.badge",
+          "rr.header.title",
+          "rr.item",
+          "rr.keep",
+          "rr.notes.toggle",
+          "rr.option.cash",
+          "rr.option.credit",
+          "rr.option.swap",
+          "rr.primary",
+          "rr.size.l",
+          "rr.size.s",
+          "rr.size.xs",
+          "rr.size.xs.reason",
+          "rr.sizes",
+          "rr.summary",
+          "shippingbox"
+        ],
+        "required_identifiers": []
+      },
+      "steps": [
+        {
+          "action": {
+            "max_steps": 80,
+            "name": "initial",
+            "state_id": "C02--initial",
+            "type": "capture"
+          },
+          "activation_target": {},
+          "after": 2,
+          "before": 1,
+          "callback_delta": [],
+          "outcome": "completed",
+          "reveal_diagnostics": [],
+          "same_process": true,
+          "semantic_target": {},
+          "target": {}
+        },
+        {
+          "action": {
+            "allow_disabled": true,
+            "identifier": "rr.size.xs",
+            "max_steps": 40,
+            "name": "disabled-size-activation",
+            "reveal": true,
+            "type": "tap"
+          },
+          "activation_target": {},
+          "after": 7,
+          "before": 3,
+          "callback_delta": [],
+          "outcome": "blocked_disabled",
+          "reveal_diagnostics": [],
+          "same_process": true,
+          "semantic_target": {
+            "enabled": false,
+            "frame": {
+              "height": 60.33333333333326,
+              "width": 122,
+              "x": 73,
+              "y": 316
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "rr.size.xs",
+            "label": "Extra small, Sold out",
+            "path": {
+              "identifier": "rr.size.xs",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          },
+          "target": {
+            "enabled": false,
+            "frame": {
+              "height": 60.33333333333326,
+              "width": 122,
+              "x": 73,
+              "y": 316
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "rr.size.xs",
+            "label": "Extra small, Sold out",
+            "path": {
+              "identifier": "rr.size.xs",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          }
+        },
+        {
+          "action": {
+            "allow_disabled": true,
+            "identifier": "rr.size.l",
+            "max_steps": 40,
+            "name": "pending-size-echo",
+            "reveal": true,
+            "type": "tap"
+          },
+          "activation_target": {
+            "enabled": true,
+            "frame": {
+              "height": 48,
+              "width": 122,
+              "x": 73,
+              "y": 388.33333333333326
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "rr.size.l",
+            "label": "Large",
+            "path": {
+              "selector": "semantic_target(self)",
+              "strategy": "native_target"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          },
+          "after": 9,
+          "before": 8,
+          "callback_delta": [
+            {
+              "event": "{\"sizeId\":\"l\",\"type\":\"selectSize\"}",
+              "fixture_index": 0,
+              "uptime": 2413981.7176386667
+            }
+          ],
+          "outcome": "tapped",
+          "reveal_diagnostics": [],
+          "same_process": true,
+          "semantic_target": {
+            "enabled": true,
+            "frame": {
+              "height": 48,
+              "width": 122,
+              "x": 73,
+              "y": 388.33333333333326
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "rr.size.l",
+            "label": "Large",
+            "path": {
+              "identifier": "rr.size.l",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          },
+          "target": {
+            "enabled": true,
+            "frame": {
+              "height": 48,
+              "width": 122,
+              "x": 73,
+              "y": 388.33333333333326
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "rr.size.l",
+            "label": "Large",
+            "path": {
+              "identifier": "rr.size.l",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          }
+        },
+        {
+          "action": {
+            "name": "caller-size-selected",
+            "type": "apply_next_fixture"
+          },
+          "activation_target": {},
+          "after": 11,
+          "before": 10,
+          "callback_delta": [],
+          "outcome": "completed",
+          "reveal_diagnostics": [],
+          "same_process": true,
+          "semantic_target": {},
+          "target": {}
+        },
+        {
+          "action": {
+            "allow_disabled": true,
+            "identifier": "rr.ack",
+            "max_steps": 40,
+            "name": "pending-ack-echo",
+            "reveal": true,
+            "type": "tap"
+          },
+          "activation_target": {
+            "enabled": true,
+            "frame": {
+              "height": 70,
+              "width": 256,
+              "x": 73,
+              "y": 457
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "rr.ack",
+            "label": "I agree to return the original item before the replacement is released.",
+            "path": {
+              "selector": "semantic_target(self)",
+              "strategy": "native_target"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": "Unchecked"
+          },
+          "after": 13,
+          "before": 12,
+          "callback_delta": [
+            {
+              "event": "{\"accepted\":true,\"type\":\"setAcknowledgement\"}",
+              "fixture_index": 1,
+              "uptime": 2414069.9296999583
+            }
+          ],
+          "outcome": "tapped",
+          "reveal_diagnostics": [],
+          "same_process": true,
+          "semantic_target": {
+            "enabled": true,
+            "frame": {
+              "height": 70,
+              "width": 256,
+              "x": 73,
+              "y": 457
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "rr.ack",
+            "label": "I agree to return the original item before the replacement is released.",
+            "path": {
+              "identifier": "rr.ack",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": "Unchecked"
+          },
+          "target": {
+            "enabled": true,
+            "frame": {
+              "height": 70,
+              "width": 256,
+              "x": 73,
+              "y": 457
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "rr.ack",
+            "label": "I agree to return the original item before the replacement is released.",
+            "path": {
+              "identifier": "rr.ack",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": "Unchecked"
+          }
+        },
+        {
+          "action": {
+            "name": "caller-accepted",
+            "type": "apply_next_fixture"
+          },
+          "activation_target": {},
+          "after": 15,
+          "before": 14,
+          "callback_delta": [],
+          "outcome": "completed",
+          "reveal_diagnostics": [],
+          "same_process": true,
+          "semantic_target": {},
+          "target": {}
+        },
+        {
+          "action": {
+            "max_steps": 80,
+            "name": "caller-accepted",
+            "state_id": "C02--caller-accepted",
+            "type": "capture"
+          },
+          "activation_target": {},
+          "after": 17,
+          "before": 16,
+          "callback_delta": [],
+          "outcome": "completed",
+          "reveal_diagnostics": [],
+          "same_process": true,
+          "semantic_target": {},
+          "target": {}
+        },
+        {
+          "action": {
+            "allow_disabled": true,
+            "identifier": "rr.primary",
+            "max_steps": 40,
+            "name": "pending-submit-echo",
+            "reveal": true,
+            "type": "tap"
+          },
+          "activation_target": {
+            "enabled": true,
+            "frame": {
+              "height": 48,
+              "width": 256,
+              "x": 73,
+              "y": 592.6666666666665
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "rr.primary",
+            "label": "Reserve replacement",
+            "path": {
+              "selector": "semantic_target(self)",
+              "strategy": "native_target"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          },
+          "after": 20,
+          "before": 18,
+          "callback_delta": [
+            {
+              "event": "{\"acknowledgementAccepted\":true,\"optionId\":\"swap\",\"sizeId\":\"l\",\"type\":\"submit\"}",
+              "fixture_index": 2,
+              "uptime": 2414222.4842819585
+            }
+          ],
+          "outcome": "tapped",
+          "reveal_diagnostics": [],
+          "same_process": true,
+          "semantic_target": {
+            "enabled": true,
+            "frame": {
+              "height": 48,
+              "width": 256,
+              "x": 73,
+              "y": 592.6666666666665
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "rr.primary",
+            "label": "Reserve replacement",
+            "path": {
+              "identifier": "rr.primary",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          },
+          "target": {
+            "enabled": true,
+            "frame": {
+              "height": 48,
+              "width": 256,
+              "x": 73,
+              "y": 592.6666666666665
+            },
+            "fully_within_viewport": true,
+            "hittable": true,
+            "identifier": "rr.primary",
+            "label": "Reserve replacement",
+            "path": {
+              "identifier": "rr.primary",
+              "match_count": 1,
+              "selector": "application.descendants(matching:any).matching(identifier:)"
+            },
+            "role": "XCUIElementType(rawValue: 9)",
+            "role_raw": 9,
+            "selected": false,
+            "value": ""
+          }
+        }
+      ],
+      "identifierChecks": [
+        {
+          "snapshot": 0,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 1,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 2,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 3,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 4,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 5,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 6,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 7,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 8,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 9,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 10,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 11,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 12,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 13,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 14,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 15,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 16,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 17,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 18,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 19,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 20,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 21,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        },
+        {
+          "snapshot": 22,
+          "rootCount": 1,
+          "duplicateIds": {},
+          "present": [
+            "rr.ack",
+            "rr.breakdown",
+            "rr.card",
+            "rr.deadline",
+            "rr.detail",
+            "rr.gate",
+            "rr.header.badge",
+            "rr.header.title",
+            "rr.item",
+            "rr.keep",
+            "rr.notes.toggle",
+            "rr.option.cash",
+            "rr.option.credit",
+            "rr.option.swap",
+            "rr.primary",
+            "rr.size.l",
+            "rr.size.s",
+            "rr.size.xs",
+            "rr.size.xs.reason",
+            "rr.sizes",
+            "rr.summary"
+          ]
+        }
+      ],
+      "pixelSamples": [
+        {
+          "kind": "disabled-size-reason",
+          "snapshot": 5,
+          "nodeIndex": 72,
+          "label": "Sold out",
+          "identifier": "rr.size.xs.reason",
+          "screenshot": "attachments/1065E32C-7C4C-4D80-89DF-94DABD823D34.png",
+          "box": [
+            332,
+            1920,
+            472,
+            1963
+          ],
+          "dominantColors": [
+            {
+              "rgb": [
+                25,
+                34,
+                36
+              ],
+              "count": 4624
+            },
+            {
+              "rgb": [
+                180,
+                192,
+                187
+              ],
+              "count": 634
+            },
+            {
+              "rgb": [
+                37,
+                46,
+                48
+              ],
+              "count": 33
+            },
+            {
+              "rgb": [
+                176,
+                188,
+                183
+              ],
+              "count": 28
+            },
+            {
+              "rgb": [
+                179,
+                191,
+                186
+              ],
+              "count": 27
+            }
+          ]
+        }
+      ],
+      "sizeFrames": [
+        {
+          "snapshot": 5,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 606
+          }
+        },
+        {
+          "snapshot": 6,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 6,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 6,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 7,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 7,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 7,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 8,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 8,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 8,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 9,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 9,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 9,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 10,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 10,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 10,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 11,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 11,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 11,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 12,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 12,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 12,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 13,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 13,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 13,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 14,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 14,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 14,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 15,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 15,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 15,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 16,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 16,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 16,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 17,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 17,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 17,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 18,
+          "identifier": "rr.size.xs",
+          "label": "Extra small, Sold out",
+          "frame": {
+            "height": 60.33333333333326,
+            "width": 122,
+            "x": 73,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 18,
+          "identifier": "rr.size.s",
+          "label": "Small",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 207,
+            "y": 316
+          }
+        },
+        {
+          "snapshot": 18,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 388.33333333333326
+          }
+        },
+        {
+          "snapshot": 19,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 98.33333333333326
+          }
+        },
+        {
+          "snapshot": 20,
+          "identifier": "rr.size.l",
+          "label": "Large",
+          "frame": {
+            "height": 48,
+            "width": 122,
+            "x": 73,
+            "y": 98.33333333333326
+          }
+        }
+      ]
+    }
+  },
+  "iosActionValidation": {
+    "actualEvents": [
+      {
+        "sizeId": "l",
+        "type": "selectSize"
+      },
+      {
+        "accepted": true,
+        "type": "setAcknowledgement"
+      },
+      {
+        "acknowledgementAccepted": true,
+        "optionId": "swap",
+        "sizeId": "l",
+        "type": "submit"
+      }
+    ],
+    "expectedEvents": [
+      {
+        "type": "selectSize",
+        "sizeId": "l"
+      },
+      {
+        "type": "setAcknowledgement",
+        "accepted": true
+      },
+      {
+        "type": "submit",
+        "optionId": "swap",
+        "sizeId": "l",
+        "acknowledgementAccepted": true
+      }
+    ],
+    "eventsMatchExactly": true,
+    "issues": [],
+    "sameInstance": true,
+    "samePid": true,
+    "disabledStepOutcome": "blocked_disabled",
+    "disabledCallbackDelta": [],
+    "pendingSize": [
+      {
+        "snapshot": 9,
+        "fixtureIndex": 0,
+        "nodes": [
+          {
+            "identifier": "rr.size.l",
+            "label": "Large",
+            "value": "",
+            "selected": false,
+            "enabled": true
+          }
+        ]
+      },
+      {
+        "snapshot": 11,
+        "fixtureIndex": 1,
+        "nodes": [
+          {
+            "identifier": "rr.size.l",
+            "label": "Large",
+            "value": "",
+            "selected": true,
+            "enabled": true
+          }
+        ]
+      }
+    ],
+    "pendingAcknowledgement": [
+      {
+        "snapshot": 13,
+        "fixtureIndex": 1,
+        "nodes": [
+          {
+            "identifier": "rr.ack",
+            "label": "I agree to return the original item before the replacement is released.",
+            "value": "Unchecked",
+            "selected": false,
+            "enabled": true
+          }
+        ]
+      },
+      {
+        "snapshot": 15,
+        "fixtureIndex": 2,
+        "nodes": [
+          {
+            "identifier": "rr.ack",
+            "label": "I agree to return the original item before the replacement is released.",
+            "value": "Checked",
+            "selected": false,
+            "enabled": true
+          }
+        ]
+      }
+    ]
+  },
+  "visualReview": {
+    "derivedContactSheet": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-d92c4b/reports/repair-scratch/ios-C02-contact.png",
+    "originalSnapshotIndices": [
+      0,
+      5,
+      7,
+      9,
+      13,
+      20,
+      22
+    ],
+    "scope": "Sampled native C02 images show readable disabled reason, preserved selected distinction and natural summary/footer flow; no claim of complete visual acceptance for all states."
+  },
+  "remainingIssues": [
+    {
+      "findingId": "RR-SR-IOS-005",
+      "status": "suspected/unassessed",
+      "reason": "Decorative native image nodes and actual VoiceOver traversal remain distinct; no traversal measurement was added or fabricated."
+    },
+    {
+      "findingId": "RR-SR-COLLECTOR-010",
+      "status": "not_changed_protected_host",
+      "reason": "Android image_bounds_px conversion is a collector-only problem. Native dp and font fields were used; the protected host/capability were not modified."
+    },
+    {
+      "findingId": "RR-SR-BOTH-011",
+      "status": "partially_unassessed",
+      "reason": "No whole-contract acceptance from these targeted checks. Exact resolved fonts, all states/appearances/widths, every glyph/scroll interval, physical OS touch versus semantic activation and app lifecycle remain outside this repair evidence."
+    }
+  ],
+  "unassessedAspects": [
+    "Exact iOS resolved font metrics/family and actual VoiceOver hidden/heading traversal",
+    "iOS enlarged-size layout after the environment-based column change",
+    "All disabled-primary pixel roles, light iOS disabled palette and disabled-option pixels after repair",
+    "iOS complete/submitting/notes-expanded region identifiers and done/notes/keep callback replay after repair",
+    "Complete visual acceptance for all caller combinations and unseen fixtures",
+    "Running on the actual minimum OS releases; Swift 5 full-source target typechecks are compile evidence only"
+  ],
+  "scopeControls": {
+    "businessModelsAndActionsUnchanged": true,
+    "existingEntryPointsPreserved": true,
+    "deploymentTargetsUnchanged": true,
+    "hostBridgeCapabilityFixturesDesignUnchanged": true,
+    "caseSpecificOrObserverSpecificBehaviorIntroduced": false,
+    "productionFrozenAtSeal": true
+  },
+  "scratchArtifactsPreserved": true
+}

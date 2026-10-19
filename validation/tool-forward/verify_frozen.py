@@ -42,7 +42,7 @@ def main():
         assert changed == {'scripts/ios_observe.py', 'assets/ios-observer/ObserverTests.swift'}
         assert set(files) == set(original)
     for manifest in ['operator-freeze.json', 'phase-prompt-freeze.json', 'matching-prompt-freeze.json',
-                     'resource-amendment-2.json']:
+                     'resource-amendment-2.json', 'operator-case-name-amendment.json']:
         checked += checked_files(R, read(R / manifest)['files'])
     checked += checked_files(R / 'harness', read(R / 'harness-freeze.json')['files'])
     assert sha(R / 'METHODS.md') == read(R / 'methods-commitment.json')['sha256']

@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "scope": "Targeted notes repair only; no whole contract acceptance",
+  "states": [
+    {
+      "id": "initial",
+      "input_index": 0
+    },
+    {
+      "id": "C03--caller-notes-open",
+      "input_index": 1
+    },
+    {
+      "id": "action-1",
+      "input_index": 0,
+      "coverage": "target",
+      "after_action": 1
+    },
+    {
+      "id": "action-4",
+      "input_index": 1,
+      "coverage": "target",
+      "after_action": 4
+    },
+    {
+      "id": "action-6",
+      "input_index": 2,
+      "coverage": "target",
+      "after_action": 6
+    }
+  ],
+  "assertions": [
+    {
+      "id": "notes-closed-control_role",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "control_role",
+      "expected": "button",
+      "op": "eq"
+    },
+    {
+      "id": "notes-closed-label",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "label",
+      "expected": "Read packing, inspection, and delivery instructions",
+      "op": "eq"
+    },
+    {
+      "id": "notes-closed-touch_height",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "touch_height",
+      "expected": 44,
+      "op": "gte"
+    },
+    {
+      "id": "notes-closed-glyphs",
+      "state": "initial",
+      "kind": "manual",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "notes-open-control_role",
+      "state": "C03--caller-notes-open",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "control_role",
+      "expected": "button",
+      "op": "eq"
+    },
+    {
+      "id": "notes-open-label",
+      "state": "C03--caller-notes-open",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "label",
+      "expected": "Read packing, inspection, and delivery instructions",
+      "op": "eq"
+    },
+    {
+      "id": "notes-open-touch_height",
+      "state": "C03--caller-notes-open",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "touch_height",
+      "expected": 44,
+      "op": "gte"
+    },
+    {
+      "id": "notes-open-glyphs",
+      "state": "C03--caller-notes-open",
+      "kind": "manual",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "event-1",
+      "state": "action-1",
+      "kind": "event",
+      "action_index": 1,
+      "expected": [
+        "{\"type\":\"setNotesExpanded\",\"expanded\":true}"
+      ]
+    },
+    {
+      "id": "event-4",
+      "state": "action-4",
+      "kind": "event",
+      "action_index": 4,
+      "expected": [
+        "{\"type\":\"setAcknowledgement\",\"accepted\":true}"
+      ]
+    },
+    {
+      "id": "event-6",
+      "state": "action-6",
+      "kind": "event",
+      "action_index": 6,
+      "expected": [
+        "{\"type\":\"keepPurchase\"}"
+      ]
+    }
+  ]
+}

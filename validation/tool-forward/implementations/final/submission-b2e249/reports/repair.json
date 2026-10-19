@@ -1,0 +1,614 @@
+{
+  "phase": "repair",
+  "iteration": 1,
+  "status": "final-source-sealed",
+  "startedAt": "2026-10-19T14:50:02Z",
+  "finishedAt": "2026-10-19T15:02:28Z",
+  "elapsedSeconds": 746.0,
+  "budgetSeconds": 900,
+  "timing": {
+    "accounting": "Full wall time from first work call; no time subtracted and budget not reset.",
+    "serviceInterruptions": [],
+    "allNativeCommandsFinished": true,
+    "lateOrBackgroundNativeWork": false,
+    "nativeIntegrationSeconds": {
+      "initial-inputs/C03.json:android": 16.86,
+      "initial-inputs/C06.json:android": 19.562,
+      "design/public-example.json:ios": 357.749
+    }
+  },
+  "changedFiles": [
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt",
+    "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift"
+  ],
+  "beforeFingerprints": {
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt": "c2d9cf3a9f57bb5af8c2ea334305d0f2fb6eb0c36e751a418d329b03b9f4c580",
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt": "b6670834791db6dd012220a1160ff1c97b4d4e522afa0dcf009815281152ef59",
+    "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift": "0f76b8538a0f7892d439239b70e8cbb8c923655970c673885789d636b8af006f",
+    "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift": "5b23b42bf3f8102c5cbb5502dfd168ec80de3108dc6a87c8a980c17e0df2edde"
+  },
+  "afterFingerprints": {
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt": "a5622cb4f4739ce490042865769032ff7539efeb7d68917c25b744f0188d80e2",
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionModels.kt": "b6670834791db6dd012220a1160ff1c97b4d4e522afa0dcf009815281152ef59",
+    "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift": "c0c9920f7465082f5f7ff330fd759353589157ba9ce90b3be4806fc621380c01",
+    "alerttoast/Sources/AlertToast/ReturnResolutionModels.swift": "5b23b42bf3f8102c5cbb5502dfd168ec80de3108dc6a87c8a980c17e0df2edde"
+  },
+  "unchangedPublicModelsAndActions": true,
+  "changes": [
+    {
+      "findingId": "SR-ANDROID-NOTES-CLIPPING",
+      "status": "runtime-verified-in-examined-C03-and-C06-states",
+      "files": [
+        "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt"
+      ],
+      "change": "Give notes and keep-purchase TextButtons an explicit rectangular shape. This removes the capsule clipping mechanism for multiline caller labels without changing controlled actions, labels, enabled state or natural sizing.",
+      "verification": {
+        "compile": "reports/repair-scratch/android-compile.log",
+        "nativeChecks": {
+          "android-C03": {
+            "passed": 11,
+            "failed": 0,
+            "unassessed": 0
+          },
+          "android-C06": {
+            "passed": 16,
+            "failed": 0,
+            "unassessed": 0
+          }
+        },
+        "scope": "C03 long LTR and C06 enlarged RTL notes titles, expanded/collapsed; native button label/role/minimum touch height and supplied action callbacks. C06 submitting exclusions were also checked.",
+        "evidence": [
+          "reports/repair-scratch/android-C03-notes.json",
+          "reports/repair-scratch/android-C06-notes.json",
+          "reports/repair-scratch/android-C03-checks.json",
+          "reports/repair-scratch/android-C06-checks.json",
+          "reports/repair-scratch/android-C03-repaired-notes-input0-snapshot15.png",
+          "reports/repair-scratch/android-C03-repaired-notes-input1-snapshot59.png",
+          "reports/repair-scratch/android-C06-repaired-notes-input0-snapshot11.png",
+          "reports/repair-scratch/android-C06-repaired-notes-input1-snapshot44.png"
+        ]
+      },
+      "limits": "Only the notes labels in those images were visually accepted; this is not a full-card style or all-caller-text pass."
+    },
+    {
+      "findingId": "SR-IOS-DISABLED-TOKENS",
+      "status": "runtime-verified-on-interim-Swift-source-for-light-public-example; final-source-runtime-unassessed",
+      "files": [
+        "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift"
+      ],
+      "change": "Replace PlainButtonStyle with a shared private ButtonStyle that preserves authored colors when disabled and supplies only native press feedback. Native .disabled and callback guards remain.",
+      "verification": {
+        "evidence": "reports/repair-scratch/ios-public-verification.json",
+        "observedPrimaryFillRGB": [
+          223,
+          230,
+          225
+        ],
+        "observedPrimaryTextRGB": [
+          89,
+          101,
+          94
+        ],
+        "observedUnavailableReasonRGB": [
+          93,
+          103,
+          108
+        ],
+        "rawPrimaryNativeEnabled": false,
+        "pixelValuesMatchSpecifiedLightRoles": true,
+        "sourceAtRuntime": "reports/repair-scratch/runtime-ReturnResolutionCard.swift",
+        "scope": "Light/LTR/large public example, disabled primary and unavailable M-size reason only."
+      },
+      "limits": "The last source change adds an accessibility container to the size group after this capture. The runtime source fingerprint therefore differs from the final Swift source. Although color/style code did not change in that last adjustment, the old capture is not a final-source pass. Dark disabled options/sizes and other environments were not freshly validated."
+    },
+    {
+      "findingId": "SR-IOS-EXCHANGE-HEIGHT-DRIFT",
+      "status": "implementation-changed; enlarged-C06-runtime-unassessed",
+      "files": [
+        "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift"
+      ],
+      "change": "Replace LazyVGrid with eager rows. All sizes are measured in natural flow: two columns at ordinary categories and one column for accessibility categories, preserving list order and native wrapping.",
+      "verification": {
+        "interimPublicExampleContentHeight": 1744.3333333333333,
+        "interimInitialAndFinalHeightStable": true,
+        "interimCoverage": "reports/repair-scratch/ios-public-verification.json",
+        "minimumTargetCompileChecks": "reports/repair-scratch/final-compatibility.json"
+      },
+      "limits": "No repaired iOS C06 accessibility/RTL capture was run in this phase. Stable base-size public-example geometry does not establish that the original C06 drift has been fixed."
+    },
+    {
+      "findingId": "REPAIR-IOS-SIZE-IDENTIFIER-PROPAGATION",
+      "status": "observed-interim-regression; final-source-adjusted-and-typechecked; runtime-unassessed",
+      "files": [
+        "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift"
+      ],
+      "change": "The eager VStack caused rr.sizes to propagate onto native size buttons. The final source gives the size group an explicit accessibilityElement(children: .contain) before setting its group identifier, preserving the intended independent per-size identifiers in source.",
+      "evidence": [
+        "reports/repair-scratch/ios-direct-ax.json",
+        "reports/repair-scratch/ios-public-checks.json",
+        "reports/repair-scratch/ios-final.patch",
+        "reports/repair-scratch/final-compatibility.json"
+      ],
+      "limits": "A fresh runtime capture after the container adjustment was not performed. Per-size identifier restoration is not claimed as verified."
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "cat",
+        "reports/self-review.json",
+        "capability/SKILL.md"
+      ],
+      "purpose": "Read own sealed findings and assigned capability; public design remained the contract."
+    },
+    {
+      "command": [
+        "reply/Reply/gradlew",
+        "-p",
+        "reply/Reply",
+        ":app:compileDebugKotlin",
+        "--console=plain",
+        "--max-workers=2"
+      ],
+      "environment": {
+        "JAVA_HOME": "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home",
+        "ANDROID_HOME": "/Users/rex/Library/Android/sdk"
+      },
+      "exitCode": 0,
+      "outcome": "BUILD SUCCESSFUL in 2s",
+      "log": "reports/repair-scratch/android-compile.log"
+    },
+    {
+      "commands": [
+        {
+          "platform": "ios14",
+          "command": [
+            "xcrun",
+            "--sdk",
+            "iphonesimulator",
+            "swiftc",
+            "-typecheck",
+            "-swift-version",
+            "5",
+            "-module-name",
+            "AlertToast",
+            "-target",
+            "arm64-apple-ios14.0-simulator",
+            "-sdk",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ActivityIndicator.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/AlertToast.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/BlurView.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionModels.swift"
+          ],
+          "exitCode": 0,
+          "log": "reports/repair-scratch/ios14-typecheck.log"
+        },
+        {
+          "platform": "macos11",
+          "command": [
+            "xcrun",
+            "--sdk",
+            "macosx",
+            "swiftc",
+            "-typecheck",
+            "-swift-version",
+            "5",
+            "-module-name",
+            "AlertToast",
+            "-target",
+            "arm64-apple-macosx11.0",
+            "-sdk",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ActivityIndicator.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/AlertToast.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/BlurView.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionModels.swift"
+          ],
+          "exitCode": 0,
+          "log": "reports/repair-scratch/macos11-typecheck.log"
+        }
+      ],
+      "purpose": "Full real package Swift 5 type checks against iOS14 and macOS11 targets before runtime verification"
+    },
+    {
+      "commands": [
+        {
+          "platform": "ios14",
+          "command": [
+            "xcrun",
+            "--sdk",
+            "iphonesimulator",
+            "swiftc",
+            "-typecheck",
+            "-swift-version",
+            "5",
+            "-module-name",
+            "AlertToast",
+            "-target",
+            "arm64-apple-ios14.0-simulator",
+            "-sdk",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator27.1.sdk",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ActivityIndicator.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/AlertToast.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/BlurView.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionModels.swift"
+          ],
+          "exitCode": 0,
+          "log": "reports/repair-scratch/ios14-final-typecheck.log"
+        },
+        {
+          "platform": "macos11",
+          "command": [
+            "xcrun",
+            "--sdk",
+            "macosx",
+            "swiftc",
+            "-typecheck",
+            "-swift-version",
+            "5",
+            "-module-name",
+            "AlertToast",
+            "-target",
+            "arm64-apple-macosx11.0",
+            "-sdk",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ActivityIndicator.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/AlertToast.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/BlurView.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionCard.swift",
+            "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast/Sources/AlertToast/ReturnResolutionModels.swift"
+          ],
+          "exitCode": 0,
+          "log": "reports/repair-scratch/macos11-final-typecheck.log"
+        }
+      ],
+      "purpose": "Full package minimum-target type checks after the final accessibility container correction"
+    },
+    {
+      "command": [
+        "python3",
+        "capability/scripts/native_checks.py",
+        "--plan",
+        "reports/repair-scratch/android-C03-plan.json",
+        "--observation",
+        "reports/repair-android-C03/observation.json",
+        "--platform",
+        "android",
+        "--manual",
+        "reports/repair-scratch/android-C03-manual.json",
+        "--root",
+        "reports/repair-android-C03",
+        "--output",
+        "reports/repair-scratch/android-C03-checks.json"
+      ],
+      "exitCode": 0,
+      "counts": {
+        "passed": 11,
+        "failed": 0,
+        "unassessed": 0
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "capability/scripts/native_checks.py",
+        "--plan",
+        "reports/repair-scratch/android-C06-plan.json",
+        "--observation",
+        "reports/repair-android-C06/observation.json",
+        "--platform",
+        "android",
+        "--manual",
+        "reports/repair-scratch/android-C06-manual.json",
+        "--root",
+        "reports/repair-android-C06",
+        "--output",
+        "reports/repair-scratch/android-C06-checks.json"
+      ],
+      "exitCode": 0,
+      "counts": {
+        "passed": 16,
+        "failed": 0,
+        "unassessed": 0
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "reports/repair-scratch/verify_ios.py"
+      ],
+      "exitCode": 0,
+      "purpose": "Pixel counts, source fingerprint binding, and content-height stability for the captured interim iOS source"
+    },
+    {
+      "command": [
+        "python3",
+        "capability/scripts/native_checks.py",
+        "--plan",
+        "reports/repair-scratch/ios-public-plan.json",
+        "--observation",
+        "reports/repair-ios-public/observation.json",
+        "--platform",
+        "ios",
+        "--output",
+        "reports/repair-scratch/ios-public-checks.json"
+      ],
+      "status": "needs_review",
+      "counts": {
+        "passed": 1,
+        "failed": 0,
+        "unassessed": 14
+      },
+      "outcome": "One label check passed; 14 assertions remain unassessed. Public example has no observation_targets/control-group ancestry export. Raw AX also exposed the interim size-identifier propagation regression. This was not counted as a native semantics pass."
+    },
+    {
+      "operations": "view_image on four repaired Android notes crops, the complete iOS-public initial montage, disabled-primary crop and unavailable-reason crop",
+      "artifacts": [
+        "reports/repair-scratch/android-C03-repaired-notes-input0-snapshot15.png",
+        "reports/repair-scratch/android-C03-repaired-notes-input1-snapshot59.png",
+        "reports/repair-scratch/android-C06-repaired-notes-input0-snapshot11.png",
+        "reports/repair-scratch/android-C06-repaired-notes-input1-snapshot44.png",
+        "reports/repair-scratch/ios-public-initial.jpg",
+        "reports/repair-scratch/ios-public-rr.primary-snapshot6.png",
+        "reports/repair-scratch/ios-public-rr.size.m.reason-snapshot4.png"
+      ]
+    }
+  ],
+  "nativeIntegrations": [
+    {
+      "platform": "android",
+      "fixture": "initial-inputs/C03.json",
+      "command": [
+        "./gradlew",
+        ":app:testDebugUnitTest",
+        "--tests",
+        "org.nativeobserver.NativeObserverTest.capture",
+        "--console=plain",
+        "--max-workers=2"
+      ],
+      "adapterCommand": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/capability/scripts/android_observe.py",
+        "run",
+        "--project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reply/Reply",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/harness/ObserverBridge.kt",
+        "--java-home",
+        "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home",
+        "--android-sdk",
+        "/Users/rex/Library/Android/sdk",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-android-C03-inputs/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-android-C03-inputs/actions.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-android-C03"
+      ],
+      "exitCode": 0,
+      "seconds": 16.86,
+      "captureStatus": "captured_not_graded",
+      "nativeStatus": "captured_not_graded",
+      "nativeTestCount": 1,
+      "capture": "reports/repair-android-C03/capture.json",
+      "manifest": "reports/repair-android-C03/manifest.json",
+      "sourceFixtureHashMatchesCurrent": true,
+      "finalSourceMatchesRuntime": {
+        "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt": true
+      },
+      "native_counts": {
+        "name": "org.nativeobserver.NativeObserverTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-10-19T14:51:20.851Z",
+        "hostname": "Rexs-MacBook-Pro.local",
+        "time": "14.81"
+      }
+    },
+    {
+      "platform": "android",
+      "fixture": "initial-inputs/C06.json",
+      "command": [
+        "./gradlew",
+        ":app:testDebugUnitTest",
+        "--tests",
+        "org.nativeobserver.NativeObserverTest.capture",
+        "--console=plain",
+        "--max-workers=2"
+      ],
+      "adapterCommand": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/capability/scripts/android_observe.py",
+        "run",
+        "--project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reply/Reply",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/harness/ObserverBridge.kt",
+        "--java-home",
+        "/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home",
+        "--android-sdk",
+        "/Users/rex/Library/Android/sdk",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-android-C06-inputs/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-android-C06-inputs/actions.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-android-C06"
+      ],
+      "exitCode": 0,
+      "seconds": 19.562,
+      "captureStatus": "captured_not_graded",
+      "nativeStatus": "captured_not_graded",
+      "nativeTestCount": 1,
+      "capture": "reports/repair-android-C06/capture.json",
+      "manifest": "reports/repair-android-C06/manifest.json",
+      "sourceFixtureHashMatchesCurrent": true,
+      "finalSourceMatchesRuntime": {
+        "reply/Reply/app/src/main/java/com/example/reply/ui/components/ReturnResolutionCard.kt": true
+      },
+      "native_counts": {
+        "name": "org.nativeobserver.NativeObserverTest",
+        "tests": "1",
+        "skipped": "0",
+        "failures": "0",
+        "errors": "0",
+        "timestamp": "2026-10-19T14:52:21.567Z",
+        "hostname": "Rexs-MacBook-Pro.local",
+        "time": "17.756"
+      }
+    },
+    {
+      "platform": "ios",
+      "fixture": "design/public-example.json",
+      "command": [
+        "python3",
+        "harness/capture.py",
+        "--platform",
+        "ios",
+        "--project",
+        "alerttoast",
+        "--fixture",
+        "design/public-example.json",
+        "--output",
+        "reports/repair-ios-public",
+        "--simulator",
+        "6BD1B761-F036-4881-9014-2A053A4ED15D"
+      ],
+      "adapterCommand": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/capability/scripts/ios_observe.py",
+        "run",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/harness/ReturnBridge.swift",
+        "--package",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/alerttoast",
+        "--product",
+        "AlertToast",
+        "--simulator",
+        "6BD1B761-F036-4881-9014-2A053A4ED15D",
+        "--developer-dir",
+        "/Applications/Xcode.app/Contents/Developer",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-ios-public-inputs/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-ios-public-inputs/actions.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-ios-public"
+      ],
+      "exitCode": 0,
+      "seconds": 357.749,
+      "captureStatus": "captured_not_graded",
+      "nativeStatus": "passed",
+      "nativeTestCount": 1,
+      "capture": "reports/repair-ios-public/capture.json",
+      "manifest": "reports/repair-ios-public/manifest.json",
+      "sourceFixtureHashMatchesCurrent": true,
+      "finalSourceMatchesRuntime": {
+        "alerttoast/Sources/AlertToast/ReturnResolutionCard.swift": false
+      },
+      "build_command": [
+        "xcodebuild",
+        "build-for-testing",
+        "-project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-ios-public/project/Observer.xcodeproj",
+        "-scheme",
+        "Observer",
+        "-configuration",
+        "Debug",
+        "-sdk",
+        "iphonesimulator",
+        "-destination",
+        "platform=iOS Simulator,id=6BD1B761-F036-4881-9014-2A053A4ED15D",
+        "-derivedDataPath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-ios-public/DerivedData",
+        "-resultBundlePath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-ios-public/build.xcresult",
+        "CODE_SIGNING_ALLOWED=NO",
+        "ARCHS=arm64",
+        "ONLY_ACTIVE_ARCH=YES"
+      ],
+      "test_command": [
+        "xcodebuild",
+        "test-without-building",
+        "-xctestrun",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-ios-public/DerivedData/Build/Products/Observer_iphonesimulator27.1-arm64.xctestrun",
+        "-destination",
+        "platform=iOS Simulator,id=6BD1B761-F036-4881-9014-2A053A4ED15D",
+        "-resultBundlePath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/tool-forward/cache/unit-7f301a/reports/repair-ios-public/test.xcresult",
+        "-parallel-testing-enabled",
+        "NO",
+        "-maximum-concurrent-test-simulator-destinations",
+        "1"
+      ],
+      "build_exit_code": 0,
+      "test_exit_code": 0
+    }
+  ],
+  "remainingIssues": [
+    {
+      "findingId": "SR-IOS-EXCHANGE-HEIGHT-DRIFT",
+      "state": "C06--initial",
+      "status": "needs_runtime_review",
+      "reason": "Eager layout compiled, but the exact enlarged RTL state was not re-captured."
+    },
+    {
+      "findingId": "REPAIR-IOS-SIZE-IDENTIFIER-PROPAGATION",
+      "status": "needs_runtime_review",
+      "reason": "The final explicit accessibility container is type-checked only; the interim capture showed missing per-size IDs."
+    },
+    {
+      "findingId": "SR-IOS-DISABLED-TOKENS",
+      "status": "partially_assessed",
+      "reason": "Captured light example matched required colors, but the final Swift source includes a later accessibility-only adjustment and has no fresh capture. Dark disabled option styling was not freshly tested."
+    },
+    {
+      "findingId": "SR-ANDROID-HOST-CANVAS",
+      "status": "unchanged-external-environment-issue",
+      "reason": "Host is immutable and the discrepancy was outside the component."
+    },
+    {
+      "findingId": "SR-ANDROID-UNEXPORTED-SEMANTICS-FONTS",
+      "status": "unassessed",
+      "reason": "No exporter/host changes authorized; missing runtime fields were not inferred from source."
+    },
+    {
+      "findingId": "SR-IOS-UNEXPORTED-FONTS-HIT-TRAITS",
+      "status": "unassessed",
+      "reason": "No resolved native typography, physical hit regions, heading traits or AX performAction evidence was added."
+    }
+  ],
+  "unassessedAspects": [
+    "Whole-card visual acceptance outside the explicitly inspected repaired notes and iOS public-example images.",
+    "All unseen caller content and combinations, actual minimum-OS execution, original app entry-point regression flows, keyboard/navigation/lifecycle behavior.",
+    "Final Swift runtime accessibility identifiers and geometry after the explicit container correction.",
+    "iOS activation/callback regressions after custom ButtonStyle changes: the public example contained no actions.",
+    "Full P01-P07 acceptance; capture success, compile success and targeted checks do not establish a whole requirement pass."
+  ],
+  "scopeIntegrity": {
+    "providedFixturesChanged": false,
+    "hostChanged": false,
+    "bridgeChanged": false,
+    "capabilityChanged": false,
+    "publicDesignChanged": false,
+    "deploymentTargetsChanged": false,
+    "entryPointsChanged": false,
+    "publicModelsOrActionsChanged": false,
+    "caseSpecificBehaviorIntroduced": false,
+    "committedOrPushed": false,
+    "independentGradesOrHoldoutsInspected": false
+  },
+  "scratchArtifactsPreserved": true,
+  "diffArtifacts": [
+    "reports/repair-scratch/android.patch",
+    "reports/repair-scratch/ios.patch",
+    "reports/repair-scratch/ios-final.patch"
+  ],
+  "seal": "Production source is now frozen. No more source changes will be made after this report until a newly authorized phase."
+}

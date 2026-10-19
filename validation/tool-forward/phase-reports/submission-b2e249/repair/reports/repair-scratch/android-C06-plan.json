@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "scope": "Targeted RTL notes repair and existing actions/status exclusions; no whole-contract acceptance",
+  "states": [
+    {
+      "id": "initial",
+      "input_index": 0
+    },
+    {
+      "id": "C06--caller-refund-and-notes-closed",
+      "input_index": 1
+    },
+    {
+      "id": "C06--caller-submitting",
+      "input_index": 2
+    },
+    {
+      "id": "action-1",
+      "input_index": 0,
+      "coverage": "target",
+      "after_action": 1
+    },
+    {
+      "id": "action-2",
+      "input_index": 0,
+      "coverage": "target",
+      "after_action": 2
+    },
+    {
+      "id": "action-5",
+      "input_index": 1,
+      "coverage": "target",
+      "after_action": 5
+    }
+  ],
+  "assertions": [
+    {
+      "id": "notes-expanded-control_role",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "control_role",
+      "expected": "button",
+      "op": "eq"
+    },
+    {
+      "id": "notes-expanded-label",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "label",
+      "expected": "Avant de d\u00e9poser votre colis",
+      "op": "eq"
+    },
+    {
+      "id": "notes-expanded-touch_height",
+      "state": "initial",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "touch_height",
+      "expected": 44,
+      "op": "gte"
+    },
+    {
+      "id": "notes-expanded-glyphs",
+      "state": "initial",
+      "kind": "manual",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "notes-collapsed-control_role",
+      "state": "C06--caller-refund-and-notes-closed",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "control_role",
+      "expected": "button",
+      "op": "eq"
+    },
+    {
+      "id": "notes-collapsed-label",
+      "state": "C06--caller-refund-and-notes-closed",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "label",
+      "expected": "Avant de d\u00e9poser votre colis",
+      "op": "eq"
+    },
+    {
+      "id": "notes-collapsed-touch_height",
+      "state": "C06--caller-refund-and-notes-closed",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "touch_height",
+      "expected": 44,
+      "op": "gte"
+    },
+    {
+      "id": "notes-collapsed-glyphs",
+      "state": "C06--caller-refund-and-notes-closed",
+      "kind": "manual",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "event-1",
+      "state": "action-1",
+      "kind": "event",
+      "action_index": 1,
+      "expected": [
+        "{\"type\":\"setNotesExpanded\",\"expanded\":false}"
+      ]
+    },
+    {
+      "id": "event-2",
+      "state": "action-2",
+      "kind": "event",
+      "action_index": 2,
+      "expected": [
+        "{\"type\":\"selectOption\",\"optionId\":\"cash\"}"
+      ]
+    },
+    {
+      "id": "event-5",
+      "state": "action-5",
+      "kind": "event",
+      "action_index": 5,
+      "expected": [
+        "{\"type\":\"submit\",\"optionId\":\"cash\",\"sizeId\":null,\"acknowledgementAccepted\":false}"
+      ]
+    },
+    {
+      "id": "submitting-absent-rr.primary",
+      "state": "C06--caller-submitting",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.primary"
+      },
+      "property": "present",
+      "expected": false
+    },
+    {
+      "id": "submitting-absent-rr.keep",
+      "state": "C06--caller-submitting",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.keep"
+      },
+      "property": "present",
+      "expected": false
+    },
+    {
+      "id": "submitting-absent-rr.notes.toggle",
+      "state": "C06--caller-submitting",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.notes.toggle"
+      },
+      "property": "present",
+      "expected": false
+    },
+    {
+      "id": "submitting-absent-rr.sizes",
+      "state": "C06--caller-submitting",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.sizes"
+      },
+      "property": "present",
+      "expected": false
+    },
+    {
+      "id": "submitting-absent-rr.ack",
+      "state": "C06--caller-submitting",
+      "kind": "control",
+      "target": {
+        "identifier": "rr.ack"
+      },
+      "property": "present",
+      "expected": false
+    }
+  ]
+}
