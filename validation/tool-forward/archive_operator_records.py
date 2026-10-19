@@ -12,8 +12,15 @@ def main():
     sources = []
     for phase in ['d0', 'final']:
         for submission in ['submission-b2e249', 'submission-4f4364']:
-            inventory = json.loads((R / 'evidence' / phase / submission / 'capture-inventory.json').read_text())
-            assert inventory['complete'], 'Wait for complete native attempts, not just running logs'
+            evidence = R / 'evidence' / phase / submission
+            plan = json.loads((R / 'private/inputs' / phase / 'manifest.json').read_text())
+            expected = {(platform, case['case']) for platform in ['android', 'ios'] for case in plan['cases']}
+            actual = {(path.parent.parent.name, path.parent.name) for path in evidence.glob('*/*/capture.json')}
+            assert actual == expected, 'Wait for every frozen case and platform'
+            assert all((evidence / platform / case / 'portable-sha256.json').is_file() for platform, case in expected)
+            inventory = evidence / 'capture-inventory.json'
+            if inventory.exists():
+                assert json.loads(inventory.read_text())['complete'], 'Wait for complete native attempts, not just running logs'
             sources.append((R / 'cache/ground-truth' / phase / submission, Path(phase) / submission))
     sources.append((R / 'cache/paired-collector-evidence/d0', Path('paired/d0')))
     files = {}
