@@ -45,7 +45,18 @@ def compute():
     if sub.is_dir():audits[name+'/'+sub.name]=native_records(sub)
  lastPrimary=max(a['finalCollection']['sealUnix'] for a in arms.values())
  for rows in audits.values():assert all(r['startUnix']>=lastPrimary for r in rows),'Experiment-only acquisition contended with primary loop'
- return {'version':1,'scope':'Measured continuous development loops plus separately charged experiment acquisition. Segment sums are not active reasoning or uninterrupted throughput. Parallel command sums are not walls. All first translation attempts remain charged.','arms':arms,'experimentOnlyAcquisition':audits,'primaryBothLoopsEndUTC':iso(lastPrimary)}
+ pairs={}
+ for sid in arms:
+  old=native_records(R/'evidence'/('own-d0'if sid=='submission-e572b1'else'audit-v3-d0')/sid)
+  new=native_records(R/'evidence'/('audit-v4-d0'if sid=='submission-e572b1'else'own-d0')/sid)
+  pairs[sid]={}
+  for platform in ['ios','android']:
+   before=[r for r in old if r['platform']==platform];after=[r for r in new if r['platform']==platform]
+   assert [r['case']for r in before]==[r['case']for r in after]
+   b=sum(r['wallSeconds']for r in before);n=sum(r['wallSeconds']for r in after)
+   pairs[sid][platform]={'commonV3CommandSeconds':b,'candidateV4CommandSeconds':n,'reductionSeconds':b-n,'reductionFraction':(b-n)/b,'commonV3Commands':before,'candidateV4Commands':after,'scope':'Identical D0 source and inputs, distinct acquisitions. Shared hardware/SDK/compiler caches, different run order; descriptive bundle comparison, not individual-knob ablation.'}
+ setup=report_time(R/'setup.json');generic=read(R/'generic-summary.json')
+ return {'version':1,'scope':'Measured continuous development loops plus separately charged experiment acquisition. Segment sums are not active reasoning or uninterrupted throughput. Parallel command sums are not walls. All first translation attempts remain charged.','arms':arms,'experimentOnlyAcquisition':audits,'primaryBothLoopsEndUTC':iso(lastPrimary),'sameSourceD0Acquisition':pairs,'commonSetup':setup,'genericEngineeringAcquisition':{'nativeTests':generic['native_tests'],'snapshots':generic['snapshots'],'commandSumSeconds':sum(r['command_seconds']for r in generic['runs']),'scope':'Separate generic validation before fresh business design; not charged to either builder or counted as business samples.'},'modelUsage':{'tokens':None,'financialCost':None,'reason':'Host did not expose per-arm token/billing receipts. No estimate is substituted for measurement.'}}
 def main():
  p=argparse.ArgumentParser();p.add_argument('--write',action='store_true');a=p.parse_args();out=R/'cost-summary.json';d=compute()
  if a.write:assert not out.exists();out.write_text(json.dumps(d,indent=2)+'\n')
