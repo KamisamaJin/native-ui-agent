@@ -14,8 +14,13 @@ python -B -m unittest discover -s native-ui-agent/tests -v
 python -B validation/dispatch-forward/verify_generic.py
 python -B validation/dispatch-forward/run_evaluator_controls.py
 python -B validation/dispatch-forward/verify_trial.py
+python -B validation/dispatch-forward/verify_blind_stages.py
+python -B validation/dispatch-forward/verify_evaluation.py
+python -B validation/dispatch-forward/metrics.py
 python -B validation/dispatch-forward/observation_facts.py
 python -B validation/dispatch-forward/costs.py
+python -B validation/dispatch-forward/build_tables.py
+python -B validation/dispatch-forward/build_failure_index.py
 python -B validation/dispatch-forward/verify_artifacts.py
 ```
 
