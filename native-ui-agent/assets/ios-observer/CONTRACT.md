@@ -28,7 +28,9 @@ The bridge must expose stable unique accessibility identifiers on the actual tar
 that the test should operate. Callback names and callback routing are caller-owned.
 Use `__observer.*` only for the observer's host controls.
 
-The host offers width 320 or 390 points and a 600-point native vertical ScrollView,
+The frontend accepts a finite offered width from 160 to 1024 points. The host uses
+a 600-point native vertical ScrollView; actual native viewport/content frames must
+establish whether a requested width fits the chosen simulator,
 with horizontal padding 16 and top padding 24 inside that parent. Thus actual child
 content width is offered width minus 32. A bottom sentinel follows the component.
 Fixture update, runtime metadata and callback receipt controls sit outside that region.

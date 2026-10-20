@@ -1,0 +1,248 @@
+{
+  "version": 1,
+  "design_owner": "Independent neutral probe specification",
+  "approval_reference": "validation/contract-forward/PREREGISTRATION.md; freeze before acquisition",
+  "sources": [
+    {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "0d8b13dde0ff81ce8a7826d0734c3f4f66f2d8e2bc739de4227a23a5c44bcf64"
+    }
+  ],
+  "required_rule_ids": [
+    "header-label",
+    "marker-width",
+    "marker-gap",
+    "ink",
+    "activate",
+    "update"
+  ],
+  "rules": [
+    {
+      "id": "header-label",
+      "kind": "control",
+      "target": "header",
+      "property": "label"
+    },
+    {
+      "id": "marker-width",
+      "kind": "geometry",
+      "target": "markerA",
+      "property": "width",
+      "op": "near"
+    },
+    {
+      "id": "marker-gap",
+      "kind": "geometry",
+      "target": "markerB",
+      "reference_target": "markerA",
+      "property": "gap_x",
+      "op": "near"
+    },
+    {
+      "id": "ink",
+      "kind": "text_layout",
+      "target": "ink",
+      "property": "color_argb"
+    },
+    {
+      "id": "activate",
+      "kind": "event"
+    },
+    {
+      "id": "update",
+      "kind": "event",
+      "stimulus": "caller_update"
+    }
+  ],
+  "scenarios": {
+    "neutral": {
+      "states": [
+        {
+          "id": "expanded",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "targets"
+        },
+        {
+          "id": "updated",
+          "input_index": 1,
+          "after_action": 1,
+          "coverage": "targets"
+        }
+      ],
+      "actions": [
+        {
+          "type": "tap",
+          "target": "disclosure",
+          "reveal": true,
+          "state_id": "expanded"
+        },
+        {
+          "type": "apply_next_fixture",
+          "state_id": "updated"
+        }
+      ],
+      "values": {
+        "header-label": {
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/A"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/A"
+            }
+          },
+          "updated": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/B"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/B"
+            }
+          }
+        },
+        "marker-width": {
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/width"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/width"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "updated": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/width"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/width"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          }
+        },
+        "marker-gap": {
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/gap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/gap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "updated": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/gap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/gap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          }
+        },
+        "ink": {
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/style/ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/style/ink"
+            }
+          },
+          "updated": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/style/ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/style/ink"
+            }
+          }
+        },
+        "activate": {
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/business/activated"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/business/activated"
+            }
+          },
+          "updated": {
+            "not_applicable": "Different independent stimulus class"
+          }
+        },
+        "update": {
+          "expanded": {
+            "not_applicable": "Different independent stimulus class"
+          },
+          "updated": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/business/quiet"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/business/quiet"
+            }
+          }
+        }
+      }
+    }
+  }
+}

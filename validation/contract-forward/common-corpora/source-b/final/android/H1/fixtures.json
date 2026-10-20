@@ -1,0 +1,322 @@
+{
+  "width": 360,
+  "theme": "light",
+  "direction": "ltr",
+  "dynamic_type": "xLarge",
+  "fontScale": 1.1,
+  "viewportHeight": 640,
+  "state_capture": false,
+  "max_scrolls": 28,
+  "initial": {
+    "title": "Regional team learning",
+    "detail": "Choose a course and reserve places for the regional team.",
+    "courses": [
+      {
+        "id": "foundations",
+        "title": "Service foundations",
+        "detail": "A practical workshop for new customer support colleagues.",
+        "seatPriceCents": 10000,
+        "capacity": 0,
+        "onsiteAvailable": true,
+        "workbookAvailable": true
+      },
+      {
+        "id": "advanced",
+        "title": "Advanced service recovery",
+        "detail": "Practice resolving complex customer conversations as a team.",
+        "seatPriceCents": 15000,
+        "capacity": 6,
+        "onsiteAvailable": true,
+        "workbookAvailable": true
+      }
+    ],
+    "remoteDiscountCents": 1000,
+    "onsiteFeeCents": 2500,
+    "workbookCents": 1200
+  },
+  "updates": [
+    {
+      "title": "Regional catalog revised",
+      "detail": "Advanced is no longer offered. Your draft should follow the available course.",
+      "courses": [
+        {
+          "id": "foundations",
+          "title": "Service foundations",
+          "detail": "A practical workshop for new customer support colleagues.",
+          "seatPriceCents": 10000,
+          "capacity": 3,
+          "onsiteAvailable": false,
+          "workbookAvailable": false
+        }
+      ],
+      "remoteDiscountCents": 1000,
+      "onsiteFeeCents": 2500,
+      "workbookCents": 1200
+    },
+    {
+      "title": "Regional catalog closed",
+      "detail": "The organizer has closed this learning cohort.",
+      "courses": [
+        {
+          "id": "foundations",
+          "title": "Service foundations",
+          "detail": "A practical workshop for new customer support colleagues.",
+          "seatPriceCents": 10000,
+          "capacity": 0,
+          "onsiteAvailable": false,
+          "workbookAvailable": false
+        }
+      ],
+      "remoteDiscountCents": 1000,
+      "onsiteFeeCents": 2500,
+      "workbookCents": 1200
+    }
+  ],
+  "observation_targets": [
+    {
+      "identifier": "enroll.title"
+    },
+    {
+      "identifier": "enroll.detail"
+    },
+    {
+      "identifier": "enroll.course.foundations"
+    },
+    {
+      "identifier": "enroll.course.advanced"
+    },
+    {
+      "identifier": "enroll.mode.remote"
+    },
+    {
+      "identifier": "enroll.mode.onsite"
+    },
+    {
+      "identifier": "enroll.seats.3"
+    },
+    {
+      "identifier": "enroll.seats.6"
+    },
+    {
+      "identifier": "enroll.workbook"
+    },
+    {
+      "identifier": "enroll.total"
+    },
+    {
+      "identifier": "enroll.reserve"
+    },
+    {
+      "identifier": "enroll.status"
+    },
+    {
+      "identifier": "enroll.edit"
+    }
+  ],
+  "actions": [
+    {
+      "type": "sweep",
+      "state_id": "browse"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "enroll.mode.onsite"
+      },
+      "reveal": true
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "enroll.seats.6"
+      },
+      "reveal": true
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "enroll.workbook"
+      },
+      "reveal": true,
+      "state_id": "configured",
+      "after_targets": [
+        {
+          "identifier": "enroll.title"
+        },
+        {
+          "identifier": "enroll.detail"
+        },
+        {
+          "identifier": "enroll.course.foundations"
+        },
+        {
+          "identifier": "enroll.course.advanced"
+        },
+        {
+          "identifier": "enroll.mode.onsite"
+        },
+        {
+          "identifier": "enroll.mode.remote"
+        },
+        {
+          "identifier": "enroll.seats.3"
+        },
+        {
+          "identifier": "enroll.seats.6"
+        },
+        {
+          "identifier": "enroll.workbook"
+        },
+        {
+          "identifier": "enroll.total"
+        },
+        {
+          "identifier": "enroll.reserve"
+        },
+        {
+          "identifier": "enroll.status"
+        },
+        {
+          "identifier": "enroll.edit"
+        }
+      ]
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "reconciled",
+      "after_targets": [
+        {
+          "identifier": "enroll.title"
+        },
+        {
+          "identifier": "enroll.detail"
+        },
+        {
+          "identifier": "enroll.course.foundations"
+        },
+        {
+          "identifier": "enroll.mode.onsite"
+        },
+        {
+          "identifier": "enroll.mode.remote"
+        },
+        {
+          "identifier": "enroll.seats.3"
+        },
+        {
+          "identifier": "enroll.seats.6"
+        },
+        {
+          "identifier": "enroll.workbook"
+        },
+        {
+          "identifier": "enroll.total"
+        },
+        {
+          "identifier": "enroll.reserve"
+        },
+        {
+          "identifier": "enroll.status"
+        },
+        {
+          "identifier": "enroll.edit"
+        }
+      ]
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "enroll.reserve"
+      },
+      "reveal": true,
+      "state_id": "reserved",
+      "after_targets": [
+        {
+          "identifier": "enroll.title"
+        },
+        {
+          "identifier": "enroll.detail"
+        },
+        {
+          "identifier": "enroll.course.foundations"
+        },
+        {
+          "identifier": "enroll.mode.onsite"
+        },
+        {
+          "identifier": "enroll.mode.remote"
+        },
+        {
+          "identifier": "enroll.seats.3"
+        },
+        {
+          "identifier": "enroll.seats.6"
+        },
+        {
+          "identifier": "enroll.workbook"
+        },
+        {
+          "identifier": "enroll.total"
+        },
+        {
+          "identifier": "enroll.reserve"
+        },
+        {
+          "identifier": "enroll.status"
+        },
+        {
+          "identifier": "enroll.edit"
+        }
+      ]
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "enroll.edit"
+      },
+      "reveal": true
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "empty",
+      "after_targets": [
+        {
+          "identifier": "enroll.title"
+        },
+        {
+          "identifier": "enroll.detail"
+        },
+        {
+          "identifier": "enroll.course.foundations"
+        },
+        {
+          "identifier": "enroll.mode.onsite"
+        },
+        {
+          "identifier": "enroll.mode.remote"
+        },
+        {
+          "identifier": "enroll.seats.3"
+        },
+        {
+          "identifier": "enroll.seats.6"
+        },
+        {
+          "identifier": "enroll.workbook"
+        },
+        {
+          "identifier": "enroll.total"
+        },
+        {
+          "identifier": "enroll.reserve"
+        },
+        {
+          "identifier": "enroll.status"
+        },
+        {
+          "identifier": "enroll.edit"
+        }
+      ]
+    }
+  ]
+}

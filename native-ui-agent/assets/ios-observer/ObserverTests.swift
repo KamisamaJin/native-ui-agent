@@ -335,25 +335,53 @@ final class ObserverTests: XCTestCase {
         let epoch = immediate["binding"] as? [String: Any] ?? [:]
         var indices = [immediate["index"] as! Int], remaining = min(max(maxScrolls, 0), 40)
         let diagnosticsStart = revealDiagnostics.count
-        for (number, wanted) in targets.enumerated() {
-            if key(binding()) != key(epoch) { break }
-            if targetEvidence(wanted, indices: indices, epoch: epoch)["status"] as? String == "observed" { continue }
-            if remaining == 0 { continue }
-            let native = frame(runtime()["content_frame"])
-            let initialDirection = viewportFrame.minY - native.minY > 0.5 ? "up" : "down"
-            for direction in [initialDirection, initialDirection == "up" ? "down" : "up"] {
-                if remaining == 0 || key(binding()) != key(epoch) { break }
-                let beforeOffset = frame(runtime()["content_frame"]).minY
-                let start = revealDiagnostics.count
-                let target = revealTarget(wanted, maxSteps: remaining, initialDirection: direction, prefix: "action-\(action)-target-\(number)", requireControl: false, centerOversized: true, recordFailure: false)
-                remaining -= Array(revealDiagnostics.dropFirst(start)).filter { $0["fraction"] != nil }.count
-                let afterOffset = frame(runtime()["content_frame"]).minY
-                if abs(beforeOffset - afterOffset) > 0.5 {
-                    let sample = capture("action-\(action)-target-\(number)")
-                    indices.append(sample["index"] as! Int)
+        var unknownDirection = "down", reversedUnknown = false, stationary = 0
+        // Plan from one public AX snapshot, then verify after every scroll.
+        // Remote queries per target/attribute are unnecessary for observation.
+        // Native activation still uses the separate unique-control dispatch path.
+        while remaining > 0 {
+            guard let latest = records.last, key(latest["binding"] as? [String: Any] ?? [:]) == key(epoch),
+                  latest["capture_consistent"] as? Bool == true else { break }
+            let pending = targets.filter { targetEvidence($0, indices: indices, epoch: epoch)["status"] as? String != "observed" }
+            if pending.isEmpty { break }
+            let nodes = latest["nodes"] as? [[String: Any]] ?? []
+            var candidates: [(Int, CGRect, Double)] = [], unknown: [Int] = []
+            for (i, wanted) in pending.enumerated() {
+                let found = nodes.filter { node in
+                    let identity = wanted["identifier"] as? String, label = wanted["label"] as? String
+                    let identityMatches = identity != nil ? node["identifier"] as? String == identity : label != nil && node["label"] as? String == label
+                    let roleMatches = (wanted["role"] as? String).flatMap { role($0) }.map { ($0.rawValue == (node["role_raw"] as? UInt ?? UInt.max)) } ?? true
+                    return identityMatches && roleMatches
                 }
-                if target != nil || targetEvidence(wanted, indices: indices, epoch: epoch)["status"] as? String == "observed" { break }
-                if matches(wanted).count > 1 { break }
+                if found.isEmpty { unknown.append(i); continue }
+                // Ambiguity cannot be repaired by spatially guessing a leaf.
+                if found.count != 1 { continue }
+                let f = frame(found[0]["frame"])
+                if f.width <= 0 || f.height <= 0 { unknown.append(i); continue }
+                let distance = abs(Double(f.midY - viewportFrame.midY))
+                candidates.append((i, f, distance))
+            }
+            let chosen = candidates.min { $0.2 < $1.2 }
+            if chosen == nil && unknown.isEmpty { break }
+            let direction: String, fraction: Double
+            if let chosen {
+                let delta = Double(chosen.1.midY - viewportFrame.midY)
+                direction = delta < 0 ? "up" : "down"
+                fraction = min(max(abs(delta) / max(Double(viewportFrame.height), 1), 0.025), 0.65)
+            } else { direction = unknownDirection; fraction = 0.45 }
+            let before = frame((latest["runtime"] as? [String: Any])?["content_frame"])
+            scroll(direction, fraction: fraction); remaining -= 1
+            let sample = capture("action-\(action)-viewport-\(maxScrolls - remaining)")
+            indices.append(sample["index"] as! Int)
+            let after = frame((sample["runtime"] as? [String: Any])?["content_frame"])
+            let moved = abs(before.minY - after.minY) > 0.5
+            stationary = moved ? 0 : stationary + 1
+            revealDiagnostics.append(["mode": "nearest_snapshot_viewport", "direction": direction, "fraction": fraction,
+                "offset_before": viewportFrame.minY - before.minY, "offset_after": viewportFrame.minY - after.minY,
+                "pending_targets": pending.count, "geometry_navigation_only": true])
+            if stationary >= 2 {
+                if chosen == nil && !reversedUnknown { unknownDirection = direction == "up" ? "down" : "up"; reversedUnknown = true; stationary = 0 }
+                else { break }
             }
         }
         // trace_reveal_images may have produced extra original frames; retain

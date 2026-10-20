@@ -1,0 +1,469 @@
+{
+  "version": 1,
+  "design_owner": "Independent generic forward-test agent, isolated from root design/code/results",
+  "approval_reference": "independent-generic/APPROVAL-SCOPED.json; measurement-scope schema amendment with original numeric design unchanged",
+  "sources": [
+    {
+      "id": "reading-design",
+      "path": "reference.json",
+      "sha256": "ba9bf6807b9531a6723dc50538ce2dd04b82afd594809a970ec2ef28a8d540f6"
+    }
+  ],
+  "required_rule_ids": [
+    "heading",
+    "status",
+    "footer",
+    "marker-width",
+    "marker-gap",
+    "ink",
+    "font",
+    "open-callback",
+    "replace-quiet",
+    "visual-reading"
+  ],
+  "rules": [
+    {
+      "id": "heading",
+      "kind": "control",
+      "target": "heading",
+      "property": "label"
+    },
+    {
+      "id": "status",
+      "kind": "control",
+      "target": "status",
+      "property": "label"
+    },
+    {
+      "id": "footer",
+      "kind": "control",
+      "target": "footer",
+      "property": "label"
+    },
+    {
+      "id": "marker-width",
+      "kind": "geometry",
+      "target": "markerA",
+      "property": "width",
+      "op": "near",
+      "basis": "semantic",
+      "measurement": "layout_box"
+    },
+    {
+      "id": "marker-gap",
+      "kind": "geometry",
+      "target": "markerB",
+      "reference_target": "markerA",
+      "property": "gap_x",
+      "op": "near",
+      "basis": "semantic",
+      "measurement": "layout_box"
+    },
+    {
+      "id": "ink",
+      "kind": "text_layout",
+      "target": "ink",
+      "property": "color_argb"
+    },
+    {
+      "id": "font",
+      "kind": "text_layout",
+      "target": "ink",
+      "property": "font_sp"
+    },
+    {
+      "id": "open-callback",
+      "kind": "event"
+    },
+    {
+      "id": "replace-quiet",
+      "kind": "event",
+      "stimulus": "caller_update"
+    },
+    {
+      "id": "visual-reading",
+      "kind": "manual",
+      "target": "heading",
+      "allowed_methods": [
+        "visual"
+      ],
+      "coverage": "full_content"
+    }
+  ],
+  "scenarios": {
+    "reading-long": {
+      "states": [
+        {
+          "id": "initial",
+          "input_index": 0,
+          "after_action": -1,
+          "coverage": "full_content"
+        },
+        {
+          "id": "opened",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "targets"
+        },
+        {
+          "id": "replaced",
+          "input_index": 1,
+          "after_action": 1,
+          "coverage": "targets"
+        }
+      ],
+      "actions": [
+        {
+          "type": "tap",
+          "target": "disclosure",
+          "reveal": true,
+          "state_id": "opened"
+        },
+        {
+          "type": "apply_next_fixture",
+          "state_id": "replaced"
+        }
+      ],
+      "values": {
+        "heading": {
+          "initial": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/heading/A"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/heading/A"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/heading/A"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/heading/A"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/heading/B"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/heading/B"
+            }
+          }
+        },
+        "status": {
+          "initial": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/status/closed"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/status/closed"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/status/open"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/status/open"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/status/open"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/status/open"
+            }
+          }
+        },
+        "footer": {
+          "initial": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/footer/A"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/footer/A"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/footer/A"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/footer/A"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/footer/B"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/footer/B"
+            }
+          }
+        },
+        "marker-width": {
+          "initial": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/geometry/ios/width"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/geometry/android/width"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reading-design",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reading-design",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/geometry/ios/width"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/geometry/android/width"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reading-design",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reading-design",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/geometry/ios/width"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/geometry/android/width"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reading-design",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reading-design",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          }
+        },
+        "marker-gap": {
+          "initial": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/geometry/ios/gap"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/geometry/android/gap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reading-design",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reading-design",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/geometry/ios/gap"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/geometry/android/gap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reading-design",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reading-design",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/geometry/ios/gap"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/geometry/android/gap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reading-design",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reading-design",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          }
+        },
+        "ink": {
+          "initial": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/style/ink"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/style/ink"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/style/ink"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/style/ink"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/style/ink"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/style/ink"
+            }
+          }
+        },
+        "font": {
+          "initial": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/style/font"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/style/font"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/style/font"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/style/font"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/style/font"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/style/font"
+            }
+          }
+        },
+        "open-callback": {
+          "initial": {
+            "not_applicable": "No disclosure activation in this state."
+          },
+          "opened": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/events/open"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/events/open"
+            }
+          },
+          "replaced": {
+            "not_applicable": "No disclosure activation in this state."
+          }
+        },
+        "replace-quiet": {
+          "initial": {
+            "not_applicable": "No caller replacement in this state."
+          },
+          "opened": {
+            "not_applicable": "No caller replacement in this state."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/events/quiet"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/events/quiet"
+            }
+          }
+        },
+        "visual-reading": {
+          "initial": {
+            "ios": {
+              "source": "reading-design",
+              "pointer": "/intent"
+            },
+            "android": {
+              "source": "reading-design",
+              "pointer": "/intent"
+            }
+          },
+          "opened": {
+            "not_applicable": "Full-content visual inspection fixed for initial; target-state typed checks separately cover activation and replacement."
+          },
+          "replaced": {
+            "not_applicable": "Full-content visual inspection fixed for initial; target-state typed checks separately cover activation and replacement."
+          }
+        }
+      }
+    }
+  }
+}

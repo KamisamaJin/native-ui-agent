@@ -44,8 +44,8 @@ def materialize(destination, publication):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('publication', choices=['dispatch-v4'])
-    parser.add_argument('check', choices=['verify_trial.py', 'verify_artifacts.py'])
+    parser.add_argument('publication', choices=['dispatch-v4', 'state-v5'])
+    parser.add_argument('check', choices=['verify_trial.py', 'verify_artifacts.py', 'artifacts.py'])
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='native-publication-audit-') as temporary:
         root = Path(temporary)

@@ -209,6 +209,14 @@ def prepare_build(args, output, bridge, package, env, manifest):
         return runs[0]
 
 
+def validate_offered_width(width):
+    # The existing native host consumes an explicit logical width. Public AX
+    # viewport/content geometry still establishes actual coverage; allowing an
+    # offered width does not certify that it fits a particular simulator.
+    if type(width) not in (int, float) or not math.isfinite(width) or not 160 <= width <= 1024:
+        raise ValueError("width must be a finite number from 160 to 1024 logical points")
+
+
 def run(args) -> int:
     output = Path(args.output).resolve()
     if output.exists(): raise ValueError(f"Output must be fresh: {output}")
@@ -218,7 +226,7 @@ def run(args) -> int:
     config = json.loads(Path(args.fixtures).read_text())
     config.setdefault("state_capture", True)
     actions = json.loads(Path(args.actions).read_text()) if args.actions else []
-    if config.get("width", 390) not in (320, 390): raise ValueError("width must be 320 or 390 logical points")
+    validate_offered_width(config.get("width", 390))
     if not isinstance(config.get("initial"), dict) or not isinstance(config.get("updates", []), list): raise ValueError("initial object and updates array required")
     if not all(isinstance(f, dict) for f in config.get("updates", [])): raise ValueError("every update must be an object")
     if config.get("theme", "light") not in ("light", "dark"): raise ValueError("theme must be light or dark")

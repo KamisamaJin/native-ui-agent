@@ -1,0 +1,1502 @@
+{
+  "version": 1,
+  "design_owner": "Independent business UI designer (procedurally blind context)",
+  "approval_reference": "private/DESIGN-SEAL.json; design owner approval before candidate source",
+  "sources": [
+    {
+      "id": "reference",
+      "path": "reference.hidden.json",
+      "sha256": "b8c5c538e137f466d3309c80671700cf82059d6d120d56dd6381d1b48a264c3e"
+    }
+  ],
+  "required_rule_ids": [
+    "heading",
+    "detail",
+    "course-a-selected",
+    "course-b-enabled",
+    "onsite-enabled",
+    "onsite-selected",
+    "remote-selected",
+    "seats3-enabled",
+    "seats6-enabled",
+    "seats3-selected",
+    "seats6-selected",
+    "workbook-enabled",
+    "workbook-selected",
+    "total",
+    "reserve-enabled",
+    "status",
+    "edit-enabled",
+    "activation",
+    "caller-update",
+    "title-font",
+    "title-ink",
+    "detail-ellipsis",
+    "reserve-height",
+    "reserve-visible"
+  ],
+  "rules": [
+    {
+      "id": "heading",
+      "kind": "control",
+      "target": "title",
+      "property": "label"
+    },
+    {
+      "id": "detail",
+      "kind": "control",
+      "target": "detail",
+      "property": "label"
+    },
+    {
+      "id": "course-a-selected",
+      "kind": "control",
+      "target": "courseA",
+      "property": "selected"
+    },
+    {
+      "id": "course-b-enabled",
+      "kind": "control",
+      "target": "courseB",
+      "property": "enabled"
+    },
+    {
+      "id": "onsite-enabled",
+      "kind": "control",
+      "target": "onsite",
+      "property": "enabled"
+    },
+    {
+      "id": "onsite-selected",
+      "kind": "control",
+      "target": "onsite",
+      "property": "selected"
+    },
+    {
+      "id": "remote-selected",
+      "kind": "control",
+      "target": "remote",
+      "property": "selected"
+    },
+    {
+      "id": "seats3-enabled",
+      "kind": "control",
+      "target": "seats3",
+      "property": "enabled"
+    },
+    {
+      "id": "seats6-enabled",
+      "kind": "control",
+      "target": "seats6",
+      "property": "enabled"
+    },
+    {
+      "id": "seats3-selected",
+      "kind": "control",
+      "target": "seats3",
+      "property": "selected"
+    },
+    {
+      "id": "seats6-selected",
+      "kind": "control",
+      "target": "seats6",
+      "property": "selected"
+    },
+    {
+      "id": "workbook-enabled",
+      "kind": "control",
+      "target": "workbook",
+      "property": "enabled"
+    },
+    {
+      "id": "workbook-selected",
+      "kind": "control",
+      "target": "workbook",
+      "property": "selected"
+    },
+    {
+      "id": "total",
+      "kind": "control",
+      "target": "total",
+      "property": "label"
+    },
+    {
+      "id": "reserve-enabled",
+      "kind": "control",
+      "target": "reserve",
+      "property": "enabled"
+    },
+    {
+      "id": "status",
+      "kind": "control",
+      "target": "status",
+      "property": "label"
+    },
+    {
+      "id": "edit-enabled",
+      "kind": "control",
+      "target": "edit",
+      "property": "enabled"
+    },
+    {
+      "id": "activation",
+      "kind": "event"
+    },
+    {
+      "id": "caller-update",
+      "kind": "event",
+      "stimulus": "caller_update"
+    },
+    {
+      "id": "title-font",
+      "kind": "text_layout",
+      "target": "title",
+      "property": "font_sp",
+      "op": "near"
+    },
+    {
+      "id": "title-ink",
+      "kind": "text_layout",
+      "target": "title",
+      "property": "color_argb"
+    },
+    {
+      "id": "detail-ellipsis",
+      "kind": "text_layout",
+      "target": "detail",
+      "property": "ellipsized"
+    },
+    {
+      "id": "reserve-height",
+      "kind": "geometry",
+      "target": "reserve",
+      "property": "height",
+      "op": "gte",
+      "basis": "control",
+      "measurement": "accessibility_box"
+    },
+    {
+      "id": "reserve-visible",
+      "kind": "manual",
+      "target": "reserve",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    }
+  ],
+  "scenarios": {
+    "H1": {
+      "states": [
+        {
+          "id": "browse",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        },
+        {
+          "id": "configured",
+          "input_index": 0,
+          "after_action": 3,
+          "coverage": "targets"
+        },
+        {
+          "id": "reconciled",
+          "input_index": 1,
+          "after_action": 4,
+          "coverage": "targets"
+        },
+        {
+          "id": "reserved",
+          "input_index": 1,
+          "after_action": 5,
+          "coverage": "targets"
+        },
+        {
+          "id": "empty",
+          "input_index": 2,
+          "after_action": 7,
+          "coverage": "targets"
+        }
+      ],
+      "actions": [
+        {
+          "type": "sweep",
+          "state_id": "browse"
+        },
+        {
+          "type": "tap",
+          "target": "onsite",
+          "reveal": true
+        },
+        {
+          "type": "tap",
+          "target": "seats6",
+          "reveal": true
+        },
+        {
+          "type": "tap",
+          "target": "workbook",
+          "reveal": true,
+          "state_id": "configured"
+        },
+        {
+          "type": "apply_next_fixture",
+          "state_id": "reconciled"
+        },
+        {
+          "type": "tap",
+          "target": "reserve",
+          "reveal": true,
+          "state_id": "reserved"
+        },
+        {
+          "type": "tap",
+          "target": "edit",
+          "reveal": true
+        },
+        {
+          "type": "apply_next_fixture",
+          "state_id": "empty"
+        }
+      ],
+      "values": {
+        "heading": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/heading/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/heading/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/heading/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/heading/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/heading/android"
+            }
+          }
+        },
+        "detail": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/detail/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/detail/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/detail/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/detail/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/detail/android"
+            }
+          }
+        },
+        "course-a-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/course-a-selected/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/course-a-selected/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/course-a-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/course-a-selected/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/course-a-selected/android"
+            }
+          }
+        },
+        "course-b-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/course-b-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/course-b-enabled/android"
+            }
+          },
+          "reconciled": {
+            "not_applicable": "This caller catalog does not contain the advanced course."
+          },
+          "reserved": {
+            "not_applicable": "This caller catalog does not contain the advanced course."
+          },
+          "empty": {
+            "not_applicable": "This caller catalog does not contain the advanced course."
+          }
+        },
+        "onsite-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/onsite-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/onsite-enabled/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/onsite-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/onsite-enabled/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/onsite-enabled/android"
+            }
+          }
+        },
+        "onsite-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/onsite-selected/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/onsite-selected/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/onsite-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/onsite-selected/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/onsite-selected/android"
+            }
+          }
+        },
+        "remote-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/remote-selected/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/remote-selected/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/remote-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/remote-selected/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/remote-selected/android"
+            }
+          }
+        },
+        "seats3-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/seats3-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/seats3-enabled/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/seats3-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/seats3-enabled/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/seats3-enabled/android"
+            }
+          }
+        },
+        "seats6-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/seats6-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/seats6-enabled/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/seats6-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/seats6-enabled/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/seats6-enabled/android"
+            }
+          }
+        },
+        "seats3-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/seats3-selected/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/seats3-selected/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/seats3-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/seats3-selected/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/seats3-selected/android"
+            }
+          }
+        },
+        "seats6-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/seats6-selected/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/seats6-selected/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/seats6-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/seats6-selected/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/seats6-selected/android"
+            }
+          }
+        },
+        "workbook-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/workbook-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/workbook-enabled/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/workbook-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/workbook-enabled/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/workbook-enabled/android"
+            }
+          }
+        },
+        "workbook-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/workbook-selected/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/workbook-selected/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/workbook-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/workbook-selected/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/workbook-selected/android"
+            }
+          }
+        },
+        "total": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/total/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/total/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/total/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/total/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/total/android"
+            }
+          }
+        },
+        "reserve-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/reserve-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/reserve-enabled/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/reserve-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/reserve-enabled/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/reserve-enabled/android"
+            }
+          }
+        },
+        "status": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/status/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/status/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/status/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/status/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/status/android"
+            }
+          }
+        },
+        "edit-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/edit-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/edit-enabled/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/edit-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/edit-enabled/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/edit-enabled/android"
+            }
+          }
+        },
+        "activation": {
+          "browse": {
+            "not_applicable": "Selected checkpoint is not an activation stimulus."
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/activation/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/activation/android"
+            }
+          },
+          "reconciled": {
+            "not_applicable": "Selected checkpoint is not an activation stimulus."
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/activation/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/activation/android"
+            }
+          },
+          "empty": {
+            "not_applicable": "Selected checkpoint is not an activation stimulus."
+          }
+        },
+        "caller-update": {
+          "browse": {
+            "not_applicable": "Selected checkpoint is not a caller replacement stimulus."
+          },
+          "configured": {
+            "not_applicable": "Selected checkpoint is not a caller replacement stimulus."
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/caller-update/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/caller-update/android"
+            }
+          },
+          "reserved": {
+            "not_applicable": "Selected checkpoint is not a caller replacement stimulus."
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/caller-update/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/caller-update/android"
+            }
+          }
+        },
+        "title-font": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          }
+        },
+        "title-ink": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/title-ink/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/title-ink/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/title-ink/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/title-ink/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/title-ink/android"
+            }
+          }
+        },
+        "detail-ellipsis": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/detail-ellipsis/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/detail-ellipsis/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/detail-ellipsis/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/detail-ellipsis/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/detail-ellipsis/android"
+            }
+          }
+        },
+        "reserve-height": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/reserve-height/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/reserve-height/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/reserve-height/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/reserve-height/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/reserve-height/android"
+            }
+          }
+        },
+        "reserve-visible": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/browse/reserve-visible/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/configured/reserve-visible/android"
+            }
+          },
+          "reconciled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reconciled/reserve-visible/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/reserved/reserve-visible/android"
+            }
+          },
+          "empty": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/empty/reserve-visible/android"
+            }
+          }
+        }
+      }
+    }
+  }
+}

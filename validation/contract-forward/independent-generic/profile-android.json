@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "platform": "android",
+  "backend": "paparazzi",
+  "target": {
+    "description": "Reading Notes, initial viewport from this forward-test native acquisition; SHA-verified current-source evidence staging.",
+    "sources": [
+      "sources",
+      "fixtures.json",
+      "generated-android/actions.json",
+      "stage_verified_observation.py",
+      "design-scoped",
+      "APPROVAL-SCOPED.json"
+    ]
+  },
+  "environment": {
+    "width": 390,
+    "theme": "light",
+    "direction": "ltr",
+    "font": "fontScale=1.0",
+    "execution_scope": "Earlier fresh native run in this session, then verified source/input/image reuse; capture stage is not another native execution.",
+    "native_test_count": 1
+  },
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/independent-generic/stage_verified_observation.py",
+        "--run",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/independent-generic/evidence/main-android-r1",
+        "--fixtures",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/independent-generic/fixtures.json",
+        "--actions",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/independent-generic/generated-android/actions.json",
+        "--observation-sha256",
+        "047de83991c8b0cbb0ff5a83dbe1dc0e0dc55da5d5f6a9fa55083f5f2ca205da",
+        "--index",
+        "0",
+        "--output",
+        "{output}"
+      ],
+      "timeout_seconds": 60
+    }
+  ],
+  "artifacts": [
+    {
+      "base": "output",
+      "glob": "native/actual.png",
+      "role": "actual"
+    },
+    {
+      "base": "output",
+      "glob": "native/staging.json",
+      "role": "native-report"
+    }
+  ],
+  "checks": [
+    {
+      "id": "initial-viewport",
+      "kind": "visual",
+      "description": "Readable heading, summary, two blue markers, disclosure and status, and first reading rows in initial viewport. Exact styles and full content are assessed separately.",
+      "source": "Independent design-scoped/reference.json /intent; original preimplementation typed reference unchanged."
+    }
+  ]
+}

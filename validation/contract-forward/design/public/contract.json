@@ -1,0 +1,3105 @@
+{
+  "version": 1,
+  "design_owner": "Independent business UI designer (procedurally blind context)",
+  "approval_reference": "private/DESIGN-SEAL.json; design owner approval before candidate source",
+  "sources": [
+    {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "ee047c60313a3638d8702c0a70c03d7909dd3f76e9acae919b181afb57aee9e0"
+    }
+  ],
+  "required_rule_ids": [
+    "heading",
+    "detail",
+    "course-a-selected",
+    "course-b-enabled",
+    "onsite-enabled",
+    "onsite-selected",
+    "remote-selected",
+    "seats3-enabled",
+    "seats6-enabled",
+    "seats3-selected",
+    "seats6-selected",
+    "workbook-enabled",
+    "workbook-selected",
+    "total",
+    "reserve-enabled",
+    "status",
+    "edit-enabled",
+    "activation",
+    "caller-update",
+    "title-font",
+    "title-ink",
+    "detail-ellipsis",
+    "reserve-height",
+    "reserve-visible"
+  ],
+  "rules": [
+    {
+      "id": "heading",
+      "kind": "control",
+      "target": "title",
+      "property": "label"
+    },
+    {
+      "id": "detail",
+      "kind": "control",
+      "target": "detail",
+      "property": "label"
+    },
+    {
+      "id": "course-a-selected",
+      "kind": "control",
+      "target": "courseA",
+      "property": "selected"
+    },
+    {
+      "id": "course-b-enabled",
+      "kind": "control",
+      "target": "courseB",
+      "property": "enabled"
+    },
+    {
+      "id": "onsite-enabled",
+      "kind": "control",
+      "target": "onsite",
+      "property": "enabled"
+    },
+    {
+      "id": "onsite-selected",
+      "kind": "control",
+      "target": "onsite",
+      "property": "selected"
+    },
+    {
+      "id": "remote-selected",
+      "kind": "control",
+      "target": "remote",
+      "property": "selected"
+    },
+    {
+      "id": "seats3-enabled",
+      "kind": "control",
+      "target": "seats3",
+      "property": "enabled"
+    },
+    {
+      "id": "seats6-enabled",
+      "kind": "control",
+      "target": "seats6",
+      "property": "enabled"
+    },
+    {
+      "id": "seats3-selected",
+      "kind": "control",
+      "target": "seats3",
+      "property": "selected"
+    },
+    {
+      "id": "seats6-selected",
+      "kind": "control",
+      "target": "seats6",
+      "property": "selected"
+    },
+    {
+      "id": "workbook-enabled",
+      "kind": "control",
+      "target": "workbook",
+      "property": "enabled"
+    },
+    {
+      "id": "workbook-selected",
+      "kind": "control",
+      "target": "workbook",
+      "property": "selected"
+    },
+    {
+      "id": "total",
+      "kind": "control",
+      "target": "total",
+      "property": "label"
+    },
+    {
+      "id": "reserve-enabled",
+      "kind": "control",
+      "target": "reserve",
+      "property": "enabled"
+    },
+    {
+      "id": "status",
+      "kind": "control",
+      "target": "status",
+      "property": "label"
+    },
+    {
+      "id": "edit-enabled",
+      "kind": "control",
+      "target": "edit",
+      "property": "enabled"
+    },
+    {
+      "id": "activation",
+      "kind": "event"
+    },
+    {
+      "id": "caller-update",
+      "kind": "event",
+      "stimulus": "caller_update"
+    },
+    {
+      "id": "title-font",
+      "kind": "text_layout",
+      "target": "title",
+      "property": "font_sp",
+      "op": "near"
+    },
+    {
+      "id": "title-ink",
+      "kind": "text_layout",
+      "target": "title",
+      "property": "color_argb"
+    },
+    {
+      "id": "detail-ellipsis",
+      "kind": "text_layout",
+      "target": "detail",
+      "property": "ellipsized"
+    },
+    {
+      "id": "reserve-height",
+      "kind": "geometry",
+      "target": "reserve",
+      "property": "height",
+      "op": "gte",
+      "basis": "control",
+      "measurement": "accessibility_box"
+    },
+    {
+      "id": "reserve-visible",
+      "kind": "manual",
+      "target": "reserve",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    }
+  ],
+  "scenarios": {
+    "P1": {
+      "states": [
+        {
+          "id": "browse",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        },
+        {
+          "id": "configured",
+          "input_index": 0,
+          "after_action": 4,
+          "coverage": "targets"
+        },
+        {
+          "id": "reserved",
+          "input_index": 0,
+          "after_action": 5,
+          "coverage": "targets"
+        },
+        {
+          "id": "replaced",
+          "input_index": 1,
+          "after_action": 6,
+          "coverage": "targets"
+        },
+        {
+          "id": "reserved-again",
+          "input_index": 1,
+          "after_action": 7,
+          "coverage": "targets"
+        }
+      ],
+      "actions": [
+        {
+          "type": "sweep",
+          "state_id": "browse"
+        },
+        {
+          "type": "tap",
+          "target": "courseB",
+          "reveal": true
+        },
+        {
+          "type": "tap",
+          "target": "onsite",
+          "reveal": true
+        },
+        {
+          "type": "tap",
+          "target": "seats3",
+          "reveal": true
+        },
+        {
+          "type": "tap",
+          "target": "workbook",
+          "reveal": true,
+          "state_id": "configured"
+        },
+        {
+          "type": "tap",
+          "target": "reserve",
+          "reveal": true,
+          "state_id": "reserved"
+        },
+        {
+          "type": "apply_next_fixture",
+          "state_id": "replaced"
+        },
+        {
+          "type": "tap",
+          "target": "reserve",
+          "reveal": true,
+          "state_id": "reserved-again"
+        }
+      ],
+      "values": {
+        "heading": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/heading/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/heading/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/heading/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/heading/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/heading/android"
+            }
+          }
+        },
+        "detail": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/detail/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/detail/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/detail/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/detail/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/detail/android"
+            }
+          }
+        },
+        "course-a-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/course-a-selected/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/course-a-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/course-a-selected/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/course-a-selected/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/course-a-selected/android"
+            }
+          }
+        },
+        "course-b-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/course-b-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/course-b-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/course-b-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/course-b-enabled/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/course-b-enabled/android"
+            }
+          }
+        },
+        "onsite-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/onsite-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/onsite-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/onsite-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/onsite-enabled/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/onsite-enabled/android"
+            }
+          }
+        },
+        "onsite-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/onsite-selected/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/onsite-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/onsite-selected/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/onsite-selected/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/onsite-selected/android"
+            }
+          }
+        },
+        "remote-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/remote-selected/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/remote-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/remote-selected/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/remote-selected/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/remote-selected/android"
+            }
+          }
+        },
+        "seats3-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/seats3-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/seats3-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/seats3-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/seats3-enabled/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/seats3-enabled/android"
+            }
+          }
+        },
+        "seats6-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/seats6-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/seats6-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/seats6-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/seats6-enabled/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/seats6-enabled/android"
+            }
+          }
+        },
+        "seats3-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/seats3-selected/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/seats3-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/seats3-selected/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/seats3-selected/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/seats3-selected/android"
+            }
+          }
+        },
+        "seats6-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/seats6-selected/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/seats6-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/seats6-selected/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/seats6-selected/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/seats6-selected/android"
+            }
+          }
+        },
+        "workbook-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/workbook-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/workbook-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/workbook-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/workbook-enabled/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/workbook-enabled/android"
+            }
+          }
+        },
+        "workbook-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/workbook-selected/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/workbook-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/workbook-selected/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/workbook-selected/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/workbook-selected/android"
+            }
+          }
+        },
+        "total": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/total/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/total/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/total/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/total/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/total/android"
+            }
+          }
+        },
+        "reserve-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/reserve-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/reserve-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/reserve-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/reserve-enabled/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/reserve-enabled/android"
+            }
+          }
+        },
+        "status": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/status/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/status/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/status/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/status/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/status/android"
+            }
+          }
+        },
+        "edit-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/edit-enabled/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/edit-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/edit-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/edit-enabled/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/edit-enabled/android"
+            }
+          }
+        },
+        "activation": {
+          "browse": {
+            "not_applicable": "Selected checkpoint is not an activation stimulus."
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/activation/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/activation/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/activation/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/activation/android"
+            }
+          },
+          "replaced": {
+            "not_applicable": "Selected checkpoint is not an activation stimulus."
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/activation/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/activation/android"
+            }
+          }
+        },
+        "caller-update": {
+          "browse": {
+            "not_applicable": "Selected checkpoint is not a caller replacement stimulus."
+          },
+          "configured": {
+            "not_applicable": "Selected checkpoint is not a caller replacement stimulus."
+          },
+          "reserved": {
+            "not_applicable": "Selected checkpoint is not a caller replacement stimulus."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/caller-update/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/caller-update/android"
+            }
+          },
+          "reserved-again": {
+            "not_applicable": "Selected checkpoint is not a caller replacement stimulus."
+          }
+        },
+        "title-font": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          }
+        },
+        "title-ink": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/title-ink/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/title-ink/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/title-ink/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/title-ink/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/title-ink/android"
+            }
+          }
+        },
+        "detail-ellipsis": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/detail-ellipsis/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/detail-ellipsis/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/detail-ellipsis/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/detail-ellipsis/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/detail-ellipsis/android"
+            }
+          }
+        },
+        "reserve-height": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/reserve-height/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/reserve-height/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/reserve-height/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/reserve-height/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/reserve-height/android"
+            }
+          }
+        },
+        "reserve-visible": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/browse/reserve-visible/android"
+            }
+          },
+          "configured": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/configured/reserve-visible/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved/reserve-visible/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/replaced/reserve-visible/android"
+            }
+          },
+          "reserved-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P1/reserved-again/reserve-visible/android"
+            }
+          }
+        }
+      }
+    },
+    "P2": {
+      "states": [
+        {
+          "id": "browse",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        },
+        {
+          "id": "blocked",
+          "input_index": 0,
+          "after_action": 1,
+          "coverage": "targets"
+        },
+        {
+          "id": "course-changed",
+          "input_index": 0,
+          "after_action": 3,
+          "coverage": "targets"
+        },
+        {
+          "id": "reserved",
+          "input_index": 0,
+          "after_action": 4,
+          "coverage": "targets"
+        },
+        {
+          "id": "editing",
+          "input_index": 0,
+          "after_action": 5,
+          "coverage": "targets"
+        },
+        {
+          "id": "replaced",
+          "input_index": 1,
+          "after_action": 6,
+          "coverage": "targets"
+        }
+      ],
+      "actions": [
+        {
+          "type": "sweep",
+          "state_id": "browse"
+        },
+        {
+          "type": "tap",
+          "target": "onsite",
+          "reveal": true,
+          "state_id": "blocked"
+        },
+        {
+          "type": "tap",
+          "target": "seats6",
+          "reveal": true
+        },
+        {
+          "type": "tap",
+          "target": "courseB",
+          "reveal": true,
+          "state_id": "course-changed"
+        },
+        {
+          "type": "tap",
+          "target": "reserve",
+          "reveal": true,
+          "state_id": "reserved"
+        },
+        {
+          "type": "tap",
+          "target": "edit",
+          "reveal": true,
+          "state_id": "editing"
+        },
+        {
+          "type": "apply_next_fixture",
+          "state_id": "replaced"
+        }
+      ],
+      "values": {
+        "heading": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/heading/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/heading/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/heading/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/heading/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/heading/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/heading/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/heading/android"
+            }
+          }
+        },
+        "detail": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/detail/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/detail/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/detail/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/detail/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/detail/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/detail/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/detail/android"
+            }
+          }
+        },
+        "course-a-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/course-a-selected/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/course-a-selected/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/course-a-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/course-a-selected/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/course-a-selected/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/course-a-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/course-a-selected/android"
+            }
+          }
+        },
+        "course-b-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/course-b-enabled/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/course-b-enabled/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/course-b-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/course-b-enabled/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/course-b-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/course-b-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/course-b-enabled/android"
+            }
+          }
+        },
+        "onsite-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/onsite-enabled/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/onsite-enabled/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/onsite-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/onsite-enabled/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/onsite-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/onsite-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/onsite-enabled/android"
+            }
+          }
+        },
+        "onsite-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/onsite-selected/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/onsite-selected/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/onsite-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/onsite-selected/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/onsite-selected/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/onsite-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/onsite-selected/android"
+            }
+          }
+        },
+        "remote-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/remote-selected/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/remote-selected/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/remote-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/remote-selected/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/remote-selected/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/remote-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/remote-selected/android"
+            }
+          }
+        },
+        "seats3-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/seats3-enabled/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/seats3-enabled/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/seats3-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/seats3-enabled/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/seats3-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/seats3-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/seats3-enabled/android"
+            }
+          }
+        },
+        "seats6-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/seats6-enabled/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/seats6-enabled/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/seats6-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/seats6-enabled/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/seats6-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/seats6-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/seats6-enabled/android"
+            }
+          }
+        },
+        "seats3-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/seats3-selected/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/seats3-selected/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/seats3-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/seats3-selected/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/seats3-selected/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/seats3-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/seats3-selected/android"
+            }
+          }
+        },
+        "seats6-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/seats6-selected/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/seats6-selected/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/seats6-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/seats6-selected/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/seats6-selected/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/seats6-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/seats6-selected/android"
+            }
+          }
+        },
+        "workbook-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/workbook-enabled/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/workbook-enabled/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/workbook-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/workbook-enabled/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/workbook-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/workbook-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/workbook-enabled/android"
+            }
+          }
+        },
+        "workbook-selected": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/workbook-selected/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/workbook-selected/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/workbook-selected/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/workbook-selected/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/workbook-selected/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/workbook-selected/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/workbook-selected/android"
+            }
+          }
+        },
+        "total": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/total/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/total/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/total/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/total/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/total/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/total/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/total/android"
+            }
+          }
+        },
+        "reserve-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/reserve-enabled/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/reserve-enabled/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/reserve-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/reserve-enabled/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/reserve-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/reserve-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/reserve-enabled/android"
+            }
+          }
+        },
+        "status": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/status/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/status/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/status/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/status/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/status/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/status/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/status/android"
+            }
+          }
+        },
+        "edit-enabled": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/edit-enabled/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/edit-enabled/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/edit-enabled/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/edit-enabled/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/edit-enabled/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/edit-enabled/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/edit-enabled/android"
+            }
+          }
+        },
+        "activation": {
+          "browse": {
+            "not_applicable": "Selected checkpoint is not an activation stimulus."
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/activation/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/activation/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/activation/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/activation/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/activation/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/activation/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/activation/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/activation/android"
+            }
+          },
+          "replaced": {
+            "not_applicable": "Selected checkpoint is not an activation stimulus."
+          }
+        },
+        "caller-update": {
+          "browse": {
+            "not_applicable": "Selected checkpoint is not a caller replacement stimulus."
+          },
+          "blocked": {
+            "not_applicable": "Selected checkpoint is not a caller replacement stimulus."
+          },
+          "course-changed": {
+            "not_applicable": "Selected checkpoint is not a caller replacement stimulus."
+          },
+          "reserved": {
+            "not_applicable": "Selected checkpoint is not a caller replacement stimulus."
+          },
+          "editing": {
+            "not_applicable": "Selected checkpoint is not a caller replacement stimulus."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/caller-update/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/caller-update/android"
+            }
+          }
+        },
+        "title-font": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/title-font/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/title-font/android"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/tokens/fontToleranceIOS"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/tokens/android/fontTolerance"
+              }
+            }
+          }
+        },
+        "title-ink": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/title-ink/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/title-ink/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/title-ink/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/title-ink/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/title-ink/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/title-ink/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/title-ink/android"
+            }
+          }
+        },
+        "detail-ellipsis": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/detail-ellipsis/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/detail-ellipsis/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/detail-ellipsis/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/detail-ellipsis/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/detail-ellipsis/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/detail-ellipsis/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/detail-ellipsis/android"
+            }
+          }
+        },
+        "reserve-height": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/reserve-height/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/reserve-height/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/reserve-height/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/reserve-height/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/reserve-height/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/reserve-height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/reserve-height/android"
+            }
+          }
+        },
+        "reserve-visible": {
+          "browse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/browse/reserve-visible/android"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/blocked/reserve-visible/android"
+            }
+          },
+          "course-changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/course-changed/reserve-visible/android"
+            }
+          },
+          "reserved": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/reserved/reserve-visible/android"
+            }
+          },
+          "editing": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/editing/reserve-visible/android"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/reserve-visible/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/P2/replaced/reserve-visible/android"
+            }
+          }
+        }
+      }
+    }
+  }
+}

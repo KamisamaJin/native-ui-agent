@@ -1,0 +1,176 @@
+{
+  "initial": {
+    "rows": 8,
+    "token": "A"
+  },
+  "updates": [
+    {
+      "rows": 12,
+      "token": "B"
+    }
+  ],
+  "width": 390,
+  "theme": "light",
+  "dynamic_type": "large",
+  "fontScale": 1.0,
+  "direction": "ltr",
+  "state_capture": false,
+  "max_scrolls": 20,
+  "observation_targets": [
+    {
+      "identifier": "probe.header"
+    },
+    {
+      "identifier": "probe.footer"
+    },
+    {
+      "identifier": "probe.secondary"
+    },
+    {
+      "identifier": "probe.disclosure"
+    },
+    {
+      "identifier": "probe.disabled"
+    },
+    {
+      "identifier": "probe.markerA"
+    },
+    {
+      "identifier": "probe.markerB"
+    },
+    {
+      "identifier": "probe.ink"
+    }
+  ],
+  "actions": [
+    {
+      "type": "sweep",
+      "state_id": "full-initial",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "probe.disclosure"
+      },
+      "reveal": true,
+      "state_id": "expanded",
+      "after_targets": [
+        {
+          "identifier": "probe.header"
+        },
+        {
+          "identifier": "probe.markerA"
+        },
+        {
+          "identifier": "probe.markerB"
+        },
+        {
+          "identifier": "probe.ink"
+        },
+        {
+          "identifier": "probe.footer"
+        },
+        {
+          "identifier": "probe.secondary"
+        }
+      ]
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "probe.secondary"
+      },
+      "reveal": true,
+      "state_id": "continued",
+      "after_targets": [
+        {
+          "identifier": "probe.header"
+        },
+        {
+          "identifier": "probe.markerA"
+        },
+        {
+          "identifier": "probe.markerB"
+        },
+        {
+          "identifier": "probe.ink"
+        },
+        {
+          "identifier": "probe.footer"
+        },
+        {
+          "identifier": "probe.secondary"
+        }
+      ]
+    },
+    {
+      "type": "capture",
+      "state_id": "bounded-missing",
+      "after_targets": [
+        {
+          "identifier": "probe.missing"
+        }
+      ],
+      "observation_max_scrolls": 0
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "updated",
+      "after_targets": [
+        {
+          "identifier": "probe.header"
+        },
+        {
+          "identifier": "probe.markerA"
+        },
+        {
+          "identifier": "probe.markerB"
+        },
+        {
+          "identifier": "probe.ink"
+        },
+        {
+          "identifier": "probe.footer"
+        },
+        {
+          "identifier": "probe.secondary"
+        }
+      ]
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "probe.disabled"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "state_id": "disabled",
+      "after_targets": [
+        {
+          "identifier": "probe.header"
+        },
+        {
+          "identifier": "probe.markerA"
+        },
+        {
+          "identifier": "probe.markerB"
+        },
+        {
+          "identifier": "probe.ink"
+        },
+        {
+          "identifier": "probe.footer"
+        },
+        {
+          "identifier": "probe.secondary"
+        }
+      ]
+    },
+    {
+      "type": "sweep",
+      "state_id": "full-update",
+      "max_steps": 24
+    }
+  ]
+}

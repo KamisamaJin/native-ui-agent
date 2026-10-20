@@ -1,0 +1,629 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "Independent neutral probe specification",
+    "approval_reference": "validation/contract-forward/PREREGISTRATION.md; freeze before acquisition",
+    "sources": [
+      {
+        "id": "reference",
+        "path": "reference.json",
+        "sha256": "93261b225ed7e4d32f042ef3af16b42f5fc1ad62cd3d47d9180cc3e603f7206e"
+      }
+    ],
+    "required_rule_ids": [
+      "header-label",
+      "marker-width",
+      "marker-gap",
+      "ink",
+      "activate",
+      "update",
+      "footer-label",
+      "secondary-label"
+    ],
+    "rules": [
+      {
+        "id": "header-label",
+        "kind": "control",
+        "target": "header",
+        "property": "label"
+      },
+      {
+        "id": "marker-width",
+        "kind": "geometry",
+        "target": "markerA",
+        "property": "width",
+        "op": "near"
+      },
+      {
+        "id": "marker-gap",
+        "kind": "geometry",
+        "target": "markerB",
+        "reference_target": "markerA",
+        "property": "gap_x",
+        "op": "near"
+      },
+      {
+        "id": "ink",
+        "kind": "text_layout",
+        "target": "ink",
+        "property": "color_argb"
+      },
+      {
+        "id": "activate",
+        "kind": "event"
+      },
+      {
+        "id": "update",
+        "kind": "event",
+        "stimulus": "caller_update"
+      },
+      {
+        "id": "footer-label",
+        "kind": "control",
+        "target": "footer",
+        "property": "label"
+      },
+      {
+        "id": "secondary-label",
+        "kind": "control",
+        "target": "secondary",
+        "property": "label"
+      }
+    ],
+    "scenarios": {
+      "neutral": {
+        "states": [
+          {
+            "id": "expanded",
+            "input_index": 0,
+            "after_action": 1,
+            "coverage": "targets"
+          },
+          {
+            "id": "continued",
+            "input_index": 0,
+            "after_action": 2,
+            "coverage": "targets"
+          },
+          {
+            "id": "updated",
+            "input_index": 1,
+            "after_action": 4,
+            "coverage": "targets"
+          },
+          {
+            "id": "disabled",
+            "input_index": 1,
+            "after_action": 5,
+            "coverage": "targets"
+          }
+        ],
+        "actions": [
+          {
+            "type": "sweep",
+            "state_id": "full-initial",
+            "max_steps": 24
+          },
+          {
+            "type": "tap",
+            "target": "disclosure",
+            "reveal": true,
+            "state_id": "expanded"
+          },
+          {
+            "type": "tap",
+            "target": "secondary",
+            "reveal": true,
+            "state_id": "continued"
+          },
+          {
+            "type": "capture",
+            "state_id": "bounded-missing",
+            "after_targets": [
+              {
+                "identifier": "probe.missing"
+              }
+            ],
+            "observation_max_scrolls": 0
+          },
+          {
+            "type": "apply_next_fixture",
+            "state_id": "updated"
+          },
+          {
+            "type": "tap",
+            "target": "disabled",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "disabled"
+          },
+          {
+            "type": "sweep",
+            "state_id": "full-update",
+            "max_steps": 24
+          }
+        ],
+        "values": {
+          "header-label": {
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/A"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/A"
+              }
+            },
+            "continued": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/A"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/A"
+              }
+            },
+            "updated": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/B"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/B"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/B"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/B"
+              }
+            }
+          },
+          "marker-width": {
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/width"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/width"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "continued": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/width"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/width"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "updated": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/width"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/width"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/width"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/width"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            }
+          },
+          "marker-gap": {
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/gap"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/gap"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "continued": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/gap"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/gap"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "updated": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/gap"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/gap"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/gap"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/gap"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            }
+          },
+          "ink": {
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/ink"
+              }
+            },
+            "continued": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/ink"
+              }
+            },
+            "updated": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/ink"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/ink"
+              }
+            }
+          },
+          "activate": {
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/business/activated"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/business/activated"
+              }
+            },
+            "continued": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/business/secondary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/business/secondary"
+              }
+            },
+            "updated": {
+              "not_applicable": "No corresponding successful stimulus class in this state"
+            },
+            "disabled": {
+              "not_applicable": "No corresponding successful stimulus class in this state"
+            }
+          },
+          "update": {
+            "expanded": {
+              "not_applicable": "No corresponding successful stimulus class in this state"
+            },
+            "continued": {
+              "not_applicable": "No corresponding successful stimulus class in this state"
+            },
+            "updated": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/business/quiet"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/business/quiet"
+              }
+            },
+            "disabled": {
+              "not_applicable": "No corresponding successful stimulus class in this state"
+            }
+          },
+          "footer-label": {
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/footer/A"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/footer/A"
+              }
+            },
+            "continued": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/footer/A"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/footer/A"
+              }
+            },
+            "updated": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/footer/B"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/footer/B"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/footer/B"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/footer/B"
+              }
+            }
+          },
+          "secondary-label": {
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/secondary/A"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/secondary/A"
+              }
+            },
+            "continued": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/secondary/A"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/secondary/A"
+              }
+            },
+            "updated": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/secondary/B"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/secondary/B"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/secondary/B"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/secondary/B"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "reference": {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "93261b225ed7e4d32f042ef3af16b42f5fc1ad62cd3d47d9180cc3e603f7206e",
+      "document": {
+        "labels": {
+          "A": {
+            "value": "Panel A",
+            "unit": "string"
+          },
+          "B": {
+            "value": "Panel B",
+            "unit": "string"
+          }
+        },
+        "geometry": {
+          "ios": {
+            "width": {
+              "value": 72,
+              "unit": "pt"
+            },
+            "gap": {
+              "value": 10,
+              "unit": "pt"
+            },
+            "tolerance": {
+              "value": 0.75,
+              "unit": "pt"
+            }
+          },
+          "android": {
+            "width": {
+              "value": 72,
+              "unit": "dp"
+            },
+            "gap": {
+              "value": 10,
+              "unit": "dp"
+            },
+            "tolerance": {
+              "value": 0.75,
+              "unit": "dp"
+            }
+          }
+        },
+        "style": {
+          "ink": {
+            "value": "#FF276145",
+            "unit": "argb"
+          }
+        },
+        "business": {
+          "activated": {
+            "value": [
+              "expanded"
+            ],
+            "unit": "events"
+          },
+          "quiet": {
+            "value": [],
+            "unit": "events"
+          },
+          "secondary": {
+            "value": [
+              "secondary"
+            ],
+            "unit": "events"
+          }
+        },
+        "footer": {
+          "A": {
+            "value": "End A",
+            "unit": "string"
+          },
+          "B": {
+            "value": "End B",
+            "unit": "string"
+          }
+        },
+        "secondary": {
+          "A": {
+            "value": "Continue A",
+            "unit": "string"
+          },
+          "B": {
+            "value": "Continue B",
+            "unit": "string"
+          }
+        }
+      },
+      "raw_utf8": "{\n  \"labels\": {\n    \"A\": {\n      \"value\": \"Panel A\",\n      \"unit\": \"string\"\n    },\n    \"B\": {\n      \"value\": \"Panel B\",\n      \"unit\": \"string\"\n    }\n  },\n  \"geometry\": {\n    \"ios\": {\n      \"width\": {\n        \"value\": 72,\n        \"unit\": \"pt\"\n      },\n      \"gap\": {\n        \"value\": 10,\n        \"unit\": \"pt\"\n      },\n      \"tolerance\": {\n        \"value\": 0.75,\n        \"unit\": \"pt\"\n      }\n    },\n    \"android\": {\n      \"width\": {\n        \"value\": 72,\n        \"unit\": \"dp\"\n      },\n      \"gap\": {\n        \"value\": 10,\n        \"unit\": \"dp\"\n      },\n      \"tolerance\": {\n        \"value\": 0.75,\n        \"unit\": \"dp\"\n      }\n    }\n  },\n  \"style\": {\n    \"ink\": {\n      \"value\": \"#FF276145\",\n      \"unit\": \"argb\"\n    }\n  },\n  \"business\": {\n    \"activated\": {\n      \"value\": [\n        \"expanded\"\n      ],\n      \"unit\": \"events\"\n    },\n    \"quiet\": {\n      \"value\": [],\n      \"unit\": \"events\"\n    },\n    \"secondary\": {\n      \"value\": [\n        \"secondary\"\n      ],\n      \"unit\": \"events\"\n    }\n  },\n  \"footer\": {\n    \"A\": {\n      \"value\": \"End A\",\n      \"unit\": \"string\"\n    },\n    \"B\": {\n      \"value\": \"End B\",\n      \"unit\": \"string\"\n    }\n  },\n  \"secondary\": {\n    \"A\": {\n      \"value\": \"Continue A\",\n      \"unit\": \"string\"\n    },\n    \"B\": {\n      \"value\": \"Continue B\",\n      \"unit\": \"string\"\n    }\n  }\n}\n"
+    }
+  },
+  "contract_sha256": "a4f5441af9b711af98bb6ee03229fd405807b5e66a8fe575dae5ee3c54830127",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

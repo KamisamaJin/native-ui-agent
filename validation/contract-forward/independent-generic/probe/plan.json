@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "states": [
+    {
+      "id": "primary",
+      "input_index": 0,
+      "after_action": 0
+    },
+    {
+      "id": "replaced",
+      "input_index": 1,
+      "after_action": 1
+    },
+    {
+      "id": "last",
+      "input_index": 1,
+      "after_action": 2
+    }
+  ],
+  "assertions": [
+    {
+      "id": "primary-callback",
+      "state": "primary",
+      "kind": "event",
+      "action_index": 0,
+      "expected": [
+        "cap.primary"
+      ]
+    },
+    {
+      "id": "update-quiet",
+      "state": "replaced",
+      "kind": "event",
+      "action_index": 1,
+      "expected": [],
+      "stimulus": "caller_update"
+    },
+    {
+      "id": "updated-title",
+      "state": "replaced",
+      "kind": "control",
+      "target": {
+        "identifier": "cap.title"
+      },
+      "property": "label",
+      "expected": "Capability input B"
+    },
+    {
+      "id": "last-callback",
+      "state": "last",
+      "kind": "event",
+      "action_index": 2,
+      "expected": [
+        "cap.last"
+      ]
+    }
+  ],
+  "required_assertion_ids": [
+    "primary-callback",
+    "update-quiet",
+    "updated-title",
+    "last-callback"
+  ]
+}

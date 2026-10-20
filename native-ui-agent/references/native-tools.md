@@ -8,7 +8,7 @@ they supply no business UI or expected answer. Run generic capability probes fir
 
 The iOS App/XCUITest entry point remains `scripts/ios_observe.py run` (see the
 [full bridge contract](../assets/ios-observer/CONTRACT.md)). `state_capture` defaults
-to true. Its caller JSON has `initial`, optional `updates`, width320/390, theme,
+to true. Its caller JSON has `initial`, optional `updates`, finite offered width160–1024pt (verify actual viewport), theme,
 Dynamic Type category, direction, and optional `observation_targets` selectors.
 
 The Android entry point requires an existing Paparazzi test project, its JVM/SDK

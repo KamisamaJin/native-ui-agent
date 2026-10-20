@@ -1,0 +1,117 @@
+{
+  "phase": "single_bounded_product_repair",
+  "start_utc": "2026-10-20T12:32:19.879263Z",
+  "end_utc": "2026-10-20T12:33:45.628955Z",
+  "wall_seconds": 85.749692,
+  "budget_minutes": 15,
+  "changes": [
+    {
+      "file": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/reply/Reply/app/src/main/java/com/example/reply/ui/components/WorkshopEnrollmentCard.kt",
+      "scope": "Reserve action control minimum height",
+      "before": "heightIn(min = 48.dp)",
+      "after": "heightIn(min = 49.dp)",
+      "reason": "The original typed checker reported 47.99994000000004dp against the required >=48dp lower bound in three independently named P2 states. The production minimum now has 1dp of margin above the lower bound so coordinate serialization near exactly 48 does not determine conformance. The public requirement is a lower bound, not an exact 48dp size.",
+      "supported_by": [
+        "P2/android/browse/reserve-height",
+        "P2/android/editing/reserve-height",
+        "P2/android/replaced/reserve-height"
+      ],
+      "confirmation": "Compile-only passed. Final native geometry has not been captured."
+    },
+    {
+      "file": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/alerttoast/Sources/AlertToast/WorkshopEnrollmentCard.swift",
+      "scope": "Shared option/action ButtonStyle",
+      "before": "PlainButtonStyle plus explicit disabled opacity",
+      "after": "WorkshopEnrollmentButtonStyle renders the explicit label palette, keeps the existing single explicit 0.62 disabled opacity, and adds only press opacity feedback. Button and .disabled remain the actual native control and native disabled gate.",
+      "reason": "The original manual review recorded very pale disabled option labels in P1 reserved. PlainButtonStyle adding a native disabled treatment to the explicit opacity is a plausible cause. An explicit custom ButtonStyle is intended to keep the caller-defined ink readable while retaining visibly disabled controls and selected traits.",
+      "supported_by": [
+        "P1/ios/reserved/disabled-readability-concern"
+      ],
+      "confirmation": "This was a qualitative concern, not a confirmed exact color or contrast failure. Compile-only passed; visual improvement and runtime traits remain to be verified after the final source seal."
+    }
+  ],
+  "supported_by_original_findings": {
+    "review": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/submissions/unit-092e15/original-review/review.json",
+    "review_sha256": "1b7f7cefad1b21d1bc968b71940a43e1e20c3319aca96897f8e93c1898791ce3",
+    "finding_ids": [
+      "P2/android/browse/reserve-height",
+      "P2/android/editing/reserve-height",
+      "P2/android/replaced/reserve-height",
+      "P1/ios/reserved/disabled-readability-concern"
+    ]
+  },
+  "plan_changes": [],
+  "original_plans_and_support_unchanged": true,
+  "original_review_artifacts_unchanged": true,
+  "compile_checks": [
+    {
+      "platform": "ios",
+      "kind": "common_compile_only_no_render",
+      "record": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/agent-output/compile-ios-repair-01/record.json",
+      "record_sha256": "629bfb8417fc34294078409d806c48672ba5cecb81d0d987f917a7c1905e63d3",
+      "log": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/agent-output/compile-ios-repair-01/build.log",
+      "log_sha256": "20a5590a7e7063f66b69f2f8a77220740be3b692f47bdc78718ca2638c7cb120",
+      "argv": [
+        "xcodebuild",
+        "build-for-testing",
+        "-project",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/agent-output/compile-ios-repair-01/project/Observer.xcodeproj",
+        "-scheme",
+        "Observer",
+        "-configuration",
+        "Debug",
+        "-sdk",
+        "iphonesimulator",
+        "-destination",
+        "generic/platform=iOS Simulator",
+        "-derivedDataPath",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/agent-output/compile-ios-repair-01/DerivedData",
+        "CODE_SIGNING_ALLOWED=NO",
+        "ARCHS=arm64",
+        "ONLY_ACTIVE_ARCH=YES"
+      ],
+      "cwd": null,
+      "exit_code": 0,
+      "start_utc": "2026-10-20T12:32:40.430445+00:00",
+      "end_utc": "2026-10-20T12:32:50.399921+00:00",
+      "wall_seconds": 9.969475984573364
+    },
+    {
+      "platform": "android",
+      "kind": "common_compile_only_no_render",
+      "record": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/agent-output/compile-android-repair-01/record.json",
+      "record_sha256": "e3c4bb3684d4957f1f8efd6157eaf8e312bd35f93a1417ac0500d721b61abcc3",
+      "log": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/agent-output/compile-android-repair-01/build.log",
+      "log_sha256": "fd635df6cf7e4b2d0e4e122f49e61c7e10b4af929fbd7237f11b60abdf611cf0",
+      "argv": [
+        "./gradlew",
+        ":app:compileDebugKotlin",
+        "--console=plain",
+        "--max-workers=2"
+      ],
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/reply/Reply",
+      "exit_code": 0,
+      "start_utc": "2026-10-20T12:32:40.403524+00:00",
+      "end_utc": "2026-10-20T12:32:41.449278+00:00",
+      "wall_seconds": 1.0457537174224854
+    }
+  ],
+  "initial_source_sha256": {
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/alerttoast/Sources/AlertToast/WorkshopEnrollmentCard.swift": "c51b66982a34797fbe19217869651485d26b89f4ad1d2d1c98016d022b776487",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/reply/Reply/app/src/main/java/com/example/reply/ui/components/WorkshopEnrollmentCard.kt": "643324de69b02076b685d07b3c938000dd563e329b03fa6dce94664965de20c3"
+  },
+  "final_source_sha256": {
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/alerttoast/Sources/AlertToast/WorkshopEnrollmentCard.swift": "4bd48762678ab453c163294ee38f47ab1dbf095af62f1ae0f6968b6a4ec84395",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/contract-forward/cache/unit-092e15/reply/Reply/app/src/main/java/com/example/reply/ui/components/WorkshopEnrollmentCard.kt": "1188ffbe4f3814ac44294bf301eb67364bbf854bfbb8b8e6ee9a67214f6f3ce1"
+  },
+  "limits": [
+    "No native observation, screenshot, preview, test execution, app launch, final capture, independent grade or heldout feedback was used during repair.",
+    "Only compilation is validated. Neither original typed failures nor the qualitative concern is claimed resolved without a new source-bound capture.",
+    "The Android measurement discrepancy may involve exported coordinate precision; its cause remains uncertain. No expected value, tolerance, comparator, fixture or action route was changed.",
+    "The SwiftUI change is based on a qualitative readability concern and a style-layer hypothesis. It is not evidence of computed color or contrast compliance.",
+    "All original plans/actions retain their independent design lock integrity and exact hashes. Original review P/F/U rows remain preserved.",
+    "Unsupported iOS computed measurements, blocked callback behavior and prior inconsistent geometry remain unassessed in the original evidence.",
+    "Public production API, catalog reconciliation, reservation payloads and callback dispatch logic are unchanged.",
+    "Frozen tools, bridges, host files, common infrastructure, framework/deployment versions and public design were not edited."
+  ]
+}

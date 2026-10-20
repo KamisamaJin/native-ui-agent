@@ -140,6 +140,7 @@ class NativeObserverTest {
   val b=rawBounds(n)
   return if(b.height<=viewportHeight && b.width<=view.width)fullyVisible(n)else visible(n) && b.center.y in 0f..viewportHeight && b.center.x in 0f..view.width.toFloat()
  }
+ private var postOrder=mutableListOf<Int>()
  private fun targetEvidence(spec:JsonObject):JsonObject{
   val observed=mutableListOf<Int>();val full=mutableListOf<Int>();var ambiguous=false
   for(index in postIndices){
@@ -179,11 +180,20 @@ class NativeObserverTest {
     capture(pendingName,image);immediateSnapshot=records.lastIndex;afterBinding=binding();afterDelta=events.drop(eventStart).toList();postIndices.add(immediateSnapshot)
     postTargets=if(action["observe_after"]?.jsonPrimitive?.booleanOrNull==false)emptyList()else action["after_targets"]?.jsonArray?.map{it.jsonObject} ?: if(optional(action,"type")=="tap")listOf(action["after_target"]?.jsonObject ?: action["target"]?.jsonObject ?: buildJsonObject{put("identifier",optional(action,"identifier") ?: "")})else emptyList()
    }
+   if(postOrder.isEmpty())postOrder=postTargets.indices.toMutableList()
    val needsImage=postTrace.isNotEmpty() && postTargets.any{spec->targetEvidence(spec)["status"]!!.jsonPrimitive.content!="observed" && select(spec).singleOrNull()?.let{targetReady(it)}==true}
    if(needsImage){capture(pendingName+"-post-target-"+postTargetIndex,image);postIndices.add(records.lastIndex)}
    val limit=(action["observation_max_scrolls"]?.jsonPrimitive?.intOrNull ?: 24).coerceIn(0,40)
    while(postTargetIndex<postTargets.size && binding()==afterBinding){
-    val wanted=postTargets[postTargetIndex];val found=select(wanted);val target=found.singleOrNull()
+    // Reuse each coherent frame for all targets and visit the nearest unseen
+    // native box. Keep requested_targets in original order for audit/replay.
+    val next=(postTargetIndex until postOrder.size).minByOrNull{position->
+     val spec=postTargets[postOrder[position]]
+     if(targetEvidence(spec)["status"]!!.jsonPrimitive.content=="observed")-1f
+     else select(spec).singleOrNull()?.let{kotlin.math.abs(rawBounds(it).center.y-viewportHeight/2)} ?: Float.MAX_VALUE
+    } ?: postTargetIndex
+    val selectedOrder=postOrder[next];postOrder[next]=postOrder[postTargetIndex];postOrder[postTargetIndex]=selectedOrder
+    val wanted=postTargets[selectedOrder];val found=select(wanted);val target=found.singleOrNull()
     if(targetEvidence(wanted)["status"]!!.jsonPrimitive.content=="observed" || found.size>1 || postAttempts>=limit){postTargetIndex++;postDirection=0;postReversed=false;continue}
     if(target?.let{targetReady(it)}==true){capture(pendingName+"-post-target-"+postTargetIndex,image);postIndices.add(records.lastIndex);postTargetIndex++;postDirection=0;postReversed=false;continue}
     if(postDirection==0)postDirection=if(scroll.value>0)-1 else 1
@@ -199,7 +209,7 @@ class NativeObserverTest {
    val observationSet=if(postTargets.isEmpty())JsonObject(emptyMap())else buildJsonObject{put("state_id",activeState);put("after_action",actionIndex);put("binding",afterBinding!!);put("binding_after_observation",binding());put("binding_stable",stable);put("snapshot_indices",buildJsonArray{postIndices.forEach{add(it)}});put("requested_targets",JsonArray(postTargets));put("targets",JsonArray(results));put("all_targets_observed",stable && results.all{it["status"]!!.jsonPrimitive.content=="observed"});put("scroll_budget",limit);put("scrolls_used",postAttempts);put("trace",JsonArray(postTrace));put("scope","targets_only; never full-content or absence proof")}
    steps.add(buildJsonObject{item.forEach{(k,v)->put(k,v)};put("dispatch",buildJsonObject{dispatch.forEach{(k,v)->put(k,v)};put("event_end",afterBinding!!["event_revision"]!!)});put("callback_delta",buildJsonArray{afterDelta.forEach{add(it)}});put("snapshot",records.lastIndex);put("immediate_after",immediateSnapshot);put("binding_after",afterBinding!!);put("state_id",activeState)
     put("observation_set",observationSet);put("post_action_viewport",buildJsonObject{val first=results.firstOrNull();if(first!=null)first.forEach{(k,v)->put(k,v)}else put("status","not_requested");put("snapshot",first?.get("snapshot_indices")?.jsonArray?.firstOrNull() ?: JsonPrimitive(records.lastIndex));put("binding_stable",stable)})})
-   afterBinding=null;postAttempts=0;postTrace.clear();postIndices.clear();postTargets=emptyList();postTargetIndex=0;postDirection=0;postReversed=false
+   afterBinding=null;postAttempts=0;postTrace.clear();postIndices.clear();postTargets=emptyList();postOrder.clear();postTargetIndex=0;postDirection=0;postReversed=false
    val state=optional(actions[finished],"state_id");actionIndex++;attempts=0
    if(stateCapture && state!=null)startSweep(state,finished,"after")else phase="actions"
    return

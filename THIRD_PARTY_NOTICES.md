@@ -2,7 +2,7 @@
 
 The root MIT license covers original Skill, runner, documentation and harness code. It does not replace upstream licenses.
 
-The blind-comparison transfer queue, fresh-blind visit-rescheduling components, tool-forward return-resolution components, dispatch-forward WaterRound components and state-forward Print Batch Approval components, independent designs/oracles, generic observer probes and adapters are original additions covered by the root MIT license. Their Reply/AlertToast test hosts still use the upstream projects and native dependencies below. Screenshots and archived native reports document those integrations; they do not relicense upstream assets or dependencies. State-forward source capsules preserve the upstream license texts alongside copied production sources.
+The blind-comparison transfer queue, fresh-blind visit-rescheduling components, tool-forward return-resolution components, dispatch-forward WaterRound components state-forward Print Batch Approval components and contract-forward Workshop enrollment components, independent designs/oracles, generic observer probes and adapters are original additions covered by the root MIT license. Their Reply/AlertToast test hosts still use the upstream projects and native dependencies below. Screenshots and archived native reports document those integrations; they do not relicense upstream assets or dependencies. State-forward and contract-forward source capsules preserve the upstream license texts alongside copied production sources.
 
 | Material | Source | License / notice |
 | --- | --- | --- |

@@ -84,15 +84,23 @@ def validate_plan(plan):
     for item in plan['assertions']:
         if not item.get('id')or item['id']in ids:raise ValueError('Unique assertion IDs required')
         if item.get('state')not in states:raise ValueError('Assertion references unknown state')
-        if item.get('kind')not in {'control','event','manual','text_layout'}:raise ValueError('Unknown assertion kind')
-        if item['kind']in {'control','text_layout'}:
+        if item.get('kind')not in {'control','event','manual','text_layout','geometry'}:raise ValueError('Unknown assertion kind')
+        if item['kind']in {'control','text_layout','geometry'}:
             target=item.get('target',{})
             if not isinstance(target,dict)or sum(isinstance(target.get(k),str)and bool(target[k])for k in ['identifier','label'])!=1:
                 raise ValueError('Typed assertion needs one exact native target')
             if not isinstance(item.get('property'),str)or not item['property']or 'expected'not in item:
                 raise ValueError('Typed assertion needs property and explicit expectation')
-            if item.get('op','eq')not in {'eq','contains','gte','lte'}:raise ValueError('Known comparison operator required')
+            if item.get('op','eq')not in {'eq','contains','gte','lte','near'}:raise ValueError('Known comparison operator required')
             if item.get('op')in {'gte','lte'}and(type(item['expected'])not in {int,float}):raise ValueError('Numeric bounds require numeric expectations')
+            if item.get('op')=='near':
+                import math
+                if any(type(item.get(k))not in {int,float}or not math.isfinite(item[k])for k in ['expected','tolerance'])or item['tolerance']<0:raise ValueError('Near needs finite numerical expected and nonnegative tolerance')
+            if item['kind']=='geometry':
+                from design_contract import GEOMETRY
+                from observation_contract import validate_selector
+                if item['property']not in GEOMETRY or item.get('basis','semantic')not in {'semantic','control'}:raise ValueError('Explicit native-bound geometry required')
+                if item['property']not in {'width','height'}:validate_selector(item.get('reference_target'))
         if item.get('coverage','full_content')not in {'full_content','target'}:raise ValueError('Known coverage scope required')
         if item['kind']=='manual'and not set(item.get('allowed_methods',['visual']))<={'visual','native_pixels'}:raise ValueError('Manual review is visual/pixel interpretation, not native runtime facts')
         if item['kind']=='event':
@@ -107,11 +115,12 @@ def validate_plan(plan):
     return states
 
 
-def compare(actual, expected, op):
+def compare(actual, expected, op, tolerance=None):
     if op=='eq':return actual==expected and (isinstance(actual,bool)==isinstance(expected,bool))
     if op=='contains':return isinstance(actual,str)and isinstance(expected,str)and expected in actual
     if op=='gte':return isinstance(actual,(int,float))and not isinstance(actual,bool)and actual>=expected
     if op=='lte':return isinstance(actual,(int,float))and not isinstance(actual,bool)and actual<=expected
+    if op=='near':return type(actual)in {int,float}and abs(actual-expected)<=tolerance
     raise ValueError('Unknown comparison operator')
 
 
@@ -245,7 +254,40 @@ def state_evidence(observation,state):
     return found,complete,'native interval union complete'if complete else'incomplete per-state interval union',capture
 
 
-def evaluate(plan, observation, platform, manual=None, root=None, observation_sha256=None):
+def geometry_value(snapshot, item, platform):
+    """Distances between observed native bounds, not inferred style attributes.
+
+    Both boxes must be in the same coherent frame. Subtracting screen positions
+    across separately scrolled screenshots would produce false spacing results.
+    """
+    if item.get('measurement')=='layout_box':return None
+    def box(selector):
+        r=resolve(snapshot,selector,platform)
+        node=r.get(item.get('basis','semantic'),{})
+        if not r['facts'].get('unique')or not node.get('intersects_viewport'):return None
+        if not node.get('fully_within_viewport',node.get('fully_visible',False)):return None
+        if platform=='ios':
+            f=node.get('frame',{});return [f.get('x',0),f.get('y',0),f.get('x',0)+f.get('width',0),f.get('y',0)+f.get('height',0)]if f else None
+        return node.get('unclipped_bounds_dp')
+    a=box(item['target'])
+    if not a:return None
+    p=item['property']
+    if p=='width':return a[2]-a[0]
+    if p=='height':return a[3]-a[1]
+    b=box(item['reference_target'])
+    if not b:return None
+    return {'gap_x':a[0]-b[2],'gap_y':a[1]-b[3],
+            'inset_left':a[0]-b[0],'inset_right':b[2]-a[2],
+            'inset_top':a[1]-b[1],'inset_bottom':b[3]-a[3]}[p]
+
+
+def evaluate(plan, observation, platform, manual=None, root=None, observation_sha256=None, design_lock=None, design_sha256=None):
+    if (design_lock is None)!=(design_sha256 is None):raise ValueError('Trusted design requires both external lock and pinned digest')
+    if design_lock is not None and 'design_contract'not in plan:raise ValueError('Trusted design mode rejects a stripped or legacy unverified plan')
+    if 'design_contract'in plan:
+        from design_contract import verify_generated
+        if design_lock is None:raise ValueError('Generated assertions require the separately pinned design lock')
+        verify_generated(plan,design_lock,design_sha256,platform)
     states=validate_plan(plan);manual=manual or {'decisions':[]};decisions={}
     if manual.get('decisions') and (not observation_sha256 or manual.get('observation_sha256')!=observation_sha256):raise ValueError('Manual review is not bound to this observation')
     for row in manual.get('decisions',[]):
@@ -272,7 +314,7 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
                         values.append((index,facts[prop],resolved))
                 if values:
                     actual=[{'snapshot':i,'value':v,'resolution':r}for i,v,r in values];used=[i for i,_,_ in values]
-                    checks=[compare(v,item['expected'],item.get('op','eq'))for _,v,_ in values]
+                    checks=[compare(v,item['expected'],item.get('op','eq'),item.get('tolerance'))for _,v,_ in values]
                     # Conflicting real values inside one immutable epoch remain unknown.
                     if all(checks):status='passed';reason='typed native property matches expected'
                     elif not any(checks):status='failed';reason='typed native property contradicts expected'
@@ -295,10 +337,20 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
                     if len(matched)==1 and matched[0].get('intersects_viewport')and item['property']in matched[0]:
                         values.append((index,matched[0][item['property']]))
                 if values:
-                    actual=[v for _,v in values];used=[i for i,_ in values];result=[compare(v,item['expected'],item.get('op','eq'))for _,v in values]
+                    actual=[v for _,v in values];used=[i for i,_ in values];result=[compare(v,item['expected'],item.get('op','eq'),item.get('tolerance'))for _,v in values]
                     if all(result):status='passed';reason='native text layout result'
                     elif not any(result):status='failed';reason='native text layout contradiction'
                     else:reason='conflicting native layout values'
+            elif kind=='geometry':
+                values=[(i,geometry_value(s,item,platform))for i,s in found]
+                values=[(i,v)for i,v in values if v is not None]
+                if values:
+                    actual=[v for _,v in values];used=[i for i,_ in values]
+                    result=[compare(v,item['expected'],item.get('op','eq'),item.get('tolerance'))for _,v in values]
+                    if all(result):status='passed';reason='same-frame native-bound geometry matches design'
+                    elif not any(result):status='failed';reason='same-frame native-bound geometry contradicts design'
+                    else:reason='conflicting native geometry inside one state'
+                else:reason='layout-box measurement unsupported by current AX/semantic collector'if item.get('measurement')=='layout_box'else'unique fully visible native boxes unavailable in a shared coherent frame'
             elif kind=='manual':
                 row=decisions.get(item['id']);actual=row
                 if row:
@@ -323,6 +375,8 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
                        'origin':'typed_native_check','kind':planned[row['id']]['kind'],
                        'target':planned[row['id']].get('target'),'property':planned[row['id']].get('property'),
                        'expected':planned[row['id']].get('expected'),'actual':row['actual'],
+                       'unit':planned[row['id']].get('unit'),'measurement':planned[row['id']].get('measurement'),
+                       'expectation_provenance':planned[row['id']].get('expectation_provenance'),
                        'reason':row['reason'],'snapshot_indices':row['snapshot_indices'],
                        'action_index':planned[row['id']].get('action_index')}
                       for row in rows if row['status']=='failed'and planned[row['id']]['kind']!='manual']
@@ -330,13 +384,14 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
             'coverage_contract':'required_id_set'if 'required_assertion_ids'in plan else'supplied_plan_only','complete_requirements_claim':bool(plan.get('required_assertion_ids'))and not counts['failed']and not counts['unassessed'],'assertions':rows,'counts':counts,'states':{k:{'complete':v[1],'reason':v[2],'binding':v[3].get('binding')if v[3]else None}for k,v in evidence.items()},
             'machine_findings':machine_findings,'failed_assertion_ids':[row['id']for row in rows if row['status']=='failed'],
             'matrix_contract':plan.get('matrix_contract'),
+            'expectation_provenance':{'status':'verified_typed_source_derivation','design_lock_sha256':design_sha256}if 'design_contract'in plan else{'status':'unverified_supplied_expectations'},
             'limits':'Native facts are typed and state-bound. Manual visual meaning remains reviewer judgment. AX dimensions do not establish internal padding/fonts/colors or complete physical hit regions.'}
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--plan',type=Path,required=True);p.add_argument('--observation',type=Path,required=True);p.add_argument('--platform',choices=['ios','android'],required=True);p.add_argument('--manual',type=Path);p.add_argument('--root',type=Path);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--plan',type=Path,required=True);p.add_argument('--observation',type=Path,required=True);p.add_argument('--platform',choices=['ios','android'],required=True);p.add_argument('--manual',type=Path);p.add_argument('--root',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--design-lock',type=Path);p.add_argument('--design-sha256');a=p.parse_args()
     if a.output.exists():raise ValueError('Fresh output required')
-    report=evaluate(read(a.plan),read(a.observation),a.platform,read(a.manual)if a.manual else None,a.root or a.observation.parent,sha(a.observation))
+    report=evaluate(read(a.plan),read(a.observation),a.platform,read(a.manual)if a.manual else None,a.root or a.observation.parent,sha(a.observation),read(a.design_lock)if a.design_lock else None,a.design_sha256)
     report['input_hashes']={'plan':sha(a.plan),'observation':sha(a.observation),**({'manual':sha(a.manual)}if a.manual else{})}
     a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n');print(json.dumps({'status':report['status'],'counts':report['counts']}));return 1 if report['status']=='failed'else 3 if report['status']=='needs_review'else 0
 if __name__=='__main__':

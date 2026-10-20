@@ -1,0 +1,32 @@
+--- initial/WorkshopEnrollmentCard.swift
++++ final/WorkshopEnrollmentCard.swift
+@@ -249,7 +249,7 @@
+             .cornerRadius(8)
+             .contentShape(Rectangle())
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(EnrollmentButtonStyle())
+         .disabled(!enabled)
+         .opacity(enabled ? 1 : 0.65)
+         .accessibilityLabel(Text(text))
+@@ -270,7 +270,7 @@
+                 .cornerRadius(8)
+                 .contentShape(Rectangle())
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(EnrollmentButtonStyle())
+         .disabled(!enabled)
+         .opacity(enabled ? 1 : 0.65)
+         .accessibilityIdentifier(id)
+@@ -280,3 +280,11 @@
+               green: Double((value >> 8) & 255) / 255, blue: Double(value & 255) / 255)
+     }
+ }
++
++/// Keep the explicit disabled affordance on the card's label instead of also
++/// inheriting PlainButtonStyle's dimming. Native Button enablement is unchanged.
++private struct EnrollmentButtonStyle: ButtonStyle {
++    func makeBody(configuration: Configuration) -> some View {
++        configuration.label.opacity(configuration.isPressed ? 0.85 : 1)
++    }
++}
