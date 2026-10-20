@@ -19,7 +19,7 @@ def main():
   for f in path.rglob('*'):
    if f.is_file()and '__pycache__'not in f.parts:add(f)
  for p in (R/'private').glob('*.json'):add(p)
- for name in ['inputs','audit-seals','grade-capsules']:
+ for name in ['inputs','audit-seals','grade-capsules','grade-deliveries']:
   if (R/'private'/name).exists():tree(R/'private'/name)
  for sub in (R/'private/submissions').iterdir():
   for f in sub.iterdir():
