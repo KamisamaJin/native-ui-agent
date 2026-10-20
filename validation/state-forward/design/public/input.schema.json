@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Print Batch Approval case inputs",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "cases"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "caseID",
+          "host",
+          "models",
+          "initial",
+          "actions"
+        ],
+        "properties": {
+          "caseID": {
+            "type": "string"
+          },
+          "host": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "width",
+              "height",
+              "theme",
+              "textScale",
+              "direction"
+            ],
+            "properties": {
+              "width": {
+                "enum": [
+                  320,
+                  390
+                ]
+              },
+              "height": {
+                "const": 600
+              },
+              "theme": {
+                "enum": [
+                  "light",
+                  "dark"
+                ]
+              },
+              "textScale": {
+                "enum": [
+                  1,
+                  1.2
+                ]
+              },
+              "direction": {
+                "enum": [
+                  "ltr",
+                  "rtl"
+                ]
+              }
+            }
+          },
+          "models": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 2,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "modelID",
+                "budgetCredits",
+                "allowPriority",
+                "initialPaperMode",
+                "initialPriority",
+                "initialExpanded",
+                "jobs"
+              ],
+              "properties": {
+                "modelID": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "budgetCredits": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9999
+                },
+                "allowPriority": {
+                  "type": "boolean"
+                },
+                "initialPaperMode": {
+                  "enum": [
+                    "single",
+                    "duplex"
+                  ]
+                },
+                "initialPriority": {
+                  "type": "boolean"
+                },
+                "initialExpanded": {
+                  "type": "boolean"
+                },
+                "jobs": {
+                  "type": "array",
+                  "minItems": 3,
+                  "maxItems": 3,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "id",
+                      "title",
+                      "pages",
+                      "copies",
+                      "isColor",
+                      "selected",
+                      "locked"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_-]*$"
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "pages": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 100
+                      },
+                      "copies": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 5
+                      },
+                      "isColor": {
+                        "type": "boolean"
+                      },
+                      "selected": {
+                        "type": "boolean"
+                      },
+                      "locked": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "initial": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "stateID",
+              "full_content"
+            ],
+            "properties": {
+              "stateID": {
+                "type": "string"
+              },
+              "full_content": {
+                "type": "boolean"
+              }
+            }
+          },
+          "actions": {
+            "type": "array",
+            "maxItems": 8,
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "type",
+                    "targetID",
+                    "actionIndex",
+                    "stateID",
+                    "full_content"
+                  ],
+                  "properties": {
+                    "type": {
+                      "const": "activate"
+                    },
+                    "targetID": {
+                      "type": "string",
+                      "pattern": "^printbatch\\."
+                    },
+                    "actionIndex": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 8
+                    },
+                    "stateID": {
+                      "type": "string"
+                    },
+                    "full_content": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "type",
+                    "modelIndex",
+                    "actionIndex",
+                    "stateID",
+                    "full_content"
+                  ],
+                  "properties": {
+                    "type": {
+                      "const": "replaceModel"
+                    },
+                    "modelIndex": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "actionIndex": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 8
+                    },
+                    "stateID": {
+                      "type": "string"
+                    },
+                    "full_content": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

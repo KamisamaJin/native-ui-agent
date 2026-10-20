@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUTC": "2026-10-20T07:58:32.845956+00:00",
+  "kind": "pre-builder-common-adapter-signature-correction",
+  "originalSeal": "a8ead1afd395448f040d9982e944c03d0c2ea530f1afc8effaf56e0290002fc4",
+  "preservedOriginal": "history/v2",
+  "reason": "The existing Android observer invokes org.nativeobserver.ObserverBridge.Content(input: kotlinx.serialization.json.JsonObject,onEvent:(String)->Unit), not the v2 top-level JSONObject adapter.",
+  "correction": "Only public Android adapter changed to object ObserverBridge with @Composable Content(JsonObject,onEvent), converting input.toString() to JSONObject for the unchanged decoding and production call. Product API, Swift bridge and all expectations are unchanged.",
+  "beforeBuildersStarted": true,
+  "beforeAnyBusinessSourceOrObservation": true,
+  "attribution": "Common adapter correction, not a v5 observer benefit."
+}

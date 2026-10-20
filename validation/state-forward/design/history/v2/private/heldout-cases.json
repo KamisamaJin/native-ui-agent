@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "caseID": "H1",
+      "host": {
+        "width": 320,
+        "height": 600,
+        "theme": "dark",
+        "textScale": 1.2,
+        "direction": "ltr"
+      },
+      "models": [
+        {
+          "modelID": "H1-A",
+          "budgetCredits": 8,
+          "allowPriority": false,
+          "initialPaperMode": "single",
+          "initialPriority": false,
+          "initialExpanded": false,
+          "jobs": [
+            {
+              "id": "safety",
+              "title": "Safety checklist",
+              "pages": 2,
+              "copies": 1,
+              "isColor": false,
+              "selected": true,
+              "locked": true
+            },
+            {
+              "id": "reference",
+              "title": "Reference color",
+              "pages": 1,
+              "copies": 1,
+              "isColor": true,
+              "selected": true,
+              "locked": false
+            },
+            {
+              "id": "spare",
+              "title": "Spare copy",
+              "pages": 3,
+              "copies": 1,
+              "isColor": false,
+              "selected": false,
+              "locked": false
+            }
+          ]
+        },
+        {
+          "modelID": "H1-B",
+          "budgetCredits": 9,
+          "allowPriority": true,
+          "initialPaperMode": "duplex",
+          "initialPriority": true,
+          "initialExpanded": true,
+          "jobs": [
+            {
+              "id": "safety",
+              "title": "Safety checklist v2",
+              "pages": 3,
+              "copies": 1,
+              "isColor": false,
+              "selected": true,
+              "locked": true
+            },
+            {
+              "id": "reference",
+              "title": "Reference color v2",
+              "pages": 2,
+              "copies": 1,
+              "isColor": true,
+              "selected": false,
+              "locked": false
+            },
+            {
+              "id": "spare",
+              "title": "Spare copy v2",
+              "pages": 4,
+              "copies": 1,
+              "isColor": false,
+              "selected": false,
+              "locked": false
+            }
+          ]
+        }
+      ],
+      "initial": {
+        "stateID": "H1.s0",
+        "full_content": true
+      },
+      "actions": [
+        {
+          "type": "activate",
+          "targetID": "printbatch.priority",
+          "actionIndex": 1,
+          "stateID": "H1.s1",
+          "full_content": false
+        },
+        {
+          "type": "activate",
+          "targetID": "printbatch.job.safety.toggle",
+          "actionIndex": 2,
+          "stateID": "H1.s2",
+          "full_content": false
+        },
+        {
+          "type": "activate",
+          "targetID": "printbatch.job.reference.toggle",
+          "actionIndex": 3,
+          "stateID": "H1.s3",
+          "full_content": false
+        },
+        {
+          "type": "replaceModel",
+          "modelIndex": 1,
+          "actionIndex": 4,
+          "stateID": "H1.s4",
+          "full_content": true
+        },
+        {
+          "type": "activate",
+          "targetID": "printbatch.priority",
+          "actionIndex": 5,
+          "stateID": "H1.s5",
+          "full_content": false
+        },
+        {
+          "type": "activate",
+          "targetID": "printbatch.approve",
+          "actionIndex": 6,
+          "stateID": "H1.s6",
+          "full_content": false
+        }
+      ]
+    },
+    {
+      "caseID": "H2",
+      "host": {
+        "width": 390,
+        "height": 600,
+        "theme": "light",
+        "textScale": 1,
+        "direction": "rtl"
+      },
+      "models": [
+        {
+          "modelID": "H2-A",
+          "budgetCredits": 13,
+          "allowPriority": true,
+          "initialPaperMode": "duplex",
+          "initialPriority": true,
+          "initialExpanded": true,
+          "jobs": [
+            {
+              "id": "handbook",
+              "title": "Quarterly workshop participant handbook",
+              "pages": 5,
+              "copies": 1,
+              "isColor": false,
+              "selected": true,
+              "locked": false
+            },
+            {
+              "id": "sample",
+              "title": "Front-cover color sample",
+              "pages": 2,
+              "copies": 1,
+              "isColor": true,
+              "selected": false,
+              "locked": false
+            },
+            {
+              "id": "archive",
+              "title": "Do not print: retained archive",
+              "pages": 2,
+              "copies": 1,
+              "isColor": false,
+              "selected": false,
+              "locked": true
+            }
+          ]
+        }
+      ],
+      "initial": {
+        "stateID": "H2.s0",
+        "full_content": true
+      },
+      "actions": [
+        {
+          "type": "activate",
+          "targetID": "printbatch.job.handbook.toggle",
+          "actionIndex": 1,
+          "stateID": "H2.s1",
+          "full_content": false
+        },
+        {
+          "type": "activate",
+          "targetID": "printbatch.mode.duplex",
+          "actionIndex": 2,
+          "stateID": "H2.s2",
+          "full_content": false
+        },
+        {
+          "type": "activate",
+          "targetID": "printbatch.job.handbook.toggle",
+          "actionIndex": 3,
+          "stateID": "H2.s3",
+          "full_content": false
+        },
+        {
+          "type": "activate",
+          "targetID": "printbatch.priority",
+          "actionIndex": 4,
+          "stateID": "H2.s4",
+          "full_content": false
+        },
+        {
+          "type": "activate",
+          "targetID": "printbatch.breakdown.toggle",
+          "actionIndex": 5,
+          "stateID": "H2.s5",
+          "full_content": false
+        },
+        {
+          "type": "activate",
+          "targetID": "printbatch.approve",
+          "actionIndex": 6,
+          "stateID": "H2.s6",
+          "full_content": true
+        }
+      ]
+    }
+  ]
+}

@@ -38,3 +38,13 @@ jobs:
       - run: python -B validation/dispatch-forward/build_tables.py
       - run: python -B validation/dispatch-forward/build_failure_index.py
       - run: python -B validation/publication_history.py dispatch-v4 verify_artifacts.py
+      - run: python -B validation/state-forward/verify_tools.py
+      - run: python -B validation/state-forward/verify_generic.py
+      - run: python -B -m unittest discover -s validation/state-forward/design/private -p 'test_*.py'
+      - run: python -B validation/state-forward/verify_trial.py
+      - run: python -B validation/state-forward/verify_evaluation.py
+      - run: python -B validation/state-forward/metrics.py
+      - run: python -B validation/state-forward/costs.py
+      - run: python -B validation/state-forward/build_tables.py
+      - run: python -B validation/state-forward/failure_index.py
+      - run: python -B validation/state-forward/artifacts.py

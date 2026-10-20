@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUTC": "2026-10-20T08:23:25.807286+00:00",
+  "kind": "pre-delivery-common-gate-provenance-correction",
+  "beforeBusinessSourceOrRawObservationDelivery": true,
+  "originalGraderSeal": "2822260f2bb38b48c0f50f29ba351590002c3ec29e9ad7bf53600a2024692d63",
+  "originalPreservedByteExact": "history/grader-v1",
+  "originalBug": "normalize.py sourced gate.targetID from callback target in the expected oracle. A wrong-target successful or empty interval could therefore be assigned expected target identity.",
+  "correction": "Read actual iOS step.action.target.identifier or step.action.identifier; Android step.selector.identifier. Preserve actual selector candidates and refs. Compare to expected target only as validation. Require raw step.state_id to match explicit mapped trigger_state_id and binding_after.fixture_index to match mapped input_index. Missing, contradictory or mismatched proof leaves behavior U. Caller replacement instead requires actual caller_fixture_update method and native binding index advance.",
+  "callbackIndependence": "Immediate callbacks use actual immediate binding_after and immutable callback helper interval, independent of later full/target state viewport availability.",
+  "nativeHelperChanged": false,
+  "oracleOrAcceptanceChanged": false,
+  "attribution": "Common evaluator infrastructure correction, no v5 treatment credit. Attribution overlay is separate from fixed grades and does not rescore rows.",
+  "syntheticControls": [
+    "wrong actual target with empty interval stays U and preserves actual target",
+    "wrong action pointer/state stays U",
+    "wrong immediate input stays U",
+    "missing actual selector stays U without oracle-sourced proof",
+    "both iOS selector forms pass when actual proof matches",
+    "valid immediate callback remains P with no later viewport observation",
+    "caller update requires actual method and binding advance",
+    "invalid pointer retained as diagnostic"
+  ]
+}

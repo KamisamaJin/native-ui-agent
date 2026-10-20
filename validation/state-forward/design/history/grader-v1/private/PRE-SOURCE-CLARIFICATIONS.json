@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUTC": "2026-10-20T08:07:26.317825+00:00",
+  "beforeBusinessSourcesOrObservations": true,
+  "acceptanceChanges": false,
+  "clarifications": [
+    {
+      "topic": "replacement identity",
+      "interpretation": "The common host/bridge must preserve production component position while supplying replacement model. Component-owned remember(modelID), onChange and internally keyed subtree resets are legitimate production replacement handling.",
+      "basis": "API.md states caller replacement must preserve production component position/identity so replacement handling is exercised in production code. The source identity check concerns that caller, not internal idiomatic reset implementation."
+    },
+    {
+      "topic": "native TextLayout ownership",
+      "interpretation": "Only actual measured text nodes or a unique label-matching descendant linked by native node_id/parent_id may establish native text style. Retain node paths/candidates; ambiguous descendants remain U; no spatial/source inference."
+    },
+    {
+      "topic": "helper callback result schema",
+      "interpretation": "callback_verdict exposes interval_facts, the original immediate event list, not an actual_events field. Canonicalize only copied JSON event strings; retain original receipt refs/counts."
+    }
+  ]
+}

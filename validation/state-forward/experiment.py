@@ -37,20 +37,28 @@ def restore(capsule,w):
   dst=w/rel;dst.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(capsule/'source'/rel,dst)
  assert fingerprint(w)==seal['files']
 def argv(tool,w,platform,bridge,case,sim,out):
+ actions=case/('actions.'+platform+'.json')
+ if not actions.is_file():actions=case/'actions.json'
  cmd=[sys.executable,str(R/tool/'scripts'/f'{platform}_observe.py'),'run','--bridge',str(bridge.resolve()),
-      '--fixtures',str((case/'fixtures.json').resolve()),'--actions',str((case/'actions.json').resolve()),'--output',str(out.resolve())]
+      '--fixtures',str((case/'fixtures.json').resolve()),'--actions',str(actions.resolve()),'--output',str(out.resolve())]
  if platform=='ios':cmd+=['--package',str((w/'alerttoast').resolve()),'--simulator',sim,'--developer-dir',DEV,'--build-cache',str((w/'ios-build-cache').resolve())]
  else:cmd+=['--project',str((w/'reply/Reply').resolve()),'--java-home',JAVA,'--android-sdk',SDK]
  return cmd
 def collect(a):
  w=a.workspace.resolve();out=a.output.resolve();assert not out.exists();out.mkdir(parents=True)
- original=fingerprint(w);started=time.time();save(out/'started.json',{'startedAtUTC':utc(),'startedAtUnix':started,'source':original,'tool':a.tool,'phase':a.phase})
+ original=fingerprint(w);started=time.time()
+ # Witness the operator before spawning native processes. Old own-D0 runs retain
+ # their explicitly retrospective operator snapshot rather than a backdated one.
+ operator=out/'operator-source.py';shutil.copy2(Path(__file__).resolve(),operator)
+ save(out/'started.json',{'startedAtUTC':utc(),'startedAtUnix':started,'source':original,'tool':a.tool,'phase':a.phase,'operatorSHA256':sha(operator)})
  def platform_run(platform):
   dest=out/platform;dest.mkdir();rows=[]
   bridge=a.bridges/('Bridge.swift'if platform=='ios'else'ObserverBridge.kt')
   for case in sorted(p for p in a.inputs.iterdir()if p.is_dir() and(p/'fixtures.json').is_file()):
    cmd=argv(a.tool,w,platform,bridge,case,a.simulator,dest/case.name)
-   row={'case':case.name,'argv':cmd,'startedAtUTC':utc(),'startedAtUnix':time.time(),'inputHashes':{n:sha(case/n)for n in ['fixtures.json','actions.json']}}
+   actual_actions=case/('actions.'+platform+'.json')
+   if not actual_actions.is_file():actual_actions=case/'actions.json'
+   row={'case':case.name,'argv':cmd,'startedAtUTC':utc(),'startedAtUnix':time.time(),'inputHashes':{'fixtures.json':sha(case/'fixtures.json'),actual_actions.name:sha(actual_actions)}}
    save(dest/(case.name+'-command.json'),row)
    with(dest/(case.name+'-wrapper.log')).open('w')as stream:code=subprocess.run(cmd,stdout=stream,stderr=subprocess.STDOUT,env=dict(os.environ,DEVELOPER_DIR=DEV,PYTHONDONTWRITEBYTECODE='1')).returncode
    row.update(exitCode=code,finishedAtUTC=utc(),finishedAtUnix=time.time());row['wallSeconds']=row['finishedAtUnix']-row['startedAtUnix'];save(dest/(case.name+'-command.json'),row);rows.append(row)
