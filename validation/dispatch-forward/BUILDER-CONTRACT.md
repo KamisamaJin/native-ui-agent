@@ -20,7 +20,7 @@ inspect compiler/native-test logs and execution counts only: no actual product
 image, tree, callback trace, or private validation input review. The provided SVG
 is a design intention and may be read at any stage.
 
-The public integration command is `operator.py capture --public --phase d0` with
+The public integration command is `trial_operator.py capture --public --phase d0` with
 the assigned workspace/tool/platform/simulator and a fresh output. It uses a
 single public example, invokes the actual production component and retains all
 native images. Do not open those images/observation before D0. There is one iOS
