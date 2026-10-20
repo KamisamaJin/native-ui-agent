@@ -31,7 +31,7 @@ def main():
  for rel,h in read(R/'candidate-v4-freeze.json')['files'].items():assert sha(R.parent.parent/'native-ui-agent'/rel)==h,('live skill differs',rel)
  design=envelope(R/'design/private/SEAL.json',R/'design')
  prep=R/'design/private/evaluator-prep'
- for sub,name in [('', 'PREP-SEAL.json'),('v2','V2-SEAL.json'),('v3','V3-SEAL.json')]:envelope(prep/sub/name,prep/sub)
+ for sub,name in [('', 'PREP-SEAL.json'),('v2','V2-SEAL.json'),('v3','V3-SEAL.json'),('report-conventions','CONVENTIONS-SEAL.json')]:envelope(prep/sub/name,prep/sub)
  assert read(R/'design-commitment.json')['commitment_sha256']==design['commitment_sha256']
  for name,private,key in [('assignment-commitment.json','assignment.json','sha256'),('grade-assignment-commitment.json','grade-assignment.json','sha256')]:
   d=read(R/name);assert sha(R/'private'/private)==d[key]
