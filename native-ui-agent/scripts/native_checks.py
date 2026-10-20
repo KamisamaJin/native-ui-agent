@@ -15,7 +15,8 @@ def same_selector(node, selector):
     if 'role' in selector:
         aliases = {'button':9,'switch':40,'other':1,'statictext':48,'text':48}
         role = str(selector['role']).lower()
-        if node.get('role_raw') != aliases.get(role) and str(node.get('role','')).lower() != role: return False
+        native_text = role in {'text','statictext'} and bool(node.get('native_text')) and not node.get('role')
+        if node.get('role_raw') != aliases.get(role) and str(node.get('role','')).lower() != role and not native_text: return False
     return True
 
 
@@ -77,13 +78,21 @@ def validate_plan(plan):
     states={};ids=set()
     for state in plan['states']:
         if not isinstance(state.get('id'),str)or state['id']in states:raise ValueError('Unique state IDs required')
-        if not isinstance(state.get('input_index'),int):raise ValueError('Every state requires explicit input_index')
-        if state.get('coverage','full_content')not in {'full_content','target'}:raise ValueError('Known state coverage scope required')
+        if type(state.get('input_index'))is not int or state['input_index']<0:raise ValueError('Every state requires explicit nonnegative input_index')
+        if state.get('coverage','full_content')not in {'full_content','target','targets'}:raise ValueError('Known state coverage scope required')
         states[state['id']]=state
     for item in plan['assertions']:
         if not item.get('id')or item['id']in ids:raise ValueError('Unique assertion IDs required')
         if item.get('state')not in states:raise ValueError('Assertion references unknown state')
         if item.get('kind')not in {'control','event','manual','text_layout'}:raise ValueError('Unknown assertion kind')
+        if item['kind']in {'control','text_layout'}:
+            target=item.get('target',{})
+            if not isinstance(target,dict)or sum(isinstance(target.get(k),str)and bool(target[k])for k in ['identifier','label'])!=1:
+                raise ValueError('Typed assertion needs one exact native target')
+            if not isinstance(item.get('property'),str)or not item['property']or 'expected'not in item:
+                raise ValueError('Typed assertion needs property and explicit expectation')
+            if item.get('op','eq')not in {'eq','contains','gte','lte'}:raise ValueError('Known comparison operator required')
+            if item.get('op')in {'gte','lte'}and(type(item['expected'])not in {int,float}):raise ValueError('Numeric bounds require numeric expectations')
         if item.get('coverage','full_content')not in {'full_content','target'}:raise ValueError('Known coverage scope required')
         if item['kind']=='manual'and not set(item.get('allowed_methods',['visual']))<={'visual','native_pixels'}:raise ValueError('Manual review is visual/pixel interpretation, not native runtime facts')
         if item['kind']=='event':
@@ -166,6 +175,39 @@ def callback_verdict(step, expected, platform, required_method=None, stimulus='a
 
 def state_evidence(observation,state):
     captures=[c for c in observation.get('state_captures',[])if c.get('state_id')==state['id']]
+    if not captures and state.get('coverage')=='targets':
+        index=state.get('after_action');steps=observation.get('steps',[])
+        if type(index)is not int or not 0<=index<len(steps):return [],False,'missing native action checkpoint',None
+        step=steps[index];bundle=step.get('observation_set')
+        if not bundle:
+            # Legacy raw data still earns the facts actually visible in its one
+            # bound action frame; it cannot borrow frames from other actions.
+            legacy=dict(state,coverage='target')
+            return state_evidence(observation,legacy)
+        binding=step.get('binding_after',{});snapshots=observation.get('snapshots',[])
+        capture=dict(bundle,after_action=index,source='native_post_action_targets',scope='targets_only')
+        if (bundle.get('state_id')!=state['id']or step.get('state_id')!=state['id']or bundle.get('after_action')!=index
+                or not binding or bundle.get('binding')!=binding
+                or bundle.get('binding_after_observation')!=binding
+                or bundle.get('binding_stable')is not True):
+            return [],False,'target observation input/process/event binding drift',capture
+        if binding.get('fixture_index',binding.get('input_index'))!=state['input_index']:
+            return [],False,'target observation has different caller input',capture
+        if not binding.get('instance')or not binding.get('input_sha256')or type(binding.get('event_revision'))is not int:
+            return [],False,'target observation lacks native epoch identity',capture
+        indices=bundle.get('snapshot_indices',[]);immediate=step.get('immediate_after')
+        last=step.get('after',step.get('snapshot'))
+        if (not isinstance(indices,list)or not indices or any(type(i)is not int for i in indices)
+                or len(indices)!=len(set(indices))or type(immediate)is not int
+                or type(last)is not int or immediate not in indices
+                or any(type(i)is not int or not 0<=i<len(snapshots)or not immediate<=i<=last for i in indices)):
+            return [],False,'invalid target observation snapshot interval',capture
+        found=[(i,snapshots[i])for i in indices]
+        if any(s.get('state_id')!=state['id']or s.get('binding')!=binding
+               or s.get('capture_consistent')is False
+               or s.get('binding_after_capture',binding)!=binding for _,s in found):
+            return [],False,'target snapshot state/epoch/image mismatch',capture
+        return found,False,'bound multi-target evidence; no full-content coverage claim',capture
     if not captures and state.get('coverage')=='target':
         index=state.get('after_action');steps=observation.get('steps',[])
         if not isinstance(index,int)or not 0<=index<len(steps):return [],False,'missing native action checkpoint',None
@@ -276,8 +318,18 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
                     else:reason='missing scoped manual method, snapshots or rationale'
         rows.append({'id':item['id'],'state':item['state'],'status':status,'actual':actual,'reason':reason,'snapshot_indices':sorted(set(used))})
     counts={s:sum(row['status']==s for row in rows)for s in ['passed','failed','unassessed']}
+    planned={item['id']:item for item in plan['assertions']}
+    machine_findings=[{'id':row['id'],'state':row['state'],'requirement_id':planned[row['id']].get('requirement_id'),
+                       'origin':'typed_native_check','kind':planned[row['id']]['kind'],
+                       'target':planned[row['id']].get('target'),'property':planned[row['id']].get('property'),
+                       'expected':planned[row['id']].get('expected'),'actual':row['actual'],
+                       'reason':row['reason'],'snapshot_indices':row['snapshot_indices'],
+                       'action_index':planned[row['id']].get('action_index')}
+                      for row in rows if row['status']=='failed'and planned[row['id']]['kind']!='manual']
     return {'schema_version':1,'status':'failed'if counts['failed']else'needs_review'if counts['unassessed']else'passed',
             'coverage_contract':'required_id_set'if 'required_assertion_ids'in plan else'supplied_plan_only','complete_requirements_claim':bool(plan.get('required_assertion_ids'))and not counts['failed']and not counts['unassessed'],'assertions':rows,'counts':counts,'states':{k:{'complete':v[1],'reason':v[2],'binding':v[3].get('binding')if v[3]else None}for k,v in evidence.items()},
+            'machine_findings':machine_findings,'failed_assertion_ids':[row['id']for row in rows if row['status']=='failed'],
+            'matrix_contract':plan.get('matrix_contract'),
             'limits':'Native facts are typed and state-bound. Manual visual meaning remains reviewer judgment. AX dimensions do not establish internal padding/fonts/colors or complete physical hit regions.'}
 
 

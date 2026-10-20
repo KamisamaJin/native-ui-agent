@@ -1,0 +1,71 @@
+{
+  "initial": {
+    "revision": "A",
+    "title": "Field notes, set A",
+    "enabled": true
+  },
+  "updates": [
+    {
+      "revision": "B",
+      "title": "Field notes, set B",
+      "enabled": false
+    }
+  ],
+  "width": 390,
+  "theme": "light",
+  "direction": "ltr",
+  "required_identifiers": [
+    "reading.title",
+    "reading.status",
+    "reading.toggle",
+    "reading.footer"
+  ],
+  "max_scrolls": 24,
+  "fontScale": 1.0,
+  "viewportHeight": 600,
+  "actions": [
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "reading.toggle"
+      },
+      "reveal": true,
+      "expect_callback": "toggle-mark",
+      "observation_max_scrolls": 24,
+      "state_id": "marked",
+      "after_targets": [
+        {
+          "identifier": "reading.title"
+        },
+        {
+          "identifier": "reading.status"
+        },
+        {
+          "identifier": "reading.toggle"
+        },
+        {
+          "identifier": "reading.footer"
+        }
+      ]
+    },
+    {
+      "type": "apply_next_fixture",
+      "observation_max_scrolls": 24,
+      "state_id": "replaced",
+      "after_targets": [
+        {
+          "identifier": "reading.title"
+        },
+        {
+          "identifier": "reading.status"
+        },
+        {
+          "identifier": "reading.toggle"
+        },
+        {
+          "identifier": "reading.footer"
+        }
+      ]
+    }
+  ]
+}

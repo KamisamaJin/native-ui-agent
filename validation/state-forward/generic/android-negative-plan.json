@@ -1,0 +1,364 @@
+{
+  "version": 1,
+  "states": [
+    {
+      "id": "expanded",
+      "input_index": 0,
+      "after_action": 1,
+      "coverage": "targets"
+    },
+    {
+      "id": "continued",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets"
+    },
+    {
+      "id": "updated",
+      "input_index": 1,
+      "after_action": 4,
+      "coverage": "targets"
+    },
+    {
+      "id": "disabled",
+      "input_index": 1,
+      "after_action": 5,
+      "coverage": "targets"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.header"
+      },
+      "property": "label",
+      "expected": "INTENTIONAL NEGATIVE CONTROL",
+      "id": "expanded/header-label",
+      "state": "expanded",
+      "requirement_id": "header-label",
+      "source": "generic/prepare.py: neutral fixed label contract"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.header"
+      },
+      "property": "label",
+      "expected": "INTENTIONAL NEGATIVE CONTROL",
+      "id": "continued/header-label",
+      "state": "continued",
+      "requirement_id": "header-label",
+      "source": "generic/prepare.py: neutral fixed label contract"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.header"
+      },
+      "property": "label",
+      "expected": "INTENTIONAL NEGATIVE CONTROL",
+      "id": "updated/header-label",
+      "state": "updated",
+      "requirement_id": "header-label",
+      "source": "generic/prepare.py: neutral fixed label contract"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.header"
+      },
+      "property": "label",
+      "expected": "INTENTIONAL NEGATIVE CONTROL",
+      "id": "disabled/header-label",
+      "state": "disabled",
+      "requirement_id": "header-label",
+      "source": "generic/prepare.py: neutral fixed label contract"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.footer"
+      },
+      "property": "label",
+      "expected": "End A",
+      "id": "expanded/footer-label",
+      "state": "expanded",
+      "requirement_id": "footer-label",
+      "source": "generic/prepare.py: neutral fixed label contract"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.footer"
+      },
+      "property": "label",
+      "expected": "End A",
+      "id": "continued/footer-label",
+      "state": "continued",
+      "requirement_id": "footer-label",
+      "source": "generic/prepare.py: neutral fixed label contract"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.footer"
+      },
+      "property": "label",
+      "expected": "End B",
+      "id": "updated/footer-label",
+      "state": "updated",
+      "requirement_id": "footer-label",
+      "source": "generic/prepare.py: neutral fixed label contract"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.footer"
+      },
+      "property": "label",
+      "expected": "End B",
+      "id": "disabled/footer-label",
+      "state": "disabled",
+      "requirement_id": "footer-label",
+      "source": "generic/prepare.py: neutral fixed label contract"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.secondary"
+      },
+      "property": "label",
+      "expected": "Continue A",
+      "id": "expanded/secondary-label",
+      "state": "expanded",
+      "requirement_id": "secondary-label",
+      "source": "generic/prepare.py: neutral fixed label contract"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.secondary"
+      },
+      "property": "label",
+      "expected": "Continue A",
+      "id": "continued/secondary-label",
+      "state": "continued",
+      "requirement_id": "secondary-label",
+      "source": "generic/prepare.py: neutral fixed label contract"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.secondary"
+      },
+      "property": "label",
+      "expected": "Continue B",
+      "id": "updated/secondary-label",
+      "state": "updated",
+      "requirement_id": "secondary-label",
+      "source": "generic/prepare.py: neutral fixed label contract"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.secondary"
+      },
+      "property": "label",
+      "expected": "Continue B",
+      "id": "disabled/secondary-label",
+      "state": "disabled",
+      "requirement_id": "secondary-label",
+      "source": "generic/prepare.py: neutral fixed label contract"
+    },
+    {
+      "kind": "event",
+      "expected": [
+        "expanded"
+      ],
+      "action_index": 1,
+      "id": "expanded/event",
+      "state": "expanded",
+      "requirement_id": "event",
+      "source": "generic/prepare.py: dispatch/quietness contract"
+    },
+    {
+      "kind": "event",
+      "expected": [
+        "secondary"
+      ],
+      "action_index": 2,
+      "id": "continued/event",
+      "state": "continued",
+      "requirement_id": "event",
+      "source": "generic/prepare.py: dispatch/quietness contract"
+    },
+    {
+      "kind": "event",
+      "expected": [],
+      "stimulus": "caller_update",
+      "action_index": 4,
+      "id": "updated/event",
+      "state": "updated",
+      "requirement_id": "event",
+      "source": "generic/prepare.py: dispatch/quietness contract"
+    },
+    {
+      "kind": "event",
+      "expected": [],
+      "action_index": 5,
+      "id": "disabled/event",
+      "state": "disabled",
+      "requirement_id": "event",
+      "source": "generic/prepare.py: dispatch/quietness contract"
+    }
+  ],
+  "required_assertion_ids": [
+    "expanded/header-label",
+    "continued/header-label",
+    "updated/header-label",
+    "disabled/header-label",
+    "expanded/footer-label",
+    "continued/footer-label",
+    "updated/footer-label",
+    "disabled/footer-label",
+    "expanded/secondary-label",
+    "continued/secondary-label",
+    "updated/secondary-label",
+    "disabled/secondary-label",
+    "expanded/event",
+    "continued/event",
+    "updated/event",
+    "disabled/event"
+  ],
+  "matrix_contract": {
+    "matrix_sha256": "87b024e01a126835f6fa2d9de48e383b0d30c7c109905c38deb487170bf42844",
+    "selected_states": [
+      "expanded",
+      "continued",
+      "updated",
+      "disabled"
+    ],
+    "selected_requirements": [
+      "header-label",
+      "footer-label",
+      "secondary-label",
+      "event"
+    ],
+    "cells": [
+      {
+        "id": "expanded/header-label",
+        "state": "expanded",
+        "requirement_id": "header-label",
+        "source": "generic/prepare.py: neutral fixed label contract",
+        "disposition": "required"
+      },
+      {
+        "id": "continued/header-label",
+        "state": "continued",
+        "requirement_id": "header-label",
+        "source": "generic/prepare.py: neutral fixed label contract",
+        "disposition": "required"
+      },
+      {
+        "id": "updated/header-label",
+        "state": "updated",
+        "requirement_id": "header-label",
+        "source": "generic/prepare.py: neutral fixed label contract",
+        "disposition": "required"
+      },
+      {
+        "id": "disabled/header-label",
+        "state": "disabled",
+        "requirement_id": "header-label",
+        "source": "generic/prepare.py: neutral fixed label contract",
+        "disposition": "required"
+      },
+      {
+        "id": "expanded/footer-label",
+        "state": "expanded",
+        "requirement_id": "footer-label",
+        "source": "generic/prepare.py: neutral fixed label contract",
+        "disposition": "required"
+      },
+      {
+        "id": "continued/footer-label",
+        "state": "continued",
+        "requirement_id": "footer-label",
+        "source": "generic/prepare.py: neutral fixed label contract",
+        "disposition": "required"
+      },
+      {
+        "id": "updated/footer-label",
+        "state": "updated",
+        "requirement_id": "footer-label",
+        "source": "generic/prepare.py: neutral fixed label contract",
+        "disposition": "required"
+      },
+      {
+        "id": "disabled/footer-label",
+        "state": "disabled",
+        "requirement_id": "footer-label",
+        "source": "generic/prepare.py: neutral fixed label contract",
+        "disposition": "required"
+      },
+      {
+        "id": "expanded/secondary-label",
+        "state": "expanded",
+        "requirement_id": "secondary-label",
+        "source": "generic/prepare.py: neutral fixed label contract",
+        "disposition": "required"
+      },
+      {
+        "id": "continued/secondary-label",
+        "state": "continued",
+        "requirement_id": "secondary-label",
+        "source": "generic/prepare.py: neutral fixed label contract",
+        "disposition": "required"
+      },
+      {
+        "id": "updated/secondary-label",
+        "state": "updated",
+        "requirement_id": "secondary-label",
+        "source": "generic/prepare.py: neutral fixed label contract",
+        "disposition": "required"
+      },
+      {
+        "id": "disabled/secondary-label",
+        "state": "disabled",
+        "requirement_id": "secondary-label",
+        "source": "generic/prepare.py: neutral fixed label contract",
+        "disposition": "required"
+      },
+      {
+        "id": "expanded/event",
+        "state": "expanded",
+        "requirement_id": "event",
+        "source": "generic/prepare.py: dispatch/quietness contract",
+        "disposition": "required"
+      },
+      {
+        "id": "continued/event",
+        "state": "continued",
+        "requirement_id": "event",
+        "source": "generic/prepare.py: dispatch/quietness contract",
+        "disposition": "required"
+      },
+      {
+        "id": "updated/event",
+        "state": "updated",
+        "requirement_id": "event",
+        "source": "generic/prepare.py: dispatch/quietness contract",
+        "disposition": "required"
+      },
+      {
+        "id": "disabled/event",
+        "state": "disabled",
+        "requirement_id": "event",
+        "source": "generic/prepare.py: dispatch/quietness contract",
+        "disposition": "required"
+      }
+    ],
+    "scope": "Complete declared matrix, not proof that natural-language requirements were fully translated; explicit exclusions remain auditable."
+  }
+}

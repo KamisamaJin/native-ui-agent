@@ -56,6 +56,18 @@ snapshot and input/event binding; offscreen/missing/ambiguous targets or binding
 drift never become a visual pass. A fitting target is fully revealed; an oversized
 target's center is measured separately from full visibility.
 
+For multiple locations use `after_targets:[selector,...]` on a tap, caller update
+or checkpoint. Native observers reuse already valid frames and collect remaining
+targets without another activation. `observation_max_scrolls` (0–40, default24)
+bounds the entire target set, not each target. Missing/ambiguous targets retain
+their individual unavailable result; a zero search budget still permits actual
+immediate-frame facts. `observation_set` binds original snapshot indices, input,
+process and event revision, plus native target results and geometry traces.
+Callback receipts and event_end remain those of the immediate action frame.
+Read [state evidence planning](state-evidence.md) for matrix compilation and
+machine findings; `coverage:"targets"` evaluates all bound frames while retaining
+`complete:false`. It also gives legacy single-frame evidence its actual credit.
+
 iOS exports hierarchy/attributes from one public XCUIElementSnapshot per capture.
 Native hit testing is queried at actual dispatch targets; other exported nodes
 have `hittable_measured:false`, not guessed hit values. A native epoch/geometry

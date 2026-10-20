@@ -72,6 +72,11 @@ class NativeObserverTest {
  private var immediateSnapshot=-1
  private var postAttempts=0
  private val postTrace=mutableListOf<JsonObject>()
+ private var postTargetIndex=0
+ private var postDirection=0
+ private var postReversed=false
+ private var postTargets=emptyList<JsonObject>()
+ private val postIndices=mutableListOf<Int>()
  private class ObservationComplete:RuntimeException()
  private val observed=mutableSetOf<String>()
  private var bottomReached=false
@@ -83,17 +88,18 @@ class NativeObserverTest {
  private fun nodes(n:SemanticsNode):List<SemanticsNode> = listOf(n)+n.children.flatMap{nodes(it)}
  private fun raw()=nodes((view.getChildAt(0) as ViewRootForTest).semanticsOwner.unmergedRootSemanticsNode)
  private fun rawBounds(n:SemanticsNode):androidx.compose.ui.geometry.Rect {val p=n.positionInRoot;return androidx.compose.ui.geometry.Rect(p.x,p.y,p.x+n.size.width,p.y+n.size.height)}
- private fun visible(n:SemanticsNode)=rawBounds(n).bottom>0 && rawBounds(n).top<viewportHeight && rawBounds(n).width>0
- private fun fullyVisible(n:SemanticsNode)=rawBounds(n).top>=-0.5f && rawBounds(n).bottom<=viewportHeight+0.5f && rawBounds(n).width>0
+ private fun visible(n:SemanticsNode)=rawBounds(n).let{it.bottom>0 && it.top<viewportHeight && it.right>0 && it.left<view.width && it.width>0 && it.height>0}
+ private fun fullyVisible(n:SemanticsNode)=rawBounds(n).let{it.top>=-0.5f && it.bottom<=viewportHeight+0.5f && it.left>=-0.5f && it.right<=view.width+0.5f && it.width>0 && it.height>0}
  private fun tag(n:SemanticsNode)=n.config.getOrNull(SemanticsProperties.TestTag) ?: ""
  private fun capture(name:String,image:BufferedImage){
   val captureStart=System.nanoTime()
+  val originalBinding=binding()
   val all=raw(); val imageName="${records.size.toString().padStart(3,'0')}-$name.png"
   ImageIO.write(image,"png",File(output,imageName))
   all.filter{visible(it)}.map{tag(it)}.filter{it.isNotBlank()}.forEach{observed.add(it)}
   bottomReached=bottomReached || all.any{tag(it)=="__observer.bottom" && fullyVisible(it)}
   records.add(buildJsonObject{
-   put("binding",binding());put("runtime",binding());put("state_id",activeState)
+   put("binding",originalBinding);put("runtime",originalBinding);put("state_id",activeState)
    put("screenshot_pixels",buildJsonObject{put("width",image.width);put("height",image.height)});put("logical_viewport_dp",buildJsonObject{put("width",view.width/density);put("height",view.height/density)});put("name",name);put("screenshot",imageName);put("frame",frame);put("scroll_offset_dp",scroll.value/density)
    put("scroll_max_dp",scroll.maxValue/density);put("viewport_height_dp",viewportHeight/density)
    put("nodes",buildJsonArray{all.forEach{node->
@@ -117,6 +123,7 @@ class NativeObserverTest {
     })
    }})
    put("events",buildJsonArray{events.forEach{add(it)}})
+   put("binding_after_capture",binding());put("capture_consistent",binding()==originalBinding)
    put("capture_seconds",(System.nanoTime()-captureStart)/1_000_000_000.0)
   })
  }
@@ -124,10 +131,30 @@ class NativeObserverTest {
  private fun label(n:SemanticsNode):String=n.config.getOrNull(SemanticsProperties.ContentDescription)?.joinToString() ?: n.config.getOrNull(SemanticsProperties.Text)?.joinToString{it.text} ?: n.children.flatMap{nodes(it)}.mapNotNull{it.config.getOrNull(SemanticsProperties.Text)?.joinToString{x->x.text}}.joinToString(", ")
  private fun select(spec:JsonObject)=raw().filter{n->
   val id=optional(spec,"identifier");val text=optional(spec,"label");val role=optional(spec,"role")
-  (if(id!=null)tag(n)==id else text!=null && label(n)==text) && (role==null || n.config.getOrNull(SemanticsProperties.Role)?.toString()?.equals(role,true)==true)
+  (if(id!=null)tag(n)==id else text!=null && label(n)==text) && (role==null || n.config.getOrNull(SemanticsProperties.Role)?.toString()?.equals(role,true)==true || (role.equals("text",true) || role.equals("statictext",true)) && n.config.getOrNull(SemanticsProperties.Text)!=null)
  }
  private fun leaves(n:SemanticsNode):List<SemanticsNode>{
   return nodes(n).filter{it.config.getOrNull(SemanticsActions.OnClick)?.action!=null}
+ }
+ private fun targetReady(n:SemanticsNode):Boolean{
+  val b=rawBounds(n)
+  return if(b.height<=viewportHeight && b.width<=view.width)fullyVisible(n)else visible(n) && b.center.y in 0f..viewportHeight && b.center.x in 0f..view.width.toFloat()
+ }
+ private fun targetEvidence(spec:JsonObject):JsonObject{
+  val observed=mutableListOf<Int>();val full=mutableListOf<Int>();var ambiguous=false
+  for(index in postIndices){
+   val s=records[index]
+   if(s["binding"]!=afterBinding || s["capture_consistent"]?.jsonPrimitive?.booleanOrNull==false)continue
+   val found=s["nodes"]!!.jsonArray.map{it.jsonObject}.filter{n->
+    val id=optional(spec,"identifier");val text=optional(spec,"label");val role=optional(spec,"role")
+    (if(id!=null)optional(n,"identifier")==id else text!=null && optional(n,"label")==text) && (role==null || optional(n,"role")?.equals(role,true)==true || (role.equals("text",true) || role.equals("statictext",true)) && !optional(n,"native_text").isNullOrEmpty())
+   }
+   if(found.size!=1){ambiguous=ambiguous || found.size>1;continue}
+   val n=found.single();val bounds=n["unclipped_bounds_dp"]!!.jsonArray.map{it.jsonPrimitive.float};val w=s["logical_viewport_dp"]!!.jsonObject["width"]!!.jsonPrimitive.float;val h=s["logical_viewport_dp"]!!.jsonObject["height"]!!.jsonPrimitive.float
+   if(n["fully_visible"]?.jsonPrimitive?.booleanOrNull==true){observed.add(index);full.add(index)}
+   else if(n["intersects_viewport"]?.jsonPrimitive?.booleanOrNull==true && (bounds[2]-bounds[0]>w || bounds[3]-bounds[1]>h) && (bounds[0]+bounds[2])/2 in 0f..w && (bounds[1]+bounds[3])/2 in 0f..h)observed.add(index)
+  }
+  return buildJsonObject{put("selector",spec);put("status",if(observed.isEmpty())"unavailable"else"observed");put("snapshot_indices",buildJsonArray{observed.forEach{add(it)}});put("fully_visible",full.isNotEmpty());put("fully_visible_snapshot_indices",buildJsonArray{full.forEach{add(it)}});put("reason",if(observed.isNotEmpty())"original_native_target_frames"else if(ambiguous)"ambiguous_native_target"else"no_unique_visible_target_frame")}
  }
  private fun startSweep(id:String,after:Int,purpose:String,limit:Int=80){activeState=id;activeAfterAction=after;sweepPurpose=purpose;sweepLimit=limit.coerceIn(1,80);sweepCount=0;phase="sweep_top"}
  private fun finishSweep(){
@@ -147,29 +174,32 @@ class NativeObserverTest {
    scrollBy(viewportHeight*0.45f);return
   }
   if(phase=="after_action"){
-   if(afterBinding==null){capture(pendingName,image);immediateSnapshot=records.lastIndex;afterBinding=binding();afterDelta=events.drop(eventStart).toList()}
    val action=actions[actionIndex]
-   val shouldFocus=optional(action,"type")=="tap" && action["observe_after"]?.jsonPrimitive?.booleanOrNull!=false
-   val wanted=action["after_target"]?.jsonObject ?: action["target"]?.jsonObject ?: buildJsonObject{put("identifier",optional(action,"identifier") ?: "")}
-   val matches=if(shouldFocus)select(wanted)else emptyList()
-   val target=matches.singleOrNull()
-   val b=target?.let{rawBounds(it)}
-   val centered=b!=null && b.center.y>=0 && b.center.y<=viewportHeight
-   val fits=b!=null && b.height<=viewportHeight
-   val ready=!shouldFocus || target!=null && (if(fits)fullyVisible(target)else centered)
-   val limit=action["max_steps"]?.jsonPrimitive?.intOrNull ?: 24
-   if(!ready && matches.size<=1 && postAttempts++<limit){
-    val previous=scroll.value
-    val delta=if(b!=null)(b.center.y-viewportHeight/2).coerceIn(-viewportHeight*0.65f,viewportHeight*0.65f)else viewportHeight*0.45f
-    scrollBy(delta)
-    postTrace.add(buildJsonObject{put("step",postAttempts);put("offset_before",previous/density);put("offset_after",scroll.value/density);put("target_observed",target!=null)})
-    if(scroll.value!=previous)return
+   if(afterBinding==null){
+    capture(pendingName,image);immediateSnapshot=records.lastIndex;afterBinding=binding();afterDelta=events.drop(eventStart).toList();postIndices.add(immediateSnapshot)
+    postTargets=if(action["observe_after"]?.jsonPrimitive?.booleanOrNull==false)emptyList()else action["after_targets"]?.jsonArray?.map{it.jsonObject} ?: if(optional(action,"type")=="tap")listOf(action["after_target"]?.jsonObject ?: action["target"]?.jsonObject ?: buildJsonObject{put("identifier",optional(action,"identifier") ?: "")})else emptyList()
    }
-   if(postTrace.isNotEmpty())capture(pendingName+"-post-target",image)
+   val needsImage=postTrace.isNotEmpty() && postTargets.any{spec->targetEvidence(spec)["status"]!!.jsonPrimitive.content!="observed" && select(spec).singleOrNull()?.let{targetReady(it)}==true}
+   if(needsImage){capture(pendingName+"-post-target-"+postTargetIndex,image);postIndices.add(records.lastIndex)}
+   val limit=(action["observation_max_scrolls"]?.jsonPrimitive?.intOrNull ?: 24).coerceIn(0,40)
+   while(postTargetIndex<postTargets.size && binding()==afterBinding){
+    val wanted=postTargets[postTargetIndex];val found=select(wanted);val target=found.singleOrNull()
+    if(targetEvidence(wanted)["status"]!!.jsonPrimitive.content=="observed" || found.size>1 || postAttempts>=limit){postTargetIndex++;postDirection=0;postReversed=false;continue}
+    if(target?.let{targetReady(it)}==true){capture(pendingName+"-post-target-"+postTargetIndex,image);postIndices.add(records.lastIndex);postTargetIndex++;postDirection=0;postReversed=false;continue}
+    if(postDirection==0)postDirection=if(scroll.value>0)-1 else 1
+    val b=target?.let{rawBounds(it)};val previous=scroll.value
+    val delta=if(b!=null)(b.center.y-viewportHeight/2).coerceIn(-viewportHeight*0.65f,viewportHeight*0.65f)else viewportHeight*0.45f*postDirection
+    scrollBy(delta);postAttempts++
+    postTrace.add(buildJsonObject{put("selector",wanted);put("step",postAttempts);put("offset_before",previous/density);put("offset_after",scroll.value/density);put("target_observed",target!=null)})
+    if(scroll.value!=previous)return
+    if(target==null && !postReversed){postDirection = -postDirection;postReversed=true}else{postTargetIndex++;postDirection=0;postReversed=false}
+   }
    val item=pendingStep!!;val finished=actionIndex
+   val results=postTargets.map{targetEvidence(it)};val stable=binding()==afterBinding && postIndices.all{records[it]["binding"]==afterBinding && records[it]["capture_consistent"]?.jsonPrimitive?.booleanOrNull!=false}
+   val observationSet=if(postTargets.isEmpty())JsonObject(emptyMap())else buildJsonObject{put("state_id",activeState);put("after_action",actionIndex);put("binding",afterBinding!!);put("binding_after_observation",binding());put("binding_stable",stable);put("snapshot_indices",buildJsonArray{postIndices.forEach{add(it)}});put("requested_targets",JsonArray(postTargets));put("targets",JsonArray(results));put("all_targets_observed",stable && results.all{it["status"]!!.jsonPrimitive.content=="observed"});put("scroll_budget",limit);put("scrolls_used",postAttempts);put("trace",JsonArray(postTrace));put("scope","targets_only; never full-content or absence proof")}
    steps.add(buildJsonObject{item.forEach{(k,v)->put(k,v)};put("dispatch",buildJsonObject{dispatch.forEach{(k,v)->put(k,v)};put("event_end",afterBinding!!["event_revision"]!!)});put("callback_delta",buildJsonArray{afterDelta.forEach{add(it)}});put("snapshot",records.lastIndex);put("immediate_after",immediateSnapshot);put("binding_after",afterBinding!!);put("state_id",activeState)
-    put("post_action_viewport",buildJsonObject{put("status",if(!shouldFocus)"not_requested"else if(ready)"observed"else"unavailable");put("selector",wanted);put("snapshot",records.lastIndex);put("fully_visible",target?.let{fullyVisible(it)} ?: false);put("center_visible",centered);put("binding_stable",binding()==afterBinding);put("trace",JsonArray(postTrace))})})
-   afterBinding=null;postAttempts=0;postTrace.clear()
+    put("observation_set",observationSet);put("post_action_viewport",buildJsonObject{val first=results.firstOrNull();if(first!=null)first.forEach{(k,v)->put(k,v)}else put("status","not_requested");put("snapshot",first?.get("snapshot_indices")?.jsonArray?.firstOrNull() ?: JsonPrimitive(records.lastIndex));put("binding_stable",stable)})})
+   afterBinding=null;postAttempts=0;postTrace.clear();postIndices.clear();postTargets=emptyList();postTargetIndex=0;postDirection=0;postReversed=false
    val state=optional(actions[finished],"state_id");actionIndex++;attempts=0
    if(stateCapture && state!=null)startSweep(state,finished,"after")else phase="actions"
    return

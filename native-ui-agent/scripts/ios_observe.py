@@ -22,8 +22,12 @@ import sys
 import time
 import uuid
 import xml.sax.saxutils
+import importlib.util
 
 TEMPLATES = Path(__file__).resolve().parents[1] / "assets" / "ios-observer"
+CONTRACT = Path(__file__).with_name('observation_contract.py')
+_spec = importlib.util.spec_from_file_location('native_observation_contract', CONTRACT)
+_contract = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_contract)
 
 
 def digest(path: Path) -> str:
@@ -223,27 +227,21 @@ def run(args) -> int:
     allowed_types = ["xSmall", "small", "medium", "large", "xLarge", "xxLarge", "xxxLarge"] + [f"accessibility{i}" for i in range(1, 6)]
     if config.get("dynamic_type", "large") not in allowed_types: raise ValueError("unknown dynamic_type")
     if not isinstance(actions, list) or len(actions) > 40: raise ValueError("actions must be an array of at most 40 bounded actions")
-    def validate_selector(value):
-        if not isinstance(value, dict) or len([k for k in ("identifier", "label") if isinstance(value.get(k), str) and value[k]]) != 1:
-            raise ValueError("Selector needs exactly one nonempty identifier or exact label")
-        if value.get("role", "button").lower() not in {"button", "switch", "other", "statictext", "text"}:
-            raise ValueError("Unsupported selector role")
-    for target in config.get("observation_targets", []): validate_selector(target)
+    _contract.validate_actions(actions)
+    for target in config.get("observation_targets", []): _contract.validate_selector(target)
     state_ids = [action["state_id"] for action in actions if "state_id" in action]
     if len(state_ids) != len(set(state_ids)) or any(not isinstance(s, str) or not s or s in {"initial", "final"} for s in state_ids):
         raise ValueError("Explicit state IDs must be unique nonempty strings; initial/final are reserved")
-    for action in actions:
-        if action.get("type") == "tap": validate_selector(action.get("target", {"identifier": action.get("identifier")}))
     env = dict(os.environ, DEVELOPER_DIR=args.developer_dir)
     manifest = {"schema_version": 1, "status": "error", "simulator": args.simulator, "started_at": time.time(),
                 "bridge": str(bridge), "package": str(package) if package else None, "source_hashes": {}, "image_hashes": {}, "native_test_count": 0}
-    files = [bridge, TEMPLATES / "ObserverApp.swift", TEMPLATES / "ObserverTests.swift", Path(__file__).resolve()]
+    files = [bridge, TEMPLATES / "ObserverApp.swift", TEMPLATES / "ObserverTests.swift", Path(__file__).resolve(), CONTRACT]
     if package:
         files += [package / "Package.swift"] + sorted(p for p in (package / "Sources").rglob("*") if p.is_file())
         if (package / 'Package.resolved').is_file(): files.append(package / 'Package.resolved')
     manifest["source_hashes"] = {str(p): digest(p) for p in files}
     (output / 'tool-sources').mkdir()
-    for source in [TEMPLATES / 'ObserverApp.swift', TEMPLATES / 'ObserverTests.swift', Path(__file__).resolve()]:
+    for source in [TEMPLATES / 'ObserverApp.swift', TEMPLATES / 'ObserverTests.swift', Path(__file__).resolve(), CONTRACT]:
         shutil.copy2(source, output / 'tool-sources' / source.name)
     manifest["input_hashes"] = {"fixtures": digest(Path(args.fixtures))}
     if args.actions: manifest["input_hashes"]["actions"] = digest(Path(args.actions))

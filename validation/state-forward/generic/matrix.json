@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "required_state_ids": [
+    "expanded",
+    "continued",
+    "updated",
+    "disabled"
+  ],
+  "required_requirement_ids": [
+    "header-label",
+    "footer-label",
+    "secondary-label",
+    "event"
+  ],
+  "states": [
+    {
+      "id": "expanded",
+      "input_index": 0,
+      "after_action": 1,
+      "coverage": "targets"
+    },
+    {
+      "id": "continued",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets"
+    },
+    {
+      "id": "updated",
+      "input_index": 1,
+      "after_action": 4,
+      "coverage": "targets"
+    },
+    {
+      "id": "disabled",
+      "input_index": 1,
+      "after_action": 5,
+      "coverage": "targets"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "header-label",
+      "source": "generic/prepare.py: neutral fixed label contract",
+      "check": {
+        "kind": "control",
+        "target": {
+          "identifier": "probe.header"
+        },
+        "property": "label"
+      },
+      "by_state": {
+        "expanded": {
+          "expected": "Panel A"
+        },
+        "continued": {
+          "expected": "Panel A"
+        },
+        "updated": {
+          "expected": "Panel B"
+        },
+        "disabled": {
+          "expected": "Panel B"
+        }
+      }
+    },
+    {
+      "id": "footer-label",
+      "source": "generic/prepare.py: neutral fixed label contract",
+      "check": {
+        "kind": "control",
+        "target": {
+          "identifier": "probe.footer"
+        },
+        "property": "label"
+      },
+      "by_state": {
+        "expanded": {
+          "expected": "End A"
+        },
+        "continued": {
+          "expected": "End A"
+        },
+        "updated": {
+          "expected": "End B"
+        },
+        "disabled": {
+          "expected": "End B"
+        }
+      }
+    },
+    {
+      "id": "secondary-label",
+      "source": "generic/prepare.py: neutral fixed label contract",
+      "check": {
+        "kind": "control",
+        "target": {
+          "identifier": "probe.secondary"
+        },
+        "property": "label"
+      },
+      "by_state": {
+        "expanded": {
+          "expected": "Continue A"
+        },
+        "continued": {
+          "expected": "Continue A"
+        },
+        "updated": {
+          "expected": "Continue B"
+        },
+        "disabled": {
+          "expected": "Continue B"
+        }
+      }
+    },
+    {
+      "id": "event",
+      "source": "generic/prepare.py: dispatch/quietness contract",
+      "check": {
+        "kind": "event"
+      },
+      "by_state": {
+        "expanded": {
+          "expected": [
+            "expanded"
+          ]
+        },
+        "continued": {
+          "expected": [
+            "secondary"
+          ]
+        },
+        "updated": {
+          "expected": [],
+          "stimulus": "caller_update"
+        },
+        "disabled": {
+          "expected": []
+        }
+      }
+    }
+  ]
+}

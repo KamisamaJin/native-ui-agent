@@ -1,0 +1,56 @@
+{
+  "initial": {
+    "title": "Probe alpha",
+    "footer": "Alpha footer"
+  },
+  "updates": [
+    {
+      "title": "Probe beta",
+      "footer": "Beta footer"
+    }
+  ],
+  "width": 390,
+  "theme": "light",
+  "direction": "ltr",
+  "max_scrolls": 24,
+  "required_identifiers": [
+    "probe.title",
+    "probe.action",
+    "probe.footer"
+  ],
+  "fontScale": 1.0,
+  "viewportHeight": 600,
+  "actions": [
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "probe.action"
+      },
+      "reveal": true,
+      "expect_callback": "probe.activated",
+      "observation_max_scrolls": 24,
+      "state_id": "probe-tapped",
+      "after_targets": [
+        {
+          "identifier": "probe.title"
+        },
+        {
+          "identifier": "probe.footer"
+        }
+      ]
+    },
+    {
+      "type": "apply_next_fixture",
+      "observation_max_scrolls": 24,
+      "state_id": "probe-replaced",
+      "after_targets": [
+        {
+          "identifier": "probe.title"
+        },
+        {
+          "identifier": "probe.footer"
+        }
+      ]
+    }
+  ]
+}

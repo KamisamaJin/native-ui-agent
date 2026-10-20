@@ -1,0 +1,357 @@
+{
+  "version": 1,
+  "states": [
+    {
+      "id": "marked",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "targets"
+    },
+    {
+      "id": "replaced",
+      "input_index": 1,
+      "after_action": 1,
+      "coverage": "targets"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "reading.title"
+      },
+      "property": "label",
+      "expected": "Field notes, set A",
+      "id": "marked/title",
+      "state": "marked",
+      "requirement_id": "title",
+      "source": "acceptance.md (frozen independent design and state contract)"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "reading.title"
+      },
+      "property": "label",
+      "expected": "Field notes, set B",
+      "id": "replaced/title",
+      "state": "replaced",
+      "requirement_id": "title",
+      "source": "acceptance.md (frozen independent design and state contract)"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "reading.status"
+      },
+      "property": "label",
+      "expected": "Section six marked",
+      "id": "marked/top-status",
+      "state": "marked",
+      "requirement_id": "top-status",
+      "source": "acceptance.md (frozen independent design and state contract)"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "reading.status"
+      },
+      "property": "label",
+      "expected": "Nothing marked",
+      "id": "replaced/top-status",
+      "state": "replaced",
+      "requirement_id": "top-status",
+      "source": "acceptance.md (frozen independent design and state contract)"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "reading.toggle"
+      },
+      "property": "label",
+      "expected": "Clear mark",
+      "id": "marked/action-label",
+      "state": "marked",
+      "requirement_id": "action-label",
+      "source": "acceptance.md (frozen independent design and state contract)"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "reading.toggle"
+      },
+      "property": "label",
+      "expected": "Mark section six",
+      "id": "replaced/action-label",
+      "state": "replaced",
+      "requirement_id": "action-label",
+      "source": "acceptance.md (frozen independent design and state contract)"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "reading.toggle"
+      },
+      "property": "enabled",
+      "expected": true,
+      "id": "marked/action-enabled",
+      "state": "marked",
+      "requirement_id": "action-enabled",
+      "source": "acceptance.md (frozen independent design and state contract)"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "reading.toggle"
+      },
+      "property": "enabled",
+      "expected": false,
+      "id": "replaced/action-enabled",
+      "state": "replaced",
+      "requirement_id": "action-enabled",
+      "source": "acceptance.md (frozen independent design and state contract)"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "reading.toggle"
+      },
+      "property": "selected",
+      "expected": true,
+      "id": "marked/action-selected",
+      "state": "marked",
+      "requirement_id": "action-selected",
+      "source": "acceptance.md (frozen independent design and state contract)"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "reading.toggle"
+      },
+      "property": "selected",
+      "expected": false,
+      "id": "replaced/action-selected",
+      "state": "replaced",
+      "requirement_id": "action-selected",
+      "source": "acceptance.md (frozen independent design and state contract)"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "reading.footer"
+      },
+      "property": "label",
+      "expected": "Selection: section six",
+      "id": "marked/footer-status",
+      "state": "marked",
+      "requirement_id": "footer-status",
+      "source": "acceptance.md (frozen independent design and state contract)"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "reading.footer"
+      },
+      "property": "label",
+      "expected": "Selection: none",
+      "id": "replaced/footer-status",
+      "state": "replaced",
+      "requirement_id": "footer-status",
+      "source": "acceptance.md (frozen independent design and state contract)"
+    },
+    {
+      "kind": "event",
+      "expected": [
+        "toggle-mark"
+      ],
+      "action_index": 0,
+      "id": "marked/callbacks",
+      "state": "marked",
+      "requirement_id": "callbacks",
+      "source": "acceptance.md actual activation and quiet caller replacement"
+    },
+    {
+      "kind": "event",
+      "expected": [],
+      "stimulus": "caller_update",
+      "required_method": "caller_fixture_update",
+      "action_index": 1,
+      "id": "replaced/callbacks",
+      "state": "replaced",
+      "requirement_id": "callbacks",
+      "source": "acceptance.md actual activation and quiet caller replacement"
+    },
+    {
+      "kind": "manual",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ],
+      "id": "marked/target-visual",
+      "state": "marked",
+      "requirement_id": "target-visual",
+      "source": "acceptance.md independently fixed structure/colors/wrapping; target frames only"
+    },
+    {
+      "kind": "manual",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ],
+      "id": "replaced/target-visual",
+      "state": "replaced",
+      "requirement_id": "target-visual",
+      "source": "acceptance.md independently fixed structure/colors/wrapping; target frames only"
+    }
+  ],
+  "required_assertion_ids": [
+    "marked/title",
+    "replaced/title",
+    "marked/top-status",
+    "replaced/top-status",
+    "marked/action-label",
+    "replaced/action-label",
+    "marked/action-enabled",
+    "replaced/action-enabled",
+    "marked/action-selected",
+    "replaced/action-selected",
+    "marked/footer-status",
+    "replaced/footer-status",
+    "marked/callbacks",
+    "replaced/callbacks",
+    "marked/target-visual",
+    "replaced/target-visual"
+  ],
+  "matrix_contract": {
+    "matrix_sha256": "6eac014393b9405ac8e2073dbc31f27d714e7364a0ecc30f7c35bdf627a1eac6",
+    "selected_states": [
+      "marked",
+      "replaced"
+    ],
+    "selected_requirements": [
+      "title",
+      "top-status",
+      "action-label",
+      "action-enabled",
+      "action-selected",
+      "footer-status",
+      "callbacks",
+      "target-visual"
+    ],
+    "cells": [
+      {
+        "id": "marked/title",
+        "state": "marked",
+        "requirement_id": "title",
+        "source": "acceptance.md (frozen independent design and state contract)",
+        "disposition": "required"
+      },
+      {
+        "id": "replaced/title",
+        "state": "replaced",
+        "requirement_id": "title",
+        "source": "acceptance.md (frozen independent design and state contract)",
+        "disposition": "required"
+      },
+      {
+        "id": "marked/top-status",
+        "state": "marked",
+        "requirement_id": "top-status",
+        "source": "acceptance.md (frozen independent design and state contract)",
+        "disposition": "required"
+      },
+      {
+        "id": "replaced/top-status",
+        "state": "replaced",
+        "requirement_id": "top-status",
+        "source": "acceptance.md (frozen independent design and state contract)",
+        "disposition": "required"
+      },
+      {
+        "id": "marked/action-label",
+        "state": "marked",
+        "requirement_id": "action-label",
+        "source": "acceptance.md (frozen independent design and state contract)",
+        "disposition": "required"
+      },
+      {
+        "id": "replaced/action-label",
+        "state": "replaced",
+        "requirement_id": "action-label",
+        "source": "acceptance.md (frozen independent design and state contract)",
+        "disposition": "required"
+      },
+      {
+        "id": "marked/action-enabled",
+        "state": "marked",
+        "requirement_id": "action-enabled",
+        "source": "acceptance.md (frozen independent design and state contract)",
+        "disposition": "required"
+      },
+      {
+        "id": "replaced/action-enabled",
+        "state": "replaced",
+        "requirement_id": "action-enabled",
+        "source": "acceptance.md (frozen independent design and state contract)",
+        "disposition": "required"
+      },
+      {
+        "id": "marked/action-selected",
+        "state": "marked",
+        "requirement_id": "action-selected",
+        "source": "acceptance.md (frozen independent design and state contract)",
+        "disposition": "required"
+      },
+      {
+        "id": "replaced/action-selected",
+        "state": "replaced",
+        "requirement_id": "action-selected",
+        "source": "acceptance.md (frozen independent design and state contract)",
+        "disposition": "required"
+      },
+      {
+        "id": "marked/footer-status",
+        "state": "marked",
+        "requirement_id": "footer-status",
+        "source": "acceptance.md (frozen independent design and state contract)",
+        "disposition": "required"
+      },
+      {
+        "id": "replaced/footer-status",
+        "state": "replaced",
+        "requirement_id": "footer-status",
+        "source": "acceptance.md (frozen independent design and state contract)",
+        "disposition": "required"
+      },
+      {
+        "id": "marked/callbacks",
+        "state": "marked",
+        "requirement_id": "callbacks",
+        "source": "acceptance.md actual activation and quiet caller replacement",
+        "disposition": "required"
+      },
+      {
+        "id": "replaced/callbacks",
+        "state": "replaced",
+        "requirement_id": "callbacks",
+        "source": "acceptance.md actual activation and quiet caller replacement",
+        "disposition": "required"
+      },
+      {
+        "id": "marked/target-visual",
+        "state": "marked",
+        "requirement_id": "target-visual",
+        "source": "acceptance.md independently fixed structure/colors/wrapping; target frames only",
+        "disposition": "required"
+      },
+      {
+        "id": "replaced/target-visual",
+        "state": "replaced",
+        "requirement_id": "target-visual",
+        "source": "acceptance.md independently fixed structure/colors/wrapping; target frames only",
+        "disposition": "required"
+      }
+    ],
+    "scope": "Complete declared matrix, not proof that natural-language requirements were fully translated; explicit exclusions remain auditable."
+  }
+}

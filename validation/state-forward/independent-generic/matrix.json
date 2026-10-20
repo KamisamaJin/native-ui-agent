@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "required_state_ids": [
+    "marked",
+    "replaced"
+  ],
+  "required_requirement_ids": [
+    "title",
+    "top-status",
+    "action-label",
+    "action-enabled",
+    "action-selected",
+    "footer-status",
+    "callbacks",
+    "target-visual"
+  ],
+  "states": [
+    {
+      "id": "marked",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "targets"
+    },
+    {
+      "id": "replaced",
+      "input_index": 1,
+      "after_action": 1,
+      "coverage": "targets"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "title",
+      "source": "acceptance.md (frozen independent design and state contract)",
+      "check": {
+        "kind": "control",
+        "target": {
+          "identifier": "reading.title"
+        },
+        "property": "label",
+        "expected": "Field notes, set A"
+      },
+      "by_state": {
+        "replaced": {
+          "expected": "Field notes, set B"
+        }
+      }
+    },
+    {
+      "id": "top-status",
+      "source": "acceptance.md (frozen independent design and state contract)",
+      "check": {
+        "kind": "control",
+        "target": {
+          "identifier": "reading.status"
+        },
+        "property": "label",
+        "expected": "Section six marked"
+      },
+      "by_state": {
+        "replaced": {
+          "expected": "Nothing marked"
+        }
+      }
+    },
+    {
+      "id": "action-label",
+      "source": "acceptance.md (frozen independent design and state contract)",
+      "check": {
+        "kind": "control",
+        "target": {
+          "identifier": "reading.toggle"
+        },
+        "property": "label",
+        "expected": "Clear mark"
+      },
+      "by_state": {
+        "replaced": {
+          "expected": "Mark section six"
+        }
+      }
+    },
+    {
+      "id": "action-enabled",
+      "source": "acceptance.md (frozen independent design and state contract)",
+      "check": {
+        "kind": "control",
+        "target": {
+          "identifier": "reading.toggle"
+        },
+        "property": "enabled",
+        "expected": true
+      },
+      "by_state": {
+        "replaced": {
+          "expected": false
+        }
+      }
+    },
+    {
+      "id": "action-selected",
+      "source": "acceptance.md (frozen independent design and state contract)",
+      "check": {
+        "kind": "control",
+        "target": {
+          "identifier": "reading.toggle"
+        },
+        "property": "selected",
+        "expected": true
+      },
+      "by_state": {
+        "replaced": {
+          "expected": false
+        }
+      }
+    },
+    {
+      "id": "footer-status",
+      "source": "acceptance.md (frozen independent design and state contract)",
+      "check": {
+        "kind": "control",
+        "target": {
+          "identifier": "reading.footer"
+        },
+        "property": "label",
+        "expected": "Selection: section six"
+      },
+      "by_state": {
+        "replaced": {
+          "expected": "Selection: none"
+        }
+      }
+    },
+    {
+      "id": "callbacks",
+      "source": "acceptance.md actual activation and quiet caller replacement",
+      "check": {
+        "kind": "event",
+        "expected": [
+          "toggle-mark"
+        ]
+      },
+      "by_state": {
+        "replaced": {
+          "expected": [],
+          "stimulus": "caller_update",
+          "required_method": "caller_fixture_update"
+        }
+      }
+    },
+    {
+      "id": "target-visual",
+      "source": "acceptance.md independently fixed structure/colors/wrapping; target frames only",
+      "check": {
+        "kind": "manual",
+        "coverage": "target",
+        "allowed_methods": [
+          "visual"
+        ]
+      }
+    }
+  ]
+}

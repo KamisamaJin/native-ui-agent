@@ -1,0 +1,95 @@
+[
+  {
+    "type": "sweep",
+    "state_id": "full-initial",
+    "max_steps": 24
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "probe.disclosure"
+    },
+    "reveal": true,
+    "state_id": "expanded",
+    "after_targets": [
+      {
+        "identifier": "probe.header"
+      },
+      {
+        "identifier": "probe.footer"
+      },
+      {
+        "identifier": "probe.secondary"
+      }
+    ]
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "probe.secondary"
+    },
+    "reveal": true,
+    "state_id": "continued",
+    "after_targets": [
+      {
+        "identifier": "probe.header"
+      },
+      {
+        "identifier": "probe.footer"
+      },
+      {
+        "identifier": "probe.secondary"
+      }
+    ]
+  },
+  {
+    "type": "capture",
+    "state_id": "bounded-missing",
+    "after_targets": [
+      {
+        "identifier": "probe.missing"
+      }
+    ],
+    "observation_max_scrolls": 0
+  },
+  {
+    "type": "apply_next_fixture",
+    "state_id": "updated",
+    "after_targets": [
+      {
+        "identifier": "probe.header"
+      },
+      {
+        "identifier": "probe.footer"
+      },
+      {
+        "identifier": "probe.secondary"
+      }
+    ]
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "probe.disabled"
+    },
+    "reveal": true,
+    "allow_disabled": true,
+    "state_id": "disabled",
+    "after_targets": [
+      {
+        "identifier": "probe.header"
+      },
+      {
+        "identifier": "probe.footer"
+      },
+      {
+        "identifier": "probe.secondary"
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "full-update",
+    "max_steps": 24
+  }
+]

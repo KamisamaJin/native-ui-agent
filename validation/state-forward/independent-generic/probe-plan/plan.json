@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "states": [
+    {
+      "id": "probe-tapped",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "targets"
+    },
+    {
+      "id": "probe-replaced",
+      "input_index": 1,
+      "after_action": 1,
+      "coverage": "targets"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.title"
+      },
+      "property": "label",
+      "expected": "Probe alpha",
+      "id": "probe-tapped/title",
+      "state": "probe-tapped",
+      "requirement_id": "title",
+      "source": "Independent probe title must reflect caller input"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.title"
+      },
+      "property": "label",
+      "expected": "Probe beta",
+      "id": "probe-replaced/title",
+      "state": "probe-replaced",
+      "requirement_id": "title",
+      "source": "Independent probe title must reflect caller input"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.footer"
+      },
+      "property": "label",
+      "expected": "Alpha footer",
+      "id": "probe-tapped/footer",
+      "state": "probe-tapped",
+      "requirement_id": "footer",
+      "source": "Independent probe distant footer must reflect caller input"
+    },
+    {
+      "kind": "control",
+      "target": {
+        "identifier": "probe.footer"
+      },
+      "property": "label",
+      "expected": "Beta footer",
+      "id": "probe-replaced/footer",
+      "state": "probe-replaced",
+      "requirement_id": "footer",
+      "source": "Independent probe distant footer must reflect caller input"
+    },
+    {
+      "kind": "event",
+      "expected": [
+        "probe.activated"
+      ],
+      "action_index": 0,
+      "id": "probe-tapped/callbacks",
+      "state": "probe-tapped",
+      "requirement_id": "callbacks",
+      "source": "Independent probe event contract: real button emits one; caller replacement emits none"
+    },
+    {
+      "kind": "event",
+      "expected": [],
+      "stimulus": "caller_update",
+      "required_method": "caller_fixture_update",
+      "action_index": 1,
+      "id": "probe-replaced/callbacks",
+      "state": "probe-replaced",
+      "requirement_id": "callbacks",
+      "source": "Independent probe event contract: real button emits one; caller replacement emits none"
+    }
+  ],
+  "required_assertion_ids": [
+    "probe-tapped/title",
+    "probe-replaced/title",
+    "probe-tapped/footer",
+    "probe-replaced/footer",
+    "probe-tapped/callbacks",
+    "probe-replaced/callbacks"
+  ],
+  "matrix_contract": {
+    "matrix_sha256": "82664a8651eaf221421121fddb9d317fa769a1be0087a612fe2c91252ee8ee5b",
+    "selected_states": [
+      "probe-tapped",
+      "probe-replaced"
+    ],
+    "selected_requirements": [
+      "title",
+      "footer",
+      "callbacks"
+    ],
+    "cells": [
+      {
+        "id": "probe-tapped/title",
+        "state": "probe-tapped",
+        "requirement_id": "title",
+        "source": "Independent probe title must reflect caller input",
+        "disposition": "required"
+      },
+      {
+        "id": "probe-replaced/title",
+        "state": "probe-replaced",
+        "requirement_id": "title",
+        "source": "Independent probe title must reflect caller input",
+        "disposition": "required"
+      },
+      {
+        "id": "probe-tapped/footer",
+        "state": "probe-tapped",
+        "requirement_id": "footer",
+        "source": "Independent probe distant footer must reflect caller input",
+        "disposition": "required"
+      },
+      {
+        "id": "probe-replaced/footer",
+        "state": "probe-replaced",
+        "requirement_id": "footer",
+        "source": "Independent probe distant footer must reflect caller input",
+        "disposition": "required"
+      },
+      {
+        "id": "probe-tapped/callbacks",
+        "state": "probe-tapped",
+        "requirement_id": "callbacks",
+        "source": "Independent probe event contract: real button emits one; caller replacement emits none",
+        "disposition": "required"
+      },
+      {
+        "id": "probe-replaced/callbacks",
+        "state": "probe-replaced",
+        "requirement_id": "callbacks",
+        "source": "Independent probe event contract: real button emits one; caller replacement emits none",
+        "disposition": "required"
+      }
+    ],
+    "scope": "Complete declared matrix, not proof that natural-language requirements were fully translated; explicit exclusions remain auditable."
+  }
+}
