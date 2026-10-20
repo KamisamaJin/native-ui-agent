@@ -1,0 +1,59 @@
+{
+  "initial": {
+    "rows": 8
+  },
+  "updates": [
+    {
+      "rows": 4
+    }
+  ],
+  "width": 390,
+  "theme": "light",
+  "dynamic_type": "large",
+  "direction": "ltr",
+  "state_capture": false,
+  "max_scrolls": 8,
+  "observation_targets": [
+    {
+      "identifier": "gen.correct"
+    },
+    {
+      "identifier": "gen.disabled"
+    },
+    {
+      "identifier": "gen.silent"
+    },
+    {
+      "identifier": "gen.wrong"
+    },
+    {
+      "identifier": "gen.disclosure"
+    },
+    {
+      "identifier": "gen.tail"
+    }
+  ],
+  "actions": [
+    {
+      "type": "sweep",
+      "state_id": "full-initial",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "identifier": "gen.disclosure",
+      "reveal": true,
+      "max_steps": 24,
+      "state_id": "expanded-target"
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "new-input"
+    },
+    {
+      "type": "sweep",
+      "state_id": "full-update",
+      "max_steps": 24
+    }
+  ]
+}

@@ -172,6 +172,7 @@ def state_evidence(observation,state):
         step=steps[index];snap_index=step.get('after',step.get('snapshot'));snapshots=observation.get('snapshots',[])
         if not isinstance(snap_index,int)or not 0<=snap_index<len(snapshots):return [],False,'invalid native action snapshot',None
         snapshot=snapshots[snap_index];binding=step.get('binding_after')
+        if snapshot.get('capture_consistent') is False:return [],False,'native image/hierarchy epoch changed during capture',None
         if step.get('state_id')!=state['id']or snapshot.get('state_id')!=state['id']or not binding or snapshot.get('binding')!=binding:
             return [],False,'action checkpoint state/binding mismatch',None
         if binding.get('fixture_index',binding.get('input_index'))!=state['input_index']:return [],False,'action checkpoint has different input',None
@@ -186,6 +187,7 @@ def state_evidence(observation,state):
     snapshots=observation.get('snapshots',[]);indices=capture.get('snapshot_indices',[])
     if not indices or any(not isinstance(i,int)or i<0 or i>=len(snapshots)for i in indices):return [],False,'invalid state snapshot indices',capture
     found=[(i,snapshots[i])for i in indices]
+    if any(s.get('capture_consistent') is False for _,s in found):return [],False,'native image/hierarchy epoch changed during capture',capture
     if any(s.get('binding')!=binding for _,s in found):return [],False,'snapshot binding drift',capture
     # Recompute geometry coverage; the producer's complete:true alone is not proof.
     intervals=[];heights=[]

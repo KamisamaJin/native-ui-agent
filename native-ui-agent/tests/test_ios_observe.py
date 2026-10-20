@@ -49,5 +49,25 @@ class ObserverInvariants(unittest.TestCase):
             self.assertTrue((project / "xcshareddata/xcschemes/Observer.xcscheme").exists())
             with self.assertRaises(FileExistsError): observer.generate_project(root / "generated", bridge, None)
 
+    def test_build_cache_identity_covers_compilation_not_runtime_fixture(self):
+        base = observer.build_signature({'source': 'one'}, {'xcode': 'sdk-a'}, 'simulator', 'Module')
+        self.assertEqual(base, observer.build_signature({'source': 'one'}, {'xcode': 'sdk-a'}, 'simulator', 'Module'))
+        for args in [({'source': 'two'}, {'xcode': 'sdk-a'}, 'simulator', 'Module'),
+                     ({'source': 'one'}, {'xcode': 'sdk-b'}, 'simulator', 'Module'),
+                     ({'source': 'one'}, {'xcode': 'sdk-a'}, 'other-sdk', 'Module'),
+                     ({'source': 'one'}, {'xcode': 'sdk-a'}, 'simulator', 'OtherModule')]:
+            self.assertNotEqual(base, observer.build_signature(*args))
+
+    def test_tampered_or_escaped_compiled_cache_cannot_be_reused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); artifact = root / 'compiled.xctestrun'; artifact.write_text('compiled artifact')
+            record = {'signature': 'key', 'artifacts': {'compiled.xctestrun': observer.digest(artifact)}, 'runfile': 'compiled.xctestrun'}
+            self.assertEqual(observer.validate_cached_build(root, record, 'key'), artifact.resolve())
+            with self.assertRaises(ValueError): observer.validate_cached_build(root, record, 'another-key')
+            artifact.write_text('changed')
+            with self.assertRaises(ValueError): observer.validate_cached_build(root, record, 'key')
+            record['artifacts'] = {'../outside': 'hash'}
+            with self.assertRaises(ValueError): observer.validate_cached_build(root, record, 'key')
+
 
 if __name__ == "__main__": unittest.main()

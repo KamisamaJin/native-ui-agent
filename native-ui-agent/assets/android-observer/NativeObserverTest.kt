@@ -67,6 +67,12 @@ class NativeObserverTest {
  private var pendingStep:JsonObject?=null
  private var eventStart=0
  private var dispatch=JsonObject(emptyMap())
+ private var afterBinding:JsonObject?=null
+ private var afterDelta:List<String> = emptyList()
+ private var immediateSnapshot=-1
+ private var postAttempts=0
+ private val postTrace=mutableListOf<JsonObject>()
+ private class ObservationComplete:RuntimeException()
  private val observed=mutableSetOf<String>()
  private var bottomReached=false
  private var actualNight=-1
@@ -81,6 +87,7 @@ class NativeObserverTest {
  private fun fullyVisible(n:SemanticsNode)=rawBounds(n).top>=-0.5f && rawBounds(n).bottom<=viewportHeight+0.5f && rawBounds(n).width>0
  private fun tag(n:SemanticsNode)=n.config.getOrNull(SemanticsProperties.TestTag) ?: ""
  private fun capture(name:String,image:BufferedImage){
+  val captureStart=System.nanoTime()
   val all=raw(); val imageName="${records.size.toString().padStart(3,'0')}-$name.png"
   ImageIO.write(image,"png",File(output,imageName))
   all.filter{visible(it)}.map{tag(it)}.filter{it.isNotBlank()}.forEach{observed.add(it)}
@@ -110,6 +117,7 @@ class NativeObserverTest {
     })
    }})
    put("events",buildJsonArray{events.forEach{add(it)}})
+   put("capture_seconds",(System.nanoTime()-captureStart)/1_000_000_000.0)
   })
  }
  private fun scrollBy(delta:Float){scroll.dispatchRawDelta(delta)}
@@ -131,7 +139,7 @@ class NativeObserverTest {
   if(sweepPurpose=="final"){phase="complete"}else{phase="actions"}
  }
  private fun advance(image:BufferedImage){
-  if(frame++ % 8!=0 || phase=="complete")return
+  if(frame++ % 2!=0 || phase=="complete")return
   if(phase=="sweep_top"){scrollBy(-scroll.value.toFloat());stateFirst=records.size;stateOriginal=binding();phase="sweeping";return}
   if(phase=="sweeping"){
    capture("state_${activeState}_${sweepCount}",image)
@@ -139,9 +147,29 @@ class NativeObserverTest {
    scrollBy(viewportHeight*0.45f);return
   }
   if(phase=="after_action"){
-   capture(pendingName,image)
+   if(afterBinding==null){capture(pendingName,image);immediateSnapshot=records.lastIndex;afterBinding=binding();afterDelta=events.drop(eventStart).toList()}
+   val action=actions[actionIndex]
+   val shouldFocus=optional(action,"type")=="tap" && action["observe_after"]?.jsonPrimitive?.booleanOrNull!=false
+   val wanted=action["after_target"]?.jsonObject ?: action["target"]?.jsonObject ?: buildJsonObject{put("identifier",optional(action,"identifier") ?: "")}
+   val matches=if(shouldFocus)select(wanted)else emptyList()
+   val target=matches.singleOrNull()
+   val b=target?.let{rawBounds(it)}
+   val centered=b!=null && b.center.y>=0 && b.center.y<=viewportHeight
+   val fits=b!=null && b.height<=viewportHeight
+   val ready=!shouldFocus || target!=null && (if(fits)fullyVisible(target)else centered)
+   val limit=action["max_steps"]?.jsonPrimitive?.intOrNull ?: 24
+   if(!ready && matches.size<=1 && postAttempts++<limit){
+    val previous=scroll.value
+    val delta=if(b!=null)(b.center.y-viewportHeight/2).coerceIn(-viewportHeight*0.65f,viewportHeight*0.65f)else viewportHeight*0.45f
+    scrollBy(delta)
+    postTrace.add(buildJsonObject{put("step",postAttempts);put("offset_before",previous/density);put("offset_after",scroll.value/density);put("target_observed",target!=null)})
+    if(scroll.value!=previous)return
+   }
+   if(postTrace.isNotEmpty())capture(pendingName+"-post-target",image)
    val item=pendingStep!!;val finished=actionIndex
-   steps.add(buildJsonObject{item.forEach{(k,v)->put(k,v)};put("dispatch",buildJsonObject{dispatch.forEach{(k,v)->put(k,v)};put("event_end",events.size)});put("callback_delta",buildJsonArray{events.drop(eventStart).forEach{add(it)}});put("snapshot",records.lastIndex);put("binding_after",binding());put("state_id",activeState)})
+   steps.add(buildJsonObject{item.forEach{(k,v)->put(k,v)};put("dispatch",buildJsonObject{dispatch.forEach{(k,v)->put(k,v)};put("event_end",afterBinding!!["event_revision"]!!)});put("callback_delta",buildJsonArray{afterDelta.forEach{add(it)}});put("snapshot",records.lastIndex);put("immediate_after",immediateSnapshot);put("binding_after",afterBinding!!);put("state_id",activeState)
+    put("post_action_viewport",buildJsonObject{put("status",if(!shouldFocus)"not_requested"else if(ready)"observed"else"unavailable");put("selector",wanted);put("snapshot",records.lastIndex);put("fully_visible",target?.let{fullyVisible(it)} ?: false);put("center_visible",centered);put("binding_stable",binding()==afterBinding);put("trace",JsonArray(postTrace))})})
+   afterBinding=null;postAttempts=0;postTrace.clear()
    val state=optional(actions[finished],"state_id");actionIndex++;attempts=0
    if(stateCapture && state!=null)startSweep(state,finished,"after")else phase="actions"
    return
@@ -173,7 +201,7 @@ class NativeObserverTest {
   pendingStep=buildJsonObject{put("type",type);put("outcome","unsupported")};phase="after_action"
  }
  @get:Rule val paparazzi=Paparazzi(deviceConfig=DeviceConfig.PIXEL_5.copy(screenWidth=(number("width",390f)*2.75f).toInt(),screenHeight=(number("viewportHeight",600f)*2.75f).toInt(),nightMode=if(dark)NightMode.NIGHT else NightMode.NOTNIGHT,fontScale=number("fontScale",1f),softButtons=false),showSystemUi=false,
-  snapshotHandler=object:SnapshotHandler{override fun close(){};override fun newFrameHandler(snapshot:Snapshot,frameCount:Int,fps:Int)=object:SnapshotHandler.FrameHandler{override fun close(){};override fun handle(image:BufferedImage){advance(image)}}})
+  snapshotHandler=object:SnapshotHandler{override fun close(){};override fun newFrameHandler(snapshot:Snapshot,frameCount:Int,fps:Int)=object:SnapshotHandler.FrameHandler{override fun close(){};override fun handle(image:BufferedImage){advance(image);if(phase=="complete")throw ObservationComplete()}}})
  @Test fun capture(){
   output.mkdirs();view=ComposeView(paparazzi.context)
   val preview=object:View(paparazzi.context){override fun isInEditMode()=true}
@@ -192,9 +220,9 @@ class NativeObserverTest {
     }
    }
   }
-  paparazzi.gif(view,"session",0L,600_000L,4)
+  try{paparazzi.gif(view,"session",0L,600_000L,4)}catch(done:ObservationComplete){check(phase=="complete")}
   File(output,"observation.json").writeText(buildJsonObject{
-   put("schema_version",2);put("state_captures",JsonArray(stateCaptures));put("native_test","NativeObserverTest.capture");put("phase",phase);put("snapshots",JsonArray(records));put("steps",JsonArray(steps));put("events",buildJsonArray{events.forEach{add(it)}})
+   put("schema_version",3);put("state_captures",JsonArray(stateCaptures));put("native_test","NativeObserverTest.capture");put("phase",phase);put("rendered_frames",frame);put("completion_stop","native_state_machine_complete");put("snapshots",JsonArray(records));put("steps",JsonArray(steps));put("events",buildJsonArray{events.forEach{add(it)}})
    put("coverage",buildJsonObject{put("bottom_reached",bottomReached);put("observed_identifiers",buildJsonArray{observed.sorted().forEach{add(it)}})})
    put("configuration",buildJsonObject{put("night_mode_mask",actualNight);put("font_scale",actualScale);put("density",density);put("direction",actualDirection)})
    put("scope","One attached native ComposeView in continuous Paparazzi frame session. Semantic OnClick invocation, not physical touch; native parent ScrollState displacement, not OS gestures. No Activity/navigation/lifecycle claims.")

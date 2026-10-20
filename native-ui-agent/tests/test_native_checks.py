@@ -31,6 +31,9 @@ class NativeChecks(unittest.TestCase):
   self.assertEqual(m.evaluate(self.plan(),o,'ios')['counts']['unassessed'],1)
   o=self.observation();p=self.plan();p['states'][0]['input_index']=1
   self.assertEqual(m.evaluate(p,o,'ios')['counts']['unassessed'],1)
+ def test_native_hierarchy_image_epoch_drift_is_unassessed(self):
+  o=self.observation();o['snapshots'][1]['capture_consistent']=False
+  self.assertEqual(m.evaluate(self.plan(),o,'ios')['counts']['unassessed'],1)
  def test_physical_touch_width_not_inferred_from_ax(self):
   self.assertEqual(m.evaluate(self.plan(44,'touch_width'),self.observation(),'ios')['counts']['unassessed'],1)
  def test_unexecuted_callback_does_not_become_failure(self):

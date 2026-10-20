@@ -1,0 +1,147 @@
+{
+  "platform": "android",
+  "review_scope": "Manual visual interpretation separate from typed runtime assertions",
+  "observation_sha256": "b5f7eb2a50d03d26d2ac9e24066a386c9b7d53b078d12c1adf3d77776c422387",
+  "reviewed_snapshot_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25
+  ],
+  "actual_screenshots": [
+    {
+      "index": 0,
+      "file": "000-state_initial_0.png",
+      "sha256": "c77cc6573c469096960711f2a66425623cd06aab2648a1025302b22670bde1c4",
+      "dimensions": [
+        649,
+        1000
+      ]
+    },
+    {
+      "index": 2,
+      "file": "002-state_initial_2.png",
+      "sha256": "bc98f05626502d870914f27b216f518e395007879cee4b8c9d12d1603b23d1b4",
+      "dimensions": [
+        649,
+        1000
+      ]
+    },
+    {
+      "index": 4,
+      "file": "004-action-1.png",
+      "sha256": "ffdddbece6f569be5996edbee4fe80f838e0f5a0205cf78fc42ec23e5904de91",
+      "dimensions": [
+        649,
+        1000
+      ]
+    },
+    {
+      "index": 5,
+      "file": "005-action-1-post-target.png",
+      "sha256": "d6c2393497aa0f8a4c2d511491f040726e09bcfa74eb54bb132c490fcc341bde",
+      "dimensions": [
+        649,
+        1000
+      ]
+    },
+    {
+      "index": 6,
+      "file": "006-state_opened_0.png",
+      "sha256": "ffdddbece6f569be5996edbee4fe80f838e0f5a0205cf78fc42ec23e5904de91",
+      "dimensions": [
+        649,
+        1000
+      ]
+    },
+    {
+      "index": 9,
+      "file": "009-state_opened_3.png",
+      "sha256": "bc98f05626502d870914f27b216f518e395007879cee4b8c9d12d1603b23d1b4",
+      "dimensions": [
+        649,
+        1000
+      ]
+    },
+    {
+      "index": 15,
+      "file": "015-state_replaced_0.png",
+      "sha256": "c7f2077bbf80e72bed85ef881c1e416b15561d9363eef825a1ad13b47a6c68b8",
+      "dimensions": [
+        649,
+        1000
+      ]
+    },
+    {
+      "index": 19,
+      "file": "019-state_replaced_4.png",
+      "sha256": "ecf6dc225261e71b3856dbd00449d206eaa49d68c40d6cc454fd8cc7ef184cf8",
+      "dimensions": [
+        649,
+        1000
+      ]
+    },
+    {
+      "index": 21,
+      "file": "021-state_final_0.png",
+      "sha256": "c7f2077bbf80e72bed85ef881c1e416b15561d9363eef825a1ad13b47a6c68b8",
+      "dimensions": [
+        649,
+        1000
+      ]
+    },
+    {
+      "index": 25,
+      "file": "025-state_final_4.png",
+      "sha256": "ecf6dc225261e71b3856dbd00449d206eaa49d68c40d6cc454fd8cc7ef184cf8",
+      "dimensions": [
+        649,
+        1000
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "status": "passed",
+      "aspect": "ordering/wrapping",
+      "reason": "Contact sheets of all 26 native PNGs show title, disabled and open actions, six A/eight B wrapping paragraphs and a reachable finish action. Top/bottom viewport cuts are joined by overlapping state images."
+    },
+    {
+      "status": "passed",
+      "aspect": "post-action movement",
+      "reason": "Native immediate screenshot 4 shows Field opened partly below viewport; post-target screenshot 5 fully reveals it, consistent with native geometry."
+    },
+    {
+      "status": "failed",
+      "aspect": "white-background expectation",
+      "reason": "Expected.md fixed a white card. PNGs show pale #EDF1F6 host background; frozen Android template hardcodes this canvas and authored Compose component is transparent. Do not treat as a generic component rendering defect or silently revise expected background."
+    },
+    {
+      "status": "needs_review",
+      "aspect": "unmeasured rendering properties",
+      "reason": "No pixel baseline. No universal SwiftUI style, physical hit region, platform equivalence or app navigation claims."
+    }
+  ]
+}

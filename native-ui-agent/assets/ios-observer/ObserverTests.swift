@@ -17,6 +17,7 @@ final class ObserverTests: XCTestCase {
     var stateCaptureEnabled = false
     var currentActionIndex = -1
     var sweepLimit = 40
+    var traceRevealImages = false
     func key(_ value: [String: Any]) -> String {
         String(data: (try? JSONSerialization.data(withJSONObject: value, options: [.sortedKeys])) ?? Data(), encoding: .utf8) ?? ""
     }
@@ -158,31 +159,83 @@ final class ObserverTests: XCTestCase {
         e.exists && e.frame.width > 0 && e.frame.height > 0 && viewportFrame.insetBy(dx: -0.5, dy: -0.5).contains(e.frame)
     }
     func capture(_ name: String) -> [String: Any] {
+        let started = ProcessInfo.processInfo.systemUptime
+        // One public native snapshot carries real AX ancestry and attributes.
+        // Do not turn every exported property into another remote XCUI query.
+        let tree: XCUIElementSnapshot?
+        do { tree = try app.snapshot() }
+        catch { issues.append("native snapshot unavailable: \(error)"); tree = nil }
+        var native: [XCUIElementSnapshot] = [], parents: [Int] = []
+        func visit(_ node: XCUIElementSnapshot, parent: Int) {
+            let index = native.count; native.append(node); parents.append(parent)
+            for child in node.children { visit(child, parent: index) }
+        }
+        if let tree { visit(tree, parent: -1) }
+        let treeFinished = ProcessInfo.processInfo.systemUptime
         let shot = app.screenshot()
         let attachment = XCTAttachment(screenshot: shot)
         attachment.name = String(format: "%03d-", counter) + name + ".png"; attachment.lifetime = .keepAlways; add(attachment)
         let viewport = viewportFrame
-        let elements = app.descendants(matching: .any).allElementsBoundByIndex
         var nodes: [[String: Any]] = []
-        for (i, e) in elements.enumerated() where e.exists {
-            let isVisible = visible(e)
-            let hittable = isVisible ? e.isHittable : false
-            let enabled = e.isEnabled
-            let full = fullyVisible(e)
+        for (i, e) in native.enumerated() {
+            let intersection = e.frame.intersection(viewport)
+            let isVisible = !intersection.isNull && intersection.width > 0 && intersection.height > 0 && e.frame.width > 0 && e.frame.height > 0
+            let full = e.frame.width > 0 && e.frame.height > 0 && viewport.insetBy(dx: -0.5, dy: -0.5).contains(e.frame)
             if isVisible && !e.identifier.isEmpty { seen.insert(e.identifier) }
-            nodes.append(["index": i, "identifier": e.identifier, "label": e.label, "value": e.value.map { String(describing: $0) } ?? NSNull(),
+            nodes.append(["index": i, "parent_index": parents[i], "identifier": e.identifier, "label": e.label, "value": e.value.map { String(describing: $0) } ?? NSNull(),
                 "role": String(describing: e.elementType), "role_raw": e.elementType.rawValue, "frame": rect(e.frame),
-                "enabled": enabled, "selected": e.isSelected, "hittable": hittable, "hittable_measured": isVisible, "intersects_viewport": isVisible, "fully_within_viewport": full])
+                "enabled": e.isEnabled, "selected": e.isSelected, "hittable": NSNull(), "hittable_measured": false, "intersects_viewport": isVisible, "fully_within_viewport": full])
         }
-        let sentinel = app.staticTexts["__observer.bottom"]
-        let reached = sentinel.exists && sentinel.isHittable && fullyVisible(sentinel)
+        let r = nodes.first { $0["identifier"] as? String == "__observer.runtime" }.flatMap { decode($0["label"] as? String ?? "") as? [String: Any] } ?? [:]
+        let callbacks = nodes.first { $0["identifier"] as? String == "__observer.receipt" }.flatMap { decode($0["label"] as? String ?? "") as? [[String: Any]] } ?? []
+        let b: [String: Any] = ["pid": r["pid"] ?? NSNull(), "instance": r["instance"] ?? NSNull(), "fixture_index": r["fixture_index"] ?? NSNull(), "input_sha256": r["input_sha256"] ?? NSNull(), "event_revision": r["event_revision"] ?? NSNull()]
+        let reached = nodes.contains { $0["identifier"] as? String == "__observer.bottom" && $0["fully_within_viewport"] as? Bool == true }
         bottomReached = bottomReached || reached
         let cg = UIImage(data: shot.pngRepresentation)?.cgImage
+        // Keep the image tied to the snapshot's native epoch. A fast tree must
+        // not relabel an older hierarchy with a newer caller input or event.
+        let afterImage = runtime()
+        let afterImageBinding: [String: Any] = ["pid": afterImage["pid"] ?? NSNull(), "instance": afterImage["instance"] ?? NSNull(),
+            "fixture_index": afterImage["fixture_index"] ?? NSNull(), "input_sha256": afterImage["input_sha256"] ?? NSNull(), "event_revision": afterImage["event_revision"] ?? NSNull()]
+        let beforeGeometry = frame(r["content_frame"]), afterGeometry = frame(afterImage["content_frame"])
+        let consistent = key(b) == key(afterImageBinding) && beforeGeometry.height > 0
+            && abs(beforeGeometry.minY - afterGeometry.minY) <= 0.5 && abs(beforeGeometry.height - afterGeometry.height) <= 0.5
+        func snapshotGroup(_ wanted: [String: Any]) -> [String: Any] {
+            let found = nodes.indices.filter { index in
+                let n = nodes[index]
+                let identity = wanted["identifier"] as? String
+                let label = wanted["label"] as? String
+                return (identity != nil ? n["identifier"] as? String == identity : label != nil && n["label"] as? String == label)
+                    && ((wanted["role"] as? String).flatMap { role($0) }.map { $0 == native[index].elementType } ?? true)
+            }
+            guard found.count == 1 else { return ["selector": wanted, "match_count": found.count, "resolution": found.isEmpty ? "missing" : "ambiguous_semantic"] }
+            let index = found[0], semantic = nodes[index]
+            guard semantic["intersects_viewport"] as? Bool == true else { return ["selector": wanted, "match_count": 1, "semantic": semantic, "resolution": "offscreen_not_resolved"] }
+            func descendants(_ n: Int) -> [Int] {
+                nodes.indices.filter { child in
+                    var cursor = parents[child]
+                    while cursor >= 0 { if cursor == n { return true }; cursor = parents[cursor] }
+                    return false
+                }
+            }
+            var candidates: [Int] = native[index].elementType == .button ? [index] : []
+            for child in descendants(index) {
+                if native[child].elementType == .button { candidates.append(child) }
+                else if native[child].elementType == .switch && !descendants(child).contains(where: { native[$0].elementType == .button || native[$0].elementType == .switch }) { candidates.append(child) }
+            }
+            if candidates.isEmpty && native[index].elementType == .switch { candidates = [index] }
+            var value: [String: Any] = ["selector": wanted, "match_count": 1, "semantic": semantic, "native_control_count": candidates.count,
+                "candidates": candidates.map { nodes[$0] }, "resolution": candidates.count == 1 ? "unique_native_control" : candidates.isEmpty ? "no_native_control" : "ambiguous_native_controls"]
+            if candidates.count == 1 { value["control"] = nodes[candidates[0]] }
+            return value
+        }
         let record: [String: Any] = ["index": counter, "name": name, "screenshot_attachment": attachment.name!, "nodes": nodes,
-            "runtime": runtime(), "callbacks": receipt(), "viewport": rect(viewport), "app_frame": rect(app.frame),
-            "native_scroll_ax_frame": rect(app.scrollViews["__observer.scroll"].frame),
+            "runtime": r, "callbacks": callbacks, "viewport": rect(viewport), "app_frame": rect(tree?.frame ?? app.frame),
+            "native_scroll_ax_frame": nodes.first { $0["identifier"] as? String == "__observer.scroll" }?["frame"] ?? NSNull(),
             "screenshot_pixels": ["width": cg?.width ?? 0, "height": cg?.height ?? 0],
-            "state_id": activeState, "binding": binding(), "control_groups": observationTargets.map { group($0) },
+            "state_id": activeState, "binding": b, "control_groups": observationTargets.map { snapshotGroup($0) },
+            "binding_after_capture": afterImageBinding, "capture_consistent": consistent,
+            "performance": ["ax_snapshot_seconds": treeFinished - started, "capture_seconds": ProcessInfo.processInfo.systemUptime - started, "native_query_mode": "single_public_snapshot", "hittable_scope": "actual_dispatch_target_only"] as [String: Any],
             "bottom_sentinel_visible": reached]
         records.append(record); counter += 1; return record
     }
@@ -225,14 +278,19 @@ final class ObserverTests: XCTestCase {
         revealDiagnostics.append(diagnostic)
         issues.append("observer target \(identifier) \(present ? "unavailable" : "unobserved"): \(reason), after \(scrolls) native scroll steps")
     }
-    func revealTarget(_ selector: [String: Any], maxSteps: Int, initialDirection: String, prefix: String, requireControl: Bool = true) -> XCUIElement? {
+    func revealTarget(_ selector: [String: Any], maxSteps: Int, initialDirection: String, prefix: String, requireControl: Bool = true, centerOversized: Bool = false) -> XCUIElement? {
         let limit = min(max(maxSteps, 1), 40)
         var fraction = 0.45, lastDirection = "", lastOffset: Double? = nil, stationary = 0
         for n in 0...limit {
             let found = matches(selector)
             if found.count > 1 { issues.append("ambiguous semantic selector \(key(selector))"); return nil }
             let target = found.first
-            if let target, requireControl ? actionable(target) : revealed(target) { return target }
+            if let target {
+                let f = target.frame
+                let fits = f.height <= viewportFrame.height && f.width <= viewportFrame.width
+                let observed = !centerOversized || fits ? revealed(target) : visible(target) && viewportFrame.contains(CGPoint(x: f.midX, y: f.midY))
+                if requireControl ? actionable(target) : observed { return target }
+            }
             var direction = initialDirection == "up" ? "up" : "down"
             if let target {
                 let leaves = requireControl ? controls(target) : [], f = leaves.count == 1 ? leaves[0].0.frame : target.frame
@@ -248,7 +306,8 @@ final class ObserverTests: XCTestCase {
             }
             revealDiagnostics.append(["selector": selector, "step": n, "direction": direction, "fraction": fraction, "offset_before": offset, "target_present": target != nil])
             lastDirection = direction; lastOffset = offset
-            scroll(direction, fraction: fraction); _ = capture("\(prefix)-reveal-\(n)-\(direction)")
+            scroll(direction, fraction: fraction)
+            if traceRevealImages { _ = capture("\(prefix)-reveal-\(n)-\(direction)") }
         }
         return nil
     }
@@ -277,6 +336,7 @@ final class ObserverTests: XCTestCase {
         let actionData = Data(base64Encoded: env["OBSERVER_ACTIONS_BASE64"] ?? "") ?? Data("[]".utf8)
         let actions = try JSONSerialization.jsonObject(with: actionData) as? [[String: Any]] ?? []
         stateCaptureEnabled = config["state_capture"] as? Bool ?? false
+        traceRevealImages = config["trace_reveal_images"] as? Bool ?? false
         sweepLimit = min(max(config["max_scrolls"] as? Int ?? 40, 1), 80)
         observationTargets = config["observation_targets"] as? [[String: Any]] ?? []
         for action in actions where action["type"] as? String == "tap" {
@@ -365,11 +425,28 @@ final class ObserverTests: XCTestCase {
             default: issues.append("unsupported action \(kind)")
             }
             Thread.sleep(forTimeInterval: 0.15)
-            let after = capture(action["name"] as? String ?? "action-\(i)-after")
+            let immediateAfter = capture(action["name"] as? String ?? "action-\(i)-after")
+            var after = immediateAfter
             let actionBinding = after["binding"] as? [String: Any] ?? [:]
             let actionReceipts = after["callbacks"] as? [[String: Any]] ?? []
             let delta = Array(actionReceipts.dropFirst(callbacksBefore))
             dispatch["event_end"] = actionBinding["event_revision"] ?? NSNull()
+            var postViewport: [String: Any] = ["status": "not_requested"]
+            if kind == "tap", action["observe_after"] as? Bool != false {
+                let wanted = action["after_target"] as? [String: Any] ?? selector(action)
+                let beforeOffset = frame((immediateAfter["runtime"] as? [String: Any])?["content_frame"]).minY
+                let target = revealTarget(wanted, maxSteps: action["max_steps"] as? Int ?? 24, initialDirection: "down", prefix: "action-\(i)-post", requireControl: false, centerOversized: true)
+                let afterOffset = frame(runtime()["content_frame"]).minY
+                if abs(beforeOffset - afterOffset) > 0.5 || target == nil { after = capture("action-\(i)-post-target") }
+                postViewport = ["selector": wanted, "status": target == nil ? "unavailable" : "observed", "snapshot": after["index"] ?? NSNull(),
+                                "binding_stable": key(after["binding"] as? [String: Any] ?? [:]) == key(actionBinding)]
+                if let target {
+                    let f = target.frame
+                    postViewport["frame"] = rect(f)
+                    postViewport["fully_visible"] = viewportFrame.insetBy(dx: -0.5, dy: -0.5).contains(f)
+                    postViewport["center_visible"] = viewportFrame.contains(CGPoint(x: f.midX, y: f.midY))
+                }
+            }
             if stateCaptureEnabled, let state = action["state_id"] as? String, kind != "sweep" { sweep(state) }
             let now = after["runtime"] as? [String: Any] ?? [:]
             let sameProcess = (now["pid"] as? Int == originalRuntime["pid"] as? Int) && (now["instance"] as? String == originalRuntime["instance"] as? String)
@@ -381,6 +458,7 @@ final class ObserverTests: XCTestCase {
             steps.append(["action": action, "outcome": outcome, "target": targetState, "semantic_target": targetState,
                           "activation_target": activationState, "reveal_diagnostics": Array(revealDiagnostics.dropFirst(diagnosticsBefore)),
                           "dispatch": dispatch,
+                          "post_action_viewport": postViewport, "immediate_after": immediateAfter["index"]!,
                           "before": before["index"]!, "after": after["index"]!, "callback_delta": delta, "same_process": sameProcess, "state_id": activeState, "binding_after": actionBinding])
         }
         if stateCaptureEnabled { sweep("final") }

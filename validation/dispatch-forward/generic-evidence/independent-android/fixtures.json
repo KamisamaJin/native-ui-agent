@@ -1,0 +1,61 @@
+{
+  "initial": {
+    "title": "Alpha field",
+    "token": "A",
+    "count": 6
+  },
+  "updates": [
+    {
+      "title": "Beta field",
+      "token": "B",
+      "count": 8
+    }
+  ],
+  "width": 390,
+  "viewportHeight": 600,
+  "theme": "light",
+  "fontScale": 1,
+  "dynamic_type": "large",
+  "direction": "ltr",
+  "canvas_color": "#FFFFFF",
+  "required_identifiers": [
+    "fold.title",
+    "fold.locked",
+    "fold.open",
+    "fold.finish",
+    "fold.row.5"
+  ],
+  "max_scrolls": 18,
+  "trace_reveal_images": true,
+  "actions": [
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "fold.locked"
+      },
+      "reveal": true,
+      "allow_disabled": true
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "fold.open"
+      },
+      "reveal": true,
+      "state_id": "opened",
+      "expect_callback": "open:A"
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "replaced"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "fold.finish"
+      },
+      "reveal": true,
+      "expect_callback": "finish:B"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "states": [
+    {
+      "id": "action-0",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "target"
+    },
+    {
+      "id": "opened",
+      "input_index": 0,
+      "after_action": 1
+    },
+    {
+      "id": "replaced",
+      "input_index": 1,
+      "after_action": 2
+    },
+    {
+      "id": "action-3",
+      "input_index": 1,
+      "after_action": 3,
+      "coverage": "target"
+    }
+  ],
+  "required_assertion_ids": [
+    "locked-property",
+    "locked-event-U",
+    "open-callback",
+    "replace-quiet",
+    "finish-callback",
+    "updated-title"
+  ],
+  "assertions": [
+    {
+      "id": "locked-property",
+      "state": "action-0",
+      "kind": "control",
+      "target": {
+        "identifier": "fold.locked"
+      },
+      "property": "enabled",
+      "expected": false
+    },
+    {
+      "id": "locked-event-U",
+      "state": "action-0",
+      "kind": "event",
+      "action_index": 0,
+      "expected": [],
+      "required_method": "compose_onclick"
+    },
+    {
+      "id": "open-callback",
+      "state": "opened",
+      "kind": "event",
+      "action_index": 1,
+      "expected": [
+        "open:A"
+      ],
+      "required_method": "compose_onclick"
+    },
+    {
+      "id": "replace-quiet",
+      "state": "replaced",
+      "kind": "event",
+      "action_index": 2,
+      "expected": [],
+      "required_method": "caller_fixture_update",
+      "stimulus": "caller_update"
+    },
+    {
+      "id": "finish-callback",
+      "state": "action-3",
+      "kind": "event",
+      "action_index": 3,
+      "expected": [
+        "finish:B"
+      ],
+      "required_method": "compose_onclick"
+    },
+    {
+      "id": "updated-title",
+      "state": "replaced",
+      "kind": "control",
+      "target": {
+        "identifier": "fold.title"
+      },
+      "property": "label",
+      "expected": "Beta field"
+    }
+  ]
+}

@@ -48,6 +48,30 @@ Both action formats support:
 ]
 ```
 
+After a tap, the observer keeps the immediate result and, by default, reveals the
+same target again if layout moved it outside the viewport. `after_target` can name
+another exact selector; `observe_after:false` explicitly disables that extra
+observation. No second activation occurs. Post-observation stores target geometry,
+snapshot and input/event binding; offscreen/missing/ambiguous targets or binding
+drift never become a visual pass. A fitting target is fully revealed; an oversized
+target's center is measured separately from full visibility.
+
+iOS exports hierarchy/attributes from one public XCUIElementSnapshot per capture.
+Native hit testing is queried at actual dispatch targets; other exported nodes
+have `hittable_measured:false`, not guessed hit values. A native epoch/geometry
+change across hierarchy and image makes that capture unassessed. Reveal navigation
+keeps native geometry traces; `trace_reveal_images:true` also keeps every search
+image. Full-content sweeps still retain all required overlapping images.
+
+For repeated fixtures on unchanged source, iOS `run --build-cache /absolute/cache`
+can reuse a content-addressed compiled host. The key covers source/bridge/templates,
+toolchain, SDK and compile options; artifact hashes are checked before reuse. Each
+capture gets a fresh runtime test plan, inputs, App process, callbacks and images.
+Changed code/toolchain is a miss; changed/tampered artifacts fail closed. The manifest
+separates cache validation/build, native test and export time. Android retains one
+attached ComposeView and stops only when its native capture state machine completes;
+it does not shorten content or omit planned states to meet the frame budget.
+
 Selectors are exact identifier or exact label with an optional native role. Natural
 language target selection remains the caller agent's job. Duplicate semantic
 matches or multiple native actionable descendants are unavailable, never first-match
@@ -122,7 +146,17 @@ sweeps after every simple interaction.
 Control properties include present, unique, enabled, selected, value, label,
 control_role, ax_width/ax_height. `touch_width/touch_height` use Android native touch
 bounds only; iOS AX frames do not establish physical hit regions. `event` assertions
-name the action index and exact expected callback delta. `text_layout` uses exported
+name the action index and exact expected callback delta. They default to activation
+and the platform's real route (`xcui_tap` or `compose_onclick`). Optional
+`required_method` must match the demonstrated method. The exported
+`native_checks.callback_verdict` is also the evaluator entry point: successful
+attempt, unique enabled native control, same input/process and exact event interval
+are hard preconditions. Observer-blocked/unavailable/observed intervals remain U
+even when expected callbacks are empty. A demonstrated delivery with missing/wrong
+callbacks is F. For callback quietness after caller replacement, explicitly set
+`stimulus:"caller_update"`; the native input index must demonstrably advance by one.
+Literal interval facts are retained separately and are not behavior verdicts.
+`text_layout` uses exported
 native text-layout fields such as font_sp, color_argb, lines, ellipsized or overflow;
 unsupported fields remain unassessed, not guessed from source.
 
