@@ -15,7 +15,10 @@ def main():
     def gate(path): return ast.dump(next(n for n in ast.parse(path.read_text()).body if isinstance(n,ast.FunctionDef)and n.name=='callback_verdict'),include_attributes=False)
     assert gate(R/'common-v3/scripts/native_checks.py')==gate(R/'candidate-v4/scripts/native_checks.py')
     copies=[p for folder in ['common-v3','candidate-v4','generic-sources','generic-evidence']for p in(R/folder).rglob('*')if p.is_file()and p.suffix in {'.swift','.kt','.py'}]
-    by_sha={sha(p):str(p.relative_to(R))for p in copies}
+    by_sha={}
+    for p in copies:by_sha.setdefault(sha(p),set()).add(str(p.relative_to(R)))
+    output=R/'generic-summary.json'
+    recorded={}if args.write else{row['case']:row['observer_source_copies']for row in read(output)['runs']}
     rows=[];observations={};manifests={}
     for folder in sorted((R/'generic-evidence').iterdir()):
         if not folder.is_dir():continue
@@ -25,6 +28,11 @@ def main():
         for snapshot in observation['snapshots']:assert sha(folder/snapshot['screenshot'])==manifest['image_hashes'][snapshot['screenshot']]
         relevant={name:digest for name,digest in manifest['source_hashes'].items()if name.endswith(('ObserverTests.swift','ObserverApp.swift','Bridge.swift','ObserverBridge.kt','NativeObserverTest.kt','ios_observe.py','android_observe.py'))}
         assert relevant and all(digest in by_sha for digest in relevant.values()),(folder,'missing exact compiled observer/wrapper/bridge source copy')
+        witnesses={}
+        for name,digest in relevant.items():
+            witness=min(by_sha[digest])if args.write else recorded[folder.name][name]
+            assert witness in by_sha[digest],(folder,name,'recorded source witness missing or changed')
+            witnesses[name]=witness
         states=[]
         for capture in observation.get('state_captures',[]):
             b=capture['binding'];spec={'id':capture['state_id'],'input_index':b.get('fixture_index',b.get('input_index')),'after_action':capture['after_action']}
@@ -35,7 +43,7 @@ def main():
                      'native_capture_status':manifest['status'],'command_seconds':round(manifest['finished_at']-manifest['started_at'],3),
                      'snapshots':len(observation['snapshots']),'complete_states':states,'cache_hit':manifest.get('build_cache',{}).get('hit'),
                      'timings':manifest.get('timings'),'manifest_sha256':sha(folder/'manifest.json'),
-                     'observer_source_copies':{name:by_sha[digest]for name,digest in relevant.items()}})
+                     'observer_source_copies':witnesses})
     expected=read(R/'generic/expected.json')['gate']
     for name in ['ios-common-gate','ios-candidate-first','android-common-gate','android-candidate-gate']:
         platform='ios'if name.startswith('ios')else'android'
@@ -66,7 +74,7 @@ def main():
         assert all(s['complete_recomputed']for s in item['states'])
     result={'native_tests':len(rows),'snapshots':sum(row['snapshots']for row in rows),'runs':rows,'post_action_viewport':viewport,
             'scope':'Generic probes only, including deliberate missing selectors and wrong/silent handlers. Real native source/input/PNG integrity, shared gates, interval recomputation, target viewport and fresh-input/process cache reuse. Not new business samples, a new visual grade, native SDK replay or isolated hardware performance benchmark.'}
-    output=R/'generic-summary.json';encoded=json.dumps(result,indent=2,ensure_ascii=False)+'\n'
+    encoded=json.dumps(result,indent=2,ensure_ascii=False)+'\n'
     if args.write:assert not output.exists();output.write_text(encoded)
     else:assert output.read_text()==encoded
     print(json.dumps({'status':'passed_generic_native_evidence','native_tests':result['native_tests'],'snapshots':result['snapshots']}))

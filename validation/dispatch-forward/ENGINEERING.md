@@ -91,3 +91,5 @@ iOS 优化样本多一张动作后证据图。运行期间存在共享硬件、G
 SHA-256 恢复完全相同的旧字节，并保留 [恢复记录](harness-failures/conventions-report-recovery.json)。
 
 发布前的干净归档审计另保留两次执行环境失败：[记录与日志](harness-failures/clean-checkout-administration.json)。首次选用的工具虚拟环境缺少 Pillow，安装已声明依赖后 65 个测试通过；第二次 macOS BSD tar 把 Git 中的 `._` 原文件名当作 AppleDouble 元数据，导致封存文件缺失。改用 Python tarfile 按字面解包，不修改或删除封存 sidecar、源码或评分。标准 Git 检出和 Linux CI 不依赖此 macOS 解包行为。这些发布审计问题不计为业务缺陷或 v4 收益。
+
+首次 Linux CI 的通用审计还暴露了同哈希源码副本的路径选择依赖目录顺序：[原始失败](harness-failures/linux-ci-source-witness.log)、[原因和修复](harness-failures/linux-source-witness-order.json)。审计器现保存同哈希的全部路径，逐项验证历史报告原来引用的路径仍存在且字节完全匹配；新生成报告才使用确定性排序。原通用报告与全部冻结文件不变，反向遍历也复算得到相同原字节。这是跨平台审计修正，不是业务或 v4 观测收益。

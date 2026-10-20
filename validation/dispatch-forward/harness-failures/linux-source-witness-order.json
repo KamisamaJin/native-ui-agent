@@ -1,0 +1,14 @@
+{
+  "recordedAtUTC": "2026-10-20T03:47:10.094494+00:00",
+  "failedRun": "https://github.com/KamisamaJin/native-ui-agent/actions/runs/39365700827",
+  "failedHead": "1e5310c6ff7bde82933f662922f464e2befd7035",
+  "step": "python -B validation/dispatch-forward/verify_generic.py",
+  "cause": "SHA-to-single-path dict selected the last identical source copy in filesystem traversal order; Linux and macOS chose different equally byte-identical paths, so generic-summary exact text comparison failed.",
+  "fix": "Keep SHA-to-set-of-paths registry, verify immutable historical source witness is present with exact required SHA, and retain that original path when recomputing the summary. Fresh --write uses deterministic sorted path.",
+  "validation": [
+    "Native/unit and old audits already passed on Linux before this failure.",
+    "Normal generic audit retains historical summary bytes.",
+    "Actual source registry traversal reversed: exact historical summary reproduced."
+  ],
+  "scope": "Post-release auditor portability fix only. No frozen observer/tool/gate/design/expected/summary/grade or native evidence changes; no new business score."
+}
