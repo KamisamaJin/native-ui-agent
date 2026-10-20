@@ -7,13 +7,17 @@ spec=importlib.util.spec_from_file_location('native_encoding_v2',R/'design/priva
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def read(p):return json.loads(p.read_text())
 def check(source_capsule,corpus,platform):
- seal=read(source_capsule/'seal.json');runs=[]
+ seal=read(source_capsule/'seal.json');runs=[];tool=read(corpus/'started.json')['tool'];assert tool in {'common-v3','candidate-v4'}
  for command in sorted(corpus.glob('*-command.json')):
   c=read(command);d=corpus/c['case'];manifest=d/'manifest.json'
   if not manifest.is_file():
    assert c['exitCode']!=0,'Successful wrapper without native manifest'
    runs.append({'case':c['case'],'exitCode':c['exitCode'],'manifest':False});continue
   m=read(manifest);native=m.get('source_hashes',{})
+  names=['ObserverTests.swift','ObserverApp.swift','ios_observe.py']if platform=='ios'else['NativeObserverTest.kt','android_observe.py']
+  for name in names:
+   files=[f for f in(R/tool).rglob(name)if f.is_file()];assert len(files)==1
+   assert [h for path,h in native.items()if path.endswith('/'+name)]==[sha(files[0])],('Captured collector differs from frozen tool',command,name)
   for rel,h in seal['files'].items():
    assert sha(source_capsule/'source'/rel)==h
    prefix='alerttoast/' if platform=='ios' else 'reply/Reply/'
