@@ -1,0 +1,363 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Frozen atomic report with v3 administrative geometry calibration",
+  "type": "object",
+  "required": [
+    "version",
+    "anonymous_id",
+    "phase",
+    "design_commitment",
+    "normalized_plan_sha256",
+    "manifest_sha256",
+    "rows",
+    "counts",
+    "platform_counts",
+    "business_scopes",
+    "claim",
+    "evaluator_adapter",
+    "input_encoding_provenance"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "anonymous_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "phase": {
+      "enum": [
+        "d0",
+        "final"
+      ]
+    },
+    "design_commitment": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "normalized_plan_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/row"
+      }
+    },
+    "counts": {
+      "$ref": "#/$defs/counts"
+    },
+    "platform_counts": {
+      "type": "object",
+      "required": [
+        "ios",
+        "android"
+      ],
+      "properties": {
+        "ios": {
+          "$ref": "#/$defs/counts"
+        },
+        "android": {
+          "$ref": "#/$defs/counts"
+        }
+      },
+      "additionalProperties": false
+    },
+    "business_scopes": {
+      "type": "object",
+      "required": [
+        "primary_post_stimulus",
+        "initial_native_descriptive"
+      ],
+      "properties": {
+        "primary_post_stimulus": {
+          "type": "object",
+          "required": [
+            "required",
+            "stimulus_established",
+            "P",
+            "F",
+            "U"
+          ],
+          "properties": {
+            "required": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "stimulus_established": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "P": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "F": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "U": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "initial_native_descriptive": {
+          "type": "object",
+          "required": [
+            "P",
+            "F",
+            "U"
+          ],
+          "properties": {
+            "P": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "F": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "U": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "claim": {
+      "type": "string"
+    },
+    "evaluator_adapter": {
+      "const": "v3"
+    },
+    "input_encoding_provenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "platform",
+          "case",
+          "checkpoint",
+          "producer",
+          "profile_sha256",
+          "native_probe_output_sha256",
+          "current_model_sha256",
+          "fixture_file_sha256",
+          "fixture_artifact",
+          "model_pointer"
+        ]
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "bucket": {
+      "type": "object",
+      "required": [
+        "required",
+        "P",
+        "F",
+        "U"
+      ],
+      "properties": {
+        "required": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "P": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "F": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "U": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "runtime_business",
+        "runtime_visual",
+        "runtime_integration",
+        "runtime_capability",
+        "input_member_integration",
+        "source_api"
+      ],
+      "properties": {
+        "runtime_business": {
+          "$ref": "#/$defs/bucket"
+        },
+        "runtime_visual": {
+          "$ref": "#/$defs/bucket"
+        },
+        "runtime_integration": {
+          "$ref": "#/$defs/bucket"
+        },
+        "runtime_capability": {
+          "$ref": "#/$defs/bucket"
+        },
+        "input_member_integration": {
+          "$ref": "#/$defs/bucket"
+        },
+        "source_api": {
+          "$ref": "#/$defs/bucket"
+        }
+      },
+      "additionalProperties": false
+    },
+    "row": {
+      "type": "object",
+      "required": [
+        "key",
+        "platform",
+        "case",
+        "checkpoint",
+        "category",
+        "denominator",
+        "method",
+        "outcome",
+        "expected_sha256",
+        "actual",
+        "reason",
+        "evidence",
+        "stimulus_gate"
+      ],
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "platform": {
+          "enum": [
+            "ios",
+            "android"
+          ]
+        },
+        "case": {
+          "type": "string"
+        },
+        "checkpoint": {
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "business",
+            "visual",
+            "integration",
+            "source_api",
+            "capability"
+          ]
+        },
+        "denominator": {
+          "enum": [
+            "runtime_business",
+            "runtime_visual",
+            "runtime_integration",
+            "runtime_capability",
+            "input_member_integration",
+            "source_api"
+          ]
+        },
+        "method": {
+          "enum": [
+            "callback",
+            "native_control",
+            "native_text",
+            "native_bounds",
+            "native_typography",
+            "pixels",
+            "visual",
+            "source_api"
+          ]
+        },
+        "outcome": {
+          "enum": [
+            "P",
+            "F",
+            "U"
+          ]
+        },
+        "expected_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "actual": {},
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": "string"
+              },
+              "pointer": {
+                "type": "string"
+              },
+              "line_start": {
+                "type": "integer"
+              },
+              "line_end": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "stimulus_gate": {
+          "type": "object",
+          "required": [
+            "required",
+            "established"
+          ],
+          "properties": {
+            "required": {
+              "type": "boolean"
+            },
+            "established": {
+              "type": "boolean"
+            },
+            "requested_target_established": {
+              "type": "boolean"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "verdict": {
+              "type": "object"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

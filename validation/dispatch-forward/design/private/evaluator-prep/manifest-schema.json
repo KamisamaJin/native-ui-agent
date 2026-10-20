@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Anonymous frozen evaluator input capsule",
+  "type":"object",
+  "required":["version","phase","anonymous_id","observations"],
+  "properties":{
+    "version":{"const":1},
+    "phase":{"enum":["d0","final"]},
+    "anonymous_id":{"type":"string","minLength":1},
+    "observations":{"type":"array","items":{"$ref":"#/$defs/observation"}},
+    "source_files":{"type":"array","items":{"$ref":"#/$defs/artifact"}},
+    "visual_review":{"$ref":"#/$defs/artifact"},
+    "source_review":{"$ref":"#/$defs/artifact"}
+  },
+  "additionalProperties":false,
+  "$defs":{
+    "artifact":{"type":"object","required":["path","sha256"],"properties":{"path":{"type":"string","minLength":1},"sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},"pointer":{"type":"string","pattern":"^(/.*)?$"}},"additionalProperties":false},
+    "observation":{"type":"object","required":["platform","case","observation","mapping","fixture","model_pointers"],"properties":{"platform":{"enum":["ios","android"]},"case":{"enum":["C01","C02","C03","C04","H01","H02"]},"observation":{"$ref":"#/$defs/artifact"},"mapping":{"$ref":"#/$defs/artifact"},"fixture":{"$ref":"#/$defs/artifact"},"model_pointers":{"type":"object","required":["initial","replacement"],"properties":{"initial":{"type":"string"},"replacement":{"type":"string"}},"additionalProperties":false}},"additionalProperties":false}
+  }
+}

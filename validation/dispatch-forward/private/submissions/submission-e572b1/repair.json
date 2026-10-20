@@ -1,0 +1,163 @@
+{
+  "submission": "submission-e572b1",
+  "stage": "repair",
+  "assigned_tool": "common-v3",
+  "start_utc": "2026-10-20 01:52:07 UTC",
+  "end_utc": "2026-10-20 01:55:07 UTC",
+  "sealed_review": {
+    "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-e572b1/review.json",
+    "sha256": "a172b0a8006c0cc1b45aff799593af1e7c48097988422aadcfc3f146ff200edb"
+  },
+  "review_seal": {
+    "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-e572b1/review-seal.json",
+    "sha256": "23ed67e5868b12fc1b77199001393a9b22a98a62ed03fe79150e5e554877b93f"
+  },
+  "repairs": [
+    {
+      "id": "P001",
+      "cited_own_findings": [
+        "R001",
+        "R002",
+        "R003",
+        "R004",
+        "R005",
+        "R006",
+        "R007",
+        "R008",
+        "R009"
+      ],
+      "file": "alerttoast/Sources/AlertToast/WaterRound.swift",
+      "change": "Replace PlainButtonStyle with a private ButtonStyle that returns the explicitly styled label, on methods and release.",
+      "rationale": "D0 native pixels showed disabled surfaces, borders and text dimmed from the required palette. The private style preserves native Button disabled semantics and the existing eligibility guards while preventing style-added fading.",
+      "verification": "Final source type checks on iOS14 and macOS11; package compilation succeeded. No repaired native pixels captured."
+    },
+    {
+      "id": "P002",
+      "cited_own_findings": [
+        "R010",
+        "R011",
+        "R012"
+      ],
+      "file": "reply/Reply/app/src/main/java/com/example/reply/ui/waterround/WaterRound.kt",
+      "change": "Set Ltr paragraph direction on fixed English method-rate and summary text styles; summary labels and values align to the current native leading edge.",
+      "rationale": "D0 C02 native screenshots showed L per bed 14, L 70 and :Required. The text-run direction changes while parent RTL layout and caller Unicode fields retain their original behavior.",
+      "verification": "Final Android Kotlin compilation succeeded. No repaired native glyph order captured."
+    },
+    {
+      "id": "P003",
+      "cited_own_findings": [],
+      "cited_compilation_failure": "CF001",
+      "public_requirement": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/design/public/api.md — Swift API must compile for iOS14 and macOS11",
+      "file": "alerttoast/Sources/AlertToast/WaterRound.swift",
+      "change": "Apply monospacedDigit() to Font instead of Text in both numeric summary arrangements.",
+      "rationale": "An authorized explicit iOS14 compilation check rejected Text.monospacedDigit() as iOS15-only. The equivalent Font API compiles at both required minimum versions. This is a compatibility adjustment discovered during repair validation, not a retroactive sealed-review finding or a business behavior change.",
+      "verification": "Final iOS14 simulator and macOS11 type checks and final package build succeeded."
+    }
+  ],
+  "changed_files": [
+    {
+      "path": "alerttoast/Sources/AlertToast/WaterRound.swift",
+      "d0_sha256": "a8f5b7bc1a12a54a21b5dfcc5589078aa81f165bafccbf01622c86cc940f1915",
+      "final_sha256": "317f942dea727bfadc2c383930c9d6c4b0679e5b2d4b56f419b885cb0bfea770"
+    },
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/waterround/WaterRound.kt",
+      "d0_sha256": "e9fba55c975a2e31c195be8402f2c36a2fac26626720196298463bf4df00f9a3",
+      "final_sha256": "c16f29bc2ec83db4d9587295e8189e82d50d06b6237020caf5c46977a9353178"
+    }
+  ],
+  "compilation_attempts": [
+    {
+      "id": "MC01",
+      "platform": "macos",
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swift build --target AlertToast",
+      "source_state": "After visual repair, before P003",
+      "exit_code": 0,
+      "log": {
+        "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-e572b1/repair-macos-compile.log",
+        "sha256": "eae0fa42b46fd19c175d1c2dea0d3ecc8142fadebe089e6c5681877f3baccf25"
+      }
+    },
+    {
+      "id": "CF001",
+      "platform": "ios",
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun --sdk iphonesimulator swiftc -typecheck -target arm64-apple-ios14.0-simulator -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/cache/unit-59af93/alerttoast/Sources/AlertToast/WaterRound.swift",
+      "source_state": "After visual repair, before P003",
+      "exit_code": 1,
+      "log": {
+        "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-e572b1/repair-ios-typecheck.log",
+        "sha256": "a53d96d6ab7eef1cb279520909fa82d33ddc59feb452c2e914713196347a2d71"
+      },
+      "failure": "Text.monospacedDigit() requires iOS15; public minimum is iOS14."
+    },
+    {
+      "id": "AC01",
+      "platform": "android",
+      "command": "JAVA_HOME=/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home ANDROID_HOME=/Users/rex/Library/Android/sdk ./gradlew :app:compileDebugKotlin --console=plain --max-workers=2",
+      "source_state": "Final Android source",
+      "exit_code": 0,
+      "log": {
+        "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-e572b1/repair-android-compile.log",
+        "sha256": "ffd6196440e36bbc3a016241dc71a8164af0fc58565835294f88921fa9c1d7dd"
+      }
+    },
+    {
+      "id": "IC02",
+      "platform": "ios",
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun --sdk iphonesimulator swiftc -typecheck -target arm64-apple-ios14.0-simulator -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/cache/unit-59af93/alerttoast/Sources/AlertToast/WaterRound.swift",
+      "source_state": "Final Swift source",
+      "exit_code": 0,
+      "log": {
+        "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-e572b1/repair-ios-typecheck-2.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "MC02",
+      "platform": "macos",
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun --sdk macosx swiftc -typecheck -target arm64-apple-macosx11.0 -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/cache/unit-59af93/alerttoast/Sources/AlertToast/WaterRound.swift",
+      "source_state": "Final Swift source",
+      "exit_code": 0,
+      "log": {
+        "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-e572b1/repair-macos11-typecheck.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "MC03",
+      "platform": "macos",
+      "command": "DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcrun swift build --target AlertToast",
+      "source_state": "Final Swift source",
+      "exit_code": 0,
+      "log": {
+        "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-e572b1/repair-macos-compile-final.log",
+        "sha256": "47126abcd6ac39e18982ecd59ce058c4b7fbfef35a727222be57f3d68a100be3"
+      }
+    }
+  ],
+  "not_repaired": [
+    {
+      "finding": "U001",
+      "reason": "hasVisualOverflow did not establish actual clipping; no supported source repair identified."
+    }
+  ],
+  "unverified_aspects": [
+    "No native captures launched during repair. Final rendered colors, RTL glyph order/alignment, callbacks and native control states await operator collection.",
+    "D0 observations and PNGs establish D0 behavior only, not final source results.",
+    "Unavailable runtime typography, exact internal padding and iOS physical hit regions remain U; source declarations and compilation do not replace runtime measurements.",
+    "No hidden cases, other submission evidence, OS-level interaction or macOS runtime was inspected or executed."
+  ],
+  "scope_attestation": "Only the two allowed production source files changed. Common bridge, host, tests, tool, public API signatures and watering business calculations unchanged. Generated SwiftPM Package.resolved removed after compilation.",
+  "native_capture_count_during_repair": 0,
+  "source_edits_complete": true,
+  "summary": {
+    "repair_records": 3,
+    "sealed_atomic_findings_addressed_in_source": 12,
+    "related_visual_root_cause_clusters": 2,
+    "additional_compile_compatibility_adjustments": 1,
+    "production_files_changed": 2,
+    "compilation_successes": 5,
+    "compilation_failures": 1,
+    "final_runtime_pass_claim": false
+  }
+}

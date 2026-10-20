@@ -1,0 +1,11 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "type":"object","required":["version","anonymous_id","d0_report","final_report","original_review","observed_problem_matches"],
+  "properties":{
+    "version":{"const":1},"anonymous_id":{"type":"string"},
+    "d0_report":{"$ref":"#/$defs/ref"},"final_report":{"$ref":"#/$defs/ref"},"original_review":{"$ref":"#/$defs/ref"},
+    "observed_problem_matches":{"type":"array","items":{"type":"object","required":["claim_id","row_key","quote","reason","review_citation"],"properties":{"claim_id":{"type":"string"},"row_key":{"type":"string"},"quote":{"type":"string","minLength":1},"reason":{"type":"string","minLength":1},"review_citation":{"type":"object","required":["artifact","range_type","start","end"],"properties":{"artifact":{"$ref":"#/$defs/ref"},"range_type":{"enum":["utf8_bytes","lines"]},"start":{"type":"integer","minimum":0},"end":{"type":"integer","minimum":1}},"additionalProperties":false}},"additionalProperties":false}}
+  },
+  "additionalProperties":false,
+  "$defs":{"ref":{"type":"object","required":["path","sha256"],"properties":{"path":{"type":"string"},"sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"}},"additionalProperties":false}}
+}

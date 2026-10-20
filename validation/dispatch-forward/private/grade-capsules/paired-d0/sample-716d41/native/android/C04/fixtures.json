@@ -1,0 +1,160 @@
+{
+  "initial": {
+    "roundId": "round_reed",
+    "title": "Reed beds \u2014 steward pause",
+    "description": "The steward has paused this round while the garden gate is being cleared.",
+    "notice": "",
+    "bedCount": 4,
+    "dripLitresPerBed": 9,
+    "soakLitresPerBed": 11,
+    "dripPrimeLitres": 2,
+    "tankLitres": 70,
+    "reserveLitres": 10,
+    "soakAllowed": true,
+    "selectedMethod": "drip",
+    "reserveAcknowledged": false,
+    "isEnabled": false,
+    "isSubmitting": false
+  },
+  "updates": [
+    {
+      "roundId": "round_reed_confirmed",
+      "title": "Reed beds \u2014 release preparation",
+      "description": "The caller is preparing the confirmed round. Wait for a new model before another request.",
+      "notice": "",
+      "bedCount": 4,
+      "dripLitresPerBed": 9,
+      "soakLitresPerBed": 11,
+      "dripPrimeLitres": 2,
+      "tankLitres": 70,
+      "reserveLitres": 10,
+      "soakAllowed": true,
+      "selectedMethod": "soak",
+      "reserveAcknowledged": false,
+      "isEnabled": true,
+      "isSubmitting": true
+    }
+  ],
+  "width": 390,
+  "theme": "dark",
+  "direction": "ltr",
+  "dynamic_type": "large",
+  "fontScale": 1,
+  "state_capture": false,
+  "max_scrolls": 24,
+  "observation_targets": [
+    {
+      "identifier": "waterRound.root"
+    },
+    {
+      "identifier": "waterRound.title"
+    },
+    {
+      "identifier": "waterRound.description"
+    },
+    {
+      "identifier": "waterRound.notice"
+    },
+    {
+      "identifier": "waterRound.beds"
+    },
+    {
+      "identifier": "waterRound.tank"
+    },
+    {
+      "identifier": "waterRound.reserve"
+    },
+    {
+      "identifier": "waterRound.dripPrime"
+    },
+    {
+      "identifier": "waterRound.method.drip"
+    },
+    {
+      "identifier": "waterRound.method.soak"
+    },
+    {
+      "identifier": "waterRound.required"
+    },
+    {
+      "identifier": "waterRound.spendable"
+    },
+    {
+      "identifier": "waterRound.reserveNeeded"
+    },
+    {
+      "identifier": "waterRound.remaining"
+    },
+    {
+      "identifier": "waterRound.shortfall"
+    },
+    {
+      "identifier": "waterRound.reserveConsent"
+    },
+    {
+      "identifier": "waterRound.status"
+    },
+    {
+      "identifier": "waterRound.submit"
+    },
+    {
+      "identifier": "waterRound.progress"
+    }
+  ],
+  "actions": [
+    {
+      "type": "sweep",
+      "state_id": "cp-initial.full",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "waterRound.method.soak"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 24,
+      "state_id": "cp-a01"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "waterRound.submit"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 24,
+      "state_id": "cp-a02"
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "cp-a03.trigger"
+    },
+    {
+      "type": "sweep",
+      "state_id": "cp-a03.full",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "waterRound.method.drip"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 24,
+      "state_id": "cp-a04"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "waterRound.submit"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 24,
+      "state_id": "cp-a05"
+    }
+  ]
+}

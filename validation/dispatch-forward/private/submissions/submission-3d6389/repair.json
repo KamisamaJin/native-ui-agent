@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "submission": "submission-3d6389",
+  "tool": "candidate-v4",
+  "phase": "repair",
+  "started_at": "2026-10-20T01:25:17Z",
+  "finished_at": "2026-10-20T01:26:38Z",
+  "review_reference": {
+    "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-3d6389/review.json",
+    "sha256": "475bd55c787a661fd28f39415bda12869a7aeea61849feb1085720509f945941"
+  },
+  "review_seal_reference": {
+    "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-3d6389/review-seal.json",
+    "sha256": "dc7e0580b754999a7dcffa1ad4918b021ae33ca7d2d30fa9d25a20b7f21e1188"
+  },
+  "repairs": [
+    {
+      "id": "repair-ios-disabled-palette",
+      "finding_ids": [
+        "WR4-01",
+        "WR4-02",
+        "WR4-03",
+        "WR4-04"
+      ],
+      "file": "alerttoast/Sources/AlertToast/WaterRound.swift",
+      "change": "Added a private ButtonStyle returning the supplied label without a disabled fade, and applied it to release and method buttons.",
+      "rationale": "D0 native pixels demonstrate a second disabled fade on explicitly assigned surface and foreground tokens. The view already chooses the complete palette; the custom style keeps those values while retaining Button disabled semantics.",
+      "verification": "Swift type checks succeeded for iOS 14 simulator and macOS 11 targets. Rendered colors and disabled runtime control facts require final native evidence."
+    },
+    {
+      "id": "repair-android-rtl-rate",
+      "finding_ids": [
+        "WR4-05"
+      ],
+      "file": "reply/Reply/app/src/main/java/com/example/reply/ui/waterround/WaterRound.kt",
+      "change": "Set ContentOrLtr text direction on the fixed English method-rate TextStyle.",
+      "rationale": "The D0 RTL screenshot draws the number after the English words. An explicit content/LTR paragraph base preserves English rate order while the existing row and column layout still mirror with native layout direction.",
+      "verification": "Android production Kotlin compilation succeeded. Final RTL rendering is unverified in this stage."
+    },
+    {
+      "id": "repair-android-consent-label",
+      "finding_ids": [
+        "WR4-06",
+        "WR4-07"
+      ],
+      "file": "reply/Reply/app/src/main/java/com/example/reply/ui/waterround/WaterRound.kt",
+      "change": "Replaced the checkmark Text with a non-text Canvas drawing and supplied the exact consent contentDescription on the checkable row.",
+      "rationale": "Two D0 native checked-consent observations include the decorative checkmark as label text. Removing that native Text leaf and naming the control directly preserves the public label independently of decoration.",
+      "verification": "Android production Kotlin compilation succeeded. Final native checked label and action behavior require final observation."
+    }
+  ],
+  "changed_files": [
+    {
+      "path": "alerttoast/Sources/AlertToast/WaterRound.swift",
+      "sha256": "b0ca18c548d1082d151ec06125ea1fcbc48d8cb0f660530397282c0d35135a59"
+    },
+    {
+      "path": "reply/Reply/app/src/main/java/com/example/reply/ui/waterround/WaterRound.kt",
+      "sha256": "3ce4567ae07c2005c68cfc59ebcf895b9011114200bb6e2bd8eb174218883849"
+    }
+  ],
+  "public_api_unchanged": true,
+  "compilation_attempts": [
+    {
+      "platform": "ios",
+      "attempt": 1,
+      "kind": "production source type check",
+      "target": "arm64-apple-ios14.0-simulator",
+      "sdk": "iphonesimulator",
+      "exit_code": 0,
+      "log": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-3d6389/repair-ios14-typecheck.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "platform": "macos",
+      "attempt": 1,
+      "kind": "production source type check",
+      "target": "arm64-apple-macosx11.0",
+      "sdk": "macosx",
+      "exit_code": 0,
+      "log": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-3d6389/repair-macos11-typecheck.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "platform": "android",
+      "attempt": 1,
+      "kind": "production Kotlin compilation",
+      "command": "./gradlew :app:compileDebugKotlin --offline",
+      "exit_code": 0,
+      "log": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/dispatch-forward/private/submissions/submission-3d6389/repair-android-compile.log",
+      "log_sha256": "a31a4a35fe8740b48d5f8641e98ecdb2472c4d7bd74b01a15939588192c589e7"
+    }
+  ],
+  "compilation_failures": 0,
+  "native_captures": 0,
+  "source_edits_stopped": true,
+  "unverified_aspects": [
+    "Final native images, native label/state observations and callback behavior have not been collected after these edits.",
+    "D0 images and typed results describe D0 only and are not a pass for final source.",
+    "iOS runtime typography, exact internal padding and physical hit regions remain unavailable from D0 observations.",
+    "Android exact internal padding and mixed summary-span font feature measurements remain unavailable.",
+    "Final native collection, including unseen cases, is left to the operator after both final source seals."
+  ]
+}

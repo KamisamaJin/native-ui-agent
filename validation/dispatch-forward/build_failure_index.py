@@ -22,6 +22,7 @@ def compute():
  scores={}
  for phase in ['d0','final','paired-d0']:
   for folder in sorted((R/'design/private/evaluation'/phase).iterdir()):
+   if not folder.is_dir() or not folder.name.startswith('sample-'):continue
    report=folder/('paired-grade.json'if phase=='paired-d0'else'grade.json');d=read(report);rows=d['rows'];scores[phase+'/'+folder.name]={'artifact':str(report.relative_to(R)),'sha256':sha(report),'failedKeys':[x['key']for x in rows if x['outcome']=='F'],'unassessedKeys':[x['key']for x in rows if x['outcome']=='U'],'unassessedReasons':[{'denominator':bucket,'reason':reason,'rows':n}for(bucket,reason),n in sorted(collections.Counter((x['denominator'],x['reason'])for x in rows if x['outcome']=='U').items())]}
  return {'version':1,'scope':'Command exit failures, compilation failures and independent score F/U are separate. A failed/blocked observation never automatically becomes a product/business defect. All original successful superseded Android attempts remain included.','acquisitionCommands':commands,'nonzeroAcquisitionCommands':[x for x in commands if x['exitCode']!=0],'intentionalGenericNativeFailures':generic,'repairCompilationFailures':compiles,'independentGrades':scores,'administrativeRecords':[str(p.relative_to(R))for p in sorted((R/'harness-failures').iterdir())if p.is_file()]}
 def render(d):

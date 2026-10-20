@@ -1,0 +1,13 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "type":"object","required":["version","phase","anonymous_id","anchor_report","paired_report","source_commitments","source_seals","acquisition_records"],
+  "properties":{
+    "version":{"const":1},"phase":{"const":"d0"},"anonymous_id":{"type":"string"},
+    "anchor_report":{"$ref":"#/$defs/ref"},"paired_report":{"$ref":"#/$defs/ref"},
+    "source_commitments":{"type":"array","minItems":2,"maxItems":2,"items":{"type":"string","pattern":"^[0-9a-f]{64}$"}},
+    "source_seals":{"type":"array","minItems":2,"maxItems":2,"items":{"$ref":"#/$defs/ref"}},
+    "acquisition_records":{"type":"array","minItems":2,"maxItems":2,"items":{"$ref":"#/$defs/ref"}}
+  },
+  "additionalProperties":false,
+  "$defs":{"ref":{"type":"object","required":["path","sha256"],"properties":{"path":{"type":"string"},"sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"}},"additionalProperties":false}}
+}

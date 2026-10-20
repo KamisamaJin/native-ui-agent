@@ -13,6 +13,7 @@ def render():
  for name,path in [('业务漏检（成功原生派发后）',('primaryBusiness','missRate')),('确认发现误报占比（运行时原子行）',('runtimeDescriptive','falseDiscoveryShare')),('全部运行时漏检（描述性）',('runtimeDescriptive','missRate')),('首版运行时失败→最终通过',('runtimeRepair','successRate')),('首版业务失败→最终通过',('primaryBusinessRepair','successRate'))]:rows.append([name,*[pct(a[path[0]][path[1]])for a in arms]])
  rows += [['D0 运行时未评估',*[pct(a['d0']['runtime_total']['unassessedFraction'])for a in arms]],['最终运行时未评估（六场景）',*[pct(a['final']['runtime_total']['unassessedFraction'])for a in arms]],['连续实现开始→自身最终语料封存',*[duration(x['continuousWallSeconds'])for x in costs]],['必需阶段墙钟之和',*[duration(x['sequentialSegmentSumSeconds'])for x in costs]],['队列、屏障和未分配间隔',*[duration(x['barrierQueueAndUnallocatedGapSeconds'])for x in costs]]]
  text='# 指标与成本\n\n'+table(['双端合计',*labels],rows)+'\n\n两组均使用 Skill。原子行重复症状不等于独立缺陷数量；未裁定/未映射发现单列，不自动算误报。没有完整 TN 宇宙，因此不报告经典 FP/(FP+TN)。零自然业务反例分母为 N/A。\n'
+ text+='\n冻结 F 行不等于独立产品缺陷数：两组最终 Android 各有两行 `47.99994 dp < 48 dp` 的数值边界失败；candidate-v4 的八个首版业务 F 是同一个装饰勾号合并进 AX 名称的契约问题。原始分数保留，解释与预览排查更正见 [RESULTS.md](RESULTS.md)。\n'
  text+='\n## 各平台与分母\n\n'
  for sid,label in zip(ids,labels):
   text+='### '+label+'\n\n'
