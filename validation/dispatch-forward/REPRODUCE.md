@@ -13,6 +13,7 @@ python -m pip install -r native-ui-agent/scripts/requirements.txt
 python -B -m unittest discover -s native-ui-agent/tests -v
 python -B validation/dispatch-forward/verify_generic.py
 python -B validation/dispatch-forward/run_evaluator_controls.py
+python -B validation/dispatch-forward/run_png_cache_controls.py
 python -B validation/dispatch-forward/verify_trial.py
 python -B validation/dispatch-forward/verify_blind_stages.py
 python -B validation/dispatch-forward/verify_evaluation.py
@@ -30,6 +31,13 @@ phase order and published arithmetic. They do **not** rerender native UI or turn
 manual image judgment into a deterministic universal style inspector. The
 timestamped original synthetic-control reports are restored byte for byte after
 each fresh control replay.
+
+Full grading replay installs the sealed, bounded cache of the exact frozen PNG
+decoder. Keys use full original-byte SHA-256 and changed files are rejected; no
+matcher, gate, tolerance or measurement changes. Six generic equivalence/stale-byte/
+bound controls replay separately. The ordinary frozen grader CLI also remains
+valid without the cache, with substantially repeated decoding work. This is common
+evaluation infrastructure, separate from either native collector's measured cost.
 
 `original-v3/`, `common-v3/`, and `candidate-v4/` are immutable tool copies. The
 published `native-ui-agent/` files equal the candidate freeze. Design, evaluator
