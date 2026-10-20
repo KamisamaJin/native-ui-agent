@@ -22,7 +22,7 @@ def native_records(corpus):
    rows.append({'platform':platform,'case':c['case'],'startUnix':c['startedAtUnix'],'endUnix':c['finishedAtUnix'],'wallSeconds':c['wallSeconds'],'exitCode':c['exitCode'],'nativeTests':m.get('native_test_count'),'nativeIntervalSeconds':native,'producerTimings':m.get('timings'),'collectorBuildCacheHit':m.get('build_cache',{}).get('hit'),'commandArtifact':str(p.relative_to(R)),'commandArtifactSHA256':sha(p),'nativeManifestSHA256':sha(case/'manifest.json') if m else None})
  return rows
 def collection(corpora,seal):
- rows=[row for c in corpora for row in native_records(c)];assert rows;start=min(r['startUnix'] for r in rows);end=max(r['endUnix'] for r in rows);s=read(seal)
+ rows=[row for c in corpora for row in native_records(c)];assert rows;start=min(r['startUnix'] for r in rows);end=max(r['endUnix'] for r in rows);s=read(seal);end=max(d['producerFinishedAtUnix'] for d in s['datasets'].values())
  return {'startUnix':start,'producerEndUnix':end,'sealUnix':s['sealedAtUnix'],'acquisitionWallSeconds':end-start,'archiveWallSeconds':s['archiveWallSeconds'],'producerEndToSealSeconds':s['sealedAtUnix']-end,'commandSumSeconds':sum(r['wallSeconds'] for r in rows),'commands':rows,'sealArtifact':str(seal.relative_to(R)),'sealArtifactSHA256':sha(seal)}
 def compute():
  mapping=read(R/'private/assignment.json')['arms'];arms={}
