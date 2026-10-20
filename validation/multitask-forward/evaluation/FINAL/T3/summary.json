@@ -1,0 +1,583 @@
+{
+  "schema_version": 1,
+  "stage": "FINAL",
+  "task": "T3",
+  "scope": "Symmetric anonymous P1/P2/H1 iOS/Android acceptance review; immutable original grader, complete792-cell denominator per source. No evaluator native SDK commands, repairs or assignment access.",
+  "sources": {
+    "source-a": {
+      "counts": {
+        "P": 274,
+        "F": 0,
+        "U": 420,
+        "N/A": 98
+      },
+      "counts_by_case_platform": {
+        "P1/ios": {
+          "P": 91,
+          "F": 0,
+          "U": 24,
+          "N/A": 17
+        },
+        "P1/android": {
+          "P": 0,
+          "F": 0,
+          "U": 115,
+          "N/A": 17
+        },
+        "P2/ios": {
+          "P": 90,
+          "F": 0,
+          "U": 25,
+          "N/A": 17
+        },
+        "P2/android": {
+          "P": 0,
+          "F": 0,
+          "U": 115,
+          "N/A": 17
+        },
+        "H1/ios": {
+          "P": 93,
+          "F": 0,
+          "U": 24,
+          "N/A": 15
+        },
+        "H1/android": {
+          "P": 0,
+          "F": 0,
+          "U": 117,
+          "N/A": 15
+        }
+      },
+      "denominator": 792,
+      "defect_clusters": [],
+      "product_failure_row_ids": [],
+      "non_product_f_rows": [],
+      "uncertain_f_rows": [],
+      "unsupported_scope": [
+        {
+          "scope": "All347 applicable Android cells across P1/P2/H1",
+          "reason": "Immutable native-environment check rejects recorded direction Ltr against expected ltr; font scale/night mode otherwise match. Preserve U without shared correction; representation mismatch is not proof of an RTL product bug.",
+          "evidence": [
+            {
+              "case": "P1",
+              "input_check": {
+                "id": "native-environment",
+                "status": "F",
+                "expected": {
+                  "font_scale": 1.0,
+                  "night_mode_mask": 16,
+                  "direction": "ltr"
+                },
+                "actual": {
+                  "font_scale": 1.0,
+                  "night_mode_mask": 16,
+                  "direction": "Ltr"
+                },
+                "reason": "Actual native caller environment; absence remains U.",
+                "evidence": []
+              },
+              "evidence": [
+                {
+                  "path": "common-corpora/T3/source-a/final/android/P1/observation.json",
+                  "sha256": "fae23982de7c26d7d35403232dca0c1771775421007dfaf27aab4b7e172f8437"
+                }
+              ]
+            },
+            {
+              "case": "P2",
+              "input_check": {
+                "id": "native-environment",
+                "status": "F",
+                "expected": {
+                  "font_scale": 1.6,
+                  "night_mode_mask": 32,
+                  "direction": "ltr"
+                },
+                "actual": {
+                  "font_scale": 1.6,
+                  "night_mode_mask": 32,
+                  "direction": "Ltr"
+                },
+                "reason": "Actual native caller environment; absence remains U.",
+                "evidence": []
+              },
+              "evidence": [
+                {
+                  "path": "common-corpora/T3/source-a/final/android/P2/observation.json",
+                  "sha256": "9d620ec68bc4604ff801622be1a959d391734b0f9063412985a762c13df71c5b"
+                }
+              ]
+            },
+            {
+              "case": "H1",
+              "input_check": {
+                "id": "native-environment",
+                "status": "F",
+                "expected": {
+                  "font_scale": 1.0,
+                  "night_mode_mask": 16,
+                  "direction": "ltr"
+                },
+                "actual": {
+                  "font_scale": 1.0,
+                  "night_mode_mask": 16,
+                  "direction": "Ltr"
+                },
+                "reason": "Actual native caller environment; absence remains U.",
+                "evidence": []
+              },
+              "evidence": [
+                {
+                  "path": "common-corpora/T3/source-a/final/android/H1/observation.json",
+                  "sha256": "7f308b7f90df2f382f51e2413b4b9259c6bf8803bde98d923a2e3b1d12a73d28"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scope": "72 applicable iOS native-style cells (24 per case)",
+          "reason": "Generic computed SwiftUI typography/color/ellipsis unavailable. Pixels, visual passes and static source cannot turn them into native measurements."
+        },
+        {
+          "scope": "P2 iOS classified activation-callback",
+          "reason": "The read-only Stable attempt is blocked_disabled without demonstrated successful dispatch. Empty event interval does not prove callback behavior."
+        }
+      ],
+      "unasserted_scope": [
+        {
+          "requirement": "Exact fonts/weights/colors for all non-title roles; surface/canvas/border/primary role metrics; radius10, internal12, major16 and stacked8 gaps.",
+          "gap": "Selected22 has exact title-native style and selected control boxes. Broad visual P assesses readable hierarchy and appearance, not numerical proof for each font/color/spacing. iOS native_style remains U.",
+          "evidence": [
+            {
+              "path": "design-v2/T3/public/BRIEF.md",
+              "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+            },
+            {
+              "path": "design-v2/T3/public/STYLE-PRECISION.md",
+              "sha256": "99aec2f97adfb564aef1bd70ce50821ac24d9f84cb5737789cf99ad211caf24f"
+            }
+          ]
+        },
+        {
+          "requirement": "All queue row identities/labels and active selected traits, third-row navigation, long caller labels growing above64 and exact caption/name typography.",
+          "gap": "Second-row selected/status and queue width have direct fixed checks; broad visual review is not exhaustive semantics or arbitrary long-label stress coverage.",
+          "evidence": [
+            {
+              "path": "design-v2/T3/public/BRIEF.md",
+              "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+            }
+          ]
+        },
+        {
+          "requirement": "Exact caller context/material/inspection-note strings, Review notes heading identity and all paragraph text.",
+          "gap": "Exact title/focused-title checks and broad visual notes/wrapping review do not create separate copy/identity cells for all text nodes.",
+          "evidence": [
+            {
+              "path": "design-v2/T3/public/BRIEF.md",
+              "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+            }
+          ]
+        },
+        {
+          "requirement": "Unknown focus fallback; invalid nonempty care reason; Stable clearing an existing care reason; reselecting care with an existing valid reason; re-entering care after Stable; switching Surface/Structure and all validation-priority combinations.",
+          "gap": "H1 exercises empty-reason care and optional pending along the selected route, but the fixed selected states do not individually assert every business branch or input combination.",
+          "evidence": [
+            {
+              "path": "design-v2/T3/public/BRIEF.md",
+              "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+            },
+            {
+              "path": "design-v2/T3/public/API.md",
+              "sha256": "525a98a95296ed40c16ba7358564a3e6830d9a3ca8ff7eb27c86b9bf927ee3b0"
+            }
+          ]
+        },
+        {
+          "requirement": "Every read-only care/reason-edit path, all focus persistence sequences, callbacks after replacement and all object-order/optionality permutations.",
+          "gap": "H1 confirms one optional-pending callback and P2 has a blocked-disabled classification attempt. Neither establishes all these routes; blocked dispatch remains U.",
+          "evidence": [
+            {
+              "path": "design-v2/T3/public/BRIEF.md",
+              "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+            },
+            {
+              "path": "design-v2/T3/public/API.md",
+              "sha256": "525a98a95296ed40c16ba7358564a3e6830d9a3ca8ff7eb27c86b9bf927ee3b0"
+            }
+          ]
+        },
+        {
+          "requirement": "No duplicate outer padding/nested scrolling, all dedicated text nodes/heading identifiers and no nested native OnClick.",
+          "gap": "Composition and source review provide context; selected geometry measures only primary height, queue width and conditional care-control height. No additional acceptance cells are invented.",
+          "evidence": [
+            {
+              "path": "design-v2/T3/public/BRIEF.md",
+              "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+            },
+            {
+              "path": "design-v2/T3/public/STYLE-PRECISION.md",
+              "sha256": "99aec2f97adfb564aef1bd70ce50821ac24d9f84cb5737789cf99ad211caf24f"
+            }
+          ]
+        }
+      ],
+      "source_api_issues": [],
+      "source_api_disposition": "Exact sealed sources expose the required public models/signatures; original native builds/tests succeeded. Structural source reviews are exact-source-SHA and log bound. No compilation/signature issue found.",
+      "unasserted_source_only_concerns": [],
+      "newly_observed_issues": [],
+      "observed_final_behavior": {
+        "description": "No confirmed scored product defect in scoped FINAL evidence. iOS caller replacement has expected Harbor sketch focus, seeded queue status, summary and disabled primary. H1 preserves optional sketch=pending in successfully dispatched confirmation and accepts it when required objects are complete. Visual state review shows readable wrapping, complete notes and specified disabled palette appearance. These are scoped observations, not proof of all brief details or Android acceptance.",
+        "evidence": [
+          [
+            {
+              "path": "common-corpora/T3/source-a/final/ios/P1/observation.json",
+              "sha256": "c6fc64250a537eb5c5ae3df451acb372b9877b0a07efe64be7ca2455d5fd64e7"
+            }
+          ],
+          [
+            {
+              "path": "common-corpora/T3/source-a/final/ios/P2/observation.json",
+              "sha256": "6823b66840c9d68dae4b256803707bed3051ea0045d280dc1cf1953300944169"
+            }
+          ],
+          [
+            {
+              "path": "common-corpora/T3/source-a/final/ios/H1/observation.json",
+              "sha256": "f97671d62f70abf38d8f3f470cac2d5c9982f284ea835daf5968d4aed0746a0d"
+            }
+          ]
+        ]
+      },
+      "symmetry": "Same original grader, review scope and visual criteria for both aliases."
+    },
+    "source-b": {
+      "counts": {
+        "P": 274,
+        "F": 0,
+        "U": 420,
+        "N/A": 98
+      },
+      "counts_by_case_platform": {
+        "P1/ios": {
+          "P": 91,
+          "F": 0,
+          "U": 24,
+          "N/A": 17
+        },
+        "P1/android": {
+          "P": 0,
+          "F": 0,
+          "U": 115,
+          "N/A": 17
+        },
+        "P2/ios": {
+          "P": 90,
+          "F": 0,
+          "U": 25,
+          "N/A": 17
+        },
+        "P2/android": {
+          "P": 0,
+          "F": 0,
+          "U": 115,
+          "N/A": 17
+        },
+        "H1/ios": {
+          "P": 93,
+          "F": 0,
+          "U": 24,
+          "N/A": 15
+        },
+        "H1/android": {
+          "P": 0,
+          "F": 0,
+          "U": 117,
+          "N/A": 15
+        }
+      },
+      "denominator": 792,
+      "defect_clusters": [],
+      "product_failure_row_ids": [],
+      "non_product_f_rows": [],
+      "uncertain_f_rows": [],
+      "unsupported_scope": [
+        {
+          "scope": "All347 applicable Android cells across P1/P2/H1",
+          "reason": "Immutable native-environment check rejects recorded direction Ltr against expected ltr; font scale/night mode otherwise match. Preserve U without shared correction; representation mismatch is not proof of an RTL product bug.",
+          "evidence": [
+            {
+              "case": "P1",
+              "input_check": {
+                "id": "native-environment",
+                "status": "F",
+                "expected": {
+                  "font_scale": 1.0,
+                  "night_mode_mask": 16,
+                  "direction": "ltr"
+                },
+                "actual": {
+                  "font_scale": 1.0,
+                  "night_mode_mask": 16,
+                  "direction": "Ltr"
+                },
+                "reason": "Actual native caller environment; absence remains U.",
+                "evidence": []
+              },
+              "evidence": [
+                {
+                  "path": "common-corpora/T3/source-b/final/android/P1/observation.json",
+                  "sha256": "6878e418ce8c040a30f631702b7c34b5dffb662eaa5355dcba9da77ee313c70f"
+                }
+              ]
+            },
+            {
+              "case": "P2",
+              "input_check": {
+                "id": "native-environment",
+                "status": "F",
+                "expected": {
+                  "font_scale": 1.6,
+                  "night_mode_mask": 32,
+                  "direction": "ltr"
+                },
+                "actual": {
+                  "font_scale": 1.6,
+                  "night_mode_mask": 32,
+                  "direction": "Ltr"
+                },
+                "reason": "Actual native caller environment; absence remains U.",
+                "evidence": []
+              },
+              "evidence": [
+                {
+                  "path": "common-corpora/T3/source-b/final/android/P2/observation.json",
+                  "sha256": "f38540e41ab1e6319dd842966a76c9a6cbab6d1ee0c9863d1a5df41be4f73749"
+                }
+              ]
+            },
+            {
+              "case": "H1",
+              "input_check": {
+                "id": "native-environment",
+                "status": "F",
+                "expected": {
+                  "font_scale": 1.0,
+                  "night_mode_mask": 16,
+                  "direction": "ltr"
+                },
+                "actual": {
+                  "font_scale": 1.0,
+                  "night_mode_mask": 16,
+                  "direction": "Ltr"
+                },
+                "reason": "Actual native caller environment; absence remains U.",
+                "evidence": []
+              },
+              "evidence": [
+                {
+                  "path": "common-corpora/T3/source-b/final/android/H1/observation.json",
+                  "sha256": "cc4aae013ae144f875df21061bafaccc76e1e60d3a304255c55cd9ebe8d14af4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scope": "72 applicable iOS native-style cells (24 per case)",
+          "reason": "Generic computed SwiftUI typography/color/ellipsis unavailable. Pixels, visual passes and static source cannot turn them into native measurements."
+        },
+        {
+          "scope": "P2 iOS classified activation-callback",
+          "reason": "The read-only Stable attempt is blocked_disabled without demonstrated successful dispatch. Empty event interval does not prove callback behavior."
+        }
+      ],
+      "unasserted_scope": [
+        {
+          "requirement": "Exact fonts/weights/colors for all non-title roles; surface/canvas/border/primary role metrics; radius10, internal12, major16 and stacked8 gaps.",
+          "gap": "Selected22 has exact title-native style and selected control boxes. Broad visual P assesses readable hierarchy and appearance, not numerical proof for each font/color/spacing. iOS native_style remains U.",
+          "evidence": [
+            {
+              "path": "design-v2/T3/public/BRIEF.md",
+              "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+            },
+            {
+              "path": "design-v2/T3/public/STYLE-PRECISION.md",
+              "sha256": "99aec2f97adfb564aef1bd70ce50821ac24d9f84cb5737789cf99ad211caf24f"
+            }
+          ]
+        },
+        {
+          "requirement": "All queue row identities/labels and active selected traits, third-row navigation, long caller labels growing above64 and exact caption/name typography.",
+          "gap": "Second-row selected/status and queue width have direct fixed checks; broad visual review is not exhaustive semantics or arbitrary long-label stress coverage.",
+          "evidence": [
+            {
+              "path": "design-v2/T3/public/BRIEF.md",
+              "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+            }
+          ]
+        },
+        {
+          "requirement": "Exact caller context/material/inspection-note strings, Review notes heading identity and all paragraph text.",
+          "gap": "Exact title/focused-title checks and broad visual notes/wrapping review do not create separate copy/identity cells for all text nodes.",
+          "evidence": [
+            {
+              "path": "design-v2/T3/public/BRIEF.md",
+              "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+            }
+          ]
+        },
+        {
+          "requirement": "Unknown focus fallback; invalid nonempty care reason; Stable clearing an existing care reason; reselecting care with an existing valid reason; re-entering care after Stable; switching Surface/Structure and all validation-priority combinations.",
+          "gap": "H1 exercises empty-reason care and optional pending along the selected route, but the fixed selected states do not individually assert every business branch or input combination.",
+          "evidence": [
+            {
+              "path": "design-v2/T3/public/BRIEF.md",
+              "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+            },
+            {
+              "path": "design-v2/T3/public/API.md",
+              "sha256": "525a98a95296ed40c16ba7358564a3e6830d9a3ca8ff7eb27c86b9bf927ee3b0"
+            }
+          ]
+        },
+        {
+          "requirement": "Every read-only care/reason-edit path, all focus persistence sequences, callbacks after replacement and all object-order/optionality permutations.",
+          "gap": "H1 confirms one optional-pending callback and P2 has a blocked-disabled classification attempt. Neither establishes all these routes; blocked dispatch remains U.",
+          "evidence": [
+            {
+              "path": "design-v2/T3/public/BRIEF.md",
+              "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+            },
+            {
+              "path": "design-v2/T3/public/API.md",
+              "sha256": "525a98a95296ed40c16ba7358564a3e6830d9a3ca8ff7eb27c86b9bf927ee3b0"
+            }
+          ]
+        },
+        {
+          "requirement": "No duplicate outer padding/nested scrolling, all dedicated text nodes/heading identifiers and no nested native OnClick.",
+          "gap": "Composition and source review provide context; selected geometry measures only primary height, queue width and conditional care-control height. No additional acceptance cells are invented.",
+          "evidence": [
+            {
+              "path": "design-v2/T3/public/BRIEF.md",
+              "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+            },
+            {
+              "path": "design-v2/T3/public/STYLE-PRECISION.md",
+              "sha256": "99aec2f97adfb564aef1bd70ce50821ac24d9f84cb5737789cf99ad211caf24f"
+            }
+          ]
+        }
+      ],
+      "source_api_issues": [],
+      "source_api_disposition": "Exact sealed sources expose the required public models/signatures; original native builds/tests succeeded. Structural source reviews are exact-source-SHA and log bound. No compilation/signature issue found.",
+      "unasserted_source_only_concerns": [],
+      "newly_observed_issues": [],
+      "observed_final_behavior": {
+        "description": "No confirmed scored product defect in scoped FINAL evidence. iOS caller replacement has expected Harbor sketch focus, seeded queue status, summary and disabled primary. H1 preserves optional sketch=pending in successfully dispatched confirmation and accepts it when required objects are complete. Visual state review shows readable wrapping, complete notes and specified disabled palette appearance. These are scoped observations, not proof of all brief details or Android acceptance.",
+        "evidence": [
+          [
+            {
+              "path": "common-corpora/T3/source-b/final/ios/P1/observation.json",
+              "sha256": "2649651c53d39926091528131e92a765bb55dc4f1ba402c3760a7de5a2df989f"
+            }
+          ],
+          [
+            {
+              "path": "common-corpora/T3/source-b/final/ios/P2/observation.json",
+              "sha256": "8d3817f1392aed286bf5a910ccf06ac789be221a036ccf19bbb234df2d0304d8"
+            }
+          ],
+          [
+            {
+              "path": "common-corpora/T3/source-b/final/ios/H1/observation.json",
+              "sha256": "426dc601bc909b1faaedcd4e0fc8a5232a929b324634b2c1d2cdca1ad8c3b7cd"
+            }
+          ]
+        ]
+      },
+      "symmetry": "Same original grader, review scope and visual criteria for both aliases."
+    }
+  },
+  "unasserted_scope": [
+    {
+      "requirement": "Exact fonts/weights/colors for all non-title roles; surface/canvas/border/primary role metrics; radius10, internal12, major16 and stacked8 gaps.",
+      "gap": "Selected22 has exact title-native style and selected control boxes. Broad visual P assesses readable hierarchy and appearance, not numerical proof for each font/color/spacing. iOS native_style remains U.",
+      "evidence": [
+        {
+          "path": "design-v2/T3/public/BRIEF.md",
+          "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+        },
+        {
+          "path": "design-v2/T3/public/STYLE-PRECISION.md",
+          "sha256": "99aec2f97adfb564aef1bd70ce50821ac24d9f84cb5737789cf99ad211caf24f"
+        }
+      ]
+    },
+    {
+      "requirement": "All queue row identities/labels and active selected traits, third-row navigation, long caller labels growing above64 and exact caption/name typography.",
+      "gap": "Second-row selected/status and queue width have direct fixed checks; broad visual review is not exhaustive semantics or arbitrary long-label stress coverage.",
+      "evidence": [
+        {
+          "path": "design-v2/T3/public/BRIEF.md",
+          "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+        }
+      ]
+    },
+    {
+      "requirement": "Exact caller context/material/inspection-note strings, Review notes heading identity and all paragraph text.",
+      "gap": "Exact title/focused-title checks and broad visual notes/wrapping review do not create separate copy/identity cells for all text nodes.",
+      "evidence": [
+        {
+          "path": "design-v2/T3/public/BRIEF.md",
+          "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+        }
+      ]
+    },
+    {
+      "requirement": "Unknown focus fallback; invalid nonempty care reason; Stable clearing an existing care reason; reselecting care with an existing valid reason; re-entering care after Stable; switching Surface/Structure and all validation-priority combinations.",
+      "gap": "H1 exercises empty-reason care and optional pending along the selected route, but the fixed selected states do not individually assert every business branch or input combination.",
+      "evidence": [
+        {
+          "path": "design-v2/T3/public/BRIEF.md",
+          "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+        },
+        {
+          "path": "design-v2/T3/public/API.md",
+          "sha256": "525a98a95296ed40c16ba7358564a3e6830d9a3ca8ff7eb27c86b9bf927ee3b0"
+        }
+      ]
+    },
+    {
+      "requirement": "Every read-only care/reason-edit path, all focus persistence sequences, callbacks after replacement and all object-order/optionality permutations.",
+      "gap": "H1 confirms one optional-pending callback and P2 has a blocked-disabled classification attempt. Neither establishes all these routes; blocked dispatch remains U.",
+      "evidence": [
+        {
+          "path": "design-v2/T3/public/BRIEF.md",
+          "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+        },
+        {
+          "path": "design-v2/T3/public/API.md",
+          "sha256": "525a98a95296ed40c16ba7358564a3e6830d9a3ca8ff7eb27c86b9bf927ee3b0"
+        }
+      ]
+    },
+    {
+      "requirement": "No duplicate outer padding/nested scrolling, all dedicated text nodes/heading identifiers and no nested native OnClick.",
+      "gap": "Composition and source review provide context; selected geometry measures only primary height, queue width and conditional care-control height. No additional acceptance cells are invented.",
+      "evidence": [
+        {
+          "path": "design-v2/T3/public/BRIEF.md",
+          "sha256": "aba572c4175356989c777a75aff6af94dbdc7b2b1fe987e2737c088830543f48"
+        },
+        {
+          "path": "design-v2/T3/public/STYLE-PRECISION.md",
+          "sha256": "99aec2f97adfb564aef1bd70ce50821ac24d9f84cb5737789cf99ad211caf24f"
+        }
+      ]
+    }
+  ],
+  "interpretation": "U and N/A are not passes. Native test success is evidence acquisition/build success, not full product acceptance. Repeated states/platform manifestations are not independent experiments. FINAL findings do not assert introduction timing."
+}

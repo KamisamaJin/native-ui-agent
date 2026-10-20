@@ -1,0 +1,6 @@
+{
+  "command": "python3 -B - <<'PY'\nfrom pathlib import Path\nimport json\nR=Path('/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/multitask-forward')\np=R/'precision-replay/T1/comparison.json';d=json.loads(p.read_text());print('comparison',str(d)[:9000]);\nfor name in ['commands.json','baseline-v6.json','candidate-v7.json']:\n p=R/f'precision-replay/T1/source-a/P1/ios/{name}';d=json.loads(p.read_text());print(name,'keys',list(d));print(str(d)[:9000] if name=='commands.json' else str(d.get('assertions',[])[:2])[:2000]);print('geometry', [x for x in d.get('assertions',[]) if 'height' in x['id'] or 'width' in x['id']][:3])\nPY",
+  "exit_code": 1,
+  "stderr": "Traceback (most recent call last):\n  File \"<stdin>\", line 6, in <module>\nAttributeError: 'list' object has no attribute 'get'\n",
+  "resolution": "commands.json is an original list; subsequent reads handled that list. No native observation, grader or checker output altered."
+}

@@ -1,0 +1,54 @@
+--- original/alerttoast/Sources/AlertToast/BroadcastCueMixerPanel.swift
++++ repaired/alerttoast/Sources/AlertToast/BroadcastCueMixerPanel.swift
+@@ -144,7 +144,7 @@
+                     .cornerRadius(10)
+                     .contentShape(Rectangle())
+             }
+-            .buttonStyle(PlainButtonStyle())
++            .buttonStyle(MixerPaletteButtonStyle())
+             .disabled(!canApply)
+             .accessibilityIdentifier("mixer.primary")
+             VStack(alignment: .leading, spacing: 16) {
+@@ -161,9 +161,9 @@
+             }
+         }
+         .frame(maxWidth: .infinity, alignment: .leading)
+-        .onChange(of: request.id) { _ in
+-            channels = Self.seed(request)
+-            mode = request.mode
++        .onChange(of: MixerRequestRevision(request: request)) { revision in
++            channels = Self.seed(revision.request)
++            mode = revision.request.mode
+         }
+     }
+ 
+@@ -246,7 +246,7 @@
+                 .cornerRadius(10)
+                 .contentShape(Rectangle())
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(MixerPaletteButtonStyle())
+         .disabled(!enabled)
+         .accessibilityIdentifier(id)
+         .accessibilityAddTraits(selected ? [.isSelected] : [])
+@@ -258,6 +258,20 @@
+         channels[index] = BroadcastMixChannel(id: old.id, name: old.name, caption: old.caption,
+                                               level: min(max(level, 0), max(request.maxLevel, 0)),
+                                               muted: muted, locked: old.locked)
++    }
++}
++
++private struct MixerRequestRevision: Equatable {
++    let request: BroadcastCueMixerRequest
++
++    static func == (lhs: MixerRequestRevision, rhs: MixerRequestRevision) -> Bool {
++        lhs.request.id == rhs.request.id
++    }
++}
++
++private struct MixerPaletteButtonStyle: ButtonStyle {
++    func makeBody(configuration: Configuration) -> some View {
++        configuration.label
+     }
+ }
+ 

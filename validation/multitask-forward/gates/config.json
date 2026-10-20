@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "artifact_root": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/multitask-forward",
+  "stages": {
+    "tools": {
+      "members": [
+        "baseline-v6",
+        "candidate-v7"
+      ],
+      "requires": []
+    },
+    "design": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "tools"
+      ]
+    },
+    "d0-sources": {
+      "members": [
+        "unit-df4422",
+        "unit-58e398",
+        "unit-ade847",
+        "unit-6f8d35",
+        "unit-59862e",
+        "unit-ba8b2b"
+      ],
+      "requires": [
+        "design"
+      ]
+    },
+    "own-d0": {
+      "members": [
+        "unit-df4422",
+        "unit-58e398",
+        "unit-ade847",
+        "unit-6f8d35",
+        "unit-59862e",
+        "unit-ba8b2b"
+      ],
+      "requires": [
+        "d0-sources"
+      ]
+    },
+    "reviews": {
+      "members": [
+        "unit-df4422",
+        "unit-58e398",
+        "unit-ade847",
+        "unit-6f8d35",
+        "unit-59862e",
+        "unit-ba8b2b"
+      ],
+      "requires": [
+        "own-d0"
+      ]
+    },
+    "final-sources": {
+      "members": [
+        "unit-df4422",
+        "unit-58e398",
+        "unit-ade847",
+        "unit-6f8d35",
+        "unit-59862e",
+        "unit-ba8b2b"
+      ],
+      "requires": [
+        "reviews"
+      ]
+    },
+    "own-final": {
+      "members": [
+        "unit-df4422",
+        "unit-58e398",
+        "unit-ade847",
+        "unit-6f8d35",
+        "unit-59862e",
+        "unit-ba8b2b"
+      ],
+      "requires": [
+        "final-sources"
+      ]
+    },
+    "hidden-inputs": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "own-final"
+      ]
+    },
+    "grade-d0": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "d0-sources"
+      ]
+    },
+    "grade-final": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "grade-d0",
+        "hidden-inputs"
+      ]
+    },
+    "grade-selfreview": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "grade-final",
+        "reviews"
+      ]
+    },
+    "grade-pair": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "grade-selfreview"
+      ]
+    },
+    "reveal": {
+      "members": [
+        "assignment"
+      ],
+      "requires": [
+        "grade-pair"
+      ]
+    }
+  }
+}

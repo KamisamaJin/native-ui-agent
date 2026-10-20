@@ -1,0 +1,301 @@
+{
+  "initial": {
+    "id": "h1-session",
+    "title": "Broadcast cue mixer",
+    "context": "Evening bulletin \u2022 Studio B",
+    "maxLiveUnits": 6,
+    "maxLevel": 5,
+    "mode": "live",
+    "stepperWidth": 48,
+    "notes": [
+      "Check the live load before sending the mix to the desk. Each unmuted channel with a level above zero contributes its displayed units. Muted channels retain their stored levels so that an engineer can restore them without rebuilding the balance.",
+      "Preview mode lets the engineer prepare a mix that exceeds the live unit limit. The warning remains visible because switching that mix to live would require reducing levels or muting channels. Applying a preview mix does not automatically switch the desk to live.",
+      "Locked channels are supplied by the producer. Their increase, decrease and mute controls remain disabled while the channel is locked, but their current audible levels still count in the load. Changing mode does not unlock a channel or alter any stored level.",
+      "A replacement session restores all channel levels, mute flags and mode from the new request on the existing mounted component. Applying a mix reports the real current values to the caller. This panel does not access an audio device, start recording or change system volume."
+    ],
+    "channels": [
+      {
+        "id": "voice",
+        "name": "Presenter",
+        "caption": "Speech bus \u2022 producer locked",
+        "level": 0,
+        "muted": false,
+        "locked": true
+      },
+      {
+        "id": "music",
+        "name": "Music bed",
+        "caption": "Underscore bus",
+        "level": 0,
+        "muted": false,
+        "locked": false
+      },
+      {
+        "id": "room",
+        "name": "Room tone",
+        "caption": "Ambience bus",
+        "level": 2,
+        "muted": false,
+        "locked": false
+      }
+    ]
+  },
+  "updates": [
+    {
+      "id": "h1-replacement",
+      "title": "Broadcast cue mixer",
+      "context": "Morning interview \u2022 Studio C",
+      "maxLiveUnits": 4,
+      "maxLevel": 5,
+      "mode": "live",
+      "stepperWidth": 48,
+      "notes": [
+        "Check the live load before sending the mix to the desk. Each unmuted channel with a level above zero contributes its displayed units. Muted channels retain their stored levels so that an engineer can restore them without rebuilding the balance.",
+        "Preview mode lets the engineer prepare a mix that exceeds the live unit limit. The warning remains visible because switching that mix to live would require reducing levels or muting channels. Applying a preview mix does not automatically switch the desk to live.",
+        "Locked channels are supplied by the producer. Their increase, decrease and mute controls remain disabled while the channel is locked, but their current audible levels still count in the load. Changing mode does not unlock a channel or alter any stored level.",
+        "A replacement session restores all channel levels, mute flags and mode from the new request on the existing mounted component. Applying a mix reports the real current values to the caller. This panel does not access an audio device, start recording or change system volume."
+      ],
+      "channels": [
+        {
+          "id": "voice",
+          "name": "Presenter",
+          "caption": "Speech bus \u2022 producer locked",
+          "level": 0,
+          "muted": false,
+          "locked": true
+        },
+        {
+          "id": "music",
+          "name": "Music bed",
+          "caption": "Underscore bus",
+          "level": 2,
+          "muted": false,
+          "locked": false
+        },
+        {
+          "id": "room",
+          "name": "Room tone",
+          "caption": "Ambience bus",
+          "level": 2,
+          "muted": true,
+          "locked": false
+        }
+      ]
+    }
+  ],
+  "width": 390,
+  "theme": "light",
+  "dynamic_type": "large",
+  "fontScale": 1.0,
+  "direction": "ltr",
+  "canvas_color": "#FFFFFF",
+  "viewportHeight": 600,
+  "max_scrolls": 24,
+  "state_capture": true,
+  "required_identifiers": [
+    "mixer.primary",
+    "mixer.notes"
+  ],
+  "actions": [
+    {
+      "type": "sweep",
+      "state_id": "loaded",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "mixer.musicPlus"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "state_id": "leveled",
+      "after_targets": [
+        {
+          "identifier": "mixer.title"
+        },
+        {
+          "identifier": "mixer.modeLabel"
+        },
+        {
+          "identifier": "mixer.musicLevel"
+        },
+        {
+          "identifier": "mixer.voiceLevel"
+        },
+        {
+          "identifier": "mixer.musicPlus"
+        },
+        {
+          "identifier": "mixer.voiceMinus"
+        },
+        {
+          "identifier": "mixer.musicMute"
+        },
+        {
+          "identifier": "mixer.preview"
+        },
+        {
+          "identifier": "mixer.summary"
+        },
+        {
+          "identifier": "mixer.headroom"
+        },
+        {
+          "identifier": "mixer.warning"
+        },
+        {
+          "identifier": "mixer.primary"
+        }
+      ]
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "mixer.preview"
+      },
+      "reveal": true,
+      "state_id": "previewed",
+      "after_targets": [
+        {
+          "identifier": "mixer.title"
+        },
+        {
+          "identifier": "mixer.modeLabel"
+        },
+        {
+          "identifier": "mixer.musicLevel"
+        },
+        {
+          "identifier": "mixer.voiceLevel"
+        },
+        {
+          "identifier": "mixer.musicPlus"
+        },
+        {
+          "identifier": "mixer.voiceMinus"
+        },
+        {
+          "identifier": "mixer.musicMute"
+        },
+        {
+          "identifier": "mixer.preview"
+        },
+        {
+          "identifier": "mixer.summary"
+        },
+        {
+          "identifier": "mixer.headroom"
+        },
+        {
+          "identifier": "mixer.warning"
+        },
+        {
+          "identifier": "mixer.primary"
+        }
+      ]
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "mixer.musicMute"
+      },
+      "reveal": true,
+      "state_id": "muted",
+      "after_targets": [
+        {
+          "identifier": "mixer.title"
+        },
+        {
+          "identifier": "mixer.modeLabel"
+        },
+        {
+          "identifier": "mixer.musicLevel"
+        },
+        {
+          "identifier": "mixer.voiceLevel"
+        },
+        {
+          "identifier": "mixer.musicPlus"
+        },
+        {
+          "identifier": "mixer.voiceMinus"
+        },
+        {
+          "identifier": "mixer.musicMute"
+        },
+        {
+          "identifier": "mixer.preview"
+        },
+        {
+          "identifier": "mixer.summary"
+        },
+        {
+          "identifier": "mixer.headroom"
+        },
+        {
+          "identifier": "mixer.warning"
+        },
+        {
+          "identifier": "mixer.primary"
+        }
+      ]
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "mixer.primary"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "state_id": "submitted",
+      "after_targets": [
+        {
+          "identifier": "mixer.title"
+        },
+        {
+          "identifier": "mixer.modeLabel"
+        },
+        {
+          "identifier": "mixer.musicLevel"
+        },
+        {
+          "identifier": "mixer.voiceLevel"
+        },
+        {
+          "identifier": "mixer.musicPlus"
+        },
+        {
+          "identifier": "mixer.voiceMinus"
+        },
+        {
+          "identifier": "mixer.musicMute"
+        },
+        {
+          "identifier": "mixer.preview"
+        },
+        {
+          "identifier": "mixer.summary"
+        },
+        {
+          "identifier": "mixer.headroom"
+        },
+        {
+          "identifier": "mixer.warning"
+        },
+        {
+          "identifier": "mixer.primary"
+        }
+      ]
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "caller-applied"
+    },
+    {
+      "type": "sweep",
+      "state_id": "replaced",
+      "max_steps": 24
+    }
+  ]
+}

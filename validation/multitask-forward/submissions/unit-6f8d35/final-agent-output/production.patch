@@ -1,0 +1,99 @@
+--- original/alerttoast/Sources/AlertToast/BroadcastCueMixerPanel.swift
++++ alerttoast/Sources/AlertToast/BroadcastCueMixerPanel.swift
+@@ -1,6 +1,6 @@
+ import SwiftUI
+ 
+-public struct BroadcastMixChannel: Codable {
++public struct BroadcastMixChannel: Codable, Equatable {
+     public let id: String
+     public let name: String
+     public let caption: String
+@@ -18,7 +18,7 @@
+     }
+ }
+ 
+-public struct BroadcastCueMixerRequest: Codable {
++public struct BroadcastCueMixerRequest: Codable, Equatable {
+     public let id: String
+     public let title: String
+     public let context: String
+@@ -47,6 +47,7 @@
+     private let onConfirm: (String, String, [BroadcastMixChannel]) -> Void
+     @State private var channels: [BroadcastMixChannel]
+     @State private var mode: String
++    @State private var seededRequestID: String
+     @Environment(\.colorScheme) private var colorScheme
+     @ScaledMetric(relativeTo: .body) private var titleSize: CGFloat = 22
+     @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 14
+@@ -59,6 +60,7 @@
+         self.onConfirm = onConfirm
+         _channels = State(initialValue: Self.seed(request))
+         _mode = State(initialValue: request.mode)
++        _seededRequestID = State(initialValue: request.id)
+     }
+ 
+     private static func seed(_ request: BroadcastCueMixerRequest) -> [BroadcastMixChannel] {
+@@ -141,7 +143,7 @@
+                     .cornerRadius(10)
+                     .contentShape(RoundedRectangle(cornerRadius: 10))
+             }
+-            .buttonStyle(PlainButtonStyle())
++            .buttonStyle(MixerButtonStyle())
+             .disabled(!canApply)
+             .accessibilityIdentifier("mixer.primary")
+             VStack(alignment: .leading, spacing: 16) {
+@@ -158,9 +160,11 @@
+         }
+         .foregroundColor(palette.ink)
+         .frame(maxWidth: .infinity, alignment: .leading)
+-        .onChange(of: request.id) { _ in
+-            channels = Self.seed(request)
+-            mode = request.mode
++        .onChange(of: request) { newRequest in
++            guard newRequest.id != seededRequestID else { return }
++            channels = Self.seed(newRequest)
++            mode = newRequest.mode
++            seededRequestID = newRequest.id
+         }
+     }
+ 
+@@ -180,7 +184,7 @@
+                 .cornerRadius(10)
+                 .contentShape(RoundedRectangle(cornerRadius: 10))
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(MixerButtonStyle())
+         .accessibilityIdentifier("mixer.\(value)")
+         .accessibilityAddTraits(selected ? .isSelected : [])
+     }
+@@ -217,7 +221,7 @@
+                         .cornerRadius(10)
+                         .contentShape(RoundedRectangle(cornerRadius: 10))
+                 }
+-                .buttonStyle(PlainButtonStyle())
++                .buttonStyle(MixerButtonStyle())
+                 .disabled(channel.locked)
+                 .accessibilityIdentifier("mixer.\(channel.id)Mute")
+                 .accessibilityAddTraits(channel.muted ? .isSelected : [])
+@@ -237,7 +241,7 @@
+                 .cornerRadius(10)
+                 .contentShape(RoundedRectangle(cornerRadius: 10))
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(MixerButtonStyle())
+         .disabled(!enabled)
+         .accessibilityLabel(delta < 0 ? "Decrease \(channel.name)" : "Increase \(channel.name)")
+         .accessibilityIdentifier("mixer.\(channel.id)\(delta < 0 ? "Minus" : "Plus")")
+@@ -259,6 +263,12 @@
+     private func confirm() {
+         guard canApply else { return }
+         onConfirm(request.id, mode, channels.sorted { $0.id < $1.id })
++    }
++}
++
++private struct MixerButtonStyle: ButtonStyle {
++    func makeBody(configuration: Configuration) -> some View {
++        configuration.label
+     }
+ }
+ 

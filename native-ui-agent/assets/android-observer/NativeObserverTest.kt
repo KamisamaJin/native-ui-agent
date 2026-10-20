@@ -113,6 +113,12 @@ class NativeObserverTest {
      put("role",c.getOrNull(SemanticsProperties.Role)?.toString() ?: "");put("clickable",c.getOrNull(SemanticsActions.OnClick)?.action!=null)
      put("intersects_viewport",visible(node));put("fully_visible",fullyVisible(node))
      fun bounds(r:androidx.compose.ui.geometry.Rect)=buildJsonArray{add(r.left/density);add(r.top/density);add(r.right/density);add(r.bottom/density)}
+     put("native_geometry",buildJsonObject{
+      put("version",1);put("provider","compose_semantics_int_size");put("coordinate_unit","px")
+      put("density",density.toDouble())
+      put("position_px",buildJsonArray{val p=node.positionInRoot;add(p.x.toDouble());add(p.y.toDouble())})
+      put("size_px",buildJsonArray{add(node.size.width);add(node.size.height)})
+     })
      put("image_bounds_px",buildJsonArray{val r=rawBounds(node);val sx=image.width/(view.width/density);val sy=image.height/(view.height/density);add(r.left/density*sx);add(r.top/density*sy);add(r.right/density*sx);add(r.bottom/density*sy)});put("unclipped_bounds_dp",bounds(rawBounds(node)));put("bounds_dp",bounds(node.boundsInRoot));put("touch_bounds_dp",bounds(node.touchBoundsInRoot))
      layouts.firstOrNull()?.let{t->
       if(t.layoutInput.style.fontSize.value.isFinite())put("font_sp",t.layoutInput.style.fontSize.value)

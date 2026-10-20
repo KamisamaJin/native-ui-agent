@@ -1,0 +1,28 @@
+--- original-frozen-oracle
++++ separate-shared-environment-v1
+@@ -1,8 +1,10 @@
+ """Frozen SDK-free independent business/native oracle. Does not read builder plans."""
+ import copy,hashlib,json,re,sys
+ from pathlib import Path
+-D=Path(__file__).resolve().parent
+-R=D.parent
++R=Path(__file__).resolve().parents[1]
++D=R/"design-v2"
++sys.path.insert(0,str(R.parents[1]/"tools"))
++from native_environment import direction, ENCODING
+ sys.path.insert(0,str(R/'candidate-v7/scripts'))
+ sys.dont_write_bytecode=True
+ import design_contract as dc
+@@ -60,10 +62,11 @@
+  else:inputs.append(check('caller-fixture','U',reason='Adapter fixture copy absent; caller input identity not independently available.'))
+  if platform=='android':
+   conf=obs.get('configuration',{});exp={'font_scale':approved['fontScale'],'night_mode_mask':32 if approved['theme']=='dark' else 16,'direction':approved['direction']}
+-  got={k:conf.get(k) for k in exp};st='U' if any(v is None for v in got.values()) else 'P' if got==exp else 'F'
++  got={k:conf.get(k) for k in exp};direction_proof=direction(got['direction'],encoding=ENCODING);got['direction']=direction_proof['canonical'];st='U' if any(v is None for v in got.values()) else 'P' if got==exp else 'F'
+  else:
+   envs=[s.get('runtime',{}).get('actual_environment') for s in obs.get('snapshots',[])];envs=[e for e in envs if e];exp={k:approved[k] for k in ['theme','dynamic_type','direction']};got=[{k:e.get(k) for k in exp} for e in envs];st='U' if not got else 'P' if all(e==exp for e in got) else 'F'
+  inputs.append(check('native-environment',st,exp,got,'Actual native caller environment; absence remains U.'))
++ if platform=='android':inputs[-1]['direction_encoding_proof']=direction_proof
+  manual_data=read(manual) if isinstance(manual,(str,Path)) else manual
+  # native_checks enforces original observation hashes, exact state indices and PNG hashes.
+  try:

@@ -1,0 +1,253 @@
+{
+  "at": "2026-10-20T13:53:32.289724+00:00",
+  "scope": "Pure evaluator and plan mutations only; no production source modified.",
+  "plan_corruptions": [
+    {
+      "mutation": "expected",
+      "rejected": true,
+      "reason": "Generated assertions changed: expected value, precision, source, state or rule coverage differs"
+    },
+    {
+      "mutation": "tolerance",
+      "rejected": true,
+      "reason": "Generated assertions changed: expected value, precision, source, state or rule coverage differs"
+    },
+    {
+      "mutation": "drop-assertion",
+      "rejected": true,
+      "reason": "Generated assertions changed: expected value, precision, source, state or rule coverage differs"
+    },
+    {
+      "mutation": "drop-state",
+      "rejected": true,
+      "reason": "Generated assertions changed: expected value, precision, source, state or rule coverage differs"
+    },
+    {
+      "mutation": "source",
+      "rejected": true,
+      "reason": "Generated assertions changed: expected value, precision, source, state or rule coverage differs"
+    }
+  ],
+  "callback_controls": [
+    {
+      "case": "valid",
+      "input": {
+        "outcome": "tapped",
+        "binding_after": {
+          "pid": 123,
+          "instance": "pure-control",
+          "fixture_index": 0,
+          "input_sha256": "input",
+          "event_revision": 3
+        },
+        "callback_delta": [
+          "selected"
+        ],
+        "dispatch": {
+          "attempted": true,
+          "succeeded": true,
+          "method": "xcui_tap",
+          "stimulus": "activation",
+          "binding_before": {
+            "pid": 123,
+            "instance": "pure-control",
+            "fixture_index": 0,
+            "input_sha256": "input",
+            "event_revision": 2
+          },
+          "event_start": 2,
+          "event_end": 3,
+          "matches": 1,
+          "native_controls": 1,
+          "enabled": true
+        }
+      },
+      "result": {
+        "status": "passed",
+        "reason": "callback behavior after demonstrated requested native stimulus",
+        "interval_facts": [
+          "selected"
+        ],
+        "stimulus_established": true,
+        "required_method": "xcui_tap",
+        "actual_method": "xcui_tap"
+      }
+    },
+    {
+      "case": "disabled",
+      "input": {
+        "outcome": "blocked_disabled",
+        "binding_after": {
+          "pid": 123,
+          "instance": "pure-control",
+          "fixture_index": 0,
+          "input_sha256": "input",
+          "event_revision": 3
+        },
+        "callback_delta": [
+          "selected"
+        ],
+        "dispatch": {
+          "attempted": false,
+          "succeeded": true,
+          "method": "xcui_tap",
+          "stimulus": "activation",
+          "binding_before": {
+            "pid": 123,
+            "instance": "pure-control",
+            "fixture_index": 0,
+            "input_sha256": "input",
+            "event_revision": 2
+          },
+          "event_start": 2,
+          "event_end": 3,
+          "matches": 1,
+          "native_controls": 1,
+          "enabled": true
+        }
+      },
+      "result": {
+        "status": "unassessed",
+        "reason": "no demonstrated successful native dispatch; interval facts are not behavior",
+        "interval_facts": [
+          "selected"
+        ],
+        "stimulus_established": false,
+        "required_method": "xcui_tap",
+        "actual_method": "xcui_tap"
+      }
+    },
+    {
+      "case": "wrong-input",
+      "input": {
+        "outcome": "tapped",
+        "binding_after": {
+          "pid": 123,
+          "instance": "pure-control",
+          "fixture_index": 0,
+          "input_sha256": "another-input",
+          "event_revision": 3
+        },
+        "callback_delta": [
+          "selected"
+        ],
+        "dispatch": {
+          "attempted": true,
+          "succeeded": true,
+          "method": "xcui_tap",
+          "stimulus": "activation",
+          "binding_before": {
+            "pid": 123,
+            "instance": "pure-control",
+            "fixture_index": 0,
+            "input_sha256": "input",
+            "event_revision": 2
+          },
+          "event_start": 2,
+          "event_end": 3,
+          "matches": 1,
+          "native_controls": 1,
+          "enabled": true
+        }
+      },
+      "result": {
+        "status": "unassessed",
+        "reason": "activation not uniquely dispatched in one caller-input epoch",
+        "interval_facts": [
+          "selected"
+        ],
+        "stimulus_established": false,
+        "required_method": "xcui_tap",
+        "actual_method": "xcui_tap"
+      }
+    },
+    {
+      "case": "wrong-method",
+      "input": {
+        "outcome": "tapped",
+        "binding_after": {
+          "pid": 123,
+          "instance": "pure-control",
+          "fixture_index": 0,
+          "input_sha256": "input",
+          "event_revision": 3
+        },
+        "callback_delta": [
+          "selected"
+        ],
+        "dispatch": {
+          "attempted": true,
+          "succeeded": true,
+          "method": "os_touch",
+          "stimulus": "activation",
+          "binding_before": {
+            "pid": 123,
+            "instance": "pure-control",
+            "fixture_index": 0,
+            "input_sha256": "input",
+            "event_revision": 2
+          },
+          "event_start": 2,
+          "event_end": 3,
+          "matches": 1,
+          "native_controls": 1,
+          "enabled": true
+        }
+      },
+      "result": {
+        "status": "unassessed",
+        "reason": "actual native stimulus/method differs from required method",
+        "interval_facts": [
+          "selected"
+        ],
+        "stimulus_established": false,
+        "required_method": "xcui_tap",
+        "actual_method": "os_touch"
+      }
+    },
+    {
+      "case": "wrong-event",
+      "input": {
+        "outcome": "tapped",
+        "binding_after": {
+          "pid": 123,
+          "instance": "pure-control",
+          "fixture_index": 0,
+          "input_sha256": "input",
+          "event_revision": 3
+        },
+        "callback_delta": [
+          "wrong"
+        ],
+        "dispatch": {
+          "attempted": true,
+          "succeeded": true,
+          "method": "xcui_tap",
+          "stimulus": "activation",
+          "binding_before": {
+            "pid": 123,
+            "instance": "pure-control",
+            "fixture_index": 0,
+            "input_sha256": "input",
+            "event_revision": 2
+          },
+          "event_start": 2,
+          "event_end": 3,
+          "matches": 1,
+          "native_controls": 1,
+          "enabled": true
+        }
+      },
+      "result": {
+        "status": "failed",
+        "reason": "callback behavior after demonstrated requested native stimulus",
+        "interval_facts": [
+          "wrong"
+        ],
+        "stimulus_established": true,
+        "required_method": "xcui_tap",
+        "actual_method": "xcui_tap"
+      }
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+--- original/CollectionConditionReviewPanel.swift
++++ repaired/CollectionConditionReviewPanel.swift
+@@ -1,6 +1,6 @@
+ import SwiftUI
+ 
+-public struct CollectionConditionObject: Codable {
++public struct CollectionConditionObject: Codable, Equatable {
+     public let id: String
+     public let title: String
+     public let material: String
+@@ -22,7 +22,7 @@
+     }
+ }
+ 
+-public struct CollectionConditionReviewRequest: Codable {
++public struct CollectionConditionReviewRequest: Codable, Equatable {
+     public let id: String
+     public let title: String
+     public let context: String
+@@ -60,6 +60,7 @@
+     @Environment(\.colorScheme) private var colorScheme
+     @State private var decisions: [String: CollectionConditionAssessment]
+     @State private var focusID: String
++    @State private var loadedRequestID: String
+     @ScaledMetric(relativeTo: .body) private var titleSize: CGFloat = 22
+     @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 14
+     @ScaledMetric(relativeTo: .body) private var rowSize: CGFloat = 16
+@@ -72,6 +73,7 @@
+         self.onConfirm = onConfirm
+         _decisions = State(initialValue: Self.seed(request))
+         _focusID = State(initialValue: Self.initialFocus(request))
++        _loadedRequestID = State(initialValue: request.id)
+     }
+ 
+     private static func seed(_ request: CollectionConditionReviewRequest) -> [String: CollectionConditionAssessment] {
+@@ -143,7 +145,7 @@
+                         .background(RoundedRectangle(cornerRadius: 10).fill(ready ? palette.accent : palette.border))
+                         .contentShape(Rectangle())
+                 }
+-                .buttonStyle(PlainButtonStyle())
++                .buttonStyle(ConditionButtonStyle())
+                 .disabled(!ready)
+                 .accessibilityIdentifier("condition.primary")
+             }
+@@ -156,9 +158,11 @@
+             }
+         }
+         .frame(maxWidth: .infinity, alignment: .leading)
+-        .onChange(of: request.id) { _ in
+-            decisions = Self.seed(request)
+-            focusID = Self.initialFocus(request)
++        .onChange(of: request) { updatedRequest in
++            guard updatedRequest.id != loadedRequestID else { return }
++            loadedRequestID = updatedRequest.id
++            decisions = Self.seed(updatedRequest)
++            focusID = Self.initialFocus(updatedRequest)
+         }
+     }
+ 
+@@ -186,7 +190,7 @@
+                 .overlay(selectedMarker(selected), alignment: .topTrailing)
+                 .contentShape(Rectangle())
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(ConditionButtonStyle())
+         .frame(width: CGFloat(request.queueWidth))
+         .accessibilityElement(children: .ignore)
+         .accessibilityLabel(label)
+@@ -245,7 +249,7 @@
+                 .overlay(selectedMarker(selected), alignment: .topTrailing)
+                 .contentShape(Rectangle())
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(ConditionButtonStyle())
+         .disabled(!enabled)
+         .accessibilityElement(children: .ignore)
+         .accessibilityLabel(label)
+@@ -273,6 +277,12 @@
+     private func setReason(_ object: CollectionConditionObject, reason: String) {
+         guard object.editable, object.id == focusID, decision(for: object).status == "care" else { return }
+         decisions[object.id] = CollectionConditionAssessment(id: object.id, status: "care", reason: reason)
++    }
++}
++
++private struct ConditionButtonStyle: ButtonStyle {
++    func makeBody(configuration: Configuration) -> some View {
++        configuration.label
+     }
+ }
+ 

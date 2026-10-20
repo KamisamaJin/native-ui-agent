@@ -1,0 +1,1153 @@
+{
+  "schema_version": 1,
+  "task": "T2",
+  "stage": "D0",
+  "cases": [
+    "P1",
+    "P2"
+  ],
+  "sources": {
+    "source-a": {
+      "counts": {
+        "P": 188,
+        "F": 8,
+        "U": 294,
+        "N/A": 38
+      },
+      "case_platform_counts": {
+        "P1": {
+          "ios": {
+            "P": 95,
+            "F": 3,
+            "U": 24,
+            "N/A": 10
+          },
+          "android": {
+            "P": 0,
+            "F": 0,
+            "U": 122,
+            "N/A": 10
+          }
+        },
+        "P2": {
+          "ios": {
+            "P": 93,
+            "F": 5,
+            "U": 25,
+            "N/A": 9
+          },
+          "android": {
+            "P": 0,
+            "F": 0,
+            "U": 123,
+            "N/A": 9
+          }
+        }
+      },
+      "denominator": 528,
+      "defect_clusters": [
+        {
+          "cluster_id": "T2-D0-ios-replacement-seed",
+          "category": "business_state",
+          "description": "On same-mounted iOS caller replacement, channel seed values are not fully restored: Room tone remains unmuted in P1/P2 and Music bed remains5 in P2. Displayed load/headroom/warning and P2 increment eligibility consequently reflect initial channel values. New caller context, live limit and mode do update. Exact underlying SwiftUI mechanism not isolated.",
+          "fixed_row_ids": [
+            "P1/ios/replaced/derived-load",
+            "P1/ios/replaced/derived-headroom",
+            "P1/ios/replaced/overload-copy",
+            "P2/ios/replaced/music-level",
+            "P2/ios/replaced/music-increase-enabled",
+            "P2/ios/replaced/derived-load",
+            "P2/ios/replaced/derived-headroom",
+            "P2/ios/replaced/overload-copy"
+          ],
+          "evidence": [
+            {
+              "path": "design-v2/T2/public/BRIEF.md",
+              "sha256": "51d3d3437c3eb0ad0a7653f10b5b6a3aa9dfb4486c412bbd161af15a1a2857b1"
+            },
+            {
+              "path": "design-v2/T2/public/API.md",
+              "sha256": "8d12067a36a5902b17ffb9d2660560880ee4080bc3a5a50e62c35bdcf0066276"
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P1/observation.json",
+              "sha256": "f7a722ab576d104fc8740aa2e95e2c16084d0c4149d8506bfb5c5c3c36e467e8"
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P1/fixtures.json",
+              "sha256": "03fc1aad87ad0cdd088e9bb8b934a754e8d43afe63c415ce162ba849c1fcfe6a"
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P1/manifest.json",
+              "sha256": "b4433940013c9f32808f15a48450a498838df593814602fed8e7e4b4833d6a18"
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P1/build.log",
+              "sha256": "9950a98f723cadfbca939b7c46044be2f2e7ae5cdf7eca694652d91e35dd45c4"
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P1/test.log",
+              "sha256": "ebea660f149a2bedac610f5c816acb2e9d8e6d0c8d7017803a9a443786ad678d"
+            },
+            {
+              "path": "evaluation-inputs/D0/T2/source-a/source-capsule/source/alerttoast/Sources/AlertToast/BroadcastCueMixerPanel.swift",
+              "sha256": "b474463d95e20c8203fe4dedef025606f4a0df02283ec904d12fadf2a7e34abf"
+            },
+            {
+              "path": "design-v2/T2/public/cases/P1/expected-states.json",
+              "sha256": "8669ffaeb83809d1ba5a8cc888e467d888f002786ee1dd7fa6215a309e31187f"
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P1/attachments/085E0159-C5AE-48CC-81EC-1F53F63FA272.png",
+              "sha256": "967669ac3af65ee59f43de63ecd07410da6289b0040c4ef0ce5e0655efc2b67e",
+              "snapshot_index": 71
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P1/attachments/038AABA9-BA96-420E-BE76-C62849AAE4FB.png",
+              "sha256": "50a19991433c8e979d0cd21e3f330ce82beb30eb3fff288a271415ba4f75edbc",
+              "snapshot_index": 72
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P1/attachments/ED4639D4-D89A-40F5-82AA-E4E56885EE9F.png",
+              "sha256": "fef0cc80ac125481674aca7cd9acdc5227701f379bd160f6b7b17f38a10bd263",
+              "snapshot_index": 73
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P1/attachments/C66E6EE0-6FE2-4C1F-837B-D044970C3F0F.png",
+              "sha256": "d8af23a3f8a3556aa0f509cc12ba13967159e0b379096c35b1438ab429c032d7",
+              "snapshot_index": 74
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P2/observation.json",
+              "sha256": "9925403eb82c23cbdde02fb1f52d669ff7fefce29654223b5732c6ec4e7c088f"
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P2/fixtures.json",
+              "sha256": "2642cef37ab6b4ef0da8024bd5f445ed5eda12f1d4cc5cca07fa7d315e339b6c"
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P2/manifest.json",
+              "sha256": "76ed03a50aa0c5c690f0542aff53e0ba3be1a2d07fa9a085a75d7aae5083a781"
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P2/build.log",
+              "sha256": "44f5e79583e5ea8e3ef6e92fe547c8b2cd100d2e1784c161b9ac8434d842e5fe"
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P2/test.log",
+              "sha256": "e54ff304a1dd713701c8a46a3719de3bf09df75c096a1112ef251759aa7e1b09"
+            },
+            {
+              "path": "evaluation-inputs/D0/T2/source-a/source-capsule/source/alerttoast/Sources/AlertToast/BroadcastCueMixerPanel.swift",
+              "sha256": "b474463d95e20c8203fe4dedef025606f4a0df02283ec904d12fadf2a7e34abf"
+            },
+            {
+              "path": "design-v2/T2/public/cases/P2/expected-states.json",
+              "sha256": "bc75460dd76c60d13617caad34fdc3da38e0e09c83c0bebd5d293445cea0bcbe"
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P2/attachments/8ED37CDD-21ED-415A-8B47-F089ECCD68F1.png",
+              "sha256": "3adbe60917f32570bf26bfb2f512db6f37affb57561a57bb9c79eead3ad1b003",
+              "snapshot_index": 96
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P2/attachments/79137904-5FD1-4467-BB68-749D408956E4.png",
+              "sha256": "43d9a567f55a338f5bfcba964097df3d68cd1006fedaddd294e0af0419a4a46c",
+              "snapshot_index": 97
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P2/attachments/FAFB18C5-361A-42CA-BAD0-79219DB98118.png",
+              "sha256": "8c696a159515fbdd463878987638bb498fef0ad4896cfde775ce07070fc84802",
+              "snapshot_index": 98
+            }
+          ],
+          "detail_record": {
+            "path": "evaluation/D0/T2/source-a/replacement-evidence.json",
+            "sha256": "4c5b3d7e21d37d8388e0efcdcb044cbf915a51872551c1f22bd98ff1fc20e068"
+          },
+          "independence": "One observed behavioral cluster with repeated states/platform fixtures; repeated row manifestations are not separate experiments."
+        }
+      ],
+      "product_failure_row_ids": [
+        "P1/ios/replaced/derived-load",
+        "P1/ios/replaced/derived-headroom",
+        "P1/ios/replaced/overload-copy",
+        "P2/ios/replaced/music-level",
+        "P2/ios/replaced/music-increase-enabled",
+        "P2/ios/replaced/derived-load",
+        "P2/ios/replaced/derived-headroom",
+        "P2/ios/replaced/overload-copy"
+      ],
+      "non_product_f_rows": [],
+      "uncertain_f_rows": [],
+      "unsupported_scope": [
+        {
+          "scope": "Android all applicable rows",
+          "reason": "Original configuration direction serializes Ltr but immutable expected direction is ltr. Frozen input check returns F and withholds every applicable acceptance status as U. No case is removed, and no normalization or fabricated input pass is used. Host canvas hue differences in screenshots are observation/host scope; component does not own parent canvas.",
+          "fixed_row_ids": [
+            "P1/android/loaded/title",
+            "P1/android/loaded/mode-copy",
+            "P1/android/loaded/music-level",
+            "P1/android/loaded/presenter-level",
+            "P1/android/loaded/music-increase-enabled",
+            "P1/android/loaded/presenter-decrease-enabled",
+            "P1/android/loaded/music-muted",
+            "P1/android/loaded/preview-selected",
+            "P1/android/loaded/derived-load",
+            "P1/android/loaded/derived-headroom",
+            "P1/android/loaded/overload-presence",
+            "P1/android/loaded/apply-enabled",
+            "P1/android/loaded/stepper-width",
+            "P1/android/loaded/primary-height",
+            "P1/android/loaded/title-font-size",
+            "P1/android/loaded/title-font-weight",
+            "P1/android/loaded/title-ink",
+            "P1/android/loaded/summary-wrap",
+            "P1/android/loaded/visual-composition",
+            "P1/android/leveled/title",
+            "P1/android/leveled/mode-copy",
+            "P1/android/leveled/music-level",
+            "P1/android/leveled/presenter-level",
+            "P1/android/leveled/music-increase-enabled",
+            "P1/android/leveled/presenter-decrease-enabled",
+            "P1/android/leveled/music-muted",
+            "P1/android/leveled/preview-selected",
+            "P1/android/leveled/derived-load",
+            "P1/android/leveled/derived-headroom",
+            "P1/android/leveled/overload-presence",
+            "P1/android/leveled/overload-copy",
+            "P1/android/leveled/apply-enabled",
+            "P1/android/leveled/stepper-width",
+            "P1/android/leveled/primary-height",
+            "P1/android/leveled/title-font-size",
+            "P1/android/leveled/title-font-weight",
+            "P1/android/leveled/title-ink",
+            "P1/android/leveled/summary-wrap",
+            "P1/android/leveled/activation-callback",
+            "P1/android/leveled/visual-composition",
+            "P1/android/previewed/title",
+            "P1/android/previewed/mode-copy",
+            "P1/android/previewed/music-level",
+            "P1/android/previewed/presenter-level",
+            "P1/android/previewed/music-increase-enabled",
+            "P1/android/previewed/presenter-decrease-enabled",
+            "P1/android/previewed/music-muted",
+            "P1/android/previewed/preview-selected",
+            "P1/android/previewed/derived-load",
+            "P1/android/previewed/derived-headroom",
+            "P1/android/previewed/overload-presence",
+            "P1/android/previewed/overload-copy",
+            "P1/android/previewed/apply-enabled",
+            "P1/android/previewed/stepper-width",
+            "P1/android/previewed/primary-height",
+            "P1/android/previewed/title-font-size",
+            "P1/android/previewed/title-font-weight",
+            "P1/android/previewed/title-ink",
+            "P1/android/previewed/summary-wrap",
+            "P1/android/previewed/activation-callback",
+            "P1/android/previewed/visual-composition",
+            "P1/android/muted/title",
+            "P1/android/muted/mode-copy",
+            "P1/android/muted/music-level",
+            "P1/android/muted/presenter-level",
+            "P1/android/muted/music-increase-enabled",
+            "P1/android/muted/presenter-decrease-enabled",
+            "P1/android/muted/music-muted",
+            "P1/android/muted/preview-selected",
+            "P1/android/muted/derived-load",
+            "P1/android/muted/derived-headroom",
+            "P1/android/muted/overload-presence",
+            "P1/android/muted/apply-enabled",
+            "P1/android/muted/stepper-width",
+            "P1/android/muted/primary-height",
+            "P1/android/muted/title-font-size",
+            "P1/android/muted/title-font-weight",
+            "P1/android/muted/title-ink",
+            "P1/android/muted/summary-wrap",
+            "P1/android/muted/activation-callback",
+            "P1/android/muted/visual-composition",
+            "P1/android/submitted/title",
+            "P1/android/submitted/mode-copy",
+            "P1/android/submitted/music-level",
+            "P1/android/submitted/presenter-level",
+            "P1/android/submitted/music-increase-enabled",
+            "P1/android/submitted/presenter-decrease-enabled",
+            "P1/android/submitted/music-muted",
+            "P1/android/submitted/preview-selected",
+            "P1/android/submitted/derived-load",
+            "P1/android/submitted/derived-headroom",
+            "P1/android/submitted/overload-presence",
+            "P1/android/submitted/apply-enabled",
+            "P1/android/submitted/stepper-width",
+            "P1/android/submitted/primary-height",
+            "P1/android/submitted/title-font-size",
+            "P1/android/submitted/title-font-weight",
+            "P1/android/submitted/title-ink",
+            "P1/android/submitted/summary-wrap",
+            "P1/android/submitted/activation-callback",
+            "P1/android/submitted/visual-composition",
+            "P1/android/replaced/title",
+            "P1/android/replaced/mode-copy",
+            "P1/android/replaced/music-level",
+            "P1/android/replaced/presenter-level",
+            "P1/android/replaced/music-increase-enabled",
+            "P1/android/replaced/presenter-decrease-enabled",
+            "P1/android/replaced/music-muted",
+            "P1/android/replaced/preview-selected",
+            "P1/android/replaced/derived-load",
+            "P1/android/replaced/derived-headroom",
+            "P1/android/replaced/overload-presence",
+            "P1/android/replaced/overload-copy",
+            "P1/android/replaced/apply-enabled",
+            "P1/android/replaced/stepper-width",
+            "P1/android/replaced/primary-height",
+            "P1/android/replaced/title-font-size",
+            "P1/android/replaced/title-font-weight",
+            "P1/android/replaced/title-ink",
+            "P1/android/replaced/summary-wrap",
+            "P1/android/replaced/replacement-callback",
+            "P1/android/replaced/visual-composition",
+            "P2/android/loaded/title",
+            "P2/android/loaded/mode-copy",
+            "P2/android/loaded/music-level",
+            "P2/android/loaded/presenter-level",
+            "P2/android/loaded/music-increase-enabled",
+            "P2/android/loaded/presenter-decrease-enabled",
+            "P2/android/loaded/music-muted",
+            "P2/android/loaded/preview-selected",
+            "P2/android/loaded/derived-load",
+            "P2/android/loaded/derived-headroom",
+            "P2/android/loaded/overload-presence",
+            "P2/android/loaded/overload-copy",
+            "P2/android/loaded/apply-enabled",
+            "P2/android/loaded/stepper-width",
+            "P2/android/loaded/primary-height",
+            "P2/android/loaded/title-font-size",
+            "P2/android/loaded/title-font-weight",
+            "P2/android/loaded/title-ink",
+            "P2/android/loaded/summary-wrap",
+            "P2/android/loaded/visual-composition",
+            "P2/android/leveled/title",
+            "P2/android/leveled/mode-copy",
+            "P2/android/leveled/music-level",
+            "P2/android/leveled/presenter-level",
+            "P2/android/leveled/music-increase-enabled",
+            "P2/android/leveled/presenter-decrease-enabled",
+            "P2/android/leveled/music-muted",
+            "P2/android/leveled/preview-selected",
+            "P2/android/leveled/derived-load",
+            "P2/android/leveled/derived-headroom",
+            "P2/android/leveled/overload-presence",
+            "P2/android/leveled/overload-copy",
+            "P2/android/leveled/apply-enabled",
+            "P2/android/leveled/stepper-width",
+            "P2/android/leveled/primary-height",
+            "P2/android/leveled/title-font-size",
+            "P2/android/leveled/title-font-weight",
+            "P2/android/leveled/title-ink",
+            "P2/android/leveled/summary-wrap",
+            "P2/android/leveled/activation-callback",
+            "P2/android/leveled/visual-composition",
+            "P2/android/previewed/title",
+            "P2/android/previewed/mode-copy",
+            "P2/android/previewed/music-level",
+            "P2/android/previewed/presenter-level",
+            "P2/android/previewed/music-increase-enabled",
+            "P2/android/previewed/presenter-decrease-enabled",
+            "P2/android/previewed/music-muted",
+            "P2/android/previewed/preview-selected",
+            "P2/android/previewed/derived-load",
+            "P2/android/previewed/derived-headroom",
+            "P2/android/previewed/overload-presence",
+            "P2/android/previewed/overload-copy",
+            "P2/android/previewed/apply-enabled",
+            "P2/android/previewed/stepper-width",
+            "P2/android/previewed/primary-height",
+            "P2/android/previewed/title-font-size",
+            "P2/android/previewed/title-font-weight",
+            "P2/android/previewed/title-ink",
+            "P2/android/previewed/summary-wrap",
+            "P2/android/previewed/activation-callback",
+            "P2/android/previewed/visual-composition",
+            "P2/android/muted/title",
+            "P2/android/muted/mode-copy",
+            "P2/android/muted/music-level",
+            "P2/android/muted/presenter-level",
+            "P2/android/muted/music-increase-enabled",
+            "P2/android/muted/presenter-decrease-enabled",
+            "P2/android/muted/music-muted",
+            "P2/android/muted/preview-selected",
+            "P2/android/muted/derived-load",
+            "P2/android/muted/derived-headroom",
+            "P2/android/muted/overload-presence",
+            "P2/android/muted/apply-enabled",
+            "P2/android/muted/stepper-width",
+            "P2/android/muted/primary-height",
+            "P2/android/muted/title-font-size",
+            "P2/android/muted/title-font-weight",
+            "P2/android/muted/title-ink",
+            "P2/android/muted/summary-wrap",
+            "P2/android/muted/activation-callback",
+            "P2/android/muted/visual-composition",
+            "P2/android/submitted/title",
+            "P2/android/submitted/mode-copy",
+            "P2/android/submitted/music-level",
+            "P2/android/submitted/presenter-level",
+            "P2/android/submitted/music-increase-enabled",
+            "P2/android/submitted/presenter-decrease-enabled",
+            "P2/android/submitted/music-muted",
+            "P2/android/submitted/preview-selected",
+            "P2/android/submitted/derived-load",
+            "P2/android/submitted/derived-headroom",
+            "P2/android/submitted/overload-presence",
+            "P2/android/submitted/apply-enabled",
+            "P2/android/submitted/stepper-width",
+            "P2/android/submitted/primary-height",
+            "P2/android/submitted/title-font-size",
+            "P2/android/submitted/title-font-weight",
+            "P2/android/submitted/title-ink",
+            "P2/android/submitted/summary-wrap",
+            "P2/android/submitted/activation-callback",
+            "P2/android/submitted/visual-composition",
+            "P2/android/replaced/title",
+            "P2/android/replaced/mode-copy",
+            "P2/android/replaced/music-level",
+            "P2/android/replaced/presenter-level",
+            "P2/android/replaced/music-increase-enabled",
+            "P2/android/replaced/presenter-decrease-enabled",
+            "P2/android/replaced/music-muted",
+            "P2/android/replaced/preview-selected",
+            "P2/android/replaced/derived-load",
+            "P2/android/replaced/derived-headroom",
+            "P2/android/replaced/overload-presence",
+            "P2/android/replaced/overload-copy",
+            "P2/android/replaced/apply-enabled",
+            "P2/android/replaced/stepper-width",
+            "P2/android/replaced/primary-height",
+            "P2/android/replaced/title-font-size",
+            "P2/android/replaced/title-font-weight",
+            "P2/android/replaced/title-ink",
+            "P2/android/replaced/summary-wrap",
+            "P2/android/replaced/replacement-callback",
+            "P2/android/replaced/visual-composition"
+          ],
+          "evidence": [
+            {
+              "path": "common-corpora/T2/source-a/d0/android/P1/observation.json",
+              "sha256": "da5918281d8be3d9954771bf12eea9937e06b4f1528015924b0fafccee5ce225"
+            },
+            {
+              "path": "common-corpora/T2/source-a/d0/android/P2/observation.json",
+              "sha256": "989381bf35115b999dcadb99b6c4c801bedd88e551ed56b700cadeb02c0a6d6c"
+            }
+          ]
+        },
+        {
+          "scope": "iOS numeric typography/color/ellipsis",
+          "reason": "Frozen public native collector cannot expose generic computed SwiftUI style; all 24 native_style cells remain U. Qualitative image review is separate and does not replace native numbers.",
+          "fixed_row_ids": [
+            "P1/ios/loaded/title-font-size",
+            "P1/ios/loaded/title-font-weight",
+            "P1/ios/loaded/title-ink",
+            "P1/ios/loaded/summary-wrap",
+            "P1/ios/leveled/title-font-size",
+            "P1/ios/leveled/title-font-weight",
+            "P1/ios/leveled/title-ink",
+            "P1/ios/leveled/summary-wrap",
+            "P1/ios/previewed/title-font-size",
+            "P1/ios/previewed/title-font-weight",
+            "P1/ios/previewed/title-ink",
+            "P1/ios/previewed/summary-wrap",
+            "P1/ios/muted/title-font-size",
+            "P1/ios/muted/title-font-weight",
+            "P1/ios/muted/title-ink",
+            "P1/ios/muted/summary-wrap",
+            "P1/ios/submitted/title-font-size",
+            "P1/ios/submitted/title-font-weight",
+            "P1/ios/submitted/title-ink",
+            "P1/ios/submitted/summary-wrap",
+            "P1/ios/replaced/title-font-size",
+            "P1/ios/replaced/title-font-weight",
+            "P1/ios/replaced/title-ink",
+            "P1/ios/replaced/summary-wrap",
+            "P2/ios/loaded/title-font-size",
+            "P2/ios/loaded/title-font-weight",
+            "P2/ios/loaded/title-ink",
+            "P2/ios/loaded/summary-wrap",
+            "P2/ios/leveled/title-font-size",
+            "P2/ios/leveled/title-font-weight",
+            "P2/ios/leveled/title-ink",
+            "P2/ios/leveled/summary-wrap",
+            "P2/ios/previewed/title-font-size",
+            "P2/ios/previewed/title-font-weight",
+            "P2/ios/previewed/title-ink",
+            "P2/ios/previewed/summary-wrap",
+            "P2/ios/muted/title-font-size",
+            "P2/ios/muted/title-font-weight",
+            "P2/ios/muted/title-ink",
+            "P2/ios/muted/summary-wrap",
+            "P2/ios/submitted/title-font-size",
+            "P2/ios/submitted/title-font-weight",
+            "P2/ios/submitted/title-ink",
+            "P2/ios/submitted/summary-wrap",
+            "P2/ios/replaced/title-font-size",
+            "P2/ios/replaced/title-font-weight",
+            "P2/ios/replaced/title-ink",
+            "P2/ios/replaced/summary-wrap"
+          ],
+          "evidence": [
+            {
+              "path": "design-v2/T2/public/STYLE-PRECISION.md",
+              "sha256": "27d72e6f9564623d8c5003e6d5791f3b5e441f771cbd93b47dd7c843488c7c26"
+            }
+          ]
+        },
+        {
+          "scope": "P2 iOS leveled activation interval",
+          "reason": "Music plus is at max; no demonstrated successful native dispatch. Empty interval cannot establish no-callback behavior.",
+          "fixed_row_ids": [
+            "P2/ios/leveled/activation-callback"
+          ],
+          "evidence": [
+            {
+              "path": "common-corpora/T2/source-a/d0/ios/P2/observation.json",
+              "sha256": "9925403eb82c23cbdde02fb1f52d669ff7fefce29654223b5732c6ec4e7c088f"
+            }
+          ]
+        }
+      ],
+      "source_api_issues": [],
+      "source_only_unasserted_concerns": [],
+      "api_review_scope": "API shape and production ownership reviewed against sealed source plus actual successful native build logs. No compilation/API shape defect was observed. Behavior, visual and API dispositions remain separate.",
+      "unasserted_scope": [
+        {
+          "requirement": "All-channel seed clamping and boundary edits",
+          "ledger_gap": "Only music/presenter levels and selected enabled flags are asserted. No full grid of negative/above-max seeds, decrement routes, room levels, 0-audible eligibility or every channel lock route. D0 uses ordinary selected fixtures; no additional test was run."
+        },
+        {
+          "requirement": "Replacement resets every channel field and caller order",
+          "ledger_gap": "Room mute/level/lock and every channel field have no dedicated fixed row. Original room-mute native node/image corroborates the existing replacement defect; it is not a new denominator cell. Reordered/added/removed channels are not exercised."
+        },
+        {
+          "requirement": "Complete identity/accessibility semantics",
+          "ledger_gap": "The selected rows cover preview-selected and music-muted plus some enabled flags. They do not independently assert every identifier, live/room selected trait, every disabled control, screen-reader focus/order or absence of every nested action. Source inspection is separate."
+        },
+        {
+          "requirement": "Every font, padding and layout metric in BRIEF",
+          "ledger_gap": "Numeric ledger covers title style, summary ellipsis, one stepper width and primary height. All other text sizes/weights, 48-unit stepper heights, counter40/mute90 allocations, surface radius10/inset12 and 8/16 gaps have no individual numeric cells. Qualitative visual composition does not prove each exact value."
+        },
+        {
+          "requirement": "All notes and caller context",
+          "ledger_gap": "Four paragraphs, heading placement and caller context were visually inspected, but the selected ledger has no independent string row for every note/context/heading identity. No claim that selected22 proves arbitrary long-content behavior."
+        },
+        {
+          "requirement": "All callback model fields and editing routes",
+          "ledger_gap": "Frozen event assertions inspect selected native intervals and serialized receipts. Names/captions/lock metadata, all potential edits and post-replacement confirmation in every state are not separately dispatched/asserted. No callback defect is inferred from a blocked interval."
+        },
+        {
+          "requirement": "Arbitrary caller/theme/type combinations",
+          "ledger_gap": "Only delivered P1/P2 on two platforms are in this stage. Wider dynamic type, RTL, alternative titles/notes/identities, and additional business permutations are not established."
+        }
+      ],
+      "classification_notes": {
+        "copy_format": "No independent copy/format cluster: changed derived/warning copy is a consequence of replacement channel state. Singular overload1 and headroom rule were not overridden.",
+        "visual_layout": "Original viewports show readable hierarchy, selected marker, disabled appearance, ordered full notes and no component overlap/truncation. Composition P applies only on integrity-valid iOS; Android remains U. Exact iOS native style is unsupported.",
+        "accessibility": "No confirmed fixed-row accessibility failure. Scope is limited to collected selected/disabled facts and separately reviewed source.",
+        "business_state": "Eight iOS F rows belong to the evidenced replacement cluster.",
+        "callbacks": "No successfully dispatched callback defect observed. P2 blocked plus callback remains U.",
+        "introduced": "No prior comparable stage was read. These are D0 observations; no claim of introduction or regression."
+      }
+    },
+    "source-b": {
+      "counts": {
+        "P": 188,
+        "F": 8,
+        "U": 294,
+        "N/A": 38
+      },
+      "case_platform_counts": {
+        "P1": {
+          "ios": {
+            "P": 95,
+            "F": 3,
+            "U": 24,
+            "N/A": 10
+          },
+          "android": {
+            "P": 0,
+            "F": 0,
+            "U": 122,
+            "N/A": 10
+          }
+        },
+        "P2": {
+          "ios": {
+            "P": 93,
+            "F": 5,
+            "U": 25,
+            "N/A": 9
+          },
+          "android": {
+            "P": 0,
+            "F": 0,
+            "U": 123,
+            "N/A": 9
+          }
+        }
+      },
+      "denominator": 528,
+      "defect_clusters": [
+        {
+          "cluster_id": "T2-D0-ios-replacement-seed",
+          "category": "business_state",
+          "description": "On same-mounted iOS caller replacement, channel seed values are not fully restored: Room tone remains unmuted in P1/P2 and Music bed remains5 in P2. Displayed load/headroom/warning and P2 increment eligibility consequently reflect initial channel values. New caller context, live limit and mode do update. Exact underlying SwiftUI mechanism not isolated.",
+          "fixed_row_ids": [
+            "P1/ios/replaced/derived-load",
+            "P1/ios/replaced/derived-headroom",
+            "P1/ios/replaced/overload-copy",
+            "P2/ios/replaced/music-level",
+            "P2/ios/replaced/music-increase-enabled",
+            "P2/ios/replaced/derived-load",
+            "P2/ios/replaced/derived-headroom",
+            "P2/ios/replaced/overload-copy"
+          ],
+          "evidence": [
+            {
+              "path": "design-v2/T2/public/BRIEF.md",
+              "sha256": "51d3d3437c3eb0ad0a7653f10b5b6a3aa9dfb4486c412bbd161af15a1a2857b1"
+            },
+            {
+              "path": "design-v2/T2/public/API.md",
+              "sha256": "8d12067a36a5902b17ffb9d2660560880ee4080bc3a5a50e62c35bdcf0066276"
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P1/observation.json",
+              "sha256": "1791e32f5940ba28ebc282250bfa136584860459f9283dab8dfa7a1eee741ee0"
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P1/fixtures.json",
+              "sha256": "03fc1aad87ad0cdd088e9bb8b934a754e8d43afe63c415ce162ba849c1fcfe6a"
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P1/manifest.json",
+              "sha256": "27135d88dfd90dc9311d4251649fbe81aae17f7813e07870c316cd75614ab460"
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P1/build.log",
+              "sha256": "8f717143bf4351a930b9471fd3f22c5b3c516b4135b07e17992198c398c074aa"
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P1/test.log",
+              "sha256": "3cc0163e197aa9855e9463ee6c28123fd311854dbd47c6356e65484025be939a"
+            },
+            {
+              "path": "evaluation-inputs/D0/T2/source-b/source-capsule/source/alerttoast/Sources/AlertToast/BroadcastCueMixerPanel.swift",
+              "sha256": "b7a6a2cf1a052ffd982a42eb7297d4361904e3d0302ef5b7f24e098ce9d07fe0"
+            },
+            {
+              "path": "design-v2/T2/public/cases/P1/expected-states.json",
+              "sha256": "8669ffaeb83809d1ba5a8cc888e467d888f002786ee1dd7fa6215a309e31187f"
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P1/attachments/5F0B699B-526F-4025-A2EE-B7F617EF7309.png",
+              "sha256": "5ff8044b096b5a4920402eae5bc3f06ef0990f3151747714be3a53cb9f6c2b4b",
+              "snapshot_index": 71
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P1/attachments/A5D67C9C-088F-47B8-BB14-9167542D3946.png",
+              "sha256": "b199a5bec1676c1b77e59e6f9601d0719b6b076ea469570a597c7f7df0df79ff",
+              "snapshot_index": 72
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P1/attachments/0A9E0B84-B75B-4D58-9CB4-C49CEDA11141.png",
+              "sha256": "6cab2e3e7537bc2c2eca4334ab7ee9c5d60445f9b8fec0aa54e2368e5937b44e",
+              "snapshot_index": 73
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P1/attachments/B5EECE0B-5D10-42FC-953B-7EF08CA5C283.png",
+              "sha256": "f4cb793a5376058768fb47824a974987fa791b7df25765aef24ecedb53ecead7",
+              "snapshot_index": 74
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P2/observation.json",
+              "sha256": "243d99f2eaacbe98dfaa450932d48cd77b65044d5afab0b185f506499176af24"
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P2/fixtures.json",
+              "sha256": "2642cef37ab6b4ef0da8024bd5f445ed5eda12f1d4cc5cca07fa7d315e339b6c"
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P2/manifest.json",
+              "sha256": "58497e59ed6a394b8253e5930c51c1bc0aeed2228ffa62401ea6c126df7b9106"
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P2/build.log",
+              "sha256": "a66d268c2f48be2576de732b7043b9dee08d029b7ac667d9bc2f1fb2e9b54cd2"
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P2/test.log",
+              "sha256": "5d33c84c1f78ea599de75f6ce7fede090bb059ac7ed08d3fae36943ba08cf389"
+            },
+            {
+              "path": "evaluation-inputs/D0/T2/source-b/source-capsule/source/alerttoast/Sources/AlertToast/BroadcastCueMixerPanel.swift",
+              "sha256": "b7a6a2cf1a052ffd982a42eb7297d4361904e3d0302ef5b7f24e098ce9d07fe0"
+            },
+            {
+              "path": "design-v2/T2/public/cases/P2/expected-states.json",
+              "sha256": "bc75460dd76c60d13617caad34fdc3da38e0e09c83c0bebd5d293445cea0bcbe"
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P2/attachments/5D8EFACB-D4A6-4147-83AF-6BD868D7EB37.png",
+              "sha256": "d12867eac02e64f43a92ec8b6422d76f52710952ccc50003aa9684222b707c62",
+              "snapshot_index": 96
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P2/attachments/55EEBC74-5C36-47D3-886A-2C17F051530C.png",
+              "sha256": "38fa2cf9eb905d8a5739245653bea8abb9ff5bca5058ad8f0c59f4dd83a8be41",
+              "snapshot_index": 97
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P2/attachments/ED8BCFA9-1167-4D3C-B66A-B72A261CC2D9.png",
+              "sha256": "635f61535bdd4f3deb818a9660b824d0f172dd13e3e728f3777d1e89b8a661d7",
+              "snapshot_index": 98
+            }
+          ],
+          "detail_record": {
+            "path": "evaluation/D0/T2/source-b/replacement-evidence.json",
+            "sha256": "f9f4ef9743859393cc094fb755a4fbbd7557cd0fc927b09bee152c86db24e656"
+          },
+          "independence": "One observed behavioral cluster with repeated states/platform fixtures; repeated row manifestations are not separate experiments."
+        }
+      ],
+      "product_failure_row_ids": [
+        "P1/ios/replaced/derived-load",
+        "P1/ios/replaced/derived-headroom",
+        "P1/ios/replaced/overload-copy",
+        "P2/ios/replaced/music-level",
+        "P2/ios/replaced/music-increase-enabled",
+        "P2/ios/replaced/derived-load",
+        "P2/ios/replaced/derived-headroom",
+        "P2/ios/replaced/overload-copy"
+      ],
+      "non_product_f_rows": [],
+      "uncertain_f_rows": [],
+      "unsupported_scope": [
+        {
+          "scope": "Android all applicable rows",
+          "reason": "Original configuration direction serializes Ltr but immutable expected direction is ltr. Frozen input check returns F and withholds every applicable acceptance status as U. No case is removed, and no normalization or fabricated input pass is used. Host canvas hue differences in screenshots are observation/host scope; component does not own parent canvas.",
+          "fixed_row_ids": [
+            "P1/android/loaded/title",
+            "P1/android/loaded/mode-copy",
+            "P1/android/loaded/music-level",
+            "P1/android/loaded/presenter-level",
+            "P1/android/loaded/music-increase-enabled",
+            "P1/android/loaded/presenter-decrease-enabled",
+            "P1/android/loaded/music-muted",
+            "P1/android/loaded/preview-selected",
+            "P1/android/loaded/derived-load",
+            "P1/android/loaded/derived-headroom",
+            "P1/android/loaded/overload-presence",
+            "P1/android/loaded/apply-enabled",
+            "P1/android/loaded/stepper-width",
+            "P1/android/loaded/primary-height",
+            "P1/android/loaded/title-font-size",
+            "P1/android/loaded/title-font-weight",
+            "P1/android/loaded/title-ink",
+            "P1/android/loaded/summary-wrap",
+            "P1/android/loaded/visual-composition",
+            "P1/android/leveled/title",
+            "P1/android/leveled/mode-copy",
+            "P1/android/leveled/music-level",
+            "P1/android/leveled/presenter-level",
+            "P1/android/leveled/music-increase-enabled",
+            "P1/android/leveled/presenter-decrease-enabled",
+            "P1/android/leveled/music-muted",
+            "P1/android/leveled/preview-selected",
+            "P1/android/leveled/derived-load",
+            "P1/android/leveled/derived-headroom",
+            "P1/android/leveled/overload-presence",
+            "P1/android/leveled/overload-copy",
+            "P1/android/leveled/apply-enabled",
+            "P1/android/leveled/stepper-width",
+            "P1/android/leveled/primary-height",
+            "P1/android/leveled/title-font-size",
+            "P1/android/leveled/title-font-weight",
+            "P1/android/leveled/title-ink",
+            "P1/android/leveled/summary-wrap",
+            "P1/android/leveled/activation-callback",
+            "P1/android/leveled/visual-composition",
+            "P1/android/previewed/title",
+            "P1/android/previewed/mode-copy",
+            "P1/android/previewed/music-level",
+            "P1/android/previewed/presenter-level",
+            "P1/android/previewed/music-increase-enabled",
+            "P1/android/previewed/presenter-decrease-enabled",
+            "P1/android/previewed/music-muted",
+            "P1/android/previewed/preview-selected",
+            "P1/android/previewed/derived-load",
+            "P1/android/previewed/derived-headroom",
+            "P1/android/previewed/overload-presence",
+            "P1/android/previewed/overload-copy",
+            "P1/android/previewed/apply-enabled",
+            "P1/android/previewed/stepper-width",
+            "P1/android/previewed/primary-height",
+            "P1/android/previewed/title-font-size",
+            "P1/android/previewed/title-font-weight",
+            "P1/android/previewed/title-ink",
+            "P1/android/previewed/summary-wrap",
+            "P1/android/previewed/activation-callback",
+            "P1/android/previewed/visual-composition",
+            "P1/android/muted/title",
+            "P1/android/muted/mode-copy",
+            "P1/android/muted/music-level",
+            "P1/android/muted/presenter-level",
+            "P1/android/muted/music-increase-enabled",
+            "P1/android/muted/presenter-decrease-enabled",
+            "P1/android/muted/music-muted",
+            "P1/android/muted/preview-selected",
+            "P1/android/muted/derived-load",
+            "P1/android/muted/derived-headroom",
+            "P1/android/muted/overload-presence",
+            "P1/android/muted/apply-enabled",
+            "P1/android/muted/stepper-width",
+            "P1/android/muted/primary-height",
+            "P1/android/muted/title-font-size",
+            "P1/android/muted/title-font-weight",
+            "P1/android/muted/title-ink",
+            "P1/android/muted/summary-wrap",
+            "P1/android/muted/activation-callback",
+            "P1/android/muted/visual-composition",
+            "P1/android/submitted/title",
+            "P1/android/submitted/mode-copy",
+            "P1/android/submitted/music-level",
+            "P1/android/submitted/presenter-level",
+            "P1/android/submitted/music-increase-enabled",
+            "P1/android/submitted/presenter-decrease-enabled",
+            "P1/android/submitted/music-muted",
+            "P1/android/submitted/preview-selected",
+            "P1/android/submitted/derived-load",
+            "P1/android/submitted/derived-headroom",
+            "P1/android/submitted/overload-presence",
+            "P1/android/submitted/apply-enabled",
+            "P1/android/submitted/stepper-width",
+            "P1/android/submitted/primary-height",
+            "P1/android/submitted/title-font-size",
+            "P1/android/submitted/title-font-weight",
+            "P1/android/submitted/title-ink",
+            "P1/android/submitted/summary-wrap",
+            "P1/android/submitted/activation-callback",
+            "P1/android/submitted/visual-composition",
+            "P1/android/replaced/title",
+            "P1/android/replaced/mode-copy",
+            "P1/android/replaced/music-level",
+            "P1/android/replaced/presenter-level",
+            "P1/android/replaced/music-increase-enabled",
+            "P1/android/replaced/presenter-decrease-enabled",
+            "P1/android/replaced/music-muted",
+            "P1/android/replaced/preview-selected",
+            "P1/android/replaced/derived-load",
+            "P1/android/replaced/derived-headroom",
+            "P1/android/replaced/overload-presence",
+            "P1/android/replaced/overload-copy",
+            "P1/android/replaced/apply-enabled",
+            "P1/android/replaced/stepper-width",
+            "P1/android/replaced/primary-height",
+            "P1/android/replaced/title-font-size",
+            "P1/android/replaced/title-font-weight",
+            "P1/android/replaced/title-ink",
+            "P1/android/replaced/summary-wrap",
+            "P1/android/replaced/replacement-callback",
+            "P1/android/replaced/visual-composition",
+            "P2/android/loaded/title",
+            "P2/android/loaded/mode-copy",
+            "P2/android/loaded/music-level",
+            "P2/android/loaded/presenter-level",
+            "P2/android/loaded/music-increase-enabled",
+            "P2/android/loaded/presenter-decrease-enabled",
+            "P2/android/loaded/music-muted",
+            "P2/android/loaded/preview-selected",
+            "P2/android/loaded/derived-load",
+            "P2/android/loaded/derived-headroom",
+            "P2/android/loaded/overload-presence",
+            "P2/android/loaded/overload-copy",
+            "P2/android/loaded/apply-enabled",
+            "P2/android/loaded/stepper-width",
+            "P2/android/loaded/primary-height",
+            "P2/android/loaded/title-font-size",
+            "P2/android/loaded/title-font-weight",
+            "P2/android/loaded/title-ink",
+            "P2/android/loaded/summary-wrap",
+            "P2/android/loaded/visual-composition",
+            "P2/android/leveled/title",
+            "P2/android/leveled/mode-copy",
+            "P2/android/leveled/music-level",
+            "P2/android/leveled/presenter-level",
+            "P2/android/leveled/music-increase-enabled",
+            "P2/android/leveled/presenter-decrease-enabled",
+            "P2/android/leveled/music-muted",
+            "P2/android/leveled/preview-selected",
+            "P2/android/leveled/derived-load",
+            "P2/android/leveled/derived-headroom",
+            "P2/android/leveled/overload-presence",
+            "P2/android/leveled/overload-copy",
+            "P2/android/leveled/apply-enabled",
+            "P2/android/leveled/stepper-width",
+            "P2/android/leveled/primary-height",
+            "P2/android/leveled/title-font-size",
+            "P2/android/leveled/title-font-weight",
+            "P2/android/leveled/title-ink",
+            "P2/android/leveled/summary-wrap",
+            "P2/android/leveled/activation-callback",
+            "P2/android/leveled/visual-composition",
+            "P2/android/previewed/title",
+            "P2/android/previewed/mode-copy",
+            "P2/android/previewed/music-level",
+            "P2/android/previewed/presenter-level",
+            "P2/android/previewed/music-increase-enabled",
+            "P2/android/previewed/presenter-decrease-enabled",
+            "P2/android/previewed/music-muted",
+            "P2/android/previewed/preview-selected",
+            "P2/android/previewed/derived-load",
+            "P2/android/previewed/derived-headroom",
+            "P2/android/previewed/overload-presence",
+            "P2/android/previewed/overload-copy",
+            "P2/android/previewed/apply-enabled",
+            "P2/android/previewed/stepper-width",
+            "P2/android/previewed/primary-height",
+            "P2/android/previewed/title-font-size",
+            "P2/android/previewed/title-font-weight",
+            "P2/android/previewed/title-ink",
+            "P2/android/previewed/summary-wrap",
+            "P2/android/previewed/activation-callback",
+            "P2/android/previewed/visual-composition",
+            "P2/android/muted/title",
+            "P2/android/muted/mode-copy",
+            "P2/android/muted/music-level",
+            "P2/android/muted/presenter-level",
+            "P2/android/muted/music-increase-enabled",
+            "P2/android/muted/presenter-decrease-enabled",
+            "P2/android/muted/music-muted",
+            "P2/android/muted/preview-selected",
+            "P2/android/muted/derived-load",
+            "P2/android/muted/derived-headroom",
+            "P2/android/muted/overload-presence",
+            "P2/android/muted/apply-enabled",
+            "P2/android/muted/stepper-width",
+            "P2/android/muted/primary-height",
+            "P2/android/muted/title-font-size",
+            "P2/android/muted/title-font-weight",
+            "P2/android/muted/title-ink",
+            "P2/android/muted/summary-wrap",
+            "P2/android/muted/activation-callback",
+            "P2/android/muted/visual-composition",
+            "P2/android/submitted/title",
+            "P2/android/submitted/mode-copy",
+            "P2/android/submitted/music-level",
+            "P2/android/submitted/presenter-level",
+            "P2/android/submitted/music-increase-enabled",
+            "P2/android/submitted/presenter-decrease-enabled",
+            "P2/android/submitted/music-muted",
+            "P2/android/submitted/preview-selected",
+            "P2/android/submitted/derived-load",
+            "P2/android/submitted/derived-headroom",
+            "P2/android/submitted/overload-presence",
+            "P2/android/submitted/apply-enabled",
+            "P2/android/submitted/stepper-width",
+            "P2/android/submitted/primary-height",
+            "P2/android/submitted/title-font-size",
+            "P2/android/submitted/title-font-weight",
+            "P2/android/submitted/title-ink",
+            "P2/android/submitted/summary-wrap",
+            "P2/android/submitted/activation-callback",
+            "P2/android/submitted/visual-composition",
+            "P2/android/replaced/title",
+            "P2/android/replaced/mode-copy",
+            "P2/android/replaced/music-level",
+            "P2/android/replaced/presenter-level",
+            "P2/android/replaced/music-increase-enabled",
+            "P2/android/replaced/presenter-decrease-enabled",
+            "P2/android/replaced/music-muted",
+            "P2/android/replaced/preview-selected",
+            "P2/android/replaced/derived-load",
+            "P2/android/replaced/derived-headroom",
+            "P2/android/replaced/overload-presence",
+            "P2/android/replaced/overload-copy",
+            "P2/android/replaced/apply-enabled",
+            "P2/android/replaced/stepper-width",
+            "P2/android/replaced/primary-height",
+            "P2/android/replaced/title-font-size",
+            "P2/android/replaced/title-font-weight",
+            "P2/android/replaced/title-ink",
+            "P2/android/replaced/summary-wrap",
+            "P2/android/replaced/replacement-callback",
+            "P2/android/replaced/visual-composition"
+          ],
+          "evidence": [
+            {
+              "path": "common-corpora/T2/source-b/d0/android/P1/observation.json",
+              "sha256": "568614d7e1deca181999c1a16bfb4d7636012128ad1e11ae8244b673dbfecc15"
+            },
+            {
+              "path": "common-corpora/T2/source-b/d0/android/P2/observation.json",
+              "sha256": "094af41c54ff320455b5e1f151bd0eedcac0e2c4efe9399df7b2d3a6a2832572"
+            }
+          ]
+        },
+        {
+          "scope": "iOS numeric typography/color/ellipsis",
+          "reason": "Frozen public native collector cannot expose generic computed SwiftUI style; all 24 native_style cells remain U. Qualitative image review is separate and does not replace native numbers.",
+          "fixed_row_ids": [
+            "P1/ios/loaded/title-font-size",
+            "P1/ios/loaded/title-font-weight",
+            "P1/ios/loaded/title-ink",
+            "P1/ios/loaded/summary-wrap",
+            "P1/ios/leveled/title-font-size",
+            "P1/ios/leveled/title-font-weight",
+            "P1/ios/leveled/title-ink",
+            "P1/ios/leveled/summary-wrap",
+            "P1/ios/previewed/title-font-size",
+            "P1/ios/previewed/title-font-weight",
+            "P1/ios/previewed/title-ink",
+            "P1/ios/previewed/summary-wrap",
+            "P1/ios/muted/title-font-size",
+            "P1/ios/muted/title-font-weight",
+            "P1/ios/muted/title-ink",
+            "P1/ios/muted/summary-wrap",
+            "P1/ios/submitted/title-font-size",
+            "P1/ios/submitted/title-font-weight",
+            "P1/ios/submitted/title-ink",
+            "P1/ios/submitted/summary-wrap",
+            "P1/ios/replaced/title-font-size",
+            "P1/ios/replaced/title-font-weight",
+            "P1/ios/replaced/title-ink",
+            "P1/ios/replaced/summary-wrap",
+            "P2/ios/loaded/title-font-size",
+            "P2/ios/loaded/title-font-weight",
+            "P2/ios/loaded/title-ink",
+            "P2/ios/loaded/summary-wrap",
+            "P2/ios/leveled/title-font-size",
+            "P2/ios/leveled/title-font-weight",
+            "P2/ios/leveled/title-ink",
+            "P2/ios/leveled/summary-wrap",
+            "P2/ios/previewed/title-font-size",
+            "P2/ios/previewed/title-font-weight",
+            "P2/ios/previewed/title-ink",
+            "P2/ios/previewed/summary-wrap",
+            "P2/ios/muted/title-font-size",
+            "P2/ios/muted/title-font-weight",
+            "P2/ios/muted/title-ink",
+            "P2/ios/muted/summary-wrap",
+            "P2/ios/submitted/title-font-size",
+            "P2/ios/submitted/title-font-weight",
+            "P2/ios/submitted/title-ink",
+            "P2/ios/submitted/summary-wrap",
+            "P2/ios/replaced/title-font-size",
+            "P2/ios/replaced/title-font-weight",
+            "P2/ios/replaced/title-ink",
+            "P2/ios/replaced/summary-wrap"
+          ],
+          "evidence": [
+            {
+              "path": "design-v2/T2/public/STYLE-PRECISION.md",
+              "sha256": "27d72e6f9564623d8c5003e6d5791f3b5e441f771cbd93b47dd7c843488c7c26"
+            }
+          ]
+        },
+        {
+          "scope": "P2 iOS leveled activation interval",
+          "reason": "Music plus is at max; no demonstrated successful native dispatch. Empty interval cannot establish no-callback behavior.",
+          "fixed_row_ids": [
+            "P2/ios/leveled/activation-callback"
+          ],
+          "evidence": [
+            {
+              "path": "common-corpora/T2/source-b/d0/ios/P2/observation.json",
+              "sha256": "243d99f2eaacbe98dfaa450932d48cd77b65044d5afab0b185f506499176af24"
+            }
+          ]
+        }
+      ],
+      "source_api_issues": [],
+      "source_only_unasserted_concerns": [],
+      "api_review_scope": "API shape and production ownership reviewed against sealed source plus actual successful native build logs. No compilation/API shape defect was observed. Behavior, visual and API dispositions remain separate.",
+      "unasserted_scope": [
+        {
+          "requirement": "All-channel seed clamping and boundary edits",
+          "ledger_gap": "Only music/presenter levels and selected enabled flags are asserted. No full grid of negative/above-max seeds, decrement routes, room levels, 0-audible eligibility or every channel lock route. D0 uses ordinary selected fixtures; no additional test was run."
+        },
+        {
+          "requirement": "Replacement resets every channel field and caller order",
+          "ledger_gap": "Room mute/level/lock and every channel field have no dedicated fixed row. Original room-mute native node/image corroborates the existing replacement defect; it is not a new denominator cell. Reordered/added/removed channels are not exercised."
+        },
+        {
+          "requirement": "Complete identity/accessibility semantics",
+          "ledger_gap": "The selected rows cover preview-selected and music-muted plus some enabled flags. They do not independently assert every identifier, live/room selected trait, every disabled control, screen-reader focus/order or absence of every nested action. Source inspection is separate."
+        },
+        {
+          "requirement": "Every font, padding and layout metric in BRIEF",
+          "ledger_gap": "Numeric ledger covers title style, summary ellipsis, one stepper width and primary height. All other text sizes/weights, 48-unit stepper heights, counter40/mute90 allocations, surface radius10/inset12 and 8/16 gaps have no individual numeric cells. Qualitative visual composition does not prove each exact value."
+        },
+        {
+          "requirement": "All notes and caller context",
+          "ledger_gap": "Four paragraphs, heading placement and caller context were visually inspected, but the selected ledger has no independent string row for every note/context/heading identity. No claim that selected22 proves arbitrary long-content behavior."
+        },
+        {
+          "requirement": "All callback model fields and editing routes",
+          "ledger_gap": "Frozen event assertions inspect selected native intervals and serialized receipts. Names/captions/lock metadata, all potential edits and post-replacement confirmation in every state are not separately dispatched/asserted. No callback defect is inferred from a blocked interval."
+        },
+        {
+          "requirement": "Arbitrary caller/theme/type combinations",
+          "ledger_gap": "Only delivered P1/P2 on two platforms are in this stage. Wider dynamic type, RTL, alternative titles/notes/identities, and additional business permutations are not established."
+        }
+      ],
+      "classification_notes": {
+        "copy_format": "No independent copy/format cluster: changed derived/warning copy is a consequence of replacement channel state. Singular overload1 and headroom rule were not overridden.",
+        "visual_layout": "Original viewports show readable hierarchy, selected marker, disabled appearance, ordered full notes and no component overlap/truncation. Composition P applies only on integrity-valid iOS; Android remains U. Exact iOS native style is unsupported.",
+        "accessibility": "No confirmed fixed-row accessibility failure. Scope is limited to collected selected/disabled facts and separately reviewed source.",
+        "business_state": "Eight iOS F rows belong to the evidenced replacement cluster.",
+        "callbacks": "No successfully dispatched callback defect observed. P2 blocked plus callback remains U.",
+        "introduced": "No prior comparable stage was read. These are D0 observations; no claim of introduction or regression."
+      }
+    }
+  },
+  "scope": "Anonymous symmetric public D0 evaluation only. Complete immutable 22-family selected-state acceptance denominator, 528 rows per source. P/F/U/N/A preserved; separate input/API checks do not enter acceptance counts.",
+  "input_acquisition": "All eight original acquisition runs completed with exit0 and native test/build success. Logs/manifests and hashes retained by reference in integrity.json. Android input comparison fails direction casing; this does not convert successful execution into acceptance proof.",
+  "unasserted_scope": [
+    {
+      "requirement": "All-channel seed clamping and boundary edits",
+      "ledger_gap": "Only music/presenter levels and selected enabled flags are asserted. No full grid of negative/above-max seeds, decrement routes, room levels, 0-audible eligibility or every channel lock route. D0 uses ordinary selected fixtures; no additional test was run."
+    },
+    {
+      "requirement": "Replacement resets every channel field and caller order",
+      "ledger_gap": "Room mute/level/lock and every channel field have no dedicated fixed row. Original room-mute native node/image corroborates the existing replacement defect; it is not a new denominator cell. Reordered/added/removed channels are not exercised."
+    },
+    {
+      "requirement": "Complete identity/accessibility semantics",
+      "ledger_gap": "The selected rows cover preview-selected and music-muted plus some enabled flags. They do not independently assert every identifier, live/room selected trait, every disabled control, screen-reader focus/order or absence of every nested action. Source inspection is separate."
+    },
+    {
+      "requirement": "Every font, padding and layout metric in BRIEF",
+      "ledger_gap": "Numeric ledger covers title style, summary ellipsis, one stepper width and primary height. All other text sizes/weights, 48-unit stepper heights, counter40/mute90 allocations, surface radius10/inset12 and 8/16 gaps have no individual numeric cells. Qualitative visual composition does not prove each exact value."
+    },
+    {
+      "requirement": "All notes and caller context",
+      "ledger_gap": "Four paragraphs, heading placement and caller context were visually inspected, but the selected ledger has no independent string row for every note/context/heading identity. No claim that selected22 proves arbitrary long-content behavior."
+    },
+    {
+      "requirement": "All callback model fields and editing routes",
+      "ledger_gap": "Frozen event assertions inspect selected native intervals and serialized receipts. Names/captions/lock metadata, all potential edits and post-replacement confirmation in every state are not separately dispatched/asserted. No callback defect is inferred from a blocked interval."
+    },
+    {
+      "requirement": "Arbitrary caller/theme/type combinations",
+      "ledger_gap": "Only delivered P1/P2 on two platforms are in this stage. Wider dynamic type, RTL, alternative titles/notes/identities, and additional business permutations are not established."
+    }
+  ],
+  "evidence_integrity": {
+    "path": "evaluation/D0/T2/integrity.json",
+    "sha256": "ee031bb2254c28fd0d7c99f0770eb7f9c48ab8747e1d066988791f4b8b2bb53e"
+  },
+  "review_index": {
+    "path": "evaluation/D0/T2/visual-review-index.json",
+    "sha256": "02c7820f02ef14c6e716896cadb20ac58a79055092d30a20a2bc4f7d90825525"
+  }
+}

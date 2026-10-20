@@ -1,0 +1,99 @@
+{
+  "initial": {
+    "id": "h1-session",
+    "title": "Broadcast cue mixer",
+    "context": "Evening bulletin • Studio B",
+    "maxLiveUnits": 6,
+    "maxLevel": 5,
+    "mode": "live",
+    "stepperWidth": 48,
+    "notes": [
+      "Check the live load before sending the mix to the desk. Each unmuted channel with a level above zero contributes its displayed units. Muted channels retain their stored levels so that an engineer can restore them without rebuilding the balance.",
+      "Preview mode lets the engineer prepare a mix that exceeds the live unit limit. The warning remains visible because switching that mix to live would require reducing levels or muting channels. Applying a preview mix does not automatically switch the desk to live.",
+      "Locked channels are supplied by the producer. Their increase, decrease and mute controls remain disabled while the channel is locked, but their current audible levels still count in the load. Changing mode does not unlock a channel or alter any stored level.",
+      "A replacement session restores all channel levels, mute flags and mode from the new request on the existing mounted component. Applying a mix reports the real current values to the caller. This panel does not access an audio device, start recording or change system volume."
+    ],
+    "channels": [
+      {
+        "id": "voice",
+        "name": "Presenter",
+        "caption": "Speech bus • producer locked",
+        "level": 0,
+        "muted": false,
+        "locked": true
+      },
+      {
+        "id": "music",
+        "name": "Music bed",
+        "caption": "Underscore bus",
+        "level": 0,
+        "muted": false,
+        "locked": false
+      },
+      {
+        "id": "room",
+        "name": "Room tone",
+        "caption": "Ambience bus",
+        "level": 2,
+        "muted": false,
+        "locked": false
+      }
+    ]
+  },
+  "updates": [
+    {
+      "id": "h1-replacement",
+      "title": "Broadcast cue mixer",
+      "context": "Morning interview • Studio C",
+      "maxLiveUnits": 4,
+      "maxLevel": 5,
+      "mode": "live",
+      "stepperWidth": 48,
+      "notes": [
+        "Check the live load before sending the mix to the desk. Each unmuted channel with a level above zero contributes its displayed units. Muted channels retain their stored levels so that an engineer can restore them without rebuilding the balance.",
+        "Preview mode lets the engineer prepare a mix that exceeds the live unit limit. The warning remains visible because switching that mix to live would require reducing levels or muting channels. Applying a preview mix does not automatically switch the desk to live.",
+        "Locked channels are supplied by the producer. Their increase, decrease and mute controls remain disabled while the channel is locked, but their current audible levels still count in the load. Changing mode does not unlock a channel or alter any stored level.",
+        "A replacement session restores all channel levels, mute flags and mode from the new request on the existing mounted component. Applying a mix reports the real current values to the caller. This panel does not access an audio device, start recording or change system volume."
+      ],
+      "channels": [
+        {
+          "id": "voice",
+          "name": "Presenter",
+          "caption": "Speech bus • producer locked",
+          "level": 0,
+          "muted": false,
+          "locked": true
+        },
+        {
+          "id": "music",
+          "name": "Music bed",
+          "caption": "Underscore bus",
+          "level": 2,
+          "muted": false,
+          "locked": false
+        },
+        {
+          "id": "room",
+          "name": "Room tone",
+          "caption": "Ambience bus",
+          "level": 2,
+          "muted": true,
+          "locked": false
+        }
+      ]
+    }
+  ],
+  "width": 390,
+  "theme": "light",
+  "dynamic_type": "large",
+  "fontScale": 1.0,
+  "direction": "ltr",
+  "canvas_color": "#FFFFFF",
+  "viewportHeight": 600,
+  "max_scrolls": 24,
+  "state_capture": true,
+  "required_identifiers": [
+    "mixer.primary",
+    "mixer.notes"
+  ]
+}

@@ -1,0 +1,3866 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "Independent blind design-v2 context",
+    "approval_reference": "approval.json; frozen before all six implementations",
+    "sources": [
+      {
+        "id": "reference",
+        "path": "reference.json",
+        "sha256": "6eb39e83cf2438219407e46ee70bcba3ec62d3bb4fe91440775341d6f35effc6"
+      }
+    ],
+    "required_rule_ids": [
+      "title",
+      "focused-object",
+      "queue-second-selected",
+      "stable-selected",
+      "care-selected",
+      "classification-enabled",
+      "care-category-presence",
+      "surface-category-selected",
+      "completion-summary",
+      "validation-copy",
+      "submit-enabled",
+      "second-object-status",
+      "primary-height",
+      "queue-width",
+      "care-control-height",
+      "title-font-size",
+      "title-font-weight",
+      "title-ink",
+      "inspector-wrap",
+      "activation-callback",
+      "replacement-callback",
+      "visual-composition"
+    ],
+    "rules": [
+      {
+        "id": "title",
+        "kind": "control",
+        "target": "title",
+        "property": "label"
+      },
+      {
+        "id": "focused-object",
+        "kind": "control",
+        "target": "focused",
+        "property": "label"
+      },
+      {
+        "id": "queue-second-selected",
+        "kind": "control",
+        "target": "queue2",
+        "property": "selected"
+      },
+      {
+        "id": "stable-selected",
+        "kind": "control",
+        "target": "stable",
+        "property": "selected"
+      },
+      {
+        "id": "care-selected",
+        "kind": "control",
+        "target": "care",
+        "property": "selected"
+      },
+      {
+        "id": "classification-enabled",
+        "kind": "control",
+        "target": "stable",
+        "property": "enabled"
+      },
+      {
+        "id": "care-category-presence",
+        "kind": "control",
+        "target": "reasonGroup",
+        "property": "present"
+      },
+      {
+        "id": "surface-category-selected",
+        "kind": "control",
+        "target": "surface",
+        "property": "selected"
+      },
+      {
+        "id": "completion-summary",
+        "kind": "control",
+        "target": "summary",
+        "property": "label"
+      },
+      {
+        "id": "validation-copy",
+        "kind": "control",
+        "target": "validation",
+        "property": "label"
+      },
+      {
+        "id": "submit-enabled",
+        "kind": "control",
+        "target": "primary",
+        "property": "enabled"
+      },
+      {
+        "id": "second-object-status",
+        "kind": "control",
+        "target": "queue2",
+        "property": "label"
+      },
+      {
+        "id": "primary-height",
+        "kind": "geometry",
+        "target": "primary",
+        "property": "height",
+        "op": "near",
+        "basis": "control",
+        "measurement": "accessibility_box"
+      },
+      {
+        "id": "queue-width",
+        "kind": "geometry",
+        "target": "queue2",
+        "property": "width",
+        "op": "near",
+        "basis": "control",
+        "measurement": "accessibility_box"
+      },
+      {
+        "id": "care-control-height",
+        "kind": "geometry",
+        "target": "surface",
+        "property": "height",
+        "op": "near",
+        "basis": "control",
+        "measurement": "accessibility_box"
+      },
+      {
+        "id": "title-font-size",
+        "kind": "text_layout",
+        "target": "title",
+        "property": "font_sp"
+      },
+      {
+        "id": "title-font-weight",
+        "kind": "text_layout",
+        "target": "title",
+        "property": "font_weight"
+      },
+      {
+        "id": "title-ink",
+        "kind": "text_layout",
+        "target": "title",
+        "property": "color_argb"
+      },
+      {
+        "id": "inspector-wrap",
+        "kind": "text_layout",
+        "target": "inspectionNote",
+        "property": "ellipsized"
+      },
+      {
+        "id": "activation-callback",
+        "kind": "event"
+      },
+      {
+        "id": "replacement-callback",
+        "kind": "event",
+        "stimulus": "caller_update"
+      },
+      {
+        "id": "visual-composition",
+        "kind": "manual",
+        "target": "title",
+        "allowed_methods": [
+          "visual"
+        ],
+        "coverage": "target"
+      }
+    ],
+    "scenarios": {
+      "P1": {
+        "states": [
+          {
+            "id": "loaded",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          },
+          {
+            "id": "reasoned",
+            "input_index": 0,
+            "after_action": 2,
+            "coverage": "targets"
+          },
+          {
+            "id": "advanced",
+            "input_index": 0,
+            "after_action": 3,
+            "coverage": "targets"
+          },
+          {
+            "id": "classified",
+            "input_index": 0,
+            "after_action": 4,
+            "coverage": "targets"
+          },
+          {
+            "id": "submitted",
+            "input_index": 0,
+            "after_action": 5,
+            "coverage": "targets"
+          },
+          {
+            "id": "replaced",
+            "input_index": 1,
+            "after_action": 7,
+            "coverage": "full_content",
+            "stimulus_action": 6
+          }
+        ],
+        "actions": [
+          {
+            "type": "sweep",
+            "state_id": "loaded",
+            "max_steps": 24
+          },
+          {
+            "type": "tap",
+            "target": "care",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "care-marked"
+          },
+          {
+            "type": "tap",
+            "target": "surface",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "reasoned"
+          },
+          {
+            "type": "tap",
+            "target": "queue2",
+            "reveal": true,
+            "state_id": "advanced"
+          },
+          {
+            "type": "tap",
+            "target": "stable",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "classified"
+          },
+          {
+            "type": "tap",
+            "target": "primary",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "submitted"
+          },
+          {
+            "type": "apply_next_fixture",
+            "state_id": "caller-applied"
+          },
+          {
+            "type": "sweep",
+            "state_id": "replaced",
+            "max_steps": 24
+          }
+        ],
+        "values": {
+          "title": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/title"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/title"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/title"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/title"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/title"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/title"
+              }
+            }
+          },
+          "focused-object": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/focused-object"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/focused-object"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/focused-object"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/focused-object"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/focused-object"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/focused-object"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/focused-object"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/focused-object"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/focused-object"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/focused-object"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/focused-object"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/focused-object"
+              }
+            }
+          },
+          "queue-second-selected": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/queue-second-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/queue-second-selected"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/queue-second-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/queue-second-selected"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/queue-second-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/queue-second-selected"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/queue-second-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/queue-second-selected"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/queue-second-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/queue-second-selected"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/queue-second-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/queue-second-selected"
+              }
+            }
+          },
+          "stable-selected": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/stable-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/stable-selected"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/stable-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/stable-selected"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/stable-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/stable-selected"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/stable-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/stable-selected"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/stable-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/stable-selected"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/stable-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/stable-selected"
+              }
+            }
+          },
+          "care-selected": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/care-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/care-selected"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/care-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/care-selected"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/care-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/care-selected"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/care-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/care-selected"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/care-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/care-selected"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/care-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/care-selected"
+              }
+            }
+          },
+          "classification-enabled": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/classification-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/classification-enabled"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/classification-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/classification-enabled"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/classification-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/classification-enabled"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/classification-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/classification-enabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/classification-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/classification-enabled"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/classification-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/classification-enabled"
+              }
+            }
+          },
+          "care-category-presence": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/care-category-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/care-category-presence"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/care-category-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/care-category-presence"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/care-category-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/care-category-presence"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/care-category-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/care-category-presence"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/care-category-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/care-category-presence"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/care-category-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/care-category-presence"
+              }
+            }
+          },
+          "surface-category-selected": {
+            "loaded": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/surface-category-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/surface-category-selected"
+              }
+            },
+            "advanced": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "classified": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "submitted": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "replaced": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            }
+          },
+          "completion-summary": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/completion-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/completion-summary"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/completion-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/completion-summary"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/completion-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/completion-summary"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/completion-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/completion-summary"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/completion-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/completion-summary"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/completion-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/completion-summary"
+              }
+            }
+          },
+          "validation-copy": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/validation-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/validation-copy"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/validation-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/validation-copy"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/validation-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/validation-copy"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/validation-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/validation-copy"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/validation-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/validation-copy"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/validation-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/validation-copy"
+              }
+            }
+          },
+          "submit-enabled": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/submit-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/submit-enabled"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/submit-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/submit-enabled"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/submit-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/submit-enabled"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/submit-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/submit-enabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/submit-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/submit-enabled"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/submit-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/submit-enabled"
+              }
+            }
+          },
+          "second-object-status": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/second-object-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/second-object-status"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/second-object-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/second-object-status"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/second-object-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/second-object-status"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/second-object-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/second-object-status"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/second-object-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/second-object-status"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/second-object-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/second-object-status"
+              }
+            }
+          },
+          "primary-height": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            }
+          },
+          "queue-width": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/queue_normal"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/queue_normal"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/queue_normal"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/queue_normal"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/queue_normal"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/queue_normal"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/queue_normal"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/queue_normal"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/queue_normal"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/queue_normal"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/queue_normal"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/queue_normal"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            }
+          },
+          "care-control-height": {
+            "loaded": {
+              "not_applicable": "Care category control is absent unless focused status is care."
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/care_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/care_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "advanced": {
+              "not_applicable": "Care category control is absent unless focused status is care."
+            },
+            "classified": {
+              "not_applicable": "Care category control is absent unless focused status is care."
+            },
+            "submitted": {
+              "not_applicable": "Care category control is absent unless focused status is care."
+            },
+            "replaced": {
+              "not_applicable": "Care category control is absent unless focused status is care."
+            }
+          },
+          "title-font-size": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            }
+          },
+          "title-font-weight": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            }
+          },
+          "title-ink": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            }
+          },
+          "inspector-wrap": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            }
+          },
+          "activation-callback": {
+            "loaded": {
+              "not_applicable": "No user activation is the selected stimulus for this state."
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/activation-callback"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/activation-callback"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/activation-callback"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/activation-callback"
+              }
+            },
+            "replaced": {
+              "not_applicable": "No user activation is the selected stimulus for this state."
+            }
+          },
+          "replacement-callback": {
+            "loaded": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "reasoned": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "advanced": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "classified": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "submitted": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/replacement-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/replacement-callback"
+              }
+            }
+          },
+          "visual-composition": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/loaded/visual-composition"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/reasoned/visual-composition"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/advanced/visual-composition"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/classified/visual-composition"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/submitted/visual-composition"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P1/replaced/visual-composition"
+              }
+            }
+          }
+        }
+      },
+      "P2": {
+        "states": [
+          {
+            "id": "loaded",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          },
+          {
+            "id": "reasoned",
+            "input_index": 0,
+            "after_action": 2,
+            "coverage": "targets"
+          },
+          {
+            "id": "advanced",
+            "input_index": 0,
+            "after_action": 3,
+            "coverage": "targets"
+          },
+          {
+            "id": "classified",
+            "input_index": 0,
+            "after_action": 4,
+            "coverage": "targets"
+          },
+          {
+            "id": "submitted",
+            "input_index": 0,
+            "after_action": 5,
+            "coverage": "targets"
+          },
+          {
+            "id": "replaced",
+            "input_index": 1,
+            "after_action": 7,
+            "coverage": "full_content",
+            "stimulus_action": 6
+          }
+        ],
+        "actions": [
+          {
+            "type": "sweep",
+            "state_id": "loaded",
+            "max_steps": 24
+          },
+          {
+            "type": "tap",
+            "target": "care",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "care-marked"
+          },
+          {
+            "type": "tap",
+            "target": "surface",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "reasoned"
+          },
+          {
+            "type": "tap",
+            "target": "queue2",
+            "reveal": true,
+            "state_id": "advanced"
+          },
+          {
+            "type": "tap",
+            "target": "stable",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "classified"
+          },
+          {
+            "type": "tap",
+            "target": "primary",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "submitted"
+          },
+          {
+            "type": "apply_next_fixture",
+            "state_id": "caller-applied"
+          },
+          {
+            "type": "sweep",
+            "state_id": "replaced",
+            "max_steps": 24
+          }
+        ],
+        "values": {
+          "title": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/title"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/title"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/title"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/title"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/title"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/title"
+              }
+            }
+          },
+          "focused-object": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/focused-object"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/focused-object"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/focused-object"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/focused-object"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/focused-object"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/focused-object"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/focused-object"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/focused-object"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/focused-object"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/focused-object"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/focused-object"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/focused-object"
+              }
+            }
+          },
+          "queue-second-selected": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/queue-second-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/queue-second-selected"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/queue-second-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/queue-second-selected"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/queue-second-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/queue-second-selected"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/queue-second-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/queue-second-selected"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/queue-second-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/queue-second-selected"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/queue-second-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/queue-second-selected"
+              }
+            }
+          },
+          "stable-selected": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/stable-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/stable-selected"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/stable-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/stable-selected"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/stable-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/stable-selected"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/stable-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/stable-selected"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/stable-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/stable-selected"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/stable-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/stable-selected"
+              }
+            }
+          },
+          "care-selected": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/care-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/care-selected"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/care-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/care-selected"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/care-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/care-selected"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/care-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/care-selected"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/care-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/care-selected"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/care-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/care-selected"
+              }
+            }
+          },
+          "classification-enabled": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/classification-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/classification-enabled"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/classification-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/classification-enabled"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/classification-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/classification-enabled"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/classification-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/classification-enabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/classification-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/classification-enabled"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/classification-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/classification-enabled"
+              }
+            }
+          },
+          "care-category-presence": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/care-category-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/care-category-presence"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/care-category-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/care-category-presence"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/care-category-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/care-category-presence"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/care-category-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/care-category-presence"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/care-category-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/care-category-presence"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/care-category-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/care-category-presence"
+              }
+            }
+          },
+          "surface-category-selected": {
+            "loaded": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/surface-category-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/surface-category-selected"
+              }
+            },
+            "advanced": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "classified": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "submitted": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "replaced": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            }
+          },
+          "completion-summary": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/completion-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/completion-summary"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/completion-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/completion-summary"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/completion-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/completion-summary"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/completion-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/completion-summary"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/completion-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/completion-summary"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/completion-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/completion-summary"
+              }
+            }
+          },
+          "validation-copy": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/validation-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/validation-copy"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/validation-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/validation-copy"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/validation-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/validation-copy"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/validation-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/validation-copy"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/validation-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/validation-copy"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/validation-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/validation-copy"
+              }
+            }
+          },
+          "submit-enabled": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/submit-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/submit-enabled"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/submit-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/submit-enabled"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/submit-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/submit-enabled"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/submit-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/submit-enabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/submit-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/submit-enabled"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/submit-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/submit-enabled"
+              }
+            }
+          },
+          "second-object-status": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/second-object-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/second-object-status"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/second-object-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/second-object-status"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/second-object-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/second-object-status"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/second-object-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/second-object-status"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/second-object-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/second-object-status"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/second-object-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/second-object-status"
+              }
+            }
+          },
+          "primary-height": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            }
+          },
+          "queue-width": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/queue_narrow"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/queue_narrow"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/queue_narrow"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/queue_narrow"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/queue_narrow"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/queue_narrow"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/queue_narrow"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/queue_narrow"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/queue_narrow"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/queue_narrow"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/queue_narrow"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/queue_narrow"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            }
+          },
+          "care-control-height": {
+            "loaded": {
+              "not_applicable": "Care category control is absent unless focused status is care."
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/care_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/care_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "advanced": {
+              "not_applicable": "Care category control is absent unless focused status is care."
+            },
+            "classified": {
+              "not_applicable": "Care category control is absent unless focused status is care."
+            },
+            "submitted": {
+              "not_applicable": "Care category control is absent unless focused status is care."
+            },
+            "replaced": {
+              "not_applicable": "Care category control is absent unless focused status is care."
+            }
+          },
+          "title-font-size": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            }
+          },
+          "title-font-weight": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            }
+          },
+          "title-ink": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/dark_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/dark_ink"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/dark_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/dark_ink"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/dark_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/dark_ink"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/dark_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/dark_ink"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/dark_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/dark_ink"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/dark_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/dark_ink"
+              }
+            }
+          },
+          "inspector-wrap": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            }
+          },
+          "activation-callback": {
+            "loaded": {
+              "not_applicable": "No user activation is the selected stimulus for this state."
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/activation-callback"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/activation-callback"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/activation-callback"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/activation-callback"
+              }
+            },
+            "replaced": {
+              "not_applicable": "No user activation is the selected stimulus for this state."
+            }
+          },
+          "replacement-callback": {
+            "loaded": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "reasoned": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "advanced": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "classified": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "submitted": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/replacement-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/replacement-callback"
+              }
+            }
+          },
+          "visual-composition": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/loaded/visual-composition"
+              }
+            },
+            "reasoned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/reasoned/visual-composition"
+              }
+            },
+            "advanced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/advanced/visual-composition"
+              }
+            },
+            "classified": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/classified/visual-composition"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/submitted/visual-composition"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/P2/replaced/visual-composition"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "reference": {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "6eb39e83cf2438219407e46ee70bcba3ec62d3bb4fe91440775341d6f35effc6",
+      "document": {
+        "geometry": {
+          "ios": {
+            "primary_height": {
+              "value": 56,
+              "unit": "pt"
+            },
+            "stepper_width": {
+              "value": 44,
+              "unit": "pt"
+            },
+            "queue_normal": {
+              "value": 358,
+              "unit": "pt"
+            },
+            "queue_narrow": {
+              "value": 288,
+              "unit": "pt"
+            },
+            "care_height": {
+              "value": 48,
+              "unit": "pt"
+            },
+            "tolerance": {
+              "value": 0.75,
+              "unit": "pt"
+            }
+          },
+          "android": {
+            "primary_height": {
+              "value": 56,
+              "unit": "dp"
+            },
+            "stepper_width": {
+              "value": 44,
+              "unit": "dp"
+            },
+            "queue_normal": {
+              "value": 358,
+              "unit": "dp"
+            },
+            "queue_narrow": {
+              "value": 288,
+              "unit": "dp"
+            },
+            "care_height": {
+              "value": 48,
+              "unit": "dp"
+            },
+            "tolerance": {
+              "value": 0.75,
+              "unit": "dp"
+            }
+          }
+        },
+        "native_style": {
+          "font": {
+            "value": 22,
+            "unit": "sp"
+          },
+          "weight": {
+            "value": 700,
+            "unit": "scalar"
+          },
+          "light_ink": {
+            "value": "#FF432D58",
+            "unit": "argb"
+          },
+          "dark_ink": {
+            "value": "#FFEADDF6",
+            "unit": "argb"
+          },
+          "no_ellipsis": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "scenarios": {
+          "P1": {
+            "loaded": {
+              "title": {
+                "value": "Collection condition review",
+                "unit": "string"
+              },
+              "focused-object": {
+                "value": "Botanical folio",
+                "unit": "string"
+              },
+              "queue-second-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "stable-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "care-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "classification-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-category-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "completion-summary": {
+                "value": "1 of 3 reviewed • 0 follow-ups",
+                "unit": "string"
+              },
+              "validation-copy": {
+                "value": "2 required decisions remaining",
+                "unit": "string"
+              },
+              "submit-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "second-object-status": {
+                "value": "Ceramic bowl, Pending",
+                "unit": "string"
+              },
+              "visual-composition": {
+                "value": "P1/loaded: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "reasoned": {
+              "title": {
+                "value": "Collection condition review",
+                "unit": "string"
+              },
+              "focused-object": {
+                "value": "Botanical folio",
+                "unit": "string"
+              },
+              "queue-second-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "stable-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "care-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "classification-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-category-presence": {
+                "value": true,
+                "unit": "bool"
+              },
+              "surface-category-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "completion-summary": {
+                "value": "2 of 3 reviewed • 1 follow-up",
+                "unit": "string"
+              },
+              "validation-copy": {
+                "value": "1 required decision remaining",
+                "unit": "string"
+              },
+              "submit-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "second-object-status": {
+                "value": "Ceramic bowl, Pending",
+                "unit": "string"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "P1/reasoned: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "advanced": {
+              "title": {
+                "value": "Collection condition review",
+                "unit": "string"
+              },
+              "focused-object": {
+                "value": "Ceramic bowl",
+                "unit": "string"
+              },
+              "queue-second-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "stable-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "care-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "classification-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-category-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "completion-summary": {
+                "value": "2 of 3 reviewed • 1 follow-up",
+                "unit": "string"
+              },
+              "validation-copy": {
+                "value": "1 required decision remaining",
+                "unit": "string"
+              },
+              "submit-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "second-object-status": {
+                "value": "Ceramic bowl, Pending",
+                "unit": "string"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "P1/advanced: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "classified": {
+              "title": {
+                "value": "Collection condition review",
+                "unit": "string"
+              },
+              "focused-object": {
+                "value": "Ceramic bowl",
+                "unit": "string"
+              },
+              "queue-second-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "stable-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "classification-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-category-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "completion-summary": {
+                "value": "3 of 3 reviewed • 1 follow-up",
+                "unit": "string"
+              },
+              "validation-copy": {
+                "value": "Ready to submit",
+                "unit": "string"
+              },
+              "submit-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "second-object-status": {
+                "value": "Ceramic bowl, Stable",
+                "unit": "string"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "P1/classified: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "submitted": {
+              "title": {
+                "value": "Collection condition review",
+                "unit": "string"
+              },
+              "focused-object": {
+                "value": "Ceramic bowl",
+                "unit": "string"
+              },
+              "queue-second-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "stable-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "classification-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-category-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "completion-summary": {
+                "value": "3 of 3 reviewed • 1 follow-up",
+                "unit": "string"
+              },
+              "validation-copy": {
+                "value": "Ready to submit",
+                "unit": "string"
+              },
+              "submit-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "second-object-status": {
+                "value": "Ceramic bowl, Stable",
+                "unit": "string"
+              },
+              "activation-callback": {
+                "value": [
+                  "condition:p1-review:bowl=stable/-,folio=care/surface,sketch=stable/-"
+                ],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "P1/submitted: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "replaced": {
+              "title": {
+                "value": "Collection condition review",
+                "unit": "string"
+              },
+              "focused-object": {
+                "value": "Harbor sketch",
+                "unit": "string"
+              },
+              "queue-second-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "stable-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "care-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "classification-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-category-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "completion-summary": {
+                "value": "2 of 3 reviewed • 1 follow-up",
+                "unit": "string"
+              },
+              "validation-copy": {
+                "value": "1 required decision remaining",
+                "unit": "string"
+              },
+              "submit-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "second-object-status": {
+                "value": "Ceramic bowl, Needs care",
+                "unit": "string"
+              },
+              "replacement-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "P1/replaced: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            }
+          },
+          "P2": {
+            "loaded": {
+              "title": {
+                "value": "Collection condition review",
+                "unit": "string"
+              },
+              "focused-object": {
+                "value": "Botanical folio",
+                "unit": "string"
+              },
+              "queue-second-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "stable-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "classification-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-category-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "completion-summary": {
+                "value": "3 of 3 reviewed • 0 follow-ups",
+                "unit": "string"
+              },
+              "validation-copy": {
+                "value": "Ready to submit",
+                "unit": "string"
+              },
+              "submit-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "second-object-status": {
+                "value": "Ceramic bowl, Stable",
+                "unit": "string"
+              },
+              "visual-composition": {
+                "value": "P2/loaded: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "reasoned": {
+              "title": {
+                "value": "Collection condition review",
+                "unit": "string"
+              },
+              "focused-object": {
+                "value": "Botanical folio",
+                "unit": "string"
+              },
+              "queue-second-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "stable-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "care-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "classification-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-category-presence": {
+                "value": true,
+                "unit": "bool"
+              },
+              "surface-category-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "completion-summary": {
+                "value": "3 of 3 reviewed • 1 follow-up",
+                "unit": "string"
+              },
+              "validation-copy": {
+                "value": "Ready to submit",
+                "unit": "string"
+              },
+              "submit-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "second-object-status": {
+                "value": "Ceramic bowl, Stable",
+                "unit": "string"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "P2/reasoned: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "advanced": {
+              "title": {
+                "value": "Collection condition review",
+                "unit": "string"
+              },
+              "focused-object": {
+                "value": "Ceramic bowl",
+                "unit": "string"
+              },
+              "queue-second-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "stable-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "classification-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "care-category-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "completion-summary": {
+                "value": "3 of 3 reviewed • 1 follow-up",
+                "unit": "string"
+              },
+              "validation-copy": {
+                "value": "Ready to submit",
+                "unit": "string"
+              },
+              "submit-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "second-object-status": {
+                "value": "Ceramic bowl, Stable",
+                "unit": "string"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "P2/advanced: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "classified": {
+              "title": {
+                "value": "Collection condition review",
+                "unit": "string"
+              },
+              "focused-object": {
+                "value": "Ceramic bowl",
+                "unit": "string"
+              },
+              "queue-second-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "stable-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "classification-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "care-category-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "completion-summary": {
+                "value": "3 of 3 reviewed • 1 follow-up",
+                "unit": "string"
+              },
+              "validation-copy": {
+                "value": "Ready to submit",
+                "unit": "string"
+              },
+              "submit-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "second-object-status": {
+                "value": "Ceramic bowl, Stable",
+                "unit": "string"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "P2/classified: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "submitted": {
+              "title": {
+                "value": "Collection condition review",
+                "unit": "string"
+              },
+              "focused-object": {
+                "value": "Ceramic bowl",
+                "unit": "string"
+              },
+              "queue-second-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "stable-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "classification-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "care-category-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "completion-summary": {
+                "value": "3 of 3 reviewed • 1 follow-up",
+                "unit": "string"
+              },
+              "validation-copy": {
+                "value": "Ready to submit",
+                "unit": "string"
+              },
+              "submit-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "second-object-status": {
+                "value": "Ceramic bowl, Stable",
+                "unit": "string"
+              },
+              "activation-callback": {
+                "value": [
+                  "condition:p2-review:bowl=stable/-,folio=care/surface,sketch=stable/-"
+                ],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "P2/submitted: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "replaced": {
+              "title": {
+                "value": "Collection condition review",
+                "unit": "string"
+              },
+              "focused-object": {
+                "value": "Harbor sketch",
+                "unit": "string"
+              },
+              "queue-second-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "stable-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "care-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "classification-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "care-category-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "completion-summary": {
+                "value": "2 of 3 reviewed • 1 follow-up",
+                "unit": "string"
+              },
+              "validation-copy": {
+                "value": "1 required decision remaining",
+                "unit": "string"
+              },
+              "submit-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "second-object-status": {
+                "value": "Ceramic bowl, Needs care",
+                "unit": "string"
+              },
+              "replacement-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "P2/replaced: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            }
+          }
+        }
+      },
+      "raw_utf8": "{\n  \"geometry\": {\n    \"ios\": {\n      \"primary_height\": {\n        \"value\": 56,\n        \"unit\": \"pt\"\n      },\n      \"stepper_width\": {\n        \"value\": 44,\n        \"unit\": \"pt\"\n      },\n      \"queue_normal\": {\n        \"value\": 358,\n        \"unit\": \"pt\"\n      },\n      \"queue_narrow\": {\n        \"value\": 288,\n        \"unit\": \"pt\"\n      },\n      \"care_height\": {\n        \"value\": 48,\n        \"unit\": \"pt\"\n      },\n      \"tolerance\": {\n        \"value\": 0.75,\n        \"unit\": \"pt\"\n      }\n    },\n    \"android\": {\n      \"primary_height\": {\n        \"value\": 56,\n        \"unit\": \"dp\"\n      },\n      \"stepper_width\": {\n        \"value\": 44,\n        \"unit\": \"dp\"\n      },\n      \"queue_normal\": {\n        \"value\": 358,\n        \"unit\": \"dp\"\n      },\n      \"queue_narrow\": {\n        \"value\": 288,\n        \"unit\": \"dp\"\n      },\n      \"care_height\": {\n        \"value\": 48,\n        \"unit\": \"dp\"\n      },\n      \"tolerance\": {\n        \"value\": 0.75,\n        \"unit\": \"dp\"\n      }\n    }\n  },\n  \"native_style\": {\n    \"font\": {\n      \"value\": 22,\n      \"unit\": \"sp\"\n    },\n    \"weight\": {\n      \"value\": 700,\n      \"unit\": \"scalar\"\n    },\n    \"light_ink\": {\n      \"value\": \"#FF432D58\",\n      \"unit\": \"argb\"\n    },\n    \"dark_ink\": {\n      \"value\": \"#FFEADDF6\",\n      \"unit\": \"argb\"\n    },\n    \"no_ellipsis\": {\n      \"value\": false,\n      \"unit\": \"bool\"\n    }\n  },\n  \"scenarios\": {\n    \"P1\": {\n      \"loaded\": {\n        \"title\": {\n          \"value\": \"Collection condition review\",\n          \"unit\": \"string\"\n        },\n        \"focused-object\": {\n          \"value\": \"Botanical folio\",\n          \"unit\": \"string\"\n        },\n        \"queue-second-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"stable-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"care-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"classification-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-category-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"completion-summary\": {\n          \"value\": \"1 of 3 reviewed • 0 follow-ups\",\n          \"unit\": \"string\"\n        },\n        \"validation-copy\": {\n          \"value\": \"2 required decisions remaining\",\n          \"unit\": \"string\"\n        },\n        \"submit-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"second-object-status\": {\n          \"value\": \"Ceramic bowl, Pending\",\n          \"unit\": \"string\"\n        },\n        \"visual-composition\": {\n          \"value\": \"P1/loaded: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"reasoned\": {\n        \"title\": {\n          \"value\": \"Collection condition review\",\n          \"unit\": \"string\"\n        },\n        \"focused-object\": {\n          \"value\": \"Botanical folio\",\n          \"unit\": \"string\"\n        },\n        \"queue-second-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"stable-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"care-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"classification-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-category-presence\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"surface-category-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"completion-summary\": {\n          \"value\": \"2 of 3 reviewed • 1 follow-up\",\n          \"unit\": \"string\"\n        },\n        \"validation-copy\": {\n          \"value\": \"1 required decision remaining\",\n          \"unit\": \"string\"\n        },\n        \"submit-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"second-object-status\": {\n          \"value\": \"Ceramic bowl, Pending\",\n          \"unit\": \"string\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"P1/reasoned: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"advanced\": {\n        \"title\": {\n          \"value\": \"Collection condition review\",\n          \"unit\": \"string\"\n        },\n        \"focused-object\": {\n          \"value\": \"Ceramic bowl\",\n          \"unit\": \"string\"\n        },\n        \"queue-second-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"stable-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"care-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"classification-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-category-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"completion-summary\": {\n          \"value\": \"2 of 3 reviewed • 1 follow-up\",\n          \"unit\": \"string\"\n        },\n        \"validation-copy\": {\n          \"value\": \"1 required decision remaining\",\n          \"unit\": \"string\"\n        },\n        \"submit-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"second-object-status\": {\n          \"value\": \"Ceramic bowl, Pending\",\n          \"unit\": \"string\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"P1/advanced: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"classified\": {\n        \"title\": {\n          \"value\": \"Collection condition review\",\n          \"unit\": \"string\"\n        },\n        \"focused-object\": {\n          \"value\": \"Ceramic bowl\",\n          \"unit\": \"string\"\n        },\n        \"queue-second-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"stable-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"classification-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-category-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"completion-summary\": {\n          \"value\": \"3 of 3 reviewed • 1 follow-up\",\n          \"unit\": \"string\"\n        },\n        \"validation-copy\": {\n          \"value\": \"Ready to submit\",\n          \"unit\": \"string\"\n        },\n        \"submit-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"second-object-status\": {\n          \"value\": \"Ceramic bowl, Stable\",\n          \"unit\": \"string\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"P1/classified: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"submitted\": {\n        \"title\": {\n          \"value\": \"Collection condition review\",\n          \"unit\": \"string\"\n        },\n        \"focused-object\": {\n          \"value\": \"Ceramic bowl\",\n          \"unit\": \"string\"\n        },\n        \"queue-second-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"stable-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"classification-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-category-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"completion-summary\": {\n          \"value\": \"3 of 3 reviewed • 1 follow-up\",\n          \"unit\": \"string\"\n        },\n        \"validation-copy\": {\n          \"value\": \"Ready to submit\",\n          \"unit\": \"string\"\n        },\n        \"submit-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"second-object-status\": {\n          \"value\": \"Ceramic bowl, Stable\",\n          \"unit\": \"string\"\n        },\n        \"activation-callback\": {\n          \"value\": [\n            \"condition:p1-review:bowl=stable/-,folio=care/surface,sketch=stable/-\"\n          ],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"P1/submitted: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"replaced\": {\n        \"title\": {\n          \"value\": \"Collection condition review\",\n          \"unit\": \"string\"\n        },\n        \"focused-object\": {\n          \"value\": \"Harbor sketch\",\n          \"unit\": \"string\"\n        },\n        \"queue-second-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"stable-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"care-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"classification-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-category-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"completion-summary\": {\n          \"value\": \"2 of 3 reviewed • 1 follow-up\",\n          \"unit\": \"string\"\n        },\n        \"validation-copy\": {\n          \"value\": \"1 required decision remaining\",\n          \"unit\": \"string\"\n        },\n        \"submit-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"second-object-status\": {\n          \"value\": \"Ceramic bowl, Needs care\",\n          \"unit\": \"string\"\n        },\n        \"replacement-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"P1/replaced: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      }\n    },\n    \"P2\": {\n      \"loaded\": {\n        \"title\": {\n          \"value\": \"Collection condition review\",\n          \"unit\": \"string\"\n        },\n        \"focused-object\": {\n          \"value\": \"Botanical folio\",\n          \"unit\": \"string\"\n        },\n        \"queue-second-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"stable-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"classification-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-category-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"completion-summary\": {\n          \"value\": \"3 of 3 reviewed • 0 follow-ups\",\n          \"unit\": \"string\"\n        },\n        \"validation-copy\": {\n          \"value\": \"Ready to submit\",\n          \"unit\": \"string\"\n        },\n        \"submit-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"second-object-status\": {\n          \"value\": \"Ceramic bowl, Stable\",\n          \"unit\": \"string\"\n        },\n        \"visual-composition\": {\n          \"value\": \"P2/loaded: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"reasoned\": {\n        \"title\": {\n          \"value\": \"Collection condition review\",\n          \"unit\": \"string\"\n        },\n        \"focused-object\": {\n          \"value\": \"Botanical folio\",\n          \"unit\": \"string\"\n        },\n        \"queue-second-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"stable-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"care-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"classification-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-category-presence\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"surface-category-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"completion-summary\": {\n          \"value\": \"3 of 3 reviewed • 1 follow-up\",\n          \"unit\": \"string\"\n        },\n        \"validation-copy\": {\n          \"value\": \"Ready to submit\",\n          \"unit\": \"string\"\n        },\n        \"submit-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"second-object-status\": {\n          \"value\": \"Ceramic bowl, Stable\",\n          \"unit\": \"string\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"P2/reasoned: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"advanced\": {\n        \"title\": {\n          \"value\": \"Collection condition review\",\n          \"unit\": \"string\"\n        },\n        \"focused-object\": {\n          \"value\": \"Ceramic bowl\",\n          \"unit\": \"string\"\n        },\n        \"queue-second-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"stable-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"classification-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"care-category-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"completion-summary\": {\n          \"value\": \"3 of 3 reviewed • 1 follow-up\",\n          \"unit\": \"string\"\n        },\n        \"validation-copy\": {\n          \"value\": \"Ready to submit\",\n          \"unit\": \"string\"\n        },\n        \"submit-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"second-object-status\": {\n          \"value\": \"Ceramic bowl, Stable\",\n          \"unit\": \"string\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"P2/advanced: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"classified\": {\n        \"title\": {\n          \"value\": \"Collection condition review\",\n          \"unit\": \"string\"\n        },\n        \"focused-object\": {\n          \"value\": \"Ceramic bowl\",\n          \"unit\": \"string\"\n        },\n        \"queue-second-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"stable-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"classification-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"care-category-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"completion-summary\": {\n          \"value\": \"3 of 3 reviewed • 1 follow-up\",\n          \"unit\": \"string\"\n        },\n        \"validation-copy\": {\n          \"value\": \"Ready to submit\",\n          \"unit\": \"string\"\n        },\n        \"submit-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"second-object-status\": {\n          \"value\": \"Ceramic bowl, Stable\",\n          \"unit\": \"string\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"P2/classified: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"submitted\": {\n        \"title\": {\n          \"value\": \"Collection condition review\",\n          \"unit\": \"string\"\n        },\n        \"focused-object\": {\n          \"value\": \"Ceramic bowl\",\n          \"unit\": \"string\"\n        },\n        \"queue-second-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"stable-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"classification-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"care-category-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"completion-summary\": {\n          \"value\": \"3 of 3 reviewed • 1 follow-up\",\n          \"unit\": \"string\"\n        },\n        \"validation-copy\": {\n          \"value\": \"Ready to submit\",\n          \"unit\": \"string\"\n        },\n        \"submit-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"second-object-status\": {\n          \"value\": \"Ceramic bowl, Stable\",\n          \"unit\": \"string\"\n        },\n        \"activation-callback\": {\n          \"value\": [\n            \"condition:p2-review:bowl=stable/-,folio=care/surface,sketch=stable/-\"\n          ],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"P2/submitted: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"replaced\": {\n        \"title\": {\n          \"value\": \"Collection condition review\",\n          \"unit\": \"string\"\n        },\n        \"focused-object\": {\n          \"value\": \"Harbor sketch\",\n          \"unit\": \"string\"\n        },\n        \"queue-second-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"stable-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"care-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"classification-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"care-category-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"completion-summary\": {\n          \"value\": \"2 of 3 reviewed • 1 follow-up\",\n          \"unit\": \"string\"\n        },\n        \"validation-copy\": {\n          \"value\": \"1 required decision remaining\",\n          \"unit\": \"string\"\n        },\n        \"submit-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"second-object-status\": {\n          \"value\": \"Ceramic bowl, Needs care\",\n          \"unit\": \"string\"\n        },\n        \"replacement-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"P2/replaced: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      }\n    }\n  }\n}\n"
+    }
+  },
+  "contract_sha256": "5617d6323a5e6f3bca5a05eddbbace09f986f2fb976d13fd46d49b51e87f8d4f",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

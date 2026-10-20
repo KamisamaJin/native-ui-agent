@@ -1,0 +1,2112 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "Independent blind design context / multitask-forward",
+    "approval_reference": "approval.json; sealed before all six implementations",
+    "sources": [
+      {
+        "id": "reference",
+        "path": "reference.json",
+        "sha256": "a9f90442ccb8ddabd2eb1d33b8ac48288e0a0fdde2085df9b61a79e63463c6ec"
+      }
+    ],
+    "required_rule_ids": [
+      "title",
+      "context",
+      "first-choice-selected",
+      "second-choice-enabled",
+      "option-enabled",
+      "option-selected",
+      "derived-summary",
+      "eligibility-status",
+      "primary-enabled",
+      "primary-label",
+      "details-presence",
+      "details-copy",
+      "disclosure-label",
+      "primary-height",
+      "choice-width",
+      "title-font-size",
+      "title-font-weight",
+      "title-ink",
+      "summary-wrap",
+      "activation-callback",
+      "replacement-callback",
+      "visual-composition"
+    ],
+    "rules": [
+      {
+        "id": "title",
+        "kind": "control",
+        "target": "title",
+        "property": "label"
+      },
+      {
+        "id": "context",
+        "kind": "control",
+        "target": "context",
+        "property": "label"
+      },
+      {
+        "id": "first-choice-selected",
+        "kind": "control",
+        "target": "choiceA",
+        "property": "selected"
+      },
+      {
+        "id": "second-choice-enabled",
+        "kind": "control",
+        "target": "choiceB",
+        "property": "enabled"
+      },
+      {
+        "id": "option-enabled",
+        "kind": "control",
+        "target": "extra",
+        "property": "enabled"
+      },
+      {
+        "id": "option-selected",
+        "kind": "control",
+        "target": "extra",
+        "property": "selected"
+      },
+      {
+        "id": "derived-summary",
+        "kind": "control",
+        "target": "summary",
+        "property": "label"
+      },
+      {
+        "id": "eligibility-status",
+        "kind": "control",
+        "target": "status",
+        "property": "label"
+      },
+      {
+        "id": "primary-enabled",
+        "kind": "control",
+        "target": "primary",
+        "property": "enabled"
+      },
+      {
+        "id": "primary-label",
+        "kind": "control",
+        "target": "primary",
+        "property": "label"
+      },
+      {
+        "id": "details-presence",
+        "kind": "control",
+        "target": "detail",
+        "property": "present"
+      },
+      {
+        "id": "details-copy",
+        "kind": "control",
+        "target": "detail",
+        "property": "label"
+      },
+      {
+        "id": "disclosure-label",
+        "kind": "control",
+        "target": "disclosure",
+        "property": "label"
+      },
+      {
+        "id": "primary-height",
+        "kind": "geometry",
+        "target": "primary",
+        "property": "height",
+        "basis": "control",
+        "measurement": "accessibility_box",
+        "op": "near"
+      },
+      {
+        "id": "choice-width",
+        "kind": "geometry",
+        "target": "choiceA",
+        "property": "width",
+        "basis": "control",
+        "measurement": "accessibility_box",
+        "op": "near"
+      },
+      {
+        "id": "title-font-size",
+        "kind": "text_layout",
+        "target": "title",
+        "property": "font_sp"
+      },
+      {
+        "id": "title-font-weight",
+        "kind": "text_layout",
+        "target": "title",
+        "property": "font_weight"
+      },
+      {
+        "id": "title-ink",
+        "kind": "text_layout",
+        "target": "title",
+        "property": "color_argb"
+      },
+      {
+        "id": "summary-wrap",
+        "kind": "text_layout",
+        "target": "summary",
+        "property": "ellipsized"
+      },
+      {
+        "id": "activation-callback",
+        "kind": "event"
+      },
+      {
+        "id": "replacement-callback",
+        "kind": "event",
+        "stimulus": "caller_update"
+      },
+      {
+        "id": "visual-composition",
+        "kind": "manual",
+        "target": "title",
+        "allowed_methods": [
+          "visual"
+        ],
+        "coverage": "target"
+      }
+    ],
+    "scenarios": {
+      "H1": {
+        "states": [
+          {
+            "id": "loaded",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          },
+          {
+            "id": "chosen",
+            "input_index": 0,
+            "after_action": 1,
+            "coverage": "targets"
+          },
+          {
+            "id": "details",
+            "input_index": 0,
+            "after_action": 2,
+            "coverage": "targets"
+          },
+          {
+            "id": "optioned",
+            "input_index": 0,
+            "after_action": 3,
+            "coverage": "targets"
+          },
+          {
+            "id": "submitted",
+            "input_index": 0,
+            "after_action": 4,
+            "coverage": "targets"
+          },
+          {
+            "id": "replaced",
+            "input_index": 1,
+            "after_action": 6,
+            "coverage": "full_content",
+            "stimulus_action": 5
+          }
+        ],
+        "actions": [
+          {
+            "type": "sweep",
+            "state_id": "loaded",
+            "max_steps": 24
+          },
+          {
+            "type": "tap",
+            "target": "choiceA",
+            "reveal": true,
+            "state_id": "chosen"
+          },
+          {
+            "type": "tap",
+            "target": "disclosure",
+            "reveal": true,
+            "state_id": "details"
+          },
+          {
+            "type": "tap",
+            "target": "extra",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "optioned"
+          },
+          {
+            "type": "tap",
+            "target": "primary",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "submitted"
+          },
+          {
+            "type": "apply_next_fixture",
+            "state_id": "caller-applied"
+          },
+          {
+            "type": "sweep",
+            "state_id": "replaced",
+            "max_steps": 24
+          }
+        ],
+        "values": {
+          "title": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/title"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/title"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/title"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/title"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/title"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/title"
+              }
+            }
+          },
+          "context": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/context"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/context"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/context"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/context"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/context"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/context"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/context"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/context"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/context"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/context"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/context"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/context"
+              }
+            }
+          },
+          "first-choice-selected": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/first-choice-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/first-choice-selected"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/first-choice-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/first-choice-selected"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/first-choice-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/first-choice-selected"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/first-choice-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/first-choice-selected"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/first-choice-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/first-choice-selected"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/first-choice-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/first-choice-selected"
+              }
+            }
+          },
+          "second-choice-enabled": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/second-choice-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/second-choice-enabled"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/second-choice-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/second-choice-enabled"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/second-choice-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/second-choice-enabled"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/second-choice-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/second-choice-enabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/second-choice-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/second-choice-enabled"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/second-choice-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/second-choice-enabled"
+              }
+            }
+          },
+          "option-enabled": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/option-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/option-enabled"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/option-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/option-enabled"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/option-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/option-enabled"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/option-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/option-enabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/option-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/option-enabled"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/option-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/option-enabled"
+              }
+            }
+          },
+          "option-selected": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/option-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/option-selected"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/option-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/option-selected"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/option-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/option-selected"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/option-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/option-selected"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/option-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/option-selected"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/option-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/option-selected"
+              }
+            }
+          },
+          "derived-summary": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/derived-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/derived-summary"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/derived-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/derived-summary"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/derived-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/derived-summary"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/derived-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/derived-summary"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/derived-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/derived-summary"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/derived-summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/derived-summary"
+              }
+            }
+          },
+          "eligibility-status": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/eligibility-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/eligibility-status"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/eligibility-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/eligibility-status"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/eligibility-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/eligibility-status"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/eligibility-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/eligibility-status"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/eligibility-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/eligibility-status"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/eligibility-status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/eligibility-status"
+              }
+            }
+          },
+          "primary-enabled": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/primary-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/primary-enabled"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/primary-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/primary-enabled"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/primary-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/primary-enabled"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/primary-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/primary-enabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/primary-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/primary-enabled"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/primary-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/primary-enabled"
+              }
+            }
+          },
+          "primary-label": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/primary-label"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/primary-label"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/primary-label"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/primary-label"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/primary-label"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/primary-label"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/primary-label"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/primary-label"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/primary-label"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/primary-label"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/primary-label"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/primary-label"
+              }
+            }
+          },
+          "details-presence": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/details-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/details-presence"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/details-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/details-presence"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/details-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/details-presence"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/details-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/details-presence"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/details-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/details-presence"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/details-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/details-presence"
+              }
+            }
+          },
+          "details-copy": {
+            "loaded": {
+              "not_applicable": "Detail text is deliberately absent while disclosure is collapsed; details-presence checks absence separately."
+            },
+            "chosen": {
+              "not_applicable": "Detail text is deliberately absent while disclosure is collapsed; details-presence checks absence separately."
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/details-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/details-copy"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/details-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/details-copy"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/details-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/details-copy"
+              }
+            },
+            "replaced": {
+              "not_applicable": "Detail text is deliberately absent while disclosure is collapsed; details-presence checks absence separately."
+            }
+          },
+          "disclosure-label": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/disclosure-label"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/disclosure-label"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/disclosure-label"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/disclosure-label"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/disclosure-label"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/disclosure-label"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/disclosure-label"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/disclosure-label"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/disclosure-label"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/disclosure-label"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/disclosure-label"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/disclosure-label"
+              }
+            }
+          },
+          "primary-height": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            }
+          },
+          "choice-width": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/width_normal"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/width_normal"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/width_normal"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/width_normal"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/width_normal"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/width_normal"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/width_normal"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/width_normal"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/width_normal"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/width_normal"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/width_normal"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/width_normal"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            }
+          },
+          "title-font-size": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            }
+          },
+          "title-font-weight": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            }
+          },
+          "title-ink": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            }
+          },
+          "summary-wrap": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            }
+          },
+          "activation-callback": {
+            "loaded": {
+              "not_applicable": "No user activation is the independently selected stimulus for this state."
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/activation-callback"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/activation-callback"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/activation-callback"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/activation-callback"
+              }
+            },
+            "replaced": {
+              "not_applicable": "No user activation is the independently selected stimulus for this state."
+            }
+          },
+          "replacement-callback": {
+            "loaded": {
+              "not_applicable": "Caller replacement is not the selected stimulus for this state."
+            },
+            "chosen": {
+              "not_applicable": "Caller replacement is not the selected stimulus for this state."
+            },
+            "details": {
+              "not_applicable": "Caller replacement is not the selected stimulus for this state."
+            },
+            "optioned": {
+              "not_applicable": "Caller replacement is not the selected stimulus for this state."
+            },
+            "submitted": {
+              "not_applicable": "Caller replacement is not the selected stimulus for this state."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/replacement-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/replacement-callback"
+              }
+            }
+          },
+          "visual-composition": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/visual-composition"
+              }
+            },
+            "chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/chosen/visual-composition"
+              }
+            },
+            "details": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/details/visual-composition"
+              }
+            },
+            "optioned": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/optioned/visual-composition"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/visual-composition"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/visual-composition"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "reference": {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "a9f90442ccb8ddabd2eb1d33b8ac48288e0a0fdde2085df9b61a79e63463c6ec",
+      "document": {
+        "geometry": {
+          "ios": {
+            "height": {
+              "value": 56,
+              "unit": "pt"
+            },
+            "width_normal": {
+              "value": 173,
+              "unit": "pt"
+            },
+            "width_narrow": {
+              "value": 138,
+              "unit": "pt"
+            },
+            "tolerance": {
+              "value": 0.75,
+              "unit": "pt"
+            }
+          },
+          "android": {
+            "height": {
+              "value": 56,
+              "unit": "dp"
+            },
+            "width_normal": {
+              "value": 173,
+              "unit": "dp"
+            },
+            "width_narrow": {
+              "value": 138,
+              "unit": "dp"
+            },
+            "tolerance": {
+              "value": 0.75,
+              "unit": "dp"
+            }
+          }
+        },
+        "native_style": {
+          "font": {
+            "value": 22,
+            "unit": "sp"
+          },
+          "weight": {
+            "value": 700,
+            "unit": "scalar"
+          },
+          "light_ink": {
+            "value": "#FF18251F",
+            "unit": "argb"
+          },
+          "dark_ink": {
+            "value": "#FFE9F2EC",
+            "unit": "argb"
+          },
+          "no_ellipsis": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "scenarios": {
+          "H1": {
+            "loaded": {
+              "title": {
+                "value": "Ridge expedition pack",
+                "unit": "string"
+              },
+              "context": {
+                "value": "North ridge • shared equipment",
+                "unit": "string"
+              },
+              "first-choice-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "second-choice-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "option-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "option-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "derived-summary": {
+                "value": "2 items • 3800 g / 3500 g",
+                "unit": "string"
+              },
+              "eligibility-status": {
+                "value": "Capacity exceeded",
+                "unit": "string"
+              },
+              "primary-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "primary-label": {
+                "value": "Confirm pack",
+                "unit": "string"
+              },
+              "details-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "disclosure-label": {
+                "value": "Show details",
+                "unit": "string"
+              },
+              "visual-composition": {
+                "value": "H1: loaded; native hierarchy, palette, typography, selection, readable wrapping and long notes per BRIEF and reference PNG; only captured regions in target states.",
+                "unit": "string"
+              }
+            },
+            "chosen": {
+              "title": {
+                "value": "Ridge expedition pack",
+                "unit": "string"
+              },
+              "context": {
+                "value": "North ridge • shared equipment",
+                "unit": "string"
+              },
+              "first-choice-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "second-choice-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "option-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "option-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "derived-summary": {
+                "value": "1 item • 2000 g / 3500 g",
+                "unit": "string"
+              },
+              "eligibility-status": {
+                "value": "Shelter required",
+                "unit": "string"
+              },
+              "primary-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "primary-label": {
+                "value": "Confirm pack",
+                "unit": "string"
+              },
+              "details-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "disclosure-label": {
+                "value": "Show details",
+                "unit": "string"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "H1: chosen; native hierarchy, palette, typography, selection, readable wrapping and long notes per BRIEF and reference PNG; only captured regions in target states.",
+                "unit": "string"
+              }
+            },
+            "details": {
+              "title": {
+                "value": "Ridge expedition pack",
+                "unit": "string"
+              },
+              "context": {
+                "value": "North ridge • shared equipment",
+                "unit": "string"
+              },
+              "first-choice-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "second-choice-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "option-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "option-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "derived-summary": {
+                "value": "1 item • 2000 g / 3500 g",
+                "unit": "string"
+              },
+              "eligibility-status": {
+                "value": "Shelter required",
+                "unit": "string"
+              },
+              "primary-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "primary-label": {
+                "value": "Confirm pack",
+                "unit": "string"
+              },
+              "details-presence": {
+                "value": true,
+                "unit": "bool"
+              },
+              "details-copy": {
+                "value": "Shelter needed for this route.",
+                "unit": "string"
+              },
+              "disclosure-label": {
+                "value": "Hide details",
+                "unit": "string"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "H1: details; native hierarchy, palette, typography, selection, readable wrapping and long notes per BRIEF and reference PNG; only captured regions in target states.",
+                "unit": "string"
+              }
+            },
+            "optioned": {
+              "title": {
+                "value": "Ridge expedition pack",
+                "unit": "string"
+              },
+              "context": {
+                "value": "North ridge • shared equipment",
+                "unit": "string"
+              },
+              "first-choice-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "second-choice-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "option-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "option-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "derived-summary": {
+                "value": "1 item • 2200 g / 3500 g",
+                "unit": "string"
+              },
+              "eligibility-status": {
+                "value": "Shelter required",
+                "unit": "string"
+              },
+              "primary-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "primary-label": {
+                "value": "Confirm pack",
+                "unit": "string"
+              },
+              "details-presence": {
+                "value": true,
+                "unit": "bool"
+              },
+              "details-copy": {
+                "value": "Shelter needed for this route.",
+                "unit": "string"
+              },
+              "disclosure-label": {
+                "value": "Hide details",
+                "unit": "string"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "H1: optioned; native hierarchy, palette, typography, selection, readable wrapping and long notes per BRIEF and reference PNG; only captured regions in target states.",
+                "unit": "string"
+              }
+            },
+            "submitted": {
+              "title": {
+                "value": "Ridge expedition pack",
+                "unit": "string"
+              },
+              "context": {
+                "value": "North ridge • shared equipment",
+                "unit": "string"
+              },
+              "first-choice-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "second-choice-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "option-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "option-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "derived-summary": {
+                "value": "1 item • 2200 g / 3500 g",
+                "unit": "string"
+              },
+              "eligibility-status": {
+                "value": "Shelter required",
+                "unit": "string"
+              },
+              "primary-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "primary-label": {
+                "value": "Confirm pack",
+                "unit": "string"
+              },
+              "details-presence": {
+                "value": true,
+                "unit": "bool"
+              },
+              "details-copy": {
+                "value": "Shelter needed for this route.",
+                "unit": "string"
+              },
+              "disclosure-label": {
+                "value": "Hide details",
+                "unit": "string"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "H1: submitted; native hierarchy, palette, typography, selection, readable wrapping and long notes per BRIEF and reference PNG; only captured regions in target states.",
+                "unit": "string"
+              }
+            },
+            "replaced": {
+              "title": {
+                "value": "Ridge expedition pack",
+                "unit": "string"
+              },
+              "context": {
+                "value": "Woodland loop • day equipment",
+                "unit": "string"
+              },
+              "first-choice-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "second-choice-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "option-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "option-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "derived-summary": {
+                "value": "1 item • 2300 g / 2500 g",
+                "unit": "string"
+              },
+              "eligibility-status": {
+                "value": "Ready for departure",
+                "unit": "string"
+              },
+              "primary-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "primary-label": {
+                "value": "Confirm pack",
+                "unit": "string"
+              },
+              "details-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "disclosure-label": {
+                "value": "Show details",
+                "unit": "string"
+              },
+              "replacement-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "H1: replaced; native hierarchy, palette, typography, selection, readable wrapping and long notes per BRIEF and reference PNG; only captured regions in target states.",
+                "unit": "string"
+              }
+            }
+          }
+        }
+      },
+      "raw_utf8": "{\n  \"geometry\": {\n    \"ios\": {\n      \"height\": {\n        \"value\": 56,\n        \"unit\": \"pt\"\n      },\n      \"width_normal\": {\n        \"value\": 173,\n        \"unit\": \"pt\"\n      },\n      \"width_narrow\": {\n        \"value\": 138,\n        \"unit\": \"pt\"\n      },\n      \"tolerance\": {\n        \"value\": 0.75,\n        \"unit\": \"pt\"\n      }\n    },\n    \"android\": {\n      \"height\": {\n        \"value\": 56,\n        \"unit\": \"dp\"\n      },\n      \"width_normal\": {\n        \"value\": 173,\n        \"unit\": \"dp\"\n      },\n      \"width_narrow\": {\n        \"value\": 138,\n        \"unit\": \"dp\"\n      },\n      \"tolerance\": {\n        \"value\": 0.75,\n        \"unit\": \"dp\"\n      }\n    }\n  },\n  \"native_style\": {\n    \"font\": {\n      \"value\": 22,\n      \"unit\": \"sp\"\n    },\n    \"weight\": {\n      \"value\": 700,\n      \"unit\": \"scalar\"\n    },\n    \"light_ink\": {\n      \"value\": \"#FF18251F\",\n      \"unit\": \"argb\"\n    },\n    \"dark_ink\": {\n      \"value\": \"#FFE9F2EC\",\n      \"unit\": \"argb\"\n    },\n    \"no_ellipsis\": {\n      \"value\": false,\n      \"unit\": \"bool\"\n    }\n  },\n  \"scenarios\": {\n    \"H1\": {\n      \"loaded\": {\n        \"title\": {\n          \"value\": \"Ridge expedition pack\",\n          \"unit\": \"string\"\n        },\n        \"context\": {\n          \"value\": \"North ridge • shared equipment\",\n          \"unit\": \"string\"\n        },\n        \"first-choice-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"second-choice-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"option-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"option-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"derived-summary\": {\n          \"value\": \"2 items • 3800 g / 3500 g\",\n          \"unit\": \"string\"\n        },\n        \"eligibility-status\": {\n          \"value\": \"Capacity exceeded\",\n          \"unit\": \"string\"\n        },\n        \"primary-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"primary-label\": {\n          \"value\": \"Confirm pack\",\n          \"unit\": \"string\"\n        },\n        \"details-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"disclosure-label\": {\n          \"value\": \"Show details\",\n          \"unit\": \"string\"\n        },\n        \"visual-composition\": {\n          \"value\": \"H1: loaded; native hierarchy, palette, typography, selection, readable wrapping and long notes per BRIEF and reference PNG; only captured regions in target states.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"chosen\": {\n        \"title\": {\n          \"value\": \"Ridge expedition pack\",\n          \"unit\": \"string\"\n        },\n        \"context\": {\n          \"value\": \"North ridge • shared equipment\",\n          \"unit\": \"string\"\n        },\n        \"first-choice-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"second-choice-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"option-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"option-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"derived-summary\": {\n          \"value\": \"1 item • 2000 g / 3500 g\",\n          \"unit\": \"string\"\n        },\n        \"eligibility-status\": {\n          \"value\": \"Shelter required\",\n          \"unit\": \"string\"\n        },\n        \"primary-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"primary-label\": {\n          \"value\": \"Confirm pack\",\n          \"unit\": \"string\"\n        },\n        \"details-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"disclosure-label\": {\n          \"value\": \"Show details\",\n          \"unit\": \"string\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"H1: chosen; native hierarchy, palette, typography, selection, readable wrapping and long notes per BRIEF and reference PNG; only captured regions in target states.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"details\": {\n        \"title\": {\n          \"value\": \"Ridge expedition pack\",\n          \"unit\": \"string\"\n        },\n        \"context\": {\n          \"value\": \"North ridge • shared equipment\",\n          \"unit\": \"string\"\n        },\n        \"first-choice-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"second-choice-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"option-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"option-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"derived-summary\": {\n          \"value\": \"1 item • 2000 g / 3500 g\",\n          \"unit\": \"string\"\n        },\n        \"eligibility-status\": {\n          \"value\": \"Shelter required\",\n          \"unit\": \"string\"\n        },\n        \"primary-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"primary-label\": {\n          \"value\": \"Confirm pack\",\n          \"unit\": \"string\"\n        },\n        \"details-presence\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"details-copy\": {\n          \"value\": \"Shelter needed for this route.\",\n          \"unit\": \"string\"\n        },\n        \"disclosure-label\": {\n          \"value\": \"Hide details\",\n          \"unit\": \"string\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"H1: details; native hierarchy, palette, typography, selection, readable wrapping and long notes per BRIEF and reference PNG; only captured regions in target states.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"optioned\": {\n        \"title\": {\n          \"value\": \"Ridge expedition pack\",\n          \"unit\": \"string\"\n        },\n        \"context\": {\n          \"value\": \"North ridge • shared equipment\",\n          \"unit\": \"string\"\n        },\n        \"first-choice-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"second-choice-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"option-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"option-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"derived-summary\": {\n          \"value\": \"1 item • 2200 g / 3500 g\",\n          \"unit\": \"string\"\n        },\n        \"eligibility-status\": {\n          \"value\": \"Shelter required\",\n          \"unit\": \"string\"\n        },\n        \"primary-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"primary-label\": {\n          \"value\": \"Confirm pack\",\n          \"unit\": \"string\"\n        },\n        \"details-presence\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"details-copy\": {\n          \"value\": \"Shelter needed for this route.\",\n          \"unit\": \"string\"\n        },\n        \"disclosure-label\": {\n          \"value\": \"Hide details\",\n          \"unit\": \"string\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"H1: optioned; native hierarchy, palette, typography, selection, readable wrapping and long notes per BRIEF and reference PNG; only captured regions in target states.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"submitted\": {\n        \"title\": {\n          \"value\": \"Ridge expedition pack\",\n          \"unit\": \"string\"\n        },\n        \"context\": {\n          \"value\": \"North ridge • shared equipment\",\n          \"unit\": \"string\"\n        },\n        \"first-choice-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"second-choice-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"option-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"option-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"derived-summary\": {\n          \"value\": \"1 item • 2200 g / 3500 g\",\n          \"unit\": \"string\"\n        },\n        \"eligibility-status\": {\n          \"value\": \"Shelter required\",\n          \"unit\": \"string\"\n        },\n        \"primary-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"primary-label\": {\n          \"value\": \"Confirm pack\",\n          \"unit\": \"string\"\n        },\n        \"details-presence\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"details-copy\": {\n          \"value\": \"Shelter needed for this route.\",\n          \"unit\": \"string\"\n        },\n        \"disclosure-label\": {\n          \"value\": \"Hide details\",\n          \"unit\": \"string\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"H1: submitted; native hierarchy, palette, typography, selection, readable wrapping and long notes per BRIEF and reference PNG; only captured regions in target states.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"replaced\": {\n        \"title\": {\n          \"value\": \"Ridge expedition pack\",\n          \"unit\": \"string\"\n        },\n        \"context\": {\n          \"value\": \"Woodland loop • day equipment\",\n          \"unit\": \"string\"\n        },\n        \"first-choice-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"second-choice-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"option-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"option-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"derived-summary\": {\n          \"value\": \"1 item • 2300 g / 2500 g\",\n          \"unit\": \"string\"\n        },\n        \"eligibility-status\": {\n          \"value\": \"Ready for departure\",\n          \"unit\": \"string\"\n        },\n        \"primary-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"primary-label\": {\n          \"value\": \"Confirm pack\",\n          \"unit\": \"string\"\n        },\n        \"details-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"disclosure-label\": {\n          \"value\": \"Show details\",\n          \"unit\": \"string\"\n        },\n        \"replacement-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"H1: replaced; native hierarchy, palette, typography, selection, readable wrapping and long notes per BRIEF and reference PNG; only captured regions in target states.\",\n          \"unit\": \"string\"\n        }\n      }\n    }\n  }\n}\n"
+    }
+  },
+  "contract_sha256": "96067003d7e406872fb5089ee4b846a7c4efa1fa2d7c405bcdbf81f36b2efa59",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

@@ -1,0 +1,563 @@
+{
+  "unscoredGraderDisagreementAudit": {
+    "path": "grader-disagreements.json",
+    "sha256": "c125e677c7b45a3b52acd9d22dc8519e2f08e61a61f8189f5fd210644a86e34d",
+    "warning": "Two original grader-labelled FP have contradictory original pixel evidence; actual product false-alarm truth needs external adjudication. No label changed."
+  },
+  "schemaFieldAdapters": {
+    "T1": [
+      "origins",
+      "{origin}",
+      "confirmed_product_metrics",
+      "counts"
+    ],
+    "T2": [
+      "origin_metrics",
+      "{origin}",
+      "product_metrics",
+      "unique_claim_counts"
+    ],
+    "T3": [
+      "detection",
+      "{origin}",
+      "product_claim_metrics"
+    ]
+  },
+  "tasks": {
+    "T1": {
+      "source-a": {
+        "tool": "baseline-v6",
+        "source": "evaluation/selfreview/T1/comparison.json",
+        "sourceSHA256": "81cb99c3281198f4a115a1aeb9883fb1d0a7c927f43ce5ec9c9f3a37f4432a68",
+        "origins": {
+          "machine": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 8,
+              "FP": 0,
+              "U": 0
+            },
+            "additionalQualitativeUnknown": 0,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.0
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 8,
+              "FP": 0,
+              "U": 0,
+              "eligibleUniqueClaims": 8,
+              "qualitativeOrIneligible": 0,
+              "duplicates": 0
+            }
+          },
+          "manual": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 12,
+              "FP": 0,
+              "U": 0
+            },
+            "additionalQualitativeUnknown": 1,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.07692307692307693
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 12,
+              "FP": 0,
+              "U": 1,
+              "eligibleUniqueClaims": 12,
+              "qualitativeOrIneligible": 1,
+              "duplicates": 0
+            }
+          },
+          "combined": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 20,
+              "FP": 0,
+              "U": 0
+            },
+            "additionalQualitativeUnknown": 1,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.047619047619047616
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 20,
+              "FP": 0,
+              "U": 1,
+              "eligibleUniqueClaims": 20,
+              "qualitativeOrIneligible": 1,
+              "duplicates": 0
+            }
+          }
+        }
+      },
+      "source-b": {
+        "tool": "candidate-v7",
+        "source": "evaluation/selfreview/T1/comparison.json",
+        "sourceSHA256": "81cb99c3281198f4a115a1aeb9883fb1d0a7c927f43ce5ec9c9f3a37f4432a68",
+        "origins": {
+          "machine": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 8,
+              "FP": 0,
+              "U": 0
+            },
+            "additionalQualitativeUnknown": 0,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.0
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 8,
+              "FP": 0,
+              "U": 0,
+              "eligibleUniqueClaims": 8,
+              "qualitativeOrIneligible": 0,
+              "duplicates": 0
+            }
+          },
+          "manual": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 0,
+              "FP": 0,
+              "U": 12
+            },
+            "additionalQualitativeUnknown": 2,
+            "conditionalFalseDiscoveryRatio": null,
+            "allClaimErrorBounds": [
+              0.0,
+              1.0
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 0,
+              "FP": 12,
+              "U": 2,
+              "eligibleUniqueClaims": 12,
+              "qualitativeOrIneligible": 2,
+              "duplicates": 0
+            }
+          },
+          "combined": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 8,
+              "FP": 0,
+              "U": 12
+            },
+            "additionalQualitativeUnknown": 2,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.6363636363636364
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 8,
+              "FP": 12,
+              "U": 2,
+              "eligibleUniqueClaims": 20,
+              "qualitativeOrIneligible": 2,
+              "duplicates": 0
+            }
+          }
+        }
+      }
+    },
+    "T2": {
+      "source-a": {
+        "tool": "baseline-v6",
+        "source": "evaluation/selfreview/T2/comparison.json",
+        "sourceSHA256": "2d3fd9eb345f1771f4fb9a39fbcda82bab52be5427033fda5e8914cb3b913170",
+        "origins": {
+          "machine": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 8,
+              "FP": 0,
+              "U": 0
+            },
+            "additionalQualitativeUnknown": 0,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.0
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 8,
+              "FP": 0,
+              "U": 0,
+              "eligibleUniqueClaims": 8,
+              "qualitativeOrIneligible": 0,
+              "duplicates": 0
+            }
+          },
+          "manual": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 0,
+              "FP": 0,
+              "U": 10
+            },
+            "additionalQualitativeUnknown": 2,
+            "conditionalFalseDiscoveryRatio": null,
+            "allClaimErrorBounds": [
+              0.0,
+              1.0
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 0,
+              "FP": 8,
+              "U": 4,
+              "eligibleUniqueClaims": 10,
+              "qualitativeOrIneligible": 2,
+              "duplicates": 0
+            }
+          },
+          "combined": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 8,
+              "FP": 0,
+              "U": 10
+            },
+            "additionalQualitativeUnknown": 2,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.6
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 8,
+              "FP": 8,
+              "U": 4,
+              "eligibleUniqueClaims": 18,
+              "qualitativeOrIneligible": 2,
+              "duplicates": 0
+            }
+          }
+        }
+      },
+      "source-b": {
+        "tool": "candidate-v7",
+        "source": "evaluation/selfreview/T2/comparison.json",
+        "sourceSHA256": "2d3fd9eb345f1771f4fb9a39fbcda82bab52be5427033fda5e8914cb3b913170",
+        "origins": {
+          "machine": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 8,
+              "FP": 0,
+              "U": 0
+            },
+            "additionalQualitativeUnknown": 0,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.0
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 8,
+              "FP": 0,
+              "U": 0,
+              "eligibleUniqueClaims": 8,
+              "qualitativeOrIneligible": 0,
+              "duplicates": 0
+            }
+          },
+          "manual": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 0,
+              "FP": 2,
+              "U": 0
+            },
+            "additionalQualitativeUnknown": 2,
+            "conditionalFalseDiscoveryRatio": 1.0,
+            "allClaimErrorBounds": [
+              0.5,
+              1.0
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 0,
+              "FP": 2,
+              "U": 2,
+              "eligibleUniqueClaims": 2,
+              "qualitativeOrIneligible": 2,
+              "duplicates": 0
+            }
+          },
+          "combined": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 8,
+              "FP": 2,
+              "U": 0
+            },
+            "additionalQualitativeUnknown": 2,
+            "conditionalFalseDiscoveryRatio": 0.2,
+            "allClaimErrorBounds": [
+              0.16666666666666666,
+              0.3333333333333333
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 8,
+              "FP": 2,
+              "U": 2,
+              "eligibleUniqueClaims": 10,
+              "qualitativeOrIneligible": 2,
+              "duplicates": 0
+            }
+          }
+        }
+      }
+    },
+    "T3": {
+      "source-a": {
+        "tool": "baseline-v6",
+        "source": "evaluation/selfreview/T3/comparison.json",
+        "sourceSHA256": "3857e384deafaf21cdb2a550aeb1646d7b4da23efdf4c3794858c0300520866b",
+        "origins": {
+          "machine": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 10,
+              "FP": 0,
+              "U": 0
+            },
+            "additionalQualitativeUnknown": 0,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.0
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 10,
+              "FP": 0,
+              "U": 0,
+              "eligibleUniqueClaims": 10,
+              "qualitativeOrIneligible": 0,
+              "duplicates": 0
+            }
+          },
+          "manual": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 7,
+              "FP": 0,
+              "U": 0
+            },
+            "additionalQualitativeUnknown": 12,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.631578947368421
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 7,
+              "FP": 0,
+              "U": 12,
+              "eligibleUniqueClaims": 7,
+              "qualitativeOrIneligible": 12,
+              "duplicates": 0
+            }
+          },
+          "combined": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 17,
+              "FP": 0,
+              "U": 0
+            },
+            "additionalQualitativeUnknown": 12,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.41379310344827586
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 17,
+              "FP": 0,
+              "U": 12,
+              "eligibleUniqueClaims": 17,
+              "qualitativeOrIneligible": 12,
+              "duplicates": 0
+            }
+          }
+        }
+      },
+      "source-b": {
+        "tool": "candidate-v7",
+        "source": "evaluation/selfreview/T3/comparison.json",
+        "sourceSHA256": "3857e384deafaf21cdb2a550aeb1646d7b4da23efdf4c3794858c0300520866b",
+        "origins": {
+          "machine": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 10,
+              "FP": 0,
+              "U": 0
+            },
+            "additionalQualitativeUnknown": 0,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.0
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 10,
+              "FP": 0,
+              "U": 0,
+              "eligibleUniqueClaims": 10,
+              "qualitativeOrIneligible": 0,
+              "duplicates": 0
+            }
+          },
+          "manual": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 6,
+              "FP": 0,
+              "U": 3
+            },
+            "additionalQualitativeUnknown": 2,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.45454545454545453
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 6,
+              "FP": 3,
+              "U": 2,
+              "eligibleUniqueClaims": 9,
+              "qualitativeOrIneligible": 2,
+              "duplicates": 0
+            }
+          },
+          "combined": {
+            "sealedEligibleClaimDispositions": {
+              "TP": 16,
+              "FP": 0,
+              "U": 3
+            },
+            "additionalQualitativeUnknown": 2,
+            "conditionalFalseDiscoveryRatio": 0.0,
+            "allClaimErrorBounds": [
+              0.0,
+              0.23809523809523808
+            ],
+            "classicalFPR": null,
+            "frozenDeterministicIdentityLedger": {
+              "TP": 16,
+              "FP": 3,
+              "U": 2,
+              "eligibleUniqueClaims": 19,
+              "qualitativeOrIneligible": 2,
+              "duplicates": 0
+            }
+          }
+        }
+      }
+    }
+  },
+  "pooled": {
+    "baseline-v6": {
+      "machine": {
+        "sealedEligibleClaimDispositions": {
+          "TP": 26,
+          "FP": 0,
+          "U": 0
+        },
+        "additionalQualitativeUnknown": 0,
+        "conditionalFalseDiscoveryRatio": 0.0,
+        "allClaimErrorBounds": [
+          0.0,
+          0.0
+        ],
+        "classicalFPR": null
+      },
+      "manual": {
+        "sealedEligibleClaimDispositions": {
+          "TP": 19,
+          "FP": 0,
+          "U": 10
+        },
+        "additionalQualitativeUnknown": 15,
+        "conditionalFalseDiscoveryRatio": 0.0,
+        "allClaimErrorBounds": [
+          0.0,
+          0.5681818181818182
+        ],
+        "classicalFPR": null
+      },
+      "combined": {
+        "sealedEligibleClaimDispositions": {
+          "TP": 45,
+          "FP": 0,
+          "U": 10
+        },
+        "additionalQualitativeUnknown": 15,
+        "conditionalFalseDiscoveryRatio": 0.0,
+        "allClaimErrorBounds": [
+          0.0,
+          0.35714285714285715
+        ],
+        "classicalFPR": null
+      }
+    },
+    "candidate-v7": {
+      "machine": {
+        "sealedEligibleClaimDispositions": {
+          "TP": 26,
+          "FP": 0,
+          "U": 0
+        },
+        "additionalQualitativeUnknown": 0,
+        "conditionalFalseDiscoveryRatio": 0.0,
+        "allClaimErrorBounds": [
+          0.0,
+          0.0
+        ],
+        "classicalFPR": null
+      },
+      "manual": {
+        "sealedEligibleClaimDispositions": {
+          "TP": 6,
+          "FP": 2,
+          "U": 15
+        },
+        "additionalQualitativeUnknown": 6,
+        "conditionalFalseDiscoveryRatio": 0.25,
+        "allClaimErrorBounds": [
+          0.06896551724137931,
+          0.7931034482758621
+        ],
+        "classicalFPR": null
+      },
+      "combined": {
+        "sealedEligibleClaimDispositions": {
+          "TP": 32,
+          "FP": 2,
+          "U": 15
+        },
+        "additionalQualitativeUnknown": 6,
+        "conditionalFalseDiscoveryRatio": 0.058823529411764705,
+        "allClaimErrorBounds": [
+          0.03636363636363636,
+          0.41818181818181815
+        ],
+        "classicalFPR": null
+      }
+    }
+  },
+  "scope": "Summary of ORIGINAL already sealed independent selfreview product-disposition judgments, as requested before grading. No original claim/expected/unit is repaired; no new TP or row/cluster recall credit. Identity-rejected semantically compatible or unmapped claims may remain product U, rather than confirmed false alarms. The separately frozen deterministic identity ledger is preserved in metrics.json and shown alongside. This summary does not replace that ledger, rejudge any claim or provide a complete true-negative universe. Posthoc shared environment rescoring does not revise these original dispositions."
+}

@@ -1,0 +1,54 @@
+from pathlib import Path
+import json,hashlib,importlib.util
+R=Path('/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/multitask-forward');O=R/'evaluation/FINAL/T3';cases=['P1','P2','H1']
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def ref(p):return {'path':str(p.relative_to(R)),'sha256':sha(p)}
+def save(p,d):assert not p.exists(),p;p.write_text(json.dumps(d,indent=2)+'\n')
+spec=importlib.util.spec_from_file_location('tg',R/'design-v2/T3/private/grader.py');g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
+integ=json.loads((O/'input-integrity.json').read_text());base=[];allgrades={}
+for alias in ['source-a','source-b']:
+ allgrades[alias]=[]
+ for case in cases:
+  for plat in ['ios','android']:
+   out=O/alias/case/plat;op=R/f'common-corpora/T3/{alias}/final/{plat}/{case}/observation.json';obs=json.loads(op.read_text());cr=integ['sources'][alias]['cases'][case+'/'+plat]
+   manual={'observation_sha256':sha(op),'reviewer':'anonymous T3 FINAL independent acceptance evaluator','decisions':[],'scope':'Original state PNG review, using deterministic viewport crops as review aids. Numeric iOS native style remains U. Every visual decision binds all referenced original images.'}
+   if plat=='ios':
+    for state in ['loaded','reasoned','advanced','classified','submitted','replaced']:
+     cap=next(x for x in obs['state_captures'] if x['state_id']==state);ids=cap['snapshot_indices'];assert cap['complete'] if state in ['loaded','replaced'] else True
+     evidence=[{'path':obs['snapshots'][i]['screenshot'],'sha256':sha(op.parent/obs['snapshots'][i]['screenshot'])} for i in ids]
+     reason='PASS for the actually captured regions: reviewed the original overlapping viewport PNGs at native logical width. The vertical queue, selected border/marker, inspector title/material/note, stacked controls, summary, primary and Review notes retain readable hierarchy and visual palette roles. All supplied note paragraphs appear in order and wrap without component clipping/overlap; content beyond a single scroll viewport is ordinary scrolling. Disabled controls retain border fill and muted text where present. System-native font differences from the Arial reference do not require pixel identity. '+('The original loaded/replaced native interval union is complete; full sweep reviewed.' if state in ['loaded','replaced'] else 'Target-state judgment is limited to captured content; no uncaptured region is inferred.')+' This visual P neither supplies a native iOS typography/color/ellipsis measurement nor substitutes for business/callback checks or exact unasserted padding metrics.'
+     manual['decisions'].append({'id':state+'/visual-composition','state':state,'rule':'visual-composition','status':'passed','method':'visual','snapshot_indices':ids,'reason':reason,'evidence':evidence})
+   else:manual['unsupported_reason']='Fixed input check rejects recorded direction Ltr versus expected ltr. No Android visual decision supplied; all applicable final oracle rows remain U.'
+   save(out/'manual.json',manual)
+   source=R/cr['source']['path'];ar={'source_sha256':sha(source),'reviewer':'anonymous T3 FINAL independent acceptance evaluator','status':'P','reason':'Sealed production source matches public model field types/order and component callback signature, keeps state/eligibility/derived copy/callback construction in production, and the frozen bridge only decodes/forwards. Original native build/test evidence is bound to this exact source and succeeded. Structural API P does not change acceptance results or prove every unasserted behavior.','findings':[],'evidence':[cr['source']]+cr['original_logs']+[ref(R/'design-v2/T3/public/API.md')]}
+   save(out/'api-review.json',ar)
+   gr=g.grade(case,plat,op,manual=out/'manual.json',source_root=R/f'evaluation-inputs/FINAL/T3/{alias}/source-capsule/source',api_review=out/'api-review.json');save(out/'grade.json',gr);allgrades[alias].append(gr)
+   assert len(gr['rows'])==132;assert not any(x['id']=='native-evidence-validity' and x['status']=='F' for x in gr['input_checks']);print(alias,case,plat,gr['counts'])
+   for n in ['native-base-grade.json','native-base.json']:base.append(ref(out/n))
+save(O/'native-base-byte-bindings.json',{'files':base,'policy':'First calls used manual=None, source_root=None, api_review=None. Initial full return and native_report preserved exactly; no initial score was replaced.'})
+brief=ref(R/'design-v2/T3/public/BRIEF.md');style=ref(R/'design-v2/T3/public/STYLE-PRECISION.md');api=ref(R/'design-v2/T3/public/API.md')
+unasserted=[
+ {'requirement':'Exact fonts/weights/colors for all non-title roles; surface/canvas/border/primary role metrics; radius10, internal12, major16 and stacked8 gaps.','gap':'Selected22 has exact title-native style and selected control boxes. Broad visual P assesses readable hierarchy and appearance, not numerical proof for each font/color/spacing. iOS native_style remains U.','evidence':[brief,style]},
+ {'requirement':'All queue row identities/labels and active selected traits, third-row navigation, long caller labels growing above64 and exact caption/name typography.','gap':'Second-row selected/status and queue width have direct fixed checks; broad visual review is not exhaustive semantics or arbitrary long-label stress coverage.','evidence':[brief]},
+ {'requirement':'Exact caller context/material/inspection-note strings, Review notes heading identity and all paragraph text.','gap':'Exact title/focused-title checks and broad visual notes/wrapping review do not create separate copy/identity cells for all text nodes.','evidence':[brief]},
+ {'requirement':'Unknown focus fallback; invalid nonempty care reason; Stable clearing an existing care reason; reselecting care with an existing valid reason; re-entering care after Stable; switching Surface/Structure and all validation-priority combinations.','gap':'H1 exercises empty-reason care and optional pending along the selected route, but the fixed selected states do not individually assert every business branch or input combination.','evidence':[brief,api]},
+ {'requirement':'Every read-only care/reason-edit path, all focus persistence sequences, callbacks after replacement and all object-order/optionality permutations.','gap':'H1 confirms one optional-pending callback and P2 has a blocked-disabled classification attempt. Neither establishes all these routes; blocked dispatch remains U.','evidence':[brief,api]},
+ {'requirement':'No duplicate outer padding/nested scrolling, all dedicated text nodes/heading identifiers and no nested native OnClick.','gap':'Composition and source review provide context; selected geometry measures only primary height, queue width and conditional care-control height. No additional acceptance cells are invented.','evidence':[brief,style]}
+]
+summary={'schema_version':1,'stage':'FINAL','task':'T3','scope':'Symmetric anonymous P1/P2/H1 iOS/Android acceptance review; immutable original grader, complete792-cell denominator per source. No evaluator native SDK commands, repairs or assignment access.','sources':{},'unasserted_scope':unasserted,'interpretation':'U and N/A are not passes. Native test success is evidence acquisition/build success, not full product acceptance. Repeated states/platform manifestations are not independent experiments. FINAL findings do not assert introduction timing.'}
+for alias,gs in allgrades.items():
+ rows=[r for gr in gs for r in gr['rows']];assert len(rows)==792;fs=[r['id'] for r in rows if r['status']=='F'];assert not fs
+ env=[]
+ for c in cases:
+  gr=next(gr for gr in gs if gr['case']==c and gr['platform']=='android');env.append({'case':c,'input_check':next(x for x in gr['input_checks'] if x['id']=='native-environment'),'evidence':gr['evidence']})
+ obs_evidence=[x['evidence'] for x in gs if x['platform']=='ios']
+ summary['sources'][alias]={'counts':{s:sum(r['status']==s for r in rows) for s in ['P','F','U','N/A']},'counts_by_case_platform':{gr['case']+'/'+gr['platform']:gr['counts'] for gr in gs},'denominator':792,'defect_clusters':[],'product_failure_row_ids':[],'non_product_f_rows':[],'uncertain_f_rows':[],'unsupported_scope':[{'scope':'All347 applicable Android cells across P1/P2/H1','reason':'Immutable native-environment check rejects recorded direction Ltr against expected ltr; font scale/night mode otherwise match. Preserve U without shared correction; representation mismatch is not proof of an RTL product bug.','evidence':env},{'scope':'72 applicable iOS native-style cells (24 per case)','reason':'Generic computed SwiftUI typography/color/ellipsis unavailable. Pixels, visual passes and static source cannot turn them into native measurements.'},{'scope':'P2 iOS classified activation-callback','reason':'The read-only Stable attempt is blocked_disabled without demonstrated successful dispatch. Empty event interval does not prove callback behavior.'}],'unasserted_scope':unasserted,'source_api_issues':[],'source_api_disposition':'Exact sealed sources expose the required public models/signatures; original native builds/tests succeeded. Structural source reviews are exact-source-SHA and log bound. No compilation/signature issue found.','unasserted_source_only_concerns':[],'newly_observed_issues':[],'observed_final_behavior':{'description':'No confirmed scored product defect in scoped FINAL evidence. iOS caller replacement has expected Harbor sketch focus, seeded queue status, summary and disabled primary. H1 preserves optional sketch=pending in successfully dispatched confirmation and accepts it when required objects are complete. Visual state review shows readable wrapping, complete notes and specified disabled palette appearance. These are scoped observations, not proof of all brief details or Android acceptance.','evidence':obs_evidence},'symmetry':'Same original grader, review scope and visual criteria for both aliases.'}
+save(O/'summary.json',summary)
+full=[];native=[]
+for c in cases:
+ for p in ['ios','android']:
+  a=next(gr for gr in allgrades['source-a'] if gr['case']==c and gr['platform']==p);b=next(gr for gr in allgrades['source-b'] if gr['case']==c and gr['platform']==p);native+=g.compare_pair(a,b)['rows']
+  for ar,br in zip(a['rows'],b['rows']):
+   assert ar['id']==br['id'];full.append({k:ar[k] for k in ['id','case','platform','state','requirement','class','expected','unit','op','tolerance']}|{'source-a':ar['status'],'source-b':br['status']})
+save(O/'pair-comparison.json',{'full_denominator':len(full),'full_rows':full,'native_compare_pair_denominator':len(native),'native_compare_pair_rows':native,'scope':'All792 fixed rows retained paired, including visual/U/N/A. Frozen compare_pair retains its own756 native-only denominator separately; no favorable filtering.'})
+print('TOTAL',{a:s['counts'] for a,s in summary['sources'].items()},'PAIR',len(full),len(native))

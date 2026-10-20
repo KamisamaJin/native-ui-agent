@@ -1,0 +1,114 @@
+{
+  "width": 360,
+  "theme": "light",
+  "dynamic_type": "large",
+  "fontScale": 1,
+  "direction": "ltr",
+  "initial": {
+    "key": "day",
+    "title": "Reading room"
+  },
+  "updates": [
+    {
+      "key": "evening",
+      "title": "Evening notes"
+    }
+  ],
+  "required_identifiers": [
+    "reading.title",
+    "reading.expand",
+    "reading.choice",
+    "reading.disabled",
+    "reading.last"
+  ],
+  "max_scrolls": 18,
+  "observation_max_scrolls": 24,
+  "trace_reveal_images": true,
+  "actions": [
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "reading.expand"
+      },
+      "reveal": true,
+      "state_id": "expanded",
+      "after_targets": [
+        {
+          "identifier": "reading.title"
+        },
+        {
+          "identifier": "reading.expand"
+        },
+        {
+          "identifier": "reading.choice"
+        },
+        {
+          "identifier": "reading.disabled"
+        }
+      ]
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "reading.choice"
+      },
+      "reveal": true,
+      "state_id": "selected",
+      "after_targets": [
+        {
+          "identifier": "reading.title"
+        },
+        {
+          "identifier": "reading.expand"
+        },
+        {
+          "identifier": "reading.choice"
+        },
+        {
+          "identifier": "reading.disabled"
+        }
+      ]
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "reading.disabled"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "state_id": "blocked",
+      "after_targets": [
+        {
+          "identifier": "reading.title"
+        },
+        {
+          "identifier": "reading.expand"
+        },
+        {
+          "identifier": "reading.choice"
+        },
+        {
+          "identifier": "reading.disabled"
+        }
+      ]
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "replaced",
+      "after_targets": [
+        {
+          "identifier": "reading.title"
+        },
+        {
+          "identifier": "reading.expand"
+        },
+        {
+          "identifier": "reading.choice"
+        },
+        {
+          "identifier": "reading.disabled"
+        }
+      ]
+    }
+  ]
+}

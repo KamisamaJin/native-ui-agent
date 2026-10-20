@@ -1,0 +1,2097 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "Independent blind design-v2 context",
+    "approval_reference": "approval.json; frozen before all six implementations",
+    "sources": [
+      {
+        "id": "reference",
+        "path": "reference.json",
+        "sha256": "137702d28feef095775c4a29759cbc568ed0d6a7521254dec923b7c3df5bf88f"
+      }
+    ],
+    "required_rule_ids": [
+      "title",
+      "mode-copy",
+      "music-level",
+      "presenter-level",
+      "music-increase-enabled",
+      "presenter-decrease-enabled",
+      "music-muted",
+      "preview-selected",
+      "derived-load",
+      "derived-headroom",
+      "overload-presence",
+      "overload-copy",
+      "apply-enabled",
+      "stepper-width",
+      "primary-height",
+      "title-font-size",
+      "title-font-weight",
+      "title-ink",
+      "summary-wrap",
+      "activation-callback",
+      "replacement-callback",
+      "visual-composition"
+    ],
+    "rules": [
+      {
+        "id": "title",
+        "kind": "control",
+        "target": "title",
+        "property": "label"
+      },
+      {
+        "id": "mode-copy",
+        "kind": "control",
+        "target": "modeLabel",
+        "property": "label"
+      },
+      {
+        "id": "music-level",
+        "kind": "control",
+        "target": "musicLevel",
+        "property": "label"
+      },
+      {
+        "id": "presenter-level",
+        "kind": "control",
+        "target": "voiceLevel",
+        "property": "label"
+      },
+      {
+        "id": "music-increase-enabled",
+        "kind": "control",
+        "target": "musicPlus",
+        "property": "enabled"
+      },
+      {
+        "id": "presenter-decrease-enabled",
+        "kind": "control",
+        "target": "voiceMinus",
+        "property": "enabled"
+      },
+      {
+        "id": "music-muted",
+        "kind": "control",
+        "target": "musicMute",
+        "property": "selected"
+      },
+      {
+        "id": "preview-selected",
+        "kind": "control",
+        "target": "preview",
+        "property": "selected"
+      },
+      {
+        "id": "derived-load",
+        "kind": "control",
+        "target": "summary",
+        "property": "label"
+      },
+      {
+        "id": "derived-headroom",
+        "kind": "control",
+        "target": "headroom",
+        "property": "label"
+      },
+      {
+        "id": "overload-presence",
+        "kind": "control",
+        "target": "warning",
+        "property": "present"
+      },
+      {
+        "id": "overload-copy",
+        "kind": "control",
+        "target": "warning",
+        "property": "label"
+      },
+      {
+        "id": "apply-enabled",
+        "kind": "control",
+        "target": "primary",
+        "property": "enabled"
+      },
+      {
+        "id": "stepper-width",
+        "kind": "geometry",
+        "target": "musicPlus",
+        "property": "width",
+        "op": "near",
+        "basis": "control",
+        "measurement": "accessibility_box"
+      },
+      {
+        "id": "primary-height",
+        "kind": "geometry",
+        "target": "primary",
+        "property": "height",
+        "op": "near",
+        "basis": "control",
+        "measurement": "accessibility_box"
+      },
+      {
+        "id": "title-font-size",
+        "kind": "text_layout",
+        "target": "title",
+        "property": "font_sp"
+      },
+      {
+        "id": "title-font-weight",
+        "kind": "text_layout",
+        "target": "title",
+        "property": "font_weight"
+      },
+      {
+        "id": "title-ink",
+        "kind": "text_layout",
+        "target": "title",
+        "property": "color_argb"
+      },
+      {
+        "id": "summary-wrap",
+        "kind": "text_layout",
+        "target": "summary",
+        "property": "ellipsized"
+      },
+      {
+        "id": "activation-callback",
+        "kind": "event"
+      },
+      {
+        "id": "replacement-callback",
+        "kind": "event",
+        "stimulus": "caller_update"
+      },
+      {
+        "id": "visual-composition",
+        "kind": "manual",
+        "target": "title",
+        "allowed_methods": [
+          "visual"
+        ],
+        "coverage": "target"
+      }
+    ],
+    "scenarios": {
+      "H1": {
+        "states": [
+          {
+            "id": "loaded",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          },
+          {
+            "id": "leveled",
+            "input_index": 0,
+            "after_action": 1,
+            "coverage": "targets"
+          },
+          {
+            "id": "previewed",
+            "input_index": 0,
+            "after_action": 2,
+            "coverage": "targets"
+          },
+          {
+            "id": "muted",
+            "input_index": 0,
+            "after_action": 3,
+            "coverage": "targets"
+          },
+          {
+            "id": "submitted",
+            "input_index": 0,
+            "after_action": 4,
+            "coverage": "targets"
+          },
+          {
+            "id": "replaced",
+            "input_index": 1,
+            "after_action": 6,
+            "coverage": "full_content",
+            "stimulus_action": 5
+          }
+        ],
+        "actions": [
+          {
+            "type": "sweep",
+            "state_id": "loaded",
+            "max_steps": 24
+          },
+          {
+            "type": "tap",
+            "target": "musicPlus",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "leveled"
+          },
+          {
+            "type": "tap",
+            "target": "preview",
+            "reveal": true,
+            "state_id": "previewed"
+          },
+          {
+            "type": "tap",
+            "target": "musicMute",
+            "reveal": true,
+            "state_id": "muted"
+          },
+          {
+            "type": "tap",
+            "target": "primary",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "submitted"
+          },
+          {
+            "type": "apply_next_fixture",
+            "state_id": "caller-applied"
+          },
+          {
+            "type": "sweep",
+            "state_id": "replaced",
+            "max_steps": 24
+          }
+        ],
+        "values": {
+          "title": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/title"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/title"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/title"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/title"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/title"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/title"
+              }
+            }
+          },
+          "mode-copy": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/mode-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/mode-copy"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/mode-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/mode-copy"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/mode-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/mode-copy"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/mode-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/mode-copy"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/mode-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/mode-copy"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/mode-copy"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/mode-copy"
+              }
+            }
+          },
+          "music-level": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/music-level"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/music-level"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/music-level"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/music-level"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/music-level"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/music-level"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/music-level"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/music-level"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/music-level"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/music-level"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/music-level"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/music-level"
+              }
+            }
+          },
+          "presenter-level": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/presenter-level"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/presenter-level"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/presenter-level"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/presenter-level"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/presenter-level"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/presenter-level"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/presenter-level"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/presenter-level"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/presenter-level"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/presenter-level"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/presenter-level"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/presenter-level"
+              }
+            }
+          },
+          "music-increase-enabled": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/music-increase-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/music-increase-enabled"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/music-increase-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/music-increase-enabled"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/music-increase-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/music-increase-enabled"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/music-increase-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/music-increase-enabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/music-increase-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/music-increase-enabled"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/music-increase-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/music-increase-enabled"
+              }
+            }
+          },
+          "presenter-decrease-enabled": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/presenter-decrease-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/presenter-decrease-enabled"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/presenter-decrease-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/presenter-decrease-enabled"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/presenter-decrease-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/presenter-decrease-enabled"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/presenter-decrease-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/presenter-decrease-enabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/presenter-decrease-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/presenter-decrease-enabled"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/presenter-decrease-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/presenter-decrease-enabled"
+              }
+            }
+          },
+          "music-muted": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/music-muted"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/music-muted"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/music-muted"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/music-muted"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/music-muted"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/music-muted"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/music-muted"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/music-muted"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/music-muted"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/music-muted"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/music-muted"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/music-muted"
+              }
+            }
+          },
+          "preview-selected": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/preview-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/preview-selected"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/preview-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/preview-selected"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/preview-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/preview-selected"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/preview-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/preview-selected"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/preview-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/preview-selected"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/preview-selected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/preview-selected"
+              }
+            }
+          },
+          "derived-load": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/derived-load"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/derived-load"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/derived-load"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/derived-load"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/derived-load"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/derived-load"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/derived-load"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/derived-load"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/derived-load"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/derived-load"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/derived-load"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/derived-load"
+              }
+            }
+          },
+          "derived-headroom": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/derived-headroom"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/derived-headroom"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/derived-headroom"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/derived-headroom"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/derived-headroom"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/derived-headroom"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/derived-headroom"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/derived-headroom"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/derived-headroom"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/derived-headroom"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/derived-headroom"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/derived-headroom"
+              }
+            }
+          },
+          "overload-presence": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/overload-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/overload-presence"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/overload-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/overload-presence"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/overload-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/overload-presence"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/overload-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/overload-presence"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/overload-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/overload-presence"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/overload-presence"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/overload-presence"
+              }
+            }
+          },
+          "overload-copy": {
+            "loaded": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "leveled": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "previewed": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "muted": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "submitted": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            },
+            "replaced": {
+              "not_applicable": "Conditional control/text is absent in this focused business state; its presence is independently asserted."
+            }
+          },
+          "apply-enabled": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/apply-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/apply-enabled"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/apply-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/apply-enabled"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/apply-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/apply-enabled"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/apply-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/apply-enabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/apply-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/apply-enabled"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/apply-enabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/apply-enabled"
+              }
+            }
+          },
+          "stepper-width": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/stepper_width"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/stepper_width"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/stepper_width"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/stepper_width"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/stepper_width"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/stepper_width"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/stepper_width"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/stepper_width"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/stepper_width"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/stepper_width"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/stepper_width"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/stepper_width"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            }
+          },
+          "primary-height": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primary_height"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primary_height"
+              },
+              "tolerance": {
+                "ios": {
+                  "source": "reference",
+                  "pointer": "/geometry/ios/tolerance"
+                },
+                "android": {
+                  "source": "reference",
+                  "pointer": "/geometry/android/tolerance"
+                }
+              }
+            }
+          },
+          "title-font-size": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/font"
+              }
+            }
+          },
+          "title-font-weight": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/weight"
+              }
+            }
+          },
+          "title-ink": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/light_ink"
+              }
+            }
+          },
+          "summary-wrap": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/native_style/no_ellipsis"
+              }
+            }
+          },
+          "activation-callback": {
+            "loaded": {
+              "not_applicable": "No user activation is the selected stimulus for this state."
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/activation-callback"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/activation-callback"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/activation-callback"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/activation-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/activation-callback"
+              }
+            },
+            "replaced": {
+              "not_applicable": "No user activation is the selected stimulus for this state."
+            }
+          },
+          "replacement-callback": {
+            "loaded": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "leveled": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "previewed": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "muted": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "submitted": {
+              "not_applicable": "Caller replacement is not this selected stimulus."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/replacement-callback"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/replacement-callback"
+              }
+            }
+          },
+          "visual-composition": {
+            "loaded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/loaded/visual-composition"
+              }
+            },
+            "leveled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/leveled/visual-composition"
+              }
+            },
+            "previewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/previewed/visual-composition"
+              }
+            },
+            "muted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/muted/visual-composition"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/submitted/visual-composition"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/visual-composition"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/scenarios/H1/replaced/visual-composition"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "reference": {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "137702d28feef095775c4a29759cbc568ed0d6a7521254dec923b7c3df5bf88f",
+      "document": {
+        "geometry": {
+          "ios": {
+            "primary_height": {
+              "value": 56,
+              "unit": "pt"
+            },
+            "stepper_width": {
+              "value": 44,
+              "unit": "pt"
+            },
+            "queue_normal": {
+              "value": 358,
+              "unit": "pt"
+            },
+            "queue_narrow": {
+              "value": 288,
+              "unit": "pt"
+            },
+            "care_height": {
+              "value": 48,
+              "unit": "pt"
+            },
+            "tolerance": {
+              "value": 0.75,
+              "unit": "pt"
+            }
+          },
+          "android": {
+            "primary_height": {
+              "value": 56,
+              "unit": "dp"
+            },
+            "stepper_width": {
+              "value": 44,
+              "unit": "dp"
+            },
+            "queue_normal": {
+              "value": 358,
+              "unit": "dp"
+            },
+            "queue_narrow": {
+              "value": 288,
+              "unit": "dp"
+            },
+            "care_height": {
+              "value": 48,
+              "unit": "dp"
+            },
+            "tolerance": {
+              "value": 0.75,
+              "unit": "dp"
+            }
+          }
+        },
+        "native_style": {
+          "font": {
+            "value": 22,
+            "unit": "sp"
+          },
+          "weight": {
+            "value": 700,
+            "unit": "scalar"
+          },
+          "light_ink": {
+            "value": "#FF1E3652",
+            "unit": "argb"
+          },
+          "dark_ink": {
+            "value": "#FFE1EDFA",
+            "unit": "argb"
+          },
+          "no_ellipsis": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "scenarios": {
+          "H1": {
+            "loaded": {
+              "title": {
+                "value": "Broadcast cue mixer",
+                "unit": "string"
+              },
+              "mode-copy": {
+                "value": "Live mode",
+                "unit": "string"
+              },
+              "music-level": {
+                "value": "0",
+                "unit": "string"
+              },
+              "presenter-level": {
+                "value": "0",
+                "unit": "string"
+              },
+              "music-increase-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "presenter-decrease-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "music-muted": {
+                "value": false,
+                "unit": "bool"
+              },
+              "preview-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "derived-load": {
+                "value": "1 audible • 2 / 6 units",
+                "unit": "string"
+              },
+              "derived-headroom": {
+                "value": "Headroom: 4 units",
+                "unit": "string"
+              },
+              "overload-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "apply-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "visual-composition": {
+                "value": "H1/loaded: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "leveled": {
+              "title": {
+                "value": "Broadcast cue mixer",
+                "unit": "string"
+              },
+              "mode-copy": {
+                "value": "Live mode",
+                "unit": "string"
+              },
+              "music-level": {
+                "value": "1",
+                "unit": "string"
+              },
+              "presenter-level": {
+                "value": "0",
+                "unit": "string"
+              },
+              "music-increase-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "presenter-decrease-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "music-muted": {
+                "value": false,
+                "unit": "bool"
+              },
+              "preview-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "derived-load": {
+                "value": "2 audible • 3 / 6 units",
+                "unit": "string"
+              },
+              "derived-headroom": {
+                "value": "Headroom: 3 units",
+                "unit": "string"
+              },
+              "overload-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "apply-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "H1/leveled: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "previewed": {
+              "title": {
+                "value": "Broadcast cue mixer",
+                "unit": "string"
+              },
+              "mode-copy": {
+                "value": "Preview mode",
+                "unit": "string"
+              },
+              "music-level": {
+                "value": "1",
+                "unit": "string"
+              },
+              "presenter-level": {
+                "value": "0",
+                "unit": "string"
+              },
+              "music-increase-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "presenter-decrease-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "music-muted": {
+                "value": false,
+                "unit": "bool"
+              },
+              "preview-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "derived-load": {
+                "value": "2 audible • 3 / 6 units",
+                "unit": "string"
+              },
+              "derived-headroom": {
+                "value": "Headroom: 3 units",
+                "unit": "string"
+              },
+              "overload-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "apply-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "H1/previewed: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "muted": {
+              "title": {
+                "value": "Broadcast cue mixer",
+                "unit": "string"
+              },
+              "mode-copy": {
+                "value": "Preview mode",
+                "unit": "string"
+              },
+              "music-level": {
+                "value": "1",
+                "unit": "string"
+              },
+              "presenter-level": {
+                "value": "0",
+                "unit": "string"
+              },
+              "music-increase-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "presenter-decrease-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "music-muted": {
+                "value": true,
+                "unit": "bool"
+              },
+              "preview-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "derived-load": {
+                "value": "1 audible • 2 / 6 units",
+                "unit": "string"
+              },
+              "derived-headroom": {
+                "value": "Headroom: 4 units",
+                "unit": "string"
+              },
+              "overload-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "apply-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "activation-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "H1/muted: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "submitted": {
+              "title": {
+                "value": "Broadcast cue mixer",
+                "unit": "string"
+              },
+              "mode-copy": {
+                "value": "Preview mode",
+                "unit": "string"
+              },
+              "music-level": {
+                "value": "1",
+                "unit": "string"
+              },
+              "presenter-level": {
+                "value": "0",
+                "unit": "string"
+              },
+              "music-increase-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "presenter-decrease-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "music-muted": {
+                "value": true,
+                "unit": "bool"
+              },
+              "preview-selected": {
+                "value": true,
+                "unit": "bool"
+              },
+              "derived-load": {
+                "value": "1 audible • 2 / 6 units",
+                "unit": "string"
+              },
+              "derived-headroom": {
+                "value": "Headroom: 4 units",
+                "unit": "string"
+              },
+              "overload-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "apply-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "activation-callback": {
+                "value": [
+                  "mix:h1-session:preview:music=1/true,room=2/false,voice=0/false"
+                ],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "H1/submitted: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            },
+            "replaced": {
+              "title": {
+                "value": "Broadcast cue mixer",
+                "unit": "string"
+              },
+              "mode-copy": {
+                "value": "Live mode",
+                "unit": "string"
+              },
+              "music-level": {
+                "value": "2",
+                "unit": "string"
+              },
+              "presenter-level": {
+                "value": "0",
+                "unit": "string"
+              },
+              "music-increase-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "presenter-decrease-enabled": {
+                "value": false,
+                "unit": "bool"
+              },
+              "music-muted": {
+                "value": false,
+                "unit": "bool"
+              },
+              "preview-selected": {
+                "value": false,
+                "unit": "bool"
+              },
+              "derived-load": {
+                "value": "1 audible • 2 / 4 units",
+                "unit": "string"
+              },
+              "derived-headroom": {
+                "value": "Headroom: 2 units",
+                "unit": "string"
+              },
+              "overload-presence": {
+                "value": false,
+                "unit": "bool"
+              },
+              "apply-enabled": {
+                "value": true,
+                "unit": "bool"
+              },
+              "replacement-callback": {
+                "value": [],
+                "unit": "events"
+              },
+              "visual-composition": {
+                "value": "H1/replaced: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.",
+                "unit": "string"
+              }
+            }
+          }
+        }
+      },
+      "raw_utf8": "{\n  \"geometry\": {\n    \"ios\": {\n      \"primary_height\": {\n        \"value\": 56,\n        \"unit\": \"pt\"\n      },\n      \"stepper_width\": {\n        \"value\": 44,\n        \"unit\": \"pt\"\n      },\n      \"queue_normal\": {\n        \"value\": 358,\n        \"unit\": \"pt\"\n      },\n      \"queue_narrow\": {\n        \"value\": 288,\n        \"unit\": \"pt\"\n      },\n      \"care_height\": {\n        \"value\": 48,\n        \"unit\": \"pt\"\n      },\n      \"tolerance\": {\n        \"value\": 0.75,\n        \"unit\": \"pt\"\n      }\n    },\n    \"android\": {\n      \"primary_height\": {\n        \"value\": 56,\n        \"unit\": \"dp\"\n      },\n      \"stepper_width\": {\n        \"value\": 44,\n        \"unit\": \"dp\"\n      },\n      \"queue_normal\": {\n        \"value\": 358,\n        \"unit\": \"dp\"\n      },\n      \"queue_narrow\": {\n        \"value\": 288,\n        \"unit\": \"dp\"\n      },\n      \"care_height\": {\n        \"value\": 48,\n        \"unit\": \"dp\"\n      },\n      \"tolerance\": {\n        \"value\": 0.75,\n        \"unit\": \"dp\"\n      }\n    }\n  },\n  \"native_style\": {\n    \"font\": {\n      \"value\": 22,\n      \"unit\": \"sp\"\n    },\n    \"weight\": {\n      \"value\": 700,\n      \"unit\": \"scalar\"\n    },\n    \"light_ink\": {\n      \"value\": \"#FF1E3652\",\n      \"unit\": \"argb\"\n    },\n    \"dark_ink\": {\n      \"value\": \"#FFE1EDFA\",\n      \"unit\": \"argb\"\n    },\n    \"no_ellipsis\": {\n      \"value\": false,\n      \"unit\": \"bool\"\n    }\n  },\n  \"scenarios\": {\n    \"H1\": {\n      \"loaded\": {\n        \"title\": {\n          \"value\": \"Broadcast cue mixer\",\n          \"unit\": \"string\"\n        },\n        \"mode-copy\": {\n          \"value\": \"Live mode\",\n          \"unit\": \"string\"\n        },\n        \"music-level\": {\n          \"value\": \"0\",\n          \"unit\": \"string\"\n        },\n        \"presenter-level\": {\n          \"value\": \"0\",\n          \"unit\": \"string\"\n        },\n        \"music-increase-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"presenter-decrease-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"music-muted\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"preview-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"derived-load\": {\n          \"value\": \"1 audible • 2 / 6 units\",\n          \"unit\": \"string\"\n        },\n        \"derived-headroom\": {\n          \"value\": \"Headroom: 4 units\",\n          \"unit\": \"string\"\n        },\n        \"overload-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"apply-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"visual-composition\": {\n          \"value\": \"H1/loaded: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"leveled\": {\n        \"title\": {\n          \"value\": \"Broadcast cue mixer\",\n          \"unit\": \"string\"\n        },\n        \"mode-copy\": {\n          \"value\": \"Live mode\",\n          \"unit\": \"string\"\n        },\n        \"music-level\": {\n          \"value\": \"1\",\n          \"unit\": \"string\"\n        },\n        \"presenter-level\": {\n          \"value\": \"0\",\n          \"unit\": \"string\"\n        },\n        \"music-increase-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"presenter-decrease-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"music-muted\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"preview-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"derived-load\": {\n          \"value\": \"2 audible • 3 / 6 units\",\n          \"unit\": \"string\"\n        },\n        \"derived-headroom\": {\n          \"value\": \"Headroom: 3 units\",\n          \"unit\": \"string\"\n        },\n        \"overload-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"apply-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"H1/leveled: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"previewed\": {\n        \"title\": {\n          \"value\": \"Broadcast cue mixer\",\n          \"unit\": \"string\"\n        },\n        \"mode-copy\": {\n          \"value\": \"Preview mode\",\n          \"unit\": \"string\"\n        },\n        \"music-level\": {\n          \"value\": \"1\",\n          \"unit\": \"string\"\n        },\n        \"presenter-level\": {\n          \"value\": \"0\",\n          \"unit\": \"string\"\n        },\n        \"music-increase-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"presenter-decrease-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"music-muted\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"preview-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"derived-load\": {\n          \"value\": \"2 audible • 3 / 6 units\",\n          \"unit\": \"string\"\n        },\n        \"derived-headroom\": {\n          \"value\": \"Headroom: 3 units\",\n          \"unit\": \"string\"\n        },\n        \"overload-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"apply-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"H1/previewed: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"muted\": {\n        \"title\": {\n          \"value\": \"Broadcast cue mixer\",\n          \"unit\": \"string\"\n        },\n        \"mode-copy\": {\n          \"value\": \"Preview mode\",\n          \"unit\": \"string\"\n        },\n        \"music-level\": {\n          \"value\": \"1\",\n          \"unit\": \"string\"\n        },\n        \"presenter-level\": {\n          \"value\": \"0\",\n          \"unit\": \"string\"\n        },\n        \"music-increase-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"presenter-decrease-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"music-muted\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"preview-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"derived-load\": {\n          \"value\": \"1 audible • 2 / 6 units\",\n          \"unit\": \"string\"\n        },\n        \"derived-headroom\": {\n          \"value\": \"Headroom: 4 units\",\n          \"unit\": \"string\"\n        },\n        \"overload-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"apply-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"activation-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"H1/muted: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"submitted\": {\n        \"title\": {\n          \"value\": \"Broadcast cue mixer\",\n          \"unit\": \"string\"\n        },\n        \"mode-copy\": {\n          \"value\": \"Preview mode\",\n          \"unit\": \"string\"\n        },\n        \"music-level\": {\n          \"value\": \"1\",\n          \"unit\": \"string\"\n        },\n        \"presenter-level\": {\n          \"value\": \"0\",\n          \"unit\": \"string\"\n        },\n        \"music-increase-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"presenter-decrease-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"music-muted\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"preview-selected\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"derived-load\": {\n          \"value\": \"1 audible • 2 / 6 units\",\n          \"unit\": \"string\"\n        },\n        \"derived-headroom\": {\n          \"value\": \"Headroom: 4 units\",\n          \"unit\": \"string\"\n        },\n        \"overload-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"apply-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"activation-callback\": {\n          \"value\": [\n            \"mix:h1-session:preview:music=1/true,room=2/false,voice=0/false\"\n          ],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"H1/submitted: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      },\n      \"replaced\": {\n        \"title\": {\n          \"value\": \"Broadcast cue mixer\",\n          \"unit\": \"string\"\n        },\n        \"mode-copy\": {\n          \"value\": \"Live mode\",\n          \"unit\": \"string\"\n        },\n        \"music-level\": {\n          \"value\": \"2\",\n          \"unit\": \"string\"\n        },\n        \"presenter-level\": {\n          \"value\": \"0\",\n          \"unit\": \"string\"\n        },\n        \"music-increase-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"presenter-decrease-enabled\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"music-muted\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"preview-selected\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"derived-load\": {\n          \"value\": \"1 audible • 2 / 4 units\",\n          \"unit\": \"string\"\n        },\n        \"derived-headroom\": {\n          \"value\": \"Headroom: 2 units\",\n          \"unit\": \"string\"\n        },\n        \"overload-presence\": {\n          \"value\": false,\n          \"unit\": \"bool\"\n        },\n        \"apply-enabled\": {\n          \"value\": true,\n          \"unit\": \"bool\"\n        },\n        \"replacement-callback\": {\n          \"value\": [],\n          \"unit\": \"events\"\n        },\n        \"visual-composition\": {\n          \"value\": \"H1/replaced: composition, all palette/font roles, readable wrapping, native selected/disabled appearance and long content per brief/references. Non-sweep states cover captured target regions only.\",\n          \"unit\": \"string\"\n        }\n      }\n    }\n  }\n}\n"
+    }
+  },
+  "contract_sha256": "7a7602ffc97821b8872e9864b0594423139175a2cef9fd213d1151f63bd4eacf",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

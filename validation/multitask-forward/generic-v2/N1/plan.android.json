@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "states": [
+    {
+      "id": "start",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "expanded",
+      "input_index": 0,
+      "after_action": 1,
+      "coverage": "targets"
+    },
+    {
+      "id": "replaced",
+      "input_index": 1,
+      "after_action": 2,
+      "coverage": "targets"
+    }
+  ],
+  "assertions": [
+    {
+      "id": "start/primary",
+      "state": "start",
+      "kind": "geometry",
+      "target": {
+        "identifier": "neutral.primary"
+      },
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "property": "height",
+      "op": "gte",
+      "expected": 52,
+      "unit": "dp"
+    },
+    {
+      "id": "start/footer",
+      "state": "start",
+      "kind": "geometry",
+      "target": {
+        "identifier": "neutral.footer"
+      },
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "property": "height",
+      "op": "gte",
+      "expected": 52,
+      "unit": "dp"
+    },
+    {
+      "id": "start/gap",
+      "state": "start",
+      "kind": "geometry",
+      "target": {
+        "identifier": "neutral.secondary"
+      },
+      "reference_target": {
+        "identifier": "neutral.primary"
+      },
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "property": "gap_x",
+      "op": "near",
+      "expected": 12,
+      "tolerance": 0.25,
+      "unit": "dp"
+    },
+    {
+      "id": "expanded/primary",
+      "state": "expanded",
+      "kind": "geometry",
+      "target": {
+        "identifier": "neutral.primary"
+      },
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "property": "height",
+      "op": "gte",
+      "expected": 68,
+      "unit": "dp"
+    },
+    {
+      "id": "expanded/footer",
+      "state": "expanded",
+      "kind": "geometry",
+      "target": {
+        "identifier": "neutral.footer"
+      },
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "property": "height",
+      "op": "gte",
+      "expected": 68,
+      "unit": "dp"
+    },
+    {
+      "id": "expanded/gap",
+      "state": "expanded",
+      "kind": "geometry",
+      "target": {
+        "identifier": "neutral.secondary"
+      },
+      "reference_target": {
+        "identifier": "neutral.primary"
+      },
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "property": "gap_x",
+      "op": "near",
+      "expected": 12,
+      "tolerance": 0.25,
+      "unit": "dp"
+    },
+    {
+      "id": "replaced/primary",
+      "state": "replaced",
+      "kind": "geometry",
+      "target": {
+        "identifier": "neutral.primary"
+      },
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "property": "height",
+      "op": "gte",
+      "expected": 100,
+      "unit": "dp"
+    },
+    {
+      "id": "replaced/footer",
+      "state": "replaced",
+      "kind": "geometry",
+      "target": {
+        "identifier": "neutral.footer"
+      },
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "property": "height",
+      "op": "gte",
+      "expected": 100,
+      "unit": "dp"
+    },
+    {
+      "id": "replaced/gap",
+      "state": "replaced",
+      "kind": "geometry",
+      "target": {
+        "identifier": "neutral.secondary"
+      },
+      "reference_target": {
+        "identifier": "neutral.primary"
+      },
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "property": "gap_x",
+      "op": "near",
+      "expected": 12,
+      "tolerance": 0.25,
+      "unit": "dp"
+    },
+    {
+      "id": "expanded/event",
+      "state": "expanded",
+      "kind": "event",
+      "action_index": 1,
+      "expected": [
+        "expanded"
+      ],
+      "stimulus": "activation"
+    },
+    {
+      "id": "replaced/event",
+      "state": "replaced",
+      "kind": "event",
+      "action_index": 2,
+      "expected": [],
+      "stimulus": "caller_update"
+    }
+  ],
+  "required_assertion_ids": [
+    "start/primary",
+    "start/footer",
+    "start/gap",
+    "expanded/primary",
+    "expanded/footer",
+    "expanded/gap",
+    "replaced/primary",
+    "replaced/footer",
+    "replaced/gap",
+    "expanded/event",
+    "replaced/event"
+  ]
+}

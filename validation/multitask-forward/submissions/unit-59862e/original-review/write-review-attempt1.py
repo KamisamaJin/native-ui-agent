@@ -1,0 +1,66 @@
+import json,time,hashlib,datetime
+from pathlib import Path
+w=Path(__file__).resolve().parents[2];out=w/'agent-output/review'
+base=Path('/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/multitask-forward')
+public=base/'design-v2/T3/public'; submissions=base/'submissions/unit-59862e';corpus=base/'own-corpora/unit-59862e/d0'
+sha_cache={}
+def evidence(path):
+ path=Path(path)
+ if path not in sha_cache:sha_cache[path]=hashlib.sha256(path.read_bytes()).hexdigest()
+ return {'path':str(path),'sha256':sha_cache[path]}
+def save(name,data): (out/name).write_text(json.dumps(data,indent=2)+'\n')
+images=json.loads((out/'image-index.json').read_text());pixel=json.loads((out/'pixel-observations.json').read_text())
+findings=[];machine=[];coverage=[];original_commands=[]
+reference=json.loads((public/'reference.json').read_text())
+for case in ['P1','P2']:
+ for platform in ['ios','android']:
+  root=corpus/platform/case;op=root/'observation.json';o=json.loads(op.read_text())
+  rp=submissions/'own-checks/d0'/case/platform/'report.json';r=json.loads(rp.read_text())
+  pp=submissions/'initial-agent-output/plans'/case/platform/'plan.json';p=json.loads(pp.read_text());plans={a['id']:a for a in p['assertions']}
+  cp=rp.parent/'command.json';lp=rp.parent/'check.log'
+  original_commands.append({'case':case,'platform':platform,'command':json.loads(cp.read_text()),'command_record':evidence(cp),'exact_log':evidence(lp),'validation_error':None,'interpretation':'Exit 1 preserves original confirmed assertion failures; exit 3 preserves unassessed assertions. No validation rejection or plan mutation.'})
+  coverage.append({'case':case,'platform':platform,'original_counts':r['counts'],'original_failure_ids':r['failed_assertion_ids'],'original_report':evidence(rp),'observation':evidence(op),'selected_states':[{'id':x['state_id'],'snapshot_indices':x['snapshot_indices'],'complete':x['complete'],'top_reached':x.get('top_reached'),'bottom_reached':x.get('bottom_reached'),'stable_binding':x.get('stable_binding'),'max_gap':x.get('max_gap')} for x in o['state_captures'] if x['state_id'] in ['loaded','reasoned','advanced','classified','submitted','replaced']],'actions':[{'index':i,'state':st.get('state_id',st.get('action',{}).get('state_id')),'outcome':st.get('outcome'),'dispatch':st.get('dispatch'),'callback_delta':st.get('callback_delta'),'binding_after':st.get('binding_after')} for i,st in enumerate(o['steps'])]})
+  for a in r['assertions']:
+   plan=plans[a['id']];indices=a.get('snapshot_indices',[])
+   ev=[evidence(op),evidence(rp)]
+   for i in indices:
+    if isinstance(i,int) and 0<=i<len(o['snapshots']):
+     ev.append(evidence(root/o['snapshots'][i]['screenshot']))
+   reason=a['reason']
+   if a['status']=='unassessed' and platform=='ios' and plan['kind']=='text_layout':reason='Public iOS AX does not expose this generic SwiftUI computed-style/text-layout field. The original unassessed result remains; visual inspection does not supply a native measurement.'
+   if a['status']=='failed':
+    reason+='; original PNG and advanced fixture binding show new context with the original seed focus/decisions. This is product-related replacement-state behavior, not subpixel geometry noise.'
+    machine.append({'case':case,'platform':platform,'id':a['id'],'classification':'product-related','erased':False,'duplicate_manual_detection':False})
+   findings.append({'case':case,'platform':platform,'state':a['state'],'requirement_id':plan['requirement_id'],'assertion_id':a['id'],'aspect':plan['kind']+('/'+plan.get('property','') if plan.get('property') else ''),'expected':plan['expected'],'unit':plan['unit'],'status':a['status'],'origin':'original_typed_native_check','reason':reason,'actual':[v.get('value',v) for v in a['actual']] if isinstance(a.get('actual'),list) else a.get('actual'),'evidence':ev,'design_provenance':plan.get('expectation_provenance',[])})
+  for state in ['loaded','reasoned','advanced','classified','submitted','replaced']:
+   im=next(x for x in images if x['case']==case and x['platform']==platform and x['state']==state)
+   expected=reference['scenarios'][case][state]['visual-composition']
+   ev=[evidence(op)]+im['originals']
+   findings.append({'case':case,'platform':platform,'state':state,'requirement_id':'visual-composition','aspect':'readable wrapping, hierarchy and all review-note paragraphs','expected':expected['value'],'unit':expected['unit'],'status':'passed','origin':'original_manual_visual_review','reason':'Reviewed the original state pixels through indexed viewport crops/stitches: title/context, queue, inspector, summary, action and all four note paragraphs remain readable and vertically ordered without text overlap or ellipsis. This is an aspect-level visual judgment, not a complete palette, native-style or business-rule pass. Reference Arial export line breaks are not a pixel oracle for native SF/Roboto.','snapshot_indices':im['original_snapshot_indices'],'evidence':ev,'review_helper':evidence(im['path'])})
+   if platform=='android':
+    findings.append({'case':case,'platform':platform,'state':state,'requirement_id':'visual-composition','aspect':'canvas palette / observation-host responsibility','expected':expected['value'],'unit':expected['unit'],'status':'unassessed','origin':'original_observation_limitation','reason':'Original screenshot canvas is '+('#EDF1F6' if case=='P1' else '#0D1420')+' while the brief specifies '+('#FFFFFF' if case=='P1' else '#1C1424')+'. The assigned observer host explicitly paints these fallback colors in NativeObserverTest.kt line 256. The visible mismatch is retained, but product responsibility cannot be established from this host; do not label it a confirmed production defect.','evidence':ev+[evidence(base/'baseline-v6/assets/android-observer/NativeObserverTest.kt'),evidence(public/'BRIEF.md')]})
+# Independently observed visual defects. These are not native computed-style measurements.
+for case,states,identifiers in [('P1',['loaded','reasoned','advanced','replaced'],['condition.primary']),('P2',['advanced','classified','submitted'],['condition.stable','condition.care'])]:
+ for state in states:
+  root=corpus/'ios'/case;im=next(x for x in images if x['case']==case and x['platform']=='ios' and x['state']==state)
+  samples=[x for x in pixel if x['case']==case and x['platform']=='ios' and x['state']==state and x['identifier'] in identifiers]
+  exp=reference['scenarios'][case][state]['visual-composition']
+  actual='; '.join(x['identifier']+' visible dominant fill '+x['dominantScreenshotRGB'][0]['rgb']+' and solid foreground '+x['dominantScreenshotRGB'][1]['rgb'] for x in samples)
+  wanted='Light disabled fill #DACDE5 / muted text #746181' if case=='P1' else 'Dark disabled fill #634E75 / muted text #C8B5D9'
+  findings.append({'case':case,'platform':'ios','state':state,'requirement_id':'visual-composition','aspect':'disabled control palette','expected':exp['value'],'unit':exp['unit'],'status':'failed','origin':'original_manual_visual_review','duplicate_of_original_typed_failure':False,'root_cause_cluster':'ios-disabled-control-compositing','reason':wanted+' is explicitly fixed by the public brief. '+actual+'. Original screenshots visibly show additional fading over the specified roles. The discrepancy is confirmed in actual control regions, independent of the unsupported generic iOS style API. System disabled styling is a cause hypothesis, not a measured internal attribute.','snapshot_indices':[s['snapshot_index'] for s in samples],'evidence':[evidence(root/'observation.json'),evidence(public/'BRIEF.md')]+[{'path':s['path'],'sha256':s['sha256']} for s in samples],'pixel_measurement_scope':'Original screenshot RGB samples only; no claim of native computed fill/font/color introspection.'})
+# Confirm initial source and plans stayed byte-identical, including comparison to immutable submission copies.
+seal=json.loads((w/'agent-output/plans-seal.json').read_text());checks=[]
+for f in seal['sources']+seal['plansActionsAndScripts']:
+ path=w/f['path'];actual=hashlib.sha256(path.read_bytes()).hexdigest();item={'path':str(path),'originalSHA256':f['sha256'],'actualSHA256':actual,'identical':actual==f['sha256']}
+ if f in seal['sources']:
+  immutable=submissions/'d0/source'/f['path'];item['immutableSource']=evidence(immutable);item['matchesImmutableSource']=actual==item['immutableSource']['sha256']
+ elif f['path'].startswith('agent-output/plans/'):
+  immutable=submissions/'initial-agent-output'/Path(f['path']).relative_to('agent-output');item['immutablePlan']=evidence(immutable);item['matchesImmutablePlan']=actual==item['immutablePlan']['sha256']
+ checks.append(item)
+save('immutability-after.json',checks)
+start=json.loads((out/'phase-start.json').read_text())['startedAtUnix'];finished=time.time()
+review={'startedAtUnix':start,'finishedAtUnix':finished,'startedAtUtc':datetime.datetime.fromtimestamp(start,datetime.timezone.utc).isoformat(),'finishedAtUtc':datetime.datetime.fromtimestamp(finished,datetime.timezone.utc).isoformat(),'elapsedSeconds':finished-start,'budgetSeconds':720,'status':'read_only_review_complete','approvedLockCanonicalSHA256':'97d640f5a1ed98aabd13caf59d593c307d4488030dec031a529554ad023e3b42','coverage':coverage,'limits':['No source, plan, bridge, public design or original action was modified. No SDK, renderer, preview, app launch, observer or new capture command was run.','All 24 selected state sweeps were reviewed using original PNG pixels and state-indexed crops/stitches; each sweep reports complete native interval coverage, which alone does not establish visual correctness.','All 460 original typed assertion outcomes are retained as findings with their original expected values/units and provenance: 376 passed, 10 failed and 74 unassessed. Aspect-level manual findings do not overwrite them.','Generic iOS typography/color/ellipsis native facts remain unassessed. Screenshot palette observations are separate visual evidence, not invented computed style.','P2 disabled Stable action had no successful dispatch on both platforms; callback behavior for that attempt remains unassessed even though disabled state and unchanged displayed classification were observed.','Android canvas mismatch comes from the assigned observer host background and remains an attribution/observation limitation.','Unexercised branches remain unassessed: optional pending callbacks, unknown focus fallback, initial care seed missing/invalid category, selecting Structure, reselecting care while preserving a category, and explicitly clearing a previously reasoned care object with Stable. Source reasoning is not runtime acceptance.','No repair is authorized in this phase. Stop pending the all-six review barrier.'],'machine_failures':machine,'machine_failure_classification_summary':{'original_total':10,'product_related':10,'measurement_or_observation_limited_failures':0,'erased':0},'root_cause_clusters':[{'id':'ios-request-replacement-seed','classification':'confirmed product behavior','cases':['P1','P2'],'state':'replaced','original_typed_failure_count':10,'evidence_basis':'Same mounted instance and new fixture binding/context, but inspector and decision state match original seed.'},{'id':'ios-disabled-control-compositing','classification':'confirmed original visual palette contradiction','cases':['P1','P2'],'manual_affected_state_count':7,'original_typed_duplicate':False,'evidence_basis':'Original disabled control screenshots show fill/text additionally faded from fixed brief roles.'}],'findings':findings,'original_commands_and_errors':original_commands,'review_commands':{'sdk_or_render_commands':[],'analysis_script':['python3 agent-output/review/inspect-evidence.py','python3 agent-output/review/write-review.py'],'read_only_inputs':['Assigned public design and references','Assigned frozen Skill/native tools and Android observer host source','Own sealed D0 captures, native observations, typed reports, commands and logs','Own source/plans and immutable D0 submission copies'],'image_reads':images,'analysis_errors':[]},'immutability':{'all_original_hashes_identical':all(x['identical'] for x in checks),'all_immutable_source_and_plan_copies_match':all(x.get('matchesImmutableSource',True) and x.get('matchesImmutablePlan',True) for x in checks),'record':evidence(out/'immutability-after.json')}}
+save('review.json',review)
+reviewseal={'sealedAtUnix':time.time(),'review':evidence(out/'review.json'),'immutableSourcesAndPlansVerified':True,'artifacts':[evidence(p) for p in sorted(out.iterdir()) if p.is_file() and p.name not in ['review-seal.json','write-review.log']]}
+save('review-seal.json',reviewseal)
+print(json.dumps({'status':review['status'],'elapsedSeconds':finished-start,'originalTypedFailures':10,'manualPaletteAffectedStates':7,'originalImmutable':review['immutability']['all_original_hashes_identical'],'findings':len(findings),'review':str(out/'review.json')},indent=2))

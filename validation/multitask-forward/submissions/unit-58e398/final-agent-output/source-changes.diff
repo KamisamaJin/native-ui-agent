@@ -1,0 +1,86 @@
+--- original/ExpeditionPackPanel.swift
++++ repaired/ExpeditionPackPanel.swift
+@@ -70,6 +70,11 @@
+ 
+     private static func seedSelection(_ request: ExpeditionPackRequest) -> Set<String> {
+         Set(request.selectedIDs).intersection(Set(request.items.filter { $0.available }.map { $0.id }))
++    }
++
++    private var incomingSeed: PackRequestSeed {
++        let seeds = Self.seedSelection(request)
++        return PackRequestSeed(requestID: request.id, selectedIDs: seeds, cover: request.cover && !seeds.isEmpty)
+     }
+ 
+     private var palette: PackPalette { PackPalette(dark: colorScheme == .dark) }
+@@ -130,7 +135,7 @@
+                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(cover ? palette.accent : palette.border, lineWidth: 1))
+                 .contentShape(RoundedRectangle(cornerRadius: 12))
+             }
+-            .buttonStyle(PlainButtonStyle())
++            .buttonStyle(PackButtonStyle())
+             .disabled(!coverEnabled)
+             .accessibilityElement(children: .ignore)
+             .accessibilityLabel("Weather cover")
+@@ -159,7 +164,7 @@
+                     .overlay(RoundedRectangle(cornerRadius: 12).stroke(palette.border, lineWidth: 1))
+                     .contentShape(RoundedRectangle(cornerRadius: 12))
+             }
+-            .buttonStyle(PlainButtonStyle())
++            .buttonStyle(PackButtonStyle())
+             .accessibilityIdentifier("pack.disclosure")
+             if expanded {
+                 Text(request.requiresShelter ? "Shelter needed for this route." : "Day route: no shelter required.")
+@@ -181,7 +186,7 @@
+                     .clipShape(RoundedRectangle(cornerRadius: 12))
+                     .contentShape(RoundedRectangle(cornerRadius: 12))
+             }
+-            .buttonStyle(PlainButtonStyle())
++            .buttonStyle(PackButtonStyle())
+             .disabled(!ready)
+             .accessibilityIdentifier("pack.primary")
+             VStack(alignment: .leading, spacing: 16) {
+@@ -199,10 +204,9 @@
+             }
+         }
+         .frame(maxWidth: .infinity, alignment: .leading)
+-        .onChange(of: request.id) { _ in
+-            let seeds = Self.seedSelection(request)
+-            selectedIDs = seeds
+-            cover = request.cover && !seeds.isEmpty
++        .onChange(of: incomingSeed) { nextSeed in
++            selectedIDs = nextSeed.selectedIDs
++            cover = nextSeed.cover
+             expanded = false
+         }
+     }
+@@ -236,12 +240,29 @@
+             .overlay(RoundedRectangle(cornerRadius: 12).stroke(selected ? palette.accent : palette.border, lineWidth: 1))
+             .contentShape(RoundedRectangle(cornerRadius: 12))
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(PackButtonStyle())
+         .disabled(!enabled)
+         .accessibilityElement(children: .ignore)
+         .accessibilityLabel(item.name + ", " + item.note)
+         .accessibilityAddTraits(selected ? .isSelected : [])
+         .accessibilityIdentifier(identifier)
++    }
++}
++
++private struct PackRequestSeed: Equatable {
++    let requestID: String
++    let selectedIDs: Set<String>
++    let cover: Bool
++
++    // Only a new request identity resets local choices; use its incoming seed payload.
++    static func == (lhs: PackRequestSeed, rhs: PackRequestSeed) -> Bool {
++        lhs.requestID == rhs.requestID
++    }
++}
++
++private struct PackButtonStyle: ButtonStyle {
++    func makeBody(configuration: Configuration) -> some View {
++        configuration.label
+     }
+ }
+ 

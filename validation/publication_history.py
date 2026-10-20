@@ -36,6 +36,22 @@ def materialize(destination, publication):
             os.link(source, target)
         except OSError:
             shutil.copyfile(source, target)
+    # A historical checker may read an older immutable release that its own
+    # publication manifest did not enumerate. Pin those read-only dependencies
+    # separately rather than rewriting the original manifest or verifier.
+    for rel, expected in metadata.get('supplementalDependencies', {}).items():
+        source = REPO / rel
+        assert source.is_file() and sha(source) == expected, rel
+        target = destination / rel
+        assert target.resolve().is_relative_to(destination.resolve())
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if target.exists():
+            assert sha(target) == expected
+        else:
+            try:
+                os.link(source, target)
+            except OSError:
+                shutil.copyfile(source, target)
     target = destination / metadata['originalManifest']
     target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(manifest, target)
@@ -44,8 +60,8 @@ def materialize(destination, publication):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('publication', choices=['dispatch-v4', 'state-v5'])
-    parser.add_argument('check', choices=['verify_trial.py', 'verify_artifacts.py', 'artifacts.py'])
+    parser.add_argument('publication', choices=['dispatch-v4', 'state-v5', 'contract-v6'])
+    parser.add_argument('check', choices=['verify_trial.py', 'verify_artifacts.py', 'artifacts.py', 'verify_tools.py', 'verify_generic.py'])
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='native-publication-audit-') as temporary:
         root = Path(temporary)

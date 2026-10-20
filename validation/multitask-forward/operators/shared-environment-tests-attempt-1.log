@@ -1,0 +1,23 @@
+....E
+======================================================================
+ERROR: test_shared_patch_does_not_change_native_assertions (__main__.NativeEnvironmentTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/multitask-forward/test_shared_environment.py", line 26, in test_shared_patch_does_not_change_native_assertions
+    a=old.grade_task(task,'P1','android',op);b=fixed.grade_task(task,'P1','android',op)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/multitask-forward/design-v2/oracle_common.py", line 53, in grade_task
+    inputs=[];obs=read(op);evidence=[{'path':ref(op),'sha256':sha(op)}]
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/multitask-forward/design-v2/oracle_common.py", line 12, in read
+    def read(p):return json.loads(Path(p).read_text())
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1256, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1242, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1110, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/multitask-forward/common-corpora/unit-df4422/d0/android/P1/observation.json'
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.030s
+
+FAILED (errors=1)

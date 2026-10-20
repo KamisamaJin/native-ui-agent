@@ -1,0 +1,1450 @@
+{
+  "version": 1,
+  "design_owner": "Independent neutral forward context, design fixed before source",
+  "approval_reference": "../APPROVAL.json and PREREGISTRATION.md",
+  "sources": [
+    {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "0639a833e3c2da8fb0549545f60401deee2cef19100fbe1914739f8783ee63c0"
+    }
+  ],
+  "required_rule_ids": [
+    "title",
+    "disclosure-height",
+    "layout-height",
+    "selection",
+    "disabled",
+    "title-font",
+    "title-ink",
+    "expand-event",
+    "select-event",
+    "disabled-event",
+    "replacement-event",
+    "visual"
+  ],
+  "rules": [
+    {
+      "id": "title",
+      "kind": "control",
+      "target": "title",
+      "property": "label"
+    },
+    {
+      "id": "disclosure-height",
+      "kind": "geometry",
+      "target": "expand",
+      "property": "height",
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "op": "near"
+    },
+    {
+      "id": "layout-height",
+      "kind": "geometry",
+      "target": "expand",
+      "property": "height",
+      "basis": "control",
+      "measurement": "layout_box",
+      "op": "near"
+    },
+    {
+      "id": "selection",
+      "kind": "control",
+      "target": "choice",
+      "property": "selected"
+    },
+    {
+      "id": "disabled",
+      "kind": "control",
+      "target": "disabled",
+      "property": "enabled"
+    },
+    {
+      "id": "title-font",
+      "kind": "text_layout",
+      "target": "title",
+      "property": "font_sp"
+    },
+    {
+      "id": "title-ink",
+      "kind": "text_layout",
+      "target": "title",
+      "property": "color_argb"
+    },
+    {
+      "id": "expand-event",
+      "kind": "event"
+    },
+    {
+      "id": "select-event",
+      "kind": "event"
+    },
+    {
+      "id": "disabled-event",
+      "kind": "event"
+    },
+    {
+      "id": "replacement-event",
+      "kind": "event",
+      "stimulus": "caller_update"
+    },
+    {
+      "id": "visual",
+      "kind": "manual",
+      "target": "title",
+      "coverage": "targets",
+      "allowed_methods": [
+        "visual"
+      ]
+    }
+  ],
+  "scenarios": {
+    "normal": {
+      "states": [
+        {
+          "id": "initial",
+          "input_index": 0,
+          "coverage": "full_content",
+          "after_action": -1
+        },
+        {
+          "id": "expanded",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "targets"
+        },
+        {
+          "id": "selected",
+          "input_index": 0,
+          "after_action": 1,
+          "coverage": "targets"
+        },
+        {
+          "id": "blocked",
+          "input_index": 0,
+          "after_action": 2,
+          "coverage": "targets"
+        },
+        {
+          "id": "replaced",
+          "input_index": 1,
+          "after_action": 3,
+          "coverage": "targets"
+        }
+      ],
+      "actions": [
+        {
+          "type": "tap",
+          "target": "expand",
+          "reveal": true,
+          "state_id": "expanded"
+        },
+        {
+          "type": "tap",
+          "target": "choice",
+          "reveal": true,
+          "state_id": "selected"
+        },
+        {
+          "type": "tap",
+          "target": "disabled",
+          "reveal": true,
+          "allow_disabled": true,
+          "state_id": "blocked"
+        },
+        {
+          "type": "apply_next_fixture",
+          "state_id": "replaced"
+        }
+      ],
+      "values": {
+        "title": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/new"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/new"
+            }
+          }
+        },
+        "disclosure-height": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/collapsed"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/collapsed"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/expanded"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/expanded"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/expanded"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/expanded"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/expanded"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/expanded"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/collapsed"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/collapsed"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          }
+        },
+        "layout-height": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/collapsed"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/collapsed"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/expanded"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/expanded"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/expanded"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/expanded"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/expanded"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/expanded"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/collapsed"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/collapsed"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          }
+        },
+        "selection": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/yes"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/yes"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          }
+        },
+        "disabled": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          }
+        },
+        "title-font": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/font"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/font"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/font"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/font"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/font"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/font"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/font"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/font"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/font"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/font"
+            }
+          }
+        },
+        "title-ink": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/normal"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/normal"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/normal"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/normal"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/normal"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/normal"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/normal"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/normal"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/normal"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/normal"
+            }
+          }
+        },
+        "expand-event": {
+          "initial": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/events/expand"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/events/expand"
+            }
+          },
+          "selected": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "blocked": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "replaced": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          }
+        },
+        "select-event": {
+          "initial": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "expanded": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/events/select"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/events/select"
+            }
+          },
+          "blocked": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "replaced": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          }
+        },
+        "disabled-event": {
+          "initial": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "expanded": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "selected": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/events/quiet"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/events/quiet"
+            }
+          },
+          "replaced": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          }
+        },
+        "replacement-event": {
+          "initial": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "expanded": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "selected": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "blocked": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/events/quiet"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/events/quiet"
+            }
+          }
+        },
+        "visual": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual"
+            }
+          }
+        }
+      }
+    },
+    "dark-large": {
+      "states": [
+        {
+          "id": "initial",
+          "input_index": 0,
+          "coverage": "full_content",
+          "after_action": -1
+        },
+        {
+          "id": "expanded",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "targets"
+        },
+        {
+          "id": "selected",
+          "input_index": 0,
+          "after_action": 1,
+          "coverage": "targets"
+        },
+        {
+          "id": "blocked",
+          "input_index": 0,
+          "after_action": 2,
+          "coverage": "targets"
+        },
+        {
+          "id": "replaced",
+          "input_index": 1,
+          "after_action": 3,
+          "coverage": "targets"
+        }
+      ],
+      "actions": [
+        {
+          "type": "tap",
+          "target": "expand",
+          "reveal": true,
+          "state_id": "expanded"
+        },
+        {
+          "type": "tap",
+          "target": "choice",
+          "reveal": true,
+          "state_id": "selected"
+        },
+        {
+          "type": "tap",
+          "target": "disabled",
+          "reveal": true,
+          "allow_disabled": true,
+          "state_id": "blocked"
+        },
+        {
+          "type": "apply_next_fixture",
+          "state_id": "replaced"
+        }
+      ],
+      "values": {
+        "title": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/old"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/new"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/new"
+            }
+          }
+        },
+        "disclosure-height": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/collapsed"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/collapsed"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/expanded"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/expanded"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/expanded"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/expanded"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/expanded"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/expanded"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/collapsed"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/collapsed"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          }
+        },
+        "layout-height": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/collapsed"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/collapsed"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/expanded"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/expanded"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/expanded"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/expanded"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/expanded"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/expanded"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/collapsed"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/collapsed"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          }
+        },
+        "selection": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/yes"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/yes"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          }
+        },
+        "disabled": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bool/no"
+            }
+          }
+        },
+        "title-font": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/font"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/font"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/font"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/font"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/font"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/font"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/font"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/font"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/font"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/font"
+            }
+          }
+        },
+        "title-ink": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/dark-large"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/dark-large"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/dark-large"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/dark-large"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/dark-large"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/dark-large"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/dark-large"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/dark-large"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/dark-large"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/dark-large"
+            }
+          }
+        },
+        "expand-event": {
+          "initial": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/events/expand"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/events/expand"
+            }
+          },
+          "selected": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "blocked": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "replaced": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          }
+        },
+        "select-event": {
+          "initial": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "expanded": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/events/select"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/events/select"
+            }
+          },
+          "blocked": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "replaced": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          }
+        },
+        "disabled-event": {
+          "initial": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "expanded": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "selected": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/events/quiet"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/events/quiet"
+            }
+          },
+          "replaced": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          }
+        },
+        "replacement-event": {
+          "initial": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "expanded": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "selected": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "blocked": {
+            "not_applicable": "This state has a different stimulus; no callback attribution to this rule."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/events/quiet"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/events/quiet"
+            }
+          }
+        },
+        "visual": {
+          "initial": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,69 @@
+from pathlib import Path
+import json,hashlib,importlib.util,shutil,collections
+R=Path('/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/multitask-forward');O=R/'evaluation/selfreview/T3'
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def ref(p):return {'path':str(p.relative_to(R)),'sha256':sha(p)}
+def save(p,d):assert not p.exists(),p;p.write_text(json.dumps(d,indent=2)+'\n')
+def ratio(n,d):return {'numerator':n,'denominator':d,'value':n/d if d else None,'display':'N/A' if not d else f'{n}/{d}'}
+def rates(tp,fp,u):
+ total=tp+fp+u;known=tp+fp
+ return {'TP':tp,'FP':fp,'U':u,'total_unique_failure_claims':total,'resolved_claims':known,'precision_resolved':ratio(tp,known),'conditional_false_discovery_error':ratio(fp,known),'precision_unknown_bounds':{'lower':ratio(tp,total),'upper':ratio(tp+u,total),'assumption':'Each unresolved eligible failure claim could be true or false; no new scope or row is invented.'},'false_discovery_unknown_bounds':{'lower':ratio(fp,total),'upper':ratio(fp+u,total)},'classical_FPR':{'value':None,'display':'N/A','reason':'No complete true-negative claim universe; do not use FP/(FP+TN).'}}
+def identity(c):return '/'.join(str(c.get(k,'')) for k in ['case','platform','state','requirement'])
+def descriptor(c):return json.dumps({k:({'missing':True} if k not in c else c[k]) for k in ['case','platform','state','requirement','expected','unit','status']},sort_keys=True,ensure_ascii=False)
+# Verify only the two task-owned immutable stage outputs; do not follow corpus/source paths in rows or transported claims.
+integrity=[]
+for stage in ['D0','FINAL']:
+ d=R/f'evaluation/{stage}/T3';s=d/'SEAL.json';seal=json.loads(s.read_text());bad=[p for p,h in seal['files'].items() if sha(d/p)!=h];assert not bad
+ integrity.append({'stage':stage,'seal':ref(s),'checked_output_files':len(seal['files']),'mismatches':bad})
+spec=importlib.util.spec_from_file_location('tg',R/'design-v2/T3/private/grader.py');g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
+comparison={'schema_version':1,'stage':'selfreview','task':'T3','method':'Unchanged match_claims on original transported descriptors and sealed D0 grade rows only. Original expected/state/unit never filled, broadened or repaired. Strict matcher results and confirmed-product metrics are separate.','immutable_inputs':integrity,'sources':{},'denominator_policy':'Only eligible transported failure claims enter failure-claim TP/FP/U. Original successful observations, ineligible/qualitative findings and typed-duplicate markers are retained separately. Full D0 public528 and FINAL public528 row ledgers remain intact; heldout264 has no D0 repair denominator. States and platforms are manifestations, not independent experiments.'}
+for alias in ['source-a','source-b']:
+ out=O/alias;out.mkdir();cp=R/f'evaluation-inputs/selfreview/T3/{alias}/claims.json';claims=json.loads(cp.read_text());shutil.copyfile(cp,out/'claims-transported.json');d0=[];finalpublic=[];held=[];inputrefs=[ref(cp)]
+ for c in ['P1','P2']:
+  for p in ['ios','android']:
+   for stage,target in [('D0',d0),('FINAL',finalpublic)]:
+    f=R/f'evaluation/{stage}/T3/{alias}/{c}/{p}/grade.json';target.extend(json.loads(f.read_text())['rows']);inputrefs.append(ref(f))
+ for p in ['ios','android']:
+  f=R/f'evaluation/FINAL/T3/{alias}/H1/{p}/grade.json';held.extend(json.loads(f.read_text())['rows']);inputrefs.append(ref(f))
+ d0sum=R/'evaluation/D0/T3/summary.json';d0s=json.loads(d0sum.read_text())['sources'][alias];product=set(d0s['product_failure_row_ids']);nonprod={x if isinstance(x,str) else x['id'] for x in d0s['non_product_f_rows']};uncertain=set(d0s['uncertain_f_rows']);clusters=d0s['defect_clusters'];assert len(d0)==len(finalpublic)==528 and len(held)==264
+ index={r['id']:r for r in d0};fi={r['id']:r for r in finalpublic};assert set(index)==set(fi)
+ assert {r['id'] for r in d0 if r['status']=='F'}==product|nonprod|uncertain
+ aggregate={'rows':d0,'counts':{s:sum(r['status']==s for r in d0) for s in ['P','F','U','N/A']},'scope':'Frozen D0 public acceptance rows only; source/API/input checks excluded.'};save(out/'d0-grade-aggregate.json',aggregate)
+ groups={'machine':claims['machine'],'manual':claims['manual'],'combined':claims['machine']+claims['manual']};origins={};groupdetails={}
+ for origin,cs in groups.items():
+  raw=g.match_claims(aggregate,cs);save(out/f'match-{origin}.json',raw)
+  details=[];unique={}
+  for i,(c,m) in enumerate(zip(cs,raw['claims'])):
+   rid=identity(c);row=index.get(rid);desc=descriptor(c);product_verdict='U';cause='Original scope/expectation lacks exact oracle support; no descriptor repair or detection credit.'
+   if m['status']=='P' and c.get('status')=='F' and rid in product:product_verdict='TP';cause='Exact original failure claim supported by independently confirmed D0 product row.'
+   elif row and row['status']=='P' and m['status']=='F' and all(k in c for k in ['expected','unit']) and (c['expected'],c['unit'])==(row['expected'],row['unit']):product_verdict='FP';cause='Exact eligible failure claim concretely contradicts frozen passing D0 row.'
+   elif row and row['status']=='F' and rid in nonprod and m['status']=='P':cause='Strict F match is a sealed non-product issue; not confirmed product TP and not a demonstrated product false alarm.'
+   elif row and row['status']=='F' and rid in uncertain: cause='Sealed oracle F has uncertain product cause; product metric remains U.'
+   elif m['status']=='F' and row and (c.get('expected'),c.get('unit'))!=(row['expected'],row['unit']):cause='Unchanged exact matcher rejects the original expectation/unit. Scope overlaps an independently confirmed row, but this differently worded expectation cannot be repaired or credited; no concrete product false alarm is established.'
+   record={'claim_index':i,'origin':c.get('origin',origin),'original_descriptor':{k:c[k] for k in ['case','platform','state','requirement','expected','unit','status'] if k in c},'descriptor_key':desc,'row_id':rid if row else None,'strict_match':m,'product_verdict':product_verdict,'product_reason':cause,'oracle_row_status':row['status'] if row else None,'oracle_row_classification':'confirmed_product_F' if rid in product else 'non_product_F' if rid in nonprod else 'uncertain_F' if rid in uncertain else row['status'] if row else 'unmapped','oracle_row_evidence':row['evidence'] if row else []}
+   details.append(record)
+   if desc in unique:unique[desc]['claim_indices'].append(i)
+   else:unique[desc]={'claim_indices':[i],'row_id':record['row_id'],'product_verdict':product_verdict,'strict_verdict':m['status'],'original_descriptor':record['original_descriptor']}
+  us=list(unique.values());tp=[x for x in us if x['product_verdict']=='TP'];fps=[x for x in us if x['product_verdict']=='FP'];uu=[x for x in us if x['product_verdict']=='U'];tp_rows={x['row_id'] for x in tp};urows={x['row_id'] for x in uu if x['row_id'] in product}-tp_rows
+  clustercoverage=[]
+  for cl in clusters:
+   fixed=set(cl['fixed_row_ids']);hit=sorted(tp_rows&fixed);potential=sorted(urows&fixed);clustercoverage.append({'cluster_id':cl['cluster_id'],'category':cl['category'],'fixed_manifestation_denominator':len(fixed),'fixed_row_ids':sorted(fixed),'supported_detected_row_ids':hit,'uncertain_uncredited_row_ids':potential,'detected':bool(hit),'all_manifestations_detected':fixed<=tp_rows,'sealed_evidence':cl['evidence']})
+  strictcounts={st:sum(x['strict_verdict']==st for x in us) for st in ['P','F','U']};stats={'raw_failure_claim_count':len(cs),'unique_failure_descriptor_count':len(us),'exact_duplicate_claims':sum(len(x['claim_indices'])-1 for x in us),'product_claim_metrics':rates(len(tp),len(fps),len(uu)),'unique_TP_claims':tp,'unique_FP_claims':fps,'unique_U_claims':uu,'supported_product_row_ids':sorted(tp_rows),'missed_confirmed_product_row_ids':sorted(product-tp_rows),'product_row_detection':ratio(len(tp_rows),len(product)),'product_row_detection_unknown_bounds':{'lower':ratio(len(tp_rows),len(product)),'upper':ratio(len(tp_rows|urows),len(product)),'policy':'Only exact existing confirmed-product row scopes can bound uncertainty; qualitative/ineligible claims earn no credit and broad states are never expanded.'},'product_clusters':clustercoverage,'product_cluster_detection':ratio(sum(x['detected'] for x in clustercoverage),len(clusters)),'strict_frozen_oracle_metrics':{'unique_supported':strictcounts['P'],'unique_rejected':strictcounts['F'],'unique_unassessed':strictcounts['U'],'exact_match_rate_among_resolved':ratio(strictcounts['P'],strictcounts['P']+strictcounts['F']),'conditional_exact_match_rejection_rate':ratio(strictcounts['F'],strictcounts['P']+strictcounts['F']),'raw_counts':raw['counts'],'policy':'Rejection includes expectation/unit mismatch and is not automatically a confirmed product false alarm.'},'raw_matches_file':f'match-{origin}.json'}
+  origins[origin]=stats;groupdetails[origin]=details
+ save(out/'claim-details.json',groupdetails)
+ qual=[]
+ for i,c in enumerate(claims['ineligible_or_qualitative']):
+  rid=identity(c);row=index.get(rid);qual.append({'original_index':i,'row_id':rid if row else None,'status':'U','reason':c.get('ineligible_reason','Original qualitative/ineligible claim retained as uncertainty.'),'original_unchanged':c,'oracle_status':row['status'] if row else None,'scope':'Excluded from eligible failure-claim FP/U denominator and receives no D0 detection credit.'})
+ save(out/'ineligible-qualitative-uncertainty.json',qual);save(out/'duplicates-of-original-typed-failure.json',claims['duplicates_of_original_typed_failure']);save(out/'non-failure-observations.json',claims['non_failure_claims'])
+ nfraw=g.match_claims(aggregate,claims['non_failure_claims']);save(out/'match-non-failure.json',nfraw)
+ transitions=[]
+ for rid,row in index.items():
+  f=fi[rid];assert all(row[k]==f[k] for k in ['expected','unit','op','tolerance']);transitions.append({'id':rid,'class':row['class'],'expected':row['expected'],'unit':row['unit'],'D0':row['status'],'FINAL':f['status'],'confirmed_D0_product_issue':rid in product,'D0_evidence':row['evidence'],'FINAL_evidence':f['evidence']})
+ trcounts=collections.Counter(x['D0']+'->'+x['FINAL'] for x in transitions);fden=[x for x in transitions if x['D0']=='F'];pden=[x for x in transitions if x['D0']=='P'];clustersresolved=[]
+ for cl in clusters:
+  ids=cl['fixed_row_ids'];dispositions={rid:fi[rid]['status'] for rid in ids};resolved=all(x=='P' for x in dispositions.values());clustersresolved.append({'cluster_id':cl['cluster_id'],'fixed_row_ids':ids,'FINAL_dispositions':dispositions,'resolution':'resolved_all_confirmed_manifestations_pass' if resolved else 'not_resolved','resolved':resolved,'denominator':len(ids)})
+ save(out/'public-repair-transitions.json',{'denominator':528,'rows':transitions,'transition_counts':dict(trcounts),'all_frozen_D0_F_to_FINAL':{'denominator':len(fden),'F->P':[x['id'] for x in fden if x['FINAL']=='P'],'F->F':[x['id'] for x in fden if x['FINAL']=='F'],'F->U':[x['id'] for x in fden if x['FINAL']=='U'],'F->N/A':[x['id'] for x in fden if x['FINAL']=='N/A']},'regressions':{'D0_P_denominator':len(pden),'P->F':[x['id'] for x in pden if x['FINAL']=='F'],'P->U':[x['id'] for x in pden if x['FINAL']=='U']},'confirmed_product_clusters':clustersresolved})
+ heldq={'denominator':264,'counts':{st:sum(x['status']==st for x in held) for st in ['P','F','U','N/A']},'rows':held,'scope':'FINAL H1 quality only. Not available for repair and has no D0 hidden repair denominator.'};save(out/'heldout-final-quality.json',heldq)
+ comparison['sources'][alias]={'inputs':inputrefs+[ref(d0sum)],'transported_group_counts':{k:len(claims[k]) for k in ['machine','manual','ineligible_or_qualitative','non_failure_claims','duplicates_of_original_typed_failure']},'D0_acceptance_denominator':528,'D0_counts':aggregate['counts'],'confirmed_product_row_denominator':len(product),'confirmed_product_cluster_denominator':len(clusters),'detection':origins,'ineligible_qualitative_uncertainty_count':len(qual),'ineligible_qualitative_detail_file':'ineligible-qualitative-uncertainty.json','typed_duplicate_markers_count':len(claims['duplicates_of_original_typed_failure']),'typed_duplicate_policy':'Retained separately without additional manual detection credit. No new duplicate markers inferred.','non_failure_observation_count':len(claims['non_failure_claims']),'non_failure_oracle_concordance':nfraw['counts'],'non_failure_policy':'Original successful observations are separate and excluded from failure-claim FP/U/error denominators even when strict oracle discordant or unknown.','public_repairs':{'row_identity_denominator':528,'transition_counts':dict(trcounts),'confirmed_product_F_denominator':len(product),'confirmed_product_F_to_P':sum(fi[r]['status']=='P' for r in product),'confirmed_product_row_resolution':ratio(sum(fi[r]['status']=='P' for r in product),len(product)),'D0_P_denominator':len(pden),'P_to_F_count':sum(x['FINAL']=='F' for x in pden),'clusters':clustersresolved,'cluster_resolution':ratio(sum(x['resolved'] for x in clustersresolved),len(clusters))},'heldout_final_quality':{'denominator':264,'counts':heldq['counts'],'repair_denominator':None,'scope':heldq['scope']},'uncertainty_policy':'No concrete product false alarm is established for an unmapped or differently expected impression; it remains U. Original U stays U. No source/API/input check enters row detection or repair denominators.'}
+save(O/'comparison.json',comparison)
+print(json.dumps({a:{'counts':x['transported_group_counts'],'detection':{k:{'product':v['product_claim_metrics'],'row_recall':v['product_row_detection'],'cluster_recall':v['product_cluster_detection'],'strict':v['strict_frozen_oracle_metrics']} for k,v in x['detection'].items()},'repairs':x['public_repairs']['transition_counts'],'heldout':x['heldout_final_quality']['counts']} for a,x in comparison['sources'].items()},indent=2))

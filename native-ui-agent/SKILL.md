@@ -33,6 +33,8 @@ description: 在现有 iOS 或 Android 工程中新增或修改原生 UI 组件�
 
 选择本次相关的普通内容、长文本、缺省内容、主题、字体或尺寸场景，不做所有维度的笛卡尔积。每份 profile 对应一个平台、组件状态和一张实际图片。两端分别渲染、分别比较参考图，共享业务规则。
 
+数值几何检查使用[原生精度与封存屏障](references/native-precision.md)：保留实际原生像素尺寸/density和逐帧来源，避免从舍入端点相减；不增加默认 epsilon 或放宽设计容差。多候选盲测先固定全体成员并用 `cohort_gate.py` 强制完整封存后再启动采集；单项目日常开发无需建立试验组。
+
 复杂需求在实现前建立“需求 × 场景 × 检查方面”的证据计划，区分布局、字体、颜色、状态、交互和无障碍。拆开一条规则中可独立缺证据的方面，例如可见标签与实际点击。按 [覆盖与运行时观测](references/coverage.md)记录依据；`scripts/coverage.py`核验缺项和证据指纹，不能替代原生判定。无需为简单改动扩展无关矩阵。
 
 按 [执行与证据协议](references/protocol.md)为项目生成真实 profile。随附 [Android 示例](assets/profile.example.json)和 [iOS 示例](assets/profile.ios.example.json)展示字段结构，需要替换为当前项目确认的命令、路径和期望。必需检查在实现前固定；改变检查时保留需求依据。

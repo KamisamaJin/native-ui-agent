@@ -48,8 +48,8 @@ jobs:
       - run: python -B validation/state-forward/build_tables.py
       - run: python -B validation/state-forward/failure_index.py
       - run: python -B validation/publication_history.py state-v5 artifacts.py
-      - run: python -B validation/contract-forward/verify_tools.py
-      - run: python -B validation/contract-forward/verify_generic.py
+      - run: python -B validation/publication_history.py contract-v6 verify_tools.py
+      - run: python -B validation/publication_history.py contract-v6 verify_generic.py
       - run: python -B -m unittest discover -s validation/contract-forward/design/private -p 'test_*.py'
       - run: python -B validation/contract-forward/verify_trial.py
       - run: python -B validation/contract-forward/verify_evaluation.py
@@ -59,4 +59,36 @@ jobs:
       - run: python -B validation/contract-forward/metrics.py
       - run: python -B validation/contract-forward/build_tables.py
       - run: python -B validation/contract-forward/build_gallery.py
-      - run: python -B validation/contract-forward/artifacts.py
+      - run: python -B validation/publication_history.py contract-v6 artifacts.py
+      - run: python -B validation/multitask-forward/verify_tools.py
+      - run: python -B validation/multitask-forward/verify_generic.py
+      - run: python -B validation/multitask-forward/design-v2/T1/private/test_grader.py
+      - run: python -B validation/multitask-forward/design-v2/T2/private/test_grader.py
+      - run: python -B validation/multitask-forward/design-v2/T3/private/test_grader.py
+      - run: python -B validation/multitask-forward/verify_trial.py
+      - run: python -B validation/multitask-forward/verify_evaluation.py
+      - run: python -B validation/multitask-forward/verify_claims.py
+      - run: python -B validation/multitask-forward/test_metrics.py
+      - run: python -B validation/multitask-forward/metrics.py
+      - run: python -B validation/multitask-forward/quality_breakdown.py
+      - run: python -B validation/multitask-forward/pair_metrics.py
+      - run: python -B validation/multitask-forward/costs.py
+      - run: python -B validation/multitask-forward/observation_costs.py
+      - run: python -B validation/multitask-forward/failure_index.py
+      - run: python -B validation/multitask-forward/build_tables.py
+      - run: python -B validation/multitask-forward/build_gallery.py
+      - run: python -B validation/multitask-forward/artifacts.py
+      - name: Shared native environment compatibility regression
+        run: python3 -B validation/multitask-forward/test_shared_environment.py
+      - name: Verify separate posthoc shared infrastructure recheck
+        run: |
+          python3 -B validation/multitask-forward/supplement.py verify
+          python3 -B validation/multitask-forward/supplement.py metrics
+      - name: Verify original versus shared-fix comparison tables
+        run: python3 -B validation/multitask-forward/build_supplement_tables.py
+      - name: Verify post-reveal implementation identity diagnostic
+        run: python3 -B validation/multitask-forward/implementation_comparison.py
+      - name: Verify sealed independent product-disposition summary
+        run: python3 -B validation/multitask-forward/review_product_summary.py
+      - name: Replay unscored grader-disagreement pixel evidence
+        run: python3 -B validation/multitask-forward/audit_grader_disagreements.py

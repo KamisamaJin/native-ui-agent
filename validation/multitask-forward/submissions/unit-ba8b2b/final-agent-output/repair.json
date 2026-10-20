@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "startedAtUnix": 1792510721.799466,
+  "finishedAtUnix": 1792510849.799587,
+  "changed_files": [
+    "alerttoast/Sources/AlertToast/CollectionConditionReviewPanel.swift"
+  ],
+  "source_sha256": {
+    "alerttoast/Sources/AlertToast/CollectionConditionReviewPanel.swift": "0c6d758696bcdba93854bf02246a094749445ca41a984a5c9acea9cfd04e0f46"
+  },
+  "original_findings_addressed": [
+    {
+      "cluster": "ios-replacement-seed",
+      "original_assertions": [
+        {
+          "case": "P1",
+          "platform": "ios",
+          "id": "replaced/focused-object"
+        },
+        {
+          "case": "P1",
+          "platform": "ios",
+          "id": "replaced/completion-summary"
+        },
+        {
+          "case": "P1",
+          "platform": "ios",
+          "id": "replaced/validation-copy"
+        },
+        {
+          "case": "P1",
+          "platform": "ios",
+          "id": "replaced/second-object-status"
+        },
+        {
+          "case": "P2",
+          "platform": "ios",
+          "id": "replaced/focused-object"
+        },
+        {
+          "case": "P2",
+          "platform": "ios",
+          "id": "replaced/stable-selected"
+        },
+        {
+          "case": "P2",
+          "platform": "ios",
+          "id": "replaced/completion-summary"
+        },
+        {
+          "case": "P2",
+          "platform": "ios",
+          "id": "replaced/validation-copy"
+        },
+        {
+          "case": "P2",
+          "platform": "ios",
+          "id": "replaced/submit-enabled"
+        },
+        {
+          "case": "P2",
+          "platform": "ios",
+          "id": "replaced/second-object-status"
+        }
+      ],
+      "source_change": "Observe an Equatable replacement value containing the full incoming request; compare ids but seed decisions and focus from the new value passed by SwiftUI, avoiding the prior closure-captured request.",
+      "status": "source_repaired_compile_verified_runtime_unassessed"
+    },
+    {
+      "cluster": "ios-disabled-visible-palette",
+      "original_scope": "Original iOS light disabled primary and dark read-only classification controls, plus state duplicates retained in original review.",
+      "source_change": "Replace PlainButtonStyle with a ButtonStyle returning the explicitly colored label, so disabled visual roles are not faded a second time. Native Button disabled state and selected traits remain applied.",
+      "status": "source_repaired_compile_verified_visible_result_unassessed"
+    }
+  ],
+  "unresolved_and_why": [
+    "No new rendered or runtime feedback is authorized; final replacement, callback, selected-state, geometry and visible-palette behavior are unassessed for the repaired source.",
+    "All original computed SwiftUI typography/color/ellipsis U cells remain U; this source repair does not expose those native properties.",
+    "P2 blocked disabled classification dispatch remains unassessed as handler behavior on both platforms.",
+    "Only original public P1/P2 routes supplied runtime evidence; other legal caller combinations remain without rendered runtime coverage.",
+    "Android had no confirmed original production finding and was left byte-identical."
+  ],
+  "commands": [
+    {
+      "purpose": "Read authorized repair instructions and original sealed review/source",
+      "command": "cat repair prompt; read assigned production SwiftUI source; read original-review/review.json root_cause_clusters"
+    },
+    {
+      "purpose": "Apply targeted SwiftUI repair",
+      "command": "Python source replacement adding ConditionReplacement and ConditionButtonStyle, replacing the two PlainButtonStyle uses, and passing replacement.request into reset."
+    },
+    {
+      "purpose": "iOS compile-only",
+      "record": "agent-output/repair/repair-compile-ios-01-command.json",
+      "build_record": "agent-output/repair/repair-compile-ios-01-record.json",
+      "log": "agent-output/repair/repair-compile-ios-01-build.log",
+      "exitCode": 0
+    },
+    {
+      "purpose": "Failed original-source patch lookup",
+      "record": "agent-output/repair/inspection-failure-01.json",
+      "exitCode": 1,
+      "recovery": "Located the source/ directory within own D0 submission and generated the patch from its actual path."
+    },
+    {
+      "purpose": "Save final patch, hash check and repair record",
+      "script": "agent-output/repair/verify-and-record.py",
+      "exitCode": 0
+    }
+  ],
+  "logs": [
+    "agent-output/repair/repair-compile-ios-01.log",
+    "agent-output/repair/repair-compile-ios-01-build.log",
+    "agent-output/repair/production.patch",
+    "agent-output/repair/inspection-failure-01.log"
+  ],
+  "original_review": {
+    "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/multitask-forward/submissions/unit-ba8b2b/original-review/review.json",
+    "sha256": "0d1b88b4e7bfce2da2cec25a441b7a9f503a0dda30913cd9a606e77dc859a28d"
+  },
+  "original_plans_unchanged": true,
+  "scope_limits": [
+    "No renders, screenshots, observers, previews, SDK app launches, new feedback, expected-value changes, bridge/host edits or further repair cycle.",
+    "Compilation used the authorized no-render helper only.",
+    "No commits or pushes.",
+    "FINAL acceptance is not available and is not claimed."
+  ],
+  "elapsedSeconds": 128.00012111663818
+}

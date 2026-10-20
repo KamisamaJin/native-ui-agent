@@ -1,0 +1,51 @@
+[
+  {
+    "kind": "instruction read and clock",
+    "command": "clock curr_time; cat prompts/unit-df4422-review.txt",
+    "exitCode": 0,
+    "timeUtc": "2026-10-20T15:15:37+00:00"
+  },
+  {
+    "kind": "original record acquisition",
+    "command": "Python json reads of own original observations, original typed reports/command records/check.log; no check rerun. find own assigned corpus and d0 sources only.",
+    "exitCode": 0
+  },
+  {
+    "kind": "contact sheets",
+    "command": [
+      "python3",
+      "agent-output/review/contact_sheets.py"
+    ],
+    "exitCode": 0
+  },
+  {
+    "kind": "visual review",
+    "command": "view_image on all 24 original-state contact sheets, plus original android/P2/006-state_loaded_0.png at original detail.",
+    "exitCode": 0
+  },
+  {
+    "kind": "raster evidence",
+    "command": "Pillow opens original PNGs and samples native-identified disabled-control interior coordinates; palette-samples.json retains exact coordinates and colors.",
+    "exitCode": 0
+  },
+  {
+    "kind": "failed reviewer inspection",
+    "command": "v=a['actual']; v=[x.get('value') for x in v] if isinstance(v,list) else v",
+    "exitCode": 1,
+    "errorLog": "agent-output/review/inspection-error.log",
+    "reason": "Some geometry actual arrays contain scalars, so the summary-only inspector failed. Original evidence and source were not changed."
+  },
+  {
+    "kind": "corrected reviewer inspection",
+    "command": "v=[x.get('value') if isinstance(x,dict) else x for x in v] if isinstance(v,list) else v",
+    "exitCode": 0
+  },
+  {
+    "kind": "report write and seal",
+    "command": [
+      "python3",
+      "agent-output/review/write_review.py"
+    ],
+    "exitCode": 0
+  }
+]

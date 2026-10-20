@@ -1,0 +1,10 @@
+Command: python3 agent-output/review/write-review.py > agent-output/review/write-review.log
+Exit code: 1
+Traceback (most recent call last):
+  File "agent-output/review/write-review.py", line 34, in <module>
+    actual=[v.get("value",v) for v in a["actual"]] if isinstance(a.get("actual"),list) else a.get("actual")
+  File "agent-output/review/write-review.py", line 34, in <listcomp>
+    v.get("value",v)
+AttributeError: 'float' object has no attribute 'get'
+
+The report writer assumed every observed actual list element was a dictionary. Geometry actual values can be floats. Only this report writer was corrected; original evidence, source and plans were untouched. The original failing report writer is preserved as write-review-attempt1.py.

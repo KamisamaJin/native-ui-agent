@@ -254,7 +254,7 @@ def state_evidence(observation,state):
     return found,complete,'native interval union complete'if complete else'incomplete per-state interval union',capture
 
 
-def geometry_value(snapshot, item, platform):
+def legacy_geometry_value(snapshot, item, platform):
     """Distances between observed native bounds, not inferred style attributes.
 
     Both boxes must be in the same coherent frame. Subtracting screen positions
@@ -281,6 +281,28 @@ def geometry_value(snapshot, item, platform):
             'inset_top':a[1]-b[1],'inset_bottom':b[3]-a[3]}[p]
 
 
+def geometry_measurement(snapshot, item, platform):
+    import native_geometry
+    try:
+        measured = native_geometry.measure(snapshot, item, platform, resolve)
+    except (ValueError, TypeError, KeyError, OverflowError):
+        return None
+    if measured is not None:
+        return measured
+    # A malformed/present native packet must never fall back to rounded bounds.
+    if platform == 'android':
+        for selector in [item.get('target'), item.get('reference_target')]:
+            if selector and 'native_geometry' in resolve(snapshot, selector, platform).get(item.get('basis', 'semantic'), {}):
+                return None
+    value = legacy_geometry_value(snapshot, item, platform)
+    return None if value is None else {'value': value, 'method': 'legacy_rounded_bounds', 'policy': 'Original strict comparator; no claimed precision repair.'}
+
+
+def geometry_value(snapshot, item, platform):
+    result = geometry_measurement(snapshot, item, platform)
+    return result['value'] if result else None
+
+
 def evaluate(plan, observation, platform, manual=None, root=None, observation_sha256=None, design_lock=None, design_sha256=None):
     if (design_lock is None)!=(design_sha256 is None):raise ValueError('Trusted design requires both external lock and pinned digest')
     if design_lock is not None and 'design_contract'not in plan:raise ValueError('Trusted design mode rejects a stripped or legacy unverified plan')
@@ -297,7 +319,7 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
     if unknown:raise ValueError('Unplanned manual decisions')
     evidence={sid:state_evidence(observation,spec)for sid,spec in states.items()};rows=[]
     for item in plan['assertions']:
-        found,complete,why,capture=evidence[item['state']];status='unassessed';actual=None;reason=why;used=[]
+        found,complete,why,capture=evidence[item['state']];status='unassessed';actual=None;reason=why;used=[];geometry_proofs=None
         if found:
             kind=item['kind']
             if kind=='control':
@@ -342,11 +364,13 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
                     elif not any(result):status='failed';reason='native text layout contradiction'
                     else:reason='conflicting native layout values'
             elif kind=='geometry':
-                values=[(i,geometry_value(s,item,platform))for i,s in found]
+                values=[(i,geometry_measurement(s,item,platform))for i,s in found]
                 values=[(i,v)for i,v in values if v is not None]
                 if values:
-                    actual=[v for _,v in values];used=[i for i,_ in values]
-                    result=[compare(v,item['expected'],item.get('op','eq'),item.get('tolerance'))for _,v in values]
+                    actual=[v['value'] for _,v in values];used=[i for i,_ in values]
+                    import native_geometry
+                    result=[native_geometry.compare(v,item['expected'],item.get('op','eq'),item.get('tolerance')) if 'ratio' in v else compare(v['value'],item['expected'],item.get('op','eq'),item.get('tolerance')) for _,v in values]
+                    geometry_proofs=[dict(v,snapshot=i)for i,v in values]
                     if all(result):status='passed';reason='same-frame native-bound geometry matches design'
                     elif not any(result):status='failed';reason='same-frame native-bound geometry contradicts design'
                     else:reason='conflicting native geometry inside one state'
@@ -368,7 +392,7 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
                             status=row['status'];used=indices;reason=row['reason']
                         else:reason='manual pass withheld: this input state lacks full-content coverage'
                     else:reason='missing scoped manual method, snapshots or rationale'
-        rows.append({'id':item['id'],'state':item['state'],'status':status,'actual':actual,'reason':reason,'snapshot_indices':sorted(set(used))})
+        rows.append({'id':item['id'],'state':item['state'],'status':status,'actual':actual,'reason':reason,'snapshot_indices':sorted(set(used)),**({'geometry_evidence':geometry_proofs}if geometry_proofs is not None else{})})
     counts={s:sum(row['status']==s for row in rows)for s in ['passed','failed','unassessed']}
     planned={item['id']:item for item in plan['assertions']}
     machine_findings=[{'id':row['id'],'state':row['state'],'requirement_id':planned[row['id']].get('requirement_id'),

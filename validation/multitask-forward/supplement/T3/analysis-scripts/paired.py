@@ -1,0 +1,23 @@
+from pathlib import Path
+import json,hashlib,shutil,importlib.util,collections
+R=Path('/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/multitask-forward');O=R/'supplement/T3'
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def ref(p):return {'path':str(p.relative_to(R)),'sha256':sha(p)}
+def save(p,d):assert not p.exists(),p;p.write_text(json.dumps(d,indent=2)+'\n')
+spec=importlib.util.spec_from_file_location('fixed',R/'shared-environment-v1/oracle_common.py');f=importlib.util.module_from_spec(spec);spec.loader.exec_module(f)
+spec=importlib.util.spec_from_file_location('original_grader',R/'design-v2/T3/private/grader.py');g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
+batch=json.loads((R/'evaluation-inputs/paired-D0/T3/batch.json').read_text());sources={};pooled=[];full=[];deltas=[]
+for ent in batch['corpora']:
+ alias=ent['anonymousID'];a=[];b=[];units=[]
+ for case in batch['cases']:
+  for plat in ['ios','android']:
+   op=R/ent['v6Captures']/plat/case/'observation.json';out=O/'paired-D0'/alias/case/plat;out.mkdir(parents=True);a6=f.grade_task(R/'design-v2/T3',case,plat,op,manual=None,source_root=None,api_review=None);save(out/'native-grade-v6.json',a6);save(out/'native-report-v6.json',a6['native_report']);b7path=O/'D0'/alias/case/plat/'native-base-grade.json';r7path=O/'D0'/alias/case/plat/'native-base.json';shutil.copyfile(b7path,out/'native-grade-v7.json');shutil.copyfile(r7path,out/'native-report-v7.json');b7=json.loads(b7path.read_text());assert b7['native_report']==json.loads(r7path.read_text());a+=a6['rows'];b+=b7['rows'];units.append({'case':case,'platform':plat,'v6_grade':ref(out/'native-grade-v6.json'),'v7_corrected_D0_base_grade':ref(b7path),'v7_manual_free_byte_exact':sha(out/'native-grade-v7.json')==sha(b7path),'v6_inputs':a6['input_checks'],'v7_inputs':b7['input_checks'],'v6_native_manifest':ref(op.parent/'manifest.json')})
+   for side,new,oldname in [('a',a6,'native-grade-v6.json'),('b',b7,'native-grade-v7.json')]:
+    old=json.loads((R/f'evaluation/paired-D0/T3/{alias}/{case}/{plat}'/oldname).read_text())
+    for n,o in zip(new['rows'],old['rows']):
+     assert n['id']==o['id'] and all(n[k]==o[k] for k in ['expected','unit','op','tolerance']);deltas.append({'alias':alias,'collector_side':side,'id':n['id'],'class':n['class'],'platform':plat,'primary_status':o['status'],'supplement_status':n['status'],'primary_evidence':o['evidence'],'supplement_evidence':n['evidence']})
+   for x,y in zip(a6['rows'],b7['rows']):full.append({'alias':alias,'id':x['id'],'class':x['class'],'a':x['status'],'b':y['status'],'a_evidence':x['evidence'],'b_evidence':y['evidence']})
+ cmp=g.compare_pair({'rows':a},{'rows':b});sources[alias]={'comparison':cmp,'units':units};pooled.extend([{'alias':alias,**r} for r in cmp['rows']])
+def stats(rows):
+ return {'denominator':len(rows),'counts':{s:{v:sum(r[s]==v for r in rows) for v in ['P','F','U','N/A']} for s in ['a','b']},'transitions':dict(collections.Counter(r['a']+'->'+r['b'] for r in rows)),'U_to_P':sum(r['a']=='U' and r['b']=='P' for r in rows),'U_to_F':sum(r['a']=='U' and r['b']=='F' for r in rows),'P_or_F_to_U':sum(r['a'] in ['P','F'] and r['b']=='U' for r in rows),'assessed_conflicts':sum(r['a'] in ['P','F'] and r['b'] in ['P','F'] and r['a']!=r['b'] for r in rows)}
+result={'schema_version':1,'task':'T3','stage':'posthoc-paired-D0','sources':sources,'pooled':stats(pooled),'by_platform':{p:stats([r for r in pooled if r['platform']==p]) for p in ['ios','android']},'by_class':{cl:stats([r for r in pooled if r['class']==cl]) for cl in sorted({r['class'] for r in pooled})},'by_platform_and_class':{p:{cl:stats([r for r in pooled if r['platform']==p and r['class']==cl]) for cl in sorted({r['class'] for r in pooled})} for p in ['ios','android']},'rows':pooled,'full_fixed_ledger_denominator':len(full),'full_fixed_rows':full,'scope':'Unchanged original compare_pair, four native classes only; actual original v6 captures and corrected D0 v7 native-base scores, manual=None. Shared environment compatibility rescoring is not collector/treatment benefit. Primary paired-D0 Android-U remains separately sealed. Same-frame diagnostic was not rerun or merged.'};save(O/'pair-comparison.json',result);save(O/'paired-row-deltas-from-primary.json',{'rows':deltas,'counts_by_side':{s:dict(collections.Counter(r['primary_status']+'->'+r['supplement_status'] for r in deltas if r['collector_side']==s)) for s in ['a','b']},'scope':'Changes caused by shared Android direction compatibility gate only, equally applied to both collectors; not new native evidence or treatment effect.'});print('PAIRED',json.dumps(result['pooled']))

@@ -1,0 +1,54 @@
+--- original/alerttoast/Sources/AlertToast/CollectionConditionReviewPanel.swift
++++ repaired/alerttoast/Sources/AlertToast/CollectionConditionReviewPanel.swift
+@@ -76,6 +76,20 @@
+         accent = rgb(dark ? 0xD5B6F5 : 0x7750A6)
+         border = rgb(dark ? 0x634E75 : 0xDACDE5)
+         primaryInk = rgb(dark ? 0x1C1424 : 0xFFFFFF)
++    }
++}
++
++private struct ConditionReplacement: Equatable {
++    let request: CollectionConditionReviewRequest
++
++    static func == (lhs: ConditionReplacement, rhs: ConditionReplacement) -> Bool {
++        lhs.request.id == rhs.request.id
++    }
++}
++
++private struct ConditionButtonStyle: ButtonStyle {
++    func makeBody(configuration: Configuration) -> some View {
++        configuration.label
+     }
+ }
+ 
+@@ -195,7 +209,7 @@
+                         .clipShape(RoundedRectangle(cornerRadius: 10))
+                         .contentShape(RoundedRectangle(cornerRadius: 10))
+                 }
+-                .buttonStyle(PlainButtonStyle())
++                .buttonStyle(ConditionButtonStyle())
+                 .disabled(!ready)
+                 .accessibilityLabel("Submit review")
+                 .accessibilityIdentifier("condition.primary")
+@@ -210,9 +224,9 @@
+         }
+         .frame(maxWidth: .infinity, alignment: .leading)
+         .background(palette.canvas)
+-        .onChange(of: request.id) { _ in
+-            decisions = Self.seed(request)
+-            focusID = Self.initialFocus(request)
++        .onChange(of: ConditionReplacement(request: request)) { replacement in
++            decisions = Self.seed(replacement.request)
++            focusID = Self.initialFocus(replacement.request)
+         }
+     }
+ 
+@@ -281,7 +295,7 @@
+                 }, alignment: .topTrailing)
+                 .contentShape(RoundedRectangle(cornerRadius: 10))
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(ConditionButtonStyle())
+         .disabled(!enabled)
+         .accessibilityElement(children: .ignore)
+         .accessibilityLabel(label)
