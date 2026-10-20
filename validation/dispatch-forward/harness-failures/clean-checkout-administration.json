@@ -1,0 +1,23 @@
+{
+  "recordedAtUTC": "2026-10-20T03:33:51.558952+00:00",
+  "scope": "Post-release cache-free publication verification; no native acquisition, source/tool/evaluator/grade/expected-value/tolerance change.",
+  "attempts": [
+    {
+      "attempt": 1,
+      "failure": "Selected pre-existing tooling virtualenv lacked Pillow; unit import failed.",
+      "retainedLog": "clean-checkout-missing-dependency.log",
+      "fix": "Create a fresh runtime venv and install the declared Pillow requirement; 65 tests then passed."
+    },
+    {
+      "attempt": 2,
+      "failure": "macOS BSD tar interpreted tracked AppleDouble ._ filenames as metadata and omitted literal sealed source entries. verify_trial correctly rejected the missing file.",
+      "retainedLog": "clean-checkout-bsdtar-sidecar.log",
+      "passedBeforeFailure": {
+        "toolUnitTests": 65,
+        "auditCommands": 18,
+        "genericEvaluatorControls": 129
+      },
+      "fix": "Extract git archive with Python tarfile to preserve all tracked file names/bytes literally; normal Git checkout and Linux CI remain the documented workflow."
+    }
+  ]
+}

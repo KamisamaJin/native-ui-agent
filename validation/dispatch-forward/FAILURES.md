@@ -35,6 +35,9 @@
 ## 共同基础设施记录
 
 - [harness-failures/administrative.json](harness-failures/administrative.json)
+- [harness-failures/clean-checkout-administration.json](harness-failures/clean-checkout-administration.json)
+- [harness-failures/clean-checkout-bsdtar-sidecar.log](harness-failures/clean-checkout-bsdtar-sidecar.log)
+- [harness-failures/clean-checkout-missing-dependency.log](harness-failures/clean-checkout-missing-dependency.log)
 - [harness-failures/conventions-report-recovery.json](harness-failures/conventions-report-recovery.json)
 - [harness-failures/failure-index-directory-filter.json](harness-failures/failure-index-directory-filter.json)
 - [harness-failures/image-preview-discrepancy.json](harness-failures/image-preview-discrepancy.json)
