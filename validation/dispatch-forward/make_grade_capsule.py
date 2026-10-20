@@ -24,6 +24,13 @@ def main():
     rel=snap['screenshot'];target=(dest/rel).resolve();assert target.is_relative_to(dest.resolve());copy(native/rel,target)
    observations.append({'platform':platform,'case':case,'observation':ref(out,dest/'observation.json'),'fixture':ref(out,dest/'fixtures.json'),'mapping':ref(out,dest/'mapping.json'),'model_pointers':{'initial':'/initial','replacement':'/updates/0'}})
  save(out/'manifest.json',{'version':1,'phase':a.phase,'anonymous_id':a.anonymous_id,'source_files':sources,'observations':observations})
+ copy(a.source_capsule/'seal.json',out/'source-seal.json')
+ save(out/'source-identity.json',{'sourceSealSHA256':sha(a.source_capsule/'seal.json'),'sourceFilesCommitment':hashlib.sha256(json.dumps(seal['files'],sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest(),'scope':'Exact production source identity; common observer/host files are separately hash-bound in the manifest.'})
+ costs=[]
+ for platform in ['ios','android']:
+  for f in sorted((a.corpus/platform).glob('*-command.json')):
+   d=json.loads(f.read_text());costs.append({'platform':platform,'case':d['case'],'startedAtUnix':d['startedAtUnix'],'finishedAtUnix':d['finishedAtUnix'],'wallSeconds':d['wallSeconds'],'exitCode':d['exitCode'],'originalCommandSHA256':sha(f)})
+ save(out/'acquisition-records.json',{'records':costs,'scope':'Exact command times/statuses with explicit tool/submission/machine path strings withheld until assignment release. Original command hashes bind the published unredacted records.'})
  save(out/'capsule-seal.json',{'createdAtUTC':datetime.now(timezone.utc).isoformat(),'phase':a.phase,'anonymous_id':a.anonymous_id,'files':{str(f.relative_to(out)):sha(f) for f in sorted(out.rglob('*')) if f.is_file()}})
  print(json.dumps({'phase':a.phase,'anonymous_id':a.anonymous_id,'observations':len(observations),'destination':str(out)}))
 if __name__=='__main__':main()
