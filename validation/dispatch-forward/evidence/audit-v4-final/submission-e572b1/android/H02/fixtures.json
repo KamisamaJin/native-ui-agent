@@ -1,0 +1,180 @@
+{
+  "initial": {
+    "roundId": "round_ivy_before",
+    "title": "Ivy terrace and the extremely long teaching strip beside the west fence and accessible garden entrance",
+    "description": "The soak hoses are unavailable for this terrace. A requested reserve acknowledgement is only a request, and the steward may replace the entire round with different beds, identity, and tank numbers before releasing anything.",
+    "notice": "Shared equipment remains in the garden. Read this complete note after changing the round and preserve the new caller identity in every delivered action.",
+    "bedCount": 6,
+    "dripLitresPerBed": 10,
+    "soakLitresPerBed": 17,
+    "dripPrimeLitres": 1,
+    "tankLitres": 90,
+    "reserveLitres": 30,
+    "soakAllowed": false,
+    "selectedMethod": "drip",
+    "reserveAcknowledged": false,
+    "isEnabled": true,
+    "isSubmitting": false
+  },
+  "updates": [
+    {
+      "roundId": "round_ivy_after",
+      "title": "Ivy terrace \u2014 caller replacement for three deeper beds",
+      "description": "The caller has supplied a new round identity, three beds, a new drip rate, and one additional litre in the tank.",
+      "notice": "Check the new identity and remaining amount before opening the supply.",
+      "bedCount": 3,
+      "dripLitresPerBed": 20,
+      "soakLitresPerBed": 17,
+      "dripPrimeLitres": 1,
+      "tankLitres": 91,
+      "reserveLitres": 30,
+      "soakAllowed": false,
+      "selectedMethod": "drip",
+      "reserveAcknowledged": false,
+      "isEnabled": true,
+      "isSubmitting": false
+    }
+  ],
+  "width": 320,
+  "theme": "dark",
+  "direction": "ltr",
+  "dynamic_type": "xxxLarge",
+  "fontScale": 1.3,
+  "state_capture": false,
+  "max_scrolls": 24,
+  "observation_targets": [
+    {
+      "identifier": "waterRound.root"
+    },
+    {
+      "identifier": "waterRound.title"
+    },
+    {
+      "identifier": "waterRound.description"
+    },
+    {
+      "identifier": "waterRound.notice"
+    },
+    {
+      "identifier": "waterRound.beds"
+    },
+    {
+      "identifier": "waterRound.tank"
+    },
+    {
+      "identifier": "waterRound.reserve"
+    },
+    {
+      "identifier": "waterRound.dripPrime"
+    },
+    {
+      "identifier": "waterRound.method.drip"
+    },
+    {
+      "identifier": "waterRound.method.soak"
+    },
+    {
+      "identifier": "waterRound.required"
+    },
+    {
+      "identifier": "waterRound.spendable"
+    },
+    {
+      "identifier": "waterRound.reserveNeeded"
+    },
+    {
+      "identifier": "waterRound.remaining"
+    },
+    {
+      "identifier": "waterRound.shortfall"
+    },
+    {
+      "identifier": "waterRound.reserveConsent"
+    },
+    {
+      "identifier": "waterRound.status"
+    },
+    {
+      "identifier": "waterRound.submit"
+    },
+    {
+      "identifier": "waterRound.progress"
+    }
+  ],
+  "actions": [
+    {
+      "type": "sweep",
+      "state_id": "cp-initial.full",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "waterRound.method.soak"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 24,
+      "state_id": "cp-a01"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "waterRound.reserveConsent"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 24,
+      "state_id": "cp-a02"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "waterRound.reserveConsent"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 24,
+      "state_id": "cp-a03"
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "cp-a04.trigger"
+    },
+    {
+      "type": "sweep",
+      "state_id": "cp-a04.full",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "waterRound.submit"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 24,
+      "state_id": "cp-a05"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "waterRound.method.drip"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 24,
+      "state_id": "cp-a06"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "waterRound.submit"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "max_steps": 24,
+      "state_id": "cp-a07"
+    }
+  ]
+}
