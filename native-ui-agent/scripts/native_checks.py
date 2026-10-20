@@ -86,6 +86,11 @@ def validate_plan(plan):
         if item.get('kind')not in {'control','event','manual','text_layout'}:raise ValueError('Unknown assertion kind')
         if item.get('coverage','full_content')not in {'full_content','target'}:raise ValueError('Known coverage scope required')
         if item['kind']=='manual'and not set(item.get('allowed_methods',['visual']))<={'visual','native_pixels'}:raise ValueError('Manual review is visual/pixel interpretation, not native runtime facts')
+        if item['kind']=='event':
+            if type(item.get('action_index')) is not int or item['action_index'] < 0 or not isinstance(item.get('expected'), list):
+                raise ValueError('Callback assertion requires explicit nonnegative action_index and expected event list')
+            if item.get('stimulus','activation') not in {'activation','caller_update'}:
+                raise ValueError('Callback assertion must name activation or caller_update')
         ids.add(item['id'])
     # Independent contract IDs catch plan omissions when a frozen contract exists.
     if 'required_assertion_ids'in plan and set(plan['required_assertion_ids'])!=ids:
@@ -99,6 +104,64 @@ def compare(actual, expected, op):
     if op=='gte':return isinstance(actual,(int,float))and not isinstance(actual,bool)and actual>=expected
     if op=='lte':return isinstance(actual,(int,float))and not isinstance(actual,bool)and actual<=expected
     raise ValueError('Unknown comparison operator')
+
+
+def callback_verdict(step, expected, platform, required_method=None, stimulus='activation'):
+    """Behavior verdict, not a literal empty-interval comparison.
+
+    Exported for evaluators so an independent grade cannot bypass the same
+    successful-stimulus precondition used by the shipped assertion runner.
+    """
+    delta = step.get('callback_delta')
+    events = [v.get('event') if isinstance(v, dict) else v for v in delta] if isinstance(delta, list) else None
+    result = {'status': 'unassessed', 'reason': 'native stimulus not established',
+              'interval_facts': events, 'stimulus_established': False}
+    proof = step.get('dispatch', {})
+    if stimulus not in {'activation', 'caller_update'}:
+        raise ValueError('Callback behavior requires activation or caller_update stimulus')
+    method = required_method or ('caller_fixture_update' if stimulus == 'caller_update'
+                                 else 'xcui_tap' if platform == 'ios' else 'compose_onclick')
+    result.update(required_method=method, actual_method=proof.get('method'))
+    if proof.get('attempted') is not True or proof.get('succeeded') is not True:
+        result['reason'] = 'no demonstrated successful native dispatch; interval facts are not behavior'
+        return result
+    if proof.get('method') != method or proof.get('stimulus') != stimulus:
+        result['reason'] = 'actual native stimulus/method differs from required method'
+        return result
+    before, after = proof.get('binding_before', {}), step.get('binding_after', {})
+    index = lambda value: value.get('fixture_index', value.get('input_index'))
+    if (not before.get('instance') or before.get('instance') != after.get('instance')
+            or ('pid' in before and before.get('pid') != after.get('pid'))
+            or (platform == 'ios' and (type(before.get('pid')) is not int or before['pid'] <= 0))
+            or not isinstance(index(before), int) or isinstance(index(before), bool)
+            or not isinstance(index(after), int) or isinstance(index(after), bool)
+            or not before.get('input_sha256') or not after.get('input_sha256')):
+        result['reason'] = 'native stimulus lacks same-process/input provenance'
+        return result
+    if stimulus == 'activation':
+        if (step.get('outcome') != 'tapped' or proof.get('matches') != 1
+                or proof.get('native_controls') != 1 or proof.get('enabled') is not True
+                or type(proof.get('matches')) is not int or type(proof.get('native_controls')) is not int
+                or index(before) != index(after) or before['input_sha256'] != after['input_sha256']):
+            result['reason'] = 'activation not uniquely dispatched in one caller-input epoch'
+            return result
+    elif index(after) != index(before) + 1 or step.get('outcome') != 'updated':
+        result['reason'] = 'caller replacement did not demonstrably advance one input'
+        return result
+    start, end = before.get('event_revision'), after.get('event_revision')
+    if (events is None or type(start) is not int or type(end) is not int
+            or end < start or end - start != len(events)
+            or proof.get('event_start') != start or proof.get('event_end') != end):
+        result['reason'] = 'callback interval does not exactly bind successful stimulus'
+        return result
+    receipt_index = index(before) if stimulus == 'activation' else index(after)
+    if any(isinstance(v, dict) and v.get('fixture_index', receipt_index) != receipt_index for v in delta):
+        result['reason'] = 'callback receipt belongs to another caller input'
+        return result
+    result.update(status='passed' if events == expected else 'failed',
+                  reason='callback behavior after demonstrated requested native stimulus',
+                  stimulus_established=True)
+    return result
 
 
 def state_evidence(observation,state):
@@ -174,13 +237,13 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
             elif kind=='event':
                 index=item['action_index'];steps=observation.get('steps',[])
                 if 0<=index<len(steps):
-                    step=steps[index];actual=step.get('callback_delta');execution=step.get('outcome',step.get('execution'))
+                    step=steps[index]
                     after=step.get('binding_after',{})
                     index_ok=after==capture.get('binding')
-                    if execution in {'tapped','blocked_disabled','observed'}and actual is not None and index_ok:
-                        events=[v.get('event')if isinstance(v,dict)else v for v in actual]
-                        status='passed'if events==item['expected']else'failed';actual=events;reason='actual executed native callback delta'
-                    else:reason='action not executed or wrong input binding; zero callbacks are not a product failure'
+                    actual=callback_verdict(step,item['expected'],platform,item.get('required_method'),item.get('stimulus','activation'))
+                    if index_ok:
+                        status=actual['status'];reason=actual['reason']
+                    else:reason='successful stimulus and assessed state have different bindings'
             elif kind=='text_layout':
                 values=[]
                 for index,snapshot in found:

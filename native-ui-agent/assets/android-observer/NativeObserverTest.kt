@@ -66,6 +66,7 @@ class NativeObserverTest {
  private var pendingName="initial"
  private var pendingStep:JsonObject?=null
  private var eventStart=0
+ private var dispatch=JsonObject(emptyMap())
  private val observed=mutableSetOf<String>()
  private var bottomReached=false
  private var actualNight=-1
@@ -140,7 +141,7 @@ class NativeObserverTest {
   if(phase=="after_action"){
    capture(pendingName,image)
    val item=pendingStep!!;val finished=actionIndex
-   steps.add(buildJsonObject{item.forEach{(k,v)->put(k,v)};put("callback_delta",buildJsonArray{events.drop(eventStart).forEach{add(it)}});put("snapshot",records.lastIndex);put("binding_after",binding());put("state_id",activeState)})
+   steps.add(buildJsonObject{item.forEach{(k,v)->put(k,v)};put("dispatch",buildJsonObject{dispatch.forEach{(k,v)->put(k,v)};put("event_end",events.size)});put("callback_delta",buildJsonArray{events.drop(eventStart).forEach{add(it)}});put("snapshot",records.lastIndex);put("binding_after",binding());put("state_id",activeState)})
    val state=optional(actions[finished],"state_id");actionIndex++;attempts=0
    if(stateCapture && state!=null)startSweep(state,finished,"after")else phase="actions"
    return
@@ -149,11 +150,12 @@ class NativeObserverTest {
   val action=actions[actionIndex];val type=string(action,"type")
   if(type=="apply_next_fixture" && stateCapture && preparedUpdate!=actionIndex){preparedUpdate=actionIndex;startSweep("before-update-$actionIndex",actionIndex-1,"before");return}
   eventStart=events.size;pendingName=optional(action,"name") ?: "action-$actionIndex";activeState=optional(action,"state_id") ?: "action-$actionIndex"
+  dispatch=buildJsonObject{put("attempted",false);put("succeeded",false)}
   if(type=="sweep"){val state=optional(action,"state_id") ?: "action-$actionIndex";val n=action["max_steps"]?.jsonPrimitive?.intOrNull ?: 80;steps.add(buildJsonObject{put("type",type);put("outcome","observed");put("callback_delta",JsonArray(emptyList()));put("binding_after",binding())});actionIndex++;startSweep(state,actionIndex-1,"explicit",n);return}
   if(type=="capture" || type=="checkpoint"){pendingStep=buildJsonObject{put("type",type);put("outcome","observed")};phase="after_action";return}
   if(type=="scroll"){scrollBy(viewportHeight*(if(optional(action,"direction")=="up")-0.45f else 0.45f));pendingStep=buildJsonObject{put("type",type);put("outcome","observed")};phase="after_action";return}
   if(type=="apply_next_fixture"){
-   inputIndex++;current=fixture["updates"]!!.jsonArray[inputIndex-1].jsonObject;pendingStep=buildJsonObject{put("type",type);put("outcome","observed");put("model_update",true)};phase="after_action";return
+   val before=binding();inputIndex++;current=fixture["updates"]!!.jsonArray[inputIndex-1].jsonObject;dispatch=buildJsonObject{put("attempted",true);put("succeeded",true);put("method","caller_fixture_update");put("stimulus","caller_update");put("binding_before",before);put("event_start",eventStart)};pendingStep=buildJsonObject{put("type",type);put("outcome","updated");put("model_update",true)};phase="after_action";return
   }
   if(type=="tap" || type=="scroll_until"){
    val wanted=action["target"]?.jsonObject ?: buildJsonObject{put("identifier",optional(action,"identifier") ?: "")}
@@ -162,7 +164,9 @@ class NativeObserverTest {
    val revealNode=if(type=="scroll_until")node else target
    if(revealNode!=null && !visible(revealNode) && attempts++<40){val b=rawBounds(revealNode);scrollBy((b.center.y-viewportHeight/2).coerceIn(-viewportHeight*0.65f,viewportHeight*0.65f));return}
    val enabled=target?.let{!it.config.contains(SemanticsProperties.Disabled)} ?: false
-   val executed=if(type=="tap" && enabled && target!=null && visible(target))target.config.getOrNull(SemanticsActions.OnClick)?.action?.invoke() ?: false else false
+   val before=binding();val attempted=type=="tap" && enabled && target!=null && visible(target)
+   val executed=if(attempted)target!!.config.getOrNull(SemanticsActions.OnClick)?.action?.invoke() ?: false else false
+   dispatch=buildJsonObject{put("attempted",attempted);put("succeeded",executed);put("method","compose_onclick");put("stimulus","activation");put("binding_before",before);put("event_start",eventStart);put("matches",matches.size);put("native_controls",controls.size);put("enabled",enabled)}
    pendingStep=buildJsonObject{put("type",type);put("selector",wanted);put("matches",matches.size);put("native_controls",controls.size);put("enabled",enabled);put("outcome",if(executed)"tapped"else if(type=="scroll_until" && node!=null && visible(node))"observed"else if(target!=null && !enabled && visible(target) && action["allow_disabled"]?.jsonPrimitive?.booleanOrNull==true)"blocked_disabled"else"unavailable");put("semantic_node",node?.id ?: -1);put("activation_node",target?.id ?: -1)}
    phase="after_action";return
   }

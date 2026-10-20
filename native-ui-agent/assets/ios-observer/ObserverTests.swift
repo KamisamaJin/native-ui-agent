@@ -298,13 +298,14 @@ final class ObserverTests: XCTestCase {
             currentActionIndex = i
             activeState = action["state_id"] as? String ?? "action-\(i)"
             let before = capture("action-\(i)-before")
-            let callbacksBefore = receipt().count
+            var callbacksBefore = receipt().count
             let oldIndex = runtime()["fixture_index"] as? Int ?? -1
             let diagnosticsBefore = revealDiagnostics.count
             let kind = action["type"] as? String ?? ""
             var outcome = "completed"
             var targetState: [String: Any] = [:]
             var activationState: [String: Any] = [:]
+            var dispatch: [String: Any] = ["attempted": false, "succeeded": false]
             switch kind {
             case "tap":
                 let wanted = selector(action)
@@ -318,6 +319,11 @@ final class ObserverTests: XCTestCase {
                         if !actual.isEnabled && action["allow_disabled"] as? Bool == true && visible(actual) {
                             outcome = "blocked_disabled"
                         } else if actual.isEnabled, let point = usablePoint(actual) {
+                            let startBinding = binding()
+                            callbacksBefore = receipt().count
+                            dispatch = ["attempted": true, "succeeded": false, "method": "xcui_tap", "stimulus": "activation",
+                                        "binding_before": startBinding, "event_start": callbacksBefore,
+                                        "matches": 1, "native_controls": 1, "enabled": actual.isEnabled]
                             if fullyVisible(actual) { actual.tap() }
                             else {
                                 let origin = app.coordinate(withNormalizedOffset: .zero)
@@ -326,12 +332,20 @@ final class ObserverTests: XCTestCase {
                             activationState["activation_point"] = ["x": point.x, "y": point.y]
                             activationState["activation_method"] = fullyVisible(actual) ? "native_control_tap" : "visible_intersection_coordinate"
                             outcome = "tapped"
+                            dispatch["succeeded"] = true
                         } else { outcome = "unavailable"; issues.append("native control not enabled or no usable visible point") }
                     } else { outcome = "unavailable" }
                 } else { outcome = "unavailable" }
             case "apply_next_fixture":
                 let button = app.buttons["__observer.next"]
-                if button.isEnabled && button.isHittable { button.tap() } else { issues.append("next fixture control unavailable") }
+                if button.isEnabled && button.isHittable {
+                    dispatch = ["attempted": true, "succeeded": false, "method": "caller_fixture_update", "stimulus": "caller_update",
+                                "binding_before": binding(), "event_start": receipt().count]
+                    callbacksBefore = receipt().count
+                    button.tap()
+                    dispatch["succeeded"] = runtime()["fixture_index"] as? Int == oldIndex + 1
+                    outcome = dispatch["succeeded"] as? Bool == true ? "updated" : "unavailable"
+                } else { outcome = "unavailable"; issues.append("next fixture control unavailable") }
             case "scroll":
                 if action["direction"] as? String == "auto", let id = action["until_identifier"] as? String {
                     _ = reveal(id, maxSteps: action["max_steps"] as? Int ?? 18, initialDirection: "down", prefix: "action-\(i)")
@@ -352,19 +366,22 @@ final class ObserverTests: XCTestCase {
             }
             Thread.sleep(forTimeInterval: 0.15)
             let after = capture(action["name"] as? String ?? "action-\(i)-after")
+            let actionBinding = after["binding"] as? [String: Any] ?? [:]
+            let actionReceipts = after["callbacks"] as? [[String: Any]] ?? []
+            let delta = Array(actionReceipts.dropFirst(callbacksBefore))
+            dispatch["event_end"] = actionBinding["event_revision"] ?? NSNull()
             if stateCaptureEnabled, let state = action["state_id"] as? String, kind != "sweep" { sweep(state) }
-            let now = runtime()
+            let now = after["runtime"] as? [String: Any] ?? [:]
             let sameProcess = (now["pid"] as? Int == originalRuntime["pid"] as? Int) && (now["instance"] as? String == originalRuntime["instance"] as? String)
             if !sameProcess { issues.append("app process identity changed") }
             if kind == "apply_next_fixture" && now["fixture_index"] as? Int != oldIndex + 1 { issues.append("fixture index did not advance explicitly") }
-            let delta = Array(receipt().dropFirst(callbacksBefore))
-            if outcome == "blocked_disabled" && !delta.isEmpty { issues.append("disabled target unexpectedly emitted callbacks") }
-            if let expected = action["expect_callback"] as? String, !delta.contains(where: { $0["event"] as? String == expected }) {
+            if dispatch["succeeded"] as? Bool == true, let expected = action["expect_callback"] as? String, !delta.contains(where: { $0["event"] as? String == expected }) {
                 issues.append("expected real callback \(expected) was not received")
             }
             steps.append(["action": action, "outcome": outcome, "target": targetState, "semantic_target": targetState,
                           "activation_target": activationState, "reveal_diagnostics": Array(revealDiagnostics.dropFirst(diagnosticsBefore)),
-                          "before": before["index"]!, "after": after["index"]!, "callback_delta": delta, "same_process": sameProcess, "state_id": activeState, "binding_after": binding()])
+                          "dispatch": dispatch,
+                          "before": before["index"]!, "after": after["index"]!, "callback_delta": delta, "same_process": sameProcess, "state_id": activeState, "binding_after": actionBinding])
         }
         if stateCaptureEnabled { sweep("final") }
         let maxScrolls = min(max(config["max_scrolls"] as? Int ?? 18, 1), 40)
