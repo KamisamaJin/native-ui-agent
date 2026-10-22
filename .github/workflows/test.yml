@@ -98,6 +98,8 @@ jobs:
         run: python3 -B validation/atomic-forward/test_metrics.py
       - name: Verify frozen atomic forward study and original evidence
         run: |
+          python3 -B validation/publications/atomic-v8-completion/test_publication_closure.py
+          python3 -B validation/publications/atomic-v8-completion/verify_completion.py --prepare
           python3 -B validation/atomic-forward/verify_adapters.py
           python3 -B validation/atomic-forward/verify_study.py
       - name: Recompute atomic forward comparison and costs
@@ -112,4 +114,4 @@ jobs:
           python3 -B validation/atomic-forward/failure_index.py --check
           python3 -B validation/atomic-forward/disagreements.py --check
       - name: Verify atomic forward publication bytes
-        run: python3 -B validation/atomic-forward/artifacts.py
+        run: python3 -B validation/publications/atomic-v8-completion/verify_completion.py

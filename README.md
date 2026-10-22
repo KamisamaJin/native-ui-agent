@@ -27,6 +27,8 @@
 
 [完整报告](validation/atomic-forward/RESULTS.md)、[指标与完整成本](validation/atomic-forward/TABLES.md)、[通用工具实现](validation/atomic-forward/ENGINEERING.md)、[绑定协议](native-ui-agent/references/atomic-review.md)、[评审分歧](validation/atomic-forward/DISAGREEMENTS.md)、[失败记录](validation/atomic-forward/FAILURES.md)、[原图](validation/atomic-forward/GALLERY.md)、[复算](validation/atomic-forward/REPRODUCE.md)。iOS 为 Simulator/XCUITest，Android 为 Paparazzi/Compose JVM 语义动作；本轮不证明任意无埋点旧 App、完整业务或 SwiftUI 计算样式能力。
 
+首次远端 CI 暴露了发布遗漏：封存链引用的274个原始 `.xcresult` 文件未上传，以及一处文件名大小写差异。本地文件系统掩盖了问题。[发布补充记录](validation/publications/atomic-v8-completion/README.md)保留失败 CI 和原始发布清单，补齐原字节并增加通用 Git 引用闭包校验；不改冻结工具、源码、契约、评分和指标。当前发布完整性请使用补充记录中的验证入口。
+
 ## 上一轮 v7：三任务盲测完成，仍未证明质量优势
 
 先修复原生几何精度链并加入可执行全员封存屏障，再独立固定三个全新复杂 UI：装备组合、广播混音、馆藏状况审核。六份不同双端实现、132 次计划原生采集；未注入产品缺陷，全部阶段评分封存后才揭盲。两组均已有 v6 契约与观测能力。
@@ -308,6 +310,9 @@ python3 validation/tool-forward/build_tables.py --check
 python3 validation/tool-forward/build_failure_index.py
 python3 validation/tool-forward/verify_artifacts.py
 python3 -B validation/atomic-forward/test_metrics.py
+python3 -B validation/publications/atomic-v8-completion/test_publication_closure.py
+python3 -B validation/publications/atomic-v8-completion/verify_completion.py --prepare
+python3 -B validation/atomic-forward/verify_adapters.py
 python3 -B validation/atomic-forward/verify_study.py
 python3 -B validation/atomic-forward/build_summary.py --check
 python3 -B validation/atomic-forward/costs.py --check
@@ -318,7 +323,7 @@ python3 -B validation/atomic-forward/build_tables.py --check
 python3 -B validation/atomic-forward/build_gallery.py --check
 python3 -B validation/atomic-forward/failure_index.py --check
 python3 -B validation/atomic-forward/disagreements.py --check
-python3 -B validation/atomic-forward/artifacts.py
+python3 -B validation/publications/atomic-v8-completion/verify_completion.py
 ```
 
 当前工具冻结前通过 115 项单元测试，v8 指标另有 9 项控制。[v8 复算入口](validation/atomic-forward/REPRODUCE.md)说明完整封存、双评审与原始证据的离线核验。旧轮次的根目录依赖按原字节归档；核验旧 v7 工具/发布清单时使用 `python3 -B validation/publication_history.py multitask-v7 verify_tools.py` 和同入口的 `artifacts.py`，避免拿新工具覆盖旧分数。
