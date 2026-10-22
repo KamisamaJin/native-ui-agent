@@ -1,0 +1,185 @@
+{
+  "initial": {
+    "revision": "workshop-0",
+    "title": "Book a workshop station",
+    "subtitle": "Choose one supervised station and review the safety briefing before requesting a place.",
+    "notice": "Supervised sessions only. A request does not confirm a place.",
+    "footer": "Station requests are reviewed by the duty maker. Your selected time remains a draft until staff confirm availability.",
+    "initialDetailsExpanded": false,
+    "guidance": "Bring closed shoes. Staff will check tool training at arrival. Dust extraction runs throughout the session; tell staff about any access needs.",
+    "slots": [
+      {
+        "id": "a",
+        "label": "09:00 \u00b7 Wood bench",
+        "detail": "Bring closed shoes. Staff will check tool training at arrival. Dust extraction runs throughout the session; tell staff about any access needs.",
+        "available": true,
+        "unavailableReason": ""
+      },
+      {
+        "id": "b",
+        "label": "11:30 \u00b7 Electronics bench",
+        "detail": "Staff-assisted access is available on request.",
+        "available": true,
+        "unavailableReason": ""
+      },
+      {
+        "id": "c",
+        "label": "14:00 \u00b7 Welding bay",
+        "detail": "Bring closed shoes. Staff will check tool training at arrival. Dust extraction runs throughout the session; tell staff about any access needs.",
+        "available": false,
+        "unavailableReason": "Training supervisor is unavailable for this station."
+      },
+      {
+        "id": "d",
+        "label": "15:00 \u00b7 Textile table",
+        "detail": "Staff-assisted access is available on request.",
+        "available": true,
+        "unavailableReason": ""
+      },
+      {
+        "id": "e",
+        "label": "16:00 \u00b7 Print studio",
+        "detail": "Bring closed shoes. Staff will check tool training at arrival. Dust extraction runs throughout the session; tell staff about any access needs.",
+        "available": true,
+        "unavailableReason": ""
+      },
+      {
+        "id": "f",
+        "label": "17:30 \u00b7 Quiet assembly",
+        "detail": "Staff-assisted access is available on request.",
+        "available": true,
+        "unavailableReason": ""
+      }
+    ],
+    "initialSelectedID": null
+  },
+  "updates": [
+    {
+      "revision": "workshop-1",
+      "title": "Book a workshop station",
+      "subtitle": "Choose one supervised station and review the safety briefing before requesting a place.",
+      "notice": "Caller update: Supervised sessions only. A request does not confirm a place.",
+      "footer": "Station requests are reviewed by the duty maker. Your selected time remains a draft until staff confirm availability.",
+      "initialDetailsExpanded": false,
+      "guidance": "Bring closed shoes. Staff will check tool training at arrival. Dust extraction runs throughout the session; tell staff about any access needs.",
+      "slots": [
+        {
+          "id": "a",
+          "label": "09:00 \u00b7 Wood bench",
+          "detail": "Bring closed shoes. Staff will check tool training at arrival. Dust extraction runs throughout the session; tell staff about any access needs.",
+          "available": false,
+          "unavailableReason": "Availability changed: the duty supervisor paused new requests."
+        },
+        {
+          "id": "b",
+          "label": "11:30 \u00b7 Electronics bench",
+          "detail": "Staff-assisted access is available on request.",
+          "available": true,
+          "unavailableReason": ""
+        },
+        {
+          "id": "c",
+          "label": "14:00 \u00b7 Welding bay",
+          "detail": "Bring closed shoes. Staff will check tool training at arrival. Dust extraction runs throughout the session; tell staff about any access needs.",
+          "available": false,
+          "unavailableReason": "Training supervisor is unavailable for this station."
+        },
+        {
+          "id": "d",
+          "label": "15:00 \u00b7 Textile table",
+          "detail": "Staff-assisted access is available on request.",
+          "available": true,
+          "unavailableReason": ""
+        },
+        {
+          "id": "e",
+          "label": "16:00 \u00b7 Print studio",
+          "detail": "Bring closed shoes. Staff will check tool training at arrival. Dust extraction runs throughout the session; tell staff about any access needs.",
+          "available": true,
+          "unavailableReason": ""
+        },
+        {
+          "id": "f",
+          "label": "17:30 \u00b7 Quiet assembly",
+          "detail": "Staff-assisted access is available on request.",
+          "available": true,
+          "unavailableReason": ""
+        }
+      ],
+      "initialSelectedID": null
+    }
+  ],
+  "width": 390,
+  "viewportHeight": 600,
+  "theme": "light",
+  "dynamic_type": "large",
+  "fontScale": 1.0,
+  "direction": "ltr",
+  "state_capture": true,
+  "required_identifiers": [
+    "workshop.choice.f",
+    "workshop.footer"
+  ],
+  "max_scrolls": 24,
+  "canvas_color": "#B8B7B4",
+  "actions": [
+    {
+      "type": "sweep",
+      "state_id": "baseline",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "workshop.choice.a"
+      },
+      "reveal": true,
+      "state_id": "selected"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "workshop.disclosure"
+      },
+      "reveal": true
+    },
+    {
+      "type": "sweep",
+      "state_id": "expanded",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "workshop.choice.c"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "state_id": "blocked"
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "replaced"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "workshop.choice.b"
+      },
+      "reveal": true,
+      "state_id": "reselected"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "workshop.submit"
+      },
+      "reveal": true
+    },
+    {
+      "type": "sweep",
+      "state_id": "submitted",
+      "max_steps": 24
+    }
+  ]
+}

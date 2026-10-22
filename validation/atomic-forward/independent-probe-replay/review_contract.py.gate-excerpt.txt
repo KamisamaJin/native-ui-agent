@@ -1,0 +1,7 @@
+                incomplete = any(s['status'] != 'measured' and s.get('eligible') is True for s in samples)
+                if not any(verdicts):
+                    status, reason = 'failed', 'Original rendered color contradicts approved atomic role'
+                elif all(verdicts) and not incomplete:
+                    status, reason = 'passed', 'Original rendered color matches approved atomic role'
+                else:
+                    reason = 'Conflicting or insufficient rendered-color evidence within the state'

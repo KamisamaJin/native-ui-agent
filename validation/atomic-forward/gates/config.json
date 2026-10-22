@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "artifact_root": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward",
+  "stages": {
+    "tools": {
+      "members": [
+        "baseline-v7",
+        "candidate-v8"
+      ],
+      "requires": []
+    },
+    "design": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "tools"
+      ]
+    },
+    "d0-sources": {
+      "members": [
+        "unit-99c640",
+        "unit-b44248",
+        "unit-a32db0",
+        "unit-a891c8",
+        "unit-179c84",
+        "unit-7d82e7"
+      ],
+      "requires": [
+        "design"
+      ]
+    },
+    "own-d0": {
+      "members": [
+        "unit-99c640",
+        "unit-b44248",
+        "unit-a32db0",
+        "unit-a891c8",
+        "unit-179c84",
+        "unit-7d82e7"
+      ],
+      "requires": [
+        "d0-sources"
+      ]
+    },
+    "reviews": {
+      "members": [
+        "unit-99c640",
+        "unit-b44248",
+        "unit-a32db0",
+        "unit-a891c8",
+        "unit-179c84",
+        "unit-7d82e7"
+      ],
+      "requires": [
+        "own-d0"
+      ]
+    },
+    "final-sources": {
+      "members": [
+        "unit-99c640",
+        "unit-b44248",
+        "unit-a32db0",
+        "unit-a891c8",
+        "unit-179c84",
+        "unit-7d82e7"
+      ],
+      "requires": [
+        "reviews"
+      ]
+    },
+    "own-final": {
+      "members": [
+        "unit-99c640",
+        "unit-b44248",
+        "unit-a32db0",
+        "unit-a891c8",
+        "unit-179c84",
+        "unit-7d82e7"
+      ],
+      "requires": [
+        "final-sources"
+      ]
+    },
+    "hidden-inputs": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "own-final"
+      ]
+    },
+    "grade-d0-one": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "own-final"
+      ]
+    },
+    "grade-d0-two": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "grade-d0-one"
+      ]
+    },
+    "grade-d0": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "grade-d0-two"
+      ]
+    },
+    "grade-final-one": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "grade-d0",
+        "hidden-inputs"
+      ]
+    },
+    "grade-final-two": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "grade-final-one"
+      ]
+    },
+    "grade-final": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "grade-final-two",
+        "hidden-inputs"
+      ]
+    },
+    "grade-claims-one": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "grade-final",
+        "reviews"
+      ]
+    },
+    "grade-claims-two": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "grade-claims-one"
+      ]
+    },
+    "grade-selfreview": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "grade-claims-two"
+      ]
+    },
+    "grade-pair": {
+      "members": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "requires": [
+        "grade-selfreview"
+      ]
+    },
+    "reveal": {
+      "members": [
+        "assignment"
+      ],
+      "requires": [
+        "grade-pair"
+      ]
+    }
+  }
+}

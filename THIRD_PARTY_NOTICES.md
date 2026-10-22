@@ -6,6 +6,8 @@ The blind-comparison transfer queue, fresh-blind visit-rescheduling components, 
 
 The multitask-forward ExpeditionPackPanel, BroadcastCueMixerPanel and CollectionConditionReviewPanel components, neutral probes, independent designs/oracles, accounting and cohort harness are also original MIT-licensed additions. The preimplementation design proposal retained under `validation/multitask-forward/design/` is original material, including its two unused task designs. Every multitask-forward source capsule and anonymous source delivery retains the applicable Reply/AlertToast license text; copied upstream source headers are unchanged.
 
+The atomic-forward WorkshopSlotPlanner, RiverSensorTriageBoard and BicycleServiceIntake components, both retained independent design proposals and references, contract-bound review/pixel tools, neutral forward probes, independent reviews and study harness are original MIT-licensed additions. Their source capsules retain the applicable upstream Reply/AlertToast licenses. Portable screenshots and native test reports document the controlled-host integrations and do not replace third-party licenses. SDKs, simulator images, dependency/build caches and full upstream checkouts are excluded.
+
 | Material | Source | License / notice |
 | --- | --- | --- |
 | Reply component patches and screenshots containing its UI/assets | [android/compose-samples](https://github.com/android/compose-samples), revision `53dccc7836952e3a04ed4bc1ec7afa7c8e27ff79` | Copyright The Android Open Source Project; Apache-2.0. See [full license](validation/native-ui-pilot/licenses/android-LICENSE). Preserve source headers when applying or distributing patches. |

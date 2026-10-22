@@ -1,0 +1,251 @@
+--- original/alerttoast/Sources/AlertToast/WorkshopSlotPlanner.swift
++++ repaired/alerttoast/Sources/AlertToast/WorkshopSlotPlanner.swift
+@@ -66,6 +66,7 @@
+     let onReserve: (String) -> Void
+     @Environment(\.colorScheme) private var colorScheme
+     @Environment(\.sizeCategory) private var sizeCategory
++    @Environment(\.layoutDirection) private var layoutDirection
+     @ScaledMetric(relativeTo: .title2) private var titleSize: CGFloat = 22
+     @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 16
+     @ScaledMetric(relativeTo: .footnote) private var supportingSize: CGFloat = 14
+@@ -85,14 +86,13 @@
+     private var palette: WorkshopPalette { WorkshopPalette(dark: colorScheme == .dark) }
+     private var selected: WorkshopSlot? { model.slots.first { $0.id == selectedID && $0.available } }
+     private var summary: String { selected.map { "Draft station: \($0.label)" } ?? "No station selected" }
+-    private var twoColumns: Bool {
+-        let ordinary: Bool
++    private var ordinaryText: Bool {
+         switch sizeCategory {
+-        case .extraSmall, .small, .medium, .large: ordinary = true
+-        default: ordinary = false
+-        }
+-        return canvasWidth >= 320 && ordinary
+-    }
++        case .extraSmall, .small, .medium, .large: return true
++        default: return false
++        }
++    }
++    private var twoColumns: Bool { canvasWidth >= 320 && ordinaryText }
+ 
+     var body: some View {
+         VStack(alignment: .leading, spacing: 20) {
+@@ -115,6 +115,77 @@
+                 .accessibilityIdentifier("workshop.notice")
+             }
+ 
++            slotGrid
++
++            Text(summary)
++                .font(.system(size: bodySize, weight: .semibold))
++                .fixedSize(horizontal: false, vertical: true)
++                .accessibilityIdentifier("workshop.summary")
++
++            VStack(alignment: .leading, spacing: 12) {
++                Button {
++                    detailsExpanded.toggle()
++                    onDetailsChange(detailsExpanded)
++                } label: {
++                    Text(detailsExpanded ? "Hide safety briefing" : "Show safety briefing")
++                        .font(.system(size: bodySize, weight: .semibold))
++                        .fixedSize(horizontal: false, vertical: true)
++                        .frame(maxWidth: .infinity, alignment: .leading)
++                        .contentShape(Rectangle())
++                }
++                .buttonStyle(WorkshopButtonStyle())
++                .accessibilityIdentifier("workshop.disclosure")
++                if detailsExpanded {
++                    bodyText(model.guidance)
++                }
++            }
++
++            Button {
++                if let selected = selected { onReserve(selected.id) }
++            } label: {
++                Text("Request station")
++                    .font(.system(size: bodySize, weight: .semibold))
++                    .fixedSize(horizontal: false, vertical: true)
++                    .frame(maxWidth: .infinity, alignment: .leading)
++                    .padding(.horizontal, 18)
++                    .padding(.vertical, 16)
++                    .frame(minHeight: 56)
++                    .foregroundColor(palette.onAction)
++                    .background(selected == nil ? palette.disabled : palette.enabled)
++                    .cornerRadius(10)
++                    .contentShape(RoundedRectangle(cornerRadius: 10))
++            }
++            .buttonStyle(WorkshopButtonStyle())
++            .disabled(selected == nil)
++            .accessibilityIdentifier("workshop.submit")
++
++            Text(model.footer)
++                .font(.system(size: supportingSize))
++                .fixedSize(horizontal: false, vertical: true)
++                .accessibilityIdentifier("workshop.footer")
++        }
++        .foregroundColor(palette.ink)
++        .frame(maxWidth: .infinity, alignment: .leading)
++        .padding(16)
++        .background(palette.canvas)
++        .cornerRadius(12)
++        .background(GeometryReader { proxy in
++            Color.clear
++                .onAppear { canvasWidth = proxy.size.width }
++                .onChange(of: proxy.size.width) { canvasWidth = $0 }
++        })
++        .accessibilityElement(children: .contain)
++        .accessibilityIdentifier("workshop.canvas")
++    }
++
++    @ViewBuilder
++    private var slotGrid: some View {
++        if #available(iOS 16.0, macOS 13.0, *) {
++            WorkshopSlotGrid(ordinaryText: ordinaryText, direction: layoutDirection) {
++                ForEach(model.slots) { slot in slotCard(slot) }
++            }
++            .frame(maxWidth: .infinity)
++        } else {
+             VStack(alignment: .leading, spacing: 12) {
+                 ForEach(0..<rowCount, id: \.self) { row in
+                     HStack(alignment: .top, spacing: 12) {
+@@ -131,65 +202,7 @@
+                     .fixedSize(horizontal: false, vertical: true)
+                 }
+             }
+-
+-            Text(summary)
+-                .font(.system(size: bodySize, weight: .semibold))
+-                .fixedSize(horizontal: false, vertical: true)
+-                .accessibilityIdentifier("workshop.summary")
+-
+-            VStack(alignment: .leading, spacing: 12) {
+-                Button {
+-                    detailsExpanded.toggle()
+-                    onDetailsChange(detailsExpanded)
+-                } label: {
+-                    Text(detailsExpanded ? "Hide safety briefing" : "Show safety briefing")
+-                        .font(.system(size: bodySize, weight: .semibold))
+-                        .fixedSize(horizontal: false, vertical: true)
+-                        .frame(maxWidth: .infinity, alignment: .leading)
+-                        .contentShape(Rectangle())
+-                }
+-                .buttonStyle(PlainButtonStyle())
+-                .accessibilityIdentifier("workshop.disclosure")
+-                if detailsExpanded {
+-                    bodyText(model.guidance)
+-                }
+-            }
+-
+-            Button {
+-                if let selected = selected { onReserve(selected.id) }
+-            } label: {
+-                Text("Request station")
+-                    .font(.system(size: bodySize, weight: .semibold))
+-                    .fixedSize(horizontal: false, vertical: true)
+-                    .frame(maxWidth: .infinity, alignment: .leading)
+-                    .padding(.horizontal, 18)
+-                    .padding(.vertical, 16)
+-                    .frame(minHeight: 56)
+-                    .foregroundColor(palette.onAction)
+-                    .background(selected == nil ? palette.disabled : palette.enabled)
+-                    .cornerRadius(10)
+-                    .contentShape(RoundedRectangle(cornerRadius: 10))
+-            }
+-            .buttonStyle(PlainButtonStyle())
+-            .disabled(selected == nil)
+-            .accessibilityIdentifier("workshop.submit")
+-
+-            Text(model.footer)
+-                .font(.system(size: supportingSize))
+-                .fixedSize(horizontal: false, vertical: true)
+-                .accessibilityIdentifier("workshop.footer")
+-        }
+-        .foregroundColor(palette.ink)
+-        .frame(maxWidth: .infinity, alignment: .leading)
+-        .padding(16)
+-        .background(palette.canvas)
+-        .cornerRadius(12)
+-        .background(GeometryReader { proxy in
+-            Color.clear.preference(key: WorkshopWidthKey.self, value: proxy.size.width)
+-        })
+-        .onPreferenceChange(WorkshopWidthKey.self) { canvasWidth = $0 }
+-        .accessibilityElement(children: .contain)
+-        .accessibilityIdentifier("workshop.canvas")
++        }
+     }
+ 
+     private var columnCount: Int { twoColumns ? 2 : 1 }
+@@ -228,16 +241,70 @@
+             .cornerRadius(10)
+             .contentShape(RoundedRectangle(cornerRadius: 10))
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(WorkshopButtonStyle())
+         .disabled(!slot.available)
+         .accessibilityIdentifier("workshop.choice.\(slot.id)")
+         .accessibilityAddTraits(selected?.id == slot.id ? [.isSelected] : [])
+     }
+ }
+ 
+-private struct WorkshopWidthKey: PreferenceKey {
+-    static var defaultValue: CGFloat = 0
+-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
++private struct WorkshopButtonStyle: ButtonStyle {
++    func makeBody(configuration: Configuration) -> some View {
++        configuration.label
++    }
++}
++
++@available(iOS 16.0, macOS 13.0, *)
++private struct WorkshopSlotGrid: Layout {
++    let ordinaryText: Bool
++    let direction: LayoutDirection
++    private let gap: CGFloat = 12
++    private let canvasInsets: CGFloat = 32
++
++    private func columns(for width: CGFloat) -> Int {
++        ordinaryText && width + canvasInsets >= 320 ? 2 : 1
++    }
++
++    private func measurements(width: CGFloat, subviews: Subviews) -> (columns: Int, cardWidth: CGFloat, heights: [CGFloat]) {
++        let count = columns(for: width)
++        let cardWidth = max(0, (width - CGFloat(count - 1) * gap) / CGFloat(count))
++        var heights: [CGFloat] = []
++        for index in subviews.indices {
++            let height = subviews[index].sizeThatFits(ProposedViewSize(width: cardWidth, height: nil)).height
++            let row = index / count
++            if row == heights.count { heights.append(height) }
++            else { heights[row] = max(heights[row], height) }
++        }
++        return (count, cardWidth, heights)
++    }
++
++    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
++        let width = proposal.width ?? subviews.map { $0.sizeThatFits(.unspecified).width }.max() ?? 0
++        let values = measurements(width: width, subviews: subviews)
++        let height = values.heights.reduce(0, +) + CGFloat(max(0, values.heights.count - 1)) * gap
++        return CGSize(width: width, height: height)
++    }
++
++    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
++        let values = measurements(width: bounds.width, subviews: subviews)
++        var y = bounds.minY
++        for row in values.heights.indices {
++            for column in 0..<values.columns {
++                let index = row * values.columns + column
++                guard index < subviews.count else { continue }
++                let offset = CGFloat(column) * (values.cardWidth + gap)
++                let x = direction == .rightToLeft
++                    ? bounds.maxX - values.cardWidth - offset
++                    : bounds.minX + offset
++                subviews[index].place(
++                    at: CGPoint(x: x, y: y),
++                    anchor: .topLeading,
++                    proposal: ProposedViewSize(width: values.cardWidth, height: values.heights[row])
++                )
++            }
++            y += values.heights[row] + gap
++        }
++    }
+ }
+ 
+ private struct WorkshopPalette {

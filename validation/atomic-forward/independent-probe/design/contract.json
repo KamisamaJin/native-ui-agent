@@ -1,0 +1,469 @@
+{
+  "version": 1,
+  "design_owner": "Independent neutral forward probe context; fixed before implementation",
+  "approval_reference": "design/APPROVAL.md: independent from root study; no external human design approval claimed",
+  "sources": [
+    {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "79e8dab8b142e68be7338921ad213593adaed20503acca445057f3590a9d1656"
+    }
+  ],
+  "required_rule_ids": [
+    "band-fill",
+    "canvas-fill",
+    "text-wrap",
+    "text-overlap",
+    "title-label",
+    "band-height",
+    "tap-event",
+    "caller-update"
+  ],
+  "rules": [
+    {
+      "id": "band-fill",
+      "kind": "manual",
+      "target": "band",
+      "property": "rendered_fill_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "canvas-fill",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "rendered_canvas_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "text-wrap",
+      "kind": "manual",
+      "target": "body",
+      "property": "wrapping",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "text-overlap",
+      "kind": "manual",
+      "target": "title",
+      "property": "overlap",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "title-label",
+      "kind": "control",
+      "target": "title",
+      "property": "label"
+    },
+    {
+      "id": "band-height",
+      "kind": "geometry",
+      "target": "band",
+      "property": "height",
+      "measurement": "accessibility_box",
+      "basis": "semantic"
+    },
+    {
+      "id": "tap-event",
+      "kind": "event"
+    },
+    {
+      "id": "caller-update",
+      "kind": "event",
+      "stimulus": "caller_update"
+    }
+  ],
+  "scenarios": {
+    "normal": {
+      "states": [
+        {
+          "id": "tapped",
+          "input_index": 0,
+          "after_action": 0
+        },
+        {
+          "id": "changed",
+          "input_index": 1,
+          "after_action": 1
+        }
+      ],
+      "actions": [
+        {
+          "type": "tap",
+          "target": "action",
+          "reveal": true,
+          "state_id": "tapped"
+        },
+        {
+          "type": "apply_next_fixture",
+          "state_id": "changed"
+        }
+      ],
+      "values": {
+        "band-fill": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/colors/bandA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/colors/bandA"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/colors/bandB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/colors/bandB"
+            }
+          }
+        },
+        "canvas-fill": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/colors/canvasA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/colors/canvasA"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/colors/canvasB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/colors/canvasB"
+            }
+          }
+        },
+        "text-wrap": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/wrap"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/wrap"
+            }
+          }
+        },
+        "text-overlap": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            }
+          }
+        },
+        "title-label": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/A"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/A"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/B"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/B"
+            }
+          }
+        },
+        "band-height": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bandHeight/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bandHeight/android"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bandHeight/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bandHeight/android"
+            }
+          }
+        },
+        "tap-event": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/events/tap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/events/tap"
+            }
+          },
+          "changed": {
+            "not_applicable": "This state has the other independently specified stimulus class."
+          }
+        },
+        "caller-update": {
+          "tapped": {
+            "not_applicable": "This state has the other independently specified stimulus class."
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/events/update"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/events/update"
+            }
+          }
+        }
+      }
+    },
+    "narrow-large": {
+      "states": [
+        {
+          "id": "tapped",
+          "input_index": 0,
+          "after_action": 0
+        },
+        {
+          "id": "changed",
+          "input_index": 1,
+          "after_action": 1
+        }
+      ],
+      "actions": [
+        {
+          "type": "tap",
+          "target": "action",
+          "reveal": true,
+          "state_id": "tapped"
+        },
+        {
+          "type": "apply_next_fixture",
+          "state_id": "changed"
+        }
+      ],
+      "values": {
+        "band-fill": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/colors/bandA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/colors/bandA"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/colors/bandB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/colors/bandB"
+            }
+          }
+        },
+        "canvas-fill": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/colors/canvasA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/colors/canvasA"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/colors/canvasB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/colors/canvasB"
+            }
+          }
+        },
+        "text-wrap": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/wrap"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/wrap"
+            }
+          }
+        },
+        "text-overlap": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            }
+          }
+        },
+        "title-label": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/A"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/A"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/title/B"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/title/B"
+            }
+          }
+        },
+        "band-height": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bandHeight/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bandHeight/android"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/bandHeight/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/bandHeight/android"
+            }
+          }
+        },
+        "tap-event": {
+          "tapped": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/events/tap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/events/tap"
+            }
+          },
+          "changed": {
+            "not_applicable": "This state has the other independently specified stimulus class."
+          }
+        },
+        "caller-update": {
+          "tapped": {
+            "not_applicable": "This state has the other independently specified stimulus class."
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/events/update"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/events/update"
+            }
+          }
+        }
+      }
+    }
+  }
+}

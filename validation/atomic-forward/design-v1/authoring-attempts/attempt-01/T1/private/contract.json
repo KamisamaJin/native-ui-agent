@@ -1,0 +1,1134 @@
+{
+  "version": 1,
+  "design_owner": "Independent blind task designer, cohort design-v1",
+  "approval_reference": "approval.json; preimplementation source identity approval, pending fresh design review",
+  "sources": [
+    {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "023a0a7a6c1a5cfa77d5193057b9e7c94ff57f0e23d3e4a77a35f2f31b1cd3d7"
+    }
+  ],
+  "required_rule_ids": [
+    "current-summary",
+    "first-choice-selected",
+    "locked-choice-disabled",
+    "primary-action-enabled",
+    "disclosure-current-label",
+    "successful-activation-callback",
+    "replacement-callback-quiet",
+    "primary-control-height",
+    "title-native-weight",
+    "component-canvas-color",
+    "notice-surface-color",
+    "primary-surface-color",
+    "content-wrapping",
+    "content-overlap"
+  ],
+  "rules": [
+    {
+      "id": "current-summary",
+      "kind": "control",
+      "target": "summary",
+      "property": "label",
+      "coverage": "target"
+    },
+    {
+      "id": "first-choice-selected",
+      "kind": "control",
+      "target": "choiceA",
+      "property": "selected",
+      "coverage": "target"
+    },
+    {
+      "id": "locked-choice-disabled",
+      "kind": "control",
+      "target": "locked",
+      "property": "enabled",
+      "coverage": "target"
+    },
+    {
+      "id": "primary-action-enabled",
+      "kind": "control",
+      "target": "submit",
+      "property": "enabled",
+      "coverage": "target"
+    },
+    {
+      "id": "disclosure-current-label",
+      "kind": "control",
+      "target": "disclosure",
+      "property": "label",
+      "coverage": "target"
+    },
+    {
+      "id": "successful-activation-callback",
+      "kind": "event",
+      "coverage": "target"
+    },
+    {
+      "id": "replacement-callback-quiet",
+      "kind": "event",
+      "stimulus": "caller_update",
+      "coverage": "target"
+    },
+    {
+      "id": "primary-control-height",
+      "kind": "geometry",
+      "target": "submit",
+      "property": "height",
+      "op": "gte",
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "coverage": "target"
+    },
+    {
+      "id": "title-native-weight",
+      "kind": "text_layout",
+      "target": "title",
+      "property": "font_weight",
+      "coverage": "target"
+    },
+    {
+      "id": "component-canvas-color",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "rendered_canvas_argb",
+      "allowed_methods": [
+        "native_pixels"
+      ],
+      "coverage": "target"
+    },
+    {
+      "id": "notice-surface-color",
+      "kind": "manual",
+      "target": "notice",
+      "property": "rendered_fill_argb",
+      "allowed_methods": [
+        "native_pixels"
+      ],
+      "coverage": "target"
+    },
+    {
+      "id": "primary-surface-color",
+      "kind": "manual",
+      "target": "submit",
+      "property": "rendered_fill_argb",
+      "allowed_methods": [
+        "native_pixels"
+      ],
+      "coverage": "target"
+    },
+    {
+      "id": "content-wrapping",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "wrapping",
+      "allowed_methods": [
+        "visual"
+      ],
+      "coverage": "full_content"
+    },
+    {
+      "id": "content-overlap",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "overlap",
+      "allowed_methods": [
+        "visual"
+      ],
+      "coverage": "full_content"
+    }
+  ],
+  "scenarios": {
+    "H1": {
+      "states": [
+        {
+          "id": "baseline",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        },
+        {
+          "id": "selected",
+          "input_index": 0,
+          "after_action": 1,
+          "coverage": "targets"
+        },
+        {
+          "id": "expanded",
+          "input_index": 0,
+          "after_action": 3,
+          "stimulus_action": 2,
+          "coverage": "full_content"
+        },
+        {
+          "id": "blocked",
+          "input_index": 0,
+          "after_action": 4,
+          "coverage": "targets"
+        },
+        {
+          "id": "replaced",
+          "input_index": 1,
+          "after_action": 5,
+          "coverage": "targets"
+        },
+        {
+          "id": "reselected",
+          "input_index": 1,
+          "after_action": 6,
+          "coverage": "targets"
+        },
+        {
+          "id": "submitted",
+          "input_index": 1,
+          "after_action": 8,
+          "stimulus_action": 7,
+          "coverage": "full_content"
+        }
+      ],
+      "actions": [
+        {
+          "type": "sweep",
+          "state_id": "baseline",
+          "max_scrolls": 24
+        },
+        {
+          "type": "tap",
+          "target": "choiceA",
+          "reveal": true,
+          "state_id": "selected"
+        },
+        {
+          "type": "tap",
+          "target": "disclosure",
+          "reveal": true
+        },
+        {
+          "type": "sweep",
+          "state_id": "expanded",
+          "max_scrolls": 24
+        },
+        {
+          "type": "tap",
+          "target": "locked",
+          "reveal": true,
+          "allow_disabled": true,
+          "state_id": "blocked"
+        },
+        {
+          "type": "apply_next_fixture",
+          "state_id": "replaced"
+        },
+        {
+          "type": "tap",
+          "target": "choiceB",
+          "reveal": true,
+          "state_id": "reselected"
+        },
+        {
+          "type": "tap",
+          "target": "submit",
+          "reveal": true
+        },
+        {
+          "type": "sweep",
+          "state_id": "submitted",
+          "max_scrolls": 24
+        }
+      ],
+      "values": {
+        "current-summary": {
+          "baseline": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/baseline/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/baseline/summary"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/selected/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/selected/summary"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/expanded/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/expanded/summary"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/blocked/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/blocked/summary"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/summary"
+            }
+          },
+          "reselected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/reselected/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/reselected/summary"
+            }
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/submitted/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/submitted/summary"
+            }
+          }
+        },
+        "first-choice-selected": {
+          "baseline": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/baseline/selectedA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/baseline/selectedA"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/selected/selectedA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/selected/selectedA"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/expanded/selectedA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/expanded/selectedA"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/blocked/selectedA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/blocked/selectedA"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/selectedA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/selectedA"
+            }
+          },
+          "reselected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/reselected/selectedA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/reselected/selectedA"
+            }
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/submitted/selectedA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/submitted/selectedA"
+            }
+          }
+        },
+        "locked-choice-disabled": {
+          "baseline": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            }
+          },
+          "reselected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            }
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/booleans/no"
+            }
+          }
+        },
+        "primary-action-enabled": {
+          "baseline": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/baseline/submitEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/baseline/submitEnabled"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/selected/submitEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/selected/submitEnabled"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/expanded/submitEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/expanded/submitEnabled"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/blocked/submitEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/blocked/submitEnabled"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/submitEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/submitEnabled"
+            }
+          },
+          "reselected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/reselected/submitEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/reselected/submitEnabled"
+            }
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/submitted/submitEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/submitted/submitEnabled"
+            }
+          }
+        },
+        "disclosure-current-label": {
+          "baseline": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/baseline/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/baseline/disclosure"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/selected/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/selected/disclosure"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/expanded/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/expanded/disclosure"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/blocked/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/blocked/disclosure"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/disclosure"
+            }
+          },
+          "reselected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/reselected/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/reselected/disclosure"
+            }
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/submitted/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/submitted/disclosure"
+            }
+          }
+        },
+        "successful-activation-callback": {
+          "baseline": {
+            "not_applicable": "This checkpoint has no successful native activation stimulus. Disabled observation is never a callback success."
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/selected/activationEvents"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/selected/activationEvents"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/expanded/activationEvents"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/expanded/activationEvents"
+            }
+          },
+          "blocked": {
+            "not_applicable": "This checkpoint has no successful native activation stimulus. Disabled observation is never a callback success."
+          },
+          "replaced": {
+            "not_applicable": "This checkpoint has no successful native activation stimulus. Disabled observation is never a callback success."
+          },
+          "reselected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/reselected/activationEvents"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/reselected/activationEvents"
+            }
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/submitted/activationEvents"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/submitted/activationEvents"
+            }
+          }
+        },
+        "replacement-callback-quiet": {
+          "baseline": {
+            "not_applicable": "Only the explicit caller replacement advances the model input and owns this quietness requirement."
+          },
+          "selected": {
+            "not_applicable": "Only the explicit caller replacement advances the model input and owns this quietness requirement."
+          },
+          "expanded": {
+            "not_applicable": "Only the explicit caller replacement advances the model input and owns this quietness requirement."
+          },
+          "blocked": {
+            "not_applicable": "Only the explicit caller replacement advances the model input and owns this quietness requirement."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/updateEvents"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/updateEvents"
+            }
+          },
+          "reselected": {
+            "not_applicable": "Only the explicit caller replacement advances the model input and owns this quietness requirement."
+          },
+          "submitted": {
+            "not_applicable": "Only the explicit caller replacement advances the model input and owns this quietness requirement."
+          }
+        },
+        "primary-control-height": {
+          "baseline": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryMinHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryMinHeight"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryMinHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryMinHeight"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryMinHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryMinHeight"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryMinHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryMinHeight"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryMinHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryMinHeight"
+            }
+          },
+          "reselected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryMinHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryMinHeight"
+            }
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryMinHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryMinHeight"
+            }
+          }
+        },
+        "title-native-weight": {
+          "baseline": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            }
+          },
+          "reselected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            }
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/typography/titleWeight"
+            }
+          }
+        },
+        "component-canvas-color": {
+          "baseline": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            }
+          },
+          "reselected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            }
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/canvas"
+            }
+          }
+        },
+        "notice-surface-color": {
+          "baseline": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            }
+          },
+          "reselected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            }
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/colors/notice"
+            }
+          }
+        },
+        "primary-surface-color": {
+          "baseline": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/baseline/primaryColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/baseline/primaryColor"
+            }
+          },
+          "selected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/selected/primaryColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/selected/primaryColor"
+            }
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/expanded/primaryColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/expanded/primaryColor"
+            }
+          },
+          "blocked": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/blocked/primaryColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/blocked/primaryColor"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/primaryColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/primaryColor"
+            }
+          },
+          "reselected": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/reselected/primaryColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/reselected/primaryColor"
+            }
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/submitted/primaryColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/submitted/primaryColor"
+            }
+          }
+        },
+        "content-wrapping": {
+          "baseline": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            }
+          },
+          "selected": {
+            "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            }
+          },
+          "blocked": {
+            "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+          },
+          "replaced": {
+            "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+          },
+          "reselected": {
+            "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            }
+          }
+        },
+        "content-overlap": {
+          "baseline": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            }
+          },
+          "selected": {
+            "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+          },
+          "expanded": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            }
+          },
+          "blocked": {
+            "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+          },
+          "replaced": {
+            "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+          },
+          "reselected": {
+            "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+          },
+          "submitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/overlap"
+            }
+          }
+        }
+      }
+    }
+  }
+}

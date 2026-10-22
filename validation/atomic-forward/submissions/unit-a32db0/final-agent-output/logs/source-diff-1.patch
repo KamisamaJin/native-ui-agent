@@ -1,0 +1,41 @@
+diff --git a/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-a32db0/agent-output/repair/before/alerttoast/Sources/AlertToast/RiverSensorTriageBoard.swift b/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-a32db0/alerttoast/Sources/AlertToast/RiverSensorTriageBoard.swift
+index 0ce2c0f..852cd50 100644
+--- a/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-a32db0/agent-output/repair/before/alerttoast/Sources/AlertToast/RiverSensorTriageBoard.swift
++++ b/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-a32db0/alerttoast/Sources/AlertToast/RiverSensorTriageBoard.swift
+@@ -113,7 +113,7 @@ private struct RiverSensorBoardContent: View {
+                     .padding(.vertical, 4)
+                     .contentShape(Rectangle())
+             }
+-            .buttonStyle(PlainButtonStyle())
++            .buttonStyle(RiverSensorButtonStyle())
+             .accessibilityLabel(disclosureLabel)
+             .accessibilityIdentifier("river.disclosure")
+             .padding(.bottom, 12)
+@@ -150,7 +150,7 @@ private struct RiverSensorBoardContent: View {
+                                 .cornerRadius(10)
+                                 .contentShape(RoundedRectangle(cornerRadius: 10))
+                             }
+-                            .buttonStyle(PlainButtonStyle())
++                            .buttonStyle(RiverSensorButtonStyle())
+                             .disabled(!incident.available)
+                             .accessibilityAddTraits(selected?.id == incident.id ? .isSelected : [])
+                             .accessibilityIdentifier("river.choice.\(incident.id)")
+@@ -187,7 +187,7 @@ private struct RiverSensorBoardContent: View {
+                     .cornerRadius(10)
+                     .contentShape(RoundedRectangle(cornerRadius: 10))
+             }
+-            .buttonStyle(PlainButtonStyle())
++            .buttonStyle(RiverSensorButtonStyle())
+             .disabled(selected == nil)
+             .accessibilityLabel("Acknowledge alert")
+             .accessibilityIdentifier("river.submit")
+@@ -234,3 +234,9 @@ private struct RiverSensorTimelineRail: Shape {
+         Path(CGRect(x: rect.minX, y: rect.minY, width: rect.width, height: rect.height + 12))
+     }
+ }
++
++private struct RiverSensorButtonStyle: ButtonStyle {
++    func makeBody(configuration: Configuration) -> some View {
++        configuration.label
++    }
++}

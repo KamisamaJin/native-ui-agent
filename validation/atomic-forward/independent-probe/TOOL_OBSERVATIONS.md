@@ -1,0 +1,9 @@
+# Original prefreeze observations
+
+- Bootstrap used clean pinned upstream clones; no untracked predecessor UI was copied or read.
+- Original Android390 request yields logical native width389.81818dp, while260 yields260dp. The actual image is649×1000 /433×1000 respectively; the tool correctly maps its native region to PNG coordinates. Original environment-only evaluation is F for normal and P for narrow/large. All original values are retained. This is an environment-contract precision issue, with no product defect attribution.
+- Original bundled iOS ProbeBridge build succeeded; one native XCUITest executed. The primary and footer controls were uniquely resolved and dispatched through xcui_tap with the expected callbacks. Caller replacement preserved PID/instance and advanced input index with an empty event interval. However, all six full-content sweeps were conservatively rejected: the LazyVStack height changes by58–59pt when the lower content is realized. The original images visibly include the footer, but pixel completeness remains unestablished under the observer contract.
+- Root requested a brief hold on SDK launches at00:53Z while it updates shared environment metadata. No native runs are launched during this hold. A separate eager-stack generic probe is prepared to distinguish basic native scroll capability from the bundled lazy-content height limitation. The bundled probe and its failed original artifacts are untouched.
+- One own reporting-helper invocation failed with Python SyntaxError (`else390`); the exact failed command/log and original helper are retained, then a whitespace-only syntax fix made the helper run. This is not an SDK or tool failure.
+
+No tool is patched by this probe. No defect is seeded. No second independent acceptance judge is fabricated. The bound native/pixel checks and this context's single visual review are reported within their actual scope.

@@ -1,0 +1,197 @@
+{
+  "initial": {
+    "revision": "river-0",
+    "title": "Review river sensor alerts",
+    "subtitle": "Select one incoming alert, inspect its readings, and acknowledge it for a field team.",
+    "notice": "Readings are advisory. Follow the field team protocol before intervention.",
+    "footer": "Acknowledgement assigns review responsibility only. The monitoring service keeps the original readings and the incident chronology.",
+    "initialDetailsExpanded": false,
+    "guidance": "Latest sample: 07:18 local. Compare the three recorded readings before sending a field crew. Maintenance-held alerts remain visible for context and cannot be acknowledged.",
+    "incidents": [
+      {
+        "id": "a",
+        "label": "06:40 \u00b7 Northern overflow weir rapid water-level rise",
+        "detail": "Latest sample: 07:18 local. Compare the three recorded readings before sending a field crew. Maintenance-held alerts remain visible for context and cannot be acknowledged.",
+        "available": true,
+        "severity": "watch",
+        "unavailableReason": ""
+      },
+      {
+        "id": "b",
+        "label": "06:55 \u00b7 Eastern culvert auxiliary battery capacity warning",
+        "detail": "Staff-assisted access is available on request.",
+        "available": true,
+        "severity": "service",
+        "unavailableReason": ""
+      },
+      {
+        "id": "c",
+        "label": "07:10 \u00b7 Southern conservation reach telemetry unavailable",
+        "detail": "Latest sample: 07:18 local. Compare the three recorded readings before sending a field crew. Maintenance-held alerts remain visible for context and cannot be acknowledged.",
+        "available": false,
+        "severity": "hold",
+        "unavailableReason": "Sensor is on a maintenance hold; field acknowledgement is paused."
+      },
+      {
+        "id": "d",
+        "label": "07:25 \u00b7 Mill footbridge optical turbidity advisory",
+        "detail": "Staff-assisted access is available on request.",
+        "available": true,
+        "severity": "watch",
+        "unavailableReason": ""
+      },
+      {
+        "id": "e",
+        "label": "07:40 \u00b7 Reed restoration bank temperature advisory",
+        "detail": "Latest sample: 07:18 local. Compare the three recorded readings before sending a field crew. Maintenance-held alerts remain visible for context and cannot be acknowledged.",
+        "available": true,
+        "severity": "info",
+        "unavailableReason": ""
+      },
+      {
+        "id": "f",
+        "label": "07:55 \u00b7 Ferry approach pressure-gauge drift",
+        "detail": "Staff-assisted access is available on request.",
+        "available": true,
+        "severity": "info",
+        "unavailableReason": ""
+      }
+    ],
+    "initialSelectedID": null
+  },
+  "updates": [
+    {
+      "revision": "river-1",
+      "title": "Review river sensor alerts",
+      "subtitle": "Select one incoming alert, inspect its readings, and acknowledge it for a field team.",
+      "notice": "Caller update: Readings are advisory. Follow the field team protocol before intervention.",
+      "footer": "Acknowledgement assigns review responsibility only. The monitoring service keeps the original readings and the incident chronology.",
+      "initialDetailsExpanded": false,
+      "guidance": "Latest sample: 07:18 local. Compare the three recorded readings before sending a field crew. Maintenance-held alerts remain visible for context and cannot be acknowledged.",
+      "incidents": [
+        {
+          "id": "a",
+          "label": "06:40 \u00b7 Northern overflow weir rapid water-level rise",
+          "detail": "Latest sample: 07:18 local. Compare the three recorded readings before sending a field crew. Maintenance-held alerts remain visible for context and cannot be acknowledged.",
+          "available": false,
+          "severity": "watch",
+          "unavailableReason": "Availability changed: the duty supervisor paused new requests."
+        },
+        {
+          "id": "b",
+          "label": "06:55 \u00b7 Eastern culvert auxiliary battery capacity warning",
+          "detail": "Staff-assisted access is available on request.",
+          "available": true,
+          "severity": "service",
+          "unavailableReason": ""
+        },
+        {
+          "id": "c",
+          "label": "07:10 \u00b7 Southern conservation reach telemetry unavailable",
+          "detail": "Latest sample: 07:18 local. Compare the three recorded readings before sending a field crew. Maintenance-held alerts remain visible for context and cannot be acknowledged.",
+          "available": false,
+          "severity": "hold",
+          "unavailableReason": "Sensor is on a maintenance hold; field acknowledgement is paused."
+        },
+        {
+          "id": "d",
+          "label": "07:25 \u00b7 Mill footbridge optical turbidity advisory",
+          "detail": "Staff-assisted access is available on request.",
+          "available": true,
+          "severity": "watch",
+          "unavailableReason": ""
+        },
+        {
+          "id": "e",
+          "label": "07:40 \u00b7 Reed restoration bank temperature advisory",
+          "detail": "Latest sample: 07:18 local. Compare the three recorded readings before sending a field crew. Maintenance-held alerts remain visible for context and cannot be acknowledged.",
+          "available": true,
+          "severity": "info",
+          "unavailableReason": ""
+        },
+        {
+          "id": "f",
+          "label": "07:55 \u00b7 Ferry approach pressure-gauge drift",
+          "detail": "Staff-assisted access is available on request.",
+          "available": true,
+          "severity": "info",
+          "unavailableReason": ""
+        }
+      ],
+      "initialSelectedID": null
+    }
+  ],
+  "width": 248,
+  "viewportHeight": 600,
+  "theme": "dark",
+  "dynamic_type": "accessibility2",
+  "fontScale": 1.45,
+  "direction": "ltr",
+  "state_capture": true,
+  "required_identifiers": [
+    "river.choice.f",
+    "river.footer"
+  ],
+  "max_scrolls": 24,
+  "canvas_color": "#B8B7B4",
+  "actions": [
+    {
+      "type": "sweep",
+      "state_id": "baseline",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "river.choice.a"
+      },
+      "reveal": true,
+      "state_id": "selected"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "river.disclosure"
+      },
+      "reveal": true
+    },
+    {
+      "type": "sweep",
+      "state_id": "expanded",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "river.choice.c"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "state_id": "blocked"
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "replaced"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "river.choice.b"
+      },
+      "reveal": true,
+      "state_id": "reselected"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "river.submit"
+      },
+      "reveal": true
+    },
+    {
+      "type": "sweep",
+      "state_id": "submitted",
+      "max_steps": 24
+    }
+  ]
+}

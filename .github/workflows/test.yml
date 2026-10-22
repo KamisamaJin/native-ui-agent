@@ -6,11 +6,13 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
+      - name: Free unused hosted SDK disk for immutable native evidence
+        run: sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.11'
-      - run: python -m pip install -r native-ui-agent/scripts/requirements.txt
+      - run: python -m pip install -r native-ui-agent/scripts/requirements.txt "Pillow==11.3.0"
       - run: python -B -m unittest discover -s native-ui-agent/tests -v
       - run: python validation/feature-development/verify_evidence.py
       - run: python validation/blind-comparison/verify_evidence.py
@@ -60,7 +62,7 @@ jobs:
       - run: python -B validation/contract-forward/build_tables.py
       - run: python -B validation/contract-forward/build_gallery.py
       - run: python -B validation/publication_history.py contract-v6 artifacts.py
-      - run: python -B validation/multitask-forward/verify_tools.py
+      - run: python -B validation/publication_history.py multitask-v7 verify_tools.py
       - run: python -B validation/multitask-forward/verify_generic.py
       - run: python -B validation/multitask-forward/design-v2/T1/private/test_grader.py
       - run: python -B validation/multitask-forward/design-v2/T2/private/test_grader.py
@@ -77,7 +79,7 @@ jobs:
       - run: python -B validation/multitask-forward/failure_index.py
       - run: python -B validation/multitask-forward/build_tables.py
       - run: python -B validation/multitask-forward/build_gallery.py
-      - run: python -B validation/multitask-forward/artifacts.py
+      - run: python -B validation/publication_history.py multitask-v7 artifacts.py
       - name: Shared native environment compatibility regression
         run: python3 -B validation/multitask-forward/test_shared_environment.py
       - name: Verify separate posthoc shared infrastructure recheck
@@ -92,3 +94,22 @@ jobs:
         run: python3 -B validation/multitask-forward/review_product_summary.py
       - name: Replay unscored grader-disagreement pixel evidence
         run: python3 -B validation/multitask-forward/audit_grader_disagreements.py
+      - name: Atomic review metric controls
+        run: python3 -B validation/atomic-forward/test_metrics.py
+      - name: Verify frozen atomic forward study and original evidence
+        run: |
+          python3 -B validation/atomic-forward/verify_adapters.py
+          python3 -B validation/atomic-forward/verify_study.py
+      - name: Recompute atomic forward comparison and costs
+        run: |
+          python3 -B validation/atomic-forward/build_summary.py --check
+          python3 -B validation/atomic-forward/costs.py --check
+          python3 -B validation/atomic-forward/grading_costs.py --check
+          python3 -B validation/atomic-forward/observation_costs.py --check
+          python3 -B validation/atomic-forward/action_scope.py --check
+          python3 -B validation/atomic-forward/build_tables.py --check
+          python3 -B validation/atomic-forward/build_gallery.py --check
+          python3 -B validation/atomic-forward/failure_index.py --check
+          python3 -B validation/atomic-forward/disagreements.py --check
+      - name: Verify atomic forward publication bytes
+        run: python3 -B validation/atomic-forward/artifacts.py

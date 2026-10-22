@@ -254,6 +254,20 @@ def state_evidence(observation,state):
     return found,complete,'native interval union complete'if complete else'incomplete per-state interval union',capture
 
 
+def bound_state_evidence(observation,state):
+    """Strict source/epoch/image identity for the new independently pinned review mode."""
+    found,complete,reason,capture=state_evidence(observation,state)
+    if not found:return found,complete,reason,capture
+    binding=capture.get('binding',{})if capture else{}
+    valid=(isinstance(binding.get('instance'),str)and bool(binding['instance'])and
+           isinstance(binding.get('input_sha256'),str)and len(binding['input_sha256'])==64 and
+           type(binding.get('event_revision'))is int and binding['event_revision']>=0)
+    if not valid or any(s.get('state_id')!=state['id']or s.get('binding')!=binding or
+                        s.get('capture_consistent')is not True or s.get('binding_after_capture')!=binding for _,s in found):
+        return [],False,'strict state/input/epoch/image identity missing or changed',capture
+    return found,complete,reason,capture
+
+
 def legacy_geometry_value(snapshot, item, platform):
     """Distances between observed native bounds, not inferred style attributes.
 
@@ -303,7 +317,7 @@ def geometry_value(snapshot, item, platform):
     return result['value'] if result else None
 
 
-def evaluate(plan, observation, platform, manual=None, root=None, observation_sha256=None, design_lock=None, design_sha256=None):
+def evaluate(plan, observation, platform, manual=None, root=None, observation_sha256=None, design_lock=None, design_sha256=None, review_policy=None, review_policy_sha256=None):
     if (design_lock is None)!=(design_sha256 is None):raise ValueError('Trusted design requires both external lock and pinned digest')
     if design_lock is not None and 'design_contract'not in plan:raise ValueError('Trusted design mode rejects a stripped or legacy unverified plan')
     if 'design_contract'in plan:
@@ -311,13 +325,19 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
         if design_lock is None:raise ValueError('Generated assertions require the separately pinned design lock')
         verify_generated(plan,design_lock,design_sha256,platform)
     states=validate_plan(plan);manual=manual or {'decisions':[]};decisions={}
+    if (review_policy is None)!=(review_policy_sha256 is None):raise ValueError('Atomic review needs policy and separately pinned digest')
+    if review_policy is not None or 'review_contract'in manual:
+        if review_policy is None or 'review_contract'not in manual or design_lock is None or root is None or not observation_sha256:
+            raise ValueError('Bound atomic review cannot be stripped or used without independently pinned sources')
+        from review_contract import verify_manual
+        verify_manual(manual,plan,design_lock,design_sha256,review_policy,review_policy_sha256,observation,observation_sha256,root,platform)
     if manual.get('decisions') and (not observation_sha256 or manual.get('observation_sha256')!=observation_sha256):raise ValueError('Manual review is not bound to this observation')
     for row in manual.get('decisions',[]):
         if row.get('id')in decisions:raise ValueError('Duplicate manual decision')
         decisions[row.get('id')]=row
     unknown=set(decisions)-{a['id']for a in plan['assertions']if a['kind']=='manual'}
     if unknown:raise ValueError('Unplanned manual decisions')
-    evidence={sid:state_evidence(observation,spec)for sid,spec in states.items()};rows=[]
+    evidence={sid:(bound_state_evidence if review_policy is not None else state_evidence)(observation,spec)for sid,spec in states.items()};rows=[]
     for item in plan['assertions']:
         found,complete,why,capture=evidence[item['state']];status='unassessed';actual=None;reason=why;used=[];geometry_proofs=None
         if found:
@@ -413,9 +433,9 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--plan',type=Path,required=True);p.add_argument('--observation',type=Path,required=True);p.add_argument('--platform',choices=['ios','android'],required=True);p.add_argument('--manual',type=Path);p.add_argument('--root',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--design-lock',type=Path);p.add_argument('--design-sha256');a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--plan',type=Path,required=True);p.add_argument('--observation',type=Path,required=True);p.add_argument('--platform',choices=['ios','android'],required=True);p.add_argument('--manual',type=Path);p.add_argument('--root',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--design-lock',type=Path);p.add_argument('--design-sha256');p.add_argument('--review-policy',type=Path);p.add_argument('--review-policy-sha256');a=p.parse_args()
     if a.output.exists():raise ValueError('Fresh output required')
-    report=evaluate(read(a.plan),read(a.observation),a.platform,read(a.manual)if a.manual else None,a.root or a.observation.parent,sha(a.observation),read(a.design_lock)if a.design_lock else None,a.design_sha256)
+    report=evaluate(read(a.plan),read(a.observation),a.platform,read(a.manual)if a.manual else None,a.root or a.observation.parent,sha(a.observation),read(a.design_lock)if a.design_lock else None,a.design_sha256,read(a.review_policy)if a.review_policy else None,a.review_policy_sha256)
     report['input_hashes']={'plan':sha(a.plan),'observation':sha(a.observation),**({'manual':sha(a.manual)}if a.manual else{})}
     a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n');print(json.dumps({'status':report['status'],'counts':report['counts']}));return 1 if report['status']=='failed'else 3 if report['status']=='needs_review'else 0
 if __name__=='__main__':

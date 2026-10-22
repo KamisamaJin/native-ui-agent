@@ -1,0 +1,206 @@
+{
+  "initial": {
+    "revision": "bicycle-0",
+    "title": "Prepare a bicycle service",
+    "subtitle": "Choose the work to request, review the handover notes, and send the draft to the workshop.",
+    "notice": "Estimates describe workshop time, not a fixed collection promise.",
+    "footer": "Sending a service draft requests a mechanic review. No payment or repair authorisation is created by this component.",
+    "initialDetailsExpanded": false,
+    "guidance": "Remove loose luggage before handover. The mechanic will confirm parts and labour after inspection. Bring the key for any wheel locks and note noises that occur only under load.",
+    "services": [
+      {
+        "id": "a",
+        "label": "Brake inspection",
+        "detail": "Remove loose luggage before handover. The mechanic will confirm parts and labour after inspection. Bring the key for any wheel locks and note noises that occur only under load.",
+        "available": true,
+        "minutes": 20,
+        "unavailableReason": ""
+      },
+      {
+        "id": "b",
+        "label": "Wheel alignment",
+        "detail": "Staff-assisted access is available on request.",
+        "available": true,
+        "minutes": 35,
+        "unavailableReason": ""
+      },
+      {
+        "id": "c",
+        "label": "Hydraulic fork rebuild",
+        "detail": "Remove loose luggage before handover. The mechanic will confirm parts and labour after inspection. Bring the key for any wheel locks and note noises that occur only under load.",
+        "available": false,
+        "minutes": 90,
+        "unavailableReason": "This specialist repair is not offered at the community workshop."
+      },
+      {
+        "id": "d",
+        "label": "Chain care",
+        "detail": "Staff-assisted access is available on request.",
+        "available": true,
+        "minutes": 15,
+        "unavailableReason": ""
+      },
+      {
+        "id": "e",
+        "label": "Gear indexing",
+        "detail": "Remove loose luggage before handover. The mechanic will confirm parts and labour after inspection. Bring the key for any wheel locks and note noises that occur only under load.",
+        "available": true,
+        "minutes": 25,
+        "unavailableReason": ""
+      },
+      {
+        "id": "f",
+        "label": "Lighting check",
+        "detail": "Staff-assisted access is available on request.",
+        "available": true,
+        "minutes": 10,
+        "unavailableReason": ""
+      }
+    ],
+    "initialSelectedIDs": []
+  },
+  "updates": [
+    {
+      "revision": "bicycle-1",
+      "title": "Prepare a bicycle service",
+      "subtitle": "Choose the work to request, review the handover notes, and send the draft to the workshop.",
+      "notice": "Caller update: Estimates describe workshop time, not a fixed collection promise.",
+      "footer": "Sending a service draft requests a mechanic review. No payment or repair authorisation is created by this component.",
+      "initialDetailsExpanded": false,
+      "guidance": "Remove loose luggage before handover. The mechanic will confirm parts and labour after inspection. Bring the key for any wheel locks and note noises that occur only under load.",
+      "services": [
+        {
+          "id": "a",
+          "label": "Brake inspection",
+          "detail": "Remove loose luggage before handover. The mechanic will confirm parts and labour after inspection. Bring the key for any wheel locks and note noises that occur only under load.",
+          "available": true,
+          "minutes": 20,
+          "unavailableReason": ""
+        },
+        {
+          "id": "b",
+          "label": "Wheel alignment",
+          "detail": "Staff-assisted access is available on request.",
+          "available": true,
+          "minutes": 35,
+          "unavailableReason": ""
+        },
+        {
+          "id": "c",
+          "label": "Hydraulic fork rebuild",
+          "detail": "Remove loose luggage before handover. The mechanic will confirm parts and labour after inspection. Bring the key for any wheel locks and note noises that occur only under load.",
+          "available": false,
+          "minutes": 90,
+          "unavailableReason": "This specialist repair is not offered at the community workshop."
+        },
+        {
+          "id": "d",
+          "label": "Chain care",
+          "detail": "Staff-assisted access is available on request.",
+          "available": true,
+          "minutes": 15,
+          "unavailableReason": ""
+        },
+        {
+          "id": "e",
+          "label": "Gear indexing",
+          "detail": "Remove loose luggage before handover. The mechanic will confirm parts and labour after inspection. Bring the key for any wheel locks and note noises that occur only under load.",
+          "available": true,
+          "minutes": 25,
+          "unavailableReason": ""
+        },
+        {
+          "id": "f",
+          "label": "Lighting check",
+          "detail": "Staff-assisted access is available on request.",
+          "available": true,
+          "minutes": 10,
+          "unavailableReason": ""
+        }
+      ],
+      "initialSelectedIDs": [
+        "b"
+      ]
+    }
+  ],
+  "width": 390,
+  "viewportHeight": 600,
+  "theme": "light",
+  "dynamic_type": "large",
+  "fontScale": 1.0,
+  "direction": "ltr",
+  "state_capture": true,
+  "required_identifiers": [
+    "bicycle.choice.f",
+    "bicycle.footer"
+  ],
+  "max_scrolls": 24,
+  "canvas_color": "#B8B7B4",
+  "actions": [
+    {
+      "type": "sweep",
+      "state_id": "baseline",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "bicycle.choice.a"
+      },
+      "reveal": true,
+      "state_id": "selected"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "bicycle.choice.b"
+      },
+      "reveal": true
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "bicycle.disclosure"
+      },
+      "reveal": true
+    },
+    {
+      "type": "sweep",
+      "state_id": "expanded",
+      "max_steps": 24
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "bicycle.choice.c"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "state_id": "blocked"
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "replaced"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "bicycle.choice.a"
+      },
+      "reveal": true,
+      "state_id": "reselected"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "bicycle.submit"
+      },
+      "reveal": true
+    },
+    {
+      "type": "sweep",
+      "state_id": "submitted",
+      "max_steps": 24
+    }
+  ]
+}

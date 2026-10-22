@@ -1,0 +1,9 @@
+[
+  {
+    "operation": "Read-only observation summary inspection",
+    "command_fragment": "print('screenshot sample',[(x['index'],x.get('state_id'),x.get('screenshot'),x.get('name')) for x in o['snapshots'][:2]])",
+    "exitCode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"<stdin>\", line 17, in <module>\n  File \"<stdin>\", line 17, in <listcomp>\nKeyError: 'index'\n",
+    "reason": "Android snapshots use list position instead of an index field. Subsequent read-only inspection used enumerate/list positions. No evidence or source was changed."
+  }
+]

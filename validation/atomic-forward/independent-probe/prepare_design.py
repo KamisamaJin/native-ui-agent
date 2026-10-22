@@ -1,0 +1,29 @@
+import json,hashlib,time
+from pathlib import Path
+R=Path(__file__).resolve().parent
+D=R/'design';D.mkdir(exist_ok=True)
+def write(path,x):path.write_text(json.dumps(x,indent=2)+'\n')
+def v(x,u):return {'value':x,'unit':u}
+ref={'title':{'A':v('A quiet moment','string'),'B':v('A fresh beginning','string')},'body':{'A':v('Take one steady breath, then choose your next small step.','string'),'B':v('Keep a little space for the things that matter today.','string')},'colors':{'canvasA':v('#FFEBE6F5','argb'),'canvasB':v('#FFE7EEE7','argb'),'bandA':v('#FF605082','argb'),'bandB':v('#FF41614D','argb'),'ink':v('#FF202124','argb')},'bandHeight':{'ios':v(64,'pt'),'android':v(64,'dp')},'visual':{'wrap':v(True,'bool'),'overlap':v(True,'bool')},'questions':{'wrap':v('Is all title and body text readable and wrapped within the component without clipping or ellipsis in every captured portion?','string'),'overlap':v('Are the title and body text clear of each other, the accent band, and the action throughout the captured component?','string')},'events':{'tap':v(['acknowledged'],'events'),'update':v([],'events')}}
+write(D/'reference.json',ref)
+rules=[{'id':'band-fill','kind':'manual','target':'band','property':'rendered_fill_argb','coverage':'target','allowed_methods':['native_pixels']},{'id':'canvas-fill','kind':'manual','target':'canvas','property':'rendered_canvas_argb','coverage':'target','allowed_methods':['native_pixels']},{'id':'text-wrap','kind':'manual','target':'body','property':'wrapping','coverage':'full_content','allowed_methods':['visual']},{'id':'text-overlap','kind':'manual','target':'title','property':'overlap','coverage':'full_content','allowed_methods':['visual']},{'id':'title-label','kind':'control','target':'title','property':'label'},{'id':'band-height','kind':'geometry','target':'band','property':'height','measurement':'accessibility_box','basis':'semantic'},{'id':'tap-event','kind':'event'},{'id':'caller-update','kind':'event','stimulus':'caller_update'}]
+actions=[{'type':'tap','target':'action','reveal':True,'state_id':'tapped'},{'type':'apply_next_fixture','state_id':'changed'}]
+def exp(ptr):return {'source':'reference','pointer':ptr}
+values={}
+for r in rules:
+ values[r['id']]={}
+ for state,suffix in [('tapped','A'),('changed','B')]:
+  rid=r['id']
+  if (rid=='tap-event' and state=='changed')or(rid=='caller-update' and state=='tapped'):
+   cell={'not_applicable':'This state has the other independently specified stimulus class.'}
+  else:
+   ptr={'band-fill':f'/colors/band{suffix}','canvas-fill':f'/colors/canvas{suffix}','text-wrap':'/visual/wrap','text-overlap':'/visual/overlap','title-label':f'/title/{suffix}','tap-event':'/events/tap','caller-update':'/events/update'}.get(rid)
+   cell={p:exp(f'/bandHeight/{p}' if rid=='band-height' else ptr) for p in ['ios','android']}
+  values[rid][state]=cell
+scenario={'states':[{'id':'tapped','input_index':0,'after_action':0},{'id':'changed','input_index':1,'after_action':1}],'actions':actions,'values':values}
+contract={'version':1,'design_owner':'Independent neutral forward probe context; fixed before implementation','approval_reference':'design/APPROVAL.md: independent from root study; no external human design approval claimed','sources':[{'id':'reference','path':'reference.json','sha256':hashlib.sha256((D/'reference.json').read_bytes()).hexdigest()}],'required_rule_ids':[r['id']for r in rules],'rules':rules,'scenarios':{'normal':scenario,'narrow-large':scenario}}
+write(D/'contract.json',contract)
+write(R/'bindings.json',{k:{'identifier':'moment.'+k}for k in ['band','canvas','title','body','action']})
+write(R/'actions.json',[dict(a,target={'identifier':'moment.action'})if a.get('target')else a for a in actions])
+(D/'APPROVAL.md').write_text('''# Neutral design fixed before implementation\n\nThis independent probe context selected the design without seeing root implementation plans, prior trial results or future business studies. The same context will implement it; hashes do not establish separate human design authorship.\n\nThe component paints an opaque light canvas and a separate opaque empty accent band. Both regions are component-owned. The observer paints only the surrounding host; system status and host controls have no component color obligation. Canvas sampling uses the leftmost inner strip, outside padded content. Band sampling uses its empty central area. Neither sampling zone contains glyphs, gradients or transparency.\n\nA vertical component uses 20 native-unit inner padding, 16-unit spacing, a 64-unit band, a title, body and an Acknowledge action. Title/body wrap naturally without a fixed text height or line cap. Text ink is dark #202124. On iOS use native title2/body; Android uses 22sp semibold/17sp body. All regions have square edges. A tap emits acknowledged and changes no model. The caller replaces title, body and both colors in the still-attached component; replacement emits no callback.\n\nNormal: offered width390, light, ltr, large iOS Dynamic Type / Android fontScale1.0. Narrow/large: offered width260, light, ltr, accessibility3 / fontScale1.7. iOS host content width is offered width minus32; Android actual viewport is checked after capture. No physical Android touch, app navigation, keyboard, lifecycle or full style-tree claim is planned.\n\nThe typed reference and contract fix every expectation and original action route. Policy and lock digests will be recorded separately before component source is written.\n''')
+write(R/'phase-starts.json',{'task_received_utc':'2026-10-22T00:47:35Z','first_time_read_utc':'2026-10-22T00:48:11Z','design_fixed_epoch':time.time(),'read_only_commands_note':'Initial Skill, atomic-review/native-tools/design-contract/platform reference, example, help and dependency bootstrap source reads are preserved in transcript. Native/build/check execution is recorded by run.py.'})

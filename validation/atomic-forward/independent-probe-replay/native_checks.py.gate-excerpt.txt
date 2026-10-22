@@ -1,0 +1,14 @@
+def bound_state_evidence(observation,state):
+    """Strict source/epoch/image identity for the new independently pinned review mode."""
+    found,complete,reason,capture=state_evidence(observation,state)
+    if not found:return found,complete,reason,capture
+    binding=capture.get('binding',{})if capture else{}
+    valid=(isinstance(binding.get('instance'),str)and bool(binding['instance'])and
+           isinstance(binding.get('input_sha256'),str)and len(binding['input_sha256'])==64 and
+           type(binding.get('event_revision'))is int and binding['event_revision']>=0)
+    if not valid or any(s.get('state_id')!=state['id']or s.get('binding')!=binding or
+                        s.get('capture_consistent')is not True or s.get('binding_after_capture')!=binding for _,s in found):
+        return [],False,'strict state/input/epoch/image identity missing or changed',capture
+    return found,complete,reason,capture
+
+

@@ -1,0 +1,1458 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "Independent blind task designer, cohort design-v2",
+    "approval_reference": "approval.json; preimplementation source identity approval, pending fresh design review",
+    "sources": [
+      {
+        "id": "reference",
+        "path": "reference.json",
+        "sha256": "647ad7f2d3a9e9ba2d0afe084f67ad404a8114912145ed51ce57d5181defa791"
+      }
+    ],
+    "required_rule_ids": [
+      "current-summary",
+      "first-choice-selected",
+      "locked-choice-disabled",
+      "primary-action-enabled",
+      "disclosure-current-label",
+      "successful-activation-callback",
+      "replacement-callback-quiet",
+      "primary-control-height",
+      "title-native-weight",
+      "component-canvas-color",
+      "notice-surface-color",
+      "primary-surface-color",
+      "content-wrapping",
+      "content-overlap"
+    ],
+    "rules": [
+      {
+        "id": "current-summary",
+        "kind": "control",
+        "target": "summary",
+        "property": "label",
+        "coverage": "target"
+      },
+      {
+        "id": "first-choice-selected",
+        "kind": "control",
+        "target": "choiceA",
+        "property": "selected",
+        "coverage": "target"
+      },
+      {
+        "id": "locked-choice-disabled",
+        "kind": "control",
+        "target": "locked",
+        "property": "enabled",
+        "coverage": "target"
+      },
+      {
+        "id": "primary-action-enabled",
+        "kind": "control",
+        "target": "submit",
+        "property": "enabled",
+        "coverage": "target"
+      },
+      {
+        "id": "disclosure-current-label",
+        "kind": "control",
+        "target": "disclosure",
+        "property": "label",
+        "coverage": "target"
+      },
+      {
+        "id": "successful-activation-callback",
+        "kind": "event",
+        "coverage": "target"
+      },
+      {
+        "id": "replacement-callback-quiet",
+        "kind": "event",
+        "stimulus": "caller_update",
+        "coverage": "target"
+      },
+      {
+        "id": "primary-control-height",
+        "kind": "geometry",
+        "target": "submit",
+        "property": "height",
+        "op": "gte",
+        "basis": "control",
+        "measurement": "accessibility_box",
+        "coverage": "target"
+      },
+      {
+        "id": "title-native-weight",
+        "kind": "text_layout",
+        "target": "title",
+        "property": "font_weight",
+        "coverage": "target"
+      },
+      {
+        "id": "component-canvas-color",
+        "kind": "manual",
+        "target": "canvas",
+        "property": "rendered_canvas_argb",
+        "allowed_methods": [
+          "native_pixels"
+        ],
+        "coverage": "target"
+      },
+      {
+        "id": "notice-surface-color",
+        "kind": "manual",
+        "target": "notice",
+        "property": "rendered_fill_argb",
+        "allowed_methods": [
+          "native_pixels"
+        ],
+        "coverage": "target"
+      },
+      {
+        "id": "primary-surface-color",
+        "kind": "manual",
+        "target": "submit",
+        "property": "rendered_fill_argb",
+        "allowed_methods": [
+          "native_pixels"
+        ],
+        "coverage": "target"
+      },
+      {
+        "id": "content-wrapping",
+        "kind": "manual",
+        "target": "canvas",
+        "property": "wrapping",
+        "allowed_methods": [
+          "visual"
+        ],
+        "coverage": "full_content"
+      },
+      {
+        "id": "content-overlap",
+        "kind": "manual",
+        "target": "canvas",
+        "property": "overlap",
+        "allowed_methods": [
+          "visual"
+        ],
+        "coverage": "full_content"
+      }
+    ],
+    "scenarios": {
+      "H1": {
+        "states": [
+          {
+            "id": "baseline",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          },
+          {
+            "id": "selected",
+            "input_index": 0,
+            "after_action": 1,
+            "coverage": "targets"
+          },
+          {
+            "id": "expanded",
+            "input_index": 0,
+            "after_action": 3,
+            "stimulus_action": 2,
+            "coverage": "full_content"
+          },
+          {
+            "id": "blocked",
+            "input_index": 0,
+            "after_action": 4,
+            "coverage": "targets"
+          },
+          {
+            "id": "replaced",
+            "input_index": 1,
+            "after_action": 5,
+            "coverage": "targets"
+          },
+          {
+            "id": "reselected",
+            "input_index": 1,
+            "after_action": 6,
+            "coverage": "targets"
+          },
+          {
+            "id": "submitted",
+            "input_index": 1,
+            "after_action": 8,
+            "stimulus_action": 7,
+            "coverage": "full_content"
+          }
+        ],
+        "actions": [
+          {
+            "type": "sweep",
+            "state_id": "baseline",
+            "max_steps": 24
+          },
+          {
+            "type": "tap",
+            "target": "choiceA",
+            "reveal": true,
+            "state_id": "selected"
+          },
+          {
+            "type": "tap",
+            "target": "disclosure",
+            "reveal": true
+          },
+          {
+            "type": "sweep",
+            "state_id": "expanded",
+            "max_steps": 24
+          },
+          {
+            "type": "tap",
+            "target": "locked",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "blocked"
+          },
+          {
+            "type": "apply_next_fixture",
+            "state_id": "replaced"
+          },
+          {
+            "type": "tap",
+            "target": "choiceB",
+            "reveal": true,
+            "state_id": "reselected"
+          },
+          {
+            "type": "tap",
+            "target": "submit",
+            "reveal": true
+          },
+          {
+            "type": "sweep",
+            "state_id": "submitted",
+            "max_steps": 24
+          }
+        ],
+        "values": {
+          "current-summary": {
+            "baseline": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/baseline/summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/baseline/summary"
+              }
+            },
+            "selected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/selected/summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/selected/summary"
+              }
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/expanded/summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/expanded/summary"
+              }
+            },
+            "blocked": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/blocked/summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/blocked/summary"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/replaced/summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/replaced/summary"
+              }
+            },
+            "reselected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/reselected/summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/reselected/summary"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/submitted/summary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/submitted/summary"
+              }
+            }
+          },
+          "first-choice-selected": {
+            "baseline": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/baseline/selectedA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/baseline/selectedA"
+              }
+            },
+            "selected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/selected/selectedA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/selected/selectedA"
+              }
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/expanded/selectedA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/expanded/selectedA"
+              }
+            },
+            "blocked": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/blocked/selectedA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/blocked/selectedA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/replaced/selectedA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/replaced/selectedA"
+              }
+            },
+            "reselected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/reselected/selectedA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/reselected/selectedA"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/submitted/selectedA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/submitted/selectedA"
+              }
+            }
+          },
+          "locked-choice-disabled": {
+            "baseline": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              }
+            },
+            "selected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              }
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              }
+            },
+            "blocked": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              }
+            },
+            "reselected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/booleans/no"
+              }
+            }
+          },
+          "primary-action-enabled": {
+            "baseline": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/baseline/submitEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/baseline/submitEnabled"
+              }
+            },
+            "selected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/selected/submitEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/selected/submitEnabled"
+              }
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/expanded/submitEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/expanded/submitEnabled"
+              }
+            },
+            "blocked": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/blocked/submitEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/blocked/submitEnabled"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/replaced/submitEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/replaced/submitEnabled"
+              }
+            },
+            "reselected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/reselected/submitEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/reselected/submitEnabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/submitted/submitEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/submitted/submitEnabled"
+              }
+            }
+          },
+          "disclosure-current-label": {
+            "baseline": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/baseline/disclosure"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/baseline/disclosure"
+              }
+            },
+            "selected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/selected/disclosure"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/selected/disclosure"
+              }
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/expanded/disclosure"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/expanded/disclosure"
+              }
+            },
+            "blocked": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/blocked/disclosure"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/blocked/disclosure"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/replaced/disclosure"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/replaced/disclosure"
+              }
+            },
+            "reselected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/reselected/disclosure"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/reselected/disclosure"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/submitted/disclosure"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/submitted/disclosure"
+              }
+            }
+          },
+          "successful-activation-callback": {
+            "baseline": {
+              "not_applicable": "This checkpoint has no successful native activation stimulus. Disabled observation is never a callback success."
+            },
+            "selected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/selected/activationEvents"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/selected/activationEvents"
+              }
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/expanded/activationEvents"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/expanded/activationEvents"
+              }
+            },
+            "blocked": {
+              "not_applicable": "This checkpoint has no successful native activation stimulus. Disabled observation is never a callback success."
+            },
+            "replaced": {
+              "not_applicable": "This checkpoint has no successful native activation stimulus. Disabled observation is never a callback success."
+            },
+            "reselected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/reselected/activationEvents"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/reselected/activationEvents"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/submitted/activationEvents"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/submitted/activationEvents"
+              }
+            }
+          },
+          "replacement-callback-quiet": {
+            "baseline": {
+              "not_applicable": "Only the explicit caller replacement advances the model input and owns this quietness requirement."
+            },
+            "selected": {
+              "not_applicable": "Only the explicit caller replacement advances the model input and owns this quietness requirement."
+            },
+            "expanded": {
+              "not_applicable": "Only the explicit caller replacement advances the model input and owns this quietness requirement."
+            },
+            "blocked": {
+              "not_applicable": "Only the explicit caller replacement advances the model input and owns this quietness requirement."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/replaced/updateEvents"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/replaced/updateEvents"
+              }
+            },
+            "reselected": {
+              "not_applicable": "Only the explicit caller replacement advances the model input and owns this quietness requirement."
+            },
+            "submitted": {
+              "not_applicable": "Only the explicit caller replacement advances the model input and owns this quietness requirement."
+            }
+          },
+          "primary-control-height": {
+            "baseline": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primaryMinHeight"
+              }
+            },
+            "selected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primaryMinHeight"
+              }
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primaryMinHeight"
+              }
+            },
+            "blocked": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primaryMinHeight"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primaryMinHeight"
+              }
+            },
+            "reselected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primaryMinHeight"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/primaryMinHeight"
+              }
+            }
+          },
+          "title-native-weight": {
+            "baseline": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              }
+            },
+            "selected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              }
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              }
+            },
+            "blocked": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              }
+            },
+            "reselected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/typography/titleWeight"
+              }
+            }
+          },
+          "component-canvas-color": {
+            "baseline": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              }
+            },
+            "selected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              }
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              }
+            },
+            "blocked": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              }
+            },
+            "reselected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/canvas"
+              }
+            }
+          },
+          "notice-surface-color": {
+            "baseline": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              }
+            },
+            "selected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              }
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              }
+            },
+            "blocked": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              }
+            },
+            "reselected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/colors/notice"
+              }
+            }
+          },
+          "primary-surface-color": {
+            "baseline": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/baseline/primaryColor"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/baseline/primaryColor"
+              }
+            },
+            "selected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/selected/primaryColor"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/selected/primaryColor"
+              }
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/expanded/primaryColor"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/expanded/primaryColor"
+              }
+            },
+            "blocked": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/blocked/primaryColor"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/blocked/primaryColor"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/replaced/primaryColor"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/replaced/primaryColor"
+              }
+            },
+            "reselected": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/reselected/primaryColor"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/reselected/primaryColor"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/submitted/primaryColor"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/cases/H1/states/submitted/primaryColor"
+              }
+            }
+          },
+          "content-wrapping": {
+            "baseline": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              }
+            },
+            "selected": {
+              "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              }
+            },
+            "blocked": {
+              "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+            },
+            "replaced": {
+              "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+            },
+            "reselected": {
+              "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              }
+            }
+          },
+          "content-overlap": {
+            "baseline": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/overlap"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/overlap"
+              }
+            },
+            "selected": {
+              "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+            },
+            "expanded": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/overlap"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/overlap"
+              }
+            },
+            "blocked": {
+              "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+            },
+            "replaced": {
+              "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+            },
+            "reselected": {
+              "not_applicable": "Selected scope here is target observation; full-page visual requirements remain in the brief but are selected only at the baseline, expanded and submitted full-content sweeps."
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/overlap"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/overlap"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "reference": {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "647ad7f2d3a9e9ba2d0afe084f67ad404a8114912145ed51ce57d5181defa791",
+      "document": {
+        "identity": "Makerspace workshop station booking",
+        "geometry": {
+          "ios": {
+            "primaryMinHeight": {
+              "value": 56,
+              "unit": "pt"
+            }
+          },
+          "android": {
+            "primaryMinHeight": {
+              "value": 56,
+              "unit": "dp"
+            }
+          }
+        },
+        "typography": {
+          "titleWeight": {
+            "value": 600,
+            "unit": "scalar"
+          }
+        },
+        "booleans": {
+          "yes": {
+            "value": true,
+            "unit": "bool"
+          },
+          "no": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "questions": {
+          "wrapping": {
+            "value": "Considering only text required to be visible by the current selection and disclosure rules, are all visible title, subtitle, notice, choice labels, visible item details/reasons, visible disclosure content, summary, action label and footer words readable in natural wrapped lines without truncation or ellipsis? Deliberately collapsed guidance and unselected incident dossiers are excluded. If required text is missing, answer unknown and identify it; missing text cannot count as correct wrapping. Visible word clipping or ellipsis answers false. Evaluate wrapping only; spacing collisions have their own atom. A true answer still requires complete exact-state coverage.",
+            "unit": "string"
+          },
+          "overlap": {
+            "value": "Across every captured part of this exact state, do text, choice indicators, status badges, disclosure content and primary action occupy separate areas without unintended overlap or occlusion? Evaluate overlap only; line breaking has its own atom.",
+            "unit": "string"
+          }
+        },
+        "visual": {
+          "wrapping": {
+            "value": true,
+            "unit": "bool"
+          },
+          "overlap": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "cases": {
+          "H1": {
+            "colors": {
+              "canvas": {
+                "value": "#FF14282D",
+                "unit": "argb"
+              },
+              "notice": {
+                "value": "#FF2D4245",
+                "unit": "argb"
+              },
+              "enabled": {
+                "value": "#FF8CC7C7",
+                "unit": "argb"
+              },
+              "disabled": {
+                "value": "#FF52666A",
+                "unit": "argb"
+              },
+              "ink": {
+                "value": "#FFE6F1EF",
+                "unit": "argb"
+              },
+              "surface": {
+                "value": "#FF20383D",
+                "unit": "argb"
+              },
+              "selected": {
+                "value": "#FF31575C",
+                "unit": "argb"
+              },
+              "onAction": {
+                "value": "#FF102D30",
+                "unit": "argb"
+              }
+            },
+            "states": {
+              "baseline": {
+                "summary": {
+                  "value": "No station selected",
+                  "unit": "string"
+                },
+                "selectedA": {
+                  "value": false,
+                  "unit": "bool"
+                },
+                "submitEnabled": {
+                  "value": false,
+                  "unit": "bool"
+                },
+                "disclosure": {
+                  "value": "Show safety briefing",
+                  "unit": "string"
+                },
+                "activationEvents": {
+                  "value": [],
+                  "unit": "events"
+                },
+                "updateEvents": {
+                  "value": [],
+                  "unit": "events"
+                },
+                "primaryColor": {
+                  "value": "#FF52666A",
+                  "unit": "argb"
+                }
+              },
+              "selected": {
+                "summary": {
+                  "value": "Draft station: 08:15 · Ceramic repair bench",
+                  "unit": "string"
+                },
+                "selectedA": {
+                  "value": true,
+                  "unit": "bool"
+                },
+                "submitEnabled": {
+                  "value": true,
+                  "unit": "bool"
+                },
+                "disclosure": {
+                  "value": "Show safety briefing",
+                  "unit": "string"
+                },
+                "activationEvents": {
+                  "value": [
+                    "workshop:select:a"
+                  ],
+                  "unit": "events"
+                },
+                "updateEvents": {
+                  "value": [],
+                  "unit": "events"
+                },
+                "primaryColor": {
+                  "value": "#FF8CC7C7",
+                  "unit": "argb"
+                }
+              },
+              "expanded": {
+                "summary": {
+                  "value": "Draft station: 08:15 · Ceramic repair bench",
+                  "unit": "string"
+                },
+                "selectedA": {
+                  "value": true,
+                  "unit": "bool"
+                },
+                "submitEnabled": {
+                  "value": true,
+                  "unit": "bool"
+                },
+                "disclosure": {
+                  "value": "Hide safety briefing",
+                  "unit": "string"
+                },
+                "activationEvents": {
+                  "value": [
+                    "workshop:details:open"
+                  ],
+                  "unit": "events"
+                },
+                "updateEvents": {
+                  "value": [],
+                  "unit": "events"
+                },
+                "primaryColor": {
+                  "value": "#FF8CC7C7",
+                  "unit": "argb"
+                }
+              },
+              "blocked": {
+                "summary": {
+                  "value": "Draft station: 08:15 · Ceramic repair bench",
+                  "unit": "string"
+                },
+                "selectedA": {
+                  "value": true,
+                  "unit": "bool"
+                },
+                "submitEnabled": {
+                  "value": true,
+                  "unit": "bool"
+                },
+                "disclosure": {
+                  "value": "Hide safety briefing",
+                  "unit": "string"
+                },
+                "activationEvents": {
+                  "value": [],
+                  "unit": "events"
+                },
+                "updateEvents": {
+                  "value": [],
+                  "unit": "events"
+                },
+                "primaryColor": {
+                  "value": "#FF8CC7C7",
+                  "unit": "argb"
+                }
+              },
+              "replaced": {
+                "summary": {
+                  "value": "No station selected",
+                  "unit": "string"
+                },
+                "selectedA": {
+                  "value": false,
+                  "unit": "bool"
+                },
+                "submitEnabled": {
+                  "value": false,
+                  "unit": "bool"
+                },
+                "disclosure": {
+                  "value": "Show safety briefing",
+                  "unit": "string"
+                },
+                "activationEvents": {
+                  "value": [],
+                  "unit": "events"
+                },
+                "updateEvents": {
+                  "value": [],
+                  "unit": "events"
+                },
+                "primaryColor": {
+                  "value": "#FF52666A",
+                  "unit": "argb"
+                }
+              },
+              "reselected": {
+                "summary": {
+                  "value": "Draft station: 10:45 · Optical instrument table",
+                  "unit": "string"
+                },
+                "selectedA": {
+                  "value": false,
+                  "unit": "bool"
+                },
+                "submitEnabled": {
+                  "value": true,
+                  "unit": "bool"
+                },
+                "disclosure": {
+                  "value": "Show safety briefing",
+                  "unit": "string"
+                },
+                "activationEvents": {
+                  "value": [
+                    "workshop:select:b"
+                  ],
+                  "unit": "events"
+                },
+                "updateEvents": {
+                  "value": [],
+                  "unit": "events"
+                },
+                "primaryColor": {
+                  "value": "#FF8CC7C7",
+                  "unit": "argb"
+                }
+              },
+              "submitted": {
+                "summary": {
+                  "value": "Draft station: 10:45 · Optical instrument table",
+                  "unit": "string"
+                },
+                "selectedA": {
+                  "value": false,
+                  "unit": "bool"
+                },
+                "submitEnabled": {
+                  "value": true,
+                  "unit": "bool"
+                },
+                "disclosure": {
+                  "value": "Show safety briefing",
+                  "unit": "string"
+                },
+                "activationEvents": {
+                  "value": [
+                    "workshop:reserve:b"
+                  ],
+                  "unit": "events"
+                },
+                "updateEvents": {
+                  "value": [],
+                  "unit": "events"
+                },
+                "primaryColor": {
+                  "value": "#FF8CC7C7",
+                  "unit": "argb"
+                }
+              }
+            }
+          }
+        }
+      },
+      "raw_utf8": "{\n  \"identity\": \"Makerspace workshop station booking\",\n  \"geometry\": {\n    \"ios\": {\n      \"primaryMinHeight\": {\n        \"value\": 56,\n        \"unit\": \"pt\"\n      }\n    },\n    \"android\": {\n      \"primaryMinHeight\": {\n        \"value\": 56,\n        \"unit\": \"dp\"\n      }\n    }\n  },\n  \"typography\": {\n    \"titleWeight\": {\n      \"value\": 600,\n      \"unit\": \"scalar\"\n    }\n  },\n  \"booleans\": {\n    \"yes\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    },\n    \"no\": {\n      \"value\": false,\n      \"unit\": \"bool\"\n    }\n  },\n  \"questions\": {\n    \"wrapping\": {\n      \"value\": \"Considering only text required to be visible by the current selection and disclosure rules, are all visible title, subtitle, notice, choice labels, visible item details/reasons, visible disclosure content, summary, action label and footer words readable in natural wrapped lines without truncation or ellipsis? Deliberately collapsed guidance and unselected incident dossiers are excluded. If required text is missing, answer unknown and identify it; missing text cannot count as correct wrapping. Visible word clipping or ellipsis answers false. Evaluate wrapping only; spacing collisions have their own atom. A true answer still requires complete exact-state coverage.\",\n      \"unit\": \"string\"\n    },\n    \"overlap\": {\n      \"value\": \"Across every captured part of this exact state, do text, choice indicators, status badges, disclosure content and primary action occupy separate areas without unintended overlap or occlusion? Evaluate overlap only; line breaking has its own atom.\",\n      \"unit\": \"string\"\n    }\n  },\n  \"visual\": {\n    \"wrapping\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    },\n    \"overlap\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    }\n  },\n  \"cases\": {\n    \"H1\": {\n      \"colors\": {\n        \"canvas\": {\n          \"value\": \"#FF14282D\",\n          \"unit\": \"argb\"\n        },\n        \"notice\": {\n          \"value\": \"#FF2D4245\",\n          \"unit\": \"argb\"\n        },\n        \"enabled\": {\n          \"value\": \"#FF8CC7C7\",\n          \"unit\": \"argb\"\n        },\n        \"disabled\": {\n          \"value\": \"#FF52666A\",\n          \"unit\": \"argb\"\n        },\n        \"ink\": {\n          \"value\": \"#FFE6F1EF\",\n          \"unit\": \"argb\"\n        },\n        \"surface\": {\n          \"value\": \"#FF20383D\",\n          \"unit\": \"argb\"\n        },\n        \"selected\": {\n          \"value\": \"#FF31575C\",\n          \"unit\": \"argb\"\n        },\n        \"onAction\": {\n          \"value\": \"#FF102D30\",\n          \"unit\": \"argb\"\n        }\n      },\n      \"states\": {\n        \"baseline\": {\n          \"summary\": {\n            \"value\": \"No station selected\",\n            \"unit\": \"string\"\n          },\n          \"selectedA\": {\n            \"value\": false,\n            \"unit\": \"bool\"\n          },\n          \"submitEnabled\": {\n            \"value\": false,\n            \"unit\": \"bool\"\n          },\n          \"disclosure\": {\n            \"value\": \"Show safety briefing\",\n            \"unit\": \"string\"\n          },\n          \"activationEvents\": {\n            \"value\": [],\n            \"unit\": \"events\"\n          },\n          \"updateEvents\": {\n            \"value\": [],\n            \"unit\": \"events\"\n          },\n          \"primaryColor\": {\n            \"value\": \"#FF52666A\",\n            \"unit\": \"argb\"\n          }\n        },\n        \"selected\": {\n          \"summary\": {\n            \"value\": \"Draft station: 08:15 · Ceramic repair bench\",\n            \"unit\": \"string\"\n          },\n          \"selectedA\": {\n            \"value\": true,\n            \"unit\": \"bool\"\n          },\n          \"submitEnabled\": {\n            \"value\": true,\n            \"unit\": \"bool\"\n          },\n          \"disclosure\": {\n            \"value\": \"Show safety briefing\",\n            \"unit\": \"string\"\n          },\n          \"activationEvents\": {\n            \"value\": [\n              \"workshop:select:a\"\n            ],\n            \"unit\": \"events\"\n          },\n          \"updateEvents\": {\n            \"value\": [],\n            \"unit\": \"events\"\n          },\n          \"primaryColor\": {\n            \"value\": \"#FF8CC7C7\",\n            \"unit\": \"argb\"\n          }\n        },\n        \"expanded\": {\n          \"summary\": {\n            \"value\": \"Draft station: 08:15 · Ceramic repair bench\",\n            \"unit\": \"string\"\n          },\n          \"selectedA\": {\n            \"value\": true,\n            \"unit\": \"bool\"\n          },\n          \"submitEnabled\": {\n            \"value\": true,\n            \"unit\": \"bool\"\n          },\n          \"disclosure\": {\n            \"value\": \"Hide safety briefing\",\n            \"unit\": \"string\"\n          },\n          \"activationEvents\": {\n            \"value\": [\n              \"workshop:details:open\"\n            ],\n            \"unit\": \"events\"\n          },\n          \"updateEvents\": {\n            \"value\": [],\n            \"unit\": \"events\"\n          },\n          \"primaryColor\": {\n            \"value\": \"#FF8CC7C7\",\n            \"unit\": \"argb\"\n          }\n        },\n        \"blocked\": {\n          \"summary\": {\n            \"value\": \"Draft station: 08:15 · Ceramic repair bench\",\n            \"unit\": \"string\"\n          },\n          \"selectedA\": {\n            \"value\": true,\n            \"unit\": \"bool\"\n          },\n          \"submitEnabled\": {\n            \"value\": true,\n            \"unit\": \"bool\"\n          },\n          \"disclosure\": {\n            \"value\": \"Hide safety briefing\",\n            \"unit\": \"string\"\n          },\n          \"activationEvents\": {\n            \"value\": [],\n            \"unit\": \"events\"\n          },\n          \"updateEvents\": {\n            \"value\": [],\n            \"unit\": \"events\"\n          },\n          \"primaryColor\": {\n            \"value\": \"#FF8CC7C7\",\n            \"unit\": \"argb\"\n          }\n        },\n        \"replaced\": {\n          \"summary\": {\n            \"value\": \"No station selected\",\n            \"unit\": \"string\"\n          },\n          \"selectedA\": {\n            \"value\": false,\n            \"unit\": \"bool\"\n          },\n          \"submitEnabled\": {\n            \"value\": false,\n            \"unit\": \"bool\"\n          },\n          \"disclosure\": {\n            \"value\": \"Show safety briefing\",\n            \"unit\": \"string\"\n          },\n          \"activationEvents\": {\n            \"value\": [],\n            \"unit\": \"events\"\n          },\n          \"updateEvents\": {\n            \"value\": [],\n            \"unit\": \"events\"\n          },\n          \"primaryColor\": {\n            \"value\": \"#FF52666A\",\n            \"unit\": \"argb\"\n          }\n        },\n        \"reselected\": {\n          \"summary\": {\n            \"value\": \"Draft station: 10:45 · Optical instrument table\",\n            \"unit\": \"string\"\n          },\n          \"selectedA\": {\n            \"value\": false,\n            \"unit\": \"bool\"\n          },\n          \"submitEnabled\": {\n            \"value\": true,\n            \"unit\": \"bool\"\n          },\n          \"disclosure\": {\n            \"value\": \"Show safety briefing\",\n            \"unit\": \"string\"\n          },\n          \"activationEvents\": {\n            \"value\": [\n              \"workshop:select:b\"\n            ],\n            \"unit\": \"events\"\n          },\n          \"updateEvents\": {\n            \"value\": [],\n            \"unit\": \"events\"\n          },\n          \"primaryColor\": {\n            \"value\": \"#FF8CC7C7\",\n            \"unit\": \"argb\"\n          }\n        },\n        \"submitted\": {\n          \"summary\": {\n            \"value\": \"Draft station: 10:45 · Optical instrument table\",\n            \"unit\": \"string\"\n          },\n          \"selectedA\": {\n            \"value\": false,\n            \"unit\": \"bool\"\n          },\n          \"submitEnabled\": {\n            \"value\": true,\n            \"unit\": \"bool\"\n          },\n          \"disclosure\": {\n            \"value\": \"Show safety briefing\",\n            \"unit\": \"string\"\n          },\n          \"activationEvents\": {\n            \"value\": [\n              \"workshop:reserve:b\"\n            ],\n            \"unit\": \"events\"\n          },\n          \"updateEvents\": {\n            \"value\": [],\n            \"unit\": \"events\"\n          },\n          \"primaryColor\": {\n            \"value\": \"#FF8CC7C7\",\n            \"unit\": \"argb\"\n          }\n        }\n      }\n    }\n  }\n}\n"
+    }
+  },
+  "contract_sha256": "41202f01ed9fc6521f7d849a0ee16449d528a29348973ee41bc816182681a5c9",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

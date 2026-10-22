@@ -4,7 +4,30 @@
 
 这个仓库包含可加载的 **Skill**、确定性的 **证据 runner**，以及两个真实开源工程的接入代码和实跑记录。模型由宿主 coding agent 提供；runner 不内置 LLM，也不假装提供通用完整的原生样式树。
 
-## 本轮 v7：三任务盲测完成，仍未证明质量优势
+## 本轮 v8：自动样式证据增加，未证明缺陷簇、修复或成本优势
+
+把人工式发现与独立契约的绑定、预期/单位生成、原子配色测量做成可执行工具；修复共享评估器的环境适配、数值事实与责任归属处理。工具先用无关原生组件和负例验证并冻结，再独立设计 Workshop Slot Planner、River Sensor Triage Board、Bicycle Service Intake 三个新增复杂 UI。六份双端实现、108 条计划原生采集；未注入产品缺陷，完整评分与告警双评封存后正式揭盲。两组都已使用 Skill。
+
+| 原始主结果，三任务汇总 | v7 | v8 |
+| --- | ---: | ---: |
+| 检出产品原子表现† | 17/20 | 16/16 |
+| 检出 / 修复确认缺陷簇 | 3/3；3/3 | 4/4；4/4 |
+| 原始真实 / 确认误报 / 未裁定告警 | 17 / 0 / 1 | 16 / 0 / 10 |
+| 确认产品行修复 | 20/20 | 16/16 |
+| 最终公开 P / F / U / N/A | 922 / 0 / 50 / 204 | 922 / 0 / 50 / 204 |
+| 实现→自身最终原始证据及自动检查端点，均值 | 175.13 分钟 | 175.18 分钟 |
+
+†旧组漏记的三行是已发现裁切共因的另外三个重叠表现，不能解释成新版额外找到三个独立 bug。两组初始缺陷分母不同；旧组仅一个任务有计分缺陷，新组有三个。最终公开未评估均为 **5.14%**；含保留场景为 **5.14% / 5.01%**。这不支持整体质量或提速的因果结论。
+
+**同源码、同原始证据的自动检查：**24 组配置中 U **732→234**，新增 **498** 行可判定证据（484 P、14 F），无已知结果丢失或冲突；额外 SDK 采集为 **0**。这是自动渲染配色证据的明确收益，不能替代真实开发效果。消除重复配对采集属于共享实验基础设施。
+
+不能把零确认误报写成零实际误报。未知告警的保守误报范围是 **0–5.56% / 0–38.46%**：其中旧组1条、新组7条是原始证据支持、但刻意未纳入计分契约的同类网格发现；另3条新组换行发现仍有判定冲突。经典 FPR 不可得。新绑定能阻止预期/单位漂移，但没有补齐契约外需求，也没有保证 AI 看图判断正确。
+
+保留9次原生非零退出、全部失败与未知。发现共享公共采集路线缺少自身路线的动作后补充观测，未在本轮改路线或补采；同图换行判断的跨阶段不稳定也单列。115项工具测试、9项指标控制和完整证据复算纳入 CI；**CI 通过不代表组件验收全部通过**。
+
+[完整报告](validation/atomic-forward/RESULTS.md)、[指标与完整成本](validation/atomic-forward/TABLES.md)、[通用工具实现](validation/atomic-forward/ENGINEERING.md)、[绑定协议](native-ui-agent/references/atomic-review.md)、[评审分歧](validation/atomic-forward/DISAGREEMENTS.md)、[失败记录](validation/atomic-forward/FAILURES.md)、[原图](validation/atomic-forward/GALLERY.md)、[复算](validation/atomic-forward/REPRODUCE.md)。iOS 为 Simulator/XCUITest，Android 为 Paparazzi/Compose JVM 语义动作；本轮不证明任意无埋点旧 App、完整业务或 SwiftUI 计算样式能力。
+
+## 上一轮 v7：三任务盲测完成，仍未证明质量优势
 
 先修复原生几何精度链并加入可执行全员封存屏障，再独立固定三个全新复杂 UI：装备组合、广播混音、馆藏状况审核。六份不同双端实现、132 次计划原生采集；未注入产品缺陷，全部阶段评分封存后才揭盲。两组均已有 v6 契约与观测能力。
 
@@ -155,7 +178,11 @@
 
 这一轮新增功能试验本身没有无 Skill 对照组，不能单独据此声称提升了某个百分比的 PR 质量。首次快速视觉检查曾漏过轨道色，详细设计核对才发现；原始通过、后续失败及修正记录均保留。字号、颜色、间距能否精确观测取决于平台和采样对象。
 
-## 通用观测工具 v3 / v4 / v5 / v6 / v7
+## 通用观测工具 v3 / v4 / v5 / v6 / v7 / v8
+
+v8 增加[契约绑定的视觉观测](native-ui-agent/references/atomic-review.md)：独立设计先固定颜色、画布、换行、遮挡等原子规则及责任层；工具生成发现 ID、预期、单位和来源，模型只提交原图中的实际观察。配色由原始 PNG 与原生节点坐标自动测量，模型不能填写测得颜色或改预期。缺少原生映射、状态不一致、非平色或证据冲突仍为未评估。
+
+共享评估器校验真实运行环境，数值事实由工具计算，定性结论与产品责任需两个独立上下文一致；格式拒绝与真实产品误报分别统计。它没有增加通用 SwiftUI 计算样式接口。[工程实现与限制](validation/atomic-forward/ENGINEERING.md)、[中性完整示例](native-ui-agent/assets/atomic-example/)。
 
 新版把 AX 容器与实际控件叶节点判定、长内容反馈定位、输入与回调绑定、逐状态滚动覆盖，以及类型化断言做成可执行工具。歧义、覆盖缺口、无运行时依据的属性保留为未评估；源码声明不能替代实际生效的样式。实测通用控件包括 Button 和 Switch，Android 语义点击不等于操作系统物理触摸。
 
@@ -200,6 +227,22 @@ git -C native-ui-agent-repo sparse-checkout set native-ui-agent
 > 使用 native-ui-agent，在现有邮件卡片中增加附件摘要。先固定设计参考和验收，再复用工程主题、数据和组件生成测试宿主，渲染普通、长描述、深色和窄屏状态；按图与原生测量修正，提供页面复验及证据。
 
 Skill 目前给出 SwiftUI/UIKit、Compose/Views 的接入指导；仓库实跑覆盖的是 **SwiftUI 和 Compose**。它不自动适配任意旧项目，也不替代业务数据、导航和后端契约测试。
+
+## 契约绑定的样式验收
+
+精确样式验收走 `design_contract.py → 原生 observer → review_contract.py`。先由独立设计方批准契约、原子采样策略及其摘要，再生成计划并采集；开发实现不能自行更新批准摘要。人工和 AI 使用同一个观察接口：从工具目录选择 `review_id`，只填写实际布尔观察、理由及原始帧索引。预期、单位、颜色实际值和结论均由工具生成。
+
+```sh
+python3 native-ui-agent/scripts/review_contract.py catalog \
+  --plan generated/plan.json --design-lock approved-lock.json --design-sha256 LOCK_SHA \
+  --policy policy.json --policy-sha256 POLICY_SHA --platform ios --output catalog.json
+python3 native-ui-agent/scripts/review_contract.py review \
+  --plan generated/plan.json --design-lock approved-lock.json --design-sha256 LOCK_SHA \
+  --policy policy.json --policy-sha256 POLICY_SHA --platform ios \
+  --observation capture/observation.json --submission observations.json --output new-review
+```
+
+Android 使用同样接口，将平台改为 `android`。独立验收再由 `acceptance.py` 合并两份分别产生的判断；意见冲突保留 U，不能修改数值事实。完整输入与命令见[原子验收协议](native-ui-agent/references/atomic-review.md)和[契约生成协议](native-ui-agent/references/design-contract.md)。以下通用 Runner 是基础图片循环入口，其自由格式视觉报告不能替代上述契约绑定。
 
 ## Runner
 
@@ -264,9 +307,23 @@ python3 validation/tool-forward/build_summary.py --check
 python3 validation/tool-forward/build_tables.py --check
 python3 validation/tool-forward/build_failure_index.py
 python3 validation/tool-forward/verify_artifacts.py
+python3 -B validation/atomic-forward/test_metrics.py
+python3 -B validation/atomic-forward/verify_study.py
+python3 -B validation/atomic-forward/build_summary.py --check
+python3 -B validation/atomic-forward/costs.py --check
+python3 -B validation/atomic-forward/grading_costs.py --check
+python3 -B validation/atomic-forward/observation_costs.py --check
+python3 -B validation/atomic-forward/action_scope.py --check
+python3 -B validation/atomic-forward/build_tables.py --check
+python3 -B validation/atomic-forward/build_gallery.py --check
+python3 -B validation/atomic-forward/failure_index.py --check
+python3 -B validation/atomic-forward/disagreements.py --check
+python3 -B validation/atomic-forward/artifacts.py
 ```
 
-前一轮不含本机缓存的异地 Git 归档核验见[历史核验记录](validation/fresh-blind/verification.json)。当前 55 项单元测试与全部 15 项验证命令已在不含 Git 元数据及本机缓存的异地归档中通过，见[本轮核验记录](validation/tool-forward-verification.json)。
+当前工具冻结前通过 115 项单元测试，v8 指标另有 9 项控制。[v8 复算入口](validation/atomic-forward/REPRODUCE.md)说明完整封存、双评审与原始证据的离线核验。旧轮次的根目录依赖按原字节归档；核验旧 v7 工具/发布清单时使用 `python3 -B validation/publication_history.py multitask-v7 verify_tools.py` 和同入口的 `artifacts.py`，避免拿新工具覆盖旧分数。
+
+历史不含本机缓存的异地 Git 归档核验见[旧记录](validation/fresh-blind/verification.json)；tool-forward 轮次当时的 55 项单元测试与 15 项验证见[该轮记录](validation/tool-forward-verification.json)。
 
 第一条验证 runner、覆盖账本和观测器的协议与失效行为；后续命令跨机器审计归档图片、报告、原生测试数、冻结哈希、盲测封存与统计运算，不运行原生 SDK 或模型。GitHub CI 执行这些检查，不声称重新运行双端模拟器。
 
@@ -278,6 +335,11 @@ validation/feature-development/  新增 UI：冻结设计、功能补丁、宿�
 validation/blind-comparison/     首轮有/无 Skill 盲测及冻结v1
 validation/fresh-blind/          全新预约UI：无Skill/v1/v2、预注册与原生证据
 validation/tool-forward/         全新退款UI：旧v2/新v3、配对采集与完整评分
+validation/dispatch-forward/     成功派发前提、采集优化与旧v3/新v4
+validation/state-forward/        逐状态覆盖与旧v4/新v5
+validation/contract-forward/     独立设计契约与旧v5/新v6
+validation/multitask-forward/    精度边界、三任务旧v6/新v7
+validation/atomic-forward/       绑定发现、原子像素断言与三任务旧v7/新v8
 validation/tool-capabilities/    通用叶节点、长内容与逐状态覆盖原生验证
 validation/observer-probes/      独立通用观测能力探针及原始失败
 validation/native-ui-pilot/       历史受控回归试验、宿主接入记录及上游许可

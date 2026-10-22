@@ -1,0 +1,27 @@
+--- original/WorkshopSlotPlanner.swift
++++ repair/WorkshopSlotPlanner.swift
+@@ -143,9 +143,10 @@
+         .background(palette.canvas)
+         .cornerRadius(12)
+         .background(GeometryReader { proxy in
+-            Color.clear.preference(key: WorkshopWidthPreference.self, value: proxy.size.width)
++            Color.clear
++                .onAppear { componentWidth = proxy.size.width }
++                .onChange(of: proxy.size.width) { componentWidth = $0 }
+         })
+-        .onPreferenceChange(WorkshopWidthPreference.self) { componentWidth = $0 }
+         .accessibilityElement(children: .contain)
+         .accessibilityIdentifier("workshop.canvas")
+         .onChange(of: model.revision) { _ in synchronizeRevision() }
+@@ -212,11 +213,6 @@
+             stateRevision = model.revision
+         }
+     }
+-}
+-
+-private struct WorkshopWidthPreference: PreferenceKey {
+-    static var defaultValue: CGFloat = 0
+-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
+ }
+ 
+ private struct WorkshopPlainButtonStyle: ButtonStyle {

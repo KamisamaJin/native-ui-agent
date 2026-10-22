@@ -1,0 +1,227 @@
+{
+  "version": 1,
+  "phase": "one_authorized_repair",
+  "status": "source_repaired_compile_only_passed_pending_final_acquisition",
+  "startedAtUnix": 1792640355.4776409,
+  "startedAtUTC": "2026-10-22T03:39:15.477641+00:00",
+  "finishedAtUnix": 1792640500.324895,
+  "finishedAtUTC": "2026-10-22T03:41:40.324895+00:00",
+  "elapsedSeconds": 144.84725403785706,
+  "wallBudgetSeconds": 900,
+  "changed_files": [
+    "alerttoast/Sources/AlertToast/WorkshopSlotPlanner.swift"
+  ],
+  "original_findings_addressed": [
+    {
+      "case": "P1",
+      "platform": "ios",
+      "requirement_id": "responsive-grid",
+      "aspect": "grid_column_count",
+      "expected": 2,
+      "unit": "columns",
+      "affected_states": [
+        "baseline",
+        "selected",
+        "expanded",
+        "blocked",
+        "replaced",
+        "reselected",
+        "submitted"
+      ],
+      "original_review": {
+        "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/submissions/unit-99c640/original-review/review.json",
+        "sha256": "2181407d7d559a74e06b5914319f4e20385c0bacc018133e4d81612271a10513"
+      },
+      "original_observation": "Wide ordinary-text P1 rendered full-inner-width cards vertically in all seven reviewed states; expected two columns.",
+      "source_change": "Replace the background GeometryReader preference propagation with direct onAppear and onChange updates from proxy.size.width; remove the unused preference key.",
+      "cause_hypothesis": "Original geometry-backed width state failed to select the wide branch. The original captures establish the one-column result, not the internal preference/state cause. Direct geometry lifecycle updates remove that propagation dependency while retaining the 320pt and sizeCategory<=large conditions.",
+      "repair_scope": "Only width measurement delivery changed; eager grid, thresholds, theme, typography, semantics, model state and callbacks retain their original implementation.",
+      "verification": "The allowed compile-only helper rebuilt the production SwiftUI package and public bridge successfully. No final runtime result is claimed."
+    }
+  ],
+  "unresolved_and_why": [
+    {
+      "requirement_id": "responsive-grid",
+      "status": "pending_final_acquisition",
+      "reason": "One permitted repair is implemented and compiles; no post-repair capture or second feedback cycle is authorized in this phase."
+    },
+    {
+      "requirement_id": "title-native-weight",
+      "platform": "ios",
+      "status": "unassessed",
+      "reason": "Public accessibility does not expose computed SwiftUI native weight. Original fourteen U cells remain original; this is not a supported product repair."
+    },
+    {
+      "requirement_id": "disabled-activation-callback",
+      "status": "unassessed",
+      "reason": "Original disabled actions were blocked with no successful dispatch. No callback absence pass can be inferred; native disabled semantics were separately observed."
+    }
+  ],
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/compile_only.py",
+        "--workspace",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640",
+        "--platform",
+        "ios",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/design-v2/T1/public/Bridge.swift",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/cache/compile-ios-repair-01"
+      ],
+      "startedAtUnix": 1792640417.042968,
+      "finishedAtUnix": 1792640426.524874,
+      "exitCode": 0,
+      "output": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/cache/compile-ios-repair-01",
+      "wrapper_log": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/agent-output/repair/compile-ios-01-wrapper.log"
+    }
+  ],
+  "logs": [
+    {
+      "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/agent-output/repair/compile-ios-01-wrapper.log",
+      "sha256": "7ace16ed3f4d41789416a243f24a799cb4b47dfd576f96f2ddcfe7db2f75b4c9"
+    },
+    {
+      "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/agent-output/repair/compile-ios-01-build.log",
+      "sha256": "cbd35cb4c888ca526fbb58d7a35588c108cd2e0e82f9b1467d4226ad88e32aca"
+    },
+    {
+      "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/agent-output/repair/compile-ios-01-record.json",
+      "sha256": "5080c382df91e234876526d05be37aea5de3b3a3e9b9b85bd81c1b78dfaff25a"
+    },
+    {
+      "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/agent-output/repair/compile-ios-01-command.json",
+      "sha256": "9a14458123a9639098e743ff927b42a48abe204cf8eec504cdfa84685881785b"
+    },
+    {
+      "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/agent-output/repair/edit-record.json",
+      "sha256": "ff433faf69b8175a6fd0bd7eae03e328b24fbe7dfefb832186aaf43d6e1ffdce"
+    },
+    {
+      "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/agent-output/repair/production-change.diff",
+      "sha256": "042586ded79d97e12e448f02cb40bb73185f5cf751dc9895a735853430167c46"
+    }
+  ],
+  "compile_only": {
+    "kind": "common_compile_only_no_render",
+    "argv": [
+      "xcodebuild",
+      "build-for-testing",
+      "-project",
+      "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/cache/compile-ios-repair-01/project/Observer.xcodeproj",
+      "-scheme",
+      "Observer",
+      "-configuration",
+      "Debug",
+      "-sdk",
+      "iphonesimulator",
+      "-destination",
+      "generic/platform=iOS Simulator",
+      "-derivedDataPath",
+      "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/cache/compile-ios-repair-01/DerivedData",
+      "CODE_SIGNING_ALLOWED=NO",
+      "ARCHS=arm64",
+      "ONLY_ACTIVE_ARCH=YES"
+    ],
+    "cwd": null,
+    "startedAtUnix": 1792640417.0996969,
+    "finishedAtUnix": 1792640426.519159,
+    "exitCode": 0,
+    "bridgeSHA256": "64fc366b8d19e7c7fe617045d6f40d823fd3b251dc1c73ada6a7977be3a4808a"
+  },
+  "source_records": [
+    {
+      "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/alerttoast/Sources/AlertToast/WorkshopSlotPlanner.swift",
+      "original_sha256": "c8fd77a730aaa328012d966656c1480eaf7069ec64032d2d7d07c1da27dbcf60",
+      "final_sha256": "4cecbf23e6865b5f6c923e90ce7a95754a1f115875847a997f0a3331da197833",
+      "changed": true,
+      "immutable_copy": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/agent-output/repair/final-sources/alerttoast/Sources/AlertToast/WorkshopSlotPlanner.swift",
+      "immutable_copy_sha256": "4cecbf23e6865b5f6c923e90ce7a95754a1f115875847a997f0a3331da197833"
+    },
+    {
+      "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/reply/Reply/app/src/main/java/com/example/reply/ui/components/WorkshopSlotPlanner.kt",
+      "original_sha256": "890a79d74448216b98db2a77716953e69d966c1eec3a9f2c237e02ba3ce3870a",
+      "final_sha256": "890a79d74448216b98db2a77716953e69d966c1eec3a9f2c237e02ba3ce3870a",
+      "changed": false,
+      "immutable_copy": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-99c640/agent-output/repair/final-sources/reply/Reply/app/src/main/java/com/example/reply/ui/components/WorkshopSlotPlanner.kt",
+      "immutable_copy_sha256": "890a79d74448216b98db2a77716953e69d966c1eec3a9f2c237e02ba3ce3870a"
+    }
+  ],
+  "protected_original_plan_action_script_checks": {
+    "agent-output/plans/P1/android/actions.json": {
+      "original_sha256": "8f820b4396601df827a66cf24f9e64368c55b752258e8a8b366066d1e44da01b",
+      "actual_sha256": "8f820b4396601df827a66cf24f9e64368c55b752258e8a8b366066d1e44da01b",
+      "unchanged": true
+    },
+    "agent-output/plans/P1/android/plan.json": {
+      "original_sha256": "1560fa2422c0cca1518d7e710057f10cb965a0996b594e3bcac7a6a9ba24ccc3",
+      "actual_sha256": "1560fa2422c0cca1518d7e710057f10cb965a0996b594e3bcac7a6a9ba24ccc3",
+      "unchanged": true
+    },
+    "agent-output/plans/P1/ios/actions.json": {
+      "original_sha256": "8f820b4396601df827a66cf24f9e64368c55b752258e8a8b366066d1e44da01b",
+      "actual_sha256": "8f820b4396601df827a66cf24f9e64368c55b752258e8a8b366066d1e44da01b",
+      "unchanged": true
+    },
+    "agent-output/plans/P1/ios/plan.json": {
+      "original_sha256": "6883152178852edb0265c886c03eeeebc68f766aec53725aa6f20af2814ddbde",
+      "actual_sha256": "6883152178852edb0265c886c03eeeebc68f766aec53725aa6f20af2814ddbde",
+      "unchanged": true
+    },
+    "agent-output/plans/P2/android/actions.json": {
+      "original_sha256": "8f820b4396601df827a66cf24f9e64368c55b752258e8a8b366066d1e44da01b",
+      "actual_sha256": "8f820b4396601df827a66cf24f9e64368c55b752258e8a8b366066d1e44da01b",
+      "unchanged": true
+    },
+    "agent-output/plans/P2/android/plan.json": {
+      "original_sha256": "36c097e14d9228515dc5f8a065d3431d1d66d5af19fcf33a1ea877d0c1d1400b",
+      "actual_sha256": "36c097e14d9228515dc5f8a065d3431d1d66d5af19fcf33a1ea877d0c1d1400b",
+      "unchanged": true
+    },
+    "agent-output/plans/P2/ios/actions.json": {
+      "original_sha256": "8f820b4396601df827a66cf24f9e64368c55b752258e8a8b366066d1e44da01b",
+      "actual_sha256": "8f820b4396601df827a66cf24f9e64368c55b752258e8a8b366066d1e44da01b",
+      "unchanged": true
+    },
+    "agent-output/plans/P2/ios/plan.json": {
+      "original_sha256": "129c884cc3d4a3ec87ea45ab0ed512f4ae753c80db0f1e5fba07acf6e47d6814",
+      "actual_sha256": "129c884cc3d4a3ec87ea45ab0ed512f4ae753c80db0f1e5fba07acf6e47d6814",
+      "unchanged": true
+    },
+    "agent-output/scripts/finalize_initial.py": {
+      "original_sha256": "85df5489f00e7a93fe45c362b826806a1199ebd3ccf1baaa619259f93bd240b0",
+      "actual_sha256": "85df5489f00e7a93fe45c362b826806a1199ebd3ccf1baaa619259f93bd240b0",
+      "unchanged": true
+    },
+    "agent-output/scripts/generate_plans.py": {
+      "original_sha256": "a79714d77a32252592f282631b48dc56d8c039ba18a204ad6f7f69d772e8547d",
+      "actual_sha256": "a79714d77a32252592f282631b48dc56d8c039ba18a204ad6f7f69d772e8547d",
+      "unchanged": true
+    },
+    "agent-output/scripts/run_compile.py": {
+      "original_sha256": "e083a8f95a463cbf079cf97dfd39dc22e00e37e3384b4ce56e3381d8105470ec",
+      "actual_sha256": "e083a8f95a463cbf079cf97dfd39dc22e00e37e3384b4ce56e3381d8105470ec",
+      "unchanged": true
+    }
+  },
+  "original_compiler_unchanged": true,
+  "public_bridge_sha256": "64fc366b8d19e7c7fe617045d6f40d823fd3b251dc1c73ada6a7977be3a4808a",
+  "public_bridge_matches_initial_build": true,
+  "command_notes": [
+    "First action read the assigned repair specification; phase start recorded immediately afterward using Python UTC/Unix time.",
+    "Read current production SwiftUI source and own immutable original review only. Original design requirements and assigned frozen Skill were already read in this task.",
+    "Applied one scripted exact replacement in the production Swift file; edit-record.json retains before/after hashes and production-change.diff retains the complete patch.",
+    "Ran only the specified compile-only helper with a fresh own cache output; no failed compile attempts occurred.",
+    "Read-only comparison against own sealed D0 source and original plans confirmed the intended source delta and unchanged original plans/scripts."
+  ],
+  "limits": [
+    "No SDK rendering, observer execution, preview, app launch, screenshot, new feedback or second repair cycle was performed.",
+    "Android production source is byte-identical to initial D0; no Android repair or repeat compile was needed.",
+    "No original plan/action/expected value, tolerance, design, bridge, tool, host, build setting or framework version was edited.",
+    "No private/hidden/evaluation/common corpus, other candidate or other Skill version was inspected; no agents, commits or pushes.",
+    "Stop after this immutable repair record; root will seal all six final sources before final acquisition. No further repair is authorized."
+  ],
+  "errors": []
+}

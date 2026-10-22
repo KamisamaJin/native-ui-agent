@@ -1,0 +1,88 @@
+diff --git a/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-179c84/agent-output/repair/source-before/alerttoast/Sources/AlertToast/BicycleServiceIntake.swift b/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-179c84/alerttoast/Sources/AlertToast/BicycleServiceIntake.swift
+index 1321282..8a93913 100644
+--- a/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-179c84/agent-output/repair/source-before/alerttoast/Sources/AlertToast/BicycleServiceIntake.swift
++++ b/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-179c84/alerttoast/Sources/AlertToast/BicycleServiceIntake.swift
+@@ -51,6 +51,30 @@ public struct BicycleServiceIntake: View {
+     private let onToggle: (String, Bool) -> Void
+     private let onDetailsChange: (Bool) -> Void
+     private let onSubmit: ([String]) -> Void
++
++    public init(model: BicycleServiceIntakeModel,
++                onToggle: @escaping (String, Bool) -> Void,
++                onDetailsChange: @escaping (Bool) -> Void,
++                onSubmit: @escaping ([String]) -> Void) {
++        self.model = model
++        self.onToggle = onToggle
++        self.onDetailsChange = onDetailsChange
++        self.onSubmit = onSubmit
++    }
++
++    public var body: some View {
++        BicycleServiceIntakeContent(model: model, onToggle: onToggle,
++                                    onDetailsChange: onDetailsChange, onSubmit: onSubmit)
++            .id(model.revision)
++    }
++}
++
++@available(iOS 14, macOS 11, *)
++private struct BicycleServiceIntakeContent: View {
++    public let model: BicycleServiceIntakeModel
++    private let onToggle: (String, Bool) -> Void
++    private let onDetailsChange: (Bool) -> Void
++    private let onSubmit: ([String]) -> Void
+     @Environment(\.colorScheme) private var colorScheme
+     @ScaledMetric(relativeTo: .title2) private var titleSize: CGFloat = 22
+     @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 16
+@@ -118,7 +142,7 @@ public struct BicycleServiceIntake: View {
+                         .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                         .contentShape(Rectangle())
+                 }
+-                .buttonStyle(PlainButtonStyle())
++                .buttonStyle(BicycleButtonStyle())
+                 .accessibilityLabel(detailsExpanded ? "Hide handover notes" : "Show handover notes")
+                 .accessibilityIdentifier("bicycle.disclosure")
+                 if detailsExpanded {
+@@ -142,7 +166,7 @@ public struct BicycleServiceIntake: View {
+                         .fill(chosenServices.isEmpty ? palette.disabled : palette.enabled))
+                     .contentShape(RoundedRectangle(cornerRadius: 10))
+             }
+-            .buttonStyle(PlainButtonStyle())
++            .buttonStyle(BicycleButtonStyle())
+             .disabled(chosenServices.isEmpty)
+             .accessibilityLabel("Send service draft")
+             .accessibilityIdentifier("bicycle.submit")
+@@ -156,11 +180,6 @@ public struct BicycleServiceIntake: View {
+         .foregroundColor(palette.ink)
+         .accessibilityElement(children: .contain)
+         .accessibilityIdentifier("bicycle.canvas")
+-        .onChange(of: model.revision) { _ in
+-            let availableIDs = Set(model.services.filter { $0.available }.map { $0.id })
+-            selectedIDs = Set(model.initialSelectedIDs).intersection(availableIDs)
+-            detailsExpanded = model.initialDetailsExpanded
+-        }
+     }
+ 
+     private func copy(_ value: String, size: CGFloat, weight: Font.Weight = .regular) -> some View {
+@@ -210,7 +229,7 @@ public struct BicycleServiceIntake: View {
+                 .fill(selected ? palette.selected : palette.surface))
+             .contentShape(RoundedRectangle(cornerRadius: 10))
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(BicycleButtonStyle())
+         .disabled(!service.available)
+         .accessibilityLabel(([service.label]
+             + (service.available ? [] : ["Unavailable", service.unavailableReason])
+@@ -220,6 +239,13 @@ public struct BicycleServiceIntake: View {
+     }
+ }
+ 
++@available(iOS 14, macOS 11, *)
++private struct BicycleButtonStyle: ButtonStyle {
++    func makeBody(configuration: Configuration) -> some View {
++        configuration.label
++    }
++}
++
+ private struct BicyclePalette {
+     let dark: Bool
+     private func color(_ light: UInt32, _ darkValue: UInt32) -> Color {

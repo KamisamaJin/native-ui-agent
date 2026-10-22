@@ -1,0 +1,172 @@
+{
+  "claims": [
+    {
+      "claim_id": "source-b-0009",
+      "status": "TP",
+      "supported_rows": [
+        "P1/ios/baseline/primary-surface-color"
+      ],
+      "reason": "Direct original PNG inspection and independent sampling of the approved semantic side strip give #FFCFCDC5 with dominant support 1.000000 and exact original expected support 0.000000. The original native submit frame is fully visible and the strip contains solid component fill. The untouched expected/unit and original state identify this manifestation; common D0 confirms this exact row as product.",
+      "false_alarm_supported": false
+    },
+    {
+      "claim_id": "source-b-0171",
+      "status": "TP",
+      "supported_rows": [
+        "P2/ios/baseline/primary-surface-color"
+      ],
+      "reason": "Direct original PNG inspection and independent sampling of the approved semantic side strip give #FF33474C with dominant support 1.000000 and exact original expected support 0.000000. The original native submit frame is fully visible and the strip contains solid component fill. The untouched expected/unit and original state identify this manifestation; common D0 confirms this exact row as product.",
+      "false_alarm_supported": false
+    },
+    {
+      "claim_id": "source-b-0336",
+      "status": "TP",
+      "supported_rows": [
+        "P2/android/baseline/content-wrapping"
+      ],
+      "reason": "The original baseline PNG visibly clips the leading glyphs of the wrapped disclosure label 'Show handover notes', although the disclosure lies inside the viewport. The original finding explicitly describes this glyph loss; native ellipsized=false does not negate visible clipping. The component TextButton uses zero content padding at P2 enlarged text. Common D0 confirms this exact original_scope wrapping row as product. No overlap row or other state is credited from this sentence.",
+      "false_alarm_supported": false
+    },
+    {
+      "claim_id": "source-b-0337",
+      "status": "TP",
+      "supported_rows": [
+        "P2/android/baseline/content-overlap"
+      ],
+      "reason": "The original baseline PNG visibly shows the disclosure's leading glyphs occluded by its own rounded control boundary inside the viewport. The original finding explicitly identifies local occlusion, which is within the approved overlap question, and distinguishes it from separation of other controls. Common D0 confirms this exact original_scope row as product; sharing a cause with wrapping is not additional state credit.",
+      "false_alarm_supported": false
+    },
+    {
+      "claim_id": "source-b-0338",
+      "status": "TP",
+      "supported_rows": [
+        "P2/android/expanded/content-wrapping"
+      ],
+      "reason": "The original expanded PNG visibly clips the leading glyphs of the wrapped disclosure label 'Hide handover notes', although the disclosure lies inside the viewport. The original finding explicitly describes this glyph loss; native ellipsized=false does not negate visible clipping. The component TextButton uses zero content padding at P2 enlarged text. Common D0 confirms this exact original_scope wrapping row as product. No overlap row or other state is credited from this sentence.",
+      "false_alarm_supported": false
+    },
+    {
+      "claim_id": "source-b-0339",
+      "status": "TP",
+      "supported_rows": [
+        "P2/android/expanded/content-overlap"
+      ],
+      "reason": "The original expanded PNG visibly shows the disclosure's leading glyphs occluded by its own rounded control boundary inside the viewport. The original finding explicitly identifies local occlusion, which is within the approved overlap question, and distinguishes it from separation of other controls. Common D0 confirms this exact original_scope row as product; sharing a cause with wrapping is not additional state credit.",
+      "false_alarm_supported": false
+    },
+    {
+      "claim_id": "source-b-0340",
+      "status": "TP",
+      "supported_rows": [
+        "P2/android/submitted/content-wrapping"
+      ],
+      "reason": "The original submitted PNG visibly clips the leading glyphs of the wrapped disclosure label 'Show handover notes', although the disclosure lies inside the viewport. The original finding explicitly describes this glyph loss; native ellipsized=false does not negate visible clipping. The component TextButton uses zero content padding at P2 enlarged text. Common D0 confirms this exact original_scope wrapping row as product. No overlap row or other state is credited from this sentence.",
+      "false_alarm_supported": false
+    },
+    {
+      "claim_id": "source-b-0341",
+      "status": "TP",
+      "supported_rows": [
+        "P2/android/submitted/content-overlap"
+      ],
+      "reason": "The original submitted PNG visibly shows the disclosure's leading glyphs occluded by its own rounded control boundary inside the viewport. The original finding explicitly identifies local occlusion, which is within the approved overlap question, and distinguishes it from separation of other controls. Common D0 confirms this exact original_scope row as product; sharing a cause with wrapping is not additional state credit.",
+      "false_alarm_supported": false
+    }
+  ],
+  "clusters": [
+    {
+      "id": "ios-disabled-owned-fill",
+      "rows": [
+        "P1/ios/baseline/primary-surface-color",
+        "P2/ios/baseline/primary-surface-color"
+      ],
+      "reason": "Both public themes use the same production SwiftUI submit label background plus PlainButtonStyle and native disabled modifier. Fully visible baseline originals show the same whole-control dimming and stable wrong solid fill while native enablement is correctly false. These are theme manifestations of one disabled rendering treatment. The exact platform compositing mechanism is inferred; direct mismatches and same implementation path establish membership.",
+      "certainty": "confirmed"
+    },
+    {
+      "id": "android-disclosure-rounded-text-clip",
+      "rows": [
+        "P2/android/baseline/content-overlap",
+        "P2/android/baseline/content-wrapping",
+        "P2/android/expanded/content-overlap",
+        "P2/android/expanded/content-wrapping",
+        "P2/android/submitted/content-overlap",
+        "P2/android/submitted/content-wrapping"
+      ],
+      "reason": "Across baseline, expanded and submitted P2 originals, the same Show/Hide native disclosure has matching curved cuts in leading glyphs away from host viewport edges. The production Compose TextButton uses zero content padding and full-width copy under the same rounded clipping treatment. Wrapping (lost glyphs) and overlap (local occlusion) are two manifestations of this one component source cause, repeated in three states.",
+      "certainty": "confirmed"
+    }
+  ],
+  "duplicate_notes": [
+    {
+      "claim_id": "source-b-0350",
+      "duplicate_of": "source-b-0009",
+      "reason": "Explicit transport duplicate of an original machine failure with identical original_scope; original JSON pointer and SHA verified. Retained in failed-original-claims.json; excluded from unique alarm judgments."
+    },
+    {
+      "claim_id": "source-b-0406",
+      "duplicate_of": "source-b-0171",
+      "reason": "Explicit transport duplicate of an original machine failure with identical original_scope; original JSON pointer and SHA verified. Retained in failed-original-claims.json; excluded from unique alarm judgments."
+    }
+  ],
+  "input_integrity": {
+    "original_files_verified": 811,
+    "all_original_sha256_match": true,
+    "all_original_claim_pointers_equal": true,
+    "source_and_approved_design_hashes_verified": true,
+    "details": "../integrity.json and ../common-input-integrity.json"
+  },
+  "inspection_coverage": {
+    "unique_failed_claims": 8,
+    "explicit_machine_duplicates": 2,
+    "all_failed_claims_accounted_for": true,
+    "details": "inspection-coverage.json",
+    "original_pixels_viewed": true
+  },
+  "schema_descriptor_limitations": [
+    "All original expected/unit fields remain untouched in input and the retained failed-original-claims.json. Original-plan-integrity.json verifies each failed machine descriptor exactly against its sealed original plan.",
+    "Source-a manual wrapping records have no explicit actual Boolean, and its manual color actual is a hex string while expected is ARGB integer. These are preserved descriptor/output limitations, not negative product evidence. Explicit state/rule wording plus original PNG/native facts supports their semantic claim without rewriting.",
+    "The transport contains no schema_rejected flag set. Source-b annotation restatements of sealed bound findings do not create additional original alarms. Machine/manual categories are retained from the transport."
+  ],
+  "preserved_uncertainties": {
+    "common_unassessed_rows": {
+      "d0": [
+        "P1/ios/baseline/title-native-weight",
+        "P1/ios/selected/title-native-weight",
+        "P1/ios/expanded/title-native-weight",
+        "P1/ios/blocked/title-native-weight",
+        "P1/ios/replaced/title-native-weight",
+        "P1/ios/reselected/title-native-weight",
+        "P1/ios/submitted/title-native-weight",
+        "P2/ios/baseline/title-native-weight",
+        "P2/ios/selected/title-native-weight",
+        "P2/ios/expanded/title-native-weight",
+        "P2/ios/blocked/title-native-weight",
+        "P2/ios/replaced/title-native-weight",
+        "P2/ios/reselected/title-native-weight",
+        "P2/ios/submitted/title-native-weight"
+      ],
+      "final": [
+        "P1/ios/baseline/title-native-weight",
+        "P1/ios/selected/title-native-weight",
+        "P1/ios/expanded/title-native-weight",
+        "P1/ios/blocked/title-native-weight",
+        "P1/ios/replaced/title-native-weight",
+        "P1/ios/reselected/title-native-weight",
+        "P1/ios/submitted/title-native-weight",
+        "P2/ios/baseline/title-native-weight",
+        "P2/ios/selected/title-native-weight",
+        "P2/ios/expanded/title-native-weight",
+        "P2/ios/blocked/title-native-weight",
+        "P2/ios/replaced/title-native-weight",
+        "P2/ios/reselected/title-native-weight",
+        "P2/ios/submitted/title-native-weight"
+      ]
+    },
+    "mechanisms": [
+      "Precise SwiftUI state/closure failure mechanism is not proved; the lost incoming selection is directly observed.",
+      "Exact disabled compositing internals are inferred from source and whole-control rendering. The owned solid color contradiction is directly measured."
+    ],
+    "scope": "No original failure claim needs U after direct inspection. Nonfailure observations and common unassessed/disputed rows are not converted to alarms, pass evidence, or a TN/FPR universe. FINAL outcomes are context only and provide no original detection credit. AI consensus is not human gold."
+  }
+}

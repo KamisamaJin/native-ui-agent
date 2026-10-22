@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "phase": "one_authorized_repair",
+  "startedAtUnix": 1792640325.0,
+  "startedAtUtc": "2026-10-22T03:38:45Z",
+  "finishedAtUnix": 1792640532.456684,
+  "finishedAtUtc": "2026-10-22T03:42:12.456684+00:00",
+  "durationSeconds": 207.45668411254883,
+  "changed_files": [
+    "alerttoast/Sources/AlertToast/WorkshopSlotPlanner.swift"
+  ],
+  "source_sha256": {
+    "alerttoast/Sources/AlertToast/WorkshopSlotPlanner.swift": "4729d31525ff0a7829b60de51bce6f68c25ce4cbc28572fa0fbd4809c884e7a4",
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/WorkshopSlotPlanner.kt": "3cc983b5201415297eb752983895532700b410e14e6f187e57b602d0299941d4"
+  },
+  "original_findings_addressed": [
+    {
+      "cluster": "ios-wide-grid-remains-single-column",
+      "case": "P1",
+      "platform": "ios",
+      "requirement_id": "responsive-grid-columns",
+      "states": [
+        "baseline",
+        "selected",
+        "expanded",
+        "blocked",
+        "replaced",
+        "reselected",
+        "submitted"
+      ],
+      "source_change": "An eager Layout computes its column count from its finite proposed content width plus the component canvas inset, and ordinary native text category. It measures each card at its column width and places rows at their maximum measured height; RTL placement follows native direction. No asynchronous width state is required on iOS 16/macOS 13 and later. Deployment targets stay unchanged, with explicit width callbacks for older systems.",
+      "verification": "Compile-only passed. Final visual verification is pending the whole-cohort seal."
+    },
+    {
+      "cluster": "ios-disabled-primary-fill-faded",
+      "cases": [
+        "P1",
+        "P2"
+      ],
+      "platform": "ios",
+      "requirement_id": "primary-surface-color",
+      "original_assertion_ids": [
+        "P1/ios/baseline/primary-surface-color",
+        "P1/ios/replaced/primary-surface-color",
+        "P2/ios/baseline/primary-surface-color",
+        "P2/ios/replaced/primary-surface-color"
+      ],
+      "source_change": "A custom ButtonStyle returns the component-owned label and opaque palette fills without the default plain disabled fade. The existing disabled modifier and callback guard continue to enforce disabled interaction. Applied consistently to component buttons to preserve ink and surface ownership.",
+      "verification": "Compile-only passed. No new pixel measurements were acquired."
+    }
+  ],
+  "unresolved_and_why": [
+    {
+      "aspect": "final_render_and_runtime_acceptance",
+      "reason": "Not authorized in this phase; root will collect after all final sources are sealed."
+    },
+    {
+      "aspect": "generic_swiftui_title_native_weight",
+      "reason": "Original iOS native style observation is unsupported; no production change can make public AX expose computed SwiftUI weight."
+    },
+    {
+      "aspect": "legacy_OS_fallback_runtime",
+      "reason": "Deployment compatibility is preserved and source compiles, but no additional OS or render execution was authorized."
+    }
+  ],
+  "commands": "agent-output/repair/commands.json",
+  "logs": [
+    "agent-output/repair/compile-ios/build.log"
+  ],
+  "compile_records": [
+    "agent-output/repair/compile-ios/record.json"
+  ],
+  "compile_results": {
+    "ios": "passed",
+    "android": "unchanged; not recompiled"
+  },
+  "original_plans_actions_scripts_byte_identical": true,
+  "original_plan_integrity": "agent-output/repair/original-plan-integrity.json",
+  "no_new_render_or_feedback": true,
+  "final_acceptance_claimed": false,
+  "failed_attempts": [
+    "agent-output/repair/failed-record-attempt-1.json"
+  ]
+}

@@ -100,7 +100,7 @@ class NativeObserverTest {
   bottomReached=bottomReached || all.any{tag(it)=="__observer.bottom" && fullyVisible(it)}
   records.add(buildJsonObject{
    put("binding",originalBinding);put("runtime",originalBinding);put("state_id",activeState)
-   put("screenshot_pixels",buildJsonObject{put("width",image.width);put("height",image.height)});put("logical_viewport_dp",buildJsonObject{put("width",view.width/density);put("height",view.height/density)});put("name",name);put("screenshot",imageName);put("frame",frame);put("scroll_offset_dp",scroll.value/density)
+   put("screenshot_pixels",buildJsonObject{put("width",image.width);put("height",image.height)});put("native_viewport_px",buildJsonObject{put("width",view.width);put("height",view.height);put("density",density.toDouble())});put("logical_viewport_dp",buildJsonObject{put("width",view.width/density);put("height",view.height/density)});put("name",name);put("screenshot",imageName);put("frame",frame);put("scroll_offset_dp",scroll.value/density)
    put("scroll_max_dp",scroll.maxValue/density);put("viewport_height_dp",viewportHeight/density)
    put("nodes",buildJsonArray{all.forEach{node->
     val c=node.config;val layouts=mutableListOf<TextLayoutResult>();c.getOrNull(SemanticsActions.GetTextLayoutResult)?.action?.invoke(layouts)
@@ -270,7 +270,7 @@ class NativeObserverTest {
   File(output,"observation.json").writeText(buildJsonObject{
    put("schema_version",3);put("state_captures",JsonArray(stateCaptures));put("native_test","NativeObserverTest.capture");put("phase",phase);put("rendered_frames",frame);put("completion_stop","native_state_machine_complete");put("snapshots",JsonArray(records));put("steps",JsonArray(steps));put("events",buildJsonArray{events.forEach{add(it)}})
    put("coverage",buildJsonObject{put("bottom_reached",bottomReached);put("observed_identifiers",buildJsonArray{observed.sorted().forEach{add(it)}})})
-   put("configuration",buildJsonObject{put("night_mode_mask",actualNight);put("font_scale",actualScale);put("density",density);put("direction",actualDirection)})
+   put("configuration",buildJsonObject{put("dimension_encoding","paparazzi-float32-screen-config-v1");put("requested_width_dp",number("width",390f).toDouble());put("requested_height_dp",number("viewportHeight",600f).toDouble());put("night_mode_mask",actualNight);put("font_scale",actualScale);put("density",density);put("direction",actualDirection)})
    put("scope","One attached native ComposeView in continuous Paparazzi frame session. Semantic OnClick invocation, not physical touch; native parent ScrollState displacement, not OS gestures. No Activity/navigation/lifecycle claims.")
   }.toString())
   check(phase=="complete"){"Observation frame budget exhausted"}

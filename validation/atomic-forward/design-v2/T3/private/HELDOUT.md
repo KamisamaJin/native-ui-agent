@@ -1,0 +1,1 @@
+H1 changes only data, availability/selection combinations, width, theme, font size and direction within the public brief. Rule IDs, methods, ownership and action meanings are identical. Keep this directory private until all public implementation FINAL seals.

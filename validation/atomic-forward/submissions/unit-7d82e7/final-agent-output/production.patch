@@ -1,0 +1,47 @@
+--- d0/alerttoast/Sources/AlertToast/BicycleServiceIntake.swift
++++ repair/alerttoast/Sources/AlertToast/BicycleServiceIntake.swift
+@@ -154,7 +154,7 @@
+                     .background(RoundedRectangle(cornerRadius: 10).fill(selectedServices.isEmpty ? palette.disabled : palette.enabled))
+                     .contentShape(RoundedRectangle(cornerRadius: 10))
+             }
+-            .buttonStyle(PlainButtonStyle())
++            .buttonStyle(BicycleSurfaceButtonStyle())
+             .disabled(selectedServices.isEmpty)
+             .accessibilityLabel("Send service draft")
+             .accessibilityIdentifier("bicycle.submit")
+@@ -218,10 +218,16 @@
+             .background(RoundedRectangle(cornerRadius: 10).fill(isSelected ? palette.selected : palette.surface))
+             .contentShape(RoundedRectangle(cornerRadius: 10))
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(BicycleSurfaceButtonStyle())
+         .disabled(!service.available)
+         .accessibilityAddTraits(isSelected ? .isSelected : [])
+         .accessibilityIdentifier("bicycle.choice.\(service.id)")
++    }
++}
++
++private struct BicycleSurfaceButtonStyle: ButtonStyle {
++    func makeBody(configuration: Configuration) -> some View {
++        configuration.label
+     }
+ }
+ 
+--- d0/reply/Reply/app/src/main/java/com/example/reply/ui/components/BicycleServiceIntake.kt
++++ repair/reply/Reply/app/src/main/java/com/example/reply/ui/components/BicycleServiceIntake.kt
+@@ -24,6 +24,7 @@
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.graphics.RectangleShape
+ import androidx.compose.ui.platform.testTag
+ import androidx.compose.ui.semantics.Role
+ import androidx.compose.ui.semantics.clearAndSetSemantics
+@@ -135,6 +136,7 @@
+                     onDetailsChange(detailsExpanded)
+                 },
+                 modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp).testTag("bicycle.disclosure"),
++                shape = RectangleShape,
+                 contentPadding = PaddingValues(0.dp),
+                 colors = ButtonDefaults.textButtonColors(contentColor = palette.ink),
+             ) {

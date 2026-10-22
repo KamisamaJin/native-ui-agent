@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "read_only_inputs": [
+    "Assigned repair prompt",
+    "Own immutable original-review/review.json",
+    "Own production SwiftUI source and d0 source seal",
+    "Approved public brief and original lock/policy retained from initial phase"
+  ],
+  "production_edits": [
+    {
+      "file": "alerttoast/Sources/AlertToast/WorkshopSlotPlanner.swift",
+      "patch": "agent-output/repair/production.patch",
+      "mechanism": "Replace modern width preference dependency with an eager SwiftUI Layout; replace PlainButtonStyle with an explicit label-preserving style. Legacy width observation uses onAppear/onChange."
+    }
+  ],
+  "compile_attempts": [
+    {
+      "wrapper_argv": [
+        "python3",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/compile_only.py",
+        "--workspace",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-b44248",
+        "--platform",
+        "ios",
+        "--bridge",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/design-v2/T1/public/Bridge.swift",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-b44248/cache/repair-compile-ios-1"
+      ],
+      "record": "agent-output/repair/compile-ios/record.json",
+      "log": "agent-output/repair/compile-ios/build.log",
+      "actual": {
+        "kind": "common_compile_only_no_render",
+        "argv": [
+          "xcodebuild",
+          "build-for-testing",
+          "-project",
+          "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-b44248/cache/repair-compile-ios-1/project/Observer.xcodeproj",
+          "-scheme",
+          "Observer",
+          "-configuration",
+          "Debug",
+          "-sdk",
+          "iphonesimulator",
+          "-destination",
+          "generic/platform=iOS Simulator",
+          "-derivedDataPath",
+          "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-b44248/cache/repair-compile-ios-1/DerivedData",
+          "CODE_SIGNING_ALLOWED=NO",
+          "ARCHS=arm64",
+          "ONLY_ACTIVE_ARCH=YES"
+        ],
+        "cwd": null,
+        "startedAtUnix": 1792640429.6003342,
+        "finishedAtUnix": 1792640438.222253,
+        "exitCode": 0,
+        "bridgeSHA256": "64fc366b8d19e7c7fe617045d6f40d823fd3b251dc1c73ada6a7977be3a4808a"
+      }
+    }
+  ],
+  "checks": [
+    {
+      "command": "git diff --check",
+      "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/atomic-forward/cache/unit-b44248/alerttoast",
+      "exitCode": 0
+    },
+    {
+      "kind": "original_plan_action_script_hash_verification",
+      "passed": true
+    }
+  ],
+  "metadata_generation": [
+    "First inline metadata attempt failed before writes because d0 source files live in its source/ subdirectory. The failed record is preserved.",
+    "Second metadata generation uses the located immutable d0/source path and preserves this script."
+  ],
+  "failed_attempts": [
+    "agent-output/repair/failed-record-attempt-1.json"
+  ],
+  "render_commands": []
+}

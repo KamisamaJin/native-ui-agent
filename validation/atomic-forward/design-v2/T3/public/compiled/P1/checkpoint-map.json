@@ -1,0 +1,62 @@
+{
+  "case": "P1",
+  "model_inputs": [
+    {
+      "index": 0,
+      "revision": "bicycle-0",
+      "canonical_input_sha256": "389ca5829822ecf48b3a04090132e5b893f24e8624eaa0f49ffbca9329da6b62"
+    },
+    {
+      "index": 1,
+      "revision": "bicycle-1",
+      "canonical_input_sha256": "dba435c595e6d0eced51947f0015e9c061e086f935b9dce63de18f0eaaada74f"
+    }
+  ],
+  "states": [
+    {
+      "id": "baseline",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "selected",
+      "input_index": 0,
+      "after_action": 1,
+      "coverage": "targets"
+    },
+    {
+      "id": "expanded",
+      "input_index": 0,
+      "after_action": 4,
+      "stimulus_action": 3,
+      "coverage": "full_content"
+    },
+    {
+      "id": "blocked",
+      "input_index": 0,
+      "after_action": 5,
+      "coverage": "targets"
+    },
+    {
+      "id": "replaced",
+      "input_index": 1,
+      "after_action": 6,
+      "coverage": "targets"
+    },
+    {
+      "id": "reselected",
+      "input_index": 1,
+      "after_action": 7,
+      "coverage": "targets"
+    },
+    {
+      "id": "submitted",
+      "input_index": 1,
+      "after_action": 9,
+      "stimulus_action": 8,
+      "coverage": "full_content"
+    }
+  ],
+  "route_notes": "Use original actions through design_contract compile. Compiled action state_id/after_targets bind runtime evidence to exactly these states. Sweep stimulus_action preserves the original activation interval; never substitute sweep event deltas."
+}
