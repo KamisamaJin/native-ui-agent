@@ -27,6 +27,8 @@
 
 [完整结果与瓶颈](validation/feedback-forward/RESULTS.md)、[指标及完整成本](validation/feedback-forward/TABLES.md)、[工程实现](validation/feedback-forward/ENGINEERING.md)、[决策协议](native-ui-agent/references/decision-feedback.md)、[原始界面](validation/feedback-forward/GALLERY.md)、[失败与未知](validation/feedback-forward/failure-index.json)、[复算](validation/feedback-forward/REPRODUCE.md)。本轮为 SwiftUI / Compose 组件级验证，不覆盖完整旧 App 与后端；双 AI 一致不是人类金标准。
 
+首个发布提交的最终 CI 暴露了跨机器链接校验问题：负例里的绝对文件符号链接被误当成活动目录命名空间。所有实验复算已通过；原始链接、清单与分数保留，新的[发布补充验证](validation/publications/feedback-v9/README.md)按链接原字节校验负例，并继续严格检查实际目录命名空间。跨机器发布完整性使用该入口。
+
 ## 上一轮 v8：自动样式证据增加，未证明缺陷簇、修复或成本优势
 
 把人工式发现与独立契约的绑定、预期/单位生成、原子配色测量做成可执行工具；修复共享评估器的环境适配、数值事实与责任归属处理。工具先用无关原生组件和负例验证并冻结，再独立设计 Workshop Slot Planner、River Sensor Triage Board、Bicycle Service Intake 三个新增复杂 UI。六份双端实现、108 条计划原生采集；未注入产品缺陷，完整评分与告警双评封存后正式揭盲。两组都已使用 Skill。
@@ -347,7 +349,7 @@ python3 -B validation/feedback-forward/build_summary.py --check
 python3 -B validation/feedback-forward/build_tables.py --check
 python3 -B validation/feedback-forward/build_failure_index.py --check
 python3 -B validation/feedback-forward/build_gallery.py --check
-python3 -B validation/feedback-forward/artifacts.py
+python3 -B validation/publications/feedback-v9/verify.py
 ```
 
 当前工具冻结前通过 132 项单元测试。[v9 复算入口](validation/feedback-forward/REPRODUCE.md)说明原始来源、逐状态覆盖、完整自验、独立双评和成本复算。旧轮次的工具及根目录依赖按原字节归档；v8 使用上面的历史视图入口，v7 使用 `python3 -B validation/publication_history.py multitask-v7 verify_tools.py` 和同入口的 `artifacts.py`，避免拿新工具覆盖旧分数。
