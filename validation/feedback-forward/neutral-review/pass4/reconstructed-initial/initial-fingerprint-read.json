@@ -1,0 +1,11 @@
+{
+  "originalCommand": "python3 -B - <<'PY'\nfrom pathlib import Path\nimport hashlib,json,time\nbase=Path(\"/Users/rex/Documents/ChatGPT/mobile-native-skill\"); out=Path(\"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/neutral-review/pass4\")\nneutral=base/'validation/feedback-forward/neutral'; seal=json.loads((neutral/'SEAL.json').read_text())\nroots={'skill':base/'validation/feedback-forward/development/candidate-attempt-4','feedback':base/'validation/feedback-forward/neutral-targeted-v4'}\nrecords={}\nfor name,root in roots.items():\n for p in sorted(root.rglob('*')):\n  if p.is_file(): records[name+'/'+str(p.relative_to(root))]={'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size}\nfor rel,expected in seal['source_and_test_inputs_sha256'].items():\n p=neutral/rel; actual=hashlib.sha256(p.read_bytes()).hexdigest(); records['neutral/'+rel]={'path':str(p),'sha256':actual,'bytes':p.stat().st_size,'sealed_sha256':expected,'matches_seal':actual==expected}\nfor p in [neutral/'SEAL.json',base/'validation/feedback-forward/operators/targeted-neutral-v4-request.json']:\n records[str(p.relative_to(base))]={'path':str(p),'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size}\n(out/'input-shas.json').write_text(json.dumps({'recordedAtUnix':time.time(),'files':records},indent=2)+'\\n')\nprint(json.dumps({'file_count':len(records),'seal_mismatches':[k for k,v in records.items() if v.get('matches_seal') is False],'feedback_files':{k:{'bytes':v['bytes'],'sha256':v['sha256']} for k,v in records.items() if k.startswith('feedback/')}} ,indent=2))\nfor rel in ['APPROVAL.json','design/contract.json','design/routes.json','inputs/bindings.json']:\n print('FILE '+rel);print((neutral/rel).read_text())\nPY",
+  "original_return_metadata": {
+    "chunk_id": "1307b0",
+    "exit_code": 0,
+    "wall_time_seconds": 5.833e-06,
+    "original_token_count": 15511
+  },
+  "stdout_path": "initial-fingerprint-read.stdout.txt",
+  "limit": "Output reconstructed from original retained input map and unchanged files. The original max-output truncation is not misrepresented as a complete original stdout envelope."
+}

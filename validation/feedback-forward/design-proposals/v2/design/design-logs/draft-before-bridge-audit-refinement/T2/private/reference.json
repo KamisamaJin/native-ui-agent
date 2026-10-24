@@ -1,0 +1,2993 @@
+{
+  "version": 2,
+  "component": "OfflineAudioTourPanel",
+  "design_owner": "Independent original design author, prospective review revision",
+  "prior_source_sha256": "1ee34c8c22709cc8c1e4462460c02b5c4e7cddd448f7e478ad707bc9d61f73e7",
+  "palette": {
+    "canvas": {
+      "value": "#FFF4F6FA",
+      "unit": "argb"
+    },
+    "surface": {
+      "value": "#FFFFFFFF",
+      "unit": "argb"
+    },
+    "ink": {
+      "value": "#FF172B4D",
+      "unit": "argb"
+    },
+    "waiting": {
+      "value": "#FFE9EFF8",
+      "unit": "argb"
+    },
+    "ready": {
+      "value": "#FFDDF4EC",
+      "unit": "argb"
+    },
+    "requested": {
+      "value": "#FFDDEBFF",
+      "unit": "argb"
+    },
+    "blocked": {
+      "value": "#FFFFE5B3",
+      "unit": "argb"
+    },
+    "enabled": {
+      "value": "#FF2463C5",
+      "unit": "argb"
+    },
+    "disabled": {
+      "value": "#FFD8DEE8",
+      "unit": "argb"
+    }
+  },
+  "geometry": {
+    "ios": {
+      "primaryHeight": {
+        "value": 56,
+        "unit": "pt"
+      },
+      "tolerance": {
+        "value": 0.75,
+        "unit": "pt"
+      },
+      "outerGutter": {
+        "value": 8,
+        "unit": "pt"
+      },
+      "innerPadding": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "mainGap": {
+        "value": 12,
+        "unit": "pt"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "choicePrimaryGap": {
+        "value": 12,
+        "unit": "pt"
+      },
+      "statusLeadingMinimum": {
+        "value": 16,
+        "unit": "pt"
+      }
+    },
+    "android": {
+      "primaryHeight": {
+        "value": 56,
+        "unit": "dp"
+      },
+      "tolerance": {
+        "value": 0.75,
+        "unit": "dp"
+      },
+      "outerGutter": {
+        "value": 8,
+        "unit": "dp"
+      },
+      "innerPadding": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "mainGap": {
+        "value": 12,
+        "unit": "dp"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "choicePrimaryGap": {
+        "value": 12,
+        "unit": "dp"
+      },
+      "statusLeadingMinimum": {
+        "value": 16,
+        "unit": "dp"
+      }
+    }
+  },
+  "typography_guidance": {
+    "priority": "advisory",
+    "ios": {
+      "title": {
+        "value": 22,
+        "unit": "pt"
+      },
+      "heading": {
+        "value": 17,
+        "unit": "pt"
+      },
+      "body": {
+        "value": 17,
+        "unit": "pt"
+      }
+    },
+    "android": {
+      "title": {
+        "value": 22,
+        "unit": "sp"
+      },
+      "heading": {
+        "value": 17,
+        "unit": "sp"
+      },
+      "body": {
+        "value": 16,
+        "unit": "sp"
+      }
+    },
+    "computed_swiftui": "Unavailable to generic AX; not a measurable MUST"
+  },
+  "truth": {
+    "value": true,
+    "unit": "bool"
+  },
+  "quiet": {
+    "value": [],
+    "unit": "events"
+  },
+  "questions": {
+    "title-wrapping": {
+      "value": "The title visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "subtitle-wrapping": {
+      "value": "The subtitle visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "status-wrapping": {
+      "value": "The status text visibly displays its complete status string through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "disclosure-wrapping": {
+      "value": "The disclosure button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "choice-wrapping": {
+      "value": "The choice button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "primary-wrapping": {
+      "value": "The primary button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "heading-wrapping": {
+      "value": "Every expanded chapters heading visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "body-wrapping": {
+      "value": "Every expanded body paragraph visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "title-hierarchy": {
+      "value": "The title is visually more prominent than the expanded section headings.",
+      "unit": "string"
+    },
+    "horizontal-clipping": {
+      "value": "Visible content remains inside the component horizontal bounds without clipping.",
+      "unit": "string"
+    },
+    "row-overlap": {
+      "value": "Successive rows in the component do not visually overlap.",
+      "unit": "string"
+    },
+    "flow-order": {
+      "value": "Main component blocks occur in this reading order: ink accent, title, subtitle, status, disclosure, any expanded sections, choice, primary.",
+      "unit": "string"
+    },
+    "single-column": {
+      "value": "Main component blocks form one vertical column.",
+      "unit": "string"
+    },
+    "full-width-canvas": {
+      "value": "The component-painted pale canvas spans the complete width offered inside the host horizontal gutters.",
+      "unit": "string"
+    },
+    "collapsed-headings": {
+      "value": "No chapters section heading is visible while the disclosure is closed.",
+      "unit": "string"
+    },
+    "collapsed-bodies": {
+      "value": "No chapters body paragraph is visible while the disclosure is closed.",
+      "unit": "string"
+    },
+    "expanded-order": {
+      "value": "The eight expanded chapters heading/body pairs appear in caller order.",
+      "unit": "string"
+    }
+  },
+  "cases": {
+    "H1": {
+      "caller": {
+        "initial": {
+          "id": "TOUR-745",
+          "title": "River instruments: stories from the navigation hall",
+          "language": "English · river collection",
+          "downloadSizeMB": 284,
+          "availableMB": 680,
+          "meteredConnection": true,
+          "chapters": [
+            {
+              "id": "n1",
+              "title": "A river pilots desk",
+              "body": "Start at the pilots desk and examine the folded river chart beneath its glass cover. The opening voice explains how crews planned a passage around shifting sandbanks and why a familiar route still needed careful attention on every journey."
+            },
+            {
+              "id": "n2",
+              "title": "Measuring the current",
+              "body": "Beside the current meter, listen to a surveyor describe taking a reading from a small boat. The account connects the instrument to a practical decision about when to leave the landing, without asking you to perform a calculation yourself."
+            },
+            {
+              "id": "n3",
+              "title": "The bridge watch",
+              "body": "At the bridge model, follow the lookout route from one side of the deck to the other. A retired crew member recalls watching for a low marker while another person kept track of the approaching bend in the river."
+            },
+            {
+              "id": "n4",
+              "title": "Soundings in shallow water",
+              "body": "The sounding line display introduces a job that required patience and clear spoken signals. Listen while looking at the marked lengths on the rope, then compare the working line with the later mechanical instrument in the neighboring case."
+            },
+            {
+              "id": "n5",
+              "title": "Keeping a voyage log",
+              "body": "Pause at the open logbook and notice the short entries written beside each date. This chapter explains how observations about weather, repairs, and waiting at a landing could help the next crew prepare for the same stretch of river."
+            },
+            {
+              "id": "n6",
+              "title": "Repairing a navigation lamp",
+              "body": "The lamp bench shows the small parts a keeper carried when a light failed. The narrator follows one routine repair and describes checking the beam from the water, where an apparently bright lamp might still be difficult to recognize."
+            },
+            {
+              "id": "n7",
+              "title": "Voices at the crossing",
+              "body": "Listen near the ferry photograph to hear three short memories of the crossing. Each speaker describes a different task, and the pauses between their accounts leave time to compare the landing shown in the image with the route map."
+            },
+            {
+              "id": "n8",
+              "title": "Reading the river today",
+              "body": "End beside the modern river map and find the old crossing on its edge. The closing chapter describes which habits of observation remain useful, even when the crew also carries electronic charts and receives regular messages from the shore station."
+            }
+          ]
+        },
+        "updates": [
+          {
+            "id": "TOUR-816",
+            "title": "Stone and shadow: the sculpture courtyard",
+            "language": "English · courtyard collection",
+            "downloadSizeMB": 372,
+            "availableMB": 148,
+            "meteredConnection": false,
+            "chapters": [
+              {
+                "id": "rn1",
+                "title": "A river pilots desk",
+                "body": "Start at the pilots desk and examine the folded river chart beneath its glass cover. The opening voice explains how crews planned a passage around shifting sandbanks and why a familiar route still needed careful attention on every journey."
+              },
+              {
+                "id": "rn2",
+                "title": "Measuring the current",
+                "body": "Beside the current meter, listen to a surveyor describe taking a reading from a small boat. The account connects the instrument to a practical decision about when to leave the landing, without asking you to perform a calculation yourself."
+              },
+              {
+                "id": "rn3",
+                "title": "The bridge watch",
+                "body": "At the bridge model, follow the lookout route from one side of the deck to the other. A retired crew member recalls watching for a low marker while another person kept track of the approaching bend in the river."
+              },
+              {
+                "id": "rn4",
+                "title": "Soundings in shallow water",
+                "body": "The sounding line display introduces a job that required patience and clear spoken signals. Listen while looking at the marked lengths on the rope, then compare the working line with the later mechanical instrument in the neighboring case."
+              },
+              {
+                "id": "rn5",
+                "title": "Keeping a voyage log",
+                "body": "Pause at the open logbook and notice the short entries written beside each date. This chapter explains how observations about weather, repairs, and waiting at a landing could help the next crew prepare for the same stretch of river."
+              },
+              {
+                "id": "rn6",
+                "title": "Repairing a navigation lamp",
+                "body": "The lamp bench shows the small parts a keeper carried when a light failed. The narrator follows one routine repair and describes checking the beam from the water, where an apparently bright lamp might still be difficult to recognize."
+              },
+              {
+                "id": "rn7",
+                "title": "Voices at the crossing",
+                "body": "Listen near the ferry photograph to hear three short memories of the crossing. Each speaker describes a different task, and the pauses between their accounts leave time to compare the landing shown in the image with the route map."
+              },
+              {
+                "id": "rn8",
+                "title": "Reading the river today",
+                "body": "End beside the modern river map and find the old crossing on its edge. The closing chapter describes which habits of observation remain useful, even when the crew also carries electronic charts and receives regular messages from the shore station."
+              }
+            ]
+          },
+          {
+            "id": "TOUR-982",
+            "title": "Stone and shadow: the sculpture courtyard",
+            "language": "English · courtyard collection",
+            "downloadSizeMB": 372,
+            "availableMB": 331,
+            "meteredConnection": true,
+            "chapters": [
+              {
+                "id": "rn1",
+                "title": "A river pilots desk",
+                "body": "Start at the pilots desk and examine the folded river chart beneath its glass cover. The opening voice explains how crews planned a passage around shifting sandbanks and why a familiar route still needed careful attention on every journey."
+              },
+              {
+                "id": "rn2",
+                "title": "Measuring the current",
+                "body": "Beside the current meter, listen to a surveyor describe taking a reading from a small boat. The account connects the instrument to a practical decision about when to leave the landing, without asking you to perform a calculation yourself."
+              },
+              {
+                "id": "rn3",
+                "title": "The bridge watch",
+                "body": "At the bridge model, follow the lookout route from one side of the deck to the other. A retired crew member recalls watching for a low marker while another person kept track of the approaching bend in the river."
+              },
+              {
+                "id": "rn4",
+                "title": "Soundings in shallow water",
+                "body": "The sounding line display introduces a job that required patience and clear spoken signals. Listen while looking at the marked lengths on the rope, then compare the working line with the later mechanical instrument in the neighboring case."
+              },
+              {
+                "id": "rn5",
+                "title": "Keeping a voyage log",
+                "body": "Pause at the open logbook and notice the short entries written beside each date. This chapter explains how observations about weather, repairs, and waiting at a landing could help the next crew prepare for the same stretch of river."
+              },
+              {
+                "id": "rn6",
+                "title": "Repairing a navigation lamp",
+                "body": "The lamp bench shows the small parts a keeper carried when a light failed. The narrator follows one routine repair and describes checking the beam from the water, where an apparently bright lamp might still be difficult to recognize."
+              },
+              {
+                "id": "rn7",
+                "title": "Voices at the crossing",
+                "body": "Listen near the ferry photograph to hear three short memories of the crossing. Each speaker describes a different task, and the pauses between their accounts leave time to compare the landing shown in the image with the route map."
+              },
+              {
+                "id": "rn8",
+                "title": "Reading the river today",
+                "body": "End beside the modern river map and find the old crossing on its edge. The closing chapter describes which habits of observation remain useful, even when the crew also carries electronic charts and receives regular messages from the shore station."
+              }
+            ]
+          }
+        ],
+        "width": 400,
+        "viewportHeight": 600,
+        "theme": "light",
+        "dynamic_type": "large",
+        "fontScale": 1.0,
+        "direction": "rtl",
+        "canvas_color": "#F4F6FA",
+        "max_scrolls": 18,
+        "state_capture": true,
+        "required_identifiers": [
+          "audio.canvas",
+          "audio.surface",
+          "audio.inkMark",
+          "audio.title",
+          "audio.subtitle",
+          "audio.status",
+          "audio.disclosure",
+          "audio.choice",
+          "audio.primary",
+          "audio.statusText"
+        ]
+      },
+      "states": {
+        "overview": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "opened": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "permitted": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready to download",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "cleared": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "restored": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready to download",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "requested": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Download requested",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Requested",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDEBFF",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "requested-closed": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Download requested",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Requested",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDEBFF",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "replaced": {
+          "title": {
+            "value": "Stone and shadow: the sculpture courtyard",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · courtyard collection · 372 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Storage needed",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-816:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-816:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "held-choice": {
+          "title": {
+            "value": "Stone and shadow: the sculpture courtyard",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · courtyard collection · 372 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Storage needed",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-816:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-816:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "competing-gates": {
+          "title": {
+            "value": "Stone and shadow: the sculpture courtyard",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · courtyard collection · 372 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Storage needed",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-982:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-982:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "rows": [
+        {
+          "id": "n1",
+          "title": "A river pilots desk",
+          "body": "Start at the pilots desk and examine the folded river chart beneath its glass cover. The opening voice explains how crews planned a passage around shifting sandbanks and why a familiar route still needed careful attention on every journey."
+        },
+        {
+          "id": "n2",
+          "title": "Measuring the current",
+          "body": "Beside the current meter, listen to a surveyor describe taking a reading from a small boat. The account connects the instrument to a practical decision about when to leave the landing, without asking you to perform a calculation yourself."
+        },
+        {
+          "id": "n3",
+          "title": "The bridge watch",
+          "body": "At the bridge model, follow the lookout route from one side of the deck to the other. A retired crew member recalls watching for a low marker while another person kept track of the approaching bend in the river."
+        },
+        {
+          "id": "n4",
+          "title": "Soundings in shallow water",
+          "body": "The sounding line display introduces a job that required patience and clear spoken signals. Listen while looking at the marked lengths on the rope, then compare the working line with the later mechanical instrument in the neighboring case."
+        },
+        {
+          "id": "n5",
+          "title": "Keeping a voyage log",
+          "body": "Pause at the open logbook and notice the short entries written beside each date. This chapter explains how observations about weather, repairs, and waiting at a landing could help the next crew prepare for the same stretch of river."
+        },
+        {
+          "id": "n6",
+          "title": "Repairing a navigation lamp",
+          "body": "The lamp bench shows the small parts a keeper carried when a light failed. The narrator follows one routine repair and describes checking the beam from the water, where an apparently bright lamp might still be difficult to recognize."
+        },
+        {
+          "id": "n7",
+          "title": "Voices at the crossing",
+          "body": "Listen near the ferry photograph to hear three short memories of the crossing. Each speaker describes a different task, and the pauses between their accounts leave time to compare the landing shown in the image with the route map."
+        },
+        {
+          "id": "n8",
+          "title": "Reading the river today",
+          "body": "End beside the modern river map and find the old crossing on its edge. The closing chapter describes which habits of observation remain useful, even when the crew also carries electronic charts and receives regular messages from the shore station."
+        }
+      ],
+      "rowAssertions": [
+        {
+          "title": {
+            "value": "A river pilots desk",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Start at the pilots desk and examine the folded river chart beneath its glass cover. The opening voice explains how crews planned a passage around shifting sandbanks and why a familiar route still needed careful attention on every journey.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Measuring the current",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Beside the current meter, listen to a surveyor describe taking a reading from a small boat. The account connects the instrument to a practical decision about when to leave the landing, without asking you to perform a calculation yourself.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "The bridge watch",
+            "unit": "string"
+          },
+          "body": {
+            "value": "At the bridge model, follow the lookout route from one side of the deck to the other. A retired crew member recalls watching for a low marker while another person kept track of the approaching bend in the river.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Soundings in shallow water",
+            "unit": "string"
+          },
+          "body": {
+            "value": "The sounding line display introduces a job that required patience and clear spoken signals. Listen while looking at the marked lengths on the rope, then compare the working line with the later mechanical instrument in the neighboring case.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Keeping a voyage log",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Pause at the open logbook and notice the short entries written beside each date. This chapter explains how observations about weather, repairs, and waiting at a landing could help the next crew prepare for the same stretch of river.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Repairing a navigation lamp",
+            "unit": "string"
+          },
+          "body": {
+            "value": "The lamp bench shows the small parts a keeper carried when a light failed. The narrator follows one routine repair and describes checking the beam from the water, where an apparently bright lamp might still be difficult to recognize.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Voices at the crossing",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Listen near the ferry photograph to hear three short memories of the crossing. Each speaker describes a different task, and the pauses between their accounts leave time to compare the landing shown in the image with the route map.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Reading the river today",
+            "unit": "string"
+          },
+          "body": {
+            "value": "End beside the modern river map and find the old crossing on its edge. The closing chapter describes which habits of observation remain useful, even when the crew also carries electronic charts and receives regular messages from the shore station.",
+            "unit": "string"
+          }
+        }
+      ],
+      "original_initial_sha256": "d58ae507c1c373e5a79f4e2d62fec25266a3a2d99ec5c23794b4c90405ec734e",
+      "original_update_sha256": "787b9173e44df90e82864e99250fde08b5d0f0898dbeb1cfdb0d1e00c421bae5"
+    }
+  },
+  "launch": {
+    "H1": {
+      "ios": {
+        "fixtures_sha256": "eb4172d9c8c6d9cf1223cfa1d76665043fdff1fd6a45a310987cff9720d282d3",
+        "bridge_sha256": "c6708b2b76c2dddad9a31d755d3bcf6558b60aa903cf885a8c3a69ec196ec621",
+        "scenario": "H1",
+        "platform": "ios"
+      },
+      "android": {
+        "fixtures_sha256": "eb4172d9c8c6d9cf1223cfa1d76665043fdff1fd6a45a310987cff9720d282d3",
+        "bridge_sha256": "44c55a28afff21d69001e2c4f62554cb23f9b287c68cbd19c450cb0350cbb8a9",
+        "scenario": "H1",
+        "platform": "android"
+      }
+    }
+  },
+  "obligations": [
+    {
+      "id": "title-label",
+      "clause": "The current caller title has its complete exact accessible text.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "subtitle-label",
+      "clause": "The current caller summary uses the exact specified string composition.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "status-label",
+      "clause": "The status follows the original independently specified business guard/state precedence.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "status-text-label",
+      "clause": "The actual status Text node exposes the exact current status string independently of the painted band.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "disclosure-label",
+      "clause": "The disclosure label reflects the open or closed local state.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "disclosure-enabled",
+      "clause": "The actual disclosure Button remains enabled, including after a business request.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "choice-label",
+      "clause": "The actual choice Button exposes its exact specified accessible label.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "choice-selected",
+      "clause": "The native selected trait reflects the current Wi-Fi-only preference.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "choice-enabled",
+      "clause": "The actual choice is disabled after request and enabled after identity replacement.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "primary-label",
+      "clause": "The primary exposes its exact normal or requested label.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "primary-enabled",
+      "clause": "The actual primary enabled state follows the original complete business predicate.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "primary-height",
+      "clause": "The actual native primary control height is 56 pt/dp within the independently fixed 0.75 pt/dp tolerance.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "choice-primary-gap",
+      "clause": "The primary actual native control top edge is 12 pt/dp below the choice control bottom edge within 0.75 pt/dp.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "status-leading-inset",
+      "clause": "The actual status Text semantic boundary is at least 16 pt/dp inside the painted band logical leading semantic boundary.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "status-fill",
+      "clause": "The approved status-band solid region has the independently fixed opaque state-role fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "primary-fill",
+      "clause": "The approved primary solid region has the independently fixed enabled or disabled fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "surface-fill",
+      "clause": "The component surface gutter renders the independently fixed opaque white role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "canvas-fill",
+      "clause": "The component canvas gutter renders the independently fixed opaque pale role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "ink-fill",
+      "clause": "The solid ink accent renders the independently fixed opaque navy role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "status-leading-clear",
+      "clause": "The entire logical leading 4% strip of the painted status band contains only the current status fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "section-0-heading",
+      "clause": "Expanded section-0-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-0-body",
+      "clause": "Expanded section-0-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-1-heading",
+      "clause": "Expanded section-1-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-1-body",
+      "clause": "Expanded section-1-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-2-heading",
+      "clause": "Expanded section-2-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-2-body",
+      "clause": "Expanded section-2-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-3-heading",
+      "clause": "Expanded section-3-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-3-body",
+      "clause": "Expanded section-3-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-4-heading",
+      "clause": "Expanded section-4-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-4-body",
+      "clause": "Expanded section-4-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-5-heading",
+      "clause": "Expanded section-5-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-5-body",
+      "clause": "Expanded section-5-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-6-heading",
+      "clause": "Expanded section-6-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-6-body",
+      "clause": "Expanded section-6-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-7-heading",
+      "clause": "Expanded section-7-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-7-body",
+      "clause": "Expanded section-7-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "title-wrapping",
+      "clause": "The title visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "subtitle-wrapping",
+      "clause": "The subtitle visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "status-wrapping",
+      "clause": "The status text visibly displays its complete status string through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "disclosure-wrapping",
+      "clause": "The disclosure button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "choice-wrapping",
+      "clause": "The choice button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "primary-wrapping",
+      "clause": "The primary button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "heading-wrapping",
+      "clause": "Every expanded chapters heading visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "body-wrapping",
+      "clause": "Every expanded body paragraph visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "title-hierarchy",
+      "clause": "The title is visually more prominent than the expanded section headings.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "horizontal-clipping",
+      "clause": "Visible content remains inside the component horizontal bounds without clipping.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "row-overlap",
+      "clause": "Successive rows in the component do not visually overlap.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "flow-order",
+      "clause": "Main component blocks occur in this reading order: ink accent, title, subtitle, status, disclosure, any expanded sections, choice, primary.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "single-column",
+      "clause": "Main component blocks form one vertical column.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "full-width-canvas",
+      "clause": "The component-painted pale canvas spans the complete width offered inside the host horizontal gutters.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "collapsed-headings",
+      "clause": "No chapters section heading is visible while the disclosure is closed.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "collapsed-bodies",
+      "clause": "No chapters body paragraph is visible while the disclosure is closed.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "expanded-order",
+      "clause": "The eight expanded chapters heading/body pairs appear in caller order.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "choice-receipt",
+      "clause": "Each selected forward, reverse, restored, or held choice activation emits exactly its independent one-event receipt after demonstrated native dispatch.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "cleared",
+        "restored",
+        "held-choice"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "request-receipt",
+      "clause": "The successful native primary activation emits exactly the independently fixed business callback event.",
+      "priority": "must",
+      "states": [
+        "requested"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "disclosure-receipt",
+      "clause": "Each selected successful disclosure open or close activation has its own empty original business callback interval.",
+      "priority": "must",
+      "states": [
+        "opened",
+        "requested-closed"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "replacement-quiet",
+      "clause": "Each selected same-process caller replacement has an empty original business callback interval.",
+      "priority": "must",
+      "states": [
+        "replaced",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "typography-nominal",
+      "clause": "Nominal title/body fonts, text ink, and internal spacing tokens follow the documented platform authoring values; exact computed SwiftUI fields and generic layout allocations are advisory.",
+      "priority": "advisory",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "style"
+    }
+  ],
+  "audit_propositions": {
+    "ios-production-component": {
+      "value": "The declared public component and its model types are implemented in this production file, and the component renders caller model values rather than a separate observer-only UI.",
+      "unit": "string"
+    },
+    "ios-production-state": {
+      "value": "Disclosure, choice, and requested state are owned by the production component rather than by an observer bridge or external test fixture.",
+      "unit": "string"
+    },
+    "ios-identity-reset": {
+      "value": "The production component resets disclosure, choice, and requested state when the caller model ID changes.",
+      "unit": "string"
+    },
+    "ios-reset-quiet": {
+      "value": "The production identity-reset path invokes no caller business callback.",
+      "unit": "string"
+    },
+    "ios-native-buttons": {
+      "value": "Disclosure, choice, and primary are implemented as native Button controls.",
+      "unit": "string"
+    },
+    "ios-native-selected": {
+      "value": "The choice exposes its actual selected state through native selected semantics.",
+      "unit": "string"
+    },
+    "ios-native-disabled": {
+      "value": "Disabled choice and primary use actual native disabled semantics.",
+      "unit": "string"
+    },
+    "ios-preserve-controls": {
+      "value": "Canvas and surface accessibility containers preserve their descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "ios-unique-semantic-ids": {
+      "value": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "unit": "string"
+    },
+    "ios-no-nested-scroll": {
+      "value": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "unit": "string"
+    },
+    "ios-no-blank-padding-rows": {
+      "value": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "unit": "string"
+    },
+    "ios-model-row-order": {
+      "value": "Expanded section nodes are generated from caller rows in caller order.",
+      "unit": "string"
+    },
+    "ios-no-hidden-input-special-cases": {
+      "value": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "unit": "string"
+    },
+    "ios-callback-arguments": {
+      "value": "The business request callback forwards the current caller model ID and, where the API has a preference parameter, the current local preference value.",
+      "unit": "string"
+    },
+    "ios-no-callback-on-disclosure": {
+      "value": "The disclosure open and close paths invoke no caller business callback.",
+      "unit": "string"
+    },
+    "ios-no-callback-on-disabled": {
+      "value": "Disabled primary or choice paths cannot invoke their caller business callbacks.",
+      "unit": "string"
+    },
+    "ios-guard-predicate": {
+      "value": "The download enabled predicate is exactly availableMB >= downloadSizeMB && !(meteredConnection && wifiOnly) && !requested.",
+      "unit": "string"
+    },
+    "ios-guard-priority": {
+      "value": "The status decision order is insufficient storage, requested, metered connection with Wi-Fi only, then ready.",
+      "unit": "string"
+    },
+    "ios-choice-callback": {
+      "value": "Every successful pre-request Wi-Fi-only toggle forwards the resulting preference Boolean exactly once.",
+      "unit": "string"
+    },
+    "ios-download-callback": {
+      "value": "A successful eligible download request changes local requested state and invokes onDownload exactly once.",
+      "unit": "string"
+    },
+    "ios-no-disk-measurement": {
+      "value": "The component does not measure disk capacity; it uses the caller-supplied whole-MB availableMB and downloadSizeMB values.",
+      "unit": "string"
+    },
+    "ios-no-audio-fetch": {
+      "value": "The component does not fetch or download audio data.",
+      "unit": "string"
+    },
+    "android-production-component": {
+      "value": "The declared public component and its model types are implemented in this production file, and the component renders caller model values rather than a separate observer-only UI.",
+      "unit": "string"
+    },
+    "android-production-state": {
+      "value": "Disclosure, choice, and requested state are owned by the production component rather than by an observer bridge or external test fixture.",
+      "unit": "string"
+    },
+    "android-identity-reset": {
+      "value": "The production component resets disclosure, choice, and requested state when the caller model ID changes.",
+      "unit": "string"
+    },
+    "android-reset-quiet": {
+      "value": "The production identity-reset path invokes no caller business callback.",
+      "unit": "string"
+    },
+    "android-native-buttons": {
+      "value": "Disclosure, choice, and primary are implemented as native Button controls.",
+      "unit": "string"
+    },
+    "android-native-selected": {
+      "value": "The choice exposes its actual selected state through native selected semantics.",
+      "unit": "string"
+    },
+    "android-native-disabled": {
+      "value": "Disabled choice and primary use actual native disabled semantics.",
+      "unit": "string"
+    },
+    "android-preserve-controls": {
+      "value": "Canvas and surface accessibility containers preserve their descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "android-unique-semantic-ids": {
+      "value": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "unit": "string"
+    },
+    "android-no-nested-scroll": {
+      "value": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "unit": "string"
+    },
+    "android-no-blank-padding-rows": {
+      "value": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "unit": "string"
+    },
+    "android-model-row-order": {
+      "value": "Expanded section nodes are generated from caller rows in caller order.",
+      "unit": "string"
+    },
+    "android-no-hidden-input-special-cases": {
+      "value": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "unit": "string"
+    },
+    "android-callback-arguments": {
+      "value": "The business request callback forwards the current caller model ID and, where the API has a preference parameter, the current local preference value.",
+      "unit": "string"
+    },
+    "android-no-callback-on-disclosure": {
+      "value": "The disclosure open and close paths invoke no caller business callback.",
+      "unit": "string"
+    },
+    "android-no-callback-on-disabled": {
+      "value": "Disabled primary or choice paths cannot invoke their caller business callbacks.",
+      "unit": "string"
+    },
+    "android-guard-predicate": {
+      "value": "The download enabled predicate is exactly availableMB >= downloadSizeMB && !(meteredConnection && wifiOnly) && !requested.",
+      "unit": "string"
+    },
+    "android-guard-priority": {
+      "value": "The status decision order is insufficient storage, requested, metered connection with Wi-Fi only, then ready.",
+      "unit": "string"
+    },
+    "android-choice-callback": {
+      "value": "Every successful pre-request Wi-Fi-only toggle forwards the resulting preference Boolean exactly once.",
+      "unit": "string"
+    },
+    "android-download-callback": {
+      "value": "A successful eligible download request changes local requested state and invokes onDownload exactly once.",
+      "unit": "string"
+    },
+    "android-no-disk-measurement": {
+      "value": "The component does not measure disk capacity; it uses the caller-supplied whole-MB availableMB and downloadSizeMB values.",
+      "unit": "string"
+    },
+    "android-no-audio-fetch": {
+      "value": "The component does not fetch or download audio data.",
+      "unit": "string"
+    }
+  },
+  "implementation_audits": [
+    {
+      "id": "ios-production-component",
+      "clause": "The declared public component and its model types are implemented in this production file, and the component renders caller model values rather than a separate observer-only UI.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-production-component"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-production-state",
+      "clause": "Disclosure, choice, and requested state are owned by the production component rather than by an observer bridge or external test fixture.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-identity-reset",
+      "clause": "The production component resets disclosure, choice, and requested state when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-identity-reset"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-reset-quiet",
+      "clause": "The production identity-reset path invokes no caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-reset-quiet"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-buttons",
+      "clause": "Disclosure, choice, and primary are implemented as native Button controls.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-buttons"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-selected",
+      "clause": "The choice exposes its actual selected state through native selected semantics.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-selected"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-disabled",
+      "clause": "Disabled choice and primary use actual native disabled semantics.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-preserve-controls",
+      "clause": "Canvas and surface accessibility containers preserve their descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-unique-semantic-ids",
+      "clause": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-unique-semantic-ids"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-nested-scroll",
+      "clause": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-nested-scroll"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-blank-padding-rows",
+      "clause": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-blank-padding-rows"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-model-row-order",
+      "clause": "Expanded section nodes are generated from caller rows in caller order.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-model-row-order"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-hidden-input-special-cases",
+      "clause": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-hidden-input-special-cases"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-callback-arguments",
+      "clause": "The business request callback forwards the current caller model ID and, where the API has a preference parameter, the current local preference value.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-callback-arguments"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-callback-on-disclosure",
+      "clause": "The disclosure open and close paths invoke no caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-callback-on-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-callback-on-disabled",
+      "clause": "Disabled primary or choice paths cannot invoke their caller business callbacks.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-guard-predicate",
+      "clause": "The download enabled predicate is exactly availableMB >= downloadSizeMB && !(meteredConnection && wifiOnly) && !requested.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-guard-predicate"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-guard-priority",
+      "clause": "The status decision order is insufficient storage, requested, metered connection with Wi-Fi only, then ready.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-guard-priority"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-callback",
+      "clause": "Every successful pre-request Wi-Fi-only toggle forwards the resulting preference Boolean exactly once.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-callback"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-download-callback",
+      "clause": "A successful eligible download request changes local requested state and invokes onDownload exactly once.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-download-callback"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-disk-measurement",
+      "clause": "The component does not measure disk capacity; it uses the caller-supplied whole-MB availableMB and downloadSizeMB values.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-disk-measurement"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-audio-fetch",
+      "clause": "The component does not fetch or download audio data.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-audio-fetch"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-production-component",
+      "clause": "The declared public component and its model types are implemented in this production file, and the component renders caller model values rather than a separate observer-only UI.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-production-component"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-production-state",
+      "clause": "Disclosure, choice, and requested state are owned by the production component rather than by an observer bridge or external test fixture.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-identity-reset",
+      "clause": "The production component resets disclosure, choice, and requested state when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-identity-reset"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-reset-quiet",
+      "clause": "The production identity-reset path invokes no caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-reset-quiet"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-buttons",
+      "clause": "Disclosure, choice, and primary are implemented as native Button controls.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-buttons"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-selected",
+      "clause": "The choice exposes its actual selected state through native selected semantics.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-selected"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-disabled",
+      "clause": "Disabled choice and primary use actual native disabled semantics.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-preserve-controls",
+      "clause": "Canvas and surface accessibility containers preserve their descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-unique-semantic-ids",
+      "clause": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-unique-semantic-ids"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-nested-scroll",
+      "clause": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-nested-scroll"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-blank-padding-rows",
+      "clause": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-blank-padding-rows"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-model-row-order",
+      "clause": "Expanded section nodes are generated from caller rows in caller order.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-model-row-order"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-hidden-input-special-cases",
+      "clause": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-hidden-input-special-cases"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-callback-arguments",
+      "clause": "The business request callback forwards the current caller model ID and, where the API has a preference parameter, the current local preference value.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-callback-arguments"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-callback-on-disclosure",
+      "clause": "The disclosure open and close paths invoke no caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-callback-on-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-callback-on-disabled",
+      "clause": "Disabled primary or choice paths cannot invoke their caller business callbacks.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-guard-predicate",
+      "clause": "The download enabled predicate is exactly availableMB >= downloadSizeMB && !(meteredConnection && wifiOnly) && !requested.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-guard-predicate"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-guard-priority",
+      "clause": "The status decision order is insufficient storage, requested, metered connection with Wi-Fi only, then ready.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-guard-priority"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-callback",
+      "clause": "Every successful pre-request Wi-Fi-only toggle forwards the resulting preference Boolean exactly once.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-callback"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-download-callback",
+      "clause": "A successful eligible download request changes local requested state and invokes onDownload exactly once.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-download-callback"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-disk-measurement",
+      "clause": "The component does not measure disk capacity; it uses the caller-supplied whole-MB availableMB and downloadSizeMB values.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-disk-measurement"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-audio-fetch",
+      "clause": "The component does not fetch or download audio data.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-audio-fetch"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    }
+  ],
+  "state_definitions": [
+    {
+      "id": "overview",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "opened",
+      "input_index": 0,
+      "after_action": 1,
+      "coverage": "targets",
+      "stimulus_action": 1
+    },
+    {
+      "id": "permitted",
+      "input_index": 0,
+      "after_action": 3,
+      "coverage": "full_content",
+      "stimulus_action": 2
+    },
+    {
+      "id": "cleared",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 4
+    },
+    {
+      "id": "restored",
+      "input_index": 0,
+      "after_action": 5,
+      "coverage": "targets",
+      "stimulus_action": 5
+    },
+    {
+      "id": "requested",
+      "input_index": 0,
+      "after_action": 7,
+      "coverage": "full_content",
+      "stimulus_action": 6
+    },
+    {
+      "id": "requested-closed",
+      "input_index": 0,
+      "after_action": 9,
+      "coverage": "full_content",
+      "stimulus_action": 8
+    },
+    {
+      "id": "replaced",
+      "input_index": 1,
+      "after_action": 11,
+      "coverage": "full_content",
+      "stimulus_action": 10
+    },
+    {
+      "id": "held-choice",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "targets",
+      "stimulus_action": 12
+    },
+    {
+      "id": "competing-gates",
+      "input_index": 2,
+      "after_action": 13,
+      "stimulus_action": 13,
+      "coverage": "targets"
+    }
+  ],
+  "sampling_limits": {
+    "runtime": "Representative states; not a Cartesian truth table. Exact-capacity equality and a Wi-Fi-only true unmetered request are not claimed as native executions.",
+    "source_audit": "Source audit is a mandatory separate conjunct and cannot prove native rendered facts or actual dispatch.",
+    "provider": "Frozen Android may perform additional sweeps after targeted actions; the plan makes only its declared target-coverage claim."
+  }
+}

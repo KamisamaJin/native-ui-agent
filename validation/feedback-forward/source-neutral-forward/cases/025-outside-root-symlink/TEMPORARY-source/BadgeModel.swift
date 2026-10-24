@@ -1,0 +1,1 @@
+/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/source-neutral-forward/fixture/source/BadgeModel.swift

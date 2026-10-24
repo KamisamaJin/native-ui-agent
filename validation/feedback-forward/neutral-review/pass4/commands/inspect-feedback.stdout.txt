@@ -1,0 +1,3310 @@
+FILE design/reference.json
+{
+  "provenance": {
+    "owner": "Independent neutral forward-test author",
+    "input": "Parent task dated 2026-10-24: domain-neutral SwiftUI long content; real action, caller replacement, disabled action; four states; ordinary/narrow large-text fixtures.",
+    "interpretation": "A reading-notes panel with ten neutral cards and one review action. This design was fixed before source implementation and before any native image or execution.",
+    "independence_limit": "Separate from the Skill implementation/optimizer and earlier validation results. Design and component are authored sequentially in this tester context; hashes cannot prove semantic correctness."
+  },
+  "labels": {
+    "titleA": {
+      "value": "Observation notes",
+      "unit": "string"
+    },
+    "titleB": {
+      "value": "Revised observation notes",
+      "unit": "string"
+    },
+    "summaryA": {
+      "value": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.",
+      "unit": "string"
+    },
+    "summaryB": {
+      "value": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.",
+      "unit": "string"
+    },
+    "revisionA": {
+      "value": "Input revision: A",
+      "unit": "string"
+    },
+    "revisionB": {
+      "value": "Input revision: B",
+      "unit": "string"
+    },
+    "status0": {
+      "value": "Review count: 0",
+      "unit": "string"
+    },
+    "status1": {
+      "value": "Review count: 1",
+      "unit": "string"
+    },
+    "actionReady": {
+      "value": "Mark notes reviewed",
+      "unit": "string"
+    },
+    "actionDone": {
+      "value": "Review marked",
+      "unit": "string"
+    },
+    "footerA0": {
+      "value": "End note: revision A; review count 0",
+      "unit": "string"
+    },
+    "footerA1": {
+      "value": "End note: revision A; review count 1",
+      "unit": "string"
+    },
+    "footerB1": {
+      "value": "End note: revision B; review count 1",
+      "unit": "string"
+    },
+    "opening": {
+      "value": "01 · Opening note",
+      "unit": "string"
+    },
+    "middle": {
+      "value": "05 · Pause note",
+      "unit": "string"
+    },
+    "closing": {
+      "value": "10 · Closing note",
+      "unit": "string"
+    },
+    "buttonRole": {
+      "value": "button",
+      "unit": "string"
+    }
+  },
+  "behavior": {
+    "yes": {
+      "value": true,
+      "unit": "bool"
+    },
+    "no": {
+      "value": false,
+      "unit": "bool"
+    },
+    "reviewed": {
+      "value": [
+        "notes.reviewed.A"
+      ],
+      "unit": "events"
+    },
+    "quiet": {
+      "value": [],
+      "unit": "events"
+    }
+  },
+  "geometry": {
+    "minimumActionHeight": {
+      "value": 52,
+      "unit": "pt"
+    },
+    "minimumActionHeightAndroid": {
+      "value": 52,
+      "unit": "dp"
+    }
+  },
+  "visual": {
+    "fullLayout": {
+      "value": "One vertical reading sequence: heading, summary, revision, review count, cards 01–06, review action, cards 07–10, and end note. Cards have distinct neutral surfaces and vertical gaps. No horizontal clipping, overlap, missing cards, or accidental reordering. Required full-content evidence must reach the real bottom with overlap.",
+      "unit": "string"
+    },
+    "wrapping": {
+      "value": "At the approved offered width and Dynamic Type, all headings, summaries, card text, review labels, and end note remain readable and wrap naturally without truncation or ellipses. Narrow text may increase the content height.",
+      "unit": "string"
+    },
+    "enabledAction": {
+      "value": "The review action uses a dark blue-gray fill #263746 with white readable text, rounded corners, and at least a 52 pt accessibility control height.",
+      "unit": "string"
+    },
+    "disabledAction": {
+      "value": "The disabled review action uses a pale gray fill #DCE2E7 with dark gray readable text #55616C, rounded corners, and at least a 52 pt accessibility control height.",
+      "unit": "string"
+    },
+    "surface": {
+      "value": "The canvas is white #FFFFFF. Cards use #F4F6F8. Main text is #17212B and secondary text is #43515E. These are rendered visual expectations; public SwiftUI AX cannot establish computed color or font attributes.",
+      "unit": "string"
+    }
+  },
+  "design": {
+    "offeredWidths": [
+      400,
+      280
+    ],
+    "hostHorizontalPaddingPt": 16,
+    "childWidthsPt": [
+      368,
+      248
+    ],
+    "ordinaryDynamicType": "large",
+    "narrowDynamicType": "xxxLarge",
+    "layout": "VStack spacing 18 pt; each card content padding 16 pt, minimum outer height 180 pt; card radius 12 pt; review action minimum height 52 pt. Typography uses scalable title2, body, headline and subheadline styles. No fixed text heights.",
+    "heightIntent": "Approximately four to five 600 pt viewports at the ordinary fixture. Narrow large text may grow; actual native content height is recorded rather than forced to an expected height."
+  },
+  "obligations": [
+    {
+      "id": "current-input",
+      "clause": "Visible title, summary and revision match the current caller input in every required state.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "review-state",
+      "clause": "The review starts at zero, becomes one after activation, and remains one across caller replacement and disabled observation.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "real-review",
+      "clause": "The enabled review action is uniquely dispatched through XCUI tap and emits exactly notes.reviewed.A once.",
+      "priority": "must",
+      "states": [
+        "reviewed"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "quiet-replacement",
+      "clause": "Caller replacement advances exactly one input in the same mounted instance without a business callback.",
+      "priority": "must",
+      "states": [
+        "replaced"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "availability",
+      "clause": "The review action is enabled for revision A and disabled for revision B; disabled observation is not dispatched or scored as callback success.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "long-content",
+      "clause": "All ten cards and the footer remain reachable in the required full-content states, and the remote anchors remain observed for every target checkpoint.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "readable-layout",
+      "clause": "Both fixture configurations have readable wrapping, no horizontal clipping or overlap, and the approved vertical order.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "replaced"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "appearance",
+      "clause": "The neutral surfaces and action appearance follow the approved colors and minimum native control height.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "style"
+    }
+  ]
+}
+
+FILE design/lock.json
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "Independent neutral forward-test author",
+    "approval_reference": "neutral/design/PREIMPLEMENTATION.json and neutral/APPROVAL.json; frozen before native launch",
+    "sources": [
+      {
+        "id": "reference",
+        "path": "reference.json",
+        "sha256": "9b2e24c2da1a53999fbcd278da7b09601f1f9750bdfd916f56624e42b98d37ba"
+      },
+      {
+        "id": "launch",
+        "path": "launch.json",
+        "sha256": "92b073cee0cb0eda2489ac3a340af80142928e48015d8e5d18f8d2458bb6565a"
+      }
+    ],
+    "required_rule_ids": [
+      "title",
+      "summary",
+      "revision",
+      "review-count",
+      "action-label",
+      "action-enabled",
+      "action-unique",
+      "action-role",
+      "action-height",
+      "opening-anchor",
+      "middle-anchor",
+      "closing-anchor",
+      "footer",
+      "activation-receipt",
+      "replacement-receipt",
+      "full-layout",
+      "text-wrapping",
+      "neutral-surfaces",
+      "action-appearance"
+    ],
+    "rules": [
+      {
+        "id": "title",
+        "kind": "control",
+        "target": "title",
+        "property": "label"
+      },
+      {
+        "id": "summary",
+        "kind": "control",
+        "target": "summary",
+        "property": "label"
+      },
+      {
+        "id": "revision",
+        "kind": "control",
+        "target": "revision",
+        "property": "label"
+      },
+      {
+        "id": "review-count",
+        "kind": "control",
+        "target": "status",
+        "property": "label"
+      },
+      {
+        "id": "action-label",
+        "kind": "control",
+        "target": "action",
+        "property": "label"
+      },
+      {
+        "id": "action-enabled",
+        "kind": "control",
+        "target": "action",
+        "property": "enabled"
+      },
+      {
+        "id": "action-unique",
+        "kind": "control",
+        "target": "action",
+        "property": "unique"
+      },
+      {
+        "id": "action-role",
+        "kind": "control",
+        "target": "action",
+        "property": "control_role"
+      },
+      {
+        "id": "action-height",
+        "kind": "geometry",
+        "target": "action",
+        "property": "height",
+        "basis": "control",
+        "measurement": "accessibility_box",
+        "op": "gte"
+      },
+      {
+        "id": "opening-anchor",
+        "kind": "control",
+        "target": "opening",
+        "property": "label"
+      },
+      {
+        "id": "middle-anchor",
+        "kind": "control",
+        "target": "middle",
+        "property": "label"
+      },
+      {
+        "id": "closing-anchor",
+        "kind": "control",
+        "target": "closing",
+        "property": "label"
+      },
+      {
+        "id": "footer",
+        "kind": "control",
+        "target": "footer",
+        "property": "label"
+      },
+      {
+        "id": "activation-receipt",
+        "kind": "event",
+        "required_method": "xcui_tap"
+      },
+      {
+        "id": "replacement-receipt",
+        "kind": "event",
+        "stimulus": "caller_update",
+        "required_method": "caller_fixture_update"
+      },
+      {
+        "id": "full-layout",
+        "kind": "manual",
+        "target": "title",
+        "coverage": "full_content",
+        "allowed_methods": [
+          "visual"
+        ]
+      },
+      {
+        "id": "text-wrapping",
+        "kind": "manual",
+        "target": "summary",
+        "coverage": "full_content",
+        "allowed_methods": [
+          "visual"
+        ]
+      },
+      {
+        "id": "neutral-surfaces",
+        "kind": "manual",
+        "target": "middle",
+        "coverage": "target",
+        "allowed_methods": [
+          "visual"
+        ]
+      },
+      {
+        "id": "action-appearance",
+        "kind": "manual",
+        "target": "action",
+        "coverage": "target",
+        "allowed_methods": [
+          "visual"
+        ]
+      }
+    ],
+    "scenarios": {
+      "ordinary400": {
+        "states": [
+          {
+            "id": "ready",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          },
+          {
+            "id": "reviewed",
+            "input_index": 0,
+            "after_action": 1,
+            "coverage": "targets"
+          },
+          {
+            "id": "replaced",
+            "input_index": 1,
+            "after_action": 3,
+            "stimulus_action": 2,
+            "coverage": "full_content"
+          },
+          {
+            "id": "disabled",
+            "input_index": 1,
+            "after_action": 4,
+            "coverage": "targets"
+          }
+        ],
+        "actions": [
+          {
+            "type": "sweep",
+            "state_id": "ready",
+            "max_steps": 28
+          },
+          {
+            "type": "tap",
+            "target": "action",
+            "reveal": true,
+            "expect_callback": "notes.reviewed.A",
+            "state_id": "reviewed",
+            "observation_max_scrolls": 36
+          },
+          {
+            "type": "apply_next_fixture"
+          },
+          {
+            "type": "sweep",
+            "state_id": "replaced",
+            "max_steps": 28
+          },
+          {
+            "type": "tap",
+            "target": "action",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "disabled",
+            "observation_max_scrolls": 36
+          }
+        ],
+        "values": {
+          "title": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              }
+            }
+          },
+          "summary": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              }
+            }
+          },
+          "revision": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              }
+            }
+          },
+          "review-count": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status0"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status0"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              }
+            }
+          },
+          "action-label": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionReady"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionReady"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              }
+            }
+          },
+          "action-role": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            }
+          },
+          "opening-anchor": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            }
+          },
+          "middle-anchor": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            }
+          },
+          "closing-anchor": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            }
+          },
+          "footer": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerA0"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerA0"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerA1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerA1"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              }
+            }
+          },
+          "action-enabled": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              }
+            }
+          },
+          "action-unique": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            }
+          },
+          "action-height": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            }
+          },
+          "activation-receipt": {
+            "ready": {
+              "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/reviewed"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/reviewed"
+              }
+            },
+            "replaced": {
+              "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+            },
+            "disabled": {
+              "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+            }
+          },
+          "replacement-receipt": {
+            "ready": {
+              "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+            },
+            "reviewed": {
+              "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/quiet"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/quiet"
+              }
+            },
+            "disabled": {
+              "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+            }
+          },
+          "full-layout": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              }
+            },
+            "reviewed": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              }
+            },
+            "disabled": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            }
+          },
+          "text-wrapping": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              }
+            },
+            "reviewed": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              }
+            },
+            "disabled": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            }
+          },
+          "neutral-surfaces": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            }
+          },
+          "action-appearance": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              }
+            }
+          }
+        }
+      },
+      "narrow280-large": {
+        "states": [
+          {
+            "id": "ready",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          },
+          {
+            "id": "reviewed",
+            "input_index": 0,
+            "after_action": 1,
+            "coverage": "targets"
+          },
+          {
+            "id": "replaced",
+            "input_index": 1,
+            "after_action": 3,
+            "stimulus_action": 2,
+            "coverage": "full_content"
+          },
+          {
+            "id": "disabled",
+            "input_index": 1,
+            "after_action": 4,
+            "coverage": "targets"
+          }
+        ],
+        "actions": [
+          {
+            "type": "sweep",
+            "state_id": "ready",
+            "max_steps": 28
+          },
+          {
+            "type": "tap",
+            "target": "action",
+            "reveal": true,
+            "expect_callback": "notes.reviewed.A",
+            "state_id": "reviewed",
+            "observation_max_scrolls": 36
+          },
+          {
+            "type": "apply_next_fixture"
+          },
+          {
+            "type": "sweep",
+            "state_id": "replaced",
+            "max_steps": 28
+          },
+          {
+            "type": "tap",
+            "target": "action",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "disabled",
+            "observation_max_scrolls": 36
+          }
+        ],
+        "values": {
+          "title": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              }
+            }
+          },
+          "summary": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              }
+            }
+          },
+          "revision": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              }
+            }
+          },
+          "review-count": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status0"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status0"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              }
+            }
+          },
+          "action-label": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionReady"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionReady"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              }
+            }
+          },
+          "action-role": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            }
+          },
+          "opening-anchor": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            }
+          },
+          "middle-anchor": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            }
+          },
+          "closing-anchor": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            }
+          },
+          "footer": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerA0"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerA0"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerA1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerA1"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              }
+            }
+          },
+          "action-enabled": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              }
+            }
+          },
+          "action-unique": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            }
+          },
+          "action-height": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            }
+          },
+          "activation-receipt": {
+            "ready": {
+              "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/reviewed"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/reviewed"
+              }
+            },
+            "replaced": {
+              "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+            },
+            "disabled": {
+              "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+            }
+          },
+          "replacement-receipt": {
+            "ready": {
+              "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+            },
+            "reviewed": {
+              "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/quiet"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/quiet"
+              }
+            },
+            "disabled": {
+              "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+            }
+          },
+          "full-layout": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              }
+            },
+            "reviewed": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              }
+            },
+            "disabled": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            }
+          },
+          "text-wrapping": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              }
+            },
+            "reviewed": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              }
+            },
+            "disabled": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            }
+          },
+          "neutral-surfaces": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            }
+          },
+          "action-appearance": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "reference": {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "9b2e24c2da1a53999fbcd278da7b09601f1f9750bdfd916f56624e42b98d37ba",
+      "document": {
+        "provenance": {
+          "owner": "Independent neutral forward-test author",
+          "input": "Parent task dated 2026-10-24: domain-neutral SwiftUI long content; real action, caller replacement, disabled action; four states; ordinary/narrow large-text fixtures.",
+          "interpretation": "A reading-notes panel with ten neutral cards and one review action. This design was fixed before source implementation and before any native image or execution.",
+          "independence_limit": "Separate from the Skill implementation/optimizer and earlier validation results. Design and component are authored sequentially in this tester context; hashes cannot prove semantic correctness."
+        },
+        "labels": {
+          "titleA": {
+            "value": "Observation notes",
+            "unit": "string"
+          },
+          "titleB": {
+            "value": "Revised observation notes",
+            "unit": "string"
+          },
+          "summaryA": {
+            "value": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.",
+            "unit": "string"
+          },
+          "summaryB": {
+            "value": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.",
+            "unit": "string"
+          },
+          "revisionA": {
+            "value": "Input revision: A",
+            "unit": "string"
+          },
+          "revisionB": {
+            "value": "Input revision: B",
+            "unit": "string"
+          },
+          "status0": {
+            "value": "Review count: 0",
+            "unit": "string"
+          },
+          "status1": {
+            "value": "Review count: 1",
+            "unit": "string"
+          },
+          "actionReady": {
+            "value": "Mark notes reviewed",
+            "unit": "string"
+          },
+          "actionDone": {
+            "value": "Review marked",
+            "unit": "string"
+          },
+          "footerA0": {
+            "value": "End note: revision A; review count 0",
+            "unit": "string"
+          },
+          "footerA1": {
+            "value": "End note: revision A; review count 1",
+            "unit": "string"
+          },
+          "footerB1": {
+            "value": "End note: revision B; review count 1",
+            "unit": "string"
+          },
+          "opening": {
+            "value": "01 · Opening note",
+            "unit": "string"
+          },
+          "middle": {
+            "value": "05 · Pause note",
+            "unit": "string"
+          },
+          "closing": {
+            "value": "10 · Closing note",
+            "unit": "string"
+          },
+          "buttonRole": {
+            "value": "button",
+            "unit": "string"
+          }
+        },
+        "behavior": {
+          "yes": {
+            "value": true,
+            "unit": "bool"
+          },
+          "no": {
+            "value": false,
+            "unit": "bool"
+          },
+          "reviewed": {
+            "value": [
+              "notes.reviewed.A"
+            ],
+            "unit": "events"
+          },
+          "quiet": {
+            "value": [],
+            "unit": "events"
+          }
+        },
+        "geometry": {
+          "minimumActionHeight": {
+            "value": 52,
+            "unit": "pt"
+          },
+          "minimumActionHeightAndroid": {
+            "value": 52,
+            "unit": "dp"
+          }
+        },
+        "visual": {
+          "fullLayout": {
+            "value": "One vertical reading sequence: heading, summary, revision, review count, cards 01–06, review action, cards 07–10, and end note. Cards have distinct neutral surfaces and vertical gaps. No horizontal clipping, overlap, missing cards, or accidental reordering. Required full-content evidence must reach the real bottom with overlap.",
+            "unit": "string"
+          },
+          "wrapping": {
+            "value": "At the approved offered width and Dynamic Type, all headings, summaries, card text, review labels, and end note remain readable and wrap naturally without truncation or ellipses. Narrow text may increase the content height.",
+            "unit": "string"
+          },
+          "enabledAction": {
+            "value": "The review action uses a dark blue-gray fill #263746 with white readable text, rounded corners, and at least a 52 pt accessibility control height.",
+            "unit": "string"
+          },
+          "disabledAction": {
+            "value": "The disabled review action uses a pale gray fill #DCE2E7 with dark gray readable text #55616C, rounded corners, and at least a 52 pt accessibility control height.",
+            "unit": "string"
+          },
+          "surface": {
+            "value": "The canvas is white #FFFFFF. Cards use #F4F6F8. Main text is #17212B and secondary text is #43515E. These are rendered visual expectations; public SwiftUI AX cannot establish computed color or font attributes.",
+            "unit": "string"
+          }
+        },
+        "design": {
+          "offeredWidths": [
+            400,
+            280
+          ],
+          "hostHorizontalPaddingPt": 16,
+          "childWidthsPt": [
+            368,
+            248
+          ],
+          "ordinaryDynamicType": "large",
+          "narrowDynamicType": "xxxLarge",
+          "layout": "VStack spacing 18 pt; each card content padding 16 pt, minimum outer height 180 pt; card radius 12 pt; review action minimum height 52 pt. Typography uses scalable title2, body, headline and subheadline styles. No fixed text heights.",
+          "heightIntent": "Approximately four to five 600 pt viewports at the ordinary fixture. Narrow large text may grow; actual native content height is recorded rather than forced to an expected height."
+        },
+        "obligations": [
+          {
+            "id": "current-input",
+            "clause": "Visible title, summary and revision match the current caller input in every required state.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "reviewed",
+              "replaced",
+              "disabled"
+            ],
+            "risk": "content"
+          },
+          {
+            "id": "review-state",
+            "clause": "The review starts at zero, becomes one after activation, and remains one across caller replacement and disabled observation.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "reviewed",
+              "replaced",
+              "disabled"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "real-review",
+            "clause": "The enabled review action is uniquely dispatched through XCUI tap and emits exactly notes.reviewed.A once.",
+            "priority": "must",
+            "states": [
+              "reviewed"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "quiet-replacement",
+            "clause": "Caller replacement advances exactly one input in the same mounted instance without a business callback.",
+            "priority": "must",
+            "states": [
+              "replaced"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "availability",
+            "clause": "The review action is enabled for revision A and disabled for revision B; disabled observation is not dispatched or scored as callback success.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "reviewed",
+              "replaced",
+              "disabled"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "long-content",
+            "clause": "All ten cards and the footer remain reachable in the required full-content states, and the remote anchors remain observed for every target checkpoint.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "reviewed",
+              "replaced",
+              "disabled"
+            ],
+            "risk": "layout"
+          },
+          {
+            "id": "readable-layout",
+            "clause": "Both fixture configurations have readable wrapping, no horizontal clipping or overlap, and the approved vertical order.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "replaced"
+            ],
+            "risk": "layout"
+          },
+          {
+            "id": "appearance",
+            "clause": "The neutral surfaces and action appearance follow the approved colors and minimum native control height.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "reviewed",
+              "replaced",
+              "disabled"
+            ],
+            "risk": "style"
+          }
+        ]
+      },
+      "raw_utf8": "{\n  \"provenance\": {\n    \"owner\": \"Independent neutral forward-test author\",\n    \"input\": \"Parent task dated 2026-10-24: domain-neutral SwiftUI long content; real action, caller replacement, disabled action; four states; ordinary/narrow large-text fixtures.\",\n    \"interpretation\": \"A reading-notes panel with ten neutral cards and one review action. This design was fixed before source implementation and before any native image or execution.\",\n    \"independence_limit\": \"Separate from the Skill implementation/optimizer and earlier validation results. Design and component are authored sequentially in this tester context; hashes cannot prove semantic correctness.\"\n  },\n  \"labels\": {\n    \"titleA\": {\n      \"value\": \"Observation notes\",\n      \"unit\": \"string\"\n    },\n    \"titleB\": {\n      \"value\": \"Revised observation notes\",\n      \"unit\": \"string\"\n    },\n    \"summaryA\": {\n      \"value\": \"Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.\",\n      \"unit\": \"string\"\n    },\n    \"summaryB\": {\n      \"value\": \"The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.\",\n      \"unit\": \"string\"\n    },\n    \"revisionA\": {\n      \"value\": \"Input revision: A\",\n      \"unit\": \"string\"\n    },\n    \"revisionB\": {\n      \"value\": \"Input revision: B\",\n      \"unit\": \"string\"\n    },\n    \"status0\": {\n      \"value\": \"Review count: 0\",\n      \"unit\": \"string\"\n    },\n    \"status1\": {\n      \"value\": \"Review count: 1\",\n      \"unit\": \"string\"\n    },\n    \"actionReady\": {\n      \"value\": \"Mark notes reviewed\",\n      \"unit\": \"string\"\n    },\n    \"actionDone\": {\n      \"value\": \"Review marked\",\n      \"unit\": \"string\"\n    },\n    \"footerA0\": {\n      \"value\": \"End note: revision A; review count 0\",\n      \"unit\": \"string\"\n    },\n    \"footerA1\": {\n      \"value\": \"End note: revision A; review count 1\",\n      \"unit\": \"string\"\n    },\n    \"footerB1\": {\n      \"value\": \"End note: revision B; review count 1\",\n      \"unit\": \"string\"\n    },\n    \"opening\": {\n      \"value\": \"01 · Opening note\",\n      \"unit\": \"string\"\n    },\n    \"middle\": {\n      \"value\": \"05 · Pause note\",\n      \"unit\": \"string\"\n    },\n    \"closing\": {\n      \"value\": \"10 · Closing note\",\n      \"unit\": \"string\"\n    },\n    \"buttonRole\": {\n      \"value\": \"button\",\n      \"unit\": \"string\"\n    }\n  },\n  \"behavior\": {\n    \"yes\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    },\n    \"no\": {\n      \"value\": false,\n      \"unit\": \"bool\"\n    },\n    \"reviewed\": {\n      \"value\": [\n        \"notes.reviewed.A\"\n      ],\n      \"unit\": \"events\"\n    },\n    \"quiet\": {\n      \"value\": [],\n      \"unit\": \"events\"\n    }\n  },\n  \"geometry\": {\n    \"minimumActionHeight\": {\n      \"value\": 52,\n      \"unit\": \"pt\"\n    },\n    \"minimumActionHeightAndroid\": {\n      \"value\": 52,\n      \"unit\": \"dp\"\n    }\n  },\n  \"visual\": {\n    \"fullLayout\": {\n      \"value\": \"One vertical reading sequence: heading, summary, revision, review count, cards 01–06, review action, cards 07–10, and end note. Cards have distinct neutral surfaces and vertical gaps. No horizontal clipping, overlap, missing cards, or accidental reordering. Required full-content evidence must reach the real bottom with overlap.\",\n      \"unit\": \"string\"\n    },\n    \"wrapping\": {\n      \"value\": \"At the approved offered width and Dynamic Type, all headings, summaries, card text, review labels, and end note remain readable and wrap naturally without truncation or ellipses. Narrow text may increase the content height.\",\n      \"unit\": \"string\"\n    },\n    \"enabledAction\": {\n      \"value\": \"The review action uses a dark blue-gray fill #263746 with white readable text, rounded corners, and at least a 52 pt accessibility control height.\",\n      \"unit\": \"string\"\n    },\n    \"disabledAction\": {\n      \"value\": \"The disabled review action uses a pale gray fill #DCE2E7 with dark gray readable text #55616C, rounded corners, and at least a 52 pt accessibility control height.\",\n      \"unit\": \"string\"\n    },\n    \"surface\": {\n      \"value\": \"The canvas is white #FFFFFF. Cards use #F4F6F8. Main text is #17212B and secondary text is #43515E. These are rendered visual expectations; public SwiftUI AX cannot establish computed color or font attributes.\",\n      \"unit\": \"string\"\n    }\n  },\n  \"design\": {\n    \"offeredWidths\": [\n      400,\n      280\n    ],\n    \"hostHorizontalPaddingPt\": 16,\n    \"childWidthsPt\": [\n      368,\n      248\n    ],\n    \"ordinaryDynamicType\": \"large\",\n    \"narrowDynamicType\": \"xxxLarge\",\n    \"layout\": \"VStack spacing 18 pt; each card content padding 16 pt, minimum outer height 180 pt; card radius 12 pt; review action minimum height 52 pt. Typography uses scalable title2, body, headline and subheadline styles. No fixed text heights.\",\n    \"heightIntent\": \"Approximately four to five 600 pt viewports at the ordinary fixture. Narrow large text may grow; actual native content height is recorded rather than forced to an expected height.\"\n  },\n  \"obligations\": [\n    {\n      \"id\": \"current-input\",\n      \"clause\": \"Visible title, summary and revision match the current caller input in every required state.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"reviewed\",\n        \"replaced\",\n        \"disabled\"\n      ],\n      \"risk\": \"content\"\n    },\n    {\n      \"id\": \"review-state\",\n      \"clause\": \"The review starts at zero, becomes one after activation, and remains one across caller replacement and disabled observation.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"reviewed\",\n        \"replaced\",\n        \"disabled\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"real-review\",\n      \"clause\": \"The enabled review action is uniquely dispatched through XCUI tap and emits exactly notes.reviewed.A once.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"reviewed\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"quiet-replacement\",\n      \"clause\": \"Caller replacement advances exactly one input in the same mounted instance without a business callback.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"replaced\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"availability\",\n      \"clause\": \"The review action is enabled for revision A and disabled for revision B; disabled observation is not dispatched or scored as callback success.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"reviewed\",\n        \"replaced\",\n        \"disabled\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"long-content\",\n      \"clause\": \"All ten cards and the footer remain reachable in the required full-content states, and the remote anchors remain observed for every target checkpoint.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"reviewed\",\n        \"replaced\",\n        \"disabled\"\n      ],\n      \"risk\": \"layout\"\n    },\n    {\n      \"id\": \"readable-layout\",\n      \"clause\": \"Both fixture configurations have readable wrapping, no horizontal clipping or overlap, and the approved vertical order.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"replaced\"\n      ],\n      \"risk\": \"layout\"\n    },\n    {\n      \"id\": \"appearance\",\n      \"clause\": \"The neutral surfaces and action appearance follow the approved colors and minimum native control height.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"reviewed\",\n        \"replaced\",\n        \"disabled\"\n      ],\n      \"risk\": \"style\"\n    }\n  ]\n}\n"
+    },
+    "launch": {
+      "id": "launch",
+      "path": "launch.json",
+      "sha256": "92b073cee0cb0eda2489ac3a340af80142928e48015d8e5d18f8d2458bb6565a",
+      "document": {
+        "ordinary400": {
+          "scenario": "ordinary400",
+          "platform": "ios",
+          "fixtures_sha256": "0bcd865edfdf48a7db06be4d00bca5221293e8cd8c21041beda6fa0f66210457",
+          "bridge_sha256": "e305444db6b8b4a47c122d0f18615ae889cedd1daf8b2509b8d6bac82b783c1a"
+        },
+        "narrow280-large": {
+          "scenario": "narrow280-large",
+          "platform": "ios",
+          "fixtures_sha256": "874caa825885cc604d73a0eb7a11d3077c6267ae82e28123f7b50c6b72dba19f",
+          "bridge_sha256": "e305444db6b8b4a47c122d0f18615ae889cedd1daf8b2509b8d6bac82b783c1a"
+        }
+      },
+      "raw_utf8": "{\n  \"ordinary400\": {\n    \"scenario\": \"ordinary400\",\n    \"platform\": \"ios\",\n    \"fixtures_sha256\": \"0bcd865edfdf48a7db06be4d00bca5221293e8cd8c21041beda6fa0f66210457\",\n    \"bridge_sha256\": \"e305444db6b8b4a47c122d0f18615ae889cedd1daf8b2509b8d6bac82b783c1a\"\n  },\n  \"narrow280-large\": {\n    \"scenario\": \"narrow280-large\",\n    \"platform\": \"ios\",\n    \"fixtures_sha256\": \"874caa825885cc604d73a0eb7a11d3077c6267ae82e28123f7b50c6b72dba19f\",\n    \"bridge_sha256\": \"e305444db6b8b4a47c122d0f18615ae889cedd1daf8b2509b8d6bac82b783c1a\"\n  }\n}\n"
+    }
+  },
+  "contract_sha256": "80c49b230929bc6e2e9579aabb1f5123f7096baa271ed9a604d8ca291db375c0",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}
+
+FILE source/Bridge.swift
+import SwiftUI
+
+// Self-contained production component for this neutral forward test.
+// The bridge only decodes caller values and forwards the component's real event.
+enum ObserverBridge {
+    static func make(fixture: [String: Any],
+                     onEvent: @escaping (String) -> Void) -> AnyView {
+        AnyView(NeutralNotesPanel(model: NotesInput(fixture), onReview: onEvent))
+    }
+}
+
+private struct NotesSection: Identifiable {
+    let number: Int
+    let title: String
+    let body: String
+    var id: Int { number }
+    var heading: String { String(format: "%02d", number) + " · " + title }
+}
+
+private struct NotesInput {
+    let title: String
+    let summary: String
+    let revision: String
+    let canReview: Bool
+    let sections: [NotesSection]
+
+    init(_ fixture: [String: Any]) {
+        title = fixture["title"] as? String ?? ""
+        summary = fixture["summary"] as? String ?? ""
+        revision = fixture["revision"] as? String ?? ""
+        canReview = fixture["can_review"] as? Bool ?? false
+        sections = (fixture["sections"] as? [[String: Any]] ?? []).map {
+            NotesSection(number: $0["number"] as? Int ?? 0,
+                         title: $0["title"] as? String ?? "",
+                         body: $0["body"] as? String ?? "")
+        }
+    }
+}
+
+private enum NotesPalette {
+    static let main = Color(red: 23.0 / 255, green: 33.0 / 255, blue: 43.0 / 255)
+    static let secondary = Color(red: 67.0 / 255, green: 81.0 / 255, blue: 94.0 / 255)
+    static let surface = Color(red: 244.0 / 255, green: 246.0 / 255, blue: 248.0 / 255)
+    static let action = Color(red: 38.0 / 255, green: 55.0 / 255, blue: 70.0 / 255)
+    static let disabled = Color(red: 220.0 / 255, green: 226.0 / 255, blue: 231.0 / 255)
+    static let disabledText = Color(red: 85.0 / 255, green: 97.0 / 255, blue: 108.0 / 255)
+}
+
+private struct NeutralNotesPanel: View {
+    let model: NotesInput
+    let onReview: (String) -> Void
+    @State private var reviewCount = 0
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            Text(model.title)
+                .font(.title2.weight(.semibold))
+                .foregroundStyle(NotesPalette.main)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityIdentifier("notes.title")
+            Text(model.summary)
+                .font(.body)
+                .foregroundStyle(NotesPalette.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityIdentifier("notes.summary")
+            Text("Input revision: \(model.revision)")
+                .font(.subheadline)
+                .foregroundStyle(NotesPalette.secondary)
+                .accessibilityIdentifier("notes.revision")
+            Text("Review count: \(reviewCount)")
+                .font(.headline)
+                .foregroundStyle(NotesPalette.main)
+                .accessibilityIdentifier("notes.status")
+
+            ForEach(model.sections) { section in
+                card(section)
+                if section.number == 6 {
+                    reviewAction
+                }
+            }
+
+            Text("End note: revision \(model.revision); review count \(reviewCount)")
+                .font(.subheadline)
+                .foregroundStyle(NotesPalette.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.vertical, 12)
+                .accessibilityIdentifier("notes.footer")
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func card(_ section: NotesSection) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(section.heading)
+                .font(.headline)
+                .foregroundStyle(NotesPalette.main)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityIdentifier(headingIdentifier(section.number))
+            Text(section.body)
+                .font(.body)
+                .foregroundStyle(NotesPalette.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityIdentifier("notes.body.\(section.number)")
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, minHeight: 180, alignment: .topLeading)
+        .background(NotesPalette.surface, in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    private var reviewAction: some View {
+        Button {
+            reviewCount += 1
+            onReview("notes.reviewed.\(model.revision)")
+        } label: {
+            Text(reviewCount == 0 ? "Mark notes reviewed" : "Review marked")
+                .font(.headline)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+                .frame(maxWidth: .infinity, minHeight: 52)
+                .foregroundStyle(model.canReview ? Color.white : NotesPalette.disabledText)
+                .background(model.canReview ? NotesPalette.action : NotesPalette.disabled,
+                            in: RoundedRectangle(cornerRadius: 12))
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(!model.canReview)
+        .accessibilityIdentifier("notes.action")
+    }
+
+    private func headingIdentifier(_ number: Int) -> String {
+        switch number {
+        case 1: return "notes.opening"
+        case 5: return "notes.middle"
+        case 10: return "notes.closing"
+        default: return "notes.heading.\(number)"
+        }
+    }
+}
+
+FILE feedback/request.json
+{
+  "version": 1,
+  "startedAtUnix": 1792851852.161227,
+  "execution_sha256": "733a3226c61e7edeec1dbf957243f4d7f02feaf56acbb85a5e61506a60db1148",
+  "source_sha256": "d135e16428ff8c4f58ee1de5fcea82abc5423d564671dbd01d27361d9e125909",
+  "source_roots": [
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/neutral/source/Bridge.swift"
+  ],
+  "argv": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-B",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/development/candidate-attempt-4/scripts/ios_observe.py",
+    "run",
+    "--bridge",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/neutral/source/Bridge.swift",
+    "--fixtures",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/cache/neutral-targeted-v4/fixtures.json",
+    "--actions",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/cache/neutral-targeted-v4/actions.json",
+    "--output",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/cache/neutral-targeted-v4/native",
+    "--simulator",
+    "CA7BB2E0-0C2B-49C1-B368-5D0DC816F4D2",
+    "--developer-dir",
+    "/Applications/Xcode.app/Contents/Developer",
+    "--build-cache",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/cache/benchmark-build"
+  ],
+  "scope": "targeted",
+  "input_hashes": {
+    "fixtures.json": "a0753f3b8ca716ecd673fcca659e6edfdd67019fc448754357e3e1d41b38bbfe",
+    "actions.json": "aaf5caa81693136e8a0394eb46089d815b57586a9a71e48796b12c251833fcfb"
+  }
+}
+
+FILE feedback/result.json
+{
+  "version": 1,
+  "startedAtUnix": 1792851852.161227,
+  "execution_sha256": "733a3226c61e7edeec1dbf957243f4d7f02feaf56acbb85a5e61506a60db1148",
+  "source_sha256": "d135e16428ff8c4f58ee1de5fcea82abc5423d564671dbd01d27361d9e125909",
+  "source_roots": [
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/neutral/source/Bridge.swift"
+  ],
+  "argv": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-B",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/development/candidate-attempt-4/scripts/ios_observe.py",
+    "run",
+    "--bridge",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/neutral/source/Bridge.swift",
+    "--fixtures",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/cache/neutral-targeted-v4/fixtures.json",
+    "--actions",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/cache/neutral-targeted-v4/actions.json",
+    "--output",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/cache/neutral-targeted-v4/native",
+    "--simulator",
+    "CA7BB2E0-0C2B-49C1-B368-5D0DC816F4D2",
+    "--developer-dir",
+    "/Applications/Xcode.app/Contents/Developer",
+    "--build-cache",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/cache/benchmark-build"
+  ],
+  "scope": "targeted",
+  "input_hashes": {
+    "fixtures.json": "a0753f3b8ca716ecd673fcca659e6edfdd67019fc448754357e3e1d41b38bbfe",
+    "actions.json": "aaf5caa81693136e8a0394eb46089d815b57586a9a71e48796b12c251833fcfb"
+  },
+  "native_exit_code": 0,
+  "nativeFinishedAtUnix": 1792851898.346504,
+  "source_unchanged": true,
+  "inputs_unchanged": true,
+  "image_hashes": {
+    "attachments/5EE4A088-181F-4D9E-9CC6-0B4879E15BD7.png": "8ff54c8408af883f28418257f56682ae9a10c47e15b8edfc64587405cfa869a7",
+    "attachments/8FF0A499-9A8F-4940-AC4B-CF042D64A14F.png": "8ff54c8408af883f28418257f56682ae9a10c47e15b8edfc64587405cfa869a7",
+    "attachments/9512E3F2-D23E-4D0C-AEEC-DC269BDA2973.png": "8ff54c8408af883f28418257f56682ae9a10c47e15b8edfc64587405cfa869a7",
+    "attachments/89FFC8AB-3F3F-4BBC-9854-9B5330008F99.png": "8ff54c8408af883f28418257f56682ae9a10c47e15b8edfc64587405cfa869a7",
+    "attachments/3697663E-B422-4392-A290-D7810D5942EC.png": "4e905254b728762e5e68a7af92efef2beb75b875cf41c8e50e65f0d81354ece2",
+    "attachments/B6292F8C-FC5D-4E88-937B-8B33766EA3D8.png": "c51e040af4a4793b9e16856949caea25032ff9458eb609b27779eeaf08198029",
+    "attachments/C276E86D-BE57-49AC-921A-2FCF12B25CC3.png": "b0276b6eebec050e033c5f33dd9277e55a322dbc6491f010111e3b49995d2678",
+    "attachments/79CC33A8-CD0A-4907-B555-93E8B1F87087.png": "d8911c5d83090a5454495d6a7a5ea63e57207347e35d17564786ee9b91446fc5",
+    "attachments/03846BB8-17E7-46A5-9768-DCE5576F958A.png": "b0ce289e43456fcb52daa2aa7a76428b77e388f74a26d4fdf866b315da12d792",
+    "attachments/AEF002C4-90DA-43EE-9D39-2F42FF9CFA32.png": "b0ce289e43456fcb52daa2aa7a76428b77e388f74a26d4fdf866b315da12d792",
+    "attachments/C695434B-981C-47E5-860A-D5C416D245B2.png": "45061d94b65b1f07cb42b99e761ee55e1b3b93127d2c0d678d8d5b02eb2d5b76",
+    "attachments/E073FFB7-3529-4FEF-AF53-B3E2FDA63E45.png": "068307a5e7caabc56eb3c7dd7677cb19139ffbaa0601400ee31c02422bfebc3b",
+    "attachments/FEC4D2D7-A684-4C15-9DC1-0BA3FF2177A9.png": "787beb10e5bb746e14b797acd7f782a7d7cf520618007f72ec8a1252e921b854",
+    "attachments/ABB0894A-253A-423D-9740-F596A51019BB.png": "43edcd670dc92425dbe0774793f2d0e6896e2503271602c132a165a63d717a1a",
+    "attachments/0F072EBD-050E-4715-962A-C4D5DE294382.png": "31bfb78f41e1f47ed034101d205ef5091233da70b9988f27423d582180122959",
+    "attachments/901BABB4-B67C-473A-9B73-873CE4C8B25E.png": "9dcdd39cd6404fd45b39dae5169db06279ce9548923407ad659e1b63f0d8a09a",
+    "attachments/954C1D06-B087-444B-926A-EB342A0F8414.png": "9d64f18f1bd412070183805af5061039b4c23d558b1621c043cf35db501c0273",
+    "attachments/114A2904-75AB-48EE-A380-CF869B9CC21A.png": "88c5f60080e986a2b6f2c88fd06e92df92cc89e221dbcb1013b9aa8873652463",
+    "attachments/D5DE723D-6038-4553-A7E8-D32BD3EE04AC.png": "69e957ba3b120645e57484bb61cbc7d10ef7c162e805dae086ac80644611b599",
+    "attachments/4648A694-10C6-4AF6-AD37-27968F465451.png": "022c76ec413823049f2bc47336e296199f8044987434010f0050d01a33efa7bf",
+    "attachments/845D69F4-9BE3-47E2-A759-28BBED87409A.png": "022c76ec413823049f2bc47336e296199f8044987434010f0050d01a33efa7bf",
+    "attachments/A350885E-1C91-4705-9BD2-28EC42F8E4F7.png": "022c76ec413823049f2bc47336e296199f8044987434010f0050d01a33efa7bf"
+  },
+  "environment_status": "P",
+  "environment_expectation_sha256": "09c3fac06492debcde043af9d8e5c3cfcde1007aad7bd484373a563ead08005c",
+  "coverage_satisfied": true,
+  "automatic_counts": {
+    "passed": 21,
+    "failed": 0,
+    "unassessed": 45
+  },
+  "automatic_sha256": "7212c29cba057c4e5f92bb2c7daf7a3a6315216dbfb11749cd208f0caba9ad28",
+  "observation_sha256": "e78246f77954bc049495ca43f21d71e718a60b7431e07bd697466bb75e36df2f",
+  "parent_plan_sha256": "df5cf3e4386dc1686f097a79df02a5a3fcd3b34b9033a6bb07435ceacae43344",
+  "finishedAtUnix": 1792851898.365859,
+  "status": "verified_capture",
+  "scope_limit": "A source-bound capture/automatic-check result, not full PR acceptance or independent visual truth."
+}
+
+FILE feedback/portable-scope.json
+{
+  "source": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/cache/neutral-targeted-v4",
+  "omitted_system_videos": [],
+  "retained": "All collected PNG snapshots, raw JSON, native summaries, exact inputs/compiled host source and command logs. DerivedData/xcresult caches omitted."
+}
+
+FILE feedback/execution-coverage.json
+{
+  "execution_sha256": "733a3226c61e7edeec1dbf957243f4d7f02feaf56acbb85a5e61506a60db1148",
+  "scope": "targeted",
+  "required_states": [
+    {
+      "state_id": "replaced",
+      "complete": true,
+      "satisfied": true,
+      "reason": "native interval union complete",
+      "targets": [
+        {
+          "target": {
+            "identifier": "notes.title"
+          },
+          "indices": [
+            12
+          ],
+          "observed": true
+        },
+        {
+          "target": {
+            "identifier": "notes.summary"
+          },
+          "indices": [
+            12
+          ],
+          "observed": true
+        },
+        {
+          "target": {
+            "identifier": "notes.revision"
+          },
+          "indices": [
+            12
+          ],
+          "observed": true
+        },
+        {
+          "target": {
+            "identifier": "notes.status"
+          },
+          "indices": [
+            12
+          ],
+          "observed": true
+        },
+        {
+          "target": {
+            "identifier": "notes.action"
+          },
+          "indices": [
+            16,
+            17
+          ],
+          "observed": true
+        },
+        {
+          "target": {
+            "identifier": "notes.opening"
+          },
+          "indices": [
+            12,
+            13
+          ],
+          "observed": true
+        },
+        {
+          "target": {
+            "identifier": "notes.middle"
+          },
+          "indices": [
+            14,
+            15,
+            16
+          ],
+          "observed": true
+        },
+        {
+          "target": {
+            "identifier": "notes.closing"
+          },
+          "indices": [
+            18,
+            19
+          ],
+          "observed": true
+        },
+        {
+          "target": {
+            "identifier": "notes.footer"
+          },
+          "indices": [
+            19
+          ],
+          "observed": true
+        }
+      ]
+    }
+  ],
+  "satisfied": true,
+  "missing_states": []
+}
+
+FILE feedback/environment-check.json
+{
+  "status": "P",
+  "expected": {
+    "theme": "light",
+    "dynamic_type": "large",
+    "direction": "ltr",
+    "width": 400,
+    "height": 600
+  },
+  "frames": [
+    {
+      "snapshot_index": 0,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 1,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 2,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 3,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 4,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 5,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 6,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 7,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 8,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 9,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 10,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 11,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 12,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 13,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 14,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 15,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 16,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 17,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 18,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 19,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 20,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    },
+    {
+      "snapshot_index": 21,
+      "actual": {
+        "width": 400,
+        "height": 600,
+        "direction": "ltr",
+        "theme": "light",
+        "dynamic_type": "large"
+      },
+      "direction_encoding": {
+        "raw": "ltr",
+        "canonical": "ltr",
+        "encoding": "ios-actual-environment-v1"
+      },
+      "native_dimensions": null,
+      "status": "P"
+    }
+  ],
+  "scope": "Actual native wire values. Unknown format is not guessed or counted as valid input."
+}
+
+FILE feedback/native/native-summary.json
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "CA7BB2E0-0C2B-49C1-B368-5D0DC816F4D2",
+        "deviceName" : "FeedbackNeutralV9",
+        "modelName" : "iPhone 17",
+        "osBuildNumber" : "23F77",
+        "osVersion" : "26.5",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 0,
+      "passedTests" : 1,
+      "skippedTests" : 0,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "Observer · Built with macOS 26.6.2",
+  "expectedFailures" : 0,
+  "failedTests" : 0,
+  "finishTime" : 1792851898.15,
+  "passedTests" : 1,
+  "result" : "Passed",
+  "runtimeWarnings" : [
+
+  ],
+  "skippedTests" : 0,
+  "startTime" : 1792851860.072,
+  "statistics" : [
+
+  ],
+  "testFailures" : [
+
+  ],
+  "title" : "Test - Observer",
+  "topInsights" : [
+
+  ],
+  "totalTestCount" : 1
+}
+
+OBS KEYS ['coverage', 'execution_scope', 'issues', 'measurement_kind', 'observation_strategy', 'operations', 'original_runtime', 'reveal_diagnostics', 'schema_version', 'serialization_diagnostics', 'snapshots', 'state_captures', 'status', 'steps', 'coverage_screenshots']
+OBS SMALL FIELDS {
+  "coverage": {
+    "bottom_reached": true,
+    "execution_scope": "targeted",
+    "missing_identifiers": [],
+    "observed_identifiers": [
+      "__observer.bottom",
+      "__observer.scroll",
+      "notes.action",
+      "notes.body.1",
+      "notes.body.10",
+      "notes.body.2",
+      "notes.body.3",
+      "notes.body.4",
+      "notes.body.5",
+      "notes.body.6",
+      "notes.body.7",
+      "notes.body.8",
+      "notes.body.9",
+      "notes.closing",
+      "notes.footer",
+      "notes.heading.2",
+      "notes.heading.3",
+      "notes.heading.4",
+      "notes.heading.6",
+      "notes.heading.7",
+      "notes.heading.8",
+      "notes.heading.9",
+      "notes.middle",
+      "notes.opening",
+      "notes.revision",
+      "notes.status",
+      "notes.summary",
+      "notes.title"
+    ],
+    "required_identifiers": [
+      "notes.title",
+      "notes.summary",
+      "notes.revision",
+      "notes.status",
+      "notes.opening",
+      "notes.middle",
+      "notes.action",
+      "notes.closing",
+      "notes.footer"
+    ]
+  },
+  "execution_scope": "targeted",
+  "issues": [],
+  "measurement_kind": "XCUIElement runtime accessibility; frames in logical screen points",
+  "observation_strategy": "coalesced",
+  "operations": {
+    "counts": {
+      "app_launch_and_ready": 1,
+      "capture": 22,
+      "full_sweep": 1,
+      "receipt_query": 7,
+      "runtime_query": 44,
+      "scroll": 14,
+      "selector_query": 5
+    },
+    "scope": "Nested inclusive operation walls, not additive elapsed time",
+    "seconds": {
+      "app_launch_and_ready": 3.1298349583521485,
+      "capture": 2.152110959403217,
+      "full_sweep": 20.884821833111346,
+      "receipt_query": 0.06631370820105076,
+      "runtime_query": 0.48519174940884113,
+      "scroll": 27.20157004147768,
+      "selector_query": 0.09825141681358218
+    }
+  },
+  "original_runtime": {
+    "actual_environment": {
+      "direction": "ltr",
+      "display_scale": 3,
+      "dynamic_type": "large",
+      "theme": "light"
+    },
+    "canvas_color": "#FFFFFF",
+    "content_frame": {
+      "height": 2346.333333333333,
+      "width": 400,
+      "x": 1,
+      "y": 62
+    },
+    "direction": "ltr",
+    "dynamic_type": "large",
+    "event_revision": 0,
+    "fixture_index": 0,
+    "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651",
+    "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3",
+    "offered_width": 400,
+    "pid": 10087,
+    "screen_scale": 3,
+    "theme": "light",
+    "viewport": {
+      "height": 600,
+      "width": 400,
+      "x": 1,
+      "y": 62
+    },
+    "viewport_height": 600
+  },
+  "reveal_diagnostics": [
+    {
+      "direction": "down",
+      "fraction": 0.45,
+      "offset_before": 0,
+      "selector": {
+        "identifier": "notes.action"
+      },
+      "step": 0,
+      "target_present": true
+    },
+    {
+      "direction": "down",
+      "fraction": 0.45,
+      "offset_before": 260,
+      "selector": {
+        "identifier": "notes.action"
+      },
+      "step": 1,
+      "target_present": true
+    },
+    {
+      "direction": "down",
+      "fraction": 0.45,
+      "offset_before": 520,
+      "selector": {
+        "identifier": "notes.action"
+      },
+      "step": 2,
+      "target_present": true
+    },
+    {
+      "direction": "down",
+      "fraction": 0.45,
+      "offset_before": 780,
+      "selector": {
+        "identifier": "notes.action"
+      },
+      "step": 3,
+      "target_present": true
+    }
+  ],
+  "schema_version": 2,
+  "serialization_diagnostics": [],
+  "state_captures": [
+    {
+      "after_action": 3,
+      "binding": {
+        "event_revision": 1,
+        "fixture_index": 1,
+        "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06",
+        "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3",
+        "pid": 10087
+      },
+      "bottom_reached": true,
+      "complete": true,
+      "content_height": 2346.333333333333,
+      "intervals": [
+        [
+          0,
+          600
+        ],
+        [
+          260,
+          860
+        ],
+        [
+          520,
+          1120
+        ],
+        [
+          780,
+          1380
+        ],
+        [
+          1040,
+          1640
+        ],
+        [
+          1300,
+          1900
+        ],
+        [
+          1560,
+          2160
+        ],
+        [
+          1746.3333333333333,
+          2346.333333333333
+        ]
+      ],
+      "max_gap": 0,
+      "observed_targets": [
+        {
+          "identifier": "notes.title"
+        },
+        {
+          "identifier": "notes.summary"
+        },
+        {
+          "identifier": "notes.revision"
+        },
+        {
+          "identifier": "notes.status"
+        },
+        {
+          "identifier": "notes.action"
+        },
+        {
+          "identifier": "notes.opening"
+        },
+        {
+          "identifier": "notes.middle"
+        },
+        {
+          "identifier": "notes.closing"
+        },
+        {
+          "identifier": "notes.footer"
+        }
+      ],
+      "return_trace"
+SNAP 0 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [], "capture_consistent": true, "control_groups": [{"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333333, "width": 183.66666666666666, "x": 17, "y": 86}, "fully_within_viewport": true, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": true, "label": "Observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333334, "width": 368, "x": 17, "y": 130.33333333333331}, "fully_within_viewport": true, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": true, "label": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110.3333333333333
+SNAP 1 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [], "capture_consistent": true, "control_groups": [{"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333333, "width": 183.66666666666666, "x": 17, "y": 86}, "fully_within_viewport": true, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": true, "label": "Observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333334, "width": 368, "x": 17, "y": 130.33333333333331}, "fully_within_viewport": true, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": true, "label": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110.3333333333333
+SNAP 2 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [], "capture_consistent": true, "control_groups": [{"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333333, "width": 183.66666666666666, "x": 17, "y": 86}, "fully_within_viewport": true, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": true, "label": "Observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333334, "width": 368, "x": 17, "y": 130.33333333333331}, "fully_within_viewport": true, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": true, "label": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110.3333333333333
+SNAP 3 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [], "capture_consistent": true, "control_groups": [{"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333333, "width": 183.66666666666666, "x": 17, "y": 86}, "fully_within_viewport": true, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": true, "label": "Observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333334, "width": 368, "x": 17, "y": 130.33333333333331}, "fully_within_viewport": true, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": true, "label": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110.3333333333333
+SNAP 4 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.333333333333314, "width": 183.66666666666666, "x": 17, "y": -174}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333334, "width": 368, "x": 17, "y": -129.66666666666669}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110.33333333333333, "x": 17, "y": -47.33333333333334}, "fully_within_viewport": false, "hittable": null, "hittable_measured": fal
+SNAP 5 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.333333333333314, "width": 183.66666666666666, "x": 17, "y": -434}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333331, "width": 368, "x": 17, "y": -389.6666666666667}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110.33333333333333, "x": 17, "y": -307.33333333333337}, "fully_within_viewport": false, "hittable": null, "hittable_measured": fal
+SNAP 6 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333337, "width": 183.66666666666666, "x": 17, "y": -694}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333326, "width": 368, "x": 17, "y": -649.6666666666666}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110.33333333333333, "x": 17, "y": -567.3333333333334}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false
+SNAP 7 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 0, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333337, "width": 183.66666666666666, "x": 17, "y": -954}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333326, "width": 368, "x": 17, "y": -909.6666666666666}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110.33333333333333, "x": 17, "y": -827.3333333333334}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false
+SNAP 8 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333337, "width": 183.66666666666666, "x": 17, "y": -954}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333326, "width": 368, "x": 17, "y": -909.6666666666666}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110.33333333333333, "x": 17, "y": -827.3333333333334
+SNAP 9 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 0, "input_sha256": "7b671773eb48cb8637a860ebd59818e222ea8a41469b88090f473eb91d5f1651", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333337, "width": 183.66666666666666, "x": 17, "y": -954}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333326, "width": 368, "x": 17, "y": -909.6666666666666}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110.33333333333333, "x": 17, "y": -827.3333333333334
+SNAP 10 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333337, "width": 263.3333333333333, "x": 17, "y": -954}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Revised observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333326, "width": 367.3333333333333, "x": 17, "y": -909.6666666666666}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110, "x": 17, "y": -827.333333
+SNAP 11 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333337, "width": 263.3333333333333, "x": 17, "y": -954}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Revised observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333326, "width": 367.3333333333333, "x": 17, "y": -909.6666666666666}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110, "x": 17, "y": -827.333333
+SNAP 12 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333333, "width": 263.3333333333333, "x": 17, "y": 86}, "fully_within_viewport": true, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": true, "label": "Revised observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333334, "width": 367.3333333333333, "x": 17, "y": 130.33333333333331}, "fully_within_viewport": true, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": true, "label": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"candidates": [], "match_count": 1, "native_control_count": 0, "resolution": "no_native_control", "selector": {"identifier"
+SNAP 13 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.333333333333314, "width": 263.3333333333333, "x": 17, "y": -174}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Revised observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333334, "width": 367.3333333333333, "x": 17, "y": -129.66666666666669}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110, "x": 17, "y": -47.33333
+SNAP 14 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.333333333333314, "width": 263.3333333333333, "x": 17, "y": -434}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Revised observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333331, "width": 367.3333333333333, "x": 17, "y": -389.6666666666667}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110, "x": 17, "y": -307.33333
+SNAP 15 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333337, "width": 263.3333333333333, "x": 17, "y": -694}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Revised observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333326, "width": 367.3333333333333, "x": 17, "y": -649.6666666666666}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110, "x": 17, "y": -567.333333
+SNAP 16 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.33333333333337, "width": 263.3333333333333, "x": 17, "y": -954}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Revised observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333326, "width": 367.3333333333333, "x": 17, "y": -909.6666666666666}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110, "x": 17, "y": -827.333333
+SNAP 17 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.333333333333258, "width": 263.3333333333333, "x": 17, "y": -1214}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Revised observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333348, "width": 367.3333333333333, "x": 17, "y": -1169.6666666666667}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110, "x": 17, "y": -1087.33
+SNAP 18 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": false, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.333333333333258, "width": 263.3333333333333, "x": 17, "y": -1474}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Revised observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333348, "width": 367.3333333333333, "x": 17, "y": -1429.6666666666667}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110, "x": 17, "y": -1347.33
+SNAP 19 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": true, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.333333333333258, "width": 263.3333333333333, "x": 17, "y": -1660.3333333333333}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Revised observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333348, "width": 367.3333333333333, "x": 17, "y": -1616}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110, "x": 17, "y": -1533.666
+SNAP 20 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": true, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.333333333333258, "width": 263.3333333333333, "x": 17, "y": -1660.3333333333333}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Revised observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333348, "width": 367.3333333333333, "x": 17, "y": -1616}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110, "x": 17, "y": -1533.666
+SNAP 21 {"app_frame": {"height": 874, "width": 402, "x": 0, "y": 0}, "binding": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "binding_after_capture": {"event_revision": 1, "fixture_index": 1, "input_sha256": "4ca4ea676d2eaa0de35704a36c09aff4b2dfb0c6ee000d908e4e318122a2ab06", "instance": "FCB3EAD9-CFEB-4519-ADCE-54BA8CB018D3", "pid": 10087}, "bottom_sentinel_visible": true, "callbacks": [{"event": "notes.reviewed.A", "fixture_index": 0, "uptime": 2844138.9345236253}], "capture_consistent": true, "control_groups": [{"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.title"}, "semantic": {"enabled": true, "frame": {"height": 26.333333333333258, "width": 263.3333333333333, "x": 17, "y": -1660.3333333333333}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.title", "index": 8, "intersects_viewport": false, "label": "Revised observation notes", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.summary"}, "semantic": {"enabled": true, "frame": {"height": 64.33333333333348, "width": 367.3333333333333, "x": 17, "y": -1616}, "fully_within_viewport": false, "hittable": null, "hittable_measured": false, "identifier": "notes.summary", "index": 9, "intersects_viewport": false, "label": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.", "parent_index": 7, "role": "XCUIElementType(rawValue: 48)", "role_raw": 48, "selected": false, "value": null}}, {"match_count": 1, "resolution": "offscreen_not_resolved", "selector": {"identifier": "notes.revision"}, "semantic": {"enabled": true, "frame": {"height": 18, "width": 110, "x": 17, "y": -1533.666
+ACTION KEYS []

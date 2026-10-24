@@ -1,0 +1,87 @@
+[
+  {
+    "command": "cat validation/feedback-forward/operators/T1-design-review-request.txt",
+    "exit_code": 0
+  },
+  {
+    "command": "date +%s; rg --files validation/feedback-forward/design/T1 validation/feedback-forward/candidate-v9 validation/feedback-forward/design-review/T1",
+    "stdout_start": "1792853831",
+    "error": "rg: validation/feedback-forward/design-review/T1: No such file or directory (os error 2)",
+    "exit_code": 2,
+    "note": "rg also omitted ignored private design files; corrected by authorized find and pathlib enumeration."
+  },
+  {
+    "command": "cat public BRIEF.md API.md COLLECTION.md Bridge.swift ObserverBridge.kt and candidate-v9/SKILL.md",
+    "exit_code": 0
+  },
+  {
+    "command": "wc -l and cat public contract.json approval.json bindings.json policy.json",
+    "exit_code": 0,
+    "note": "Tool response truncated; follow-up structured reads avoid omission."
+  },
+  {
+    "command": "find T1 -maxdepth 3 -type d; cat public/routes.json and frozen requirement_routes.py execution_plan.py",
+    "exit_code": 0,
+    "note": "Tool response truncated; specific source reads follow."
+  },
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "validation/feedback-forward/design-review/T1/review_probe.py"
+    ],
+    "startedAtUnix": 1792854016.11798,
+    "finishedAtUnix": 1792854016.1935968,
+    "exit_code": 1,
+    "stdout_file": "reconstruction.stdout.log",
+    "stderr_file": "reconstruction.stderr.log"
+  },
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "validation/feedback-forward/design-review/T1/review_probe.py"
+    ],
+    "startedAtUnix": 1792854039.290949,
+    "finishedAtUnix": 1792854039.403386,
+    "exit_code": 1,
+    "stdout_file": "reconstruction.stdout.log",
+    "stderr_file": "reconstruction.stderr.log",
+    "correction": "Reviewer probe now compares the complete caller object, including profile fields; proposal files unchanged."
+  },
+  {
+    "argv": [
+      "python3",
+      "-B",
+      "validation/feedback-forward/design-review/T1/review_probe.py"
+    ],
+    "startedAtUnix": 1792854057.9925508,
+    "finishedAtUnix": 1792854058.416466,
+    "exit_code": 0,
+    "stdout_file": "reconstruction.stdout.log",
+    "stderr_file": "reconstruction.stderr.log",
+    "correction": "Reviewer probe now accounts for the frozen review_contract CLI self-excluding catalog_sha256 augmentation, confirmed from its main function; proposal files unchanged."
+  },
+  {
+    "command": "python3 -B validation/feedback-forward/design-review/T1/write_review.py",
+    "purpose": "Write independent semantic mapping, technical assessment and revision_required review; verify all pinned source hashes unchanged."
+  },
+  {
+    "tool": "view_image",
+    "purpose": "Directly inspect original independent PNG files; no rendering or editing",
+    "paths": [
+      "validation/feedback-forward/design/T1/public/references/P1/overview.png",
+      "validation/feedback-forward/design/T1/public/references/P1/permitted.png",
+      "validation/feedback-forward/design/T1/public/references/P1/requested.png",
+      "validation/feedback-forward/design/T1/public/references/P1/replaced.png",
+      "validation/feedback-forward/design/T1/public/references/P2/overview.png",
+      "validation/feedback-forward/design/T1/public/references/P2/permitted.png",
+      "validation/feedback-forward/design/T1/public/references/P2/requested.png",
+      "validation/feedback-forward/design/T1/public/references/P2/replaced.png",
+      "validation/feedback-forward/design/T1/private/references/H1/overview.png",
+      "validation/feedback-forward/design/T1/private/references/H1/permitted.png",
+      "validation/feedback-forward/design/T1/private/references/H1/requested.png",
+      "validation/feedback-forward/design/T1/private/references/H1/replaced.png"
+    ]
+  }
+]

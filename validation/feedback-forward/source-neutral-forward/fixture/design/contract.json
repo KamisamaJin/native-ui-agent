@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "design_owner": "Independent neutral source-only forward test author",
+  "approval_reference": "source-neutral-forward/independent-pin.json; local synthetic fixture approval only",
+  "sources": [
+    {
+      "id": "neutral",
+      "path": "reference.json",
+      "sha256": "54c2ae3055af13c10d03cdde9881f7bca6d17527f10801cabdcdc54ee2ae4d3d"
+    }
+  ],
+  "required_rule_ids": [
+    "scaffold-presence"
+  ],
+  "rules": [
+    {
+      "id": "scaffold-presence",
+      "kind": "control",
+      "target": "neutral-model",
+      "property": "present"
+    }
+  ],
+  "scenarios": {
+    "neutral": {
+      "states": [
+        {
+          "id": "unobserved",
+          "after_action": -1
+        }
+      ],
+      "actions": [],
+      "values": {
+        "scaffold-presence": {
+          "unobserved": {
+            "ios": {
+              "source": "neutral",
+              "pointer": "/presence"
+            },
+            "android": {
+              "source": "neutral",
+              "pointer": "/presence"
+            }
+          }
+        }
+      }
+    }
+  }
+}

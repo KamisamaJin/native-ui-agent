@@ -1,0 +1,96 @@
+{
+  "task": "T2",
+  "panel": "one",
+  "decision": "All 62 original claims retained as U; clusters empty.",
+  "claim_population": {
+    "source-a": {
+      "total": 32,
+      "original_alarms": 10,
+      "nonalarm_observations": 22
+    },
+    "source-b": {
+      "total": 30,
+      "original_alarms": 10,
+      "nonalarm_observations": 20
+    }
+  },
+  "d0_acceptance": {
+    "native": {
+      "passed": 1505,
+      "failed": 10,
+      "unassessed": 25
+    },
+    "strict_failed_rows_cause": "All ten Android choice-label rows are uncertain in the merged cause report; one independent cause review says uncertain and the other observation.",
+    "source": {
+      "passed": 107,
+      "failed": 0,
+      "unassessed": 0
+    },
+    "confirmed_product_failure_rows": []
+  },
+  "original_evidence": {
+    "collector": {
+      "path": "corpora/T2/d0/android/P1/native/sources/NativeObserverTest.kt",
+      "lines": [
+        88,
+        89,
+        109,
+        137
+      ],
+      "finding": "raw() walks unmergedRootSemanticsNode; label() falls back to recursively concatenated descendant Text, producing the observed checkmark prefix."
+    },
+    "production": {
+      "path": "cache/builder-T2/reply/Reply/app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt",
+      "sha256": "4152e62b949abff9c8b1164b9c7980a7e04e0c30eab7b72ea6c791a6bd362906",
+      "lines": [
+        181,
+        191,
+        200,
+        205,
+        208
+      ],
+      "finding": "The actual TextButton has selected semantics, and the decorative Box clears semantics; its child Text contains the checkmark. The source hash matches the D0 corpus manifest."
+    },
+    "screenshots": {
+      "contact_sheet": "original-alarm-contact-sheet.png",
+      "originals": "Ten selected fully visible original alarm frames inspected in a derived labeled contact sheet; android/P1/native/001-state_overview_0.png also inspected directly. All 17 original machine snapshot PNGs were hashed. Contact sheet is a convenience aid, not replacement native evidence.",
+      "frames": {
+        "android/P1": [
+          1,
+          10,
+          27,
+          49,
+          54
+        ],
+        "android/P2": [
+          3,
+          17,
+          44,
+          80,
+          88
+        ]
+      },
+      "finding": "Visible Wi-Fi only wording is complete, beside a separate checkmark; selected state is exported separately. Pixels cannot establish the merged accessibility-service label."
+    },
+    "bindings": "All 62 original claim objects exactly match the original machine/manual files; all 230 original evidence references with hashes match the files."
+  },
+  "cause_group_policy": "No D0 row is independently confirmed as a product failure, so clusters=[] covers the empty product-F denominator exactly once. The ten strict failures remain unresolved, outside confirmed product cause groups. Empty groups do not assert that the component is defect-free.",
+  "separation": {
+    "style": "25 unsupported pixel atoms remain unassessed; no style failure was inferred from intent or contact-sheet appearance.",
+    "business": "The merged 107 source propositions passed; these source judgments do not certify native appearance or callback paths beyond their exact evidence.",
+    "observation": "The unmerged descendant label construction supports an observation explanation, while the merged accessibility-service label is unavailable.",
+    "infrastructure": "Native/export limitations were not promoted to product failures.",
+    "final": "Final input summaries: source-a 2285 passed/25 unassessed, source-b 2270 passed/40 unassessed. These later observations were excluded from original-alarm detection credit and D0 cause membership; no hidden FINAL row entered a D0 denominator."
+  },
+  "limits": [
+    "Independent dual-AI acceptance agreement is not human gold.",
+    "The inputs do not export an Android merged accessibility-service/TalkBack label; strict native label failure is not enough to resolve observation aggregation versus a product accessibility defect.",
+    "No explicit original-evidence-negative proof rules out a product label defect, so no FP or false_alarm_supported flag is assigned.",
+    "Manual passed and unassessed observations have explicit U rationales and remain outside the alarm denominator. Four source-a passed observations have empty original assertion_ids/scope and were not expanded.",
+    "No source, expected values, fixture, SDK, native runtime, commit, or other-agent message was changed or executed.",
+    "The optional frozen metrics self-comparison was not used. Local exact-shape/ID/subset/coverage assertions passed.",
+    "A discovery listing under the evaluation directory included T1 filenames. No T1 file contents, other panel outputs, assignments, desired conclusions, or parent handoff were opened. All evidence reads and judgments were scoped to T2.",
+    "The initial full inputs.json cat and two overbroad detail dumps were truncated by the output budget. They were followed by targeted structural summaries and exact binding/hash validation; truncation was not treated as evidence absence.",
+    "The permitted original_report repair summaries were opened to locate original claims. Their repair diagnoses, later fixes and success assertions were not used to add detection rows or settle ambiguous D0 cause."
+  ]
+}

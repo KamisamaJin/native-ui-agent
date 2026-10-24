@@ -1,0 +1,2018 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "Independent neutral forward-test author",
+    "approval_reference": "neutral/design/PREIMPLEMENTATION.json and neutral/APPROVAL.json; frozen before native launch",
+    "sources": [
+      {
+        "id": "reference",
+        "path": "reference.json",
+        "sha256": "9b2e24c2da1a53999fbcd278da7b09601f1f9750bdfd916f56624e42b98d37ba"
+      },
+      {
+        "id": "launch",
+        "path": "launch.json",
+        "sha256": "92b073cee0cb0eda2489ac3a340af80142928e48015d8e5d18f8d2458bb6565a"
+      }
+    ],
+    "required_rule_ids": [
+      "title",
+      "summary",
+      "revision",
+      "review-count",
+      "action-label",
+      "action-enabled",
+      "action-unique",
+      "action-role",
+      "action-height",
+      "opening-anchor",
+      "middle-anchor",
+      "closing-anchor",
+      "footer",
+      "activation-receipt",
+      "replacement-receipt",
+      "full-layout",
+      "text-wrapping",
+      "neutral-surfaces",
+      "action-appearance"
+    ],
+    "rules": [
+      {
+        "id": "title",
+        "kind": "control",
+        "target": "title",
+        "property": "label"
+      },
+      {
+        "id": "summary",
+        "kind": "control",
+        "target": "summary",
+        "property": "label"
+      },
+      {
+        "id": "revision",
+        "kind": "control",
+        "target": "revision",
+        "property": "label"
+      },
+      {
+        "id": "review-count",
+        "kind": "control",
+        "target": "status",
+        "property": "label"
+      },
+      {
+        "id": "action-label",
+        "kind": "control",
+        "target": "action",
+        "property": "label"
+      },
+      {
+        "id": "action-enabled",
+        "kind": "control",
+        "target": "action",
+        "property": "enabled"
+      },
+      {
+        "id": "action-unique",
+        "kind": "control",
+        "target": "action",
+        "property": "unique"
+      },
+      {
+        "id": "action-role",
+        "kind": "control",
+        "target": "action",
+        "property": "control_role"
+      },
+      {
+        "id": "action-height",
+        "kind": "geometry",
+        "target": "action",
+        "property": "height",
+        "basis": "control",
+        "measurement": "accessibility_box",
+        "op": "gte"
+      },
+      {
+        "id": "opening-anchor",
+        "kind": "control",
+        "target": "opening",
+        "property": "label"
+      },
+      {
+        "id": "middle-anchor",
+        "kind": "control",
+        "target": "middle",
+        "property": "label"
+      },
+      {
+        "id": "closing-anchor",
+        "kind": "control",
+        "target": "closing",
+        "property": "label"
+      },
+      {
+        "id": "footer",
+        "kind": "control",
+        "target": "footer",
+        "property": "label"
+      },
+      {
+        "id": "activation-receipt",
+        "kind": "event",
+        "required_method": "xcui_tap"
+      },
+      {
+        "id": "replacement-receipt",
+        "kind": "event",
+        "stimulus": "caller_update",
+        "required_method": "caller_fixture_update"
+      },
+      {
+        "id": "full-layout",
+        "kind": "manual",
+        "target": "title",
+        "coverage": "full_content",
+        "allowed_methods": [
+          "visual"
+        ]
+      },
+      {
+        "id": "text-wrapping",
+        "kind": "manual",
+        "target": "summary",
+        "coverage": "full_content",
+        "allowed_methods": [
+          "visual"
+        ]
+      },
+      {
+        "id": "neutral-surfaces",
+        "kind": "manual",
+        "target": "middle",
+        "coverage": "target",
+        "allowed_methods": [
+          "visual"
+        ]
+      },
+      {
+        "id": "action-appearance",
+        "kind": "manual",
+        "target": "action",
+        "coverage": "target",
+        "allowed_methods": [
+          "visual"
+        ]
+      }
+    ],
+    "scenarios": {
+      "ordinary400": {
+        "states": [
+          {
+            "id": "ready",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          },
+          {
+            "id": "reviewed",
+            "input_index": 0,
+            "after_action": 1,
+            "coverage": "targets"
+          },
+          {
+            "id": "replaced",
+            "input_index": 1,
+            "after_action": 3,
+            "stimulus_action": 2,
+            "coverage": "full_content"
+          },
+          {
+            "id": "disabled",
+            "input_index": 1,
+            "after_action": 4,
+            "coverage": "targets"
+          }
+        ],
+        "actions": [
+          {
+            "type": "sweep",
+            "state_id": "ready",
+            "max_steps": 28
+          },
+          {
+            "type": "tap",
+            "target": "action",
+            "reveal": true,
+            "expect_callback": "notes.reviewed.A",
+            "state_id": "reviewed",
+            "observation_max_scrolls": 36
+          },
+          {
+            "type": "apply_next_fixture"
+          },
+          {
+            "type": "sweep",
+            "state_id": "replaced",
+            "max_steps": 28
+          },
+          {
+            "type": "tap",
+            "target": "action",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "disabled",
+            "observation_max_scrolls": 36
+          }
+        ],
+        "values": {
+          "title": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              }
+            }
+          },
+          "summary": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              }
+            }
+          },
+          "revision": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              }
+            }
+          },
+          "review-count": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status0"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status0"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              }
+            }
+          },
+          "action-label": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionReady"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionReady"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              }
+            }
+          },
+          "action-role": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            }
+          },
+          "opening-anchor": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            }
+          },
+          "middle-anchor": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            }
+          },
+          "closing-anchor": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            }
+          },
+          "footer": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerA0"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerA0"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerA1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerA1"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              }
+            }
+          },
+          "action-enabled": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              }
+            }
+          },
+          "action-unique": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            }
+          },
+          "action-height": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            }
+          },
+          "activation-receipt": {
+            "ready": {
+              "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/reviewed"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/reviewed"
+              }
+            },
+            "replaced": {
+              "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+            },
+            "disabled": {
+              "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+            }
+          },
+          "replacement-receipt": {
+            "ready": {
+              "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+            },
+            "reviewed": {
+              "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/quiet"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/quiet"
+              }
+            },
+            "disabled": {
+              "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+            }
+          },
+          "full-layout": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              }
+            },
+            "reviewed": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              }
+            },
+            "disabled": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            }
+          },
+          "text-wrapping": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              }
+            },
+            "reviewed": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              }
+            },
+            "disabled": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            }
+          },
+          "neutral-surfaces": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            }
+          },
+          "action-appearance": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              }
+            }
+          }
+        }
+      },
+      "narrow280-large": {
+        "states": [
+          {
+            "id": "ready",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          },
+          {
+            "id": "reviewed",
+            "input_index": 0,
+            "after_action": 1,
+            "coverage": "targets"
+          },
+          {
+            "id": "replaced",
+            "input_index": 1,
+            "after_action": 3,
+            "stimulus_action": 2,
+            "coverage": "full_content"
+          },
+          {
+            "id": "disabled",
+            "input_index": 1,
+            "after_action": 4,
+            "coverage": "targets"
+          }
+        ],
+        "actions": [
+          {
+            "type": "sweep",
+            "state_id": "ready",
+            "max_steps": 28
+          },
+          {
+            "type": "tap",
+            "target": "action",
+            "reveal": true,
+            "expect_callback": "notes.reviewed.A",
+            "state_id": "reviewed",
+            "observation_max_scrolls": 36
+          },
+          {
+            "type": "apply_next_fixture"
+          },
+          {
+            "type": "sweep",
+            "state_id": "replaced",
+            "max_steps": 28
+          },
+          {
+            "type": "tap",
+            "target": "action",
+            "reveal": true,
+            "allow_disabled": true,
+            "state_id": "disabled",
+            "observation_max_scrolls": 36
+          }
+        ],
+        "values": {
+          "title": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/titleB"
+              }
+            }
+          },
+          "summary": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/summaryB"
+              }
+            }
+          },
+          "revision": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionA"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/revisionB"
+              }
+            }
+          },
+          "review-count": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status0"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status0"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/status1"
+              }
+            }
+          },
+          "action-label": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionReady"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionReady"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/actionDone"
+              }
+            }
+          },
+          "action-role": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/buttonRole"
+              }
+            }
+          },
+          "opening-anchor": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/opening"
+              }
+            }
+          },
+          "middle-anchor": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/middle"
+              }
+            }
+          },
+          "closing-anchor": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/closing"
+              }
+            }
+          },
+          "footer": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerA0"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerA0"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerA1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerA1"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/footerB1"
+              }
+            }
+          },
+          "action-enabled": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/no"
+              }
+            }
+          },
+          "action-unique": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/yes"
+              }
+            }
+          },
+          "action-height": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/minimumActionHeightAndroid"
+              }
+            }
+          },
+          "activation-receipt": {
+            "ready": {
+              "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/reviewed"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/reviewed"
+              }
+            },
+            "replaced": {
+              "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+            },
+            "disabled": {
+              "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+            }
+          },
+          "replacement-receipt": {
+            "ready": {
+              "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+            },
+            "reviewed": {
+              "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/behavior/quiet"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/behavior/quiet"
+              }
+            },
+            "disabled": {
+              "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+            }
+          },
+          "full-layout": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              }
+            },
+            "reviewed": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/fullLayout"
+              }
+            },
+            "disabled": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            }
+          },
+          "text-wrapping": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              }
+            },
+            "reviewed": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapping"
+              }
+            },
+            "disabled": {
+              "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+            }
+          },
+          "neutral-surfaces": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/surface"
+              }
+            }
+          },
+          "action-appearance": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              }
+            },
+            "reviewed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/enabledAction"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              }
+            },
+            "disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/disabledAction"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "reference": {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "9b2e24c2da1a53999fbcd278da7b09601f1f9750bdfd916f56624e42b98d37ba",
+      "document": {
+        "provenance": {
+          "owner": "Independent neutral forward-test author",
+          "input": "Parent task dated 2026-10-24: domain-neutral SwiftUI long content; real action, caller replacement, disabled action; four states; ordinary/narrow large-text fixtures.",
+          "interpretation": "A reading-notes panel with ten neutral cards and one review action. This design was fixed before source implementation and before any native image or execution.",
+          "independence_limit": "Separate from the Skill implementation/optimizer and earlier validation results. Design and component are authored sequentially in this tester context; hashes cannot prove semantic correctness."
+        },
+        "labels": {
+          "titleA": {
+            "value": "Observation notes",
+            "unit": "string"
+          },
+          "titleB": {
+            "value": "Revised observation notes",
+            "unit": "string"
+          },
+          "summaryA": {
+            "value": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.",
+            "unit": "string"
+          },
+          "summaryB": {
+            "value": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.",
+            "unit": "string"
+          },
+          "revisionA": {
+            "value": "Input revision: A",
+            "unit": "string"
+          },
+          "revisionB": {
+            "value": "Input revision: B",
+            "unit": "string"
+          },
+          "status0": {
+            "value": "Review count: 0",
+            "unit": "string"
+          },
+          "status1": {
+            "value": "Review count: 1",
+            "unit": "string"
+          },
+          "actionReady": {
+            "value": "Mark notes reviewed",
+            "unit": "string"
+          },
+          "actionDone": {
+            "value": "Review marked",
+            "unit": "string"
+          },
+          "footerA0": {
+            "value": "End note: revision A; review count 0",
+            "unit": "string"
+          },
+          "footerA1": {
+            "value": "End note: revision A; review count 1",
+            "unit": "string"
+          },
+          "footerB1": {
+            "value": "End note: revision B; review count 1",
+            "unit": "string"
+          },
+          "opening": {
+            "value": "01 · Opening note",
+            "unit": "string"
+          },
+          "middle": {
+            "value": "05 · Pause note",
+            "unit": "string"
+          },
+          "closing": {
+            "value": "10 · Closing note",
+            "unit": "string"
+          },
+          "buttonRole": {
+            "value": "button",
+            "unit": "string"
+          }
+        },
+        "behavior": {
+          "yes": {
+            "value": true,
+            "unit": "bool"
+          },
+          "no": {
+            "value": false,
+            "unit": "bool"
+          },
+          "reviewed": {
+            "value": [
+              "notes.reviewed.A"
+            ],
+            "unit": "events"
+          },
+          "quiet": {
+            "value": [],
+            "unit": "events"
+          }
+        },
+        "geometry": {
+          "minimumActionHeight": {
+            "value": 52,
+            "unit": "pt"
+          },
+          "minimumActionHeightAndroid": {
+            "value": 52,
+            "unit": "dp"
+          }
+        },
+        "visual": {
+          "fullLayout": {
+            "value": "One vertical reading sequence: heading, summary, revision, review count, cards 01–06, review action, cards 07–10, and end note. Cards have distinct neutral surfaces and vertical gaps. No horizontal clipping, overlap, missing cards, or accidental reordering. Required full-content evidence must reach the real bottom with overlap.",
+            "unit": "string"
+          },
+          "wrapping": {
+            "value": "At the approved offered width and Dynamic Type, all headings, summaries, card text, review labels, and end note remain readable and wrap naturally without truncation or ellipses. Narrow text may increase the content height.",
+            "unit": "string"
+          },
+          "enabledAction": {
+            "value": "The review action uses a dark blue-gray fill #263746 with white readable text, rounded corners, and at least a 52 pt accessibility control height.",
+            "unit": "string"
+          },
+          "disabledAction": {
+            "value": "The disabled review action uses a pale gray fill #DCE2E7 with dark gray readable text #55616C, rounded corners, and at least a 52 pt accessibility control height.",
+            "unit": "string"
+          },
+          "surface": {
+            "value": "The canvas is white #FFFFFF. Cards use #F4F6F8. Main text is #17212B and secondary text is #43515E. These are rendered visual expectations; public SwiftUI AX cannot establish computed color or font attributes.",
+            "unit": "string"
+          }
+        },
+        "design": {
+          "offeredWidths": [
+            400,
+            280
+          ],
+          "hostHorizontalPaddingPt": 16,
+          "childWidthsPt": [
+            368,
+            248
+          ],
+          "ordinaryDynamicType": "large",
+          "narrowDynamicType": "xxxLarge",
+          "layout": "VStack spacing 18 pt; each card content padding 16 pt, minimum outer height 180 pt; card radius 12 pt; review action minimum height 52 pt. Typography uses scalable title2, body, headline and subheadline styles. No fixed text heights.",
+          "heightIntent": "Approximately four to five 600 pt viewports at the ordinary fixture. Narrow large text may grow; actual native content height is recorded rather than forced to an expected height."
+        },
+        "obligations": [
+          {
+            "id": "current-input",
+            "clause": "Visible title, summary and revision match the current caller input in every required state.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "reviewed",
+              "replaced",
+              "disabled"
+            ],
+            "risk": "content"
+          },
+          {
+            "id": "review-state",
+            "clause": "The review starts at zero, becomes one after activation, and remains one across caller replacement and disabled observation.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "reviewed",
+              "replaced",
+              "disabled"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "real-review",
+            "clause": "The enabled review action is uniquely dispatched through XCUI tap and emits exactly notes.reviewed.A once.",
+            "priority": "must",
+            "states": [
+              "reviewed"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "quiet-replacement",
+            "clause": "Caller replacement advances exactly one input in the same mounted instance without a business callback.",
+            "priority": "must",
+            "states": [
+              "replaced"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "availability",
+            "clause": "The review action is enabled for revision A and disabled for revision B; disabled observation is not dispatched or scored as callback success.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "reviewed",
+              "replaced",
+              "disabled"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "long-content",
+            "clause": "All ten cards and the footer remain reachable in the required full-content states, and the remote anchors remain observed for every target checkpoint.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "reviewed",
+              "replaced",
+              "disabled"
+            ],
+            "risk": "layout"
+          },
+          {
+            "id": "readable-layout",
+            "clause": "Both fixture configurations have readable wrapping, no horizontal clipping or overlap, and the approved vertical order.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "replaced"
+            ],
+            "risk": "layout"
+          },
+          {
+            "id": "appearance",
+            "clause": "The neutral surfaces and action appearance follow the approved colors and minimum native control height.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "reviewed",
+              "replaced",
+              "disabled"
+            ],
+            "risk": "style"
+          }
+        ]
+      },
+      "raw_utf8": "{\n  \"provenance\": {\n    \"owner\": \"Independent neutral forward-test author\",\n    \"input\": \"Parent task dated 2026-10-24: domain-neutral SwiftUI long content; real action, caller replacement, disabled action; four states; ordinary/narrow large-text fixtures.\",\n    \"interpretation\": \"A reading-notes panel with ten neutral cards and one review action. This design was fixed before source implementation and before any native image or execution.\",\n    \"independence_limit\": \"Separate from the Skill implementation/optimizer and earlier validation results. Design and component are authored sequentially in this tester context; hashes cannot prove semantic correctness.\"\n  },\n  \"labels\": {\n    \"titleA\": {\n      \"value\": \"Observation notes\",\n      \"unit\": \"string\"\n    },\n    \"titleB\": {\n      \"value\": \"Revised observation notes\",\n      \"unit\": \"string\"\n    },\n    \"summaryA\": {\n      \"value\": \"Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.\",\n      \"unit\": \"string\"\n    },\n    \"summaryB\": {\n      \"value\": \"The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.\",\n      \"unit\": \"string\"\n    },\n    \"revisionA\": {\n      \"value\": \"Input revision: A\",\n      \"unit\": \"string\"\n    },\n    \"revisionB\": {\n      \"value\": \"Input revision: B\",\n      \"unit\": \"string\"\n    },\n    \"status0\": {\n      \"value\": \"Review count: 0\",\n      \"unit\": \"string\"\n    },\n    \"status1\": {\n      \"value\": \"Review count: 1\",\n      \"unit\": \"string\"\n    },\n    \"actionReady\": {\n      \"value\": \"Mark notes reviewed\",\n      \"unit\": \"string\"\n    },\n    \"actionDone\": {\n      \"value\": \"Review marked\",\n      \"unit\": \"string\"\n    },\n    \"footerA0\": {\n      \"value\": \"End note: revision A; review count 0\",\n      \"unit\": \"string\"\n    },\n    \"footerA1\": {\n      \"value\": \"End note: revision A; review count 1\",\n      \"unit\": \"string\"\n    },\n    \"footerB1\": {\n      \"value\": \"End note: revision B; review count 1\",\n      \"unit\": \"string\"\n    },\n    \"opening\": {\n      \"value\": \"01 · Opening note\",\n      \"unit\": \"string\"\n    },\n    \"middle\": {\n      \"value\": \"05 · Pause note\",\n      \"unit\": \"string\"\n    },\n    \"closing\": {\n      \"value\": \"10 · Closing note\",\n      \"unit\": \"string\"\n    },\n    \"buttonRole\": {\n      \"value\": \"button\",\n      \"unit\": \"string\"\n    }\n  },\n  \"behavior\": {\n    \"yes\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    },\n    \"no\": {\n      \"value\": false,\n      \"unit\": \"bool\"\n    },\n    \"reviewed\": {\n      \"value\": [\n        \"notes.reviewed.A\"\n      ],\n      \"unit\": \"events\"\n    },\n    \"quiet\": {\n      \"value\": [],\n      \"unit\": \"events\"\n    }\n  },\n  \"geometry\": {\n    \"minimumActionHeight\": {\n      \"value\": 52,\n      \"unit\": \"pt\"\n    },\n    \"minimumActionHeightAndroid\": {\n      \"value\": 52,\n      \"unit\": \"dp\"\n    }\n  },\n  \"visual\": {\n    \"fullLayout\": {\n      \"value\": \"One vertical reading sequence: heading, summary, revision, review count, cards 01–06, review action, cards 07–10, and end note. Cards have distinct neutral surfaces and vertical gaps. No horizontal clipping, overlap, missing cards, or accidental reordering. Required full-content evidence must reach the real bottom with overlap.\",\n      \"unit\": \"string\"\n    },\n    \"wrapping\": {\n      \"value\": \"At the approved offered width and Dynamic Type, all headings, summaries, card text, review labels, and end note remain readable and wrap naturally without truncation or ellipses. Narrow text may increase the content height.\",\n      \"unit\": \"string\"\n    },\n    \"enabledAction\": {\n      \"value\": \"The review action uses a dark blue-gray fill #263746 with white readable text, rounded corners, and at least a 52 pt accessibility control height.\",\n      \"unit\": \"string\"\n    },\n    \"disabledAction\": {\n      \"value\": \"The disabled review action uses a pale gray fill #DCE2E7 with dark gray readable text #55616C, rounded corners, and at least a 52 pt accessibility control height.\",\n      \"unit\": \"string\"\n    },\n    \"surface\": {\n      \"value\": \"The canvas is white #FFFFFF. Cards use #F4F6F8. Main text is #17212B and secondary text is #43515E. These are rendered visual expectations; public SwiftUI AX cannot establish computed color or font attributes.\",\n      \"unit\": \"string\"\n    }\n  },\n  \"design\": {\n    \"offeredWidths\": [\n      400,\n      280\n    ],\n    \"hostHorizontalPaddingPt\": 16,\n    \"childWidthsPt\": [\n      368,\n      248\n    ],\n    \"ordinaryDynamicType\": \"large\",\n    \"narrowDynamicType\": \"xxxLarge\",\n    \"layout\": \"VStack spacing 18 pt; each card content padding 16 pt, minimum outer height 180 pt; card radius 12 pt; review action minimum height 52 pt. Typography uses scalable title2, body, headline and subheadline styles. No fixed text heights.\",\n    \"heightIntent\": \"Approximately four to five 600 pt viewports at the ordinary fixture. Narrow large text may grow; actual native content height is recorded rather than forced to an expected height.\"\n  },\n  \"obligations\": [\n    {\n      \"id\": \"current-input\",\n      \"clause\": \"Visible title, summary and revision match the current caller input in every required state.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"reviewed\",\n        \"replaced\",\n        \"disabled\"\n      ],\n      \"risk\": \"content\"\n    },\n    {\n      \"id\": \"review-state\",\n      \"clause\": \"The review starts at zero, becomes one after activation, and remains one across caller replacement and disabled observation.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"reviewed\",\n        \"replaced\",\n        \"disabled\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"real-review\",\n      \"clause\": \"The enabled review action is uniquely dispatched through XCUI tap and emits exactly notes.reviewed.A once.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"reviewed\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"quiet-replacement\",\n      \"clause\": \"Caller replacement advances exactly one input in the same mounted instance without a business callback.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"replaced\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"availability\",\n      \"clause\": \"The review action is enabled for revision A and disabled for revision B; disabled observation is not dispatched or scored as callback success.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"reviewed\",\n        \"replaced\",\n        \"disabled\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"long-content\",\n      \"clause\": \"All ten cards and the footer remain reachable in the required full-content states, and the remote anchors remain observed for every target checkpoint.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"reviewed\",\n        \"replaced\",\n        \"disabled\"\n      ],\n      \"risk\": \"layout\"\n    },\n    {\n      \"id\": \"readable-layout\",\n      \"clause\": \"Both fixture configurations have readable wrapping, no horizontal clipping or overlap, and the approved vertical order.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"replaced\"\n      ],\n      \"risk\": \"layout\"\n    },\n    {\n      \"id\": \"appearance\",\n      \"clause\": \"The neutral surfaces and action appearance follow the approved colors and minimum native control height.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"reviewed\",\n        \"replaced\",\n        \"disabled\"\n      ],\n      \"risk\": \"style\"\n    }\n  ]\n}\n"
+    },
+    "launch": {
+      "id": "launch",
+      "path": "launch.json",
+      "sha256": "92b073cee0cb0eda2489ac3a340af80142928e48015d8e5d18f8d2458bb6565a",
+      "document": {
+        "ordinary400": {
+          "scenario": "ordinary400",
+          "platform": "ios",
+          "fixtures_sha256": "0bcd865edfdf48a7db06be4d00bca5221293e8cd8c21041beda6fa0f66210457",
+          "bridge_sha256": "e305444db6b8b4a47c122d0f18615ae889cedd1daf8b2509b8d6bac82b783c1a"
+        },
+        "narrow280-large": {
+          "scenario": "narrow280-large",
+          "platform": "ios",
+          "fixtures_sha256": "874caa825885cc604d73a0eb7a11d3077c6267ae82e28123f7b50c6b72dba19f",
+          "bridge_sha256": "e305444db6b8b4a47c122d0f18615ae889cedd1daf8b2509b8d6bac82b783c1a"
+        }
+      },
+      "raw_utf8": "{\n  \"ordinary400\": {\n    \"scenario\": \"ordinary400\",\n    \"platform\": \"ios\",\n    \"fixtures_sha256\": \"0bcd865edfdf48a7db06be4d00bca5221293e8cd8c21041beda6fa0f66210457\",\n    \"bridge_sha256\": \"e305444db6b8b4a47c122d0f18615ae889cedd1daf8b2509b8d6bac82b783c1a\"\n  },\n  \"narrow280-large\": {\n    \"scenario\": \"narrow280-large\",\n    \"platform\": \"ios\",\n    \"fixtures_sha256\": \"874caa825885cc604d73a0eb7a11d3077c6267ae82e28123f7b50c6b72dba19f\",\n    \"bridge_sha256\": \"e305444db6b8b4a47c122d0f18615ae889cedd1daf8b2509b8d6bac82b783c1a\"\n  }\n}\n"
+    }
+  },
+  "contract_sha256": "80c49b230929bc6e2e9579aabb1f5123f7096baa271ed9a604d8ca291db375c0",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

@@ -1,0 +1,583 @@
+{
+  "version": 2,
+  "issues": [
+    {
+      "id": "T1-R1",
+      "original_review_sha256": "e3bca783c21fd3e7ef6defee4f5875c56ba3c25a9bb5ab93b19680ac00792ced",
+      "original_issue": {
+        "id": "T1-R1",
+        "severity": "high",
+        "title": "The acknowledgement false transition has no obligation or executable route",
+        "rationale": "BRIEF clause 2 requires a second pre-release selection to clear acknowledgement and emit false exactly once. Every public and private route taps choice only once, at action 2. All approved choice-receipt expectations contain only true. The generic choice-selected and choice-receipt obligations therefore omit this branch; successful matrix reconstruction does not verify it.",
+        "affected_platforms": [
+          "ios",
+          "android"
+        ],
+        "source_refs": [
+          {
+            "path": "validation/feedback-forward/design/T1/public/BRIEF.md",
+            "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+            "line": 6
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/reference.json",
+            "sha256": "7158ac420726a24bdacf931b5b767b58ca0dfd34447f8ac622385ad3ec66277a",
+            "pointer": "/obligations"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/contract.json",
+            "sha256": "57a5aac8363d9823874040acfb41708ac921c8e4ea8e51c6443ccd9c665756a9",
+            "pointer": "/scenarios"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/private/contract.json",
+            "sha256": "36c96c4f2fb194e9a18990659d6614cf6c15177ca73df39c2fc485887db83456",
+            "pointer": "/scenarios/H1/actions"
+          }
+        ],
+        "required_revision": "Independently specify and route the pre-release clear transition, including its selected/label/status/enabled results and a successful native stimulus with the exact false callback interval. Preserve the current seal as a prior revision."
+      },
+      "revision_response": "cleared targeted state binds reverse acknowledgement false; restored binds the subsequent true callback and resulting state.",
+      "status": "proposed_route_added_pending_independent_feasibility_review",
+      "native_result": null
+    },
+    {
+      "id": "T1-R2",
+      "original_review_sha256": "e3bca783c21fd3e7ef6defee4f5875c56ba3c25a9bb5ab93b19680ac00792ced",
+      "original_issue": {
+        "id": "T1-R2",
+        "severity": "high",
+        "title": "Acknowledge-under-hold is never exercised",
+        "rationale": "The routes acknowledge only initial models with both guards true. Seal and coolant holds appear only after the final identity replacement, where acknowledgement has reset to false and no further activation occurs. Thus the clause that acknowledgement cannot override either hold, and the full primary-enabled predicate, lack a verification route for the acknowledged held condition. H1 does correctly cover both guards false for status precedence, but still with acknowledgement false.",
+        "affected_platforms": [
+          "ios",
+          "android"
+        ],
+        "source_refs": [
+          {
+            "path": "validation/feedback-forward/design/T1/public/BRIEF.md",
+            "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+            "line": 5
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/BRIEF.md",
+            "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+            "line": 6
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/BRIEF.md",
+            "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+            "line": 11
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/cases/P1/fixtures.json",
+            "sha256": "a196380dc79754abf8e1db3892a448d9e2e805d0cb6c3c4ca2cd0cdedcca7e60"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/cases/P2/fixtures.json",
+            "sha256": "f9531bc6a907facbb5fb906fb92acda29953e68edd0e96c07a7721696432d14f"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/private/cases/H1/fixtures.json",
+            "sha256": "cb640a2167950b69eb8805fa9f0e165f8e7dad233ccda0d6186485c9c1c0ffb5"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/contract.json",
+            "sha256": "57a5aac8363d9823874040acfb41708ac921c8e4ea8e51c6443ccd9c665756a9",
+            "pointer": "/scenarios"
+          }
+        ],
+        "required_revision": "Add independently approved same-API states/actions which acknowledge each held condition and assess the resulting hold status and disabled primary. Do not count a disabled primary attempt as successful dispatch."
+      },
+      "revision_response": "held-choice activates acknowledgement on each original seal/coolant held replacement (P1/P2; H1 both); hold status and disabled primary are independently expected.",
+      "status": "proposed_route_added_pending_independent_feasibility_review",
+      "native_result": null
+    },
+    {
+      "id": "T1-R3",
+      "original_review_sha256": "e3bca783c21fd3e7ef6defee4f5875c56ba3c25a9bb5ab93b19680ac00792ced",
+      "original_issue": {
+        "id": "T1-R3",
+        "severity": "high",
+        "title": "Disclosure requirements are only partly represented",
+        "rationale": "There is one disclosure activation at action 1 and no close activation in any scenario. There is no event rule bound to that action, so disclosure zero-callback behavior is not checked: later choice and request assertions use their own later intervals. The collapsed-content proposition hides only body paragraphs, omitting headings even though the BRIEF toggles heading/body pairs. Disclosure enabled after request is specified by API.md but has neither an enabled assertion nor a post-request activation.",
+        "affected_platforms": [
+          "ios",
+          "android"
+        ],
+        "source_refs": [
+          {
+            "path": "validation/feedback-forward/design/T1/public/BRIEF.md",
+            "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+            "line": 8
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/API.md",
+            "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+            "line": 57
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/reference.json",
+            "sha256": "7158ac420726a24bdacf931b5b767b58ca0dfd34447f8ac622385ad3ec66277a",
+            "pointer": "/questions/collapsed-content"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/reference.json",
+            "sha256": "7158ac420726a24bdacf931b5b767b58ca0dfd34447f8ac622385ad3ec66277a",
+            "pointer": "/obligations"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/contract.json",
+            "sha256": "57a5aac8363d9823874040acfb41708ac921c8e4ea8e51c6443ccd9c665756a9",
+            "pointer": "/rules"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/contract.json",
+            "sha256": "57a5aac8363d9823874040acfb41708ac921c8e4ea8e51c6443ccd9c665756a9",
+            "pointer": "/scenarios"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/private/contract.json",
+            "sha256": "36c96c4f2fb194e9a18990659d6614cf6c15177ca73df39c2fc485887db83456",
+            "pointer": "/scenarios"
+          }
+        ],
+        "required_revision": "Represent and route native open/close behavior, complete collapsed pair absence, disclosure quietness bound to its actual successful activation interval, and its required enabled behavior after request."
+      },
+      "revision_response": "opened and requested-closed have actual native disclosure quiet intervals; disclosure-enabled is checked, post-request close is activated, and closed headings/bodies are separate propositions.",
+      "status": "proposed_route_added_pending_independent_feasibility_review",
+      "native_result": null
+    },
+    {
+      "id": "T1-R4",
+      "original_review_sha256": "e3bca783c21fd3e7ef6defee4f5875c56ba3c25a9bb5ab93b19680ac00792ced",
+      "original_issue": {
+        "id": "T1-R4",
+        "severity": "high",
+        "title": "All-text wrapping is narrower in the atomic questions than in the BRIEF",
+        "rationale": "The BRIEF requires all text to wrap without line limits. The only wrapping propositions cover the title and expanded body paragraphs. Section headings, subtitle, status and control text have exact semantic-label checks and horizontal clipping checks, but these do not establish untruncated natural wrapping or reject an ellipsis inside the bounds. This matters in the approved narrow/large profile. A source-backed obligation must cover these required text classes without inventing computed SwiftUI font or line facts.",
+        "affected_platforms": [
+          "ios",
+          "android"
+        ],
+        "source_refs": [
+          {
+            "path": "validation/feedback-forward/design/T1/public/BRIEF.md",
+            "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+            "line": 15
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/reference.json",
+            "sha256": "7158ac420726a24bdacf931b5b767b58ca0dfd34447f8ac622385ad3ec66277a",
+            "pointer": "/questions/title-wrapping"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/reference.json",
+            "sha256": "7158ac420726a24bdacf931b5b767b58ca0dfd34447f8ac622385ad3ec66277a",
+            "pointer": "/questions/body-wrapping"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/reference.json",
+            "sha256": "7158ac420726a24bdacf931b5b767b58ca0dfd34447f8ac622385ad3ec66277a",
+            "pointer": "/questions/horizontal-clipping"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/policy.json",
+            "sha256": "4b1801b9fe91ebbc1703251bbd9b2651ddadc32aefaace8d08b76e7a49f14b67",
+            "pointer": "/atoms"
+          }
+        ],
+        "required_revision": "Independently add the missing wrapping scope and feasible atomic visual routes, retaining distinct clipping and overlap propositions."
+      },
+      "revision_response": "All eight text roles have independent wrapping atoms; individual compact roles use actual target frames and expanded roles use full sweeps.",
+      "status": "proposed_route_added_pending_independent_feasibility_review",
+      "native_result": null
+    },
+    {
+      "id": "T1-R5",
+      "original_review_sha256": "e3bca783c21fd3e7ef6defee4f5875c56ba3c25a9bb5ab93b19680ac00792ced",
+      "original_issue": {
+        "id": "T1-R5",
+        "severity": "medium",
+        "title": "Mandatory layout and scrolling ownership clauses have no corresponding route",
+        "rationale": "The obligation index and questions do not check full-width component canvas ownership, the minimum 16-native-unit status text inset, absence of fixed-height blank spacer rows, or the prohibition on a component nested scroller. The five pixel atoms prove only their approved solid sample strips. In particular the status sample spans 1.2–3.5% of the semantic band and cannot establish a 16-unit text inset. Full parent sweep coverage proves reachability, not which object owns scrolling or why content is tall. Internal nominal spacing tokens and status minimum height are correctly advisory; this finding does not turn them into measured MUSTs.",
+        "affected_platforms": [
+          "ios",
+          "android"
+        ],
+        "source_refs": [
+          {
+            "path": "validation/feedback-forward/design/T1/public/BRIEF.md",
+            "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+            "line": 15
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/reference.json",
+            "sha256": "7158ac420726a24bdacf931b5b767b58ca0dfd34447f8ac622385ad3ec66277a",
+            "pointer": "/obligations"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/reference.json",
+            "sha256": "7158ac420726a24bdacf931b5b767b58ca0dfd34447f8ac622385ad3ec66277a",
+            "pointer": "/questions"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/policy.json",
+            "sha256": "4b1801b9fe91ebbc1703251bbd9b2651ddadc32aefaace8d08b76e7a49f14b67",
+            "pointer": "/atoms/0/sampling"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/routes.json",
+            "sha256": "70ab1ba45c08562f85fde06d8fd6435f8d971e5871eb069f61f67c7d43984e58"
+          }
+        ],
+        "required_revision": "Give each mandatory structural/layout clause an independently approved feasible evidence route and ownership. If the current collector cannot support a mandatory exact quantity, report that limitation in the revised design review rather than substituting fabricated computed facts."
+      },
+      "revision_response": "full-width-canvas visual MUST; real status Text/band leading inset >=16 runtime geometry; full leading 4% clear native pixels; no nested scroller/artificial spacer rows remain source-only MUSTs.",
+      "status": "proposed_route_added_pending_independent_feasibility_review",
+      "native_result": null
+    },
+    {
+      "id": "T1-R6",
+      "original_review_sha256": "e3bca783c21fd3e7ef6defee4f5875c56ba3c25a9bb5ab93b19680ac00792ced",
+      "original_issue": {
+        "id": "T1-R6",
+        "severity": "minor",
+        "title": "The independently authored acknowledgement obligation contains an unrelated preference",
+        "rationale": "The choice-selected clause says acknowledgement or Wi-Fi preference, and the route reason repeats this. T1 has no Wi-Fi preference. This is a source clarity discrepancy; the frozen T1 Boolean expectations themselves are consistent.",
+        "affected_platforms": [
+          "ios",
+          "android"
+        ],
+        "source_refs": [
+          {
+            "path": "validation/feedback-forward/design/T1/public/reference.json",
+            "sha256": "7158ac420726a24bdacf931b5b767b58ca0dfd34447f8ac622385ad3ec66277a",
+            "pointer": "/obligations/5/clause"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/public/routes.json",
+            "sha256": "70ab1ba45c08562f85fde06d8fd6435f8d971e5871eb069f61f67c7d43984e58",
+            "pointer": "/routes/choice-selected/reason"
+          },
+          {
+            "path": "validation/feedback-forward/design/T1/private/reference.json",
+            "sha256": "77391bb6ac7b0756be6ccc367cd1856f390489419c2d1c1133c877133f7b2c73",
+            "pointer": "/obligations/5/clause"
+          }
+        ],
+        "required_revision": "Remove the unrelated alternative in a separately sealed revision; do not silently edit this proposal."
+      },
+      "revision_response": "Acknowledgement obligation names only acknowledgement; no unrelated Wi-Fi alternative remains.",
+      "status": "proposed_route_added_pending_independent_feasibility_review",
+      "native_result": null
+    },
+    {
+      "id": "T2-R1",
+      "original_review_sha256": "7453f94f8a3e3b54ed6327a7d25b34f0e2b75f63e824ff7d95b078c8ac60b521",
+      "original_issue": {
+        "id": "T2-R1",
+        "severity": "high",
+        "category": "business_requirement_route_omission",
+        "title": "Disclosure quietness and reversible disclosure are not covered by the approved route",
+        "rationale": "BRIEF requires disclosure to toggle all heading/body pairs with no caller callback. In every case the sole disclosure action is action 1, opening it; there is no disclosure event assertion and no independently checkpointed state immediately bound to that activation. The only event checks bind choice action 2, primary action 4 and caller update action 6. A later empty caller-update interval cannot prove that action 1 emitted no callback. No action closes the disclosure in the same model. The closed-content proposition names body paragraphs only, while heading assertions become N/A; it does not explicitly establish that closed chapter headings are absent. API additionally requires disclosure to remain enabled after a request, but no disclosure enabled assertion or post-request disclosure activation covers that requirement.",
+        "affected_platforms": [
+          "ios",
+          "android"
+        ],
+        "affected_scopes": [
+          "public",
+          "private"
+        ],
+        "source_refs": [
+          {
+            "file": "design/T2/public/BRIEF.md",
+            "anchor": "line 8",
+            "sha256": "4fb183c223216e99c98219d7be5ab79ae2297876407ad2543c5a6ac9e1157db4"
+          },
+          {
+            "file": "design/T2/public/API.md",
+            "anchor": "line 55",
+            "sha256": "9252d85dbad709a4cb6b45255e743d7a894112f6d2c24bd0e8d24bbf33c0d9db"
+          },
+          {
+            "file": "design/T2/public/contract.json",
+            "anchor": "/rules",
+            "sha256": "927cc6f215f8f18cd2f4f0a8bfec664acb6d3898baf0088cb35c65fcd123cb87"
+          },
+          {
+            "file": "design/T2/public/contract.json",
+            "anchor": "/scenarios/P1/actions",
+            "sha256": "927cc6f215f8f18cd2f4f0a8bfec664acb6d3898baf0088cb35c65fcd123cb87"
+          },
+          {
+            "file": "design/T2/public/reference.json",
+            "anchor": "/questions/collapsed-content",
+            "sha256": "08c7141dccbe2acc7c50cffd094d7d3c17348c9d74feace943c7197eb70ae868"
+          },
+          {
+            "file": "design/T2/private/contract.json",
+            "anchor": "/scenarios/H1/actions",
+            "sha256": "a77aa35e59d195961fa60b78c825dae93c8f0dea44a06a755c092c9439603308"
+          }
+        ],
+        "revision_needed": "Independently extend the obligation index and approved action/state/event routes to cover successful disclosure activation with its own exact quiet interval, same-model close behavior, both members of a closed heading/body pair, and disclosure enabled after request. Preserve real original action indices in any newly authored revision. No product defect is asserted."
+      },
+      "revision_response": "opened and requested-closed have successful disclosure quiet intervals, full same-model close proof for headings/bodies, and disclosure remains enabled after request.",
+      "status": "proposed_route_added_pending_independent_feasibility_review",
+      "native_result": null
+    },
+    {
+      "id": "T2-R2",
+      "original_review_sha256": "7453f94f8a3e3b54ed6327a7d25b34f0e2b75f63e824ff7d95b078c8ac60b521",
+      "original_issue": {
+        "id": "T2-R2",
+        "severity": "high",
+        "category": "business_scenario_gap",
+        "title": "The explicit storage-over-network priority never has a competing network gate",
+        "rationale": "The status-label obligation claims guard precedence, but P1 and H1 reach insufficient storage only after a replacement whose meteredConnection is false. P2 replacement is metered but has enough storage. Thus none of the sealed states has insufficient storage and meteredConnection && wifiOnly together, so the explicit storage-priority clause has no distinguishing route. This is a semantic gap even though requirement_routes.audit returns an empty must_route_gaps array. The API and frozen rule types can support an independently authored competing-gates fixture and status/enabled assertions; the current source-pinned fixtures do not.",
+        "affected_platforms": [
+          "ios",
+          "android"
+        ],
+        "affected_scopes": [
+          "public",
+          "private"
+        ],
+        "source_refs": [
+          {
+            "file": "design/T2/public/BRIEF.md",
+            "anchor": "lines 5 and 11",
+            "sha256": "4fb183c223216e99c98219d7be5ab79ae2297876407ad2543c5a6ac9e1157db4"
+          },
+          {
+            "file": "design/T2/public/reference.json",
+            "anchor": "/obligations/2",
+            "sha256": "08c7141dccbe2acc7c50cffd094d7d3c17348c9d74feace943c7197eb70ae868"
+          },
+          {
+            "file": "design/T2/public/reference.json",
+            "anchor": "/cases/P1/caller/updates/0",
+            "sha256": "08c7141dccbe2acc7c50cffd094d7d3c17348c9d74feace943c7197eb70ae868"
+          },
+          {
+            "file": "design/T2/public/reference.json",
+            "anchor": "/cases/P2/caller/updates/0",
+            "sha256": "08c7141dccbe2acc7c50cffd094d7d3c17348c9d74feace943c7197eb70ae868"
+          },
+          {
+            "file": "design/T2/private/reference.json",
+            "anchor": "/cases/H1/caller/updates/0",
+            "sha256": "1ee34c8c22709cc8c1e4462460c02b5c4e7cddd448f7e478ad707bc9d61f73e7"
+          }
+        ],
+        "revision_needed": "Add an independently fixed scenario/stimulus with the two gates simultaneously active and a source-backed Storage needed expectation on both platforms. Do not silently reinterpret the existing fixtures or declare predicate coverage from JSON rule presence."
+      },
+      "revision_response": "Original caller records stay unchanged; a separately appended caller fixture activates insufficient storage plus metered Wi-Fi-only, with targeted status/disabled and successful quiet update checks.",
+      "status": "proposed_route_added_pending_independent_feasibility_review",
+      "native_result": null
+    },
+    {
+      "id": "T2-R3",
+      "original_review_sha256": "7453f94f8a3e3b54ed6327a7d25b34f0e2b75f63e824ff7d95b078c8ac60b521",
+      "original_issue": {
+        "id": "T2-R3",
+        "severity": "high",
+        "category": "visual_requirement_route_omission",
+        "title": "The all-text wrapping requirement is narrower in the approved propositions",
+        "rationale": "BRIEF requires all text to wrap without line limits. The two wrapping questions cover the title and expanded body paragraphs only. Exact native label assertions establish complete accessible strings, not complete visible strings. The horizontal-clipping and row-overlap propositions can both be true while a subtitle, status, chapter heading, disclosure label, choice label or primary label truncates within its own bounds. Those other text roles have no independently approved wrapping/no-truncation proposition. This matters especially in the separately fixed narrow/large profile.",
+        "affected_platforms": [
+          "ios",
+          "android"
+        ],
+        "affected_scopes": [
+          "public",
+          "private"
+        ],
+        "source_refs": [
+          {
+            "file": "design/T2/public/BRIEF.md",
+            "anchor": "line 15",
+            "sha256": "4fb183c223216e99c98219d7be5ab79ae2297876407ad2543c5a6ac9e1157db4"
+          },
+          {
+            "file": "design/T2/public/reference.json",
+            "anchor": "/questions/title-wrapping",
+            "sha256": "08c7141dccbe2acc7c50cffd094d7d3c17348c9d74feace943c7197eb70ae868"
+          },
+          {
+            "file": "design/T2/public/reference.json",
+            "anchor": "/questions/body-wrapping",
+            "sha256": "08c7141dccbe2acc7c50cffd094d7d3c17348c9d74feace943c7197eb70ae868"
+          },
+          {
+            "file": "design/T2/public/reference.json",
+            "anchor": "/questions/horizontal-clipping",
+            "sha256": "08c7141dccbe2acc7c50cffd094d7d3c17348c9d74feace943c7197eb70ae868"
+          },
+          {
+            "file": "design/T2/public/policy.json",
+            "anchor": "/atoms",
+            "sha256": "ad3833033b3794c5b225354509300b827e507cbbaba586cc9f1039d7c843beb4"
+          }
+        ],
+        "revision_needed": "Add source-backed atomic wrapping/no-truncation coverage for every required text role, with both independent judges inspecting the original full state sweep. Do not use an AX label or an unavailable computed SwiftUI font as proof of visible wrapping."
+      },
+      "revision_response": "Title/subtitle/status/disclosure/choice/primary/heading/body wrapping are distinct source-backed atoms.",
+      "status": "proposed_route_added_pending_independent_feasibility_review",
+      "native_result": null
+    },
+    {
+      "id": "T2-R4",
+      "original_review_sha256": "7453f94f8a3e3b54ed6327a7d25b34f0e2b75f63e824ff7d95b078c8ac60b521",
+      "original_issue": {
+        "id": "T2-R4",
+        "severity": "medium",
+        "category": "required_measurement_missing",
+        "title": "The explicit minimum status-text inset has no matching verification route",
+        "rationale": "BRIEF separately says status text starts at least 16 native units inside the painted band and keeps its leading 4% empty. The only status pixel rule samples normalized x=0.012..0.035. Its dominant solid fill can establish that small sampled strip, not a 16 pt/dp text inset. The API deliberately places the status identifier/label on the whole painted band; no separately bound text allocation, gte inset rule, or explicit qualitative question covers this minimum. Internal nominal layout tokens are advisory, but this sentence states a minimum without making it advisory; this review does not silently change its priority. The hidden RTL profile also requires that any leading-edge proposition distinguish logical leading from the pixel policy's physical-left normalized coordinates.",
+        "affected_platforms": [
+          "ios",
+          "android"
+        ],
+        "affected_scopes": [
+          "public",
+          "private"
+        ],
+        "source_refs": [
+          {
+            "file": "design/T2/public/BRIEF.md",
+            "anchor": "line 15",
+            "sha256": "4fb183c223216e99c98219d7be5ab79ae2297876407ad2543c5a6ac9e1157db4"
+          },
+          {
+            "file": "design/T2/public/API.md",
+            "anchor": "line 53",
+            "sha256": "9252d85dbad709a4cb6b45255e743d7a894112f6d2c24bd0e8d24bbf33c0d9db"
+          },
+          {
+            "file": "design/T2/public/policy.json",
+            "anchor": "/atoms/0",
+            "sha256": "ad3833033b3794c5b225354509300b827e507cbbaba586cc9f1039d7c843beb4"
+          },
+          {
+            "file": "design/T2/public/contract.json",
+            "anchor": "/rules",
+            "sha256": "927cc6f215f8f18cd2f4f0a8bfec664acb6d3898baf0088cb35c65fcd123cb87"
+          }
+        ],
+        "revision_needed": "The independent design owner must fix an honest verification route for the 16-unit minimum and its direction semantics. Exact computed SwiftUI padding cannot be fabricated, and the existing 3.5%-edge fill sample cannot be promoted into that measurement."
+      },
+      "revision_response": "Actual status Text semantic boundary compared with real painted band via leading >=16 geometry; LTR left / RTL right; whole leading strip is separately sampled.",
+      "status": "proposed_route_added_pending_independent_feasibility_review",
+      "native_result": null
+    },
+    {
+      "id": "T2-R5",
+      "original_review_sha256": "7453f94f8a3e3b54ed6327a7d25b34f0e2b75f63e824ff7d95b078c8ac60b521",
+      "original_issue": {
+        "id": "T2-R5",
+        "severity": "medium",
+        "category": "ownership_and_non_ui_constraints_unmapped",
+        "title": "Several explicit component constraints are absent from the obligation ledger",
+        "rationale": "BRIEF requires caller-supplied whole MB values without measuring disk, recording a request without fetching audio, parent-owned scrolling with no nested scroller, and no fixed-height blank rows inserted to manufacture scrolling. These are stated component responsibilities/prohibitions, but the 44-entry obligation index and routes file do not explicitly include them. Pixel color, vertical flow order, and full-sweep reachability do not establish the absence of I/O, nested scrolling, or artificial spacer rows. The thin bridges comply by static inspection, but that does not prove these future production behaviors. An independently defined, source-bound implementation audit could cover the source-only constraints later; none is in the frozen acceptance contract.",
+        "affected_platforms": [
+          "ios",
+          "android"
+        ],
+        "affected_scopes": [
+          "public",
+          "private"
+        ],
+        "source_refs": [
+          {
+            "file": "design/T2/public/BRIEF.md",
+            "anchor": "lines 5, 7 and 15",
+            "sha256": "4fb183c223216e99c98219d7be5ab79ae2297876407ad2543c5a6ac9e1157db4"
+          },
+          {
+            "file": "design/T2/public/reference.json",
+            "anchor": "/obligations",
+            "sha256": "08c7141dccbe2acc7c50cffd094d7d3c17348c9d74feace943c7197eb70ae868"
+          },
+          {
+            "file": "design/T2/public/routes.json",
+            "anchor": "/routes",
+            "sha256": "61a7c98b56c7a29df32322959b6259b92e7f64bc9d3a20cdc8f7fbc283dda105"
+          },
+          {
+            "file": "design/T2/public/Bridge.swift",
+            "anchor": "entire file",
+            "sha256": "c6708b2b76c2dddad9a31d755d3bcf6558b60aa903cf885a8c3a69ec196ec621"
+          },
+          {
+            "file": "design/T2/public/ObserverBridge.kt",
+            "anchor": "entire file",
+            "sha256": "44c55a28afff21d69001e2c4f62554cb23f9b287c68cbd19c450cb0350cbb8a9"
+          }
+        ],
+        "revision_needed": "Index these mandatory ownership/side-effect constraints and define an independent feasible verification disposition tied to the actual production source/host. Do not infer them from screenshots or add invented native computed properties."
+      },
+      "revision_response": "Separately source-backed per-platform audit MUSTs cover caller disk values/no capacity measurement, no audio fetch, parent scrolling, no manufactured blank rows, production state/reset and API ownership. Runtime acceptance is conjunctive with this shared sidecar.",
+      "status": "proposed_route_added_pending_independent_feasibility_review",
+      "native_result": null
+    },
+    {
+      "id": "T2-R6",
+      "original_review_sha256": "7453f94f8a3e3b54ed6327a7d25b34f0e2b75f63e824ff7d95b078c8ac60b521",
+      "original_issue": {
+        "id": "T2-R6",
+        "severity": "low",
+        "category": "independent_reference_discrepancy",
+        "title": "Two narrow reference states draw status text beyond their painted band",
+        "rationale": "The P2 permitted/requested reference PNG/SVG keeps the status band at x=40..240 with a single status text line. Inspection of the actual supplied PNGs finds exact navy ink to x=253 and x=268 inclusive, respectively, within the status band's y interval. The requested text therefore also extends past the component right edge x=264. reference-inspection.json records 39 and 76 exact navy pixels outside the band. This is a static-reference discrepancy, not a native product defect or a claimed computed font result. The brief already states that reference font rasterization is not an acceptance oracle, so this issue does not by itself make the UI impossible.",
+        "affected_platforms": [
+          "ios",
+          "android"
+        ],
+        "affected_scopes": [
+          "public"
+        ],
+        "source_refs": [
+          {
+            "file": "design/T2/public/references/P2/permitted.svg",
+            "anchor": "status rectangle/text",
+            "sha256": "9fbee4528c2ffe31fbc534f10b667f0401d41d56680c32498de20a573bd5d97f"
+          },
+          {
+            "file": "design/T2/public/references/P2/requested.svg",
+            "anchor": "status rectangle/text",
+            "sha256": "803c6af9f92d07587f81b07288c4b0b2fb8fd4325aca2ebf3adca777ed5c8067"
+          },
+          {
+            "file": "design/T2/public/references/P2/permitted.png",
+            "anchor": "status y=336..396",
+            "sha256": "9afbb4a55a11f804595b03a4515acf5c6cebc1975933523dfea58aff6d9a02b4"
+          },
+          {
+            "file": "design/T2/public/references/P2/requested.png",
+            "anchor": "status y=336..396",
+            "sha256": "2351154adcf4ba6c749997197b748eca5e1af5a5e84c7ddea9125875a73fa836"
+          },
+          {
+            "file": "design/T2/public/BRIEF.md",
+            "anchor": "lines 15 and 19",
+            "sha256": "4fb183c223216e99c98219d7be5ab79ae2297876407ad2543c5a6ac9e1157db4"
+          }
+        ],
+        "revision_needed": "Align the independent narrow reference's wrapping illustration with the unchanged all-text wrapping requirement in a new sealed revision; keep its illustrative/native-measurement distinction explicit."
+      },
+      "revision_response": "Static reference status is wrapped inside cw-32, band height grows to its text, SVG/PNG generated from the same line records; no native font result claimed.",
+      "status": "proposed_route_added_pending_independent_feasibility_review",
+      "native_result": null
+    }
+  ],
+  "whole_brief_recheck": [
+    "Retained original public APIs, callbacks, model values, guards, local reset and disabled semantics.",
+    "Added reverse preference checks to T2 as well as T1, beyond the minimum enumerated T2 blockers.",
+    "Separated flow order from single-column hierarchy; separate closed heading/body absence.",
+    "Added source-only per-platform clauses for generic data rendering, native control ownership, callback/reset logic and observer-scenario independence.",
+    "Preserved original advisory typography/internal allocation scope; rendered status inset and whole leading strip remain actual runtime MUSTs.",
+    "Native state sampling limits and provider-specific extra scans remain explicit; no runtime or source-audit pass is claimed."
+  ]
+}

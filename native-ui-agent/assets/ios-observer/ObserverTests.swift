@@ -18,6 +18,15 @@ final class ObserverTests: XCTestCase {
     var currentActionIndex = -1
     var sweepLimit = 40
     var traceRevealImages = false
+    var coalesced = false
+    var executionScope = "full"
+    var executionStates: [[String: Any]] = []
+    var operationCounts: [String: Int] = [:]
+    var operationSeconds: [String: Double] = [:]
+    func recordOperation(_ name: String, _ started: TimeInterval) {
+        operationCounts[name, default: 0] += 1
+        operationSeconds[name, default: 0] += ProcessInfo.processInfo.systemUptime - started
+    }
     func key(_ value: [String: Any]) -> String {
         String(data: (try? JSONSerialization.data(withJSONObject: value, options: [.sortedKeys])) ?? Data(), encoding: .utf8) ?? ""
     }
@@ -41,6 +50,8 @@ final class ObserverTests: XCTestCase {
         }
     }
     func matches(_ selector: [String: Any]) -> [XCUIElement] {
+        let started = ProcessInfo.processInfo.systemUptime
+        defer { recordOperation("selector_query", started) }
         let type = (selector["role"] as? String).flatMap { role($0) } ?? .any
         let query = app.descendants(matching: type)
         if let id = selector["identifier"] as? String, !id.isEmpty { return query.matching(identifier: id).allElementsBoundByIndex.filter { $0.exists } }
@@ -104,6 +115,8 @@ final class ObserverTests: XCTestCase {
         return fits ? fullyVisible(target) : visible(target)
     }
     func sweep(_ state: String, maxSteps: Int? = nil) {
+        let started = ProcessInfo.processInfo.systemUptime
+        defer { recordOperation("full_sweep", started) }
         let limit = min(max(maxSteps ?? sweepLimit, 1), 80)
         activeState = state
         guard frame(runtime()["content_frame"]).height > 0 else { issues.append("native content geometry unavailable for state \(state)"); return }
@@ -125,10 +138,22 @@ final class ObserverTests: XCTestCase {
             heights.append(h); intervals.append([max(0, offset), min(h, offset + Double(viewportFrame.height))])
             sawTop = sawTop || offset <= 0.5
             sawBottom = sawBottom || (snap["bottom_sentinel_visible"] as? Bool == true)
-            if key(binding()) != key(original) { drift = true }
-            for target in observationTargets {
-                let values = matches(target)
-                if values.count == 1 && visible(values[0]) { seenTargets.insert(key(target)) }
+            if coalesced {
+                if snap["capture_consistent"] as? Bool != true || key(snap["binding_after_capture"] as? [String: Any] ?? [:]) != key(original) { drift = true }
+                // Coverage is an observation, not native activation. Reuse the
+                // unique semantic facts from this exact fresh AX/image packet.
+                for group in snap["control_groups"] as? [[String: Any]] ?? [] {
+                    if group["match_count"] as? Int == 1,
+                       let semantic = group["semantic"] as? [String: Any], semantic["intersects_viewport"] as? Bool == true {
+                        seenTargets.insert(key(group["selector"] as? [String: Any] ?? [:]))
+                    }
+                }
+            } else {
+                if key(binding()) != key(original) { drift = true }
+                for target in observationTargets {
+                    let values = matches(target)
+                    if values.count == 1 && visible(values[0]) { seenTargets.insert(key(target)) }
+                }
             }
             if sawBottom { break }
             if n < limit { scroll("down", fraction: 0.45) }
@@ -149,8 +174,16 @@ final class ObserverTests: XCTestCase {
 
     func decode(_ value: String) -> Any? { guard let data = value.data(using: .utf8) else { return nil }; return try? JSONSerialization.jsonObject(with: data) }
     func rect(_ frame: CGRect) -> [String: Double] { ["x": frame.origin.x, "y": frame.origin.y, "width": frame.width, "height": frame.height] }
-    func receipt() -> [[String: Any]] { decode(app.staticTexts["__observer.receipt"].label) as? [[String: Any]] ?? [] }
-    func runtime() -> [String: Any] { decode(app.staticTexts["__observer.runtime"].label) as? [String: Any] ?? [:] }
+    func receipt() -> [[String: Any]] {
+        let started = ProcessInfo.processInfo.systemUptime
+        defer { recordOperation("receipt_query", started) }
+        return decode(app.staticTexts["__observer.receipt"].label) as? [[String: Any]] ?? []
+    }
+    func runtime() -> [String: Any] {
+        let started = ProcessInfo.processInfo.systemUptime
+        defer { recordOperation("runtime_query", started) }
+        return decode(app.staticTexts["__observer.runtime"].label) as? [String: Any] ?? [:]
+    }
     func visible(_ e: XCUIElement) -> Bool {
         let intersection = e.frame.intersection(viewportFrame)
         return e.exists && !intersection.isNull && intersection.width > 0 && intersection.height > 0 && e.frame.width > 0 && e.frame.height > 0
@@ -160,6 +193,7 @@ final class ObserverTests: XCTestCase {
     }
     func capture(_ name: String) -> [String: Any] {
         let started = ProcessInfo.processInfo.systemUptime
+        defer { recordOperation("capture", started) }
         // One public native snapshot carries real AX ancestry and attributes.
         // Do not turn every exported property into another remote XCUI query.
         let tree: XCUIElementSnapshot?
@@ -240,6 +274,8 @@ final class ObserverTests: XCTestCase {
         records.append(record); counter += 1; return record
     }
     func scroll(_ direction: String, fraction: Double = 0.5) {
+        let started = ProcessInfo.processInfo.systemUptime
+        defer { recordOperation("scroll", started) }
         let down = direction != "up"
         let origin = app.coordinate(withNormalizedOffset: .zero)
         let distance = min(max(fraction, 0.025), 0.7)
@@ -332,6 +368,8 @@ final class ObserverTests: XCTestCase {
                 "reason": observed.isEmpty ? (ambiguous ? "ambiguous_native_target" : "no_unique_visible_target_frame") : "original_native_target_frames"]
     }
     func observeTargets(_ targets: [[String: Any]], immediate: [String: Any], action: Int, maxScrolls: Int) -> [String: Any] {
+        let started = ProcessInfo.processInfo.systemUptime
+        defer { recordOperation("target_observation", started) }
         let epoch = immediate["binding"] as? [String: Any] ?? [:]
         var indices = [immediate["index"] as! Int], remaining = min(max(maxScrolls, 0), 40)
         let diagnosticsStart = revealDiagnostics.count
@@ -419,6 +457,9 @@ final class ObserverTests: XCTestCase {
         let actionData = Data(base64Encoded: env["OBSERVER_ACTIONS_BASE64"] ?? "") ?? Data("[]".utf8)
         let actions = try JSONSerialization.jsonObject(with: actionData) as? [[String: Any]] ?? []
         stateCaptureEnabled = config["state_capture"] as? Bool ?? false
+        coalesced = config["observation_strategy"] as? String == "coalesced"
+        executionScope = config["execution_scope"] as? String ?? "full"
+        executionStates = config["execution_states"] as? [[String: Any]] ?? []
         traceRevealImages = config["trace_reveal_images"] as? Bool ?? false
         sweepLimit = min(max(config["max_scrolls"] as? Int ?? 40, 1), 80)
         observationTargets = config["observation_targets"] as? [[String: Any]] ?? []
@@ -430,8 +471,11 @@ final class ObserverTests: XCTestCase {
             let extra = action["after_targets"] as? [[String: Any]] ?? (action["after_target"] as? [String: Any]).map { [$0] } ?? []
             for target in extra where !observationTargets.contains(where: { key($0) == key(target) }) { observationTargets.append(target) }
         }
-        app = XCUIApplication(); app.launchEnvironment["OBSERVER_CONFIG_BASE64"] = raw; app.launch()
+        app = XCUIApplication(); app.launchEnvironment["OBSERVER_CONFIG_BASE64"] = raw
+        let launchStarted = ProcessInfo.processInfo.systemUptime
+        app.launch()
         XCTAssertTrue(app.scrollViews["__observer.scroll"].waitForExistence(timeout: 15))
+        recordOperation("app_launch_and_ready", launchStarted)
         let originalRuntime = runtime()
         guard let viewport = originalRuntime["viewport"] as? [String: Double],
               let x = viewport["x"], let y = viewport["y"], let width = viewport["width"], let height = viewport["height"],
@@ -439,9 +483,9 @@ final class ObserverTests: XCTestCase {
         viewportFrame = CGRect(x: x, y: y, width: width, height: height)
         XCTAssertEqual(height, 600, accuracy: 0.5, "Native measured viewport must be 600 points")
         _ = capture("top")
-        if stateCaptureEnabled { sweep("initial") }
+        if stateCaptureEnabled && (!coalesced || executionStates.contains(where: { $0["state_id"] as? String == "initial" && $0["coverage"] as? String == "full_content" })) { sweep("initial") }
         for (i, action) in actions.enumerated() {
-            if stateCaptureEnabled && action["type"] as? String == "apply_next_fixture" { sweep("before-update-\(i)") }
+            if stateCaptureEnabled && !coalesced && action["type"] as? String == "apply_next_fixture" { sweep("before-update-\(i)") }
             currentActionIndex = i
             activeState = action["state_id"] as? String ?? "action-\(i)"
             let before = capture("action-\(i)-before")
@@ -449,6 +493,7 @@ final class ObserverTests: XCTestCase {
             let oldIndex = runtime()["fixture_index"] as? Int ?? -1
             let diagnosticsBefore = revealDiagnostics.count
             let kind = action["type"] as? String ?? ""
+            let captureScope = action["capture_scope"] as? String ?? "full_content"
             var outcome = "completed"
             var targetState: [String: Any] = [:]
             var activationState: [String: Any] = [:]
@@ -524,7 +569,21 @@ final class ObserverTests: XCTestCase {
             var postViewport: [String: Any] = ["status": "not_requested"]
             var observationSet: [String: Any] = [:]
             let requested = action["after_targets"] as? [[String: Any]] ?? (kind == "tap" ? [action["after_target"] as? [String: Any] ?? selector(action)] : [])
-            if !requested.isEmpty, action["observe_after"] as? Bool != false {
+            if coalesced && captureScope == "full_content" {
+                if kind != "sweep" { sweep(activeState) }
+                let epoch = immediateAfter["binding"] as? [String: Any] ?? [:]
+                let indices = Array(Set((stateCaptures.last?["snapshot_indices"] as? [Int] ?? []) + [immediateAfter["index"] as! Int])).sorted()
+                let ending = records.last?["binding_after_capture"] as? [String: Any] ?? [:]
+                let stable = key(ending) == key(epoch) && indices.allSatisfy { key(records[$0]["binding"] as? [String: Any] ?? [:]) == key(epoch) && records[$0]["capture_consistent"] as? Bool == true }
+                let results = requested.map { targetEvidence($0, indices: indices, epoch: epoch) }
+                observationSet = ["state_id": activeState, "after_action": i, "binding": epoch,
+                    "binding_after_observation": ending, "binding_stable": stable, "snapshot_indices": indices,
+                    "requested_targets": requested, "targets": results,
+                    "all_targets_observed": stable && results.allSatisfy { $0["status"] as? String == "observed" },
+                    "scope": "targets_from_same_epoch_full_sweep; coverage remains independently checked"]
+                after = records.last ?? immediateAfter
+                if let first = results.first { postViewport = first }
+            } else if !requested.isEmpty, action["observe_after"] as? Bool != false {
                 observationSet = observeTargets(requested, immediate: immediateAfter, action: i, maxScrolls: action["observation_max_scrolls"] as? Int ?? 24)
                 after = records.last ?? immediateAfter
                 if var first = (observationSet["targets"] as? [[String: Any]])?.first {
@@ -534,7 +593,7 @@ final class ObserverTests: XCTestCase {
                     postViewport = first
                 }
             }
-            if stateCaptureEnabled, let state = action["state_id"] as? String, kind != "sweep" { sweep(state) }
+            if stateCaptureEnabled && !coalesced, let state = action["state_id"] as? String, kind != "sweep" { sweep(state) }
             let now = after["runtime"] as? [String: Any] ?? [:]
             let sameProcess = (now["pid"] as? Int == originalRuntime["pid"] as? Int) && (now["instance"] as? String == originalRuntime["instance"] as? String)
             if !sameProcess { issues.append("app process identity changed") }
@@ -548,8 +607,8 @@ final class ObserverTests: XCTestCase {
                           "post_action_viewport": postViewport, "observation_set": observationSet, "immediate_after": immediateAfter["index"]!,
                           "before": before["index"]!, "after": after["index"]!, "callback_delta": delta, "same_process": sameProcess, "state_id": activeState, "binding_after": actionBinding])
         }
-        if stateCaptureEnabled { sweep("final") }
-        let maxScrolls = min(max(config["max_scrolls"] as? Int ?? 18, 1), 40)
+        if stateCaptureEnabled && !coalesced { sweep("final") }
+        let maxScrolls = coalesced ? 0 : min(max(config["max_scrolls"] as? Int ?? 18, 1), 40)
         for n in 0..<maxScrolls {
             let sentinel = app.staticTexts["__observer.bottom"]
             if sentinel.exists && sentinel.isHittable && fullyVisible(sentinel) { bottomReached = true; break }
@@ -558,10 +617,12 @@ final class ObserverTests: XCTestCase {
         _ = capture("bottom")
         let required = config["required_identifiers"] as? [String] ?? []
         let missing = required.filter { !seen.contains($0) }
-        if !bottomReached { issues.append("bottom sentinel not reached; lower content coverage incomplete") }
+        if !bottomReached && executionScope != "targeted" { issues.append("bottom sentinel not reached; lower content coverage incomplete") }
         if !missing.isEmpty { issues.append("required identifiers never visible: \(missing.joined(separator: ", "))") }
         let result: [String: Any] = ["schema_version": 2, "state_captures": stateCaptures, "measurement_kind": "XCUIElement runtime accessibility; frames in logical screen points",
-            "snapshots": records, "steps": steps, "coverage": ["bottom_reached": bottomReached, "required_identifiers": required, "missing_identifiers": missing, "observed_identifiers": seen.sorted()],
+            "snapshots": records, "steps": steps, "coverage": ["bottom_reached": bottomReached, "required_identifiers": required, "missing_identifiers": missing, "observed_identifiers": seen.sorted(), "execution_scope": executionScope],
+            "execution_scope": executionScope, "observation_strategy": coalesced ? "coalesced" : "legacy",
+            "operations": ["counts": operationCounts, "seconds": operationSeconds, "scope": "Nested inclusive operation walls, not additive elapsed time"],
             "issues": issues, "reveal_diagnostics": revealDiagnostics, "status": issues.isEmpty ? "passed" : "failed", "original_runtime": originalRuntime]
         var export = jsonSafe(result) as! [String: Any]
         export["serialization_diagnostics"] = nonFiniteNumbers

@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "completed_unix": 1792849949.312938,
+  "case": "ordinary400",
+  "pair": "r1",
+  "results": [
+    {
+      "arm": "legacy",
+      "counts": {
+        "passed": 64,
+        "failed": 2,
+        "unassessed": 0
+      },
+      "failed_ids": [
+        "replaced/action-appearance",
+        "disabled/action-appearance"
+      ],
+      "native_only_counts": {
+        "passed": 54,
+        "failed": 0,
+        "unassessed": 12
+      },
+      "admission": "not_accepted",
+      "blocking_obligations": [
+        "appearance"
+      ]
+    },
+    {
+      "arm": "coalesced",
+      "counts": {
+        "passed": 64,
+        "failed": 2,
+        "unassessed": 0
+      },
+      "failed_ids": [
+        "replaced/action-appearance",
+        "disabled/action-appearance"
+      ],
+      "native_only_counts": {
+        "passed": 54,
+        "failed": 0,
+        "unassessed": 12
+      },
+      "admission": "not_accepted",
+      "blocking_obligations": [
+        "appearance"
+      ]
+    }
+  ],
+  "required_coverage_preserved": true,
+  "confirmed_component_root_causes": [
+    {
+      "id": "disabled-rendered-palette",
+      "violated_assertions_per_arm": [
+        "replaced/action-appearance",
+        "disabled/action-appearance"
+      ],
+      "source_location": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/neutral/source/Bridge.swift:127",
+      "cause_hypothesis": "The plain button style applies an additional disabled appearance to an already explicitly colored label. The frozen source uses .buttonStyle(.plain) immediately before .disabled; this is a hypothesis, not a verified fix.",
+      "source_changed": false
+    }
+  ],
+  "unknowns": [
+    "Generic computed SwiftUI font, padding, color properties and physical touch bounds were never exposed or claimed.",
+    "Narrow/large-text case and reversed-order ordinary pair have not yet been delivered to this reviewer.",
+    "No second independent visual oracle has reviewed these judgments."
+  ],
+  "provenance_notes": [
+    "The supplied legacy capture identifies baseline-v8 observer tools/templates, while coalesced identifies candidate-attempt-1. Both compiled the same sealed Bridge.swift and consumed the exact frozen strategy-specific configs/actions. No baseline file outside the supplied capture was opened.",
+    "The first pair is order/cold-boot confounded: native timings are retained as observed descriptive values; no general speed or causal claim follows from this pair alone."
+  ],
+  "no_sdk_execution_by_reviewer": true
+}

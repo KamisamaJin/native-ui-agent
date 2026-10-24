@@ -1,0 +1,207 @@
+[
+  {
+    "type": "sweep",
+    "state_id": "overview",
+    "max_steps": 18,
+    "capture_scope": "full_content"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "transfer.disclosure"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "state_id": "opened",
+    "after_targets": [
+      {
+        "identifier": "transfer.title"
+      },
+      {
+        "identifier": "transfer.subtitle"
+      },
+      {
+        "identifier": "transfer.status"
+      },
+      {
+        "identifier": "transfer.statusText"
+      },
+      {
+        "identifier": "transfer.disclosure"
+      },
+      {
+        "identifier": "transfer.choice"
+      },
+      {
+        "identifier": "transfer.primary"
+      }
+    ],
+    "capture_scope": "targets"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "transfer.choice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "expect_callback": "transfer.ack:XFR-2618:true",
+    "capture_scope": "targets"
+  },
+  {
+    "type": "sweep",
+    "state_id": "permitted",
+    "max_steps": 18,
+    "capture_scope": "full_content"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "transfer.choice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "state_id": "cleared",
+    "expect_callback": "transfer.ack:XFR-2618:false",
+    "after_targets": [
+      {
+        "identifier": "transfer.title"
+      },
+      {
+        "identifier": "transfer.subtitle"
+      },
+      {
+        "identifier": "transfer.status"
+      },
+      {
+        "identifier": "transfer.statusText"
+      },
+      {
+        "identifier": "transfer.disclosure"
+      },
+      {
+        "identifier": "transfer.choice"
+      },
+      {
+        "identifier": "transfer.primary"
+      }
+    ],
+    "capture_scope": "targets"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "transfer.choice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "state_id": "restored",
+    "expect_callback": "transfer.ack:XFR-2618:true",
+    "after_targets": [
+      {
+        "identifier": "transfer.title"
+      },
+      {
+        "identifier": "transfer.subtitle"
+      },
+      {
+        "identifier": "transfer.status"
+      },
+      {
+        "identifier": "transfer.statusText"
+      },
+      {
+        "identifier": "transfer.disclosure"
+      },
+      {
+        "identifier": "transfer.choice"
+      },
+      {
+        "identifier": "transfer.primary"
+      }
+    ],
+    "capture_scope": "targets"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "transfer.primary"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "expect_callback": "transfer.release:XFR-2618",
+    "capture_scope": "targets"
+  },
+  {
+    "type": "sweep",
+    "state_id": "requested",
+    "max_steps": 18,
+    "capture_scope": "full_content"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "transfer.disclosure"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "capture_scope": "targets"
+  },
+  {
+    "type": "sweep",
+    "state_id": "requested-closed",
+    "max_steps": 18,
+    "capture_scope": "full_content"
+  },
+  {
+    "type": "apply_next_fixture",
+    "capture_scope": "none"
+  },
+  {
+    "type": "sweep",
+    "state_id": "replaced",
+    "max_steps": 18,
+    "capture_scope": "full_content"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "transfer.choice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "state_id": "held-choice",
+    "expect_callback": "transfer.ack:XFR-2740:true",
+    "after_targets": [
+      {
+        "identifier": "transfer.title"
+      },
+      {
+        "identifier": "transfer.subtitle"
+      },
+      {
+        "identifier": "transfer.status"
+      },
+      {
+        "identifier": "transfer.statusText"
+      },
+      {
+        "identifier": "transfer.disclosure"
+      },
+      {
+        "identifier": "transfer.choice"
+      },
+      {
+        "identifier": "transfer.primary"
+      }
+    ],
+    "capture_scope": "targets"
+  }
+]

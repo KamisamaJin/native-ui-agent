@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "phase": "completion_pass1_ordinary400_r1",
+  "tool_failures_in_supplied_native_runs": [],
+  "observations": [
+    {
+      "id": "supported-coverage-preserved",
+      "classification": "verified_behavior",
+      "observation": "Reconstructed both reports from the fixed contract and raw captures. Both retain all 54 supported native assertions, four required states, nine targets in every state, two complete full scans and the original dispatch/callback intervals. Coalesced target states correctly retain complete:false.",
+      "evidence": ["native-inspection.json", "raw-audit.json", "legacy-recomputed-coverage.json", "coalesced-recomputed-coverage.json"]
+    },
+    {
+      "id": "unintended-disabled-palette",
+      "classification": "component_defect_detected_by_visual_review",
+      "observation": "The source's intended disabled palette is visibly faded by the rendered button. Both arms expose the same two action-appearance failures. Automatic native results stayed at 54 pass and 12 manual U until actual image judgments were supplied; collection success did not hide the failure.",
+      "evidence": ["legacy-manual.json", "coalesced-manual.json", "rendered-color-diagnostics.json"]
+    },
+    {
+      "id": "supplied-legacy-provenance",
+      "classification": "scope_note",
+      "observation": "The parent supplied a legacy capture identifying baseline-v8 observer tooling rather than the candidate snapshot's legacy option. Same sealed component source, exact configs/actions and required coverage were independently checked; no same-tool-version claim is made.",
+      "evidence": "native-inspection.json source_hashes"
+    },
+    {
+      "id": "review-helper-field-lookup",
+      "classification": "operator_error",
+      "observation": "The first local complete_review.py attempt expected image_frame on the frozen resolve() helper's normalized semantic dictionary and raised KeyError. The original raw node contains the projected image_frame. The helper was corrected to read that raw node; no Skill source, test input, expectation or native capture changed.",
+      "resolution": "The corrected local helper completed successfully and preserved the visual decisions and original PNG evidence."
+    }
+  ],
+  "native_sdk_execution_by_reviewer": false,
+  "frozen_neutral_files_modified": false,
+  "outcome_assumed_in_advance": false
+}

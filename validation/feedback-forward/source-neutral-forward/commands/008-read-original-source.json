@@ -1,0 +1,14 @@
+{
+  "label": "008-read-original-source",
+  "startedAtUnix": 1792855751.5226939,
+  "endedAtUnix": 1792855751.537343,
+  "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill",
+  "argv": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-c",
+    "from pathlib import Path; p=Path('/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/source-neutral-forward/fixture/source'); [(print(f'FILE {f.name}\\n'+''.join(f'{i}: {line}\\n' for i,line in enumerate(f.read_text().splitlines(),1)))) for f in sorted(p.iterdir())]"
+  ],
+  "returncode": 0,
+  "stdout": "FILE BadgeModel.kt\n1: interface LabelFormatting {\n2:     fun stringFor(count: Int): String\n3: }\n4: \n5: data class BadgeModel(val count: Int, val formatter: LabelFormatting) {\n6:     companion object {\n7:         const val accessibilityIdentifier = \"neutral.badge.count\"\n8:     }\n9: \n10:     val displayCount: Int get() = count.coerceAtLeast(0)\n11:     val label: String get() = formatter.stringFor(displayCount)\n12: }\n\nFILE BadgeModel.swift\n1: protocol LabelFormatting {\n2:     func string(for count: Int) -> String\n3: }\n4: \n5: struct BadgeModel {\n6:     let count: Int\n7:     let formatter: any LabelFormatting\n8:     static let accessibilityIdentifier = \"neutral.badge.count\"\n9: \n10:     var displayCount: Int { max(0, count) }\n11:     var label: String { formatter.string(for: displayCount) }\n12: }\n\n",
+  "stderr": ""
+}

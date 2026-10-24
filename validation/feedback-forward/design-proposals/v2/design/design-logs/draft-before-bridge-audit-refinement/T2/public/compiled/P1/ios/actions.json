@@ -1,0 +1,222 @@
+[
+  {
+    "type": "sweep",
+    "state_id": "overview",
+    "max_steps": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "audio.disclosure"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "state_id": "opened",
+    "after_targets": [
+      {
+        "identifier": "audio.title"
+      },
+      {
+        "identifier": "audio.subtitle"
+      },
+      {
+        "identifier": "audio.status"
+      },
+      {
+        "identifier": "audio.statusText"
+      },
+      {
+        "identifier": "audio.disclosure"
+      },
+      {
+        "identifier": "audio.choice"
+      },
+      {
+        "identifier": "audio.primary"
+      }
+    ]
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "audio.choice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "expect_callback": "audio.wifiOnly:TOUR-203:false"
+  },
+  {
+    "type": "sweep",
+    "state_id": "permitted",
+    "max_steps": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "audio.choice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "state_id": "cleared",
+    "expect_callback": "audio.wifiOnly:TOUR-203:true",
+    "after_targets": [
+      {
+        "identifier": "audio.title"
+      },
+      {
+        "identifier": "audio.subtitle"
+      },
+      {
+        "identifier": "audio.status"
+      },
+      {
+        "identifier": "audio.statusText"
+      },
+      {
+        "identifier": "audio.disclosure"
+      },
+      {
+        "identifier": "audio.choice"
+      },
+      {
+        "identifier": "audio.primary"
+      }
+    ]
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "audio.choice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "state_id": "restored",
+    "expect_callback": "audio.wifiOnly:TOUR-203:false",
+    "after_targets": [
+      {
+        "identifier": "audio.title"
+      },
+      {
+        "identifier": "audio.subtitle"
+      },
+      {
+        "identifier": "audio.status"
+      },
+      {
+        "identifier": "audio.statusText"
+      },
+      {
+        "identifier": "audio.disclosure"
+      },
+      {
+        "identifier": "audio.choice"
+      },
+      {
+        "identifier": "audio.primary"
+      }
+    ]
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "audio.primary"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "expect_callback": "audio.download:TOUR-203:mobile"
+  },
+  {
+    "type": "sweep",
+    "state_id": "requested",
+    "max_steps": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "audio.disclosure"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18
+  },
+  {
+    "type": "sweep",
+    "state_id": "requested-closed",
+    "max_steps": 18
+  },
+  {
+    "type": "apply_next_fixture"
+  },
+  {
+    "type": "sweep",
+    "state_id": "replaced",
+    "max_steps": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "audio.choice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "observation_max_scrolls": 18,
+    "state_id": "held-choice",
+    "expect_callback": "audio.wifiOnly:TOUR-311:false",
+    "after_targets": [
+      {
+        "identifier": "audio.title"
+      },
+      {
+        "identifier": "audio.subtitle"
+      },
+      {
+        "identifier": "audio.status"
+      },
+      {
+        "identifier": "audio.statusText"
+      },
+      {
+        "identifier": "audio.disclosure"
+      },
+      {
+        "identifier": "audio.choice"
+      },
+      {
+        "identifier": "audio.primary"
+      }
+    ]
+  },
+  {
+    "type": "apply_next_fixture",
+    "state_id": "competing-gates",
+    "observation_max_scrolls": 18,
+    "after_targets": [
+      {
+        "identifier": "audio.title"
+      },
+      {
+        "identifier": "audio.subtitle"
+      },
+      {
+        "identifier": "audio.status"
+      },
+      {
+        "identifier": "audio.statusText"
+      },
+      {
+        "identifier": "audio.disclosure"
+      },
+      {
+        "identifier": "audio.choice"
+      },
+      {
+        "identifier": "audio.primary"
+      }
+    ]
+  }
+]

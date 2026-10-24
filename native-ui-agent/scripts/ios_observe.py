@@ -236,6 +236,26 @@ def run(args) -> int:
     if config.get("dynamic_type", "large") not in allowed_types: raise ValueError("unknown dynamic_type")
     if not isinstance(actions, list) or len(actions) > 40: raise ValueError("actions must be an array of at most 40 bounded actions")
     _contract.validate_actions(actions)
+    strategy = config.get('observation_strategy', 'legacy')
+    if strategy not in {'legacy', 'coalesced'}:
+        raise ValueError('Unknown observation strategy')
+    if strategy == 'coalesced':
+        selected = config.get('execution_states', [])
+        definitions = config.get('execution_state_definitions', [])
+        if not selected or not definitions or config.get('execution_scope') not in {'full', 'targeted'}:
+            raise ValueError('Coalesced execution requires explicit coverage and parent state definitions')
+        names = [s['state_id'] for s in selected]
+        if len(names) != len(set(names)) or not set(names) <= {s['id'] for s in definitions}:
+            raise ValueError('Unknown or duplicate execution state')
+        for state in selected:
+            if state['coverage'] not in {'full_content', 'targets'}:
+                raise ValueError('Explicit state coverage required')
+            for target in state['targets']: _contract.validate_selector(target)
+        for action in actions:
+            scope = action.get('capture_scope')
+            entry = next((s for s in selected if s['state_id'] == action.get('state_id')), None)
+            if scope not in {'none', 'targets', 'full_content'} or (entry and scope != entry['coverage']):
+                raise ValueError('Action sampling differs from its compiled required coverage')
     for target in config.get("observation_targets", []): _contract.validate_selector(target)
     state_ids = [action["state_id"] for action in actions if "state_id" in action]
     if len(state_ids) != len(set(state_ids)) or any(not isinstance(s, str) or not s or s in {"initial", "final"} for s in state_ids):
@@ -339,12 +359,20 @@ def run(args) -> int:
         manifest["screenshot_pixels"] = observation["snapshots"][0]["screenshot_pixels"]
         complete = coverage_status(observation["coverage"]) == "passed"
         manifest["status"] = "passed" if test.returncode == 0 and manifest["native_test_count"] > 0 and observation["status"] == "passed" and complete else "failed"
+        if strategy == 'coalesced':
+            import execution_plan
+            receipt = execution_plan.coverage_receipt({'required_coverage': config['execution_states'], 'config': config,
+                'platform': 'ios', 'execution_sha256': digest(Path(args.fixtures)), 'scope': config['execution_scope']}, observation)
+            manifest['execution_coverage'] = receipt
+            if not receipt['satisfied']: manifest['status'] = 'failed'
+            elif config['execution_scope'] == 'targeted' and test.returncode == 0 and observation['status'] == 'passed':
+                manifest['status'] = 'captured_partial'
     except Exception as exc:
         manifest["error"] = str(exc)
     manifest["finished_at"] = time.time()
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
     print(json.dumps({"status": manifest["status"], "output": str(output), "native_test_count": manifest["native_test_count"], "error": manifest.get("error")}, indent=2))
-    return 0 if manifest["status"] == "passed" else 1
+    return 0 if manifest["status"] in {"passed", "captured_partial"} else 1
 
 
 def main() -> int:

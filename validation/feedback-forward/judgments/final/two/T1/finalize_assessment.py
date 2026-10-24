@@ -1,0 +1,58 @@
+import json,time,hashlib,sys
+sys.dont_write_bytecode=True
+from pathlib import Path
+B=Path('/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward');O=B/'judgments/final/two/T1'
+def dump(p,d):p.write_text(json.dumps(d,indent=2,ensure_ascii=False)+'\n')
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+manifest=json.loads((O/'image-manifest.json').read_text());integrity={};errors=[]
+for rel,m in manifest.items():
+ inp=json.loads((B/'evaluation-inputs/final/T1'/rel/'inputs.json').read_text());image_entries=[e for t in m['tiles'] for e in t['originals']];ok=[]
+ for e in image_entries:
+  p=Path(e['path']);key=str(p.relative_to(B));h=sha(p);good=h==e['sha256'] and h==inp['original_files'].get(key);ok.append(good)
+  if not good:errors.append({'case':rel,'original':key,'problem':'Selected original image hash not equal to metadata and retained manifest.'})
+ ob=B/inp['observation'];integrity[rel]={'observation_sha256':sha(ob),'observation_matches_input':sha(ob)==inp['observation_sha256'],'selected_original_images':len(image_entries),'selected_original_images_match_metadata':all(ok),'visually_inspected_contact_pages':m['pages']}
+for alias in ['source-a','source-b']:
+ inp=json.loads((B/f'source-evaluation-inputs/final/T1/{alias}/inputs.json').read_text());cat=json.loads((B/f'source-evaluation-inputs/final/T1/{alias}/catalog.json').read_text());files={}
+ for rel,desc in cat['files'].items():
+  p=B/inp['design_root']/rel[len('@design/'):] if rel.startswith('@design/') else B/inp['capsule']/'source'/rel
+  files[rel]={'sha256':sha(p),'matches_catalog':sha(p)==desc['sha256'],'inspected_line_interval':[1,desc['line_count']]}
+ integrity[alias+'/source']=files
+integrity['errors']=errors;dump(O/'input-integrity.json',integrity)
+phase=json.loads((O/'phase.json').read_text());end=int(time.time());phase.update({'endedAtUnix':end,'durationSeconds':end-phase['startedAtUnix'],'status':'complete; ready for seal'});dump(O/'phase.json',phase)
+record={
+ 'assessor':'One isolated anonymous AI quality assessor for final/two/T1. No communication to other agents, other-panel judgments, assignment mapping, participant self-reviews, old study outcomes or repair reports were used.',
+ 'startUnix':phase['startedAtUnix'],'endUnix':end,
+ 'runtime_scope':{'sources':['source-a','source-b'],'platforms':['ios','android'],'cases':['P1','P2','H1'],'selected_states_each':9,'required_files_read_each':['inputs.json','plan.json','catalog.json','automatic.json','environment-check.json'],'visual_decisions_each':143,'total_visual_decisions':1716,'visual_actual_true':1716,'visual_actual_false':0,'visual_actual_null':0},
+ 'source_scope':{'catalog_and_inputs_read_both':True,'propositions_each':103,'total_source_decisions':206,'source_actual_true':206,'source_actual_false':0,'source_actual_null':0,'original_capsules':'Exact production Swift and Kotlin bytes for each anonymous source were read with original line numbering; approved Bridge.swift and ObserverBridge.kt were read in full. Actual evidence SHA/ranges are in each source-judge.json.'},
+ 'visual_inspection':{'native_viewports':'Every strict state-eligible original viewport in image-manifest.json was represented and visually inspected in that source/case own contact sheets. Identical pixels were deduplicated only within a case and every original path, SHA, state and index is retained. iOS sheets crop the actual observer viewport from the original PNG; Android sheets use the whole original viewport PNG. No generative image or replacement render is used.','whole_long_content':'All original permitted and requested full sweeps were followed from top through eight caller-ordered heading/body pairs to the final confirmation/primary and reachable bottom. Overview, requested-closed and replacement full states were inspected as well; targeted opened, cleared, restored and held-choice frames were inspected within their approved limits.','primary_allocation':'Four primary-boundary sheets were inspected against actual coherent native control rectangles for all nine states in all twelve cases. The original whole viewport sequences retain the complete surface edges; some enlarged P2 detail tiles approach the tile bottom. Physical hit regions were not inferred.','independent_references':'Original independent reference sheets 01, 02 and 04 were viewed. Because the initial tall sheets were automatically downscaled by the viewer, readable permitted-reference slices for P1, P2 and RTL H1 were generated and inspected in reference-detail-*.png. Static reference rasterization was used for copy/order/layout intent only, not exact cross-platform pixels.','direct_original_followups':['Both Android P2 replacement original #79 PNGs','Both Android P1 requested #43 and #44 original PNGs','Both Android H1 requested #43 and #44 original PNGs'],'image_presentation_check':'A direct pixel comparison confirmed the retained source-b Android P1 contact tile for original requested #43 exactly equals its resized original viewport. Direct originals were inspected to resolve sparse-looking repeated regions in the image presentation.'},
+ 'native_binding_and_actions':'Frozen bound_state_evidence was run for every state. All selected state/input/epoch/image identities are coherent. Full states have complete interval coverage. iOS opened/cleared/restored/held-choice are explicitly target-only and are not promoted to full-content evidence. Original real action receipts were inspected for disclosure, true/false/true confirmation sequence, one release, close, same-instance caller replacement with zero event interval/delta, and held choice using the replacement ID. Original methods are xcui_tap on iOS and compose_onclick on Android; caller replacement uses caller_fixture_update. See action-receipt-inspection.json in every case.',
+ 'strict_unknowns':'Nine status-leading-clear native-pixel rules remain unassessed in EACH Android P2 run. The frozen recomputation reports conflicting/insufficient strict rendered-color evidence (overview has no eligible sample). These 18 unknowns were neither converted into visual passes nor attributed as product failures.',
+ 'failure_attribution':'No supported strict native, pixel, qualitative visual or source false result was found. Attributions arrays are therefore empty. Strict unknowns alone do not establish a product cause.',
+ 'schema_checks':'Each runtime request was passed as BOTH arguments to frozen acceptance.evaluate exactly as a self-check. Those duplicate slots are not independent consensus. Source requests were checked by shared implementation_audit.bind with frozen design_contract already loaded. All schemas/hash/range bindings passed. 10 runtime cases self-check as 356 passed/0 failed/0 unassessed; the two Android P2 cases self-check as 347 passed/0 failed/9 unassessed. Each source request checks as 103 passed/0 failed/0 unassessed. AI agreement is not human gold.',
+ 'commands_and_tools':[
+  'cat validation/feedback-forward/operators/quality-final-two-T1-delivered.txt',
+  'Inline python3: immediately create output/phase.json with int(time.time()); inventory ONLY delivered runtime/source input folders.',
+  'Inline python3: parse required input/plan/catalog/automatic/environment files and original observation metadata; initial overly broad print was truncated, followed by bounded targeted key/proposition/state summaries.',
+  'cat validation/feedback-forward/SOURCE-AUDIT.md; rg -n bound_state_evidence/evaluate/review in candidate-v9; sed reads of frozen native_checks.py/acceptance.py and shared implementation_audit.py.',
+  'cat/sed original approved BRIEF.md, API.md, COLLECTION.md, Bridge.swift, ObserverBridge.kt; read source capsules with actual source line numbers; parse original public/private policy/reference metadata.',
+  'PYTHONDONTWRITEBYTECODE=1 python3 output/inspect_evidence.py',
+  'view_image(detail=original): every catalog-*.png listed in image-manifest.json (all sources/platforms/cases), reference sheets 01/02/04, direct original followups recorded above.',
+  'PYTHONDONTWRITEBYTECODE=1 python3 output/detail_checks.py; view_image(detail=original) four primary-boundaries-*.png and three reference-detail-*.png.',
+  'PYTHONDONTWRITEBYTECODE=1 python3 output/write_judgments.py; poll existing exec session with write_stdin until complete.',
+  'Inline python3: print scoped schema summaries; compare contact tile with resized original using PIL.ImageChops; inspect/save compact action receipts for all twelve cases.',
+  'PYTHONDONTWRITEBYTECODE=1 python3 output/finalize_assessment.py (this script performs final original image/source integrity check, writes inspection records, seals every output file).'
+ ],
+ 'failed_attempts_and_limits':[
+  {'attempt':'Initial inline observation diagnostic','result':'KeyError: viewport when the same field access reached Android, whose wire schema uses logical_viewport_dp. No judgment was changed; subsequent code handles platform schemas explicitly.'},
+  {'attempt':'First inspect_evidence.py run','result':'KeyError: issues on Android observation. Original attempted script retained as inspect_evidence-rejected-attempt.py. Follow-up used obs.get(issues, []) and completed all twelve cases.'},
+  {'attempt':'Large early metadata/source prints and one action diagnostic print','result':'Tool output truncation retained as an inspection limit; the assessment used subsequent bounded source reads, all-case image catalogs, complete retained binding/action data and exact source hashes rather than unseen truncated text.'},
+  'No SDK commands, fresh native execution, production edits, expected-value/target/unit overrides or commits were performed. This is review of the delivered original captures and exact declared source, not a new runtime truth-table test or iOS-14 link/launch proof.',
+  'Images are inspected through original viewport crops/contact sheets at readable scale. Exact colors and numerical geometry remain the frozen original native/pixel facts; visual judgment does not invent unavailable computed styles or resolve strict pixel unknowns.'
+ ]
+}
+dump(O/'inspection-record.json',record)
+if errors:raise RuntimeError('Input integrity mismatch; do not seal silently')
+# Seal every authored output, including diagnostics and source reviews, together.
+files={str(p.relative_to(O)):sha(p) for p in sorted(O.rglob('*')) if p.is_file() and p.name!='SEAL.json' and '__pycache__' not in p.parts}
+seal={'sealedAtUnix':int(time.time()),'files':files};dump(O/'SEAL.json',seal)
+print(json.dumps({'sealed':str(O/'SEAL.json'),'fileCount':len(files),'sealSha256':sha(O/'SEAL.json'),'runtimeCases':12,'sourceReviews':2,'strictUnknowns':18,'supportedFailures':0},indent=2))

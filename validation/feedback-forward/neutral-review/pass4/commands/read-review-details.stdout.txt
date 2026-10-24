@@ -1,0 +1,417 @@
+FILE native_checks.py
+320: def evaluate(plan, observation, platform, manual=None, root=None, observation_sha256=None, design_lock=None, design_sha256=None, review_policy=None, review_policy_sha256=None):
+321:     if (design_lock is None)!=(design_sha256 is None):raise ValueError('Trusted design requires both external lock and pinned digest')
+322:     if design_lock is not None and 'design_contract'not in plan:raise ValueError('Trusted design mode rejects a stripped or legacy unverified plan')
+323:     if 'design_contract'in plan:
+324:         from design_contract import verify_generated
+325:         if design_lock is None:raise ValueError('Generated assertions require the separately pinned design lock')
+326:         verify_generated(plan,design_lock,design_sha256,platform)
+327:     states=validate_plan(plan);manual=manual or {'decisions':[]};decisions={}
+328:     if (review_policy is None)!=(review_policy_sha256 is None):raise ValueError('Atomic review needs policy and separately pinned digest')
+329:     if review_policy is not None or 'review_contract'in manual:
+330:         if review_policy is None or 'review_contract'not in manual or design_lock is None or root is None or not observation_sha256:
+331:             raise ValueError('Bound atomic review cannot be stripped or used without independently pinned sources')
+332:         from review_contract import verify_manual
+333:         verify_manual(manual,plan,design_lock,design_sha256,review_policy,review_policy_sha256,observation,observation_sha256,root,platform)
+334:     if manual.get('decisions') and (not observation_sha256 or manual.get('observation_sha256')!=observation_sha256):raise ValueError('Manual review is not bound to this observation')
+335:     for row in manual.get('decisions',[]):
+336:         if row.get('id')in decisions:raise ValueError('Duplicate manual decision')
+337:         decisions[row.get('id')]=row
+338:     unknown=set(decisions)-{a['id']for a in plan['assertions']if a['kind']=='manual'}
+339:     if unknown:raise ValueError('Unplanned manual decisions')
+340:     evidence={sid:(bound_state_evidence if review_policy is not None else state_evidence)(observation,spec)for sid,spec in states.items()};rows=[]
+341:     for item in plan['assertions']:
+342:         found,complete,why,capture=evidence[item['state']];status='unassessed';actual=None;reason=why;used=[];geometry_proofs=None
+343:         if found:
+344:             kind=item['kind']
+345:             if kind=='control':
+346:                 values=[]
+347:                 for index,snapshot in found:
+348:                     resolved=resolve(snapshot,item['target'],platform);facts=resolved['facts'];prop=item['property']
+349:                     semantic=resolved['semantic'];visible=semantic.get('intersects_viewport',False)
+350:                     if prop in {'present','unique'}:
+351:                         if facts.get('unique') and visible:values.append((index,facts[prop],resolved))
+352:                         elif complete and not facts.get('present'):values.append((index,False,resolved))
+353:                         elif facts.get('present')and not facts.get('unique'):values.append((index,facts[prop],resolved))
+354:                     elif prop=='label' and visible and facts.get('unique'):values.append((index,facts.get('label'),resolved))
+355:                     elif visible and resolved['resolution']=='unique_native_control'and prop in facts and facts[prop]is not None:
+356:                         values.append((index,facts[prop],resolved))
+357:                 if values:
+358:                     actual=[{'snapshot':i,'value':v,'resolution':r}for i,v,r in values];used=[i for i,_,_ in values]
+359:                     checks=[compare(v,item['expected'],item.get('op','eq'),item.get('tolerance'))for _,v,_ in values]
+360:                     # Conflicting real values inside one immutable epoch remain unknown.
+361:                     if all(checks):status='passed';reason='typed native property matches expected'
+362:                     elif not any(checks):status='failed';reason='typed native property contradicts expected'
+363:                     else:reason='native values conflict within state; inspect changing UI or capture drift'
+364:                 else:reason='native property unavailable, target not observed, or ancestry ambiguous'
+365:             elif kind=='event':
+366:                 index=item['action_index'];steps=observation.get('steps',[])
+367:                 if 0<=index<len(steps):
+368:                     step=steps[index]
+369:                     after=step.get('binding_after',{})
+370:                     index_ok=after==capture.get('binding')
+371:                     actual=callback_verdict(step,item['expected'],platform,item.get('required_method'),item.get('stimulus','activation'))
+372:                     if index_ok:
+373:                         status=actual['status'];reason=actual['reason']
+374:                     else:reason='successful stimulus and assessed state have different bindings'
+375:             elif kind=='text_layout':
+376:                 values=[]
+377:                 for index,snapshot in found:
+378:                     matched=[n for n in snapshot.get('nodes',[])if same_selector(n,item['target'])]
+379:                     if len(matched)==1 and matched[0].get('intersects_viewport')and item['property']in matched[0]:
+380:                         values.append((index,matched[0][item['property']]))
+381:                 if values:
+382:                     actual=[v for _,v in values];used=[i for i,_ in values];result=[compare(v,item['expected'],item.get('op','eq'),item.get('tolerance'))for _,v in values]
+383:                     if all(result):status='passed';reason='native text layout result'
+384:                     elif not any(result):status='failed';reason='native text layout contradiction'
+385:                     else:reason='conflicting native layout values'
+386:             elif kind=='geometry':
+387:                 values=[(i,geometry_measurement(s,item,platform))for i,s in found]
+388:                 values=[(i,v)for i,v in values if v is not None]
+389:                 if values:
+390:                     actual=[v['value'] for _,v in values];used=[i for i,_ in values]
+391:                     import native_geometry
+392:                     result=[native_geometry.compare(v,item['expected'],item.get('op','eq'),item.get('tolerance')) if 'ratio' in v else compare(v['value'],item['expected'],item.get('op','eq'),item.get('tolerance')) for _,v in values]
+393:                     geometry_proofs=[dict(v,snapshot=i)for i,v in values]
+394:                     if all(result):status='passed';reason='same-frame native-bound geometry matches design'
+395:                     elif not any(result):status='failed';reason='same-frame native-bound geometry contradicts design'
+396:                     else:reason='conflicting native geometry inside one state'
+397:                 else:reason='layout-box measurement unsupported by current AX/semantic collector'if item.get('measurement')=='layout_box'else'unique fully visible native boxes unavailable in a shared coherent frame'
+398:             elif kind=='manual':
+399:                 row=decisions.get(item['id']);actual=row
+400:                 if row:
+401:                     indices=row.get('snapshot_indices',[]);allowed={i for i,_ in found};method=row.get('method')
+402:                     valid=bool(indices)and set(indices)<=allowed and bool(row.get('reason'))and method in item.get('allowed_methods',['visual'])and bool(row.get('evidence'))and root is not None
+403:                     if valid and root:
+404:                         expected_images={(root/observation['snapshots'][i]['screenshot']).resolve()for i in indices}
+405:                         declared={(root/ref['path']).resolve()for ref in row.get('evidence',[])}
+406:                         if not expected_images<=declared:raise ValueError('Manual review lacks actual state screenshot artifacts')
+407:                         for ref in row.get('evidence',[]):
+408:                             path=(root/ref['path']).resolve()
+409:                             if not path.is_relative_to(root.resolve())or not path.is_file()or sha(path)!=ref.get('sha256'):raise ValueError('Manual artifact missing, outside root, or changed')
+410:                     if valid and row.get('status')in {'passed','failed'}:
+411:                         if row['status']=='failed'or item.get('coverage','full_content')!='full_content'or complete:
+412:                             status=row['status'];used=indices;reason=row['reason']
+413:                         else:reason='manual pass withheld: this input state lacks full-content coverage'
+414:                     else:reason='missing scoped manual method, snapshots or rationale'
+415:         rows.append({'id':item['id'],'state':item['state'],'status':status,'actual':actual,'reason':reason,'snapshot_indices':sorted(set(used)),**({'geometry_evidence':geometry_proofs}if geometry_proofs is not None else{})})
+416:     counts={s:sum(row['status']==s for row in rows)for s in ['passed','failed','unassessed']}
+417:     planned={item['id']:item for item in plan['assertions']}
+418:     machine_findings=[{'id':row['id'],'state':row['state'],'requirement_id':planned[row['id']].get('requirement_id'),
+419:                        'origin':'typed_native_check','kind':planned[row['id']]['kind'],
+420:                        'target':planned[row['id']].get('target'),'property':planned[row['id']].get('property'),
+421:                        'expected':planned[row['id']].get('expected'),'actual':row['actual'],
+422:                        'unit':planned[row['id']].get('unit'),'measurement':planned[row['id']].get('measurement'),
+423:                        'expectation_provenance':planned[row['id']].get('expectation_provenance'),
+424:                        'reason':row['reason'],'snapshot_indices':row['snapshot_indices'],
+425:                        'action_index':planned[row['id']].get('action_index')}
+426:                       for row in rows if row['status']=='failed'and planned[row['id']]['kind']!='manual']
+427:     return {'schema_version':1,'status':'failed'if counts['failed']else'needs_review'if counts['unassessed']else'passed',
+428:             'coverage_contract':'required_id_set'if 'required_assertion_ids'in plan else'supplied_plan_only','complete_requirements_claim':bool(plan.get('required_assertion_ids'))and not counts['failed']and not counts['unassessed'],'assertions':rows,'counts':counts,'states':{k:{'complete':v[1],'reason':v[2],'binding':v[3].get('binding')if v[3]else None}for k,v in evidence.items()},
+429:             'machine_findings':machine_findings,'failed_assertion_ids':[row['id']for row in rows if row['status']=='failed'],
+430:             'matrix_contract':plan.get('matrix_contract'),
+431:             'expectation_provenance':{'status':'verified_typed_source_derivation','design_lock_sha256':design_sha256}if 'design_contract'in plan else{'status':'unverified_supplied_expectations'},
+432:             'limits':'Native facts are typed and state-bound. Manual visual meaning remains reviewer judgment. AX dimensions do not establish internal padding/fonts/colors or complete physical hit regions.'}
+433: 
+434: 
+435: def main():
+436:     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--plan',type=Path,required=True);p.add_argument('--observation',type=Path,required=True);p.add_argument('--platform',choices=['ios','android'],required=True);p.add_argument('--manual',type=Path);p.add_argument('--root',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--design-lock',type=Path);p.add_argument('--design-sha256');p.add_argument('--review-policy',type=Path);p.add_argument('--review-policy-sha256');a=p.parse_args()
+437:     if a.output.exists():raise ValueError('Fresh output required')
+438:     report=evaluate(read(a.plan),read(a.observation),a.platform,read(a.manual)if a.manual else None,a.root or a.observation.parent,sha(a.observation),read(a.design_lock)if a.design_lock else None,a.design_sha256,read(a.review_policy)if a.review_policy else None,a.review_policy_sha256)
+439:     report['input_hashes']={'plan':sha(a.plan),'observation':sha(a.observation),**({'manual':sha(a.manual)}if a.manual else{})}
+440:     a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n');print(json.dumps({'status':report['status'],'counts':report['counts']}));return 1 if report['status']=='failed'else 3 if report['status']=='needs_review'else 0
+441: if __name__=='__main__':
+442:     try:raise SystemExit(main())
+443:     except (ValueError,KeyError,TypeError,OSError)as e:print('Invalid native assertion evidence: '+str(e),file=sys.stderr);raise SystemExit(2)
+FILE native_pixels.py
+1: """Rendered sRGB samples scoped to original state/target/viewport, not computed styles."""
+2: from __future__ import annotations
+3: 
+4: from collections import Counter
+5: import hashlib
+6: import math
+7: from pathlib import Path
+8: 
+9: 
+10: def sha(path):
+11:     return hashlib.sha256(path.read_bytes()).hexdigest()
+12: 
+13: 
+14: def finite(values):
+15:     return all(type(v) in {int, float} and math.isfinite(v) for v in values)
+16: 
+17: 
+18: def validate_sampling(spec):
+19:     if set(spec) != {'region', 'minimum_pixels', 'minimum_support', 'channel_tolerance', 'basis', 'visibility'}:
+20:         raise ValueError('Exact independently approved pixel sampling policy required')
+21:     region = spec['region']
+22:     if not isinstance(region, list) or len(region) != 4 or not finite(region) or not (0 <= region[0] < region[2] <= 1 and 0 <= region[1] < region[3] <= 1):
+23:         raise ValueError('Pixel region must be a normalized target-local rectangle')
+24:     if type(spec['minimum_pixels']) is not int or spec['minimum_pixels'] < 1:
+25:         raise ValueError('Positive pixel count required')
+26:     if not finite([spec['minimum_support']]) or not .5 < spec['minimum_support'] <= 1:
+27:         raise ValueError('Unique dominant-color support must exceed one half')
+28:     if type(spec['channel_tolerance']) is not int or not 0 <= spec['channel_tolerance'] <= 255:
+29:         raise ValueError('Explicit nonnegative rendered RGB channel tolerance required')
+30:     if spec['basis'] not in {'semantic', 'control'} or spec['visibility'] not in {'fully_visible', 'visible_fragment'}:
+31:         raise ValueError('Explicit native box basis and visibility scope required')
+32: 
+33: 
+34: def image_rectangle(snapshot, node, platform, size):
+35:     """Map original native coordinates; prefer an explicit integer viewport packet."""
+36:     width, height = size
+37:     if snapshot.get('screenshot_pixels') != {'width': width, 'height': height}:
+38:         raise ValueError('Original screenshot dimensions differ from native capture')
+39:     if platform == 'ios':
+40:         app, box, viewport = snapshot.get('app_frame', {}), node.get('frame', {}), snapshot.get('viewport', {})
+41:         if any(not all(k in v for k in ['x', 'y', 'width', 'height']) for v in [app, box, viewport]):
+42:             return None
+43:         if not finite([v[k] for v in [app, box, viewport] for k in ['x', 'y', 'width', 'height']]) or app['width'] <= 0 or app['height'] <= 0:
+44:             return None
+45:         sx, sy = width / app['width'], height / app['height']
+46:         convert = lambda r: [(r['x'] - app['x']) * sx, (r['y'] - app['y']) * sy,
+47:                              (r['x'] + r['width'] - app['x']) * sx, (r['y'] + r['height'] - app['y']) * sy]
+48:         box, clip = convert(box), convert(viewport)
+49:     else:
+50:         native = snapshot.get('native_viewport_px')
+51:         geometry = node.get('native_geometry')
+52:         if native is not None:
+53:             if (set(native) != {'width', 'height', 'density'} or
+54:                     not isinstance(geometry, dict) or
+55:                     any(type(native[k]) is not int or native[k] <= 0 for k in ['width', 'height']) or
+56:                     geometry.get('version') != 1 or geometry.get('provider') != 'compose_semantics_int_size' or
+57:                     geometry.get('coordinate_unit') != 'px' or geometry.get('density') != native['density']):
+58:                 return None
+59:             position, extent = geometry.get('position_px'), geometry.get('size_px')
+60:             if (not isinstance(position, list) or len(position) != 2 or not finite(position) or
+61:                     not isinstance(extent, list) or len(extent) != 2 or any(type(v) is not int or v <= 0 for v in extent)):
+62:                 return None
+63:             sx, sy = width / native['width'], height / native['height']
+64:             box = [position[0] * sx, position[1] * sy, (position[0] + extent[0]) * sx, (position[1] + extent[1]) * sy]
+65:             return box, [0, 0, width, height]
+66:         viewport, bounds = snapshot.get('logical_viewport_dp', {}), node.get('unclipped_bounds_dp')
+67:         if not bounds or len(bounds) != 4 or not finite(bounds) or not finite([viewport.get('width'), viewport.get('height')]) or min(viewport['width'], viewport['height']) <= 0:
+68:             return None
+69:         sx, sy = width / viewport['width'], height / viewport['height']
+70:         box = [bounds[0] * sx, bounds[1] * sy, bounds[2] * sx, bounds[3] * sy]
+71:         clip = [0, 0, width, height]
+72:     if box[2] <= box[0] or box[3] <= box[1]:
+73:         return None
+74:     return box, [max(0, clip[0]), max(0, clip[1]), min(width, clip[2]), min(height, clip[3])]
+75: 
+76: 
+77: def sample(snapshot, selector, platform, root, spec):
+78:     from PIL import Image
+79:     from native_checks import resolve
+80:     validate_sampling(spec)
+81:     resolved = resolve(snapshot, selector, platform)
+82:     if not resolved['facts']['unique']:
+83:         return {'status': 'unassessed', 'eligible': resolved['facts']['present'], 'reason': 'Target is missing or ambiguous'}
+84:     node = resolved[spec['basis']]
+85:     if not node or not node.get('intersects_viewport'):
+86:         return {'status': 'unassessed', 'eligible': bool(resolved['semantic'].get('intersects_viewport')), 'reason': 'Approved native box is unavailable'}
+87:     if spec['visibility'] == 'fully_visible' and not node.get('fully_within_viewport', node.get('fully_visible', False)):
+88:         return {'status': 'unassessed', 'eligible': False, 'reason': 'Target is not fully visible'}
+89:     path = (root / snapshot['screenshot']).resolve()
+90:     if not path.is_relative_to(root.resolve()) or not path.is_file():
+91:         raise ValueError('Pixel evidence missing or outside original observation root')
+92:     with Image.open(path) as image:
+93:         mapping = image_rectangle(snapshot, node, platform, image.size)
+94:         if mapping is None:
+95:             return {'status': 'unassessed', 'eligible': True, 'reason': 'Native-to-image mapping unavailable'}
+96:         box, clip = mapping
+97:         x0, y0, x1, y1 = spec['region']
+98:         region = [box[0] + x0 * (box[2] - box[0]), box[1] + y0 * (box[3] - box[1]),
+99:                   box[0] + x1 * (box[2] - box[0]), box[1] + y1 * (box[3] - box[1])]
+100:         # Sample only pixel centers strictly within the approved region and viewport.
+101:         roi = [math.ceil(max(region[0], clip[0]) - .5), math.ceil(max(region[1], clip[1]) - .5),
+102:                math.ceil(min(region[2], clip[2]) - .5), math.ceil(min(region[3], clip[3]) - .5)]
+103:         if roi[2] <= roi[0] or roi[3] <= roi[1]:
+104:             return {'status': 'unassessed', 'eligible': False, 'reason': 'Approved pixel region is outside captured viewport'}
+105:         # Native screenshots are sRGB/RGB; do not silently color-convert profiles.
+106:         if image.info.get('icc_profile'):
+107:             return {'status': 'unassessed', 'eligible': True, 'reason': 'Embedded color profile needs an explicit approved conversion'}
+108:         rgba = image.convert('RGBA').crop(tuple(roi))
+109:         histogram = Counter(rgba.getdata())
+110:         count = sum(histogram.values())
+111:         ordered = sorted(histogram.items(), key=lambda p: (-p[1], p[0]))
+112:         proof = {'path': str(path.relative_to(root.resolve())), 'sha256': sha(path), 'image_size': list(image.size),
+113:                  'native_selector': selector, 'native_box_basis': spec['basis'], 'native_box_in_image': box,
+114:                  'native_geometry': node.get('native_geometry'), 'native_viewport_px': snapshot.get('native_viewport_px'),
+115:                  'viewport_in_image': clip, 'region_pixels': roi, 'sample_count': count,
+116:                  'histogram': [{'rgba': list(color), 'count': n} for color, n in ordered], 'sampling_policy': spec}
+117:         if count < spec['minimum_pixels'] or not ordered or ordered[0][1] / count < spec['minimum_support']:
+118:             return {'status': 'unassessed', 'eligible': True, 'reason': 'Insufficient unambiguous solid-color support', 'proof': proof}
+119:         color = ordered[0][0]
+120:         if color[3] != 255:
+121:             return {'status': 'unassessed', 'eligible': True, 'reason': 'Transparent screenshot samples need an explicit compositing model', 'proof': proof}
+122:         return {'status': 'measured', 'eligible': True, 'argb': (255 << 24) | (color[0] << 16) | (color[1] << 8) | color[2],
+123:                 'reason': 'Dominant rendered sRGB in approved native-target region', 'proof': proof}
+124: 
+125: 
+126: def matches(actual, expected, channel_tolerance):
+127:     """Tolerance is on rendered RGB channels; never use packed-integer distance."""
+128:     if type(expected) is not int or not 0 <= expected <= 0xffffffff or expected >> 24 != 255:
+129:         raise ValueError('Opaque ARGB expectation required for rendered screenshot color')
+130:     return all(abs(((actual >> shift) & 255) - ((expected >> shift) & 255)) <= channel_tolerance for shift in [16, 8, 0])
+FILE review_contract.py
+17: def catalog(plan, lock, lock_sha, policy, policy_sha, platform):
+18:     design.verify_generated(plan, lock, lock_sha, platform)
+19:     if design.digest(policy) != policy_sha or set(policy) != {'version', 'design_lock_sha256', 'approval_reference', 'ownership', 'atoms'}:
+20:         raise ValueError('Atomic review policy must match an independently pinned digest and schema')
+21:     if policy['version'] != 1 or policy['design_lock_sha256'] != lock_sha or not policy['approval_reference']:
+22:         raise ValueError('Atomic policy must bind the approved independent design')
+23:     targets = {r['id']: r.get('target') for r in lock['contract']['rules']}
+24:     manual_rules = {r['id'] for r in lock['contract']['rules'] if r['kind'] == 'manual'}
+25:     atoms = {}
+26:     for atom in policy['atoms']:
+27:         if not isinstance(atom, dict) or set(atom) - {'rule_id', 'aspect', 'method', 'sampling', 'question'} or not {'rule_id', 'aspect', 'method'} <= set(atom):
+28:             raise ValueError('Unknown atom metadata or attempted expected/unit override')
+29:         rid = atom['rule_id']
+30:         if rid in atoms or rid not in manual_rules:
+31:             raise ValueError('Each manual design rule needs one unique atomic policy')
+32:         target = targets[rid]
+33:         if policy['ownership'].get(target) not in {'component', 'host', 'system'}:
+34:             raise ValueError('Responsibility must be fixed for each visual target before implementation')
+35:         if atom['method'] == 'native_pixels' and atom['aspect'] in PIXEL_ASPECTS:
+36:             native_pixels.validate_sampling(atom.get('sampling', {}))
+37:         elif atom['method'] == 'visual' and atom['aspect'] in VISUAL_ASPECTS and 'sampling' not in atom:
+38:             question, _ = design.expression(atom.get('question'), lock['sources'])
+39:             if question['unit'] != 'string' or not question['value'].strip():
+40:                 raise ValueError('Qualitative actual must answer one source-backed independent proposition')
+41:         else:
+42:             raise ValueError('One supported aspect and evidence method required; compound visual checks are rejected')
+43:         atoms[rid] = atom
+44:     if set(atoms) != manual_rules:
+45:         raise ValueError('Atomic policy must disposition every manual rule, without omission')
+46:     rows = []
+47:     for rule in plan['assertions']:
+48:         if rule['kind'] != 'manual':
+49:             continue
+50:         atom = atoms[rule['requirement_id']]
+51:         if atom['method'] not in rule.get('allowed_methods', ['visual']) or rule.get('op', 'eq') != 'eq':
+52:             raise ValueError('Atomic review method/operator differs from the approved contract')
+53:         if atom['method'] == 'native_pixels' and (rule['unit'] != 'argb' or type(rule['expected']) is not int or rule['expected'] >> 24 != 255):
+54:             raise ValueError('Rendered color atoms require opaque source-backed ARGB')
+55:         if atom['method'] == 'visual' and (rule['unit'] != 'bool' or type(rule['expected']) is not bool):
+56:             raise ValueError('Qualitative atoms require one source-backed Boolean proposition')
+57:         identity = {'design_lock_sha256': lock_sha, 'policy_sha256': policy_sha,
+58:                     'scenario': plan['design_contract']['scenario'], 'platform': platform, 'assertion_id': rule['id']}
+59:         proposition = {}
+60:         if atom['method'] == 'visual':
+61:             question, proof = design.expression(atom['question'], lock['sources'])
+62:             proposition = {'proposition': question['value'], 'proposition_provenance': proof}
+63:         rows.append(dict(copy.deepcopy(rule), review_id=design.digest(identity), identity=identity, **proposition,
+64:                          aspect=atom['aspect'], method=atom['method'], responsibility=policy['ownership'][targets[rule['requirement_id']]],
+65:                          **({'sampling': copy.deepcopy(atom['sampling'])} if 'sampling' in atom else {})))
+66:     return {'version': 1, 'design_lock_sha256': lock_sha, 'policy_sha256': policy_sha,
+67:             'plan_sha256': design.digest(plan), 'platform': platform, 'rows': rows}
+68: 
+69: 
+70: def bind(plan, lock, lock_sha, policy, policy_sha, observation, observation_sha, root, submission, platform):
+FILE retest_plan.py
+11: def propose(coverage, parent, report, failed_ids, *, changed_files, source_before, source_after):
+12:     if (design.digest(parent) != coverage['plan_sha256'] or source_before == source_after or
+13:             any(not isinstance(v, str) or len(v) != 64 or any(c not in '0123456789abcdef' for c in v) for v in [source_before, source_after])):
+14:         raise ValueError('Exact parent plan and a changed source version required')
+15:     if not changed_files or any(not v or Path(v).is_absolute() or '..' in Path(v).parts for v in changed_files):
+16:         raise ValueError('Explicit relative changed production paths required')
+17:     rows = report_rows(report, parent)
+18:     if not failed_ids or len(failed_ids) != len(set(failed_ids)) or any(k not in rows or rows[k]['status'] != 'failed' for k in failed_ids):
+19:         raise ValueError('Feedback must start from original failed checks, never invented failures')
+20:     owners = [o for o in coverage['obligations'] if set(o['assertion_ids']) & set(failed_ids)]
+21:     if not owners: raise ValueError('Failure has no approved requirement route')
+22:     selected = {o['id'] for o in owners}
+23:     # All independently declared regression obligations are closed transitively.
+24:     while True:
+25:         expanded = selected | {r for o in coverage['obligations'] if o['id'] in selected for r in o['route']['regression_obligations']}
+26:         if expanded == selected: break
+27:         selected = expanded
+28:     obligations = [o for o in coverage['obligations'] if o['id'] in selected]
+29:     states = [s['id'] for s in parent['states'] if any(s['id'] in o['states'] for o in obligations)]
+30:     return {'version': 1, 'parent_plan_sha256': coverage['plan_sha256'], 'source_before': source_before, 'source_after': source_after,
+31:             'changed_files': changed_files, 'original_failed_ids': failed_ids, 'obligations': sorted(selected), 'states': states,
+32:             'assertion_ids': sorted({r for o in obligations for r in o['assertion_ids']}),
+33:             'requires_fresh_capture': True, 'full_final_required': True,
+34:             'unverified_obligations': [o['id'] for o in coverage['obligations'] if o['id'] not in selected],
+35:             'scope': 'Diagnostic feedback only. Dependencies express approved regression checks, not a proven source-impact graph. Full fresh final verification remains mandatory.'}
+36: 
+37: 
+38: def from_capture(coverage, parent, failed_ids, result_path, result_sha, source_roots, *,
+39:                  review_submission=None, review_sha=None, lock=None, lock_sha=None, policy=None, policy_sha=None):
+40:     """Derive change identity from an immutable original capture and actual files."""
+41:     from execution_plan import source_fingerprint
+42:     result_path = Path(result_path).resolve()
+43:     if hashlib.sha256(result_path.read_bytes()).hexdigest() != result_sha:
+44:         raise ValueError('Original independently pinned capture-result digest differs')
+45:     receipt = design.load(result_path); root = result_path.parent
+46:     if receipt.get('status') != 'verified_capture' or receipt.get('parent_plan_sha256') != design.digest(parent):
+47:         raise ValueError('Verified source-bound capture for this exact parent required')
+48:     report_path = root / 'automatic.json'
+49:     if hashlib.sha256(report_path.read_bytes()).hexdigest() != receipt.get('automatic_sha256'):
+50:         raise ValueError('Original automatic report changed')
+51:     before = design.load(root / 'source-before.json')
+52:     if design.digest(before) != receipt['source_sha256'] or before != design.load(root / 'source-after.json'):
+53:         raise ValueError('Original captured production source changed or drifted')
+54:     # Same root identities/order preserve the relative source-key namespace.
+55:     if [str(Path(p).resolve()) for p in source_roots] != receipt['source_roots']:
+56:         raise ValueError('Actual production roots differ from the captured source namespace')
+57:     after = source_fingerprint(source_roots)
+58:     changed = sorted(k for k in set(before) | set(after) if before.get(k) != after.get(k))
+59:     report = design.load(report_path)
+60:     if review_submission is not None:
+61:         # Rebuild judgments from original actuals and native pixels. A different
+62:         # arbitrary evaluated report is never accepted as an automatic override.
+63:         import review_contract
+64:         import native_checks
+65:         from execution_plan import verify_capture_images
+66:         review_submission = Path(review_submission)
+67:         if any(v is None for v in [review_sha, lock, lock_sha, policy, policy_sha]):
+68:             raise ValueError('Original review, independent lock and policy identities required')
+69:         if hashlib.sha256(review_submission.read_bytes()).hexdigest() != review_sha or lock_sha != coverage['design_lock_sha256']:
+70:             raise ValueError('Pinned original review actuals and the same independent design required')
+71:         op = root / 'native/observation.json'
+72:         obs_sha = hashlib.sha256(op.read_bytes()).hexdigest()
+73:         if obs_sha != receipt.get('observation_sha256'):
+74:             raise ValueError('Original capture observation changed')
+75:         observation = design.load(op); platform = parent['design_contract']['platform']
+76:         verify_capture_images(receipt, op.parent)
+77:         manual = review_contract.bind(parent, lock, lock_sha, policy, policy_sha, observation, obs_sha,
+78:                                       op.parent, design.load(review_submission), platform)
+79:         report = native_checks.evaluate(parent, observation, platform, manual, op.parent, obs_sha,
+80:                                         lock, lock_sha, policy, policy_sha)
+81:     elif any(v is not None for v in [review_sha, lock, lock_sha, policy, policy_sha]):
+82:         raise ValueError('Review reconstruction needs its original submission')
+83:     value = propose(coverage, parent, report, failed_ids, changed_files=changed,
+84:                     source_before=design.digest(before), source_after=design.digest(after))
+85:     value['original_capture_sha256'] = result_sha
+86:     value['change_basis'] = 'Original immutable capture source map versus current production files, not caller-entered hashes or paths'
+87:     if review_submission is not None:
+88:         value['review_submission_sha256'] = review_sha
+89:         value['finding_basis'] = 'Recomputed approved-contract review of original state-bound actuals, not an overridden automatic report'
+90:     return value
+91: 
+92: 
+93: def main():
+94:     p = argparse.ArgumentParser()
+95:     for name in ['coverage', 'plan', 'output']: p.add_argument('--' + name, type=Path, required=True)
+96:     for name in ['report', 'change', 'capture-result']: p.add_argument('--' + name, type=Path)
+97:     p.add_argument('--capture-result-sha256'); p.add_argument('--source-root', type=Path, action='append')
+98:     for name in ['review-submission', 'design-lock', 'policy']: p.add_argument('--' + name, type=Path)
+99:     for name in ['review-sha256', 'design-sha256', 'policy-sha256']: p.add_argument('--' + name)
+100:     p.add_argument('--failed-id', action='append', required=True); a = p.parse_args()
+101:     if a.capture_result:
+102:         if not a.capture_result_sha256 or not a.source_root or a.report or a.change:
+103:             raise ValueError('Capture mode needs original result digest and actual roots, without caller change/report overrides')
+104:         value = from_capture(design.load(a.coverage), design.load(a.plan), a.failed_id,
+105:                              a.capture_result, a.capture_result_sha256, a.source_root,
+106:                              review_submission=a.review_submission, review_sha=a.review_sha256,
+107:                              lock=design.load(a.design_lock) if a.design_lock else None, lock_sha=a.design_sha256,
+108:                              policy=design.load(a.policy) if a.policy else None, policy_sha=a.policy_sha256)
+109:     else:
+110:         if not a.report or not a.change: raise ValueError('Original report and explicit change declaration required')
+111:         change = design.load(a.change)
+112:         value = propose(design.load(a.coverage), design.load(a.plan), design.load(a.report), a.failed_id,
+113:                         changed_files=change['changed_files'], source_before=change['source_before'], source_after=change['source_after'])
+114:         value['change_basis'] = 'Caller-declared source changes; not independently measured. Prefer capture-result mode.'
+115:     with a.output.open('x') as stream: stream.write(__import__('json').dumps(value, indent=2, ensure_ascii=False) + '\n')

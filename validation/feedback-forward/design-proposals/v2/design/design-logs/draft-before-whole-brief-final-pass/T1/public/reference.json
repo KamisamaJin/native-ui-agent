@@ -1,0 +1,4423 @@
+{
+  "version": 2,
+  "component": "ColdStorageTransferPanel",
+  "design_owner": "Independent original design author, prospective review revision",
+  "prior_source_sha256": "7158ac420726a24bdacf931b5b767b58ca0dfd34447f8ac622385ad3ec66277a",
+  "palette": {
+    "canvas": {
+      "value": "#FFF4F6FA",
+      "unit": "argb"
+    },
+    "surface": {
+      "value": "#FFFFFFFF",
+      "unit": "argb"
+    },
+    "ink": {
+      "value": "#FF172B4D",
+      "unit": "argb"
+    },
+    "waiting": {
+      "value": "#FFE9EFF8",
+      "unit": "argb"
+    },
+    "ready": {
+      "value": "#FFDDF4EC",
+      "unit": "argb"
+    },
+    "requested": {
+      "value": "#FFDDEBFF",
+      "unit": "argb"
+    },
+    "blocked": {
+      "value": "#FFFFE5B3",
+      "unit": "argb"
+    },
+    "enabled": {
+      "value": "#FF2463C5",
+      "unit": "argb"
+    },
+    "disabled": {
+      "value": "#FFD8DEE8",
+      "unit": "argb"
+    }
+  },
+  "geometry": {
+    "ios": {
+      "primaryHeight": {
+        "value": 56,
+        "unit": "pt"
+      },
+      "tolerance": {
+        "value": 0.75,
+        "unit": "pt"
+      },
+      "outerGutter": {
+        "value": 8,
+        "unit": "pt"
+      },
+      "innerPadding": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "mainGap": {
+        "value": 12,
+        "unit": "pt"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "choicePrimaryGap": {
+        "value": 12,
+        "unit": "pt"
+      },
+      "statusLeadingMinimum": {
+        "value": 16,
+        "unit": "pt"
+      }
+    },
+    "android": {
+      "primaryHeight": {
+        "value": 56,
+        "unit": "dp"
+      },
+      "tolerance": {
+        "value": 0.75,
+        "unit": "dp"
+      },
+      "outerGutter": {
+        "value": 8,
+        "unit": "dp"
+      },
+      "innerPadding": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "mainGap": {
+        "value": 12,
+        "unit": "dp"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "choicePrimaryGap": {
+        "value": 12,
+        "unit": "dp"
+      },
+      "statusLeadingMinimum": {
+        "value": 16,
+        "unit": "dp"
+      }
+    }
+  },
+  "typography_guidance": {
+    "priority": "advisory",
+    "ios": {
+      "title": {
+        "value": 22,
+        "unit": "pt"
+      },
+      "heading": {
+        "value": 17,
+        "unit": "pt"
+      },
+      "body": {
+        "value": 17,
+        "unit": "pt"
+      }
+    },
+    "android": {
+      "title": {
+        "value": 22,
+        "unit": "sp"
+      },
+      "heading": {
+        "value": 17,
+        "unit": "sp"
+      },
+      "body": {
+        "value": 16,
+        "unit": "sp"
+      }
+    },
+    "computed_swiftui": "Unavailable to generic AX; not a measurable MUST"
+  },
+  "truth": {
+    "value": true,
+    "unit": "bool"
+  },
+  "quiet": {
+    "value": [],
+    "unit": "events"
+  },
+  "questions": {
+    "title-wrapping": {
+      "value": "The title visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "subtitle-wrapping": {
+      "value": "The subtitle visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "status-wrapping": {
+      "value": "The status text visibly displays its complete status string through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "disclosure-wrapping": {
+      "value": "The disclosure button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "choice-wrapping": {
+      "value": "The choice button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "primary-wrapping": {
+      "value": "The primary button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "heading-wrapping": {
+      "value": "Every expanded handling notes heading visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "body-wrapping": {
+      "value": "Every expanded body paragraph visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "title-hierarchy": {
+      "value": "The title is visually more prominent than the expanded section headings.",
+      "unit": "string"
+    },
+    "horizontal-clipping": {
+      "value": "Visible content remains inside the component horizontal bounds without clipping.",
+      "unit": "string"
+    },
+    "row-overlap": {
+      "value": "Successive rows in the component do not visually overlap.",
+      "unit": "string"
+    },
+    "flow-order": {
+      "value": "Main component blocks occur in this reading order: ink accent, title, subtitle, status, disclosure, any expanded sections, choice, primary.",
+      "unit": "string"
+    },
+    "single-column": {
+      "value": "Main component blocks form one vertical column.",
+      "unit": "string"
+    },
+    "full-width-canvas": {
+      "value": "The component-painted pale canvas spans the complete width offered inside the host horizontal gutters.",
+      "unit": "string"
+    },
+    "collapsed-headings": {
+      "value": "No handling notes section heading is visible while the disclosure is closed.",
+      "unit": "string"
+    },
+    "collapsed-bodies": {
+      "value": "No handling notes body paragraph is visible while the disclosure is closed.",
+      "unit": "string"
+    },
+    "expanded-order": {
+      "value": "The eight expanded handling notes heading/body pairs appear in caller order.",
+      "unit": "string"
+    }
+  },
+  "cases": {
+    "P1": {
+      "caller": {
+        "initial": {
+          "id": "XFR-2618",
+          "title": "Transfer to North research freezer",
+          "destination": "North rack B / bay 4",
+          "temperatureRange": "-20 to -14 °C",
+          "sealIntact": true,
+          "coolantReady": true,
+          "notes": [
+            {
+              "id": "n1",
+              "title": "Check the outer seal",
+              "body": "Read the seal number against the paper manifest before moving the crate. If the security strip is torn, keep the crate in its present freezer and contact the receiving technician for a replacement transfer record."
+            },
+            {
+              "id": "n2",
+              "title": "Prepare the receiving shelf",
+              "body": "Clear the assigned shelf and place the receiving tray within easy reach. Keep unrelated specimens in their labeled compartments so that the new crate can be set down without moving other active research material."
+            },
+            {
+              "id": "n3",
+              "title": "Keep the lid closed",
+              "body": "Carry the crate with its insulated lid firmly latched. Open it only inside the receiving cold room, after the technician confirms the destination label and has the temperature logger ready for the arrival reading."
+            },
+            {
+              "id": "n4",
+              "title": "Use the protected route",
+              "body": "Take the marked indoor corridor between the loading room and the cold store. Avoid leaving the crate beside an exterior doorway while waiting for a lift; ask a colleague to hold the internal door instead."
+            },
+            {
+              "id": "n5",
+              "title": "Record the logger reading",
+              "body": "At the receiving shelf, read the logger without removing its probe from the packing sleeve. Write the displayed value and the time on the manifest, then return the logger to its original position inside the crate."
+            },
+            {
+              "id": "n6",
+              "title": "Separate a suspect container",
+              "body": "If one container has a loose cap or a damaged label, keep that container in the secondary tray. Do not relabel it from memory. Record its position and ask the receiving technician to confirm the sample identity."
+            },
+            {
+              "id": "n7",
+              "title": "Confirm the handoff",
+              "body": "Give the receiving technician the manifest and wait for a verbal acknowledgement of the crate identifier. The app records a release request only; the receiving team still completes its normal physical inventory and handoff procedure."
+            },
+            {
+              "id": "n8",
+              "title": "Store the paperwork",
+              "body": "Leave the signed manifest in the cold-room document sleeve after the handoff is complete. Keep the crate identifier visible at the front of the shelf so the next shift can find both the specimens and their record."
+            }
+          ]
+        },
+        "updates": [
+          {
+            "id": "XFR-2740",
+            "title": "Quarantine transfer to West archive",
+            "destination": "West quarantine Q / bay 3",
+            "temperatureRange": "-18 to -12 °C",
+            "sealIntact": false,
+            "coolantReady": true,
+            "notes": [
+              {
+                "id": "rn1",
+                "title": "Check the outer seal",
+                "body": "Read the seal number against the paper manifest before moving the crate. If the security strip is torn, keep the crate in its present freezer and contact the receiving technician for a replacement transfer record."
+              },
+              {
+                "id": "rn2",
+                "title": "Prepare the receiving shelf",
+                "body": "Clear the assigned shelf and place the receiving tray within easy reach. Keep unrelated specimens in their labeled compartments so that the new crate can be set down without moving other active research material."
+              },
+              {
+                "id": "rn3",
+                "title": "Keep the lid closed",
+                "body": "Carry the crate with its insulated lid firmly latched. Open it only inside the receiving cold room, after the technician confirms the destination label and has the temperature logger ready for the arrival reading."
+              },
+              {
+                "id": "rn4",
+                "title": "Use the protected route",
+                "body": "Take the marked indoor corridor between the loading room and the cold store. Avoid leaving the crate beside an exterior doorway while waiting for a lift; ask a colleague to hold the internal door instead."
+              },
+              {
+                "id": "rn5",
+                "title": "Record the logger reading",
+                "body": "At the receiving shelf, read the logger without removing its probe from the packing sleeve. Write the displayed value and the time on the manifest, then return the logger to its original position inside the crate."
+              },
+              {
+                "id": "rn6",
+                "title": "Separate a suspect container",
+                "body": "If one container has a loose cap or a damaged label, keep that container in the secondary tray. Do not relabel it from memory. Record its position and ask the receiving technician to confirm the sample identity."
+              },
+              {
+                "id": "rn7",
+                "title": "Confirm the handoff",
+                "body": "Give the receiving technician the manifest and wait for a verbal acknowledgement of the crate identifier. The app records a release request only; the receiving team still completes its normal physical inventory and handoff procedure."
+              },
+              {
+                "id": "rn8",
+                "title": "Store the paperwork",
+                "body": "Leave the signed manifest in the cold-room document sleeve after the handoff is complete. Keep the crate identifier visible at the front of the shelf so the next shift can find both the specimens and their record."
+              }
+            ]
+          }
+        ],
+        "width": 400,
+        "viewportHeight": 600,
+        "theme": "light",
+        "dynamic_type": "large",
+        "fontScale": 1.0,
+        "direction": "ltr",
+        "canvas_color": "#F4F6FA",
+        "max_scrolls": 18,
+        "state_capture": true,
+        "required_identifiers": [
+          "transfer.canvas",
+          "transfer.surface",
+          "transfer.inkMark",
+          "transfer.title",
+          "transfer.subtitle",
+          "transfer.status",
+          "transfer.disclosure",
+          "transfer.choice",
+          "transfer.primary",
+          "transfer.statusText"
+        ]
+      },
+      "states": {
+        "overview": {
+          "title": {
+            "value": "Transfer to North research freezer",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "North rack B / bay 4 · -20 to -14 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Awaiting check",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Confirm seal checked",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFE9EFF8",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-2618:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-2618"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "opened": {
+          "title": {
+            "value": "Transfer to North research freezer",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "North rack B / bay 4 · -20 to -14 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Awaiting check",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Confirm seal checked",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFE9EFF8",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-2618:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-2618"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "permitted": {
+          "title": {
+            "value": "Transfer to North research freezer",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "North rack B / bay 4 · -20 to -14 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready for release",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Seal check confirmed",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-2618:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-2618"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "cleared": {
+          "title": {
+            "value": "Transfer to North research freezer",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "North rack B / bay 4 · -20 to -14 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Awaiting check",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Confirm seal checked",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFE9EFF8",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-2618:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-2618"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "restored": {
+          "title": {
+            "value": "Transfer to North research freezer",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "North rack B / bay 4 · -20 to -14 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready for release",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Seal check confirmed",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-2618:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-2618"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "requested": {
+          "title": {
+            "value": "Transfer to North research freezer",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "North rack B / bay 4 · -20 to -14 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Release requested",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Seal check confirmed",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Requested",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDEBFF",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-2618:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-2618"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "requested-closed": {
+          "title": {
+            "value": "Transfer to North research freezer",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "North rack B / bay 4 · -20 to -14 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Release requested",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Seal check confirmed",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Requested",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDEBFF",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-2618:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-2618"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "replaced": {
+          "title": {
+            "value": "Quarantine transfer to West archive",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "West quarantine Q / bay 3 · -18 to -12 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Seal needs attention",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Confirm seal checked",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-2740:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-2740"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "held-choice": {
+          "title": {
+            "value": "Quarantine transfer to West archive",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "West quarantine Q / bay 3 · -18 to -12 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Seal needs attention",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Seal check confirmed",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-2740:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-2740"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "rows": [
+        {
+          "id": "n1",
+          "title": "Check the outer seal",
+          "body": "Read the seal number against the paper manifest before moving the crate. If the security strip is torn, keep the crate in its present freezer and contact the receiving technician for a replacement transfer record."
+        },
+        {
+          "id": "n2",
+          "title": "Prepare the receiving shelf",
+          "body": "Clear the assigned shelf and place the receiving tray within easy reach. Keep unrelated specimens in their labeled compartments so that the new crate can be set down without moving other active research material."
+        },
+        {
+          "id": "n3",
+          "title": "Keep the lid closed",
+          "body": "Carry the crate with its insulated lid firmly latched. Open it only inside the receiving cold room, after the technician confirms the destination label and has the temperature logger ready for the arrival reading."
+        },
+        {
+          "id": "n4",
+          "title": "Use the protected route",
+          "body": "Take the marked indoor corridor between the loading room and the cold store. Avoid leaving the crate beside an exterior doorway while waiting for a lift; ask a colleague to hold the internal door instead."
+        },
+        {
+          "id": "n5",
+          "title": "Record the logger reading",
+          "body": "At the receiving shelf, read the logger without removing its probe from the packing sleeve. Write the displayed value and the time on the manifest, then return the logger to its original position inside the crate."
+        },
+        {
+          "id": "n6",
+          "title": "Separate a suspect container",
+          "body": "If one container has a loose cap or a damaged label, keep that container in the secondary tray. Do not relabel it from memory. Record its position and ask the receiving technician to confirm the sample identity."
+        },
+        {
+          "id": "n7",
+          "title": "Confirm the handoff",
+          "body": "Give the receiving technician the manifest and wait for a verbal acknowledgement of the crate identifier. The app records a release request only; the receiving team still completes its normal physical inventory and handoff procedure."
+        },
+        {
+          "id": "n8",
+          "title": "Store the paperwork",
+          "body": "Leave the signed manifest in the cold-room document sleeve after the handoff is complete. Keep the crate identifier visible at the front of the shelf so the next shift can find both the specimens and their record."
+        }
+      ],
+      "rowAssertions": [
+        {
+          "title": {
+            "value": "Check the outer seal",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Read the seal number against the paper manifest before moving the crate. If the security strip is torn, keep the crate in its present freezer and contact the receiving technician for a replacement transfer record.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Prepare the receiving shelf",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Clear the assigned shelf and place the receiving tray within easy reach. Keep unrelated specimens in their labeled compartments so that the new crate can be set down without moving other active research material.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Keep the lid closed",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Carry the crate with its insulated lid firmly latched. Open it only inside the receiving cold room, after the technician confirms the destination label and has the temperature logger ready for the arrival reading.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Use the protected route",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Take the marked indoor corridor between the loading room and the cold store. Avoid leaving the crate beside an exterior doorway while waiting for a lift; ask a colleague to hold the internal door instead.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Record the logger reading",
+            "unit": "string"
+          },
+          "body": {
+            "value": "At the receiving shelf, read the logger without removing its probe from the packing sleeve. Write the displayed value and the time on the manifest, then return the logger to its original position inside the crate.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Separate a suspect container",
+            "unit": "string"
+          },
+          "body": {
+            "value": "If one container has a loose cap or a damaged label, keep that container in the secondary tray. Do not relabel it from memory. Record its position and ask the receiving technician to confirm the sample identity.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Confirm the handoff",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Give the receiving technician the manifest and wait for a verbal acknowledgement of the crate identifier. The app records a release request only; the receiving team still completes its normal physical inventory and handoff procedure.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Store the paperwork",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Leave the signed manifest in the cold-room document sleeve after the handoff is complete. Keep the crate identifier visible at the front of the shelf so the next shift can find both the specimens and their record.",
+            "unit": "string"
+          }
+        }
+      ],
+      "original_initial_sha256": "4d6bd6ce2b9733d1d0ac74cc97bab6814eaae9998de4b0f71e1a69a19732bbf0",
+      "original_update_sha256": "4717ed36bd102bab79b4fed76e695fb192b86c27eba436b6d590032af9090a2c"
+    },
+    "P2": {
+      "caller": {
+        "initial": {
+          "id": "XFR-4821",
+          "title": "Evening transfer for the coastal laboratory",
+          "destination": "Coastal rack F / bay 2",
+          "temperatureRange": "-22 to -16 °C",
+          "sealIntact": true,
+          "coolantReady": true,
+          "notes": [
+            {
+              "id": "n1",
+              "title": "Check the coastal manifest",
+              "body": "Match the seal number to the coastal manifest before moving the crate. Keep a damaged seal in the current freezer and call the receiving technician."
+            },
+            {
+              "id": "n2",
+              "title": "Prepare the shelf",
+              "body": "Clear the coastal receiving shelf and put its tray within reach. Leave other specimens in their labeled compartments while the new crate is being placed."
+            },
+            {
+              "id": "n3",
+              "title": "Keep the lid closed",
+              "body": "Carry the crate with its insulated lid latched. Open it inside the receiving cold room after the technician checks the destination and prepares the logger."
+            },
+            {
+              "id": "n4",
+              "title": "Follow the indoor route",
+              "body": "Use the marked indoor corridor. Ask a colleague to hold the internal door so the crate does not wait beside an exterior entrance."
+            },
+            {
+              "id": "n5",
+              "title": "Read the logger",
+              "body": "Read the logger with its probe still in the packing sleeve. Record the displayed temperature and arrival time on the manifest before replacing the lid."
+            },
+            {
+              "id": "n6",
+              "title": "Separate suspect containers",
+              "body": "Put a container with a loose cap or damaged label in the secondary tray. Ask the technician to verify its identity before writing a replacement label."
+            },
+            {
+              "id": "n7",
+              "title": "Confirm the handoff",
+              "body": "Wait for the technician to acknowledge the crate identifier. This app records the release request; the receiving team completes its separate physical inventory and signature."
+            },
+            {
+              "id": "n8",
+              "title": "Leave the paperwork",
+              "body": "Place the signed manifest in the cold-room sleeve. Keep the crate identifier facing the aisle so the next shift can find the specimens and their record."
+            }
+          ]
+        },
+        "updates": [
+          {
+            "id": "XFR-5003",
+            "title": "Coolant hold for the coastal laboratory",
+            "destination": "Coastal hold J / bay 6",
+            "temperatureRange": "-24 to -18 °C",
+            "sealIntact": true,
+            "coolantReady": false,
+            "notes": [
+              {
+                "id": "rn1",
+                "title": "Check the coastal manifest",
+                "body": "Match the seal number to the coastal manifest before moving the crate. Keep a damaged seal in the current freezer and call the receiving technician."
+              },
+              {
+                "id": "rn2",
+                "title": "Prepare the shelf",
+                "body": "Clear the coastal receiving shelf and put its tray within reach. Leave other specimens in their labeled compartments while the new crate is being placed."
+              },
+              {
+                "id": "rn3",
+                "title": "Keep the lid closed",
+                "body": "Carry the crate with its insulated lid latched. Open it inside the receiving cold room after the technician checks the destination and prepares the logger."
+              },
+              {
+                "id": "rn4",
+                "title": "Follow the indoor route",
+                "body": "Use the marked indoor corridor. Ask a colleague to hold the internal door so the crate does not wait beside an exterior entrance."
+              },
+              {
+                "id": "rn5",
+                "title": "Read the logger",
+                "body": "Read the logger with its probe still in the packing sleeve. Record the displayed temperature and arrival time on the manifest before replacing the lid."
+              },
+              {
+                "id": "rn6",
+                "title": "Separate suspect containers",
+                "body": "Put a container with a loose cap or damaged label in the secondary tray. Ask the technician to verify its identity before writing a replacement label."
+              },
+              {
+                "id": "rn7",
+                "title": "Confirm the handoff",
+                "body": "Wait for the technician to acknowledge the crate identifier. This app records the release request; the receiving team completes its separate physical inventory and signature."
+              },
+              {
+                "id": "rn8",
+                "title": "Leave the paperwork",
+                "body": "Place the signed manifest in the cold-room sleeve. Keep the crate identifier facing the aisle so the next shift can find the specimens and their record."
+              }
+            ]
+          }
+        ],
+        "width": 280,
+        "viewportHeight": 600,
+        "theme": "light",
+        "dynamic_type": "xxxLarge",
+        "fontScale": 1.3,
+        "direction": "ltr",
+        "canvas_color": "#F4F6FA",
+        "max_scrolls": 18,
+        "state_capture": true,
+        "required_identifiers": [
+          "transfer.canvas",
+          "transfer.surface",
+          "transfer.inkMark",
+          "transfer.title",
+          "transfer.subtitle",
+          "transfer.status",
+          "transfer.disclosure",
+          "transfer.choice",
+          "transfer.primary",
+          "transfer.statusText"
+        ]
+      },
+      "states": {
+        "overview": {
+          "title": {
+            "value": "Evening transfer for the coastal laboratory",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "Coastal rack F / bay 2 · -22 to -16 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Awaiting check",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Confirm seal checked",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFE9EFF8",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-4821:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-4821"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "opened": {
+          "title": {
+            "value": "Evening transfer for the coastal laboratory",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "Coastal rack F / bay 2 · -22 to -16 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Awaiting check",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Confirm seal checked",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFE9EFF8",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-4821:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-4821"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "permitted": {
+          "title": {
+            "value": "Evening transfer for the coastal laboratory",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "Coastal rack F / bay 2 · -22 to -16 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready for release",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Seal check confirmed",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-4821:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-4821"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "cleared": {
+          "title": {
+            "value": "Evening transfer for the coastal laboratory",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "Coastal rack F / bay 2 · -22 to -16 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Awaiting check",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Confirm seal checked",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFE9EFF8",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-4821:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-4821"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "restored": {
+          "title": {
+            "value": "Evening transfer for the coastal laboratory",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "Coastal rack F / bay 2 · -22 to -16 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready for release",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Seal check confirmed",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-4821:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-4821"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "requested": {
+          "title": {
+            "value": "Evening transfer for the coastal laboratory",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "Coastal rack F / bay 2 · -22 to -16 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Release requested",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Seal check confirmed",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Requested",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDEBFF",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-4821:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-4821"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "requested-closed": {
+          "title": {
+            "value": "Evening transfer for the coastal laboratory",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "Coastal rack F / bay 2 · -22 to -16 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Release requested",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Seal check confirmed",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Requested",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDEBFF",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-4821:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-4821"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "replaced": {
+          "title": {
+            "value": "Coolant hold for the coastal laboratory",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "Coastal hold J / bay 6 · -24 to -18 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Coolant not ready",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Confirm seal checked",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-5003:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-5003"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "held-choice": {
+          "title": {
+            "value": "Coolant hold for the coastal laboratory",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "Coastal hold J / bay 6 · -24 to -18 °C",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Coolant not ready",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review handling",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Seal check confirmed",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Release transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "transfer.ack:XFR-5003:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "transfer.release:XFR-5003"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "rows": [
+        {
+          "id": "n1",
+          "title": "Check the coastal manifest",
+          "body": "Match the seal number to the coastal manifest before moving the crate. Keep a damaged seal in the current freezer and call the receiving technician."
+        },
+        {
+          "id": "n2",
+          "title": "Prepare the shelf",
+          "body": "Clear the coastal receiving shelf and put its tray within reach. Leave other specimens in their labeled compartments while the new crate is being placed."
+        },
+        {
+          "id": "n3",
+          "title": "Keep the lid closed",
+          "body": "Carry the crate with its insulated lid latched. Open it inside the receiving cold room after the technician checks the destination and prepares the logger."
+        },
+        {
+          "id": "n4",
+          "title": "Follow the indoor route",
+          "body": "Use the marked indoor corridor. Ask a colleague to hold the internal door so the crate does not wait beside an exterior entrance."
+        },
+        {
+          "id": "n5",
+          "title": "Read the logger",
+          "body": "Read the logger with its probe still in the packing sleeve. Record the displayed temperature and arrival time on the manifest before replacing the lid."
+        },
+        {
+          "id": "n6",
+          "title": "Separate suspect containers",
+          "body": "Put a container with a loose cap or damaged label in the secondary tray. Ask the technician to verify its identity before writing a replacement label."
+        },
+        {
+          "id": "n7",
+          "title": "Confirm the handoff",
+          "body": "Wait for the technician to acknowledge the crate identifier. This app records the release request; the receiving team completes its separate physical inventory and signature."
+        },
+        {
+          "id": "n8",
+          "title": "Leave the paperwork",
+          "body": "Place the signed manifest in the cold-room sleeve. Keep the crate identifier facing the aisle so the next shift can find the specimens and their record."
+        }
+      ],
+      "rowAssertions": [
+        {
+          "title": {
+            "value": "Check the coastal manifest",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Match the seal number to the coastal manifest before moving the crate. Keep a damaged seal in the current freezer and call the receiving technician.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Prepare the shelf",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Clear the coastal receiving shelf and put its tray within reach. Leave other specimens in their labeled compartments while the new crate is being placed.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Keep the lid closed",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Carry the crate with its insulated lid latched. Open it inside the receiving cold room after the technician checks the destination and prepares the logger.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Follow the indoor route",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Use the marked indoor corridor. Ask a colleague to hold the internal door so the crate does not wait beside an exterior entrance.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Read the logger",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Read the logger with its probe still in the packing sleeve. Record the displayed temperature and arrival time on the manifest before replacing the lid.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Separate suspect containers",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Put a container with a loose cap or damaged label in the secondary tray. Ask the technician to verify its identity before writing a replacement label.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Confirm the handoff",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Wait for the technician to acknowledge the crate identifier. This app records the release request; the receiving team completes its separate physical inventory and signature.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Leave the paperwork",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Place the signed manifest in the cold-room sleeve. Keep the crate identifier facing the aisle so the next shift can find the specimens and their record.",
+            "unit": "string"
+          }
+        }
+      ],
+      "original_initial_sha256": "5227422239a4a66281eeed360793e7e733faface51177d364326a390c23e84ca",
+      "original_update_sha256": "d7cc1cc5df5042a8b56f27efc12dfec7113d3979595d7c91f07717186afede03"
+    }
+  },
+  "launch": {
+    "P1": {
+      "ios": {
+        "fixtures_sha256": "c9753dadbce43db75e70c6c5d240a2cac233b48baf2a4a4aa41188574876e694",
+        "bridge_sha256": "44912111eebc8368388bbab8e0b87bf350f838cebd5374915ace7adfb3f62fd5",
+        "scenario": "P1",
+        "platform": "ios"
+      },
+      "android": {
+        "fixtures_sha256": "c9753dadbce43db75e70c6c5d240a2cac233b48baf2a4a4aa41188574876e694",
+        "bridge_sha256": "ad34dea2c626fb07648ef66814c16d9dc486a6d44131c0975cef4c503af97ac4",
+        "scenario": "P1",
+        "platform": "android"
+      }
+    },
+    "P2": {
+      "ios": {
+        "fixtures_sha256": "15c610d342350bca1f2c67c9d80b803f03e7313e99bfc19a2c5ef6163bd3b646",
+        "bridge_sha256": "44912111eebc8368388bbab8e0b87bf350f838cebd5374915ace7adfb3f62fd5",
+        "scenario": "P2",
+        "platform": "ios"
+      },
+      "android": {
+        "fixtures_sha256": "15c610d342350bca1f2c67c9d80b803f03e7313e99bfc19a2c5ef6163bd3b646",
+        "bridge_sha256": "ad34dea2c626fb07648ef66814c16d9dc486a6d44131c0975cef4c503af97ac4",
+        "scenario": "P2",
+        "platform": "android"
+      }
+    }
+  },
+  "obligations": [
+    {
+      "id": "title-label",
+      "clause": "The current caller title has its complete exact accessible text.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "subtitle-label",
+      "clause": "The current caller summary uses the exact specified string composition.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "status-label",
+      "clause": "The status follows the original independently specified business guard/state precedence.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "status-text-label",
+      "clause": "The actual status Text node exposes the exact current status string independently of the painted band.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "disclosure-label",
+      "clause": "The disclosure label reflects the open or closed local state.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "disclosure-enabled",
+      "clause": "The actual disclosure Button remains enabled, including after a business request.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "choice-label",
+      "clause": "The actual choice Button exposes its exact specified accessible label.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "choice-selected",
+      "clause": "The native selected trait reflects the current acknowledgement.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "choice-enabled",
+      "clause": "The actual choice is disabled after request and enabled after identity replacement.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "primary-label",
+      "clause": "The primary exposes its exact normal or requested label.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "primary-enabled",
+      "clause": "The actual primary enabled state follows the original complete business predicate.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "primary-height",
+      "clause": "The actual native primary control height is 56 pt/dp within the independently fixed 0.75 pt/dp tolerance.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "choice-primary-gap",
+      "clause": "The primary actual native control top edge is 12 pt/dp below the choice control bottom edge within 0.75 pt/dp.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "status-leading-inset",
+      "clause": "The actual status Text semantic boundary is at least 16 pt/dp inside the painted band logical leading semantic boundary.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "status-fill",
+      "clause": "The approved status-band solid region has the independently fixed opaque state-role fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "primary-fill",
+      "clause": "The approved primary solid region has the independently fixed enabled or disabled fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "surface-fill",
+      "clause": "The component surface gutter renders the independently fixed opaque white role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "canvas-fill",
+      "clause": "The component canvas gutter renders the independently fixed opaque pale role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "ink-fill",
+      "clause": "The solid ink accent renders the independently fixed opaque navy role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "status-leading-clear",
+      "clause": "The entire logical leading 4% strip of the painted status band contains only the current status fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "section-0-heading",
+      "clause": "Expanded section-0-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-0-body",
+      "clause": "Expanded section-0-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-1-heading",
+      "clause": "Expanded section-1-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-1-body",
+      "clause": "Expanded section-1-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-2-heading",
+      "clause": "Expanded section-2-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-2-body",
+      "clause": "Expanded section-2-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-3-heading",
+      "clause": "Expanded section-3-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-3-body",
+      "clause": "Expanded section-3-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-4-heading",
+      "clause": "Expanded section-4-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-4-body",
+      "clause": "Expanded section-4-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-5-heading",
+      "clause": "Expanded section-5-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-5-body",
+      "clause": "Expanded section-5-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-6-heading",
+      "clause": "Expanded section-6-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-6-body",
+      "clause": "Expanded section-6-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-7-heading",
+      "clause": "Expanded section-7-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-7-body",
+      "clause": "Expanded section-7-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "title-wrapping",
+      "clause": "The title visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "subtitle-wrapping",
+      "clause": "The subtitle visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "status-wrapping",
+      "clause": "The status text visibly displays its complete status string through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "disclosure-wrapping",
+      "clause": "The disclosure button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "choice-wrapping",
+      "clause": "The choice button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "primary-wrapping",
+      "clause": "The primary button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "heading-wrapping",
+      "clause": "Every expanded handling notes heading visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "body-wrapping",
+      "clause": "Every expanded body paragraph visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "title-hierarchy",
+      "clause": "The title is visually more prominent than the expanded section headings.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "horizontal-clipping",
+      "clause": "Visible content remains inside the component horizontal bounds without clipping.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "row-overlap",
+      "clause": "Successive rows in the component do not visually overlap.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "flow-order",
+      "clause": "Main component blocks occur in this reading order: ink accent, title, subtitle, status, disclosure, any expanded sections, choice, primary.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "single-column",
+      "clause": "Main component blocks form one vertical column.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "full-width-canvas",
+      "clause": "The component-painted pale canvas spans the complete width offered inside the host horizontal gutters.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "collapsed-headings",
+      "clause": "No handling notes section heading is visible while the disclosure is closed.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "collapsed-bodies",
+      "clause": "No handling notes body paragraph is visible while the disclosure is closed.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "expanded-order",
+      "clause": "The eight expanded handling notes heading/body pairs appear in caller order.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "choice-receipt",
+      "clause": "Each selected forward, reverse, restored, or held choice activation emits exactly its independent one-event receipt after demonstrated native dispatch.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "cleared",
+        "restored",
+        "held-choice"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "request-receipt",
+      "clause": "The successful native primary activation emits exactly the independently fixed business callback event.",
+      "priority": "must",
+      "states": [
+        "requested"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "disclosure-receipt",
+      "clause": "Each selected successful disclosure open or close activation has its own empty original business callback interval.",
+      "priority": "must",
+      "states": [
+        "opened",
+        "requested-closed"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "replacement-quiet",
+      "clause": "Each selected same-process caller replacement has an empty original business callback interval.",
+      "priority": "must",
+      "states": [
+        "replaced"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "typography-nominal",
+      "clause": "Nominal title/body fonts, text ink, and internal spacing tokens follow the documented platform authoring values; exact computed SwiftUI fields and generic layout allocations are advisory.",
+      "priority": "advisory",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "style"
+    }
+  ],
+  "audit_propositions": {
+    "ios-production-component": {
+      "value": "The declared native component is implemented in the exact production file named by its public API.",
+      "unit": "string"
+    },
+    "ios-caller-driven-rendering": {
+      "value": "The production component renders the supplied caller model values rather than a separate observer-only approximation.",
+      "unit": "string"
+    },
+    "ios-disclosure-production-state": {
+      "value": "Disclosure state is owned by the production component.",
+      "unit": "string"
+    },
+    "ios-choice-production-state": {
+      "value": "Choice state is owned by the production component.",
+      "unit": "string"
+    },
+    "ios-requested-production-state": {
+      "value": "Requested state is owned by the production component.",
+      "unit": "string"
+    },
+    "ios-identity-reset-disclosure": {
+      "value": "The production component resets disclosure to closed when the caller model ID changes.",
+      "unit": "string"
+    },
+    "ios-identity-reset-choice": {
+      "value": "The production component resets choice to its specified initial Boolean when the caller model ID changes.",
+      "unit": "string"
+    },
+    "ios-identity-reset-requested": {
+      "value": "The production component resets requested to false when the caller model ID changes.",
+      "unit": "string"
+    },
+    "ios-reset-quiet": {
+      "value": "The production identity-reset path invokes no caller business callback.",
+      "unit": "string"
+    },
+    "ios-native-disclosure-button": {
+      "value": "Disclosure is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "ios-native-choice-button": {
+      "value": "Choice is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "ios-native-primary-button": {
+      "value": "Primary is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "ios-native-selected": {
+      "value": "The choice exposes its actual selected state through native selected semantics.",
+      "unit": "string"
+    },
+    "ios-choice-native-disabled": {
+      "value": "The choice uses actual native disabled semantics when disabled.",
+      "unit": "string"
+    },
+    "ios-primary-native-disabled": {
+      "value": "The primary uses actual native disabled semantics when disabled.",
+      "unit": "string"
+    },
+    "ios-canvas-preserve-controls": {
+      "value": "The canvas accessibility container preserves descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "ios-surface-preserve-controls": {
+      "value": "The surface accessibility container preserves descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "ios-unique-semantic-ids": {
+      "value": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "unit": "string"
+    },
+    "ios-no-nested-scroll": {
+      "value": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "unit": "string"
+    },
+    "ios-no-blank-padding-rows": {
+      "value": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "unit": "string"
+    },
+    "ios-model-row-order": {
+      "value": "Expanded section nodes are generated from caller rows in caller order.",
+      "unit": "string"
+    },
+    "ios-no-hidden-input-special-cases": {
+      "value": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "unit": "string"
+    },
+    "ios-callback-model-id": {
+      "value": "The business request callback forwards the current caller model ID.",
+      "unit": "string"
+    },
+    "ios-no-callback-on-disclosure": {
+      "value": "The disclosure open and close paths invoke no caller business callback.",
+      "unit": "string"
+    },
+    "ios-no-primary-callback-on-disabled": {
+      "value": "A disabled primary cannot invoke its caller business callback.",
+      "unit": "string"
+    },
+    "ios-no-choice-callback-on-disabled": {
+      "value": "A disabled choice cannot invoke its caller business callback.",
+      "unit": "string"
+    },
+    "ios-guard-predicate": {
+      "value": "The release enabled predicate is exactly sealIntact && coolantReady && acknowledged && !requested.",
+      "unit": "string"
+    },
+    "ios-guard-priority": {
+      "value": "The status decision order is broken seal, unavailable coolant, requested, acknowledged, then awaiting check.",
+      "unit": "string"
+    },
+    "ios-choice-toggle": {
+      "value": "Every successful pre-request confirmation toggle flips the current acknowledgement Boolean.",
+      "unit": "string"
+    },
+    "ios-choice-callback-value": {
+      "value": "The confirmation callback forwards the resulting acknowledgement Boolean.",
+      "unit": "string"
+    },
+    "ios-choice-callback-count": {
+      "value": "A successful pre-request confirmation toggle invokes its caller callback exactly once.",
+      "unit": "string"
+    },
+    "ios-release-requested-state": {
+      "value": "A successful eligible release changes local requested state to true.",
+      "unit": "string"
+    },
+    "ios-release-callback-count": {
+      "value": "A successful eligible release invokes onRelease exactly once.",
+      "unit": "string"
+    },
+    "ios-no-physical-transfer": {
+      "value": "The component initiates no freezer hardware or physical transfer operation.",
+      "unit": "string"
+    },
+    "ios-bridge-no-ui": {
+      "value": "The approved bridge constructs no substitute component UI.",
+      "unit": "string"
+    },
+    "ios-bridge-no-state": {
+      "value": "The approved bridge owns no local component business state.",
+      "unit": "string"
+    },
+    "ios-bridge-no-identity-reset": {
+      "value": "The approved bridge applies no identity-reset wrapper around the production component.",
+      "unit": "string"
+    },
+    "ios-bridge-current-input": {
+      "value": "The approved bridge decodes the current supplied fixture into the declared production model.",
+      "unit": "string"
+    },
+    "ios-bridge-callback-forwarding": {
+      "value": "The approved bridge forwards actual production callbacks into observer event receipt.",
+      "unit": "string"
+    },
+    "android-production-component": {
+      "value": "The declared native component is implemented in the exact production file named by its public API.",
+      "unit": "string"
+    },
+    "android-caller-driven-rendering": {
+      "value": "The production component renders the supplied caller model values rather than a separate observer-only approximation.",
+      "unit": "string"
+    },
+    "android-disclosure-production-state": {
+      "value": "Disclosure state is owned by the production component.",
+      "unit": "string"
+    },
+    "android-choice-production-state": {
+      "value": "Choice state is owned by the production component.",
+      "unit": "string"
+    },
+    "android-requested-production-state": {
+      "value": "Requested state is owned by the production component.",
+      "unit": "string"
+    },
+    "android-identity-reset-disclosure": {
+      "value": "The production component resets disclosure to closed when the caller model ID changes.",
+      "unit": "string"
+    },
+    "android-identity-reset-choice": {
+      "value": "The production component resets choice to its specified initial Boolean when the caller model ID changes.",
+      "unit": "string"
+    },
+    "android-identity-reset-requested": {
+      "value": "The production component resets requested to false when the caller model ID changes.",
+      "unit": "string"
+    },
+    "android-reset-quiet": {
+      "value": "The production identity-reset path invokes no caller business callback.",
+      "unit": "string"
+    },
+    "android-native-disclosure-button": {
+      "value": "Disclosure is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "android-native-choice-button": {
+      "value": "Choice is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "android-native-primary-button": {
+      "value": "Primary is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "android-native-selected": {
+      "value": "The choice exposes its actual selected state through native selected semantics.",
+      "unit": "string"
+    },
+    "android-choice-native-disabled": {
+      "value": "The choice uses actual native disabled semantics when disabled.",
+      "unit": "string"
+    },
+    "android-primary-native-disabled": {
+      "value": "The primary uses actual native disabled semantics when disabled.",
+      "unit": "string"
+    },
+    "android-canvas-preserve-controls": {
+      "value": "The canvas accessibility container preserves descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "android-surface-preserve-controls": {
+      "value": "The surface accessibility container preserves descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "android-unique-semantic-ids": {
+      "value": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "unit": "string"
+    },
+    "android-no-nested-scroll": {
+      "value": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "unit": "string"
+    },
+    "android-no-blank-padding-rows": {
+      "value": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "unit": "string"
+    },
+    "android-model-row-order": {
+      "value": "Expanded section nodes are generated from caller rows in caller order.",
+      "unit": "string"
+    },
+    "android-no-hidden-input-special-cases": {
+      "value": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "unit": "string"
+    },
+    "android-callback-model-id": {
+      "value": "The business request callback forwards the current caller model ID.",
+      "unit": "string"
+    },
+    "android-no-callback-on-disclosure": {
+      "value": "The disclosure open and close paths invoke no caller business callback.",
+      "unit": "string"
+    },
+    "android-no-primary-callback-on-disabled": {
+      "value": "A disabled primary cannot invoke its caller business callback.",
+      "unit": "string"
+    },
+    "android-no-choice-callback-on-disabled": {
+      "value": "A disabled choice cannot invoke its caller business callback.",
+      "unit": "string"
+    },
+    "android-guard-predicate": {
+      "value": "The release enabled predicate is exactly sealIntact && coolantReady && acknowledged && !requested.",
+      "unit": "string"
+    },
+    "android-guard-priority": {
+      "value": "The status decision order is broken seal, unavailable coolant, requested, acknowledged, then awaiting check.",
+      "unit": "string"
+    },
+    "android-choice-toggle": {
+      "value": "Every successful pre-request confirmation toggle flips the current acknowledgement Boolean.",
+      "unit": "string"
+    },
+    "android-choice-callback-value": {
+      "value": "The confirmation callback forwards the resulting acknowledgement Boolean.",
+      "unit": "string"
+    },
+    "android-choice-callback-count": {
+      "value": "A successful pre-request confirmation toggle invokes its caller callback exactly once.",
+      "unit": "string"
+    },
+    "android-release-requested-state": {
+      "value": "A successful eligible release changes local requested state to true.",
+      "unit": "string"
+    },
+    "android-release-callback-count": {
+      "value": "A successful eligible release invokes onRelease exactly once.",
+      "unit": "string"
+    },
+    "android-no-physical-transfer": {
+      "value": "The component initiates no freezer hardware or physical transfer operation.",
+      "unit": "string"
+    },
+    "android-bridge-no-ui": {
+      "value": "The approved bridge constructs no substitute component UI.",
+      "unit": "string"
+    },
+    "android-bridge-no-state": {
+      "value": "The approved bridge owns no local component business state.",
+      "unit": "string"
+    },
+    "android-bridge-no-identity-reset": {
+      "value": "The approved bridge applies no identity-reset wrapper around the production component.",
+      "unit": "string"
+    },
+    "android-bridge-current-input": {
+      "value": "The approved bridge decodes the current supplied fixture into the declared production model.",
+      "unit": "string"
+    },
+    "android-bridge-callback-forwarding": {
+      "value": "The approved bridge forwards actual production callbacks into observer event receipt.",
+      "unit": "string"
+    }
+  },
+  "implementation_audits": [
+    {
+      "id": "ios-production-component",
+      "clause": "The declared native component is implemented in the exact production file named by its public API.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-production-component"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-caller-driven-rendering",
+      "clause": "The production component renders the supplied caller model values rather than a separate observer-only approximation.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-caller-driven-rendering"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-disclosure-production-state",
+      "clause": "Disclosure state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-disclosure-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-production-state",
+      "clause": "Choice state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-requested-production-state",
+      "clause": "Requested state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-requested-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-identity-reset-disclosure",
+      "clause": "The production component resets disclosure to closed when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-identity-reset-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-identity-reset-choice",
+      "clause": "The production component resets choice to its specified initial Boolean when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-identity-reset-choice"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-identity-reset-requested",
+      "clause": "The production component resets requested to false when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-identity-reset-requested"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-reset-quiet",
+      "clause": "The production identity-reset path invokes no caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-reset-quiet"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-disclosure-button",
+      "clause": "Disclosure is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-disclosure-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-choice-button",
+      "clause": "Choice is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-choice-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-primary-button",
+      "clause": "Primary is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-primary-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-selected",
+      "clause": "The choice exposes its actual selected state through native selected semantics.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-selected"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-native-disabled",
+      "clause": "The choice uses actual native disabled semantics when disabled.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-primary-native-disabled",
+      "clause": "The primary uses actual native disabled semantics when disabled.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-primary-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-canvas-preserve-controls",
+      "clause": "The canvas accessibility container preserves descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-canvas-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-surface-preserve-controls",
+      "clause": "The surface accessibility container preserves descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-surface-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-unique-semantic-ids",
+      "clause": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-unique-semantic-ids"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-nested-scroll",
+      "clause": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-nested-scroll"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-blank-padding-rows",
+      "clause": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-blank-padding-rows"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-model-row-order",
+      "clause": "Expanded section nodes are generated from caller rows in caller order.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-model-row-order"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-hidden-input-special-cases",
+      "clause": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-hidden-input-special-cases"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-callback-model-id",
+      "clause": "The business request callback forwards the current caller model ID.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-callback-model-id"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-callback-on-disclosure",
+      "clause": "The disclosure open and close paths invoke no caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-callback-on-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-primary-callback-on-disabled",
+      "clause": "A disabled primary cannot invoke its caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-primary-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-choice-callback-on-disabled",
+      "clause": "A disabled choice cannot invoke its caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-choice-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-guard-predicate",
+      "clause": "The release enabled predicate is exactly sealIntact && coolantReady && acknowledged && !requested.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-guard-predicate"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-guard-priority",
+      "clause": "The status decision order is broken seal, unavailable coolant, requested, acknowledged, then awaiting check.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-guard-priority"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-toggle",
+      "clause": "Every successful pre-request confirmation toggle flips the current acknowledgement Boolean.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-toggle"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-callback-value",
+      "clause": "The confirmation callback forwards the resulting acknowledgement Boolean.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-callback-value"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-callback-count",
+      "clause": "A successful pre-request confirmation toggle invokes its caller callback exactly once.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-callback-count"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-release-requested-state",
+      "clause": "A successful eligible release changes local requested state to true.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-release-requested-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-release-callback-count",
+      "clause": "A successful eligible release invokes onRelease exactly once.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-release-callback-count"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-physical-transfer",
+      "clause": "The component initiates no freezer hardware or physical transfer operation.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/ColdStorageTransferPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-physical-transfer"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-no-ui",
+      "clause": "The approved bridge constructs no substitute component UI.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-no-ui"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-no-state",
+      "clause": "The approved bridge owns no local component business state.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-no-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-no-identity-reset",
+      "clause": "The approved bridge applies no identity-reset wrapper around the production component.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-no-identity-reset"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-current-input",
+      "clause": "The approved bridge decodes the current supplied fixture into the declared production model.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-current-input"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-callback-forwarding",
+      "clause": "The approved bridge forwards actual production callbacks into observer event receipt.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-callback-forwarding"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-production-component",
+      "clause": "The declared native component is implemented in the exact production file named by its public API.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-production-component"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-caller-driven-rendering",
+      "clause": "The production component renders the supplied caller model values rather than a separate observer-only approximation.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-caller-driven-rendering"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-disclosure-production-state",
+      "clause": "Disclosure state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-disclosure-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-production-state",
+      "clause": "Choice state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-requested-production-state",
+      "clause": "Requested state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-requested-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-identity-reset-disclosure",
+      "clause": "The production component resets disclosure to closed when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-identity-reset-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-identity-reset-choice",
+      "clause": "The production component resets choice to its specified initial Boolean when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-identity-reset-choice"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-identity-reset-requested",
+      "clause": "The production component resets requested to false when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-identity-reset-requested"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-reset-quiet",
+      "clause": "The production identity-reset path invokes no caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-reset-quiet"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-disclosure-button",
+      "clause": "Disclosure is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-disclosure-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-choice-button",
+      "clause": "Choice is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-choice-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-primary-button",
+      "clause": "Primary is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-primary-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-selected",
+      "clause": "The choice exposes its actual selected state through native selected semantics.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-selected"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-native-disabled",
+      "clause": "The choice uses actual native disabled semantics when disabled.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-primary-native-disabled",
+      "clause": "The primary uses actual native disabled semantics when disabled.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-primary-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-canvas-preserve-controls",
+      "clause": "The canvas accessibility container preserves descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-canvas-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-surface-preserve-controls",
+      "clause": "The surface accessibility container preserves descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-surface-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-unique-semantic-ids",
+      "clause": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-unique-semantic-ids"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-nested-scroll",
+      "clause": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-nested-scroll"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-blank-padding-rows",
+      "clause": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-blank-padding-rows"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-model-row-order",
+      "clause": "Expanded section nodes are generated from caller rows in caller order.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-model-row-order"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-hidden-input-special-cases",
+      "clause": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-hidden-input-special-cases"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-callback-model-id",
+      "clause": "The business request callback forwards the current caller model ID.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-callback-model-id"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-callback-on-disclosure",
+      "clause": "The disclosure open and close paths invoke no caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-callback-on-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-primary-callback-on-disabled",
+      "clause": "A disabled primary cannot invoke its caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-primary-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-choice-callback-on-disabled",
+      "clause": "A disabled choice cannot invoke its caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-choice-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-guard-predicate",
+      "clause": "The release enabled predicate is exactly sealIntact && coolantReady && acknowledged && !requested.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-guard-predicate"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-guard-priority",
+      "clause": "The status decision order is broken seal, unavailable coolant, requested, acknowledged, then awaiting check.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-guard-priority"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-toggle",
+      "clause": "Every successful pre-request confirmation toggle flips the current acknowledgement Boolean.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-toggle"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-callback-value",
+      "clause": "The confirmation callback forwards the resulting acknowledgement Boolean.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-callback-value"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-callback-count",
+      "clause": "A successful pre-request confirmation toggle invokes its caller callback exactly once.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-callback-count"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-release-requested-state",
+      "clause": "A successful eligible release changes local requested state to true.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-release-requested-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-release-callback-count",
+      "clause": "A successful eligible release invokes onRelease exactly once.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-release-callback-count"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-physical-transfer",
+      "clause": "The component initiates no freezer hardware or physical transfer operation.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/ColdStorageTransferPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-physical-transfer"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-no-ui",
+      "clause": "The approved bridge constructs no substitute component UI.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-no-ui"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-no-state",
+      "clause": "The approved bridge owns no local component business state.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-no-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-no-identity-reset",
+      "clause": "The approved bridge applies no identity-reset wrapper around the production component.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-no-identity-reset"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-current-input",
+      "clause": "The approved bridge decodes the current supplied fixture into the declared production model.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-current-input"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-callback-forwarding",
+      "clause": "The approved bridge forwards actual production callbacks into observer event receipt.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-callback-forwarding"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    }
+  ],
+  "state_definitions": [
+    {
+      "id": "overview",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "opened",
+      "input_index": 0,
+      "after_action": 1,
+      "coverage": "targets",
+      "stimulus_action": 1
+    },
+    {
+      "id": "permitted",
+      "input_index": 0,
+      "after_action": 3,
+      "coverage": "full_content",
+      "stimulus_action": 2
+    },
+    {
+      "id": "cleared",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 4
+    },
+    {
+      "id": "restored",
+      "input_index": 0,
+      "after_action": 5,
+      "coverage": "targets",
+      "stimulus_action": 5
+    },
+    {
+      "id": "requested",
+      "input_index": 0,
+      "after_action": 7,
+      "coverage": "full_content",
+      "stimulus_action": 6
+    },
+    {
+      "id": "requested-closed",
+      "input_index": 0,
+      "after_action": 9,
+      "coverage": "full_content",
+      "stimulus_action": 8
+    },
+    {
+      "id": "replaced",
+      "input_index": 1,
+      "after_action": 11,
+      "coverage": "full_content",
+      "stimulus_action": 10
+    },
+    {
+      "id": "held-choice",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "targets",
+      "stimulus_action": 12
+    }
+  ],
+  "sampling_limits": {
+    "runtime": "Representative states; not a Cartesian truth table. Exact-capacity equality and a Wi-Fi-only true unmetered request are not claimed as native executions.",
+    "source_audit": "Source audit is a mandatory separate conjunct and cannot prove native rendered facts or actual dispatch.",
+    "provider": "Frozen Android may perform additional sweeps after targeted actions; the plan makes only its declared target-coverage claim."
+  }
+}

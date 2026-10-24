@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "index": {
+    "source": "reference",
+    "pointer": "/obligations"
+  },
+  "routes": {
+    "current-input": {
+      "rule_ids": [
+        "title",
+        "summary",
+        "revision"
+      ],
+      "reason": "Exact current native semantic labels.",
+      "regression_obligations": [
+        "readable-layout"
+      ]
+    },
+    "review-state": {
+      "rule_ids": [
+        "review-count",
+        "action-label",
+        "footer"
+      ],
+      "reason": "Top, action and remote footer expose the same retained count.",
+      "regression_obligations": [
+        "real-review",
+        "quiet-replacement"
+      ]
+    },
+    "real-review": {
+      "rule_ids": [
+        "activation-receipt"
+      ],
+      "reason": "Exact ordered event delta gated on a unique successful XCUI dispatch.",
+      "regression_obligations": [
+        "review-state",
+        "availability",
+        "appearance"
+      ]
+    },
+    "quiet-replacement": {
+      "rule_ids": [
+        "replacement-receipt"
+      ],
+      "reason": "Exact empty event delta gated on successful same-instance caller replacement.",
+      "regression_obligations": [
+        "current-input",
+        "review-state",
+        "availability"
+      ]
+    },
+    "availability": {
+      "rule_ids": [
+        "action-enabled",
+        "action-unique",
+        "action-role"
+      ],
+      "reason": "Actual unique native control state; disabled dispatch facts will be logged separately and cannot pass callback checks.",
+      "regression_obligations": [
+        "appearance"
+      ]
+    },
+    "long-content": {
+      "rule_ids": [
+        "opening-anchor",
+        "middle-anchor",
+        "closing-anchor",
+        "footer"
+      ],
+      "reason": "Full states additionally demand complete overlapping coverage; target states preserve exact remote locations.",
+      "regression_obligations": [
+        "readable-layout"
+      ]
+    },
+    "readable-layout": {
+      "rule_ids": [
+        "full-layout",
+        "text-wrapping"
+      ],
+      "reason": "Independent visual review of complete state image sequences.",
+      "regression_obligations": [
+        "appearance"
+      ]
+    },
+    "appearance": {
+      "rule_ids": [
+        "action-height",
+        "neutral-surfaces",
+        "action-appearance"
+      ],
+      "reason": "Native accessibility control height plus separately scoped visual color/surface review.",
+      "regression_obligations": [
+        "readable-layout"
+      ]
+    }
+  }
+}

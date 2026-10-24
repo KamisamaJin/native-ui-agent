@@ -1,0 +1,573 @@
+{
+  "public_brief": "design/T2/public/BRIEF.md",
+  "all_mandatory_clauses_complete": false,
+  "rows": [
+    {
+      "id": "B01",
+      "brief_clause": "Real reusable SwiftUI/Compose production component and shared APIs",
+      "disposition": "supported",
+      "obligation_ids": [
+        "title-label"
+      ],
+      "verification_routes": [
+        "sealed production paths",
+        "direct thin bridge production calls",
+        "source-bound execution roots"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Both bridges match the public model/component signatures. They forward callbacks and own no local state/UI. Future build/deployment compatibility remains unexecuted."
+    },
+    {
+      "id": "B02",
+      "brief_clause": "availableMB >= downloadSizeMB; insufficient storage blocks primary",
+      "disposition": "supported",
+      "obligation_ids": [
+        "status-label",
+        "primary-enabled"
+      ],
+      "verification_routes": [
+        "P1/H1 replaced native label+enabled"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Correct for frozen selected input values. Equality boundary is not among the selected inputs."
+    },
+    {
+      "id": "B03",
+      "brief_clause": "Insufficient storage has priority over metered network gate",
+      "disposition": "partial",
+      "obligation_ids": [
+        "status-label",
+        "primary-enabled"
+      ],
+      "verification_routes": [
+        "existing status/enabled rules, no competing-gates state"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "T2-R2: the only insufficient-storage inputs are unmetered."
+    },
+    {
+      "id": "B04",
+      "brief_clause": "Whole MB values come from caller; do not measure disk",
+      "disposition": "partial",
+      "obligation_ids": [
+        "subtitle-label",
+        "primary-enabled"
+      ],
+      "verification_routes": [
+        "sealed Int model inputs",
+        "thin bridge decoding",
+        "native subtitle/gate checks"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Positive caller-value handling is supported; the no-disk-measurement constraint is unindexed (T2-R5)."
+    },
+    {
+      "id": "B05",
+      "brief_clause": "Wi-Fi only initially selected; metered connection then blocks download",
+      "disposition": "supported",
+      "obligation_ids": [
+        "choice-selected",
+        "choice-enabled",
+        "primary-enabled",
+        "status-label"
+      ],
+      "verification_routes": [
+        "overview native selected/enabled/status"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "All three independent cases exercise this state."
+    },
+    {
+      "id": "B06",
+      "brief_clause": "Choice toggles and emits onWifiOnlyChange(newValue) once",
+      "disposition": "partial",
+      "obligation_ids": [
+        "choice-selected",
+        "choice-receipt"
+      ],
+      "verification_routes": [
+        "action 2 successful native activation; permitted receipt/selected"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "The false transition is checked exactly. A reverse true transition is not selected; this remains a sampling limit."
+    },
+    {
+      "id": "B07",
+      "brief_clause": "Disabling Wi-Fi only permits metered download when storage sufficient",
+      "disposition": "supported",
+      "obligation_ids": [
+        "primary-enabled",
+        "status-label"
+      ],
+      "verification_routes": [
+        "permitted selected=false, enabled=true, Ready to download"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Input values and expected state independently recompute correctly."
+    },
+    {
+      "id": "B08",
+      "brief_clause": "Allowed primary emits onDownload(current id,wifiOnly) once",
+      "disposition": "supported",
+      "obligation_ids": [
+        "request-receipt"
+      ],
+      "verification_routes": [
+        "requested event action_index=4; default successful method gate"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Exact current ID and mobile/false event are pinned. An eligible Wi-Fi-only/true request is not selected."
+    },
+    {
+      "id": "B09",
+      "brief_clause": "After request show requested and disable both choice and primary",
+      "disposition": "supported",
+      "obligation_ids": [
+        "status-label",
+        "primary-label",
+        "choice-enabled",
+        "primary-enabled"
+      ],
+      "verification_routes": [
+        "requested native label/enabled and requested fill"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "No disabled tap is counted as business dispatch."
+    },
+    {
+      "id": "B10",
+      "brief_clause": "Record request without fetching audio",
+      "disposition": "missing",
+      "obligation_ids": [],
+      "verification_routes": [],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "No independent no-I/O/source inspection obligation or route (T2-R5)."
+    },
+    {
+      "id": "B11",
+      "brief_clause": "Disclosure initially closed; opens all caller chapter heading/body pairs in order",
+      "disposition": "supported",
+      "obligation_ids": [
+        "disclosure-label",
+        "collapsed-content",
+        "expanded-order",
+        "section-0-heading",
+        "section-0-body",
+        "section-1-heading",
+        "section-1-body",
+        "section-2-heading",
+        "section-2-body",
+        "section-3-heading",
+        "section-3-body",
+        "section-4-heading",
+        "section-4-body",
+        "section-5-heading",
+        "section-5-body",
+        "section-6-heading",
+        "section-6-body",
+        "section-7-heading",
+        "section-7-body"
+      ],
+      "verification_routes": [
+        "overview labels/body absence visual",
+        "permitted/requested exact section strings + expanded order"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Eight chapter pairs and all copy are source-backed. Closed heading absence is not explicit; see B12."
+    },
+    {
+      "id": "B12",
+      "brief_clause": "Disclosure also closes heading/body pairs in same model; no caller callback",
+      "disposition": "partial",
+      "obligation_ids": [
+        "disclosure-label",
+        "collapsed-content"
+      ],
+      "verification_routes": [
+        "only opening tap at action 1; reset closure after replacement"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "No disclosure quiet event, reverse close activation, or explicit closed-heading proposition (T2-R1)."
+    },
+    {
+      "id": "B13",
+      "brief_clause": "New tour ID resets choice=true, disclosure closed, requested=false",
+      "disposition": "supported",
+      "obligation_ids": [
+        "choice-selected",
+        "choice-enabled",
+        "disclosure-label",
+        "collapsed-content",
+        "primary-label",
+        "primary-enabled",
+        "status-label"
+      ],
+      "verification_routes": [
+        "same mounted caller update action 6 then full sweep checkpoint 7"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Replacement is a fresh same-process fixture stimulus. Bridges contain no .id/key wrapper or replacement state logic."
+    },
+    {
+      "id": "B14",
+      "brief_clause": "New title/language/MB values update without callbacks",
+      "disposition": "supported",
+      "obligation_ids": [
+        "title-label",
+        "subtitle-label",
+        "status-label",
+        "primary-enabled",
+        "replacement-quiet"
+      ],
+      "verification_routes": [
+        "replaced labels/gates + exact empty event interval for caller update action 6"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Every selected case independently matches BRIEF-derived expectations. The successful caller_fixture_update method is mandatory in frozen native_checks."
+    },
+    {
+      "id": "B15",
+      "brief_clause": "Status precedence and primary iff formula",
+      "disposition": "partial",
+      "obligation_ids": [
+        "status-label",
+        "primary-enabled"
+      ],
+      "verification_routes": [
+        "overview/permitted/requested/replaced native state checks"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Selected expectations are correct; the explicit competing-gates priority is not exercised (T2-R2)."
+    },
+    {
+      "id": "B16",
+      "brief_clause": "All exact subtitle/disclosure/primary/choice strings and selected semantics",
+      "disposition": "supported",
+      "obligation_ids": [
+        "subtitle-label",
+        "disclosure-label",
+        "primary-label",
+        "choice-label",
+        "choice-selected"
+      ],
+      "verification_routes": [
+        "all four native checkpoints"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Exact accessible text is separate from visible wrapping."
+    },
+    {
+      "id": "B17",
+      "brief_clause": "Public P1 ordinary and P2 narrow/large; same source/API",
+      "disposition": "supported",
+      "obligation_ids": [],
+      "verification_routes": [
+        "source-pinned scenarios, launch fixtures/bridge hashes, environment contracts"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "P1/P2 are separate scenarios; actual frozen reconstruction succeeds on both platforms. iOS large/xxxLarge and Android 1.0/1.3 are explicitly handled by the host."
+    },
+    {
+      "id": "B18",
+      "brief_clause": "Host horizontal 16 and top 24; component width=requested width-32",
+      "disposition": "supported",
+      "obligation_ids": [],
+      "verification_routes": [
+        "frozen ObserverApp.swift parent",
+        "frozen NativeObserverTest.kt parent",
+        "environment preflight"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Static host reconstruction confirms 368/248 offered component units for 400/280 requested widths; Android explicit Float32 encoding is preserved. No native measurement is claimed."
+    },
+    {
+      "id": "B19",
+      "brief_clause": "Pale component canvas/white surface own their solid painted gutters",
+      "disposition": "supported",
+      "obligation_ids": [
+        "canvas-fill",
+        "surface-fill"
+      ],
+      "verification_routes": [
+        "separate component-owned pixel atoms, visible_fragment"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "The approved narrow strips fit the stated nominal gutters. They prove sampled rendered color, not exact padding allocation."
+    },
+    {
+      "id": "B20",
+      "brief_clause": "Solid ink mark exact role; single vertical flow/order",
+      "disposition": "supported",
+      "obligation_ids": [
+        "ink-fill",
+        "flow-order"
+      ],
+      "verification_routes": [
+        "ink rectangle native_pixels",
+        "full_content atomic visual order"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Noninteractive semantic containers can preserve children. There is no computed text-color assertion."
+    },
+    {
+      "id": "B21",
+      "brief_clause": "Nominal internal gutters/gaps/status minimum and typography guidance",
+      "disposition": "advisory",
+      "obligation_ids": [
+        "typography-nominal"
+      ],
+      "verification_routes": [
+        "explicit empty route with unsupported computed SwiftUI/font-layout rationale"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Advisory disposition is honest. The separately stated status inset minimum is assessed separately in B23."
+    },
+    {
+      "id": "B22",
+      "brief_clause": "Choice-to-primary real native edge gap 12 ±0.75; primary height 56 ±0.75",
+      "disposition": "supported",
+      "obligation_ids": [
+        "choice-primary-gap",
+        "primary-height"
+      ],
+      "verification_routes": [
+        "control/accessibility_box same-frame geometry with pt/dp source tolerance"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Both actual native Button controls can share a final bottom viewport. No cross-frame subtraction/layout-box inference is required."
+    },
+    {
+      "id": "B23",
+      "brief_clause": "Status text at least 16 native units inside band; logical leading 4% empty",
+      "disposition": "partial",
+      "obligation_ids": [
+        "status-fill"
+      ],
+      "verification_routes": [
+        "physical-left 1.2%..3.5% solid fill sample only"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "The 16-unit minimum has no text-inset assertion/proposition; leading and physical-left differ in RTL (T2-R4)."
+    },
+    {
+      "id": "B24",
+      "brief_clause": "All text wraps without line limits",
+      "disposition": "partial",
+      "obligation_ids": [
+        "title-wrapping",
+        "body-wrapping"
+      ],
+      "verification_routes": [
+        "title/body full-state qualitative atoms only"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Other text roles lack no-truncation coverage (T2-R3). Two narrow static references also overflow (T2-R6)."
+    },
+    {
+      "id": "B25",
+      "brief_clause": "Realistic long content; no artificial fixed-height blank rows",
+      "disposition": "partial",
+      "obligation_ids": [],
+      "verification_routes": [
+        "caller chapter copy fixed before implementation",
+        "full-state interval coverage"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Realistic provided copy and illustrative size guidance are verified; artificial spacer prohibition has no independent route (T2-R5). Approximate 3–5 viewports is advisory."
+    },
+    {
+      "id": "B26",
+      "brief_clause": "Native parent owns scrolling; component adds no nested scroller",
+      "disposition": "partial",
+      "obligation_ids": [],
+      "verification_routes": [
+        "frozen native parent has one intended scroller"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Parent ownership is statically confirmed. No component-source/nested-scroller obligation covers the future component (T2-R5)."
+    },
+    {
+      "id": "B27",
+      "brief_clause": "Exact opaque fill/canvas/surface/ink roles; separate pixel rules",
+      "disposition": "supported",
+      "obligation_ids": [
+        "status-fill",
+        "primary-fill",
+        "surface-fill",
+        "canvas-fill",
+        "ink-fill"
+      ],
+      "verification_routes": [
+        "five independent component-owned native_pixels atoms"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Palette anchors, ARGB units, minimum support/count and zero RGB-channel tolerance reconstruct. Status/primary fully visible; tall canvas/surface use visible fragments. Unused waiting palette role is not exercised."
+    },
+    {
+      "id": "B28",
+      "brief_clause": "Title hierarchy, wrapping, overlap and clipping remain separate MUST visual propositions",
+      "disposition": "supported",
+      "obligation_ids": [
+        "title-hierarchy",
+        "title-wrapping",
+        "body-wrapping",
+        "row-overlap",
+        "horizontal-clipping"
+      ],
+      "verification_routes": [
+        "independently source-backed Boolean questions + two judges"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Atomic aspects and provenance are valid. The scope omission for non-title/body wrapping remains B24."
+    },
+    {
+      "id": "B29",
+      "brief_clause": "Full overlapping evidence and actual bottom reachability in every expanded state",
+      "disposition": "supported",
+      "obligation_ids": [],
+      "verification_routes": [
+        "all four checkpoints coverage=full_content",
+        "execution coverage_receipt/bound_state_evidence interval union",
+        "manual full_content rules"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "Plan does not replace full scans with target-only frames. max_steps=18 and realistic copy are proposed budgets, not runtime guarantees."
+    },
+    {
+      "id": "B30",
+      "brief_clause": "Native selected/enabled/labels; successful callback method and original intervals",
+      "disposition": "supported",
+      "obligation_ids": [
+        "choice-selected",
+        "choice-enabled",
+        "primary-enabled",
+        "choice-receipt",
+        "request-receipt",
+        "replacement-quiet"
+      ],
+      "verification_routes": [
+        "frozen native collectors plus native_checks.callback_verdict"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "xcui_tap / compose_onclick / caller_fixture_update defaults, same process/input/event binding and successful dispatch are enforced for the three declared events. Disclosure is absent (B12)."
+    },
+    {
+      "id": "B31",
+      "brief_clause": "API: disclosure remains enabled after request",
+      "disposition": "missing",
+      "obligation_ids": [],
+      "verification_routes": [],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "No disclosure enabled assertion or post-request disclosure activation (T2-R1)."
+    },
+    {
+      "id": "B32",
+      "brief_clause": "Outside scope navigation/lifecycle/real network/disk operations; no cross-platform pixel baseline",
+      "disposition": "supported",
+      "obligation_ids": [],
+      "verification_routes": [
+        "declared component-only observer scope",
+        "reference illustrations and explicit evidence limits"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "assessment": "No native/runtime product pass is claimed by this review. The no-fetch/no-disk implementation constraints still need the source-only routes in B04/B10."
+    }
+  ],
+  "scope": "Independent semantic comparison, not the compiler's index self-audit. Partial/missing mandatory rows prevent approval."
+}

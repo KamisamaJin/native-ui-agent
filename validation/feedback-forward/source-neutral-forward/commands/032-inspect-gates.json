@@ -1,0 +1,14 @@
+{
+  "label": "032-inspect-gates",
+  "startedAtUnix": 1792855844.865428,
+  "endedAtUnix": 1792855844.880785,
+  "cwd": "/Users/rex/Documents/ChatGPT/mobile-native-skill",
+  "argv": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-c",
+    "from pathlib import Path; import json; o=Path('/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/feedback-forward/source-neutral-forward'); ps=[o/'honest-gate.json',o/'cases/022-omit-known-decision/gate.json',o/'cases/023-all-unknown-no-evidence/gate.json',o/'cases/030b-unsupported-review-acceptance/gate.json']; [(print(json.dumps({'path':str(p.relative_to(o)), **{k:json.loads(p.read_text())[k] for k in ['status','counts','blocking_obligations']}}))) for p in ps]"
+  ],
+  "returncode": 0,
+  "stdout": "{\"path\": \"honest-gate.json\", \"status\": \"not_accepted\", \"counts\": {\"passed\": 6, \"failed\": 0, \"unassessed\": 1}, \"blocking_obligations\": [\"formatter-localization\"]}\n{\"path\": \"cases/022-omit-known-decision/gate.json\", \"status\": \"not_accepted\", \"counts\": {\"passed\": 5, \"failed\": 0, \"unassessed\": 2}, \"blocking_obligations\": [\"swift-clamp\", \"formatter-localization\"]}\n{\"path\": \"cases/023-all-unknown-no-evidence/gate.json\", \"status\": \"not_accepted\", \"counts\": {\"passed\": 0, \"failed\": 0, \"unassessed\": 7}, \"blocking_obligations\": [\"swift-clamp\", \"swift-delegation\", \"kotlin-clamp\", \"kotlin-delegation\", \"kotlin-empty-fallback\", \"shared-identifier\", \"formatter-localization\"]}\n{\"path\": \"cases/030b-unsupported-review-acceptance/gate.json\", \"status\": \"accepted\", \"counts\": {\"passed\": 7, \"failed\": 0, \"unassessed\": 0}, \"blocking_obligations\": []}\n",
+  "stderr": ""
+}

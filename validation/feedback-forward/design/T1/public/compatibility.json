@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "platform": "ios",
+  "priority": "must",
+  "deployment_target": {
+    "value": "14.0",
+    "unit": "string"
+  },
+  "source_api_audit_id": "ios-api14-availability",
+  "production_files": [
+    "Sources/AlertToast/ColdStorageTransferPanel.swift"
+  ],
+  "shared_checker": {
+    "path": "validation/feedback-forward/check_minimum_api.py",
+    "sha256": "e627e55b0e79791fff4baa6e6998f939d08d586cdc1f8844b24a428da0a00b14",
+    "argv": [
+      "python3",
+      "-B",
+      "<repository>/validation/feedback-forward/check_minimum_api.py",
+      "--workspace",
+      "<actual-project-root>",
+      "--bridge",
+      "<unchanged-launch-approved-Bridge.swift>",
+      "--output",
+      "<fresh-output>",
+      "--deployment-target",
+      "14.0"
+    ],
+    "workspace_layout": "actual-project-root/alerttoast/Sources contains the real AlertToast library and the final new production component.",
+    "accepted_status": "source_api_typechecked",
+    "required_compiler_exit_codes": [
+      0,
+      0
+    ],
+    "dependency_scope": "Root freezes the shared generic operator/helper dependencies before builders. Design author did not import the checker or inspect its generic study helper."
+  },
+  "future_source_api_check": {
+    "working_directory": "Actual project workspace containing alerttoast/Sources and the final production component",
+    "target": "arm64-apple-ios14.0-simulator",
+    "module_name": "AlertToast",
+    "module_source_rule": "All real .swift files under actual workspace/alerttoast/Sources, sorted; exclude any hidden/dot path segment, including AppleDouble ._ files.",
+    "module_argv": [
+      "xcrun",
+      "swiftc",
+      "-emit-module",
+      "-emit-module-path",
+      "<fresh-output>/module/AlertToast.swiftmodule",
+      "-parse-as-library",
+      "-swift-version",
+      "5",
+      "-module-name",
+      "AlertToast",
+      "-target",
+      "arm64-apple-ios14.0-simulator",
+      "-sdk",
+      "<actual iphonesimulator SDK>",
+      "<approved sorted real library Swift sources>"
+    ],
+    "bridge_argv": [
+      "xcrun",
+      "swiftc",
+      "-typecheck",
+      "-parse-as-library",
+      "-swift-version",
+      "5",
+      "-module-name",
+      "MinimumClient",
+      "-target",
+      "arm64-apple-ios14.0-simulator",
+      "-sdk",
+      "<actual iphonesimulator SDK>",
+      "-I",
+      "<fresh-output>/module",
+      "@design/Bridge.swift"
+    ],
+    "expected_module_exit_code": {
+      "value": 0,
+      "unit": "count"
+    },
+    "expected_bridge_exit_code": {
+      "value": 0,
+      "unit": "count"
+    },
+    "evidence_required": [
+      "exact shared checker/Swift compiler/SDK identity and command records",
+      "real emitted library module with its original byte SHA",
+      "successful module emission for target14 from real library inputs",
+      "successful unchanged approved public bridge typecheck against that real module at14",
+      "all actual library source and bridge SHA before/after, matching the final source/API evidence",
+      "original fresh logs and explicit no-link/no-launch scope"
+    ]
+  },
+  "environment_limit": "Pinned current Xcode rejects a simulator Xcodebuild deployment target14. Do not promise a clean target14 package/app Xcodebuild.",
+  "scope": "Original minimum14 SOURCE/API requirement: shared real-library module emission and unchanged bridge typecheck at14 plus manual API availability audit. No linking, launch, native render or iOS14 runtime claim. Clean legacy packaging/runtime remain unverified. Do not run during design."
+}

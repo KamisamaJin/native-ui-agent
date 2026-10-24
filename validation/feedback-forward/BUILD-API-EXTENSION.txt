@@ -1,0 +1,10 @@
+Shared minimum-source-API check, no render/launch/link:
+python3 CHECK_MINIMUM_API --workspace WORKSPACE --bridge PUBLIC/Bridge.swift --output WORKSPACE/cache/<fresh-name> --deployment-target 14.0
+It emits the actual library Swift module and typechecks its unchanged caller at
+arm64-apple-ios14.0-simulator, retaining diagnostics/source hashes. Use it during
+initial compile-only authoring and when reviewing/fixing source under the existing
+wall budget. A final fresh source-version check runs in the complete self-check.
+This does not certify a clean Xcode package/archive/link or iOS14 runtime. Current
+Xcode's simulator deployment range starts15; the unsupported Xcodebuild14 attempt
+is retained separately. Real visual tests run the declared current Simulator host.
+No original project minimum/API may be silently bumped to make a check pass.

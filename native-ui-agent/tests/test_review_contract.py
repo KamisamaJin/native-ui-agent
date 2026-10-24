@@ -107,6 +107,35 @@ class AtomicReviewTests(unittest.TestCase):
         manual = self.bind(submission)
         self.assertEqual([r['status'] for r in manual['decisions']].count('unassessed'), 2)
 
+    def test_measured_retest_can_recompute_original_visual_actuals_without_report_override(self):
+        import hashlib
+        import shutil
+        import execution_plan
+        import retest_plan
+        production = self.root / 'Component.kt'; production.write_text('original neutral source')
+        before = execution_plan.source_fingerprint([production]); captured = self.root / 'capture'; native = captured / 'native'; native.mkdir(parents=True)
+        for name in ['observed.png', 'changed.png']: shutil.copy2(self.root / name, native / name)
+        op = native / 'observation.json'; op.write_text(json.dumps(self.obs)); obs_sha = hashlib.sha256(op.read_bytes()).hexdigest()
+        self.obs_sha = obs_sha; self.submission['observation_sha256'] = obs_sha
+        automatic = self.evaluate()
+        for name, value in [('automatic.json', automatic), ('source-before.json', before), ('source-after.json', before)]:
+            (captured / name).write_text(json.dumps(value))
+        receipt = {'status': 'verified_capture', 'parent_plan_sha256': d.digest(self.plan), 'source_sha256': d.digest(before),
+                   'source_roots': [str(production.resolve())], 'automatic_sha256': hashlib.sha256((captured / 'automatic.json').read_bytes()).hexdigest(),
+                   'observation_sha256': obs_sha, 'image_hashes': {name: hashlib.sha256((native / name).read_bytes()).hexdigest() for name in ['observed.png', 'changed.png']}}
+        rp = captured / 'result.json'; rp.write_text(json.dumps(receipt)); pinned = hashlib.sha256(rp.read_bytes()).hexdigest()
+        review_input = copy.deepcopy(self.submission); review_input['decisions'][0]['actual'] = False
+        submitted = self.root / 'review.json'; submitted.write_text(json.dumps(review_input)); submitted_sha = hashlib.sha256(submitted.read_bytes()).hexdigest()
+        coverage = {'plan_sha256': d.digest(self.plan), 'design_lock_sha256': self.lock_sha,
+                    'obligations': [{'id': 'title', 'states': ['observed'], 'assertion_ids': ['observed/title-overlap'], 'route': {'regression_obligations': []}}]}
+        production.write_text('changed neutral source')
+        with self.assertRaises(ValueError): retest_plan.from_capture(coverage, self.plan, ['observed/title-overlap'], rp, pinned, [production])
+        args = dict(review_submission=submitted, review_sha=submitted_sha, lock=self.lock, lock_sha=self.lock_sha, policy=self.policy, policy_sha=self.policy_sha)
+        result = retest_plan.from_capture(coverage, self.plan, ['observed/title-overlap'], rp, pinned, [production], **args)
+        self.assertEqual(result['states'], ['observed']); self.assertEqual(result['review_submission_sha256'], submitted_sha)
+        (native / 'observed.png').write_bytes(b'replaced original image')
+        with self.assertRaises(ValueError): retest_plan.from_capture(coverage, self.plan, ['observed/title-overlap'], rp, pinned, [production], **args)
+
     def test_sampling_uncertainty_transparency_and_mapping_are_not_passes(self):
         spec = self.policy['atoms'][0]['sampling']; snap = self.obs['snapshots'][0]
         im = Image.open(self.root / 'observed.png').convert('RGB'); pix = im.load()

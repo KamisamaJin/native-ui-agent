@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "platform": "ios",
+  "priority": "must",
+  "deployment_target": {
+    "value": "14.0",
+    "unit": "string"
+  },
+  "source_api_audit_id": "ios14-api-availability",
+  "production_files": [
+    "Sources/AlertToast/ColdStorageTransferPanel.swift"
+  ],
+  "future_build": {
+    "working_directory": "Actual AlertToast package checkout containing the final production source",
+    "argv": [
+      "xcodebuild",
+      "-scheme",
+      "AlertToast",
+      "-destination",
+      "generic/platform=iOS Simulator",
+      "-sdk",
+      "iphonesimulator",
+      "-derivedDataPath",
+      "<fresh-evidence>/ios14-derived-data",
+      "IPHONEOS_DEPLOYMENT_TARGET=14.0",
+      "ARCHS=arm64",
+      "ONLY_ACTIVE_ARCH=YES",
+      "CODE_SIGNING_ALLOWED=NO",
+      "build"
+    ],
+    "environment": {
+      "DEVELOPER_DIR": "Explicit selected Xcode from the approved native host configuration"
+    },
+    "expected_exit_code": {
+      "value": 0,
+      "unit": "count"
+    },
+    "evidence_required": [
+      "exact command and actual package working directory",
+      "actual SDK/Xcode identity",
+      "actual compiler deployment target 14.0 in build settings/logs",
+      "fresh unedited build log with successful package product build",
+      "final production source SHA before/after build and match to the separately source-bound final capture/audit"
+    ]
+  },
+  "scope": "Deployment-target package compilation plus source API-availability review; never an iOS-14 native-render or behavior claim. Do not run during design."
+}

@@ -1,0 +1,290 @@
+{
+  "version": 1,
+  "design_lock_sha256": "131851b42f31e531b78dca6625ebe84b2bcdde4724e1c9f8b5d1e8b38091fe72",
+  "plan_sha256": "df5cf3e4386dc1686f097a79df02a5a3fcd3b34b9033a6bb07435ceacae43344",
+  "routes_sha256": "22e532bb9c33434e02084f64525e0a96e11356fc8509dbedafb88e75853cd11e",
+  "obligations": [
+    {
+      "id": "current-input",
+      "clause": "Visible title, summary and revision match the current caller input in every required state.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "content",
+      "assertion_ids": [
+        "ready/title",
+        "ready/summary",
+        "ready/revision",
+        "reviewed/title",
+        "reviewed/summary",
+        "reviewed/revision",
+        "replaced/title",
+        "replaced/summary",
+        "replaced/revision",
+        "disabled/title",
+        "disabled/summary",
+        "disabled/revision"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "title",
+          "summary",
+          "revision"
+        ],
+        "reason": "Exact current native semantic labels.",
+        "regression_obligations": [
+          "readable-layout"
+        ]
+      }
+    },
+    {
+      "id": "review-state",
+      "clause": "The review starts at zero, becomes one after activation, and remains one across caller replacement and disabled observation.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "ready/review-count",
+        "ready/action-label",
+        "ready/footer",
+        "reviewed/review-count",
+        "reviewed/action-label",
+        "reviewed/footer",
+        "replaced/review-count",
+        "replaced/action-label",
+        "replaced/footer",
+        "disabled/review-count",
+        "disabled/action-label",
+        "disabled/footer"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "review-count",
+          "action-label",
+          "footer"
+        ],
+        "reason": "Top, action and remote footer expose the same retained count.",
+        "regression_obligations": [
+          "real-review",
+          "quiet-replacement"
+        ]
+      }
+    },
+    {
+      "id": "real-review",
+      "clause": "The enabled review action is uniquely dispatched through XCUI tap and emits exactly notes.reviewed.A once.",
+      "priority": "must",
+      "states": [
+        "reviewed"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "reviewed/activation-receipt"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "activation-receipt"
+        ],
+        "reason": "Exact ordered event delta gated on a unique successful XCUI dispatch.",
+        "regression_obligations": [
+          "review-state",
+          "availability",
+          "appearance"
+        ]
+      }
+    },
+    {
+      "id": "quiet-replacement",
+      "clause": "Caller replacement advances exactly one input in the same mounted instance without a business callback.",
+      "priority": "must",
+      "states": [
+        "replaced"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "replaced/replacement-receipt"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "replacement-receipt"
+        ],
+        "reason": "Exact empty event delta gated on successful same-instance caller replacement.",
+        "regression_obligations": [
+          "current-input",
+          "review-state",
+          "availability"
+        ]
+      }
+    },
+    {
+      "id": "availability",
+      "clause": "The review action is enabled for revision A and disabled for revision B; disabled observation is not dispatched or scored as callback success.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "ready/action-enabled",
+        "ready/action-unique",
+        "ready/action-role",
+        "reviewed/action-enabled",
+        "reviewed/action-unique",
+        "reviewed/action-role",
+        "replaced/action-enabled",
+        "replaced/action-unique",
+        "replaced/action-role",
+        "disabled/action-enabled",
+        "disabled/action-unique",
+        "disabled/action-role"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "action-enabled",
+          "action-unique",
+          "action-role"
+        ],
+        "reason": "Actual unique native control state; disabled dispatch facts will be logged separately and cannot pass callback checks.",
+        "regression_obligations": [
+          "appearance"
+        ]
+      }
+    },
+    {
+      "id": "long-content",
+      "clause": "All ten cards and the footer remain reachable in the required full-content states, and the remote anchors remain observed for every target checkpoint.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "layout",
+      "assertion_ids": [
+        "ready/opening-anchor",
+        "ready/middle-anchor",
+        "ready/closing-anchor",
+        "ready/footer",
+        "reviewed/opening-anchor",
+        "reviewed/middle-anchor",
+        "reviewed/closing-anchor",
+        "reviewed/footer",
+        "replaced/opening-anchor",
+        "replaced/middle-anchor",
+        "replaced/closing-anchor",
+        "replaced/footer",
+        "disabled/opening-anchor",
+        "disabled/middle-anchor",
+        "disabled/closing-anchor",
+        "disabled/footer"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "opening-anchor",
+          "middle-anchor",
+          "closing-anchor",
+          "footer"
+        ],
+        "reason": "Full states additionally demand complete overlapping coverage; target states preserve exact remote locations.",
+        "regression_obligations": [
+          "readable-layout"
+        ]
+      }
+    },
+    {
+      "id": "readable-layout",
+      "clause": "Both fixture configurations have readable wrapping, no horizontal clipping or overlap, and the approved vertical order.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "replaced"
+      ],
+      "risk": "layout",
+      "assertion_ids": [
+        "ready/full-layout",
+        "ready/text-wrapping",
+        "replaced/full-layout",
+        "replaced/text-wrapping"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "full-layout",
+          "text-wrapping"
+        ],
+        "reason": "Independent visual review of complete state image sequences.",
+        "regression_obligations": [
+          "appearance"
+        ]
+      }
+    },
+    {
+      "id": "appearance",
+      "clause": "The neutral surfaces and action appearance follow the approved colors and minimum native control height.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "style",
+      "assertion_ids": [
+        "ready/action-height",
+        "ready/neutral-surfaces",
+        "ready/action-appearance",
+        "reviewed/action-height",
+        "reviewed/neutral-surfaces",
+        "reviewed/action-appearance",
+        "replaced/action-height",
+        "replaced/neutral-surfaces",
+        "replaced/action-appearance",
+        "disabled/action-height",
+        "disabled/neutral-surfaces",
+        "disabled/action-appearance"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "action-height",
+          "neutral-surfaces",
+          "action-appearance"
+        ],
+        "reason": "Native accessibility control height plus separately scoped visual color/surface review.",
+        "regression_obligations": [
+          "readable-layout"
+        ]
+      }
+    }
+  ],
+  "must_route_gaps": [],
+  "unowned_assertions": [],
+  "scope": "Completeness against the independently approved index, not proof that prose was completely translated or that any check passed."
+}

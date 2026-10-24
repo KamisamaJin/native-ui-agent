@@ -1,0 +1,243 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "Independent neutral source-only forward test author",
+    "approval_reference": "source-neutral-forward/independent-pin.json; local synthetic fixture approval only",
+    "sources": [
+      {
+        "id": "neutral",
+        "path": "reference.json",
+        "sha256": "54c2ae3055af13c10d03cdde9881f7bca6d17527f10801cabdcdc54ee2ae4d3d"
+      }
+    ],
+    "required_rule_ids": [
+      "scaffold-presence"
+    ],
+    "rules": [
+      {
+        "id": "scaffold-presence",
+        "kind": "control",
+        "target": "neutral-model",
+        "property": "present"
+      }
+    ],
+    "scenarios": {
+      "neutral": {
+        "states": [
+          {
+            "id": "unobserved",
+            "after_action": -1
+          }
+        ],
+        "actions": [],
+        "values": {
+          "scaffold-presence": {
+            "unobserved": {
+              "ios": {
+                "source": "neutral",
+                "pointer": "/presence"
+              },
+              "android": {
+                "source": "neutral",
+                "pointer": "/presence"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "neutral": {
+      "id": "neutral",
+      "path": "reference.json",
+      "sha256": "54c2ae3055af13c10d03cdde9881f7bca6d17527f10801cabdcdc54ee2ae4d3d",
+      "document": {
+        "presence": {
+          "value": false,
+          "unit": "bool"
+        },
+        "propositions": {
+          "swift-clamp": {
+            "value": "The Swift displayCount getter clamps count to a minimum of zero.",
+            "unit": "string"
+          },
+          "swift-delegation": {
+            "value": "The Swift label getter passes displayCount to the supplied formatter.",
+            "unit": "string"
+          },
+          "kotlin-clamp": {
+            "value": "The Kotlin displayCount getter clamps count to a minimum of zero.",
+            "unit": "string"
+          },
+          "kotlin-delegation": {
+            "value": "The Kotlin label getter passes displayCount to the supplied formatter.",
+            "unit": "string"
+          },
+          "kotlin-empty-fallback": {
+            "value": "The Kotlin label getter contains an in-body replacement for empty formatter output.",
+            "unit": "string"
+          },
+          "shared-identifier": {
+            "value": "Both model declarations expose the source constant neutral.badge.count as accessibilityIdentifier.",
+            "unit": "string"
+          },
+          "formatter-localization": {
+            "value": "The configured formatter implementations resolve their label through localization resource key badge.count.",
+            "unit": "string"
+          }
+        },
+        "expectations": {
+          "swift-clamp": {
+            "value": true,
+            "unit": "bool"
+          },
+          "swift-delegation": {
+            "value": true,
+            "unit": "bool"
+          },
+          "kotlin-clamp": {
+            "value": true,
+            "unit": "bool"
+          },
+          "kotlin-delegation": {
+            "value": true,
+            "unit": "bool"
+          },
+          "kotlin-empty-fallback": {
+            "value": false,
+            "unit": "bool"
+          },
+          "shared-identifier": {
+            "value": true,
+            "unit": "bool"
+          },
+          "formatter-localization": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "source_audit": [
+          {
+            "id": "swift-clamp",
+            "clause": "The Swift component derives a nonnegative display count.",
+            "priority": "must",
+            "files": [
+              "BadgeModel.swift"
+            ],
+            "proposition": {
+              "source": "neutral",
+              "pointer": "/propositions/swift-clamp"
+            },
+            "expected": {
+              "source": "neutral",
+              "pointer": "/expectations/swift-clamp"
+            }
+          },
+          {
+            "id": "swift-delegation",
+            "clause": "The Swift component delegates label creation using its derived count.",
+            "priority": "must",
+            "files": [
+              "BadgeModel.swift"
+            ],
+            "proposition": {
+              "source": "neutral",
+              "pointer": "/propositions/swift-delegation"
+            },
+            "expected": {
+              "source": "neutral",
+              "pointer": "/expectations/swift-delegation"
+            }
+          },
+          {
+            "id": "kotlin-clamp",
+            "clause": "The Kotlin component derives a nonnegative display count.",
+            "priority": "must",
+            "files": [
+              "BadgeModel.kt"
+            ],
+            "proposition": {
+              "source": "neutral",
+              "pointer": "/propositions/kotlin-clamp"
+            },
+            "expected": {
+              "source": "neutral",
+              "pointer": "/expectations/kotlin-clamp"
+            }
+          },
+          {
+            "id": "kotlin-delegation",
+            "clause": "The Kotlin component delegates label creation using its derived count.",
+            "priority": "must",
+            "files": [
+              "BadgeModel.kt"
+            ],
+            "proposition": {
+              "source": "neutral",
+              "pointer": "/propositions/kotlin-delegation"
+            },
+            "expected": {
+              "source": "neutral",
+              "pointer": "/expectations/kotlin-delegation"
+            }
+          },
+          {
+            "id": "kotlin-empty-fallback",
+            "clause": "The Kotlin label getter preserves the supplied formatter result.",
+            "priority": "must",
+            "files": [
+              "BadgeModel.kt"
+            ],
+            "proposition": {
+              "source": "neutral",
+              "pointer": "/propositions/kotlin-empty-fallback"
+            },
+            "expected": {
+              "source": "neutral",
+              "pointer": "/expectations/kotlin-empty-fallback"
+            }
+          },
+          {
+            "id": "shared-identifier",
+            "clause": "The source identifier constant is shared across both model declarations.",
+            "priority": "must",
+            "files": [
+              "BadgeModel.swift",
+              "BadgeModel.kt"
+            ],
+            "proposition": {
+              "source": "neutral",
+              "pointer": "/propositions/shared-identifier"
+            },
+            "expected": {
+              "source": "neutral",
+              "pointer": "/expectations/shared-identifier"
+            }
+          },
+          {
+            "id": "formatter-localization",
+            "clause": "Configured formatter implementations must resolve the independent localization key.",
+            "priority": "must",
+            "files": [
+              "BadgeModel.swift",
+              "BadgeModel.kt"
+            ],
+            "proposition": {
+              "source": "neutral",
+              "pointer": "/propositions/formatter-localization"
+            },
+            "expected": {
+              "source": "neutral",
+              "pointer": "/expectations/formatter-localization"
+            }
+          }
+        ]
+      },
+      "raw_utf8": "{\n  \"presence\": {\n    \"value\": true,\n    \"unit\": \"bool\"\n  },\n  \"propositions\": {\n    \"swift-clamp\": {\n      \"value\": \"The Swift displayCount getter clamps count to a minimum of zero.\",\n      \"unit\": \"string\"\n    },\n    \"swift-delegation\": {\n      \"value\": \"The Swift label getter passes displayCount to the supplied formatter.\",\n      \"unit\": \"string\"\n    },\n    \"kotlin-clamp\": {\n      \"value\": \"The Kotlin displayCount getter clamps count to a minimum of zero.\",\n      \"unit\": \"string\"\n    },\n    \"kotlin-delegation\": {\n      \"value\": \"The Kotlin label getter passes displayCount to the supplied formatter.\",\n      \"unit\": \"string\"\n    },\n    \"kotlin-empty-fallback\": {\n      \"value\": \"The Kotlin label getter contains an in-body replacement for empty formatter output.\",\n      \"unit\": \"string\"\n    },\n    \"shared-identifier\": {\n      \"value\": \"Both model declarations expose the source constant neutral.badge.count as accessibilityIdentifier.\",\n      \"unit\": \"string\"\n    },\n    \"formatter-localization\": {\n      \"value\": \"The configured formatter implementations resolve their label through localization resource key badge.count.\",\n      \"unit\": \"string\"\n    }\n  },\n  \"expectations\": {\n    \"swift-clamp\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    },\n    \"swift-delegation\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    },\n    \"kotlin-clamp\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    },\n    \"kotlin-delegation\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    },\n    \"kotlin-empty-fallback\": {\n      \"value\": false,\n      \"unit\": \"bool\"\n    },\n    \"shared-identifier\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    },\n    \"formatter-localization\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    }\n  },\n  \"source_audit\": [\n    {\n      \"id\": \"swift-clamp\",\n      \"clause\": \"The Swift component derives a nonnegative display count.\",\n      \"priority\": \"must\",\n      \"files\": [\n        \"BadgeModel.swift\"\n      ],\n      \"proposition\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/propositions/swift-clamp\"\n      },\n      \"expected\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/expectations/swift-clamp\"\n      }\n    },\n    {\n      \"id\": \"swift-delegation\",\n      \"clause\": \"The Swift component delegates label creation using its derived count.\",\n      \"priority\": \"must\",\n      \"files\": [\n        \"BadgeModel.swift\"\n      ],\n      \"proposition\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/propositions/swift-delegation\"\n      },\n      \"expected\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/expectations/swift-delegation\"\n      }\n    },\n    {\n      \"id\": \"kotlin-clamp\",\n      \"clause\": \"The Kotlin component derives a nonnegative display count.\",\n      \"priority\": \"must\",\n      \"files\": [\n        \"BadgeModel.kt\"\n      ],\n      \"proposition\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/propositions/kotlin-clamp\"\n      },\n      \"expected\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/expectations/kotlin-clamp\"\n      }\n    },\n    {\n      \"id\": \"kotlin-delegation\",\n      \"clause\": \"The Kotlin component delegates label creation using its derived count.\",\n      \"priority\": \"must\",\n      \"files\": [\n        \"BadgeModel.kt\"\n      ],\n      \"proposition\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/propositions/kotlin-delegation\"\n      },\n      \"expected\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/expectations/kotlin-delegation\"\n      }\n    },\n    {\n      \"id\": \"kotlin-empty-fallback\",\n      \"clause\": \"The Kotlin label getter preserves the supplied formatter result.\",\n      \"priority\": \"must\",\n      \"files\": [\n        \"BadgeModel.kt\"\n      ],\n      \"proposition\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/propositions/kotlin-empty-fallback\"\n      },\n      \"expected\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/expectations/kotlin-empty-fallback\"\n      }\n    },\n    {\n      \"id\": \"shared-identifier\",\n      \"clause\": \"The source identifier constant is shared across both model declarations.\",\n      \"priority\": \"must\",\n      \"files\": [\n        \"BadgeModel.swift\",\n        \"BadgeModel.kt\"\n      ],\n      \"proposition\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/propositions/shared-identifier\"\n      },\n      \"expected\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/expectations/shared-identifier\"\n      }\n    },\n    {\n      \"id\": \"formatter-localization\",\n      \"clause\": \"Configured formatter implementations must resolve the independent localization key.\",\n      \"priority\": \"must\",\n      \"files\": [\n        \"BadgeModel.swift\",\n        \"BadgeModel.kt\"\n      ],\n      \"proposition\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/propositions/formatter-localization\"\n      },\n      \"expected\": {\n        \"source\": \"neutral\",\n        \"pointer\": \"/expectations/formatter-localization\"\n      }\n    }\n  ]\n}\n"
+    }
+  },
+  "contract_sha256": "467df557fc7f79fbf8fc172d8c9d4cc422e763d4394ed6a455adcb680b3e9169",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

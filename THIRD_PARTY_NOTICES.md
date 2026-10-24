@@ -8,6 +8,8 @@ The multitask-forward ExpeditionPackPanel, BroadcastCueMixerPanel and Collection
 
 The atomic-forward WorkshopSlotPlanner, RiverSensorTriageBoard and BicycleServiceIntake components, both retained independent design proposals and references, contract-bound review/pixel tools, neutral forward probes, independent reviews and study harness are original MIT-licensed additions. Their source capsules retain the applicable upstream Reply/AlertToast licenses. Portable screenshots and native test reports document the controlled-host integrations and do not replace third-party licenses. SDKs, simulator images, dependency/build caches and full upstream checkouts are excluded.
 
+The feedback-forward requirement-routing, execution and retest tools, independent neutral probes, new component implementations, designs/references, review material and comparison harness are original MIT-licensed additions. Its source capsules preserve the applicable upstream Reply/AlertToast license texts; original source headers remain intact. Native screenshots/reports are integration evidence and do not relicense upstream code, assets or SDKs.
+
 | Material | Source | License / notice |
 | --- | --- | --- |
 | Reply component patches and screenshots containing its UI/assets | [android/compose-samples](https://github.com/android/compose-samples), revision `53dccc7836952e3a04ed4bc1ec7afa7c8e27ff79` | Copyright The Android Open Source Project; Apache-2.0. See [full license](validation/native-ui-pilot/licenses/android-LICENSE). Preserve source headers when applying or distributing patches. |

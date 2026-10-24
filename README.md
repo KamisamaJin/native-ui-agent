@@ -4,7 +4,30 @@
 
 这个仓库包含可加载的 **Skill**、确定性的 **证据 runner**，以及两个真实开源工程的接入代码和实跑记录。模型由宿主 coding agent 提供；runner 不内置 LLM，也不假装提供通用完整的原生样式树。
 
-## 本轮 v8：自动样式证据增加，未证明缺陷簇、修复或成本优势
+## 本轮 v9：采集提速确认，整体质量与成功交付成本优势未证实
+
+实现需求覆盖与发现路由、统一执行计划、源码绑定的定向复验，并减少 iOS 同状态重复扫描。工具先用无关组件验证并冻结，再独立设计两项全新复杂 UI；每项只有一份自然产生的初始双端 PR，原字节复制给 v8/v9 两组。全部自验、隐藏场景、双轮质量/源码评审及原始告警评审封存后正式揭盲；未注入缺陷。
+
+**同代码、同覆盖的 iOS 采集：**4 组配对均无已知支持项丢失或判定冲突，1211.675 → 468.853 秒，下降 **61.31%**；反向顺序暖运行仍下降约 60%。这是共享后端收益，两组修复都使用该后端与最终 MUST 门控。
+
+| 同首版 PR 的双任务结果 | v8 | v9 |
+| --- | ---: | ---: |
+| 确认产品缺陷 / 真实漏检率 / 产品修复率 | 0；N/A；N/A | 0；N/A；N/A |
+| 原始 TP / FP / 未裁定告警 | 0 / 0 / 10 | 0 / 0 / 10 |
+| 最终公开 P / F / U | 2940 / 0 / 24 | 2930 / 0 / 34 |
+| 最终公开未评估 | 0.81% | 1.15% |
+| 新增确认产品回归 | 0 | 0 |
+| 完整自身验收 accepted | 0/2 | 0/2 |
+| 内循环原生请求 | 2 | 1 |
+| 初始编写＋初始采集＋完整自验，均值 | 33.60 分 | 31.88 分 |
+
+十条原始严格标签 F 后来两组均变 P，但其真实产品责任未获确认，不能算成十个 bug 修复；零分母不是零漏检，未裁定告警也不能写成零实际误报。新版少一次复验，却保留了旧版已恢复的 iOS 观测，含隐藏场景共多 **15 U**。四份最终结果都因必需未知项而未通过完整验收，较短的自验结果耗时不代表成功 PR 更便宜。
+
+新版实际调用了需求路由，但这次未记录复验规划器的实际调用，不能把少一次请求直接归因于它。瓶颈仍是把必需 U 转成执行中的定位诊断与闭合任务，以及保证测量判据代表真实平台语义。保留 **44 次业务采集、11 次不完整回执**、共享路径恢复、排队和全部评审分歧；设计/协议准备 118.15 分钟、自预注册至揭盲研究墙钟 351.46 分钟另列。CI 只验证原始档案与复算，不表示组件验收通过。
+
+[完整结果与瓶颈](validation/feedback-forward/RESULTS.md)、[指标及完整成本](validation/feedback-forward/TABLES.md)、[工程实现](validation/feedback-forward/ENGINEERING.md)、[决策协议](native-ui-agent/references/decision-feedback.md)、[原始界面](validation/feedback-forward/GALLERY.md)、[失败与未知](validation/feedback-forward/failure-index.json)、[复算](validation/feedback-forward/REPRODUCE.md)。本轮为 SwiftUI / Compose 组件级验证，不覆盖完整旧 App 与后端；双 AI 一致不是人类金标准。
+
+## 上一轮 v8：自动样式证据增加，未证明缺陷簇、修复或成本优势
 
 把人工式发现与独立契约的绑定、预期/单位生成、原子配色测量做成可执行工具；修复共享评估器的环境适配、数值事实与责任归属处理。工具先用无关原生组件和负例验证并冻结，再独立设计 Workshop Slot Planner、River Sensor Triage Board、Bicycle Service Intake 三个新增复杂 UI。六份双端实现、108 条计划原生采集；未注入产品缺陷，完整评分与告警双评封存后正式揭盲。两组都已使用 Skill。
 
@@ -180,7 +203,9 @@
 
 这一轮新增功能试验本身没有无 Skill 对照组，不能单独据此声称提升了某个百分比的 PR 质量。首次快速视觉检查曾漏过轨道色，详细设计核对才发现；原始通过、后续失败及修正记录均保留。字号、颜色、间距能否精确观测取决于平台和采样对象。
 
-## 通用观测工具 v3 / v4 / v5 / v6 / v7 / v8
+## 通用观测与反馈工具 v3 / v4 / v5 / v6 / v7 / v8 / v9
+
+v9 增加[需求路由、统一执行计划与定向复验](native-ui-agent/references/decision-feedback.md)：`requirement_routes.py` 把必需需求绑定到状态与断言，区分环境、契约、证据和产品诊断；`execution_plan.py` 从同一份独立计划生成动作与采集范围，保留实际源码、输入、图片和覆盖回执；`retest_plan.py` 按原始失败、实际改动与批准的回归依赖选择复验状态。定向采集遗漏的状态明确延期到最终完整验收，不能混成通过。iOS 将同一新鲜状态扫描用于该状态的目标观测，减少重复扫描，仍保留真实派发、即时帧和版本绑定。
 
 v8 增加[契约绑定的视觉观测](native-ui-agent/references/atomic-review.md)：独立设计先固定颜色、画布、换行、遮挡等原子规则及责任层；工具生成发现 ID、预期、单位和来源，模型只提交原图中的实际观察。配色由原始 PNG 与原生节点坐标自动测量，模型不能填写测得颜色或改预期。缺少原生映射、状态不一致、非平色或证据冲突仍为未评估。
 
@@ -310,23 +335,22 @@ python3 validation/tool-forward/build_tables.py --check
 python3 validation/tool-forward/build_failure_index.py
 python3 validation/tool-forward/verify_artifacts.py
 python3 -B validation/atomic-forward/test_metrics.py
-python3 -B validation/publications/atomic-v8-completion/test_publication_closure.py
-python3 -B validation/publications/atomic-v8-completion/verify_completion.py --prepare
-python3 -B validation/atomic-forward/verify_adapters.py
-python3 -B validation/atomic-forward/verify_study.py
-python3 -B validation/atomic-forward/build_summary.py --check
-python3 -B validation/atomic-forward/costs.py --check
-python3 -B validation/atomic-forward/grading_costs.py --check
-python3 -B validation/atomic-forward/observation_costs.py --check
-python3 -B validation/atomic-forward/action_scope.py --check
-python3 -B validation/atomic-forward/build_tables.py --check
-python3 -B validation/atomic-forward/build_gallery.py --check
-python3 -B validation/atomic-forward/failure_index.py --check
-python3 -B validation/atomic-forward/disagreements.py --check
-python3 -B validation/publications/atomic-v8-completion/verify_completion.py
+python3 -B validation/publications/atomic-v8/verify.py
+python3 -B validation/feedback-forward/test_metrics.py
+python3 -B validation/feedback-forward/test_delivery_metrics.py
+python3 -B validation/feedback-forward/test_final_outcome_metrics.py
+python3 -B validation/feedback-forward/test_implementation_audit.py
+python3 -B validation/feedback-forward/test_source_outcomes.py
+python3 -B validation/feedback-forward/verify.py
+python3 -B validation/feedback-forward/benchmark_summary.py --check
+python3 -B validation/feedback-forward/build_summary.py --check
+python3 -B validation/feedback-forward/build_tables.py --check
+python3 -B validation/feedback-forward/build_failure_index.py --check
+python3 -B validation/feedback-forward/build_gallery.py --check
+python3 -B validation/feedback-forward/artifacts.py
 ```
 
-当前工具冻结前通过 115 项单元测试，v8 指标另有 9 项控制。[v8 复算入口](validation/atomic-forward/REPRODUCE.md)说明完整封存、双评审与原始证据的离线核验。旧轮次的根目录依赖按原字节归档；核验旧 v7 工具/发布清单时使用 `python3 -B validation/publication_history.py multitask-v7 verify_tools.py` 和同入口的 `artifacts.py`，避免拿新工具覆盖旧分数。
+当前工具冻结前通过 132 项单元测试。[v9 复算入口](validation/feedback-forward/REPRODUCE.md)说明原始来源、逐状态覆盖、完整自验、独立双评和成本复算。旧轮次的工具及根目录依赖按原字节归档；v8 使用上面的历史视图入口，v7 使用 `python3 -B validation/publication_history.py multitask-v7 verify_tools.py` 和同入口的 `artifacts.py`，避免拿新工具覆盖旧分数。
 
 历史不含本机缓存的异地 Git 归档核验见[旧记录](validation/fresh-blind/verification.json)；tool-forward 轮次当时的 55 项单元测试与 15 项验证见[该轮记录](validation/tool-forward-verification.json)。
 
@@ -345,6 +369,8 @@ validation/state-forward/        逐状态覆盖与旧v4/新v5
 validation/contract-forward/     独立设计契约与旧v5/新v6
 validation/multitask-forward/    精度边界、三任务旧v6/新v7
 validation/atomic-forward/       绑定发现、原子像素断言与三任务旧v7/新v8
+validation/feedback-forward/     需求路由、统一执行、同首版PR的旧v8/新v9盲测
+validation/publications/atomic-v8/ 原字节历史视图与旧v8发布依赖回放
 validation/tool-capabilities/    通用叶节点、长内容与逐状态覆盖原生验证
 validation/observer-probes/      独立通用观测能力探针及原始失败
 validation/native-ui-pilot/       历史受控回归试验、宿主接入记录及上游许可

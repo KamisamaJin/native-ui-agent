@@ -1,0 +1,19 @@
+"""Fresh anonymous independent quality panel prompt delivery."""
+from pathlib import Path
+import study as s
+R=s.R
+T='''Independently evaluate task {task} at stage {phase}, as one anonymous native UI quality panel. Read ONLY {inputs}, original design/source/native paths explicitly referenced by its inputs.json files, the frozen generic Skill scripts/docs at {tool}, and your output folder {out}. No assignments, original self-reviews/claims/repair reports, other phases/panels, old studies or desired result. No production changes, SDK acquisitions, commits or messages to other agents. Write only {out}. This is assessor isolation on a shared filesystem, not a secure sandbox.
+
+Immediately record phase.json actual start Unix. Inspect source, independent reference images, ORIGINAL PNGs, actual state/input/event/dispatch binding and complete coverage for every delivered anonymous source, BOTH platforms and ALL delivered cases. Check all selected qualitative atoms against exactly their approved source-backed proposition. Inspect whole long-content states and caller replacement, not only automatic F rows. Do not infer pass from source, image existence or another candidate. Native/pixel facts are authoritative; classify causes separately. Unsupported/insufficient/ambiguous observations stay null/U. Preserve disagreement rather than force agreement. AI agreement will not be called human gold.
+
+For each <source>/<platform>/<case> read inputs.json, plan.json, catalog.json, automatic.json and environment-check.json. Original raw root, observation SHA, design lock/policy/approval, environment and anonymous production source capsule are in metadata. Write {out}/<source>/<platform>/<case>/judge.json exactly {{review:{{version:1,catalog_sha256:catalog.catalog_sha256,observation_sha256:inputs.observation_sha256,decisions:[{{review_id,actual:true|false|null,reason,snapshot_indices:[]}}]}},attributions:[{{id,cause,reason,snapshot_indices:[]}}]}}. Include every qualitative visual atom, no pixel actuals/expected values/units/target overrides. Exact state-eligible original indices come from frozen native_checks.bound_state_evidence. Null+[] is valid when evidence is missing. A visual actual answers the proposition, so actual:false is not automatically a product F unless expected is true.
+
+For every supported strict native/pixel/visual F, independently assess cause product|infrastructure|observation|uncertain, with rationale and original coherent state indices. Strict numerical F alone does not establish a component bug. Ownership is fixed in policy; distinguish component canvas, host padding and sampling/locator limitations. Do not attribute a failure whose selected-state evidence is missing. Original source can support causality but cannot substitute for missing native visual evidence.
+
+You may make image catalog/contact sheets/crops labelled with original paths/state/index and retain input SHA. You may schema-check own JSON via frozen acceptance.evaluate with your request twice, which is not independent consensus; preserve rejected attempts separately and do not change judgments just to make a check green. Record commands, actual visual inspection coverage/limits and start/end times. Seal ALL files except SEAL.json/__pycache__ with SEAL.json {{sealedAtUnix,files:{{relative:SHA}}}} and stop editing. Root closes the complete two-task panel before another independent panel receives any prompt.'''
+def prepare(phase,panel,task):
+ previous=('hidden'if phase=='d0'else'grade-d0-two')if panel=='one'else'grade-'+phase+'-one';authorization=s.gate.authorize(R/'gates',previous,R)
+ out=R/'judgments'/phase/panel/task;text=T.format(task=task,phase=phase,inputs=R/'evaluation-inputs'/phase/task,tool=R/'candidate-v9',out=out)
+ s.save(R/'operators'/('quality-'+phase+'-'+panel+'-'+task+'-delivery.json'),{'authorization':authorization,'prompt':text});return text
+if __name__=='__main__':
+ import sys;print(prepare(*sys.argv[1:]))

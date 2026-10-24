@@ -1,0 +1,602 @@
+FILE execution_plan.py LINES 1 153
+1: #!/usr/bin/env python3
+2: """One approved business/observation route, with explicitly scoped feedback."""
+3: from __future__ import annotations
+4: import argparse
+5: import copy
+6: import hashlib
+7: import json
+8: import os
+9: import subprocess
+10: import sys
+11: import time
+12: from pathlib import Path
+13: import design_contract as design
+14: from observation_contract import validate_actions, validate_selector
+15: 
+16: 
+17: def compile_execution(plan, lock, lock_sha, fixtures, bridge_sha, *, launch_ref, states=None, strategy='coalesced'):
+18:     platform = plan['design_contract']['platform']
+19:     actions = design.verify_generated(plan, lock, lock_sha, platform)
+20:     if set(launch_ref) != {'source', 'pointer'}:
+21:         raise ValueError('Independently sealed launch-input source required')
+22:     approval = design.pointer(lock['sources'][launch_ref['source']]['document'], launch_ref['pointer'])
+23:     expected_launch = {'fixtures_sha256': design.digest(fixtures), 'bridge_sha256': bridge_sha,
+24:                        'scenario': plan['design_contract']['scenario'], 'platform': platform}
+25:     if approval != expected_launch:
+26:         raise ValueError('Fixture, bridge, scenario or platform differs from independently sealed launch approval')
+27:     all_states = [s['id'] for s in plan['states']]
+28:     selected = all_states if states is None else list(states)
+29:     if not selected or len(selected) != len(set(selected)) or not set(selected) <= set(all_states):
+30:         raise ValueError('Explicit known unique feedback states required')
+31:     if any(s['id'] in selected and s.get('after_action', -1) < 0 for s in plan['states']):
+32:         raise ValueError('Execution manifests require explicit initial checkpoints in the approved route')
+33:     if strategy not in {'legacy', 'coalesced'} or len(bridge_sha) != 64:
+34:         raise ValueError('Known strategy and exact bridge identity required')
+35:     # Parent assertions and expectations never change. A partial capture remains
+36:     # a partial capture; the admission tool will not promote it to a full PR pass.
+37:     required = []
+38:     for state in plan['states']:
+39:         if state['id'] not in selected: continue
+40:         targets = []
+41:         for rule in plan['assertions']:
+42:             if rule['state'] == state['id']:
+43:                 for key in ['target', 'reference_target']:
+44:                     target = rule.get(key)
+45:                     if target and target not in targets: validate_selector(target); targets.append(copy.deepcopy(target))
+46:         required.append({'state_id': state['id'], 'coverage': state.get('coverage', 'targets'), 'targets': targets})
+47:     enriched = copy.deepcopy(actions)
+48:     for action in enriched:
+49:         state_id = action.get('state_id')
+50:         entry = next((v for v in required if v['state_id'] == state_id), None)
+51:         if entry:
+52:             targets = list(action.get('after_targets', []))
+53:             if action.get('after_target') and action['after_target'] not in targets: targets.append(action['after_target'])
+54:             if entry['coverage'] == 'targets':
+55:                 for target in entry['targets']:
+56:                     if target not in targets: targets.append(copy.deepcopy(target))
+57:             if targets: action['after_targets'] = targets
+58:             action['capture_scope'] = entry['coverage']
+59:         elif set(selected) != set(all_states):
+60:             action['capture_scope'] = 'none'
+61:             action['observe_after'] = False
+62:             action.pop('after_targets', None); action.pop('after_target', None)
+63:         else:
+64:             action['capture_scope'] = 'targets' if action['type'] == 'tap' or action.get('after_targets') or action.get('after_target') else 'none'
+65:         # Observation-only sweeps can be omitted, but every business action and
+66:         # original index remains present for dispatch/callback identity.
+67:         if action['type'] == 'sweep' and not entry: action['type'] = 'checkpoint'
+68:     if set(selected) != set(all_states):
+69:         last = max(s['after_action'] for s in plan['states'] if s['id'] in selected)
+70:         enriched = enriched[:last + 1]
+71:     validate_actions(enriched)
+72:     config = copy.deepcopy(fixtures)
+73:     config['state_capture'] = True
+74:     config['observation_strategy'] = strategy
+75:     config['execution_states'] = copy.deepcopy(required)
+76:     config['execution_state_definitions'] = copy.deepcopy(plan['states'])
+77:     config['execution_scope'] = 'full' if set(selected) == set(all_states) else 'targeted'
+78:     targets = list(config.get('observation_targets', [])) if config['execution_scope'] == 'full' else []
+79:     for entry in required:
+80:         for target in entry['targets']:
+81:             if target not in targets: targets.append(copy.deepcopy(target))
+82:     config['observation_targets'] = targets
+83:     if config['execution_scope'] == 'targeted':
+84:         wanted_ids = {t.get('identifier') for t in targets}
+85:         config['required_identifiers'] = [v for v in config.get('required_identifiers', []) if v in wanted_ids]
+86:     value = {'version': 1, 'platform': platform, 'scope': config['execution_scope'],
+87:              'parent_plan_sha256': design.digest(plan), 'design_lock_sha256': lock_sha, 'launch_ref': copy.deepcopy(launch_ref),
+88:              'fixtures_sha256': design.digest(fixtures), 'bridge_sha256': bridge_sha,
+89:              'selected_states': selected, 'required_coverage': required, 'actions': enriched, 'config': config,
+90:              'parent_action_count': len(actions), 'executed_action_count': len(enriched),
+91:              'scope_limit': 'Full execution retains the business route; targeted execution keeps its original action prefix and indices. Original parent expectations stay fixed; omitted states are unverified.'}
+92:     value['execution_sha256'] = design.digest(value)
+93:     return value
+94: 
+95: 
+96: def verify_execution(value, plan, lock, lock_sha, fixtures, bridge_sha):
+97:     # Reconstructs required after-target extensions from the actual approved plan;
+98:     # a caller cannot substitute a sibling base route or drop coverage extensions.
+99:     expected = compile_execution(plan, lock, lock_sha, fixtures, bridge_sha,
+100:                                  launch_ref=value.get('launch_ref', {}), states=value.get('selected_states'), strategy=value.get('config', {}).get('observation_strategy'))
+101:     if expected != value: raise ValueError('Execution manifest differs from independently rebuilt business/observation route')
+102:     return expected
+103: 
+104: 
+105: def coverage_receipt(execution, observation):
+106:     from native_checks import bound_state_evidence, resolve
+107:     missing, states = [], []
+108:     for entry in execution['required_coverage']:
+109:         parent = {'id': entry['state_id']}
+110:         # Exact state definitions are carried in config by the CLI/runner caller
+111:         # below; never infer an input epoch from an arbitrary matching label.
+112:         parent = next(s for s in execution['config']['execution_state_definitions'] if s['id'] == entry['state_id'])
+113:         found, complete, reason, _ = bound_state_evidence(observation, parent)
+114:         target_rows = []
+115:         for target in entry['targets']:
+116:             seen = []
+117:             for index, snapshot in found:
+118:                 result = resolve(snapshot, target, execution['platform'])
+119:                 semantic = result.get('semantic', {})
+120:                 if result.get('facts', {}).get('unique') and semantic.get('intersects_viewport'):
+121:                     seen.append(index)
+122:             target_rows.append({'target': target, 'indices': seen, 'observed': bool(seen)})
+123:         good = bool(found) and (complete if entry['coverage'] == 'full_content' else True) and all(v['observed'] for v in target_rows)
+124:         if not good: missing.append(entry['state_id'])
+125:         states.append({'state_id': entry['state_id'], 'complete': complete, 'satisfied': good, 'reason': reason, 'targets': target_rows})
+126:     return {'execution_sha256': execution['execution_sha256'], 'scope': execution['scope'], 'required_states': states,
+127:             'satisfied': not missing, 'missing_states': missing}
+128: 
+129: 
+130: def source_fingerprint(roots):
+131:     result = {}
+132:     for index, root in enumerate(roots):
+133:         root = Path(root).resolve()
+134:         if not root.exists(): raise ValueError('Production source root missing')
+135:         paths = [root] if root.is_file() else sorted(p for p in root.rglob('*') if p.is_file())
+136:         for path in paths:
+137:             relative = path.name if root.is_file() else str(path.relative_to(root))
+138:             if '__pycache__' in path.parts or path.suffix == '.pyc': continue
+139:             result[str(index) + '/' + relative] = hashlib.sha256(path.read_bytes()).hexdigest()
+140:     if not result: raise ValueError('Nonempty actual production source set required')
+141:     return result
+142: 
+143: 
+144: def verify_capture_images(receipt, root):
+145:     root = Path(root).resolve()
+146:     if not receipt.get('image_hashes'): raise ValueError('Original capture must pin its native image bytes')
+147:     for relative, expected in receipt['image_hashes'].items():
+148:         path = (root / relative).resolve()
+149:         if not path.is_relative_to(root) or not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
+150:             raise ValueError('Original capture image missing, replaced or outside native output')
+151: 
+152: 
+153: def run_execution(value, plan, lock, lock_sha, fixtures, bridge, output, source_roots, native_options, *, policy=None, policy_sha=None, expected_environment=None, environment_sha=None):
+FILE requirement_routes.py LINES 1 193
+1: #!/usr/bin/env python3
+2: """Bind every approved obligation to checks, then route findings to actions."""
+3: from __future__ import annotations
+4: import argparse
+5: import copy
+6: from pathlib import Path
+7: import design_contract as design
+8: 
+9: 
+10: def audit(lock, lock_sha, plan, routes, routes_sha):
+11:     design.validate_lock(lock, lock_sha)
+12:     design.verify_generated(plan, lock, lock_sha, plan['design_contract']['platform'])
+13:     if design.digest(routes) != routes_sha or set(routes) != {'version', 'index', 'routes'} or routes['version'] != 1:
+14:         raise ValueError('Separately approved exact requirement routes required')
+15:     anchor = routes['index']
+16:     if set(anchor) != {'source', 'pointer'}:
+17:         raise ValueError('Approved obligation index needs an exact source pointer')
+18:     obligations = design.pointer(lock['sources'][anchor['source']]['document'], anchor['pointer'])
+19:     if not isinstance(obligations, list) or not obligations:
+20:         raise ValueError('Nonempty independently authored obligation index required')
+21:     ids = [o['id'] for o in obligations]
+22:     if len(ids) != len(set(ids)) or set(routes['routes']) != set(ids):
+23:         raise ValueError('Every approved obligation needs an explicit route disposition')
+24:     states = set(plan['matrix_contract']['selected_states'])
+25:     rules = set(plan['matrix_contract']['selected_requirements'])
+26:     checked, rows, owned = set(), [], set()
+27:     for obligation in obligations:
+28:         if set(obligation) != {'id', 'clause', 'priority', 'states', 'risk'} or not obligation['clause'].strip():
+29:             raise ValueError('Exact source-backed obligation identity, clause, priority, states and risk required')
+30:         if obligation['priority'] not in {'must', 'advisory'} or obligation['risk'] not in {'layout', 'style', 'behavior', 'content'}:
+31:             raise ValueError('Known independent priority and risk required')
+32:         selected = obligation['states']
+33:         if not selected or len(selected) != len(set(selected)) or not set(selected) <= states:
+34:             raise ValueError('Obligation states must exist in the complete approved plan')
+35:         route = routes['routes'][obligation['id']]
+36:         if set(route) != {'rule_ids', 'reason', 'regression_obligations'} or not isinstance(route['reason'], str) or not route['reason'].strip():
+37:             raise ValueError('Explicit check mapping or unavailable-route rationale required')
+38:         rule_ids = route['rule_ids']
+39:         if len(rule_ids) != len(set(rule_ids)) or not set(rule_ids) <= rules or not set(route['regression_obligations']) <= set(ids):
+40:             raise ValueError('Unknown or duplicate rule/regression obligation')
+41:         cells = [c for c in plan['matrix_contract']['cells'] if c['state'] in selected and c['requirement_id'] in rule_ids]
+42:         applicable = [c['id'] for c in cells if c['disposition'] == 'required']
+43:         missing = sorted(set(selected) - {c['state'] for c in cells}) if rule_ids else sorted(selected)
+44:         # Independent N/A cells stay N/A; all-N/A cannot dispose a MUST clause.
+45:         ready = bool(applicable) and not missing
+46:         row = dict(copy.deepcopy(obligation), assertion_ids=applicable, route_available=ready,
+47:                    missing_states=missing, route=copy.deepcopy(route))
+48:         rows.append(row); owned.update(applicable)
+49:         if ready: checked.add(obligation['id'])
+50:     return {'version': 1, 'design_lock_sha256': lock_sha, 'plan_sha256': design.digest(plan),
+51:             'routes_sha256': routes_sha, 'obligations': rows,
+52:             'must_route_gaps': [o['id'] for o in rows if o['priority'] == 'must' and not o['route_available']],
+53:             'unowned_assertions': sorted(set(plan['required_assertion_ids']) - owned),
+54:             'scope': 'Completeness against the independently approved index, not proof that prose was completely translated or that any check passed.'}
+55: 
+56: 
+57: def report_rows(report, plan):
+58:     rows = report.get('rows', report.get('assertions'))
+59:     if not isinstance(rows, list) or len(rows) != len({r['id'] for r in rows}) or {r['id'] for r in rows} != set(plan['required_assertion_ids']):
+60:         raise ValueError('Evaluated report must retain the complete parent plan, including unknown cells')
+61:     if any(r['status'] not in {'passed', 'failed', 'unassessed'} for r in rows):
+62:         raise ValueError('Known evaluated status required')
+63:     return {r['id']: r for r in rows}
+64: 
+65: 
+66: def admission(coverage, plan, report, *, execution_scope='full', capture=None, environment=None):
+67:     if design.digest(plan) != coverage['plan_sha256']:
+68:         raise ValueError('Coverage belongs to another parent plan')
+69:     by = report_rows(report, plan)
+70:     results = []
+71:     for o in coverage['obligations']:
+72:         statuses = [by[k]['status'] for k in o['assertion_ids']]
+73:         disposition = ('coverage_gap' if not o['route_available'] else
+74:                        'failed' if 'failed' in statuses else
+75:                        'unverified' if 'unassessed' in statuses else 'passed')
+76:         results.append({'id': o['id'], 'priority': o['priority'], 'status': disposition,
+77:                         'assertion_ids': o['assertion_ids']})
+78:     blockers = [v['id'] for v in results if v['priority'] == 'must' and v['status'] != 'passed']
+79:     bound = bool(capture and capture.get('status') == 'verified_capture' and capture.get('scope') == 'full' and
+80:                  capture.get('parent_plan_sha256') == design.digest(plan) and capture.get('native_exit_code') == 0 and
+81:                  capture.get('source_unchanged') is True and capture.get('inputs_unchanged') is True and capture.get('coverage_satisfied') is True)
+82:     valid_environment = bool(environment and environment.get('status') == 'P')
+83:     return {'status': 'accepted' if execution_scope == 'full' and not blockers and bound and valid_environment else 'not_accepted',
+84:             'execution_scope': execution_scope, 'blocking_obligations': blockers, 'obligations': results,
+85:             'source_bound_full_capture': bound, 'environment_verified': valid_environment,
+86:             'scope': 'Consumes evaluated evidence; does not certify a caller-entered report or subjective observation. Targeted feedback never establishes complete PR acceptance.'}
+87: 
+88: 
+89: def route_findings(coverage, plan, report, observation, *, discoveries=(), execution=None):
+90:     from native_checks import bound_state_evidence
+91:     if design.digest(plan) != coverage['plan_sha256']:
+92:         raise ValueError('Coverage belongs to another parent plan')
+93:     rows = report_rows(report, plan); states = {s['id']: s for s in plan['states']}
+94:     selected = set(states); scoped = observation.get('execution_scope') == 'targeted'
+95:     if execution is not None:
+96:         if (execution.get('parent_plan_sha256') != design.digest(plan) or
+97:                 execution.get('design_lock_sha256') != coverage['design_lock_sha256']):
+98:             raise ValueError('Execution scope belongs to another independently approved plan')
+99:         selected = set(execution['selected_states'])
+100:         if not selected or not selected <= set(states): raise ValueError('Known nonempty execution-state scope required')
+101:         scoped = execution.get('scope') == 'targeted'
+102:         if scoped == (selected == set(states)): raise ValueError('Declared execution scope contradicts selected states')
+103:     planned = {v['id']: v for v in plan['assertions']}; tasks = []
+104:     for obligation in coverage['obligations']:
+105:         if not obligation['route_available']:
+106:             tasks.append({'obligation_id': obligation['id'], 'action': 'repair_contract_route', 'assertion_ids': [],
+107:                           'priority': obligation['priority'], 'reason': 'Approved source obligation lacks applicable verification coverage'})
+108:             continue
+109:         for rid in obligation['assertion_ids']:
+110:             row = rows[rid]
+111:             if row['status'] == 'passed': continue
+112:             if row['status'] == 'unassessed' and scoped:
+113:                 if execution is None:
+114:                     action, why = 'validate_execution_scope', 'Targeted observation needs its verified manifest before missing-state diagnosis'
+115:                 elif row['state'] not in selected:
+116:                     action, why = 'defer_to_full_verification', 'State deliberately outside this targeted capture; not a new locator or capability failure'
+117:                 else: action = why = None
+118:                 if action:
+119:                     tasks.append({'obligation_id': obligation['id'], 'priority': obligation['priority'], 'action': action,
+120:                                   'assertion_ids': [rid], 'state': row['state'], 'risk': obligation['risk'],
+121:                                   'status': row['status'], 'reason': why})
+122:                     continue
+123:             rule = planned[rid]; found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']])
+124:             if report.get('environment', {}).get('status', 'P') != 'P': action = 'repair_environment'
+125:             elif row.get('panel_disagreement'): action = 'clarify_oracle'
+126:             elif not found or (states[rule['state']].get('coverage') == 'full_content' and not complete): action = 'acquire_evidence'
+127:             elif row['status'] == 'failed':
+128:                 owner = row.get('responsibility', 'component')
+129:                 cause = row.get('cause_category')
+130:                 action = ('repair_environment' if owner in {'host', 'system'} or cause in {'infrastructure', 'system'} else
+131:                           'diagnose_product' if cause in {None, 'product'} else 'investigate_attribution')
+132:             elif rule['kind'] == 'manual': action = 'review_measurement_or_visual'
+133:             else: action = 'investigate_capability_or_locator'
+134:             tasks.append({'obligation_id': obligation['id'], 'priority': obligation['priority'], 'action': action,
+135:                           'assertion_ids': [rid], 'state': rule['state'], 'risk': obligation['risk'],
+136:                           'status': row['status'], 'reason': row.get('reason', reason)})
+137:     obligations = {o['id']: o for o in coverage['obligations']}
+138:     for discovery in discoveries:
+139:         if set(discovery) != {'obligation_id', 'reason', 'evidence'} or not discovery['reason'].strip() or not discovery['evidence']:
+140:             raise ValueError('Original discovery needs a source obligation, rationale and original evidence references')
+141:         oid = discovery['obligation_id']; known = obligations.get(oid)
+142:         tasks.append({'obligation_id': oid, 'priority': known['priority'] if known else 'unresolved',
+143:                       'action': 'repair_contract_route' if known and not known['route_available'] else 'review_original_discovery',
+144:                       'assertion_ids': [], 'original': copy.deepcopy(discovery),
+145:                       'scope': 'No retrospective TP/FP or cross-state detection credit is generated'})
+146:     return {'version': 1, 'plan_sha256': coverage['plan_sha256'], 'tasks': tasks,
+147:             'execution_scope': execution['scope'] if execution else 'targeted_scope_unverified' if scoped else 'parent_plan',
+148:             'deferred_assertions': sorted({rid for task in tasks if task['action'] == 'defer_to_full_verification' for rid in task['assertion_ids']}),
+149:             'scope': 'Next actions, not extra observations or automatic root-cause truth. A strict failure still needs source diagnosis.'}
+150: 
+151: 
+152: def main():
+153:     p = argparse.ArgumentParser(); p.add_argument('command', choices=['audit', 'route', 'admit'])
+154:     for name in ['plan', 'design-lock', 'routes', 'output']: p.add_argument('--' + name, type=Path, required=True)
+155:     for name in ['design-sha256', 'routes-sha256']: p.add_argument('--' + name, required=True)
+156:     p.add_argument('--report', type=Path); p.add_argument('--observation', type=Path); p.add_argument('--discoveries', type=Path)
+157:     p.add_argument('--capture-result', type=Path); p.add_argument('--capture-result-sha256')
+158:     p.add_argument('--environment', type=Path); p.add_argument('--environment-sha256')
+159:     p.add_argument('--execution', type=Path); p.add_argument('--fixtures', type=Path); p.add_argument('--bridge', type=Path)
+160:     p.add_argument('--scope', choices=['full', 'targeted'], default='full'); a = p.parse_args()
+161:     plan = design.load(a.plan); cov = audit(design.load(a.design_lock), a.design_sha256, plan, design.load(a.routes), a.routes_sha256)
+162:     if a.command == 'audit': result = cov
+163:     elif a.command == 'admit':
+164:         capture = env = None
+165:         if a.capture_result:
+166:             import hashlib
+167:             import acceptance
+168:             if hashlib.sha256(a.capture_result.read_bytes()).hexdigest() != a.capture_result_sha256:
+169:                 raise ValueError('Independently retained capture-result digest required')
+170:             capture = design.load(a.capture_result)
+171:             if not a.environment or design.digest(design.load(a.environment)) != a.environment_sha256:
+172:                 raise ValueError('Independently approved native environment required')
+173:             op = a.capture_result.parent / 'native/observation.json'
+174:             if hashlib.sha256(op.read_bytes()).hexdigest() != capture.get('observation_sha256') or hashlib.sha256(a.report.read_bytes()).hexdigest() != capture.get('automatic_sha256'):
+175:                 raise ValueError('Original native observation or automatic report differs from capture receipt')
+176:             env = acceptance.environment(design.load(op), design.load(a.environment), plan['design_contract']['platform'])
+177:         result = admission(cov, plan, design.load(a.report), execution_scope=a.scope, capture=capture, environment=env)
+178:     else:
+179:         execution = None
+180:         if a.execution:
+181:             import execution_plan
+182:             import hashlib
+183:             if not a.fixtures or not a.bridge: raise ValueError('Original approved fixture/bridge required to verify execution scope')
+184:             execution = design.load(a.execution)
+185:             execution_plan.verify_execution(execution, plan, design.load(a.design_lock), a.design_sha256,
+186:                                             design.load(a.fixtures), hashlib.sha256(a.bridge.read_bytes()).hexdigest())
+187:         result = route_findings(cov, plan, design.load(a.report), design.load(a.observation), discoveries=design.load(a.discoveries) if a.discoveries else [], execution=execution)
+188:     with a.output.open('x') as stream: stream.write(__import__('json').dumps(result, indent=2, ensure_ascii=False) + '\n')
+189: if __name__ == '__main__': main()
+FILE acceptance.py LINES 1 140
+1: #!/usr/bin/env python3
+2: """Shared acceptance: native wire preflight, authoritative facts and explicit panel disagreement."""
+3: from __future__ import annotations
+4: 
+5: import argparse
+6: import copy
+7: import json
+8: import math
+9: import struct
+10: from pathlib import Path
+11: 
+12: import design_contract as design
+13: from native_environment import direction, ENCODING
+14: 
+15: 
+16: def environment(observation, expected, platform):
+17:     fields = {'width', 'height', 'direction', 'theme', 'font_scale' if platform == 'android' else 'dynamic_type'}
+18:     extras = {'dimension_encoding'} if platform == 'android' else set()
+19:     if set(expected) - extras != fields or platform not in {'ios', 'android'}:
+20:         raise ValueError('Explicit platform-native environment contract required')
+21:     if expected['direction'] not in {'ltr', 'rtl'} or expected['theme'] not in {'light', 'dark'}:
+22:         raise ValueError('Unknown approved native environment identifiers')
+23:     if any(type(expected[k]) not in {int, float} or not math.isfinite(expected[k]) or expected[k] <= 0 for k in ['width', 'height']):
+24:         raise ValueError('Positive finite requested/native dimensions required')
+25:     mode = expected.get('dimension_encoding', 'exact-native-units')
+26:     if mode not in {'exact-native-units', 'paparazzi-float32-screen-config-v1'}:
+27:         raise ValueError('Unknown native dimension encoding')
+28:     f32 = lambda v: struct.unpack('!f', struct.pack('!f', v))[0]
+29:     snapshots = observation.get('snapshots', [])
+30:     actual = []
+31:     for index, snapshot in enumerate(snapshots):
+32:         if platform == 'android':
+33:             config, viewport = observation.get('configuration', {}), snapshot.get('logical_viewport_dp', {})
+34:             proof = direction(config.get('direction'), encoding=ENCODING)
+35:             value = {'width': viewport.get('width'), 'height': viewport.get('height'), 'direction': proof['canonical'],
+36:                      'theme': {16: 'light', 32: 'dark'}.get(config.get('night_mode_mask')),
+37:                      'font_scale': config.get('font_scale')}
+38:         else:
+39:             runtime = snapshot.get('runtime', {})
+40:             config, viewport = runtime.get('actual_environment', {}), snapshot.get('viewport', {})
+41:             proof = {'raw': config.get('direction'), 'canonical': config.get('direction'), 'encoding': 'ios-actual-environment-v1'}
+42:             value = {'width': viewport.get('width'), 'height': viewport.get('height'),
+43:                      **{k: config.get(k) for k in ['direction', 'theme', 'dynamic_type']}}
+44:         comparison_expected = {k: expected[k] for k in fields}
+45:         dimensions = None
+46:         dimension_ok = True
+47:         if mode == 'paparazzi-float32-screen-config-v1':
+48:             # This version names the exact host implementation, not a general dp tolerance.
+49:             # Paparazzi's pinned device sets screen pixels with Kotlin Float operations.
+50:             native = snapshot.get('native_viewport_px', {})
+51:             px = [int(f32(f32(expected[k]) * f32(2.75))) for k in ['width', 'height']]
+52:             density = native.get('density')
+53:             dimensions = {'encoding': mode, 'requested_dp': [expected['width'], expected['height']],
+54:                           'expected_native_px': px, 'actual_native_viewport': native,
+55:                           'reported_logical_dp': [value['width'], value['height']]}
+56:             dimension_ok = (config.get('dimension_encoding') == mode and
+57:                             [native.get('width'), native.get('height')] == px and density == 2.75 and
+58:                             config.get('density') == density and
+59:                             config.get('requested_width_dp') == f32(expected['width']) and
+60:                             config.get('requested_height_dp') == f32(expected['height']))
+61:             if density == 2.75:
+62:                 # Verify even the serialized Float division, without equality to an ideal dp request.
+63:                 logical = [f32(p / density) for p in px]
+64:                 dimension_ok = dimension_ok and all(f32(value[k]) == v for k, v in zip(['width', 'height'], logical) if value[k] is not None)
+65:             for key in ['width', 'height']:
+66:                 comparison_expected[key] = value[key]
+67:         missing = any(value[k] is None for k in fields) or (mode != 'exact-native-units' and not snapshot.get('native_viewport_px'))
+68:         actual.append({'snapshot_index': index, 'actual': value, 'direction_encoding': proof,
+69:                        'native_dimensions': dimensions,
+70:                        'status': 'U' if missing else 'P' if value == comparison_expected and dimension_ok else 'F'})
+71:     status = 'U' if not actual or any(v['status'] == 'U' for v in actual) else 'P' if all(v['status'] == 'P' for v in actual) else 'F'
+72:     return {'status': status, 'expected': expected, 'frames': actual,
+73:             'scope': 'Actual native wire values. Unknown format is not guessed or counted as valid input.'}
+74: 
+75: 
+76: def consensus(plan, authoritative, first, second, review_catalog, env, attributions=None):
+77:     """Inputs are reports recomputed from original observations, never caller-entered truth."""
+78:     planned = {r['id']: r for r in plan['assertions']}
+79:     atoms = {r['id']: r for r in review_catalog['rows']}
+80:     reports = []
+81:     for report in [authoritative, first, second]:
+82:         rows = {r['id']: r for r in report['assertions']}
+83:         if len(rows) != len(report['assertions']) or set(rows) != set(planned):
+84:             raise ValueError('Acceptance panel omitted, duplicated or invented a contract cell')
+85:         reports.append(rows)
+86:     attributions = attributions or [{}, {}]
+87:     rows = []
+88:     for rid, rule in planned.items():
+89:         base, a, b = [r[rid] for r in reports]
+90:         native = rule['kind'] != 'manual' or atoms[rid]['method'] == 'native_pixels'
+91:         if native:
+92:             status = base['status']
+93:             reason = 'Recomputed native/pixel fact; qualitative opinions cannot override it'
+94:         elif a['status'] == b['status'] and a['status'] in {'passed', 'failed'}:
+95:             status, reason = a['status'], 'Two independently scoped visual judgments agree'
+96:         else:
+97:             status, reason = 'unassessed', 'Visual panel disagreement or insufficient evidence retained'
+98:         fact_status = status
+99:         if env['status'] != 'P':
+100:             status, reason = 'unassessed', 'Native environment contract invalid or unobserved; raw facts retained'
+101:         owner = atoms.get(rid, {}).get('responsibility', 'component')
+102:         attributed = [panel.get(rid) for panel in attributions]
+103:         cause = None
+104:         if status == 'failed':
+105:             if owner in {'host', 'system'}:
+106:                 cause = 'infrastructure' if owner == 'host' else 'system'
+107:             elif all(p is not None for p in attributed) and attributed[0]['cause'] == attributed[1]['cause']:
+108:                 cause = attributed[0]['cause']
+109:             else:
+110:                 cause = 'uncertain'
+111:         rows.append({'id': rid, 'state': rule['state'], 'requirement_id': rule['requirement_id'],
+112:                      'expected': rule['expected'], 'unit': rule['unit'], 'op': rule.get('op', 'eq'),
+113:                      'expectation_provenance': rule['expectation_provenance'], 'status': status,
+114:                      'ungated_fact_status': fact_status, 'responsibility': owner,
+115:                      'cause_category': cause, 'cause_assessments': copy.deepcopy(attributed),
+116:                      'method': 'authoritative_fact' if native else 'independent_visual_consensus', 'reason': reason,
+117:                      'authoritative': copy.deepcopy(base), 'judges': [copy.deepcopy(a), copy.deepcopy(b)],
+118:                      'panel_disagreement': not native and a['status'] != b['status']})
+119:     return {'version': 1, 'rows': rows, 'counts': {s: sum(r['status'] == s for r in rows) for s in ['passed', 'failed', 'unassessed']},
+120:             'environment': env, 'matrix_contract': copy.deepcopy(plan['matrix_contract']),
+121:             'scope': 'Deterministic native/pixel evidence plus two independent AI judgments. Agreement is not human gold; disagreements and unsupported facts remain unknown.'}
+122: 
+123: 
+124: def evaluate(plan, lock, lock_sha, policy, policy_sha, observation, observation_sha, root, platform, expected_environment, first, second):
+125:     import native_checks
+126:     import review_contract
+127:     cat = review_contract.catalog(plan, lock, lock_sha, policy, policy_sha, platform)
+128:     blank = {'version': 1, 'catalog_sha256': design.digest(cat), 'observation_sha256': observation_sha, 'decisions': []}
+129:     panels, attributions = [], []
+130:     submissions = [blank]
+131:     for panel in [first, second]:
+132:         if set(panel) != {'review', 'attributions'}:
+133:             raise ValueError('Independent judge must provide scoped review and separate failure-cause assessments')
+134:         submissions.append(panel['review'])
+135:         scoped = {}
+136:         for item in panel['attributions']:
+137:             if set(item) != {'id', 'cause', 'reason', 'snapshot_indices'} or item['id'] in scoped:
+138:                 raise ValueError('Unique original rule-based cause assessment required')
+139:             if item['cause'] not in {'product', 'infrastructure', 'observation', 'uncertain'} or not isinstance(item['reason'], str) or not item['reason'].strip():
+140:                 raise ValueError('Explicit supported failure cause or uncertainty required')
+FILE retest_plan.py LINES 1 170
+1: #!/usr/bin/env python3
+2: """Use original failed checks and approved dependencies to choose diagnostic feedback."""
+3: from __future__ import annotations
+4: import argparse
+5: import hashlib
+6: from pathlib import Path
+7: import design_contract as design
+8: from requirement_routes import report_rows
+9: 
+10: 
+11: def propose(coverage, parent, report, failed_ids, *, changed_files, source_before, source_after):
+12:     if (design.digest(parent) != coverage['plan_sha256'] or source_before == source_after or
+13:             any(not isinstance(v, str) or len(v) != 64 or any(c not in '0123456789abcdef' for c in v) for v in [source_before, source_after])):
+14:         raise ValueError('Exact parent plan and a changed source version required')
+15:     if not changed_files or any(not v or Path(v).is_absolute() or '..' in Path(v).parts for v in changed_files):
+16:         raise ValueError('Explicit relative changed production paths required')
+17:     rows = report_rows(report, parent)
+18:     if not failed_ids or len(failed_ids) != len(set(failed_ids)) or any(k not in rows or rows[k]['status'] != 'failed' for k in failed_ids):
+19:         raise ValueError('Feedback must start from original failed checks, never invented failures')
+20:     owners = [o for o in coverage['obligations'] if set(o['assertion_ids']) & set(failed_ids)]
+21:     if not owners: raise ValueError('Failure has no approved requirement route')
+22:     selected = {o['id'] for o in owners}
+23:     # All independently declared regression obligations are closed transitively.
+24:     while True:
+25:         expanded = selected | {r for o in coverage['obligations'] if o['id'] in selected for r in o['route']['regression_obligations']}
+26:         if expanded == selected: break
+27:         selected = expanded
+28:     obligations = [o for o in coverage['obligations'] if o['id'] in selected]
+29:     states = [s['id'] for s in parent['states'] if any(s['id'] in o['states'] for o in obligations)]
+30:     return {'version': 1, 'parent_plan_sha256': coverage['plan_sha256'], 'source_before': source_before, 'source_after': source_after,
+31:             'changed_files': changed_files, 'original_failed_ids': failed_ids, 'obligations': sorted(selected), 'states': states,
+32:             'assertion_ids': sorted({r for o in obligations for r in o['assertion_ids']}),
+33:             'requires_fresh_capture': True, 'full_final_required': True,
+34:             'unverified_obligations': [o['id'] for o in coverage['obligations'] if o['id'] not in selected],
+35:             'scope': 'Diagnostic feedback only. Dependencies express approved regression checks, not a proven source-impact graph. Full fresh final verification remains mandatory.'}
+36: 
+37: 
+38: def from_capture(coverage, parent, failed_ids, result_path, result_sha, source_roots, *,
+39:                  review_submission=None, review_sha=None, lock=None, lock_sha=None, policy=None, policy_sha=None):
+40:     """Derive change identity from an immutable original capture and actual files."""
+41:     from execution_plan import source_fingerprint
+42:     result_path = Path(result_path).resolve()
+43:     if hashlib.sha256(result_path.read_bytes()).hexdigest() != result_sha:
+44:         raise ValueError('Original independently pinned capture-result digest differs')
+45:     receipt = design.load(result_path); root = result_path.parent
+46:     if receipt.get('status') != 'verified_capture' or receipt.get('parent_plan_sha256') != design.digest(parent):
+47:         raise ValueError('Verified source-bound capture for this exact parent required')
+48:     report_path = root / 'automatic.json'
+49:     if hashlib.sha256(report_path.read_bytes()).hexdigest() != receipt.get('automatic_sha256'):
+50:         raise ValueError('Original automatic report changed')
+51:     before = design.load(root / 'source-before.json')
+52:     if design.digest(before) != receipt['source_sha256'] or before != design.load(root / 'source-after.json'):
+53:         raise ValueError('Original captured production source changed or drifted')
+54:     # Same root identities/order preserve the relative source-key namespace.
+55:     if [str(Path(p).resolve()) for p in source_roots] != receipt['source_roots']:
+56:         raise ValueError('Actual production roots differ from the captured source namespace')
+57:     after = source_fingerprint(source_roots)
+58:     changed = sorted(k for k in set(before) | set(after) if before.get(k) != after.get(k))
+59:     report = design.load(report_path)
+60:     if review_submission is not None:
+61:         # Rebuild judgments from original actuals and native pixels. A different
+62:         # arbitrary evaluated report is never accepted as an automatic override.
+63:         import review_contract
+64:         import native_checks
+65:         from execution_plan import verify_capture_images
+66:         review_submission = Path(review_submission)
+67:         if any(v is None for v in [review_sha, lock, lock_sha, policy, policy_sha]):
+68:             raise ValueError('Original review, independent lock and policy identities required')
+69:         if hashlib.sha256(review_submission.read_bytes()).hexdigest() != review_sha or lock_sha != coverage['design_lock_sha256']:
+70:             raise ValueError('Pinned original review actuals and the same independent design required')
+71:         op = root / 'native/observation.json'
+72:         obs_sha = hashlib.sha256(op.read_bytes()).hexdigest()
+73:         if obs_sha != receipt.get('observation_sha256'):
+74:             raise ValueError('Original capture observation changed')
+75:         observation = design.load(op); platform = parent['design_contract']['platform']
+76:         verify_capture_images(receipt, op.parent)
+77:         manual = review_contract.bind(parent, lock, lock_sha, policy, policy_sha, observation, obs_sha,
+78:                                       op.parent, design.load(review_submission), platform)
+79:         report = native_checks.evaluate(parent, observation, platform, manual, op.parent, obs_sha,
+80:                                         lock, lock_sha, policy, policy_sha)
+81:     elif any(v is not None for v in [review_sha, lock, lock_sha, policy, policy_sha]):
+82:         raise ValueError('Review reconstruction needs its original submission')
+83:     value = propose(coverage, parent, report, failed_ids, changed_files=changed,
+84:                     source_before=design.digest(before), source_after=design.digest(after))
+85:     value['original_capture_sha256'] = result_sha
+86:     value['change_basis'] = 'Original immutable capture source map versus current production files, not caller-entered hashes or paths'
+87:     if review_submission is not None:
+88:         value['review_submission_sha256'] = review_sha
+89:         value['finding_basis'] = 'Recomputed approved-contract review of original state-bound actuals, not an overridden automatic report'
+90:     return value
+91: 
+92: 
+93: def main():
+94:     p = argparse.ArgumentParser()
+95:     for name in ['coverage', 'plan', 'output']: p.add_argument('--' + name, type=Path, required=True)
+96:     for name in ['report', 'change', 'capture-result']: p.add_argument('--' + name, type=Path)
+97:     p.add_argument('--capture-result-sha256'); p.add_argument('--source-root', type=Path, action='append')
+98:     for name in ['review-submission', 'design-lock', 'policy']: p.add_argument('--' + name, type=Path)
+99:     for name in ['review-sha256', 'design-sha256', 'policy-sha256']: p.add_argument('--' + name)
+100:     p.add_argument('--failed-id', action='append', required=True); a = p.parse_args()
+101:     if a.capture_result:
+102:         if not a.capture_result_sha256 or not a.source_root or a.report or a.change:
+103:             raise ValueError('Capture mode needs original result digest and actual roots, without caller change/report overrides')
+104:         value = from_capture(design.load(a.coverage), design.load(a.plan), a.failed_id,
+105:                              a.capture_result, a.capture_result_sha256, a.source_root,
+106:                              review_submission=a.review_submission, review_sha=a.review_sha256,
+107:                              lock=design.load(a.design_lock) if a.design_lock else None, lock_sha=a.design_sha256,
+108:                              policy=design.load(a.policy) if a.policy else None, policy_sha=a.policy_sha256)
+109:     else:
+110:         if not a.report or not a.change: raise ValueError('Original report and explicit change declaration required')
+111:         change = design.load(a.change)
+112:         value = propose(design.load(a.coverage), design.load(a.plan), design.load(a.report), a.failed_id,
+113:                         changed_files=change['changed_files'], source_before=change['source_before'], source_after=change['source_after'])
+114:         value['change_basis'] = 'Caller-declared source changes; not independently measured. Prefer capture-result mode.'
+115:     with a.output.open('x') as stream: stream.write(__import__('json').dumps(value, indent=2, ensure_ascii=False) + '\n')
+116: if __name__ == '__main__': main()

@@ -1,0 +1,4911 @@
+{
+  "version": 2,
+  "component": "OfflineAudioTourPanel",
+  "design_owner": "Independent original design author, prospective review revision",
+  "prior_source_sha256": "08c7141dccbe2acc7c50cffd094d7d3c17348c9d74feace943c7197eb70ae868",
+  "palette": {
+    "canvas": {
+      "value": "#FFF4F6FA",
+      "unit": "argb"
+    },
+    "surface": {
+      "value": "#FFFFFFFF",
+      "unit": "argb"
+    },
+    "ink": {
+      "value": "#FF172B4D",
+      "unit": "argb"
+    },
+    "waiting": {
+      "value": "#FFE9EFF8",
+      "unit": "argb"
+    },
+    "ready": {
+      "value": "#FFDDF4EC",
+      "unit": "argb"
+    },
+    "requested": {
+      "value": "#FFDDEBFF",
+      "unit": "argb"
+    },
+    "blocked": {
+      "value": "#FFFFE5B3",
+      "unit": "argb"
+    },
+    "enabled": {
+      "value": "#FF2463C5",
+      "unit": "argb"
+    },
+    "disabled": {
+      "value": "#FFD8DEE8",
+      "unit": "argb"
+    }
+  },
+  "geometry": {
+    "ios": {
+      "primaryHeight": {
+        "value": 56,
+        "unit": "pt"
+      },
+      "tolerance": {
+        "value": 0.75,
+        "unit": "pt"
+      },
+      "outerGutter": {
+        "value": 8,
+        "unit": "pt"
+      },
+      "innerPadding": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "mainGap": {
+        "value": 12,
+        "unit": "pt"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "choicePrimaryGap": {
+        "value": 12,
+        "unit": "pt"
+      },
+      "statusLeadingMinimum": {
+        "value": 16,
+        "unit": "pt"
+      }
+    },
+    "android": {
+      "primaryHeight": {
+        "value": 56,
+        "unit": "dp"
+      },
+      "tolerance": {
+        "value": 0.75,
+        "unit": "dp"
+      },
+      "outerGutter": {
+        "value": 8,
+        "unit": "dp"
+      },
+      "innerPadding": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "mainGap": {
+        "value": 12,
+        "unit": "dp"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "choicePrimaryGap": {
+        "value": 12,
+        "unit": "dp"
+      },
+      "statusLeadingMinimum": {
+        "value": 16,
+        "unit": "dp"
+      }
+    }
+  },
+  "typography_guidance": {
+    "priority": "advisory",
+    "ios": {
+      "title": {
+        "value": 22,
+        "unit": "pt"
+      },
+      "heading": {
+        "value": 17,
+        "unit": "pt"
+      },
+      "body": {
+        "value": 17,
+        "unit": "pt"
+      }
+    },
+    "android": {
+      "title": {
+        "value": 22,
+        "unit": "sp"
+      },
+      "heading": {
+        "value": 17,
+        "unit": "sp"
+      },
+      "body": {
+        "value": 16,
+        "unit": "sp"
+      }
+    },
+    "computed_swiftui": "Unavailable to generic AX; not a measurable MUST"
+  },
+  "truth": {
+    "value": true,
+    "unit": "bool"
+  },
+  "quiet": {
+    "value": [],
+    "unit": "events"
+  },
+  "labels": {
+    "inkAccent": {
+      "value": "Ink accent",
+      "unit": "string"
+    }
+  },
+  "questions": {
+    "title-wrapping": {
+      "value": "The title visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "subtitle-wrapping": {
+      "value": "The subtitle visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "status-wrapping": {
+      "value": "The status text visibly displays its complete status string through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "disclosure-wrapping": {
+      "value": "The disclosure button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "choice-wrapping": {
+      "value": "The choice button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "primary-wrapping": {
+      "value": "The primary button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "heading-wrapping": {
+      "value": "Every expanded chapters heading visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "body-wrapping": {
+      "value": "Every expanded body paragraph visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "title-hierarchy": {
+      "value": "The title is visually more prominent than the expanded section headings.",
+      "unit": "string"
+    },
+    "horizontal-clipping": {
+      "value": "Visible content remains inside the component horizontal bounds without clipping.",
+      "unit": "string"
+    },
+    "row-overlap": {
+      "value": "Successive rows in the component do not visually overlap.",
+      "unit": "string"
+    },
+    "flow-order": {
+      "value": "Main component blocks occur in this reading order: ink accent, title, subtitle, status, disclosure, any expanded sections, choice, primary.",
+      "unit": "string"
+    },
+    "single-column": {
+      "value": "Main component blocks form one vertical column.",
+      "unit": "string"
+    },
+    "full-width-canvas": {
+      "value": "The component-painted pale canvas spans the complete width offered inside the host horizontal gutters.",
+      "unit": "string"
+    },
+    "collapsed-headings": {
+      "value": "No chapters section heading is visible while the disclosure is closed.",
+      "unit": "string"
+    },
+    "collapsed-bodies": {
+      "value": "No chapters body paragraph is visible while the disclosure is closed.",
+      "unit": "string"
+    },
+    "expanded-order": {
+      "value": "The eight expanded chapters heading/body pairs appear in caller order.",
+      "unit": "string"
+    }
+  },
+  "cases": {
+    "P1": {
+      "caller": {
+        "initial": {
+          "id": "TOUR-203",
+          "title": "Harbor museum: voices of the working port",
+          "language": "English · harbor collection",
+          "downloadSizeMB": 128,
+          "availableMB": 320,
+          "meteredConnection": true,
+          "chapters": [
+            {
+              "id": "n1",
+              "title": "At the harbor gate",
+              "body": "Begin beside the old harbor gate and listen for the bell that once announced a vessel arriving at the quay. The introduction describes how workers coordinated a busy waterfront before radios became part of everyday port life."
+            },
+            {
+              "id": "n2",
+              "title": "The rope makers",
+              "body": "Walk toward the long rope-making bench and compare the tools displayed above it. This chapter follows a small team preparing a heavy line, with pauses that let you examine the fibers and the worn wooden handles nearby."
+            },
+            {
+              "id": "n3",
+              "title": "A shipwright workshop",
+              "body": "Stand beside the half-built hull and look along the curve of its ribs. The shipwright describes choosing timber, checking a joint, and teaching an apprentice to notice a small gap before the outer planks were fitted."
+            },
+            {
+              "id": "n4",
+              "title": "Work at the fish market",
+              "body": "The market gallery brings together sellers, carriers, and the people who repaired baskets at the end of the day. Listen beside the weighing table, then look for the chalk price board before continuing into the next room."
+            },
+            {
+              "id": "n5",
+              "title": "Signals across the water",
+              "body": "At the signal cabinet, the narrator explains why a clear message mattered in poor weather. Short examples describe the flags and lamps without requiring you to identify every symbol, so you can listen while examining the original equipment."
+            },
+            {
+              "id": "n6",
+              "title": "The engine room",
+              "body": "Pause near the engine model and follow the route from the boiler to the propeller shaft. A mechanic recalls the rhythm of routine checks and explains how the crew recognized a change in the sound of a working engine."
+            },
+            {
+              "id": "n7",
+              "title": "Letters from the voyage",
+              "body": "The writing desk holds copies of letters sent home during long trips. This chapter reads brief passages about ordinary meals, changing weather, and missing family, with quiet intervals that give you time to inspect the handwriting on display."
+            },
+            {
+              "id": "n8",
+              "title": "A changing waterfront",
+              "body": "Finish at the large window overlooking the present harbor. The final voices discuss new jobs and familiar landmarks, inviting you to compare the view outside with the historical photographs on the adjacent wall before you leave the gallery."
+            }
+          ]
+        },
+        "updates": [
+          {
+            "id": "TOUR-311",
+            "title": "The night observatory collection",
+            "language": "English · sky collection",
+            "downloadSizeMB": 214,
+            "availableMB": 96,
+            "meteredConnection": false,
+            "chapters": [
+              {
+                "id": "rn1",
+                "title": "At the harbor gate",
+                "body": "Begin beside the old harbor gate and listen for the bell that once announced a vessel arriving at the quay. The introduction describes how workers coordinated a busy waterfront before radios became part of everyday port life."
+              },
+              {
+                "id": "rn2",
+                "title": "The rope makers",
+                "body": "Walk toward the long rope-making bench and compare the tools displayed above it. This chapter follows a small team preparing a heavy line, with pauses that let you examine the fibers and the worn wooden handles nearby."
+              },
+              {
+                "id": "rn3",
+                "title": "A shipwright workshop",
+                "body": "Stand beside the half-built hull and look along the curve of its ribs. The shipwright describes choosing timber, checking a joint, and teaching an apprentice to notice a small gap before the outer planks were fitted."
+              },
+              {
+                "id": "rn4",
+                "title": "Work at the fish market",
+                "body": "The market gallery brings together sellers, carriers, and the people who repaired baskets at the end of the day. Listen beside the weighing table, then look for the chalk price board before continuing into the next room."
+              },
+              {
+                "id": "rn5",
+                "title": "Signals across the water",
+                "body": "At the signal cabinet, the narrator explains why a clear message mattered in poor weather. Short examples describe the flags and lamps without requiring you to identify every symbol, so you can listen while examining the original equipment."
+              },
+              {
+                "id": "rn6",
+                "title": "The engine room",
+                "body": "Pause near the engine model and follow the route from the boiler to the propeller shaft. A mechanic recalls the rhythm of routine checks and explains how the crew recognized a change in the sound of a working engine."
+              },
+              {
+                "id": "rn7",
+                "title": "Letters from the voyage",
+                "body": "The writing desk holds copies of letters sent home during long trips. This chapter reads brief passages about ordinary meals, changing weather, and missing family, with quiet intervals that give you time to inspect the handwriting on display."
+              },
+              {
+                "id": "rn8",
+                "title": "A changing waterfront",
+                "body": "Finish at the large window overlooking the present harbor. The final voices discuss new jobs and familiar landmarks, inviting you to compare the view outside with the historical photographs on the adjacent wall before you leave the gallery."
+              }
+            ]
+          },
+          {
+            "id": "TOUR-933",
+            "title": "The night observatory collection",
+            "language": "English · sky collection",
+            "downloadSizeMB": 214,
+            "availableMB": 173,
+            "meteredConnection": true,
+            "chapters": [
+              {
+                "id": "rn1",
+                "title": "At the harbor gate",
+                "body": "Begin beside the old harbor gate and listen for the bell that once announced a vessel arriving at the quay. The introduction describes how workers coordinated a busy waterfront before radios became part of everyday port life."
+              },
+              {
+                "id": "rn2",
+                "title": "The rope makers",
+                "body": "Walk toward the long rope-making bench and compare the tools displayed above it. This chapter follows a small team preparing a heavy line, with pauses that let you examine the fibers and the worn wooden handles nearby."
+              },
+              {
+                "id": "rn3",
+                "title": "A shipwright workshop",
+                "body": "Stand beside the half-built hull and look along the curve of its ribs. The shipwright describes choosing timber, checking a joint, and teaching an apprentice to notice a small gap before the outer planks were fitted."
+              },
+              {
+                "id": "rn4",
+                "title": "Work at the fish market",
+                "body": "The market gallery brings together sellers, carriers, and the people who repaired baskets at the end of the day. Listen beside the weighing table, then look for the chalk price board before continuing into the next room."
+              },
+              {
+                "id": "rn5",
+                "title": "Signals across the water",
+                "body": "At the signal cabinet, the narrator explains why a clear message mattered in poor weather. Short examples describe the flags and lamps without requiring you to identify every symbol, so you can listen while examining the original equipment."
+              },
+              {
+                "id": "rn6",
+                "title": "The engine room",
+                "body": "Pause near the engine model and follow the route from the boiler to the propeller shaft. A mechanic recalls the rhythm of routine checks and explains how the crew recognized a change in the sound of a working engine."
+              },
+              {
+                "id": "rn7",
+                "title": "Letters from the voyage",
+                "body": "The writing desk holds copies of letters sent home during long trips. This chapter reads brief passages about ordinary meals, changing weather, and missing family, with quiet intervals that give you time to inspect the handwriting on display."
+              },
+              {
+                "id": "rn8",
+                "title": "A changing waterfront",
+                "body": "Finish at the large window overlooking the present harbor. The final voices discuss new jobs and familiar landmarks, inviting you to compare the view outside with the historical photographs on the adjacent wall before you leave the gallery."
+              }
+            ]
+          }
+        ],
+        "width": 400,
+        "viewportHeight": 600,
+        "theme": "light",
+        "dynamic_type": "large",
+        "fontScale": 1.0,
+        "direction": "ltr",
+        "canvas_color": "#F4F6FA",
+        "max_scrolls": 18,
+        "state_capture": true,
+        "required_identifiers": [
+          "audio.canvas",
+          "audio.surface",
+          "audio.inkMark",
+          "audio.title",
+          "audio.subtitle",
+          "audio.status",
+          "audio.disclosure",
+          "audio.choice",
+          "audio.primary",
+          "audio.statusText"
+        ]
+      },
+      "states": {
+        "overview": {
+          "title": {
+            "value": "Harbor museum: voices of the working port",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · harbor collection · 128 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-203:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-203:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "opened": {
+          "title": {
+            "value": "Harbor museum: voices of the working port",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · harbor collection · 128 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-203:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-203:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "permitted": {
+          "title": {
+            "value": "Harbor museum: voices of the working port",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · harbor collection · 128 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready to download",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-203:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-203:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "cleared": {
+          "title": {
+            "value": "Harbor museum: voices of the working port",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · harbor collection · 128 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-203:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-203:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "restored": {
+          "title": {
+            "value": "Harbor museum: voices of the working port",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · harbor collection · 128 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready to download",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-203:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-203:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "requested": {
+          "title": {
+            "value": "Harbor museum: voices of the working port",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · harbor collection · 128 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Download requested",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Requested",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDEBFF",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-203:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-203:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "requested-closed": {
+          "title": {
+            "value": "Harbor museum: voices of the working port",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · harbor collection · 128 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Download requested",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Requested",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDEBFF",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-203:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-203:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "replaced": {
+          "title": {
+            "value": "The night observatory collection",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · sky collection · 214 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Storage needed",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-311:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-311:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "held-choice": {
+          "title": {
+            "value": "The night observatory collection",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · sky collection · 214 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Storage needed",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-311:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-311:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "competing-gates": {
+          "title": {
+            "value": "The night observatory collection",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · sky collection · 214 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Storage needed",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-933:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-933:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "rows": [
+        {
+          "id": "n1",
+          "title": "At the harbor gate",
+          "body": "Begin beside the old harbor gate and listen for the bell that once announced a vessel arriving at the quay. The introduction describes how workers coordinated a busy waterfront before radios became part of everyday port life."
+        },
+        {
+          "id": "n2",
+          "title": "The rope makers",
+          "body": "Walk toward the long rope-making bench and compare the tools displayed above it. This chapter follows a small team preparing a heavy line, with pauses that let you examine the fibers and the worn wooden handles nearby."
+        },
+        {
+          "id": "n3",
+          "title": "A shipwright workshop",
+          "body": "Stand beside the half-built hull and look along the curve of its ribs. The shipwright describes choosing timber, checking a joint, and teaching an apprentice to notice a small gap before the outer planks were fitted."
+        },
+        {
+          "id": "n4",
+          "title": "Work at the fish market",
+          "body": "The market gallery brings together sellers, carriers, and the people who repaired baskets at the end of the day. Listen beside the weighing table, then look for the chalk price board before continuing into the next room."
+        },
+        {
+          "id": "n5",
+          "title": "Signals across the water",
+          "body": "At the signal cabinet, the narrator explains why a clear message mattered in poor weather. Short examples describe the flags and lamps without requiring you to identify every symbol, so you can listen while examining the original equipment."
+        },
+        {
+          "id": "n6",
+          "title": "The engine room",
+          "body": "Pause near the engine model and follow the route from the boiler to the propeller shaft. A mechanic recalls the rhythm of routine checks and explains how the crew recognized a change in the sound of a working engine."
+        },
+        {
+          "id": "n7",
+          "title": "Letters from the voyage",
+          "body": "The writing desk holds copies of letters sent home during long trips. This chapter reads brief passages about ordinary meals, changing weather, and missing family, with quiet intervals that give you time to inspect the handwriting on display."
+        },
+        {
+          "id": "n8",
+          "title": "A changing waterfront",
+          "body": "Finish at the large window overlooking the present harbor. The final voices discuss new jobs and familiar landmarks, inviting you to compare the view outside with the historical photographs on the adjacent wall before you leave the gallery."
+        }
+      ],
+      "rowAssertions": [
+        {
+          "title": {
+            "value": "At the harbor gate",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Begin beside the old harbor gate and listen for the bell that once announced a vessel arriving at the quay. The introduction describes how workers coordinated a busy waterfront before radios became part of everyday port life.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "The rope makers",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Walk toward the long rope-making bench and compare the tools displayed above it. This chapter follows a small team preparing a heavy line, with pauses that let you examine the fibers and the worn wooden handles nearby.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "A shipwright workshop",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Stand beside the half-built hull and look along the curve of its ribs. The shipwright describes choosing timber, checking a joint, and teaching an apprentice to notice a small gap before the outer planks were fitted.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Work at the fish market",
+            "unit": "string"
+          },
+          "body": {
+            "value": "The market gallery brings together sellers, carriers, and the people who repaired baskets at the end of the day. Listen beside the weighing table, then look for the chalk price board before continuing into the next room.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Signals across the water",
+            "unit": "string"
+          },
+          "body": {
+            "value": "At the signal cabinet, the narrator explains why a clear message mattered in poor weather. Short examples describe the flags and lamps without requiring you to identify every symbol, so you can listen while examining the original equipment.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "The engine room",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Pause near the engine model and follow the route from the boiler to the propeller shaft. A mechanic recalls the rhythm of routine checks and explains how the crew recognized a change in the sound of a working engine.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Letters from the voyage",
+            "unit": "string"
+          },
+          "body": {
+            "value": "The writing desk holds copies of letters sent home during long trips. This chapter reads brief passages about ordinary meals, changing weather, and missing family, with quiet intervals that give you time to inspect the handwriting on display.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "A changing waterfront",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Finish at the large window overlooking the present harbor. The final voices discuss new jobs and familiar landmarks, inviting you to compare the view outside with the historical photographs on the adjacent wall before you leave the gallery.",
+            "unit": "string"
+          }
+        }
+      ],
+      "original_initial_sha256": "94be9e751aaccf38e2b946753d5f10875765261b483df8c1a7171545fd6a6d60",
+      "original_update_sha256": "95318c6067757c57bf0f519839798b0b5d1c888890781567c1354ba61e119cfb"
+    },
+    "P2": {
+      "caller": {
+        "initial": {
+          "id": "TOUR-516",
+          "title": "The sound of craft: a walk through the textile galleries",
+          "language": "English · textile collection",
+          "downloadSizeMB": 196,
+          "availableMB": 440,
+          "meteredConnection": true,
+          "chapters": [
+            {
+              "id": "n1",
+              "title": "The first spinning wheel",
+              "body": "Begin beside the spinning wheel and examine the worn treadle. A weaver describes learning to keep the thread steady while watching the changing bundle of fiber."
+            },
+            {
+              "id": "n2",
+              "title": "Choosing a fiber",
+              "body": "At the fiber cabinet, compare the wool and flax samples. This chapter explains how their different textures influenced the cloth a workshop could make."
+            },
+            {
+              "id": "n3",
+              "title": "Colors from the garden",
+              "body": "Listen beside the dye pots to learn how plants produced familiar colors. Look for the small sample cards that record each workshop recipe."
+            },
+            {
+              "id": "n4",
+              "title": "Setting the loom",
+              "body": "Stand near the large loom and follow the line of its threads. The narrator describes preparing a pattern before the first row of cloth was woven."
+            },
+            {
+              "id": "n5",
+              "title": "A pattern shared",
+              "body": "The pattern books preserve ideas passed between makers. Pause at the open page while a designer explains adapting a familiar motif for a new commission."
+            },
+            {
+              "id": "n6",
+              "title": "Mending a favorite coat",
+              "body": "At the mending table, listen to a repairer describe choosing a patch. The nearby coat shows how careful work can preserve a garment for another generation."
+            },
+            {
+              "id": "n7",
+              "title": "Cloth at the market",
+              "body": "The market display follows a finished bolt from workshop to customer. Short memories describe measuring, bargaining, and choosing fabric for a special family occasion."
+            },
+            {
+              "id": "n8",
+              "title": "Makers working today",
+              "body": "Finish beside the contemporary textiles. The closing voices describe the tools they still use and invite you to compare their work with the older cloth nearby."
+            }
+          ]
+        },
+        "updates": [
+          {
+            "id": "TOUR-604",
+            "title": "Winter gardens and the glasshouse collection",
+            "language": "English · garden collection",
+            "downloadSizeMB": 246,
+            "availableMB": 510,
+            "meteredConnection": true,
+            "chapters": [
+              {
+                "id": "rn1",
+                "title": "The first spinning wheel",
+                "body": "Begin beside the spinning wheel and examine the worn treadle. A weaver describes learning to keep the thread steady while watching the changing bundle of fiber."
+              },
+              {
+                "id": "rn2",
+                "title": "Choosing a fiber",
+                "body": "At the fiber cabinet, compare the wool and flax samples. This chapter explains how their different textures influenced the cloth a workshop could make."
+              },
+              {
+                "id": "rn3",
+                "title": "Colors from the garden",
+                "body": "Listen beside the dye pots to learn how plants produced familiar colors. Look for the small sample cards that record each workshop recipe."
+              },
+              {
+                "id": "rn4",
+                "title": "Setting the loom",
+                "body": "Stand near the large loom and follow the line of its threads. The narrator describes preparing a pattern before the first row of cloth was woven."
+              },
+              {
+                "id": "rn5",
+                "title": "A pattern shared",
+                "body": "The pattern books preserve ideas passed between makers. Pause at the open page while a designer explains adapting a familiar motif for a new commission."
+              },
+              {
+                "id": "rn6",
+                "title": "Mending a favorite coat",
+                "body": "At the mending table, listen to a repairer describe choosing a patch. The nearby coat shows how careful work can preserve a garment for another generation."
+              },
+              {
+                "id": "rn7",
+                "title": "Cloth at the market",
+                "body": "The market display follows a finished bolt from workshop to customer. Short memories describe measuring, bargaining, and choosing fabric for a special family occasion."
+              },
+              {
+                "id": "rn8",
+                "title": "Makers working today",
+                "body": "Finish beside the contemporary textiles. The closing voices describe the tools they still use and invite you to compare their work with the older cloth nearby."
+              }
+            ]
+          },
+          {
+            "id": "TOUR-978",
+            "title": "Winter gardens and the glasshouse collection",
+            "language": "English · garden collection",
+            "downloadSizeMB": 246,
+            "availableMB": 205,
+            "meteredConnection": true,
+            "chapters": [
+              {
+                "id": "rn1",
+                "title": "The first spinning wheel",
+                "body": "Begin beside the spinning wheel and examine the worn treadle. A weaver describes learning to keep the thread steady while watching the changing bundle of fiber."
+              },
+              {
+                "id": "rn2",
+                "title": "Choosing a fiber",
+                "body": "At the fiber cabinet, compare the wool and flax samples. This chapter explains how their different textures influenced the cloth a workshop could make."
+              },
+              {
+                "id": "rn3",
+                "title": "Colors from the garden",
+                "body": "Listen beside the dye pots to learn how plants produced familiar colors. Look for the small sample cards that record each workshop recipe."
+              },
+              {
+                "id": "rn4",
+                "title": "Setting the loom",
+                "body": "Stand near the large loom and follow the line of its threads. The narrator describes preparing a pattern before the first row of cloth was woven."
+              },
+              {
+                "id": "rn5",
+                "title": "A pattern shared",
+                "body": "The pattern books preserve ideas passed between makers. Pause at the open page while a designer explains adapting a familiar motif for a new commission."
+              },
+              {
+                "id": "rn6",
+                "title": "Mending a favorite coat",
+                "body": "At the mending table, listen to a repairer describe choosing a patch. The nearby coat shows how careful work can preserve a garment for another generation."
+              },
+              {
+                "id": "rn7",
+                "title": "Cloth at the market",
+                "body": "The market display follows a finished bolt from workshop to customer. Short memories describe measuring, bargaining, and choosing fabric for a special family occasion."
+              },
+              {
+                "id": "rn8",
+                "title": "Makers working today",
+                "body": "Finish beside the contemporary textiles. The closing voices describe the tools they still use and invite you to compare their work with the older cloth nearby."
+              }
+            ]
+          }
+        ],
+        "width": 280,
+        "viewportHeight": 600,
+        "theme": "light",
+        "dynamic_type": "xxxLarge",
+        "fontScale": 1.3,
+        "direction": "ltr",
+        "canvas_color": "#F4F6FA",
+        "max_scrolls": 18,
+        "state_capture": true,
+        "required_identifiers": [
+          "audio.canvas",
+          "audio.surface",
+          "audio.inkMark",
+          "audio.title",
+          "audio.subtitle",
+          "audio.status",
+          "audio.disclosure",
+          "audio.choice",
+          "audio.primary",
+          "audio.statusText"
+        ]
+      },
+      "states": {
+        "overview": {
+          "title": {
+            "value": "The sound of craft: a walk through the textile galleries",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · textile collection · 196 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-516:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-516:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "opened": {
+          "title": {
+            "value": "The sound of craft: a walk through the textile galleries",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · textile collection · 196 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-516:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-516:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "permitted": {
+          "title": {
+            "value": "The sound of craft: a walk through the textile galleries",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · textile collection · 196 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready to download",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-516:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-516:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "cleared": {
+          "title": {
+            "value": "The sound of craft: a walk through the textile galleries",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · textile collection · 196 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-516:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-516:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "restored": {
+          "title": {
+            "value": "The sound of craft: a walk through the textile galleries",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · textile collection · 196 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready to download",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-516:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-516:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "requested": {
+          "title": {
+            "value": "The sound of craft: a walk through the textile galleries",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · textile collection · 196 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Download requested",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Requested",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDEBFF",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-516:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-516:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "requested-closed": {
+          "title": {
+            "value": "The sound of craft: a walk through the textile galleries",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · textile collection · 196 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Download requested",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Requested",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDEBFF",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-516:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-516:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "replaced": {
+          "title": {
+            "value": "Winter gardens and the glasshouse collection",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · garden collection · 246 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-604:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-604:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "held-choice": {
+          "title": {
+            "value": "Winter gardens and the glasshouse collection",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · garden collection · 246 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready to download",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-604:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-604:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "competing-gates": {
+          "title": {
+            "value": "Winter gardens and the glasshouse collection",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · garden collection · 246 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Storage needed",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-978:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-978:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "rows": [
+        {
+          "id": "n1",
+          "title": "The first spinning wheel",
+          "body": "Begin beside the spinning wheel and examine the worn treadle. A weaver describes learning to keep the thread steady while watching the changing bundle of fiber."
+        },
+        {
+          "id": "n2",
+          "title": "Choosing a fiber",
+          "body": "At the fiber cabinet, compare the wool and flax samples. This chapter explains how their different textures influenced the cloth a workshop could make."
+        },
+        {
+          "id": "n3",
+          "title": "Colors from the garden",
+          "body": "Listen beside the dye pots to learn how plants produced familiar colors. Look for the small sample cards that record each workshop recipe."
+        },
+        {
+          "id": "n4",
+          "title": "Setting the loom",
+          "body": "Stand near the large loom and follow the line of its threads. The narrator describes preparing a pattern before the first row of cloth was woven."
+        },
+        {
+          "id": "n5",
+          "title": "A pattern shared",
+          "body": "The pattern books preserve ideas passed between makers. Pause at the open page while a designer explains adapting a familiar motif for a new commission."
+        },
+        {
+          "id": "n6",
+          "title": "Mending a favorite coat",
+          "body": "At the mending table, listen to a repairer describe choosing a patch. The nearby coat shows how careful work can preserve a garment for another generation."
+        },
+        {
+          "id": "n7",
+          "title": "Cloth at the market",
+          "body": "The market display follows a finished bolt from workshop to customer. Short memories describe measuring, bargaining, and choosing fabric for a special family occasion."
+        },
+        {
+          "id": "n8",
+          "title": "Makers working today",
+          "body": "Finish beside the contemporary textiles. The closing voices describe the tools they still use and invite you to compare their work with the older cloth nearby."
+        }
+      ],
+      "rowAssertions": [
+        {
+          "title": {
+            "value": "The first spinning wheel",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Begin beside the spinning wheel and examine the worn treadle. A weaver describes learning to keep the thread steady while watching the changing bundle of fiber.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Choosing a fiber",
+            "unit": "string"
+          },
+          "body": {
+            "value": "At the fiber cabinet, compare the wool and flax samples. This chapter explains how their different textures influenced the cloth a workshop could make.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Colors from the garden",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Listen beside the dye pots to learn how plants produced familiar colors. Look for the small sample cards that record each workshop recipe.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Setting the loom",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Stand near the large loom and follow the line of its threads. The narrator describes preparing a pattern before the first row of cloth was woven.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "A pattern shared",
+            "unit": "string"
+          },
+          "body": {
+            "value": "The pattern books preserve ideas passed between makers. Pause at the open page while a designer explains adapting a familiar motif for a new commission.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Mending a favorite coat",
+            "unit": "string"
+          },
+          "body": {
+            "value": "At the mending table, listen to a repairer describe choosing a patch. The nearby coat shows how careful work can preserve a garment for another generation.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Cloth at the market",
+            "unit": "string"
+          },
+          "body": {
+            "value": "The market display follows a finished bolt from workshop to customer. Short memories describe measuring, bargaining, and choosing fabric for a special family occasion.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Makers working today",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Finish beside the contemporary textiles. The closing voices describe the tools they still use and invite you to compare their work with the older cloth nearby.",
+            "unit": "string"
+          }
+        }
+      ],
+      "original_initial_sha256": "d3a5c55860e2632b32f0c8c37f2ad26542944fb5de84eec2429abd9a413a6569",
+      "original_update_sha256": "72fee9e78ae15ec7b34a907b141506a566849997b7b5ed0598215f3bbc81d876"
+    }
+  },
+  "launch": {
+    "P1": {
+      "ios": {
+        "fixtures_sha256": "914c5f3700fec4d2c638cf6d3eaabd318887aaa2e291e5135ef2abadfe1a6ede",
+        "bridge_sha256": "c6708b2b76c2dddad9a31d755d3bcf6558b60aa903cf885a8c3a69ec196ec621",
+        "scenario": "P1",
+        "platform": "ios"
+      },
+      "android": {
+        "fixtures_sha256": "914c5f3700fec4d2c638cf6d3eaabd318887aaa2e291e5135ef2abadfe1a6ede",
+        "bridge_sha256": "44c55a28afff21d69001e2c4f62554cb23f9b287c68cbd19c450cb0350cbb8a9",
+        "scenario": "P1",
+        "platform": "android"
+      }
+    },
+    "P2": {
+      "ios": {
+        "fixtures_sha256": "c1882ad1702d3c086090b0efccb7be95bcfb5d6d8d7df807c7e7718a79575af9",
+        "bridge_sha256": "c6708b2b76c2dddad9a31d755d3bcf6558b60aa903cf885a8c3a69ec196ec621",
+        "scenario": "P2",
+        "platform": "ios"
+      },
+      "android": {
+        "fixtures_sha256": "c1882ad1702d3c086090b0efccb7be95bcfb5d6d8d7df807c7e7718a79575af9",
+        "bridge_sha256": "44c55a28afff21d69001e2c4f62554cb23f9b287c68cbd19c450cb0350cbb8a9",
+        "scenario": "P2",
+        "platform": "android"
+      }
+    }
+  },
+  "obligations": [
+    {
+      "id": "title-label",
+      "clause": "The current caller title has its complete exact accessible text.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "subtitle-label",
+      "clause": "The current caller summary uses the exact specified string composition.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "status-label",
+      "clause": "The status follows the original independently specified business guard/state precedence.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "status-text-label",
+      "clause": "The actual status Text node exposes the exact current status string independently of the painted band.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "disclosure-label",
+      "clause": "The disclosure label reflects the open or closed local state.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "disclosure-enabled",
+      "clause": "The actual disclosure Button remains enabled, including after a business request.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "choice-label",
+      "clause": "The actual choice Button exposes its exact specified accessible label.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "choice-selected",
+      "clause": "The native selected trait reflects the current Wi-Fi-only preference.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "choice-enabled",
+      "clause": "The actual choice is disabled after request and enabled after identity replacement.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "primary-label",
+      "clause": "The primary exposes its exact normal or requested label.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "primary-enabled",
+      "clause": "The actual primary enabled state follows the original complete business predicate.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "ink-accent-label",
+      "clause": "The actual accessible solid ink mark has the exact label Ink accent.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "primary-height",
+      "clause": "The actual native primary control height is 56 pt/dp within the independently fixed 0.75 pt/dp tolerance.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "choice-primary-gap",
+      "clause": "The primary actual native control top edge is 12 pt/dp below the choice control bottom edge within 0.75 pt/dp.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "status-leading-inset",
+      "clause": "The actual status Text semantic boundary is at least 16 pt/dp inside the painted band logical leading semantic boundary.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "status-fill",
+      "clause": "The approved status-band solid region has the independently fixed opaque state-role fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "primary-fill",
+      "clause": "The approved primary solid region has the independently fixed enabled or disabled fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "surface-fill",
+      "clause": "The component surface gutter renders the independently fixed opaque white role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "canvas-fill",
+      "clause": "The component canvas gutter renders the independently fixed opaque pale role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "ink-fill",
+      "clause": "The solid ink accent renders the independently fixed opaque navy role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "status-leading-clear",
+      "clause": "The entire logical leading 4% strip of the painted status band contains only the current status fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "section-0-heading",
+      "clause": "Expanded section-0-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-0-body",
+      "clause": "Expanded section-0-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-1-heading",
+      "clause": "Expanded section-1-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-1-body",
+      "clause": "Expanded section-1-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-2-heading",
+      "clause": "Expanded section-2-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-2-body",
+      "clause": "Expanded section-2-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-3-heading",
+      "clause": "Expanded section-3-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-3-body",
+      "clause": "Expanded section-3-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-4-heading",
+      "clause": "Expanded section-4-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-4-body",
+      "clause": "Expanded section-4-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-5-heading",
+      "clause": "Expanded section-5-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-5-body",
+      "clause": "Expanded section-5-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-6-heading",
+      "clause": "Expanded section-6-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-6-body",
+      "clause": "Expanded section-6-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-7-heading",
+      "clause": "Expanded section-7-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-7-body",
+      "clause": "Expanded section-7-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "title-wrapping",
+      "clause": "The title visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "subtitle-wrapping",
+      "clause": "The subtitle visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "status-wrapping",
+      "clause": "The status text visibly displays its complete status string through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "disclosure-wrapping",
+      "clause": "The disclosure button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "choice-wrapping",
+      "clause": "The choice button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "primary-wrapping",
+      "clause": "The primary button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "heading-wrapping",
+      "clause": "Every expanded chapters heading visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "body-wrapping",
+      "clause": "Every expanded body paragraph visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "title-hierarchy",
+      "clause": "The title is visually more prominent than the expanded section headings.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "horizontal-clipping",
+      "clause": "Visible content remains inside the component horizontal bounds without clipping.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "row-overlap",
+      "clause": "Successive rows in the component do not visually overlap.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "flow-order",
+      "clause": "Main component blocks occur in this reading order: ink accent, title, subtitle, status, disclosure, any expanded sections, choice, primary.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "single-column",
+      "clause": "Main component blocks form one vertical column.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "full-width-canvas",
+      "clause": "The component-painted pale canvas spans the complete width offered inside the host horizontal gutters.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "collapsed-headings",
+      "clause": "No chapters section heading is visible while the disclosure is closed.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "collapsed-bodies",
+      "clause": "No chapters body paragraph is visible while the disclosure is closed.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "expanded-order",
+      "clause": "The eight expanded chapters heading/body pairs appear in caller order.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "choice-receipt",
+      "clause": "Each selected forward, reverse, restored, or held choice activation emits exactly its independent one-event receipt after demonstrated native dispatch.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "cleared",
+        "restored",
+        "held-choice"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "request-receipt",
+      "clause": "The successful native primary activation emits exactly the independently fixed business callback event.",
+      "priority": "must",
+      "states": [
+        "requested"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "disclosure-receipt",
+      "clause": "Each selected successful disclosure open or close activation has its own empty original business callback interval.",
+      "priority": "must",
+      "states": [
+        "opened",
+        "requested-closed"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "replacement-quiet",
+      "clause": "Each selected same-process caller replacement has an empty original business callback interval.",
+      "priority": "must",
+      "states": [
+        "replaced",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "typography-nominal",
+      "clause": "Nominal title/body fonts, text ink, and internal spacing tokens follow the documented platform authoring values; exact computed SwiftUI fields and generic layout allocations are advisory.",
+      "priority": "advisory",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "style"
+    }
+  ],
+  "audit_propositions": {
+    "ios-production-component": {
+      "value": "The declared native component is implemented in the exact production file named by its public API.",
+      "unit": "string"
+    },
+    "ios-caller-driven-rendering": {
+      "value": "The production component renders the supplied caller model values rather than a separate observer-only approximation.",
+      "unit": "string"
+    },
+    "ios-disclosure-production-state": {
+      "value": "Disclosure state is owned by the production component.",
+      "unit": "string"
+    },
+    "ios-choice-production-state": {
+      "value": "Choice state is owned by the production component.",
+      "unit": "string"
+    },
+    "ios-requested-production-state": {
+      "value": "Requested state is owned by the production component.",
+      "unit": "string"
+    },
+    "ios-identity-reset-disclosure": {
+      "value": "The production component resets disclosure to closed when the caller model ID changes.",
+      "unit": "string"
+    },
+    "ios-identity-reset-choice": {
+      "value": "The production component resets choice to true when the caller model ID changes.",
+      "unit": "string"
+    },
+    "ios-identity-reset-requested": {
+      "value": "The production component resets requested to false when the caller model ID changes.",
+      "unit": "string"
+    },
+    "ios-reset-quiet": {
+      "value": "The production identity-reset path invokes no caller business callback.",
+      "unit": "string"
+    },
+    "ios-native-disclosure-button": {
+      "value": "Disclosure is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "ios-native-choice-button": {
+      "value": "Choice is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "ios-native-primary-button": {
+      "value": "Primary is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "ios-native-selected": {
+      "value": "The choice exposes its actual selected state through native selected semantics.",
+      "unit": "string"
+    },
+    "ios-choice-native-disabled": {
+      "value": "The choice uses actual native disabled semantics when disabled.",
+      "unit": "string"
+    },
+    "ios-primary-native-disabled": {
+      "value": "The primary uses actual native disabled semantics when disabled.",
+      "unit": "string"
+    },
+    "ios-canvas-preserve-controls": {
+      "value": "The canvas accessibility container preserves descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "ios-surface-preserve-controls": {
+      "value": "The surface accessibility container preserves descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "ios-unique-semantic-ids": {
+      "value": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "unit": "string"
+    },
+    "ios-status-band-provenance": {
+      "value": "The status semantic identifier belongs to the actual painted status band, not a geometry proxy.",
+      "unit": "string"
+    },
+    "ios-status-text-provenance": {
+      "value": "The statusText semantic identifier belongs to the actual displayed status Text allocation, not a geometry proxy.",
+      "unit": "string"
+    },
+    "ios-no-nested-scroll": {
+      "value": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "unit": "string"
+    },
+    "ios-no-blank-padding-rows": {
+      "value": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "unit": "string"
+    },
+    "ios-model-row-order": {
+      "value": "Expanded section nodes are generated from caller rows in caller order.",
+      "unit": "string"
+    },
+    "ios-no-hidden-input-special-cases": {
+      "value": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "unit": "string"
+    },
+    "ios-callback-model-id": {
+      "value": "The business request callback forwards the current caller model ID.",
+      "unit": "string"
+    },
+    "ios-callbacks-only-actions": {
+      "value": "The component invokes caller business callbacks only from enabled user-action paths.",
+      "unit": "string"
+    },
+    "ios-no-callback-on-disclosure": {
+      "value": "The disclosure open and close paths invoke no caller business callback.",
+      "unit": "string"
+    },
+    "ios-no-primary-callback-on-disabled": {
+      "value": "A disabled primary cannot invoke its caller business callback.",
+      "unit": "string"
+    },
+    "ios-no-choice-callback-on-disabled": {
+      "value": "A disabled choice cannot invoke its caller business callback.",
+      "unit": "string"
+    },
+    "ios-guard-predicate": {
+      "value": "The download enabled predicate is exactly availableMB >= downloadSizeMB && !(meteredConnection && wifiOnly) && !requested.",
+      "unit": "string"
+    },
+    "ios-guard-priority": {
+      "value": "The status decision order is insufficient storage, requested, metered connection with Wi-Fi only, then ready.",
+      "unit": "string"
+    },
+    "ios-choice-toggle": {
+      "value": "Every successful pre-request Wi-Fi-only toggle flips the current Wi-Fi-only Boolean.",
+      "unit": "string"
+    },
+    "ios-choice-callback-value": {
+      "value": "The Wi-Fi-only callback forwards the resulting preference Boolean.",
+      "unit": "string"
+    },
+    "ios-choice-callback-count": {
+      "value": "A successful pre-request Wi-Fi-only toggle invokes its caller callback exactly once.",
+      "unit": "string"
+    },
+    "ios-download-requested-state": {
+      "value": "A successful eligible download request changes local requested state to true.",
+      "unit": "string"
+    },
+    "ios-download-callback-count": {
+      "value": "A successful eligible download request invokes onDownload exactly once.",
+      "unit": "string"
+    },
+    "ios-callback-preference": {
+      "value": "The download request callback forwards the current local Wi-Fi-only preference.",
+      "unit": "string"
+    },
+    "ios-no-disk-measurement": {
+      "value": "The component does not measure disk capacity; it uses the caller-supplied whole-MB availableMB and downloadSizeMB values.",
+      "unit": "string"
+    },
+    "ios-no-audio-fetch": {
+      "value": "The component does not fetch or download audio data.",
+      "unit": "string"
+    },
+    "ios-bridge-no-ui": {
+      "value": "The approved bridge constructs no substitute component UI.",
+      "unit": "string"
+    },
+    "ios-bridge-no-state": {
+      "value": "The approved bridge owns no local component business state.",
+      "unit": "string"
+    },
+    "ios-bridge-no-identity-reset": {
+      "value": "The approved bridge applies no identity-reset wrapper around the production component.",
+      "unit": "string"
+    },
+    "ios-bridge-current-input": {
+      "value": "The approved bridge decodes the current supplied fixture into the declared production model.",
+      "unit": "string"
+    },
+    "ios-bridge-callback-forwarding": {
+      "value": "The approved bridge forwards actual production callbacks into observer event receipt.",
+      "unit": "string"
+    },
+    "android-production-component": {
+      "value": "The declared native component is implemented in the exact production file named by its public API.",
+      "unit": "string"
+    },
+    "android-caller-driven-rendering": {
+      "value": "The production component renders the supplied caller model values rather than a separate observer-only approximation.",
+      "unit": "string"
+    },
+    "android-disclosure-production-state": {
+      "value": "Disclosure state is owned by the production component.",
+      "unit": "string"
+    },
+    "android-choice-production-state": {
+      "value": "Choice state is owned by the production component.",
+      "unit": "string"
+    },
+    "android-requested-production-state": {
+      "value": "Requested state is owned by the production component.",
+      "unit": "string"
+    },
+    "android-identity-reset-disclosure": {
+      "value": "The production component resets disclosure to closed when the caller model ID changes.",
+      "unit": "string"
+    },
+    "android-identity-reset-choice": {
+      "value": "The production component resets choice to true when the caller model ID changes.",
+      "unit": "string"
+    },
+    "android-identity-reset-requested": {
+      "value": "The production component resets requested to false when the caller model ID changes.",
+      "unit": "string"
+    },
+    "android-reset-quiet": {
+      "value": "The production identity-reset path invokes no caller business callback.",
+      "unit": "string"
+    },
+    "android-native-disclosure-button": {
+      "value": "Disclosure is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "android-native-choice-button": {
+      "value": "Choice is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "android-native-primary-button": {
+      "value": "Primary is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "android-native-selected": {
+      "value": "The choice exposes its actual selected state through native selected semantics.",
+      "unit": "string"
+    },
+    "android-choice-native-disabled": {
+      "value": "The choice uses actual native disabled semantics when disabled.",
+      "unit": "string"
+    },
+    "android-primary-native-disabled": {
+      "value": "The primary uses actual native disabled semantics when disabled.",
+      "unit": "string"
+    },
+    "android-canvas-preserve-controls": {
+      "value": "The canvas accessibility container preserves descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "android-surface-preserve-controls": {
+      "value": "The surface accessibility container preserves descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "android-unique-semantic-ids": {
+      "value": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "unit": "string"
+    },
+    "android-status-band-provenance": {
+      "value": "The status semantic identifier belongs to the actual painted status band, not a geometry proxy.",
+      "unit": "string"
+    },
+    "android-status-text-provenance": {
+      "value": "The statusText semantic identifier belongs to the actual displayed status Text allocation, not a geometry proxy.",
+      "unit": "string"
+    },
+    "android-no-nested-scroll": {
+      "value": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "unit": "string"
+    },
+    "android-no-blank-padding-rows": {
+      "value": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "unit": "string"
+    },
+    "android-model-row-order": {
+      "value": "Expanded section nodes are generated from caller rows in caller order.",
+      "unit": "string"
+    },
+    "android-no-hidden-input-special-cases": {
+      "value": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "unit": "string"
+    },
+    "android-callback-model-id": {
+      "value": "The business request callback forwards the current caller model ID.",
+      "unit": "string"
+    },
+    "android-callbacks-only-actions": {
+      "value": "The component invokes caller business callbacks only from enabled user-action paths.",
+      "unit": "string"
+    },
+    "android-no-callback-on-disclosure": {
+      "value": "The disclosure open and close paths invoke no caller business callback.",
+      "unit": "string"
+    },
+    "android-no-primary-callback-on-disabled": {
+      "value": "A disabled primary cannot invoke its caller business callback.",
+      "unit": "string"
+    },
+    "android-no-choice-callback-on-disabled": {
+      "value": "A disabled choice cannot invoke its caller business callback.",
+      "unit": "string"
+    },
+    "android-guard-predicate": {
+      "value": "The download enabled predicate is exactly availableMB >= downloadSizeMB && !(meteredConnection && wifiOnly) && !requested.",
+      "unit": "string"
+    },
+    "android-guard-priority": {
+      "value": "The status decision order is insufficient storage, requested, metered connection with Wi-Fi only, then ready.",
+      "unit": "string"
+    },
+    "android-choice-toggle": {
+      "value": "Every successful pre-request Wi-Fi-only toggle flips the current Wi-Fi-only Boolean.",
+      "unit": "string"
+    },
+    "android-choice-callback-value": {
+      "value": "The Wi-Fi-only callback forwards the resulting preference Boolean.",
+      "unit": "string"
+    },
+    "android-choice-callback-count": {
+      "value": "A successful pre-request Wi-Fi-only toggle invokes its caller callback exactly once.",
+      "unit": "string"
+    },
+    "android-download-requested-state": {
+      "value": "A successful eligible download request changes local requested state to true.",
+      "unit": "string"
+    },
+    "android-download-callback-count": {
+      "value": "A successful eligible download request invokes onDownload exactly once.",
+      "unit": "string"
+    },
+    "android-callback-preference": {
+      "value": "The download request callback forwards the current local Wi-Fi-only preference.",
+      "unit": "string"
+    },
+    "android-no-disk-measurement": {
+      "value": "The component does not measure disk capacity; it uses the caller-supplied whole-MB availableMB and downloadSizeMB values.",
+      "unit": "string"
+    },
+    "android-no-audio-fetch": {
+      "value": "The component does not fetch or download audio data.",
+      "unit": "string"
+    },
+    "android-bridge-no-ui": {
+      "value": "The approved bridge constructs no substitute component UI.",
+      "unit": "string"
+    },
+    "android-bridge-no-state": {
+      "value": "The approved bridge owns no local component business state.",
+      "unit": "string"
+    },
+    "android-bridge-no-identity-reset": {
+      "value": "The approved bridge applies no identity-reset wrapper around the production component.",
+      "unit": "string"
+    },
+    "android-bridge-current-input": {
+      "value": "The approved bridge decodes the current supplied fixture into the declared production model.",
+      "unit": "string"
+    },
+    "android-bridge-callback-forwarding": {
+      "value": "The approved bridge forwards actual production callbacks into observer event receipt.",
+      "unit": "string"
+    }
+  },
+  "implementation_audits": [
+    {
+      "id": "ios-production-component",
+      "clause": "The declared native component is implemented in the exact production file named by its public API.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-production-component"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-caller-driven-rendering",
+      "clause": "The production component renders the supplied caller model values rather than a separate observer-only approximation.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-caller-driven-rendering"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-disclosure-production-state",
+      "clause": "Disclosure state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-disclosure-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-production-state",
+      "clause": "Choice state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-requested-production-state",
+      "clause": "Requested state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-requested-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-identity-reset-disclosure",
+      "clause": "The production component resets disclosure to closed when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-identity-reset-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-identity-reset-choice",
+      "clause": "The production component resets choice to true when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-identity-reset-choice"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-identity-reset-requested",
+      "clause": "The production component resets requested to false when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-identity-reset-requested"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-reset-quiet",
+      "clause": "The production identity-reset path invokes no caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-reset-quiet"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-disclosure-button",
+      "clause": "Disclosure is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-disclosure-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-choice-button",
+      "clause": "Choice is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-choice-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-primary-button",
+      "clause": "Primary is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-primary-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-selected",
+      "clause": "The choice exposes its actual selected state through native selected semantics.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-selected"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-native-disabled",
+      "clause": "The choice uses actual native disabled semantics when disabled.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-primary-native-disabled",
+      "clause": "The primary uses actual native disabled semantics when disabled.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-primary-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-canvas-preserve-controls",
+      "clause": "The canvas accessibility container preserves descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-canvas-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-surface-preserve-controls",
+      "clause": "The surface accessibility container preserves descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-surface-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-unique-semantic-ids",
+      "clause": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-unique-semantic-ids"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-status-band-provenance",
+      "clause": "The status semantic identifier belongs to the actual painted status band, not a geometry proxy.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-status-band-provenance"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-status-text-provenance",
+      "clause": "The statusText semantic identifier belongs to the actual displayed status Text allocation, not a geometry proxy.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-status-text-provenance"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-nested-scroll",
+      "clause": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-nested-scroll"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-blank-padding-rows",
+      "clause": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-blank-padding-rows"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-model-row-order",
+      "clause": "Expanded section nodes are generated from caller rows in caller order.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-model-row-order"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-hidden-input-special-cases",
+      "clause": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-hidden-input-special-cases"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-callback-model-id",
+      "clause": "The business request callback forwards the current caller model ID.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-callback-model-id"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-callbacks-only-actions",
+      "clause": "The component invokes caller business callbacks only from enabled user-action paths.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-callbacks-only-actions"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-callback-on-disclosure",
+      "clause": "The disclosure open and close paths invoke no caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-callback-on-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-primary-callback-on-disabled",
+      "clause": "A disabled primary cannot invoke its caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-primary-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-choice-callback-on-disabled",
+      "clause": "A disabled choice cannot invoke its caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-choice-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-guard-predicate",
+      "clause": "The download enabled predicate is exactly availableMB >= downloadSizeMB && !(meteredConnection && wifiOnly) && !requested.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-guard-predicate"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-guard-priority",
+      "clause": "The status decision order is insufficient storage, requested, metered connection with Wi-Fi only, then ready.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-guard-priority"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-toggle",
+      "clause": "Every successful pre-request Wi-Fi-only toggle flips the current Wi-Fi-only Boolean.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-toggle"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-callback-value",
+      "clause": "The Wi-Fi-only callback forwards the resulting preference Boolean.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-callback-value"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-callback-count",
+      "clause": "A successful pre-request Wi-Fi-only toggle invokes its caller callback exactly once.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-callback-count"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-download-requested-state",
+      "clause": "A successful eligible download request changes local requested state to true.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-download-requested-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-download-callback-count",
+      "clause": "A successful eligible download request invokes onDownload exactly once.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-download-callback-count"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-callback-preference",
+      "clause": "The download request callback forwards the current local Wi-Fi-only preference.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-callback-preference"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-disk-measurement",
+      "clause": "The component does not measure disk capacity; it uses the caller-supplied whole-MB availableMB and downloadSizeMB values.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-disk-measurement"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-audio-fetch",
+      "clause": "The component does not fetch or download audio data.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-audio-fetch"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-no-ui",
+      "clause": "The approved bridge constructs no substitute component UI.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-no-ui"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-no-state",
+      "clause": "The approved bridge owns no local component business state.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-no-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-no-identity-reset",
+      "clause": "The approved bridge applies no identity-reset wrapper around the production component.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-no-identity-reset"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-current-input",
+      "clause": "The approved bridge decodes the current supplied fixture into the declared production model.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-current-input"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-callback-forwarding",
+      "clause": "The approved bridge forwards actual production callbacks into observer event receipt.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-callback-forwarding"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-production-component",
+      "clause": "The declared native component is implemented in the exact production file named by its public API.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-production-component"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-caller-driven-rendering",
+      "clause": "The production component renders the supplied caller model values rather than a separate observer-only approximation.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-caller-driven-rendering"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-disclosure-production-state",
+      "clause": "Disclosure state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-disclosure-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-production-state",
+      "clause": "Choice state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-requested-production-state",
+      "clause": "Requested state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-requested-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-identity-reset-disclosure",
+      "clause": "The production component resets disclosure to closed when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-identity-reset-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-identity-reset-choice",
+      "clause": "The production component resets choice to true when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-identity-reset-choice"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-identity-reset-requested",
+      "clause": "The production component resets requested to false when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-identity-reset-requested"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-reset-quiet",
+      "clause": "The production identity-reset path invokes no caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-reset-quiet"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-disclosure-button",
+      "clause": "Disclosure is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-disclosure-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-choice-button",
+      "clause": "Choice is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-choice-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-primary-button",
+      "clause": "Primary is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-primary-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-selected",
+      "clause": "The choice exposes its actual selected state through native selected semantics.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-selected"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-native-disabled",
+      "clause": "The choice uses actual native disabled semantics when disabled.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-primary-native-disabled",
+      "clause": "The primary uses actual native disabled semantics when disabled.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-primary-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-canvas-preserve-controls",
+      "clause": "The canvas accessibility container preserves descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-canvas-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-surface-preserve-controls",
+      "clause": "The surface accessibility container preserves descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-surface-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-unique-semantic-ids",
+      "clause": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-unique-semantic-ids"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-status-band-provenance",
+      "clause": "The status semantic identifier belongs to the actual painted status band, not a geometry proxy.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-status-band-provenance"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-status-text-provenance",
+      "clause": "The statusText semantic identifier belongs to the actual displayed status Text allocation, not a geometry proxy.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-status-text-provenance"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-nested-scroll",
+      "clause": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-nested-scroll"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-blank-padding-rows",
+      "clause": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-blank-padding-rows"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-model-row-order",
+      "clause": "Expanded section nodes are generated from caller rows in caller order.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-model-row-order"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-hidden-input-special-cases",
+      "clause": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-hidden-input-special-cases"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-callback-model-id",
+      "clause": "The business request callback forwards the current caller model ID.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-callback-model-id"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-callbacks-only-actions",
+      "clause": "The component invokes caller business callbacks only from enabled user-action paths.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-callbacks-only-actions"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-callback-on-disclosure",
+      "clause": "The disclosure open and close paths invoke no caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-callback-on-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-primary-callback-on-disabled",
+      "clause": "A disabled primary cannot invoke its caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-primary-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-choice-callback-on-disabled",
+      "clause": "A disabled choice cannot invoke its caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-choice-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-guard-predicate",
+      "clause": "The download enabled predicate is exactly availableMB >= downloadSizeMB && !(meteredConnection && wifiOnly) && !requested.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-guard-predicate"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-guard-priority",
+      "clause": "The status decision order is insufficient storage, requested, metered connection with Wi-Fi only, then ready.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-guard-priority"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-toggle",
+      "clause": "Every successful pre-request Wi-Fi-only toggle flips the current Wi-Fi-only Boolean.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-toggle"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-callback-value",
+      "clause": "The Wi-Fi-only callback forwards the resulting preference Boolean.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-callback-value"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-callback-count",
+      "clause": "A successful pre-request Wi-Fi-only toggle invokes its caller callback exactly once.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-callback-count"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-download-requested-state",
+      "clause": "A successful eligible download request changes local requested state to true.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-download-requested-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-download-callback-count",
+      "clause": "A successful eligible download request invokes onDownload exactly once.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-download-callback-count"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-callback-preference",
+      "clause": "The download request callback forwards the current local Wi-Fi-only preference.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-callback-preference"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-disk-measurement",
+      "clause": "The component does not measure disk capacity; it uses the caller-supplied whole-MB availableMB and downloadSizeMB values.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-disk-measurement"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-audio-fetch",
+      "clause": "The component does not fetch or download audio data.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-audio-fetch"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-no-ui",
+      "clause": "The approved bridge constructs no substitute component UI.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-no-ui"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-no-state",
+      "clause": "The approved bridge owns no local component business state.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-no-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-no-identity-reset",
+      "clause": "The approved bridge applies no identity-reset wrapper around the production component.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-no-identity-reset"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-current-input",
+      "clause": "The approved bridge decodes the current supplied fixture into the declared production model.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-current-input"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-callback-forwarding",
+      "clause": "The approved bridge forwards actual production callbacks into observer event receipt.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-callback-forwarding"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    }
+  ],
+  "state_definitions": [
+    {
+      "id": "overview",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "opened",
+      "input_index": 0,
+      "after_action": 1,
+      "coverage": "targets",
+      "stimulus_action": 1
+    },
+    {
+      "id": "permitted",
+      "input_index": 0,
+      "after_action": 3,
+      "coverage": "full_content",
+      "stimulus_action": 2
+    },
+    {
+      "id": "cleared",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 4
+    },
+    {
+      "id": "restored",
+      "input_index": 0,
+      "after_action": 5,
+      "coverage": "targets",
+      "stimulus_action": 5
+    },
+    {
+      "id": "requested",
+      "input_index": 0,
+      "after_action": 7,
+      "coverage": "full_content",
+      "stimulus_action": 6
+    },
+    {
+      "id": "requested-closed",
+      "input_index": 0,
+      "after_action": 9,
+      "coverage": "full_content",
+      "stimulus_action": 8
+    },
+    {
+      "id": "replaced",
+      "input_index": 1,
+      "after_action": 11,
+      "coverage": "full_content",
+      "stimulus_action": 10
+    },
+    {
+      "id": "held-choice",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "targets",
+      "stimulus_action": 12
+    },
+    {
+      "id": "competing-gates",
+      "input_index": 2,
+      "after_action": 13,
+      "stimulus_action": 13,
+      "coverage": "targets"
+    }
+  ],
+  "sampling_limits": {
+    "runtime": "Representative states; not a Cartesian truth table. Exact-capacity equality and a Wi-Fi-only true unmetered request are not claimed as native executions.",
+    "source_audit": "Source audit is a mandatory separate conjunct and cannot prove native rendered facts or actual dispatch.",
+    "provider": "Frozen Android may perform additional sweeps after targeted actions; the plan makes only its declared target-coverage claim."
+  }
+}

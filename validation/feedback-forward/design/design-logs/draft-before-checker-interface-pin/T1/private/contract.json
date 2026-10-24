@@ -1,0 +1,5270 @@
+{
+  "version": 1,
+  "design_owner": "Independent original design author; revised solely from official preimplementation semantic review",
+  "approval_reference": "T1/private/approval.json; revised proposal awaits fresh independent feasibility review",
+  "sources": [
+    {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "4ac43319e22ffeeb1015b6f3dad87e37e5f2b50065e30dbede344ee3f7ea750b"
+    }
+  ],
+  "required_rule_ids": [
+    "title-label",
+    "subtitle-label",
+    "status-label",
+    "status-text-label",
+    "disclosure-label",
+    "disclosure-enabled",
+    "choice-label",
+    "choice-selected",
+    "choice-enabled",
+    "primary-label",
+    "primary-enabled",
+    "ink-accent-label",
+    "primary-height",
+    "choice-primary-gap",
+    "status-leading-inset",
+    "status-fill",
+    "primary-fill",
+    "surface-fill",
+    "canvas-fill",
+    "ink-fill",
+    "status-leading-clear",
+    "section-0-heading",
+    "section-0-body",
+    "section-1-heading",
+    "section-1-body",
+    "section-2-heading",
+    "section-2-body",
+    "section-3-heading",
+    "section-3-body",
+    "section-4-heading",
+    "section-4-body",
+    "section-5-heading",
+    "section-5-body",
+    "section-6-heading",
+    "section-6-body",
+    "section-7-heading",
+    "section-7-body",
+    "title-wrapping",
+    "subtitle-wrapping",
+    "status-wrapping",
+    "disclosure-wrapping",
+    "choice-wrapping",
+    "primary-wrapping",
+    "heading-wrapping",
+    "body-wrapping",
+    "title-hierarchy",
+    "horizontal-clipping",
+    "row-overlap",
+    "flow-order",
+    "single-column",
+    "full-width-canvas",
+    "collapsed-headings",
+    "collapsed-bodies",
+    "expanded-order",
+    "status-rectangle",
+    "status-no-border",
+    "primary-rectangle",
+    "primary-no-border",
+    "primary-painted-allocation",
+    "ink-rectangle",
+    "choice-receipt",
+    "request-receipt",
+    "disclosure-receipt",
+    "replacement-quiet"
+  ],
+  "rules": [
+    {
+      "id": "title-label",
+      "kind": "control",
+      "target": "title",
+      "property": "label"
+    },
+    {
+      "id": "subtitle-label",
+      "kind": "control",
+      "target": "subtitle",
+      "property": "label"
+    },
+    {
+      "id": "status-label",
+      "kind": "control",
+      "target": "status",
+      "property": "label"
+    },
+    {
+      "id": "status-text-label",
+      "kind": "control",
+      "target": "statusText",
+      "property": "label"
+    },
+    {
+      "id": "disclosure-label",
+      "kind": "control",
+      "target": "disclosure",
+      "property": "label"
+    },
+    {
+      "id": "disclosure-enabled",
+      "kind": "control",
+      "target": "disclosure",
+      "property": "enabled"
+    },
+    {
+      "id": "choice-label",
+      "kind": "control",
+      "target": "choice",
+      "property": "label"
+    },
+    {
+      "id": "choice-selected",
+      "kind": "control",
+      "target": "choice",
+      "property": "selected"
+    },
+    {
+      "id": "choice-enabled",
+      "kind": "control",
+      "target": "choice",
+      "property": "enabled"
+    },
+    {
+      "id": "primary-label",
+      "kind": "control",
+      "target": "primary",
+      "property": "label"
+    },
+    {
+      "id": "primary-enabled",
+      "kind": "control",
+      "target": "primary",
+      "property": "enabled"
+    },
+    {
+      "id": "ink-accent-label",
+      "kind": "control",
+      "target": "inkMark",
+      "property": "label"
+    },
+    {
+      "id": "primary-height",
+      "kind": "geometry",
+      "target": "primary",
+      "property": "height",
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "op": "near"
+    },
+    {
+      "id": "choice-primary-gap",
+      "kind": "geometry",
+      "target": "primary",
+      "reference_target": "choice",
+      "property": "gap_y",
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "op": "near"
+    },
+    {
+      "id": "status-leading-inset",
+      "kind": "geometry",
+      "target": "statusText",
+      "reference_target": "status",
+      "property": "inset_right",
+      "basis": "semantic",
+      "measurement": "accessibility_box",
+      "op": "gte"
+    },
+    {
+      "id": "status-fill",
+      "kind": "manual",
+      "target": "status",
+      "property": "rendered_fill_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "primary-fill",
+      "kind": "manual",
+      "target": "primary",
+      "property": "rendered_fill_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "surface-fill",
+      "kind": "manual",
+      "target": "surface",
+      "property": "rendered_fill_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "canvas-fill",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "rendered_canvas_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "ink-fill",
+      "kind": "manual",
+      "target": "inkMark",
+      "property": "rendered_ink_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "status-leading-clear",
+      "kind": "manual",
+      "target": "status",
+      "property": "rendered_fill_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "section-0-heading",
+      "kind": "control",
+      "target": "section0Heading",
+      "property": "label"
+    },
+    {
+      "id": "section-0-body",
+      "kind": "control",
+      "target": "section0Body",
+      "property": "label"
+    },
+    {
+      "id": "section-1-heading",
+      "kind": "control",
+      "target": "section1Heading",
+      "property": "label"
+    },
+    {
+      "id": "section-1-body",
+      "kind": "control",
+      "target": "section1Body",
+      "property": "label"
+    },
+    {
+      "id": "section-2-heading",
+      "kind": "control",
+      "target": "section2Heading",
+      "property": "label"
+    },
+    {
+      "id": "section-2-body",
+      "kind": "control",
+      "target": "section2Body",
+      "property": "label"
+    },
+    {
+      "id": "section-3-heading",
+      "kind": "control",
+      "target": "section3Heading",
+      "property": "label"
+    },
+    {
+      "id": "section-3-body",
+      "kind": "control",
+      "target": "section3Body",
+      "property": "label"
+    },
+    {
+      "id": "section-4-heading",
+      "kind": "control",
+      "target": "section4Heading",
+      "property": "label"
+    },
+    {
+      "id": "section-4-body",
+      "kind": "control",
+      "target": "section4Body",
+      "property": "label"
+    },
+    {
+      "id": "section-5-heading",
+      "kind": "control",
+      "target": "section5Heading",
+      "property": "label"
+    },
+    {
+      "id": "section-5-body",
+      "kind": "control",
+      "target": "section5Body",
+      "property": "label"
+    },
+    {
+      "id": "section-6-heading",
+      "kind": "control",
+      "target": "section6Heading",
+      "property": "label"
+    },
+    {
+      "id": "section-6-body",
+      "kind": "control",
+      "target": "section6Body",
+      "property": "label"
+    },
+    {
+      "id": "section-7-heading",
+      "kind": "control",
+      "target": "section7Heading",
+      "property": "label"
+    },
+    {
+      "id": "section-7-body",
+      "kind": "control",
+      "target": "section7Body",
+      "property": "label"
+    },
+    {
+      "id": "title-wrapping",
+      "kind": "manual",
+      "target": "title",
+      "property": "wrapping",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "subtitle-wrapping",
+      "kind": "manual",
+      "target": "subtitle",
+      "property": "wrapping",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "status-wrapping",
+      "kind": "manual",
+      "target": "statusText",
+      "property": "wrapping",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "disclosure-wrapping",
+      "kind": "manual",
+      "target": "disclosure",
+      "property": "wrapping",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "choice-wrapping",
+      "kind": "manual",
+      "target": "choice",
+      "property": "wrapping",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "primary-wrapping",
+      "kind": "manual",
+      "target": "primary",
+      "property": "wrapping",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "heading-wrapping",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "wrapping",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "body-wrapping",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "wrapping",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "title-hierarchy",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "hierarchy",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "horizontal-clipping",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "clipping",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "row-overlap",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "overlap",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "flow-order",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "content_presence",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "single-column",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "hierarchy",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "full-width-canvas",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "content_presence",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "collapsed-headings",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "content_presence",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "collapsed-bodies",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "content_presence",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "expanded-order",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "content_presence",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "status-rectangle",
+      "kind": "manual",
+      "target": "status",
+      "property": "content_presence",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "status-no-border",
+      "kind": "manual",
+      "target": "status",
+      "property": "content_presence",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "primary-rectangle",
+      "kind": "manual",
+      "target": "primary",
+      "property": "content_presence",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "primary-no-border",
+      "kind": "manual",
+      "target": "primary",
+      "property": "content_presence",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "primary-painted-allocation",
+      "kind": "manual",
+      "target": "primary",
+      "property": "content_presence",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "ink-rectangle",
+      "kind": "manual",
+      "target": "inkMark",
+      "property": "content_presence",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "choice-receipt",
+      "kind": "event"
+    },
+    {
+      "id": "request-receipt",
+      "kind": "event"
+    },
+    {
+      "id": "disclosure-receipt",
+      "kind": "event"
+    },
+    {
+      "id": "replacement-quiet",
+      "kind": "event",
+      "stimulus": "caller_update"
+    }
+  ],
+  "scenarios": {
+    "H1": {
+      "states": [
+        {
+          "id": "overview",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        },
+        {
+          "id": "opened",
+          "input_index": 0,
+          "after_action": 1,
+          "coverage": "targets",
+          "stimulus_action": 1
+        },
+        {
+          "id": "permitted",
+          "input_index": 0,
+          "after_action": 3,
+          "coverage": "full_content",
+          "stimulus_action": 2
+        },
+        {
+          "id": "cleared",
+          "input_index": 0,
+          "after_action": 4,
+          "coverage": "targets",
+          "stimulus_action": 4
+        },
+        {
+          "id": "restored",
+          "input_index": 0,
+          "after_action": 5,
+          "coverage": "targets",
+          "stimulus_action": 5
+        },
+        {
+          "id": "requested",
+          "input_index": 0,
+          "after_action": 7,
+          "coverage": "full_content",
+          "stimulus_action": 6
+        },
+        {
+          "id": "requested-closed",
+          "input_index": 0,
+          "after_action": 9,
+          "coverage": "full_content",
+          "stimulus_action": 8
+        },
+        {
+          "id": "replaced",
+          "input_index": 1,
+          "after_action": 11,
+          "coverage": "full_content",
+          "stimulus_action": 10
+        },
+        {
+          "id": "held-choice",
+          "input_index": 1,
+          "after_action": 12,
+          "coverage": "targets",
+          "stimulus_action": 12
+        }
+      ],
+      "actions": [
+        {
+          "type": "sweep",
+          "state_id": "overview",
+          "max_steps": 18
+        },
+        {
+          "type": "tap",
+          "target": "disclosure",
+          "reveal": true,
+          "max_steps": 18,
+          "observation_max_scrolls": 18,
+          "state_id": "opened"
+        },
+        {
+          "type": "tap",
+          "target": "choice",
+          "reveal": true,
+          "max_steps": 18,
+          "observation_max_scrolls": 18,
+          "expect_callback": "transfer.ack:XFR-9074:true"
+        },
+        {
+          "type": "sweep",
+          "state_id": "permitted",
+          "max_steps": 18
+        },
+        {
+          "type": "tap",
+          "target": "choice",
+          "reveal": true,
+          "max_steps": 18,
+          "observation_max_scrolls": 18,
+          "state_id": "cleared",
+          "expect_callback": "transfer.ack:XFR-9074:false"
+        },
+        {
+          "type": "tap",
+          "target": "choice",
+          "reveal": true,
+          "max_steps": 18,
+          "observation_max_scrolls": 18,
+          "state_id": "restored",
+          "expect_callback": "transfer.ack:XFR-9074:true"
+        },
+        {
+          "type": "tap",
+          "target": "primary",
+          "reveal": true,
+          "max_steps": 18,
+          "observation_max_scrolls": 18,
+          "expect_callback": "transfer.release:XFR-9074"
+        },
+        {
+          "type": "sweep",
+          "state_id": "requested",
+          "max_steps": 18
+        },
+        {
+          "type": "tap",
+          "target": "disclosure",
+          "reveal": true,
+          "max_steps": 18,
+          "observation_max_scrolls": 18
+        },
+        {
+          "type": "sweep",
+          "state_id": "requested-closed",
+          "max_steps": 18
+        },
+        {
+          "type": "apply_next_fixture"
+        },
+        {
+          "type": "sweep",
+          "state_id": "replaced",
+          "max_steps": 18
+        },
+        {
+          "type": "tap",
+          "target": "choice",
+          "reveal": true,
+          "max_steps": 18,
+          "observation_max_scrolls": 18,
+          "state_id": "held-choice",
+          "expect_callback": "transfer.ack:XFR-9306:true"
+        }
+      ],
+      "values": {
+        "title-label": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/title"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/title"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/title"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/title"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/title"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/title"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/title"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/title"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/title"
+            }
+          }
+        },
+        "subtitle-label": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/subtitle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/subtitle"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/subtitle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/subtitle"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/subtitle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/subtitle"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/subtitle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/subtitle"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/subtitle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/subtitle"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/subtitle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/subtitle"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/subtitle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/subtitle"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/subtitle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/subtitle"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/subtitle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/subtitle"
+            }
+          }
+        },
+        "status-label": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/status"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/status"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/status"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/status"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/status"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/status"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/status"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/status"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/status"
+            }
+          }
+        },
+        "status-text-label": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/status"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/status"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/status"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/status"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/status"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/status"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/status"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/status"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/status"
+            }
+          }
+        },
+        "disclosure-label": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/disclosure"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/disclosure"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/disclosure"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/disclosure"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/disclosure"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/disclosure"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/disclosure"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/disclosure"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/disclosure"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/disclosure"
+            }
+          }
+        },
+        "disclosure-enabled": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/disclosureEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/disclosureEnabled"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/disclosureEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/disclosureEnabled"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/disclosureEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/disclosureEnabled"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/disclosureEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/disclosureEnabled"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/disclosureEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/disclosureEnabled"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/disclosureEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/disclosureEnabled"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/disclosureEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/disclosureEnabled"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/disclosureEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/disclosureEnabled"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/disclosureEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/disclosureEnabled"
+            }
+          }
+        },
+        "choice-label": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/choice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/choice"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/choice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/choice"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/choice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/choice"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/choice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/choice"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/choice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/choice"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/choice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/choice"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/choice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/choice"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/choice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/choice"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/choice"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/choice"
+            }
+          }
+        },
+        "choice-selected": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/selected"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/selected"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/selected"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/selected"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/selected"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/selected"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/selected"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/selected"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/selected"
+            }
+          }
+        },
+        "choice-enabled": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/choiceEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/choiceEnabled"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/choiceEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/choiceEnabled"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/choiceEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/choiceEnabled"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/choiceEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/choiceEnabled"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/choiceEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/choiceEnabled"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/choiceEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/choiceEnabled"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/choiceEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/choiceEnabled"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/choiceEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/choiceEnabled"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/choiceEnabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/choiceEnabled"
+            }
+          }
+        },
+        "primary-label": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/primary"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/primary"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/primary"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/primary"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/primary"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/primary"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/primary"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/primary"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/primary"
+            }
+          }
+        },
+        "primary-enabled": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/enabled"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/enabled"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/enabled"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/enabled"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/enabled"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/enabled"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/enabled"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/enabled"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/enabled"
+            }
+          }
+        },
+        "ink-accent-label": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/inkAccent"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/inkAccent"
+            }
+          },
+          "opened": {
+            "not_applicable": "This targeted business transition does not change the ink accent; its exact accessible label is checked in every representative full state."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/inkAccent"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/inkAccent"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This targeted business transition does not change the ink accent; its exact accessible label is checked in every representative full state."
+          },
+          "restored": {
+            "not_applicable": "This targeted business transition does not change the ink accent; its exact accessible label is checked in every representative full state."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/inkAccent"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/inkAccent"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/inkAccent"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/inkAccent"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/inkAccent"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/inkAccent"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "This targeted business transition does not change the ink accent; its exact accessible label is checked in every representative full state."
+          }
+        },
+        "primary-height": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryHeight"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryHeight"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryHeight"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryHeight"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryHeight"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryHeight"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryHeight"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryHeight"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/primaryHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/primaryHeight"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          }
+        },
+        "choice-primary-gap": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/choicePrimaryGap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/choicePrimaryGap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/choicePrimaryGap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/choicePrimaryGap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/choicePrimaryGap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/choicePrimaryGap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/choicePrimaryGap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/choicePrimaryGap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/choicePrimaryGap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/choicePrimaryGap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/choicePrimaryGap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/choicePrimaryGap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/choicePrimaryGap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/choicePrimaryGap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/choicePrimaryGap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/choicePrimaryGap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/choicePrimaryGap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/choicePrimaryGap"
+            },
+            "tolerance": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/ios/tolerance"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/android/tolerance"
+              }
+            }
+          }
+        },
+        "status-leading-inset": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/statusLeadingMinimum"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/statusLeadingMinimum"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/statusLeadingMinimum"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/statusLeadingMinimum"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/statusLeadingMinimum"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/statusLeadingMinimum"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/statusLeadingMinimum"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/statusLeadingMinimum"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/statusLeadingMinimum"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/statusLeadingMinimum"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/statusLeadingMinimum"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/statusLeadingMinimum"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/statusLeadingMinimum"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/statusLeadingMinimum"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/statusLeadingMinimum"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/statusLeadingMinimum"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/ios/statusLeadingMinimum"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/android/statusLeadingMinimum"
+            }
+          }
+        },
+        "status-fill": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/statusColor"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/statusColor"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/statusColor"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/statusColor"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/statusColor"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/statusColor"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/statusColor"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/statusColor"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/statusColor"
+            }
+          }
+        },
+        "primary-fill": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/buttonColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/buttonColor"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/buttonColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/buttonColor"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/buttonColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/buttonColor"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/buttonColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/buttonColor"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/buttonColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/buttonColor"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/buttonColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/buttonColor"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/buttonColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/buttonColor"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/buttonColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/buttonColor"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/buttonColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/buttonColor"
+            }
+          }
+        },
+        "surface-fill": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/surface"
+            }
+          },
+          "opened": {
+            "not_applicable": "This targeted transition checkpoint asserts state and callbacks, not a complete style result; unchanged/state-equivalent style is verified at the representative full checkpoints."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/surface"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This targeted transition checkpoint asserts state and callbacks, not a complete style result; unchanged/state-equivalent style is verified at the representative full checkpoints."
+          },
+          "restored": {
+            "not_applicable": "This targeted transition checkpoint asserts state and callbacks, not a complete style result; unchanged/state-equivalent style is verified at the representative full checkpoints."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/surface"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/surface"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/surface"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "This targeted transition checkpoint asserts state and callbacks, not a complete style result; unchanged/state-equivalent style is verified at the representative full checkpoints."
+          }
+        },
+        "canvas-fill": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/canvas"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/canvas"
+            }
+          },
+          "opened": {
+            "not_applicable": "This targeted transition checkpoint asserts state and callbacks, not a complete style result; unchanged/state-equivalent style is verified at the representative full checkpoints."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/canvas"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/canvas"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This targeted transition checkpoint asserts state and callbacks, not a complete style result; unchanged/state-equivalent style is verified at the representative full checkpoints."
+          },
+          "restored": {
+            "not_applicable": "This targeted transition checkpoint asserts state and callbacks, not a complete style result; unchanged/state-equivalent style is verified at the representative full checkpoints."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/canvas"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/canvas"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/canvas"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/canvas"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/canvas"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/canvas"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "This targeted transition checkpoint asserts state and callbacks, not a complete style result; unchanged/state-equivalent style is verified at the representative full checkpoints."
+          }
+        },
+        "ink-fill": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/ink"
+            }
+          },
+          "opened": {
+            "not_applicable": "This targeted transition checkpoint asserts state and callbacks, not a complete style result; unchanged/state-equivalent style is verified at the representative full checkpoints."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/ink"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This targeted transition checkpoint asserts state and callbacks, not a complete style result; unchanged/state-equivalent style is verified at the representative full checkpoints."
+          },
+          "restored": {
+            "not_applicable": "This targeted transition checkpoint asserts state and callbacks, not a complete style result; unchanged/state-equivalent style is verified at the representative full checkpoints."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/ink"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/ink"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/palette/ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/palette/ink"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "This targeted transition checkpoint asserts state and callbacks, not a complete style result; unchanged/state-equivalent style is verified at the representative full checkpoints."
+          }
+        },
+        "status-leading-clear": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/overview/statusColor"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/opened/statusColor"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/statusColor"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/statusColor"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/statusColor"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/statusColor"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested-closed/statusColor"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/replaced/statusColor"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/statusColor"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/statusColor"
+            }
+          }
+        },
+        "section-0-heading": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/0/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/0/title"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/0/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/0/title"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-0-body": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/0/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/0/body"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/0/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/0/body"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-1-heading": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/1/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/1/title"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/1/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/1/title"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-1-body": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/1/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/1/body"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/1/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/1/body"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-2-heading": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/2/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/2/title"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/2/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/2/title"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-2-body": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/2/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/2/body"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/2/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/2/body"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-3-heading": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/3/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/3/title"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/3/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/3/title"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-3-body": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/3/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/3/body"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/3/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/3/body"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-4-heading": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/4/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/4/title"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/4/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/4/title"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-4-body": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/4/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/4/body"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/4/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/4/body"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-5-heading": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/5/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/5/title"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/5/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/5/title"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-5-body": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/5/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/5/body"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/5/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/5/body"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-6-heading": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/6/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/6/title"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/6/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/6/title"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-6-body": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/6/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/6/body"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/6/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/6/body"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-7-heading": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/7/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/7/title"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/7/title"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/7/title"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "section-7-body": {
+          "overview": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "opened": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/7/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/7/body"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "restored": {
+            "not_applicable": "This intermediate checkpoint targets the declared transition. Exact expanded copy and complete content are checked in permitted and requested full sweeps of the unchanged same caller input."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/7/body"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/rowAssertions/7/body"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "replaced": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          },
+          "held-choice": {
+            "not_applicable": "Disclosure is closed, so this expanded heading/body node does not exist; separate closed-heading and closed-body propositions cover representative closed full states."
+          }
+        },
+        "title-wrapping": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          }
+        },
+        "subtitle-wrapping": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          }
+        },
+        "status-wrapping": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          }
+        },
+        "disclosure-wrapping": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          }
+        },
+        "choice-wrapping": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          }
+        },
+        "primary-wrapping": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          }
+        },
+        "heading-wrapping": {
+          "overview": {
+            "not_applicable": "Expanded reading rows are absent while disclosure is closed; all visible compact text roles retain independent wrapping checks."
+          },
+          "opened": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "restored": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Expanded reading rows are absent while disclosure is closed; all visible compact text roles retain independent wrapping checks."
+          },
+          "replaced": {
+            "not_applicable": "Expanded reading rows are absent while disclosure is closed; all visible compact text roles retain independent wrapping checks."
+          },
+          "held-choice": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          }
+        },
+        "body-wrapping": {
+          "overview": {
+            "not_applicable": "Expanded reading rows are absent while disclosure is closed; all visible compact text roles retain independent wrapping checks."
+          },
+          "opened": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "restored": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Expanded reading rows are absent while disclosure is closed; all visible compact text roles retain independent wrapping checks."
+          },
+          "replaced": {
+            "not_applicable": "Expanded reading rows are absent while disclosure is closed; all visible compact text roles retain independent wrapping checks."
+          },
+          "held-choice": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          }
+        },
+        "title-hierarchy": {
+          "overview": {
+            "not_applicable": "Expanded reading rows are absent while disclosure is closed; all visible compact text roles retain independent wrapping checks."
+          },
+          "opened": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "restored": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Expanded reading rows are absent while disclosure is closed; all visible compact text roles retain independent wrapping checks."
+          },
+          "replaced": {
+            "not_applicable": "Expanded reading rows are absent while disclosure is closed; all visible compact text roles retain independent wrapping checks."
+          },
+          "held-choice": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          }
+        },
+        "horizontal-clipping": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "restored": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          }
+        },
+        "row-overlap": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "restored": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          }
+        },
+        "flow-order": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "restored": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          }
+        },
+        "single-column": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "restored": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          }
+        },
+        "full-width-canvas": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "restored": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          }
+        },
+        "collapsed-headings": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "permitted": {
+            "not_applicable": "Disclosure is open; exact expanded text, wrapping and caller-order requirements cover the opposite condition."
+          },
+          "cleared": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "restored": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "requested": {
+            "not_applicable": "Disclosure is open; exact expanded text, wrapping and caller-order requirements cover the opposite condition."
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          }
+        },
+        "collapsed-bodies": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "permitted": {
+            "not_applicable": "Disclosure is open; exact expanded text, wrapping and caller-order requirements cover the opposite condition."
+          },
+          "cleared": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "restored": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "requested": {
+            "not_applicable": "Disclosure is open; exact expanded text, wrapping and caller-order requirements cover the opposite condition."
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          }
+        },
+        "expanded-order": {
+          "overview": {
+            "not_applicable": "Expanded reading rows are absent while disclosure is closed; all visible compact text roles retain independent wrapping checks."
+          },
+          "opened": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "restored": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Expanded reading rows are absent while disclosure is closed; all visible compact text roles retain independent wrapping checks."
+          },
+          "replaced": {
+            "not_applicable": "Expanded reading rows are absent while disclosure is closed; all visible compact text roles retain independent wrapping checks."
+          },
+          "held-choice": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          }
+        },
+        "status-rectangle": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          }
+        },
+        "status-no-border": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          }
+        },
+        "primary-rectangle": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          }
+        },
+        "primary-no-border": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          }
+        },
+        "primary-painted-allocation": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          }
+        },
+        "ink-rectangle": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "opened": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "cleared": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "restored": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/truth"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/truth"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "This explicitly targeted intermediate transition does not assert full-content visual acceptance; representative full checkpoints retain this structural obligation."
+          }
+        },
+        "choice-receipt": {
+          "overview": {
+            "not_applicable": "This state is not bound to an independent choice activation; its original stimulus has a different callback contract."
+          },
+          "opened": {
+            "not_applicable": "This state is not bound to an independent choice activation; its original stimulus has a different callback contract."
+          },
+          "permitted": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/choiceEvents"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/permitted/choiceEvents"
+            }
+          },
+          "cleared": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/choiceEvents"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/cleared/choiceEvents"
+            }
+          },
+          "restored": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/choiceEvents"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/restored/choiceEvents"
+            }
+          },
+          "requested": {
+            "not_applicable": "This state is not bound to an independent choice activation; its original stimulus has a different callback contract."
+          },
+          "requested-closed": {
+            "not_applicable": "This state is not bound to an independent choice activation; its original stimulus has a different callback contract."
+          },
+          "replaced": {
+            "not_applicable": "This state is not bound to an independent choice activation; its original stimulus has a different callback contract."
+          },
+          "held-choice": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/choiceEvents"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/held-choice/choiceEvents"
+            }
+          }
+        },
+        "request-receipt": {
+          "overview": {
+            "not_applicable": "Only requested follows the successful business primary activation; disabled controls are never credited as callback dispatch."
+          },
+          "opened": {
+            "not_applicable": "Only requested follows the successful business primary activation; disabled controls are never credited as callback dispatch."
+          },
+          "permitted": {
+            "not_applicable": "Only requested follows the successful business primary activation; disabled controls are never credited as callback dispatch."
+          },
+          "cleared": {
+            "not_applicable": "Only requested follows the successful business primary activation; disabled controls are never credited as callback dispatch."
+          },
+          "restored": {
+            "not_applicable": "Only requested follows the successful business primary activation; disabled controls are never credited as callback dispatch."
+          },
+          "requested": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/requestEvents"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/cases/H1/states/requested/requestEvents"
+            }
+          },
+          "requested-closed": {
+            "not_applicable": "Only requested follows the successful business primary activation; disabled controls are never credited as callback dispatch."
+          },
+          "replaced": {
+            "not_applicable": "Only requested follows the successful business primary activation; disabled controls are never credited as callback dispatch."
+          },
+          "held-choice": {
+            "not_applicable": "Only requested follows the successful business primary activation; disabled controls are never credited as callback dispatch."
+          }
+        },
+        "disclosure-receipt": {
+          "overview": {
+            "not_applicable": "Only opened and requested-closed are bound to actual disclosure activations and their own original receipt intervals."
+          },
+          "opened": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/quiet"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/quiet"
+            }
+          },
+          "permitted": {
+            "not_applicable": "Only opened and requested-closed are bound to actual disclosure activations and their own original receipt intervals."
+          },
+          "cleared": {
+            "not_applicable": "Only opened and requested-closed are bound to actual disclosure activations and their own original receipt intervals."
+          },
+          "restored": {
+            "not_applicable": "Only opened and requested-closed are bound to actual disclosure activations and their own original receipt intervals."
+          },
+          "requested": {
+            "not_applicable": "Only opened and requested-closed are bound to actual disclosure activations and their own original receipt intervals."
+          },
+          "requested-closed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/quiet"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/quiet"
+            }
+          },
+          "replaced": {
+            "not_applicable": "Only opened and requested-closed are bound to actual disclosure activations and their own original receipt intervals."
+          },
+          "held-choice": {
+            "not_applicable": "Only opened and requested-closed are bound to actual disclosure activations and their own original receipt intervals."
+          }
+        },
+        "replacement-quiet": {
+          "overview": {
+            "not_applicable": "Only a real caller-update stimulus can establish update quietness; other empty intervals are not substituted."
+          },
+          "opened": {
+            "not_applicable": "Only a real caller-update stimulus can establish update quietness; other empty intervals are not substituted."
+          },
+          "permitted": {
+            "not_applicable": "Only a real caller-update stimulus can establish update quietness; other empty intervals are not substituted."
+          },
+          "cleared": {
+            "not_applicable": "Only a real caller-update stimulus can establish update quietness; other empty intervals are not substituted."
+          },
+          "restored": {
+            "not_applicable": "Only a real caller-update stimulus can establish update quietness; other empty intervals are not substituted."
+          },
+          "requested": {
+            "not_applicable": "Only a real caller-update stimulus can establish update quietness; other empty intervals are not substituted."
+          },
+          "requested-closed": {
+            "not_applicable": "Only a real caller-update stimulus can establish update quietness; other empty intervals are not substituted."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/quiet"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/quiet"
+            }
+          },
+          "held-choice": {
+            "not_applicable": "Only a real caller-update stimulus can establish update quietness; other empty intervals are not substituted."
+          }
+        }
+      }
+    }
+  }
+}

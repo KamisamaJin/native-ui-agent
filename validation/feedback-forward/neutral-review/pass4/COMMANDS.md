@@ -1,0 +1,42 @@
+Every runner entry retains full actual subprocess argv, stdout, stderr, start/end Unix timestamps and real child exit code. The Python logging runner returns 0 even when its child fails; inspect the recorded child exit_code. Marked negative integrity controls are not product evidence. Early reconstructed readout records and missing raw transport limits are explicitly labeled in reconstructed-initial/ and REVIEW.md.
+
+| Actual command label | Child exit | Seconds | Record |
+| --- | ---: | ---: | --- |
+| inspect-feedback | 0 | 0.030669 | commands/inspect-feedback.json |
+| runner-display-adjust | 0 | 0.020582 | commands/runner-display-adjust.json |
+| feedback-summary | 0 | 0.026655 | commands/feedback-summary.json |
+| functions-provenance | 0 | 0.015707 | commands/functions-provenance.json |
+| help-routes | 0 | 0.038086 | commands/help-routes.json |
+| help-native-checks | 0 | 0.036286 | commands/help-native-checks.json |
+| help-review | 0 | 0.038161 | commands/help-review.json |
+| help-execution | 0 | 0.039244 | commands/help-execution.json |
+| read-api-contracts | 0 | 0.022797 | commands/read-api-contracts.json |
+| recompile-targeted | 0 | 0.048254 | commands/recompile-targeted.json |
+| native-checks | 3 | 0.055754 | commands/native-checks.json |
+| routes-audit | 0 | 0.047524 | commands/routes-audit.json |
+| integrity-and-rows | 0 | 0.058394 | commands/integrity-and-rows.json |
+| binding-summary | 0 | 0.026805 | commands/binding-summary.json |
+| locate-review-api | 0 | 0.012964 | commands/locate-review-api.json |
+| read-review-details | 0 | 0.020064 | commands/read-review-details.json |
+| route-verified-scope | 0 | 0.06232 | commands/route-verified-scope.json |
+| route-no-manifest | 0 | 0.054497 | commands/route-no-manifest.json |
+| admit-full | 0 | 0.057414 | commands/admit-full.json |
+| admit-targeted | 0 | 0.057473 | commands/admit-targeted.json |
+| diagnostic-action-colors | 0 | 0.170642 | commands/diagnostic-action-colors.json |
+| write-visual-observations | 1 | 0.016789 | commands/write-visual-observations.json |
+| write-visual-observations-corrected | 0 | 0.030046 | commands/write-visual-observations-corrected.json |
+| native-checks-with-visual | 1 | 0.058016 | commands/native-checks-with-visual.json |
+| read-retest-environment-details | 0 | 0.020297 | commands/read-retest-environment-details.json |
+| native-manifest-admission-summary | 0 | 0.027308 | commands/native-manifest-admission-summary.json |
+| controls-and-diagnostic-admission | 0 | 0.07274 | commands/controls-and-diagnostic-admission.json |
+| route-with-visual | 0 | 0.056734 | commands/route-with-visual.json |
+| compile-full-ordinary400 | 0 | 0.043607 | commands/compile-full-ordinary400.json |
+| admit-reviewed-report-receipt-gate | 1 | 0.045271 | commands/admit-reviewed-report-receipt-gate.json |
+| compile-full-narrow280-large | 0 | 0.043819 | commands/compile-full-narrow280-large.json |
+| final-ledger-and-scope-summary | 0 | 0.034885 | commands/final-ledger-and-scope-summary.json |
+| inspect-native-test-record | 0 | 0.010834 | commands/inspect-native-test-record.json |
+| write-final-review | 0 | 0.020222 | commands/write-final-review.json |
+| preserve-transport-and-initial-readouts | 0 | 0.072092 | commands/preserve-transport-and-initial-readouts.json |
+| final-evidence-consistency | 0 | 0.059356 | commands/final-evidence-consistency.json |
+| prepare-seal-script | 0 | 0.019375 | commands/prepare-seal-script.json |
+| seal | 0 | 0.023033 | commands/seal.json |

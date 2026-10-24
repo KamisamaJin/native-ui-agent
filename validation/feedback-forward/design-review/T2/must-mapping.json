@@ -1,0 +1,1239 @@
+{
+  "method": "Reviewer checked raw original BRIEF/API clause-by-clause, then inspected each cited runtime/source route and independent expected values; this is not merely a mechanical index-completeness assertion. Crosswalk IDs are retained as stable names.",
+  "entries": [
+    {
+      "id": "production",
+      "original_clause": "Real reusable SwiftUI and Compose production components in the exact exported paths.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:3",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:3"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-bridge-no-ui",
+        "android-caller-driven-rendering",
+        "android-production-component",
+        "ios-bridge-no-ui",
+        "ios-caller-driven-rendering",
+        "ios-production-component"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Both exact production files are mandatory source-scoped items. Bridges instantiate the API directly; no substitute UI is present in the approved bridge.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "storage-boundary",
+      "original_clause": "availableMB >= downloadSizeMB, supplied whole decimal MB, with no disk measurement.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:5"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "primary-enabled"
+      ],
+      "source_audit_ids": [
+        "android-guard-predicate",
+        "android-no-disk-measurement",
+        "ios-guard-predicate",
+        "ios-no-disk-measurement"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Independent interpreter confirms sampled gates. Equality and unmetered paths are deliberately source-reviewed through the complete >= predicate, rather than claimed as native executions.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "storage-priority",
+      "original_clause": "Insufficient storage wins over network gate.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:5",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:11"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "status-label"
+      ],
+      "source_audit_ids": [
+        "android-guard-predicate",
+        "android-guard-priority",
+        "ios-guard-predicate",
+        "ios-guard-priority"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "The appended competing-gates fixture presents storage and network holds together; Storage needed and disabled primary are independently expected. Source decision-order review covers the general rule.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "initial-choice",
+      "original_clause": "Wi-Fi-only starts selected and remains independently observable.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:6",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:11"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "choice-label",
+        "choice-selected"
+      ],
+      "source_audit_ids": [
+        "android-choice-production-state",
+        "android-native-selected",
+        "ios-choice-production-state",
+        "ios-native-selected"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "All initial models expect selected=true and enabled=true independently, with a literal label. Source native-selected construction supplements the runtime trait check.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "network-gate",
+      "original_clause": "Metered Wi-Fi-only selection blocks; deselection permits when storage sufficient.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:6",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:11"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "choice-selected",
+        "primary-enabled",
+        "status-label"
+      ],
+      "source_audit_ids": [
+        "android-guard-predicate",
+        "android-guard-priority",
+        "ios-guard-predicate",
+        "ios-guard-priority"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Initial true/false/true/false choice route exercises metered gate reversal. The complete source predicate retains sufficient storage and pending-request guards.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "choice-reversals",
+      "original_clause": "Each native choice activation toggles and calls onWifiOnlyChange(result) once.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:6"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "choice-receipt",
+        "choice-selected",
+        "primary-enabled",
+        "status-label"
+      ],
+      "source_audit_ids": [
+        "android-choice-callback-count",
+        "android-choice-callback-value",
+        "android-choice-toggle",
+        "ios-choice-callback-count",
+        "ios-choice-callback-value",
+        "ios-choice-toggle"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Independent event interpreter matches each actual activation index, resulting Boolean and exactly one event. Held-choice remains enabled even under storage hold.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "request-callback",
+      "original_clause": "Eligible primary invokes onDownload(current tour.id,current wifiOnly) exactly once.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:7",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:51"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "request-receipt"
+      ],
+      "source_audit_ids": [
+        "android-callback-model-id",
+        "android-callback-preference",
+        "android-callbacks-only-actions",
+        "android-download-callback-count",
+        "ios-callback-model-id",
+        "ios-callback-preference",
+        "ios-callbacks-only-actions",
+        "ios-download-callback-count"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Request receipt binds successful action6, current model ID and current preference. Source review separately covers the unmetered Wi-Fi-true path absent from sampled native inputs.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "requested-state",
+      "original_clause": "Request changes local requested state and disables choice and primary, with requested labels/status.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:7",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "primary-enabled",
+        "primary-label",
+        "status-label"
+      ],
+      "source_audit_ids": [
+        "android-choice-native-disabled",
+        "android-download-requested-state",
+        "android-primary-native-disabled",
+        "android-requested-production-state",
+        "ios-choice-native-disabled",
+        "ios-download-requested-state",
+        "ios-primary-native-disabled",
+        "ios-requested-production-state"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Requested full and requested-closed full states retain disabled choice/primary, requested status and Requested label, while disclosure remains enabled.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "no-fetch",
+      "original_clause": "Records request only; does not fetch audio.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:7"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-no-audio-fetch",
+        "ios-no-audio-fetch"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Both source files have explicit no-audio-fetch obligations. This is source review, not a claim about rendered pixels.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "disclosure-toggle",
+      "original_clause": "Initially closed; disclosure toggles all chapter pairs in caller order.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:8"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "collapsed-bodies",
+        "collapsed-headings",
+        "disclosure-label",
+        "expanded-order",
+        "section-0-body",
+        "section-0-heading",
+        "section-1-body",
+        "section-1-heading",
+        "section-2-body",
+        "section-2-heading",
+        "section-3-body",
+        "section-3-heading",
+        "section-4-body",
+        "section-4-heading",
+        "section-5-body",
+        "section-5-heading",
+        "section-6-body",
+        "section-6-heading",
+        "section-7-body",
+        "section-7-heading"
+      ],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-disclosure-production-state",
+        "android-model-row-order",
+        "ios-caller-driven-rendering",
+        "ios-disclosure-production-state",
+        "ios-model-row-order"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Initial closed, real open and real post-request close are separately observed. Permitted/requested full sweeps carry exact eight heading/body pairs and caller order.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "disclosure-quiet",
+      "original_clause": "Disclosure open and close have no caller business callback.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:8"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "disclosure-receipt"
+      ],
+      "source_audit_ids": [
+        "android-no-callback-on-disclosure",
+        "ios-no-callback-on-disclosure"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Opening action1 and closing action8 have their own empty expected intervals and require successful native activation; source no-callback paths are separate.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "disclosure-enabled",
+      "original_clause": "Disclosure remains enabled after request.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "disclosure-enabled",
+        "disclosure-receipt"
+      ],
+      "source_audit_ids": [
+        "android-native-disclosure-button",
+        "ios-native-disclosure-button"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Native enabled checks apply after request; the close callback assertion requires real successful dispatch at action8.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "identity-choice-reset",
+      "original_clause": "New ID resets local Wi-Fi-only to true.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:9",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "choice-selected"
+      ],
+      "source_audit_ids": [
+        "android-identity-reset-choice",
+        "ios-identity-reset-choice"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Replacement selected=true follows a prior false choice; a later actual held-choice activation confirms the reset choice is enabled.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "identity-disclosure-reset",
+      "original_clause": "New ID resets local disclosure to closed.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:9",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "collapsed-bodies",
+        "collapsed-headings",
+        "disclosure-label"
+      ],
+      "source_audit_ids": [
+        "android-identity-reset-disclosure",
+        "ios-identity-reset-disclosure"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "The runtime replacement is closed. Because disclosure was already closed immediately before the update, the source reset-disclosure item is necessary to prove the reset branch rather than infer it from this sample.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "identity-requested-reset",
+      "original_clause": "New ID resets requested false and current rendered model values together.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:9",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "primary-label",
+        "status-label",
+        "subtitle-label",
+        "title-label"
+      ],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-identity-reset-requested",
+        "ios-caller-driven-rendering",
+        "ios-identity-reset-requested"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Replacement title/subtitle/status/primary labels update after a requested state, with source reset-requested and current-model rendering checks. P1 remains storage-blocked and P2 network-blocked.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "identity-quiet-mounted",
+      "original_clause": "Same mounted component receives actual caller fixture update with no callbacks.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:9",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "replacement-quiet"
+      ],
+      "source_audit_ids": [
+        "android-bridge-current-input",
+        "android-bridge-no-identity-reset",
+        "android-reset-quiet",
+        "ios-bridge-current-input",
+        "ios-bridge-no-identity-reset",
+        "ios-reset-quiet"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "The event rule explicitly sets caller_update and stimulus_action10/13. Frozen callback_verdict requires caller_fixture_update, successful dispatch, same instance/process, advanced input and the original event interval.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "business-strings",
+      "original_clause": "Exact title/subtitle, status precedence, Review/Hide, Get audio/Requested, Wi-Fi only labels.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:11"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "choice-label",
+        "disclosure-label",
+        "primary-label",
+        "status-label",
+        "subtitle-label",
+        "title-label"
+      ],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-guard-priority",
+        "ios-caller-driven-rendering",
+        "ios-guard-priority"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Fresh independent interpreter reproduces exact current title, language/MB composition, precedence, disclosure, choice and primary labels in all30 input/state combinations.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "environment",
+      "original_clause": "P1 400x600; P2 280x600 xxxLarge/1.3; light LTR; host horizontal16 top24; same API/source.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:13"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-no-hidden-input-special-cases",
+        "ios-no-hidden-input-special-cases"
+      ],
+      "additional_routes": [
+        "candidate-v9/scripts/acceptance.py:environment",
+        "candidate-v9/assets/ios-observer/ObserverApp.swift:58-92",
+        "candidate-v9/assets/android-observer/NativeObserverTest.kt:256-264"
+      ],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Separate frozen acceptance.environment checks actual native width/height/theme/direction/text scale; original environment files and their approval digests match. Host templates supply16 horizontal and24 top padding.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "original-checkpoints",
+      "original_clause": "Retain original overview/permitted/requested/replaced full-state checkpoints.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:13",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "status-label",
+        "title-label"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [
+        "sealed contract.scenarios states/actions",
+        "fresh execution_plan.compile_execution/verify_execution"
+      ],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Overview/permitted/requested/replaced each keep explicit fresh full-content sweeps. The amended requested-closed is also full; intermediate states are only targeted as approved.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "layout-flow",
+      "original_clause": "Full-width pale canvas, white surface, accent/title/subtitle/status/disclosure/chapters/choice/primary in vertical flow.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "canvas-fill",
+        "flow-order",
+        "full-width-canvas",
+        "ink-fill",
+        "single-column",
+        "surface-fill"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Separate canvas/surface/ink pixel atoms and full-flow/single-column/full-width visual propositions cover ownership and order. The native parent owns scrolling and width.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "nominal-layout",
+      "original_clause": "8 gutter,16 padding,6x40 accent,12/16 internal gaps, nominal status56 are advisory layout tokens.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "priority": "advisory",
+      "runtime_rule_ids": [],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Original text explicitly makes generic internal layout tokens and status minimum height advisory. This cannot certify actual SwiftUI padding or convert it to a MUST pass.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "choice-primary-gap",
+      "original_clause": "Actual native choice-to-primary edge gap is12 +/-0.75 pt/dp in same coherent frame.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "choice-primary-gap"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "The actual control basis uses gap_y with exact native units and independently sourced0.75 tolerance. Both unique fully visible controls must share one coherent frame.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "status-inset",
+      "original_clause": "Actual displayed status text starts at least16 native units inside painted band.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "status-leading-inset",
+        "status-text-label"
+      ],
+      "source_audit_ids": [
+        "android-status-band-provenance",
+        "android-status-text-provenance",
+        "ios-status-band-provenance",
+        "ios-status-text-provenance"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "A real distinct statusText node is measured against the real painted band on semantic basis: inset_left publicly, inset_right privately, gte16 without a tolerance. No computed padding is fabricated.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "leading-clear",
+      "original_clause": "Whole leading4% status strip stays fill-only.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "status-leading-clear"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Full logical leading4% strip has minimum support1.0 and exact opaque status-role color. RTL uses physical right[0.96,0,1,1], LTR physical left[0,0,0.04,1].",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "wrapping",
+      "original_clause": "All displayed text wraps without truncation/ellipsis.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "body-wrapping",
+        "choice-wrapping",
+        "disclosure-wrapping",
+        "heading-wrapping",
+        "primary-wrapping",
+        "status-wrapping",
+        "subtitle-wrapping",
+        "title-wrapping"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Eight distinct source questions cover title/subtitle/status/disclosure/choice/primary/headings/bodies. They accept original native frames only; source uncapped-line configuration is a separate added obligation.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "scroll-ownership",
+      "original_clause": "Parent provides scrolling; no nested scroller or manufactured fixed-height blank rows.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-no-blank-padding-rows",
+        "android-no-nested-scroll",
+        "ios-no-blank-padding-rows",
+        "ios-no-nested-scroll"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Both source files explicitly forbid nested scrolling and blank fixed-height rows manufacturing scrolling. Generic parent source shows its actual scrolling container.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "long-content",
+      "original_clause": "Overlapping complete content and bottom reachability for representative expanded states.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "body-wrapping",
+        "expanded-order",
+        "heading-wrapping"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [
+        "frozen bound_state_evidence completeness/overlap/bottom coverage",
+        "PREIMPLEMENTATION-AMENDMENT.md representative-state authorization"
+      ],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Permitted/requested representative expanded states require full coverage, overlap and bottom reachability. Targeted intermediate states do not substitute for them under the prospective amendment.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "status-distinct-colors",
+      "original_clause": "Fixed distinct waiting/ready/requested/blocked rendered status fills.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17",
+        "validation/feedback-forward/design/T2/public/reference.json#/palette"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "status-fill"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "The original distinct waiting palette is restored for Wi-Fi required. Source-role mapping now matches business meaning; all10 states retain status pixel assertions.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "other-colors",
+      "original_clause": "Exact opaque canvas/surface/solid ink and enabled/disabled primary region colors.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "canvas-fill",
+        "ink-fill",
+        "primary-fill",
+        "surface-fill"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Separate opaque ARGB atoms use original role colors, exact zero channel tolerance and declared solid regions. The solid ink mark is not asserted to prove glyph ink.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "advisory-typography",
+      "original_clause": "Exact computed SwiftUI font/text ink unavailable and advisory.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17"
+      ],
+      "priority": "advisory",
+      "runtime_rule_ids": [],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Exact computed SwiftUI font/text ink remains advisory. Required hierarchy/wrapping/overlap/clipping keep visual questions and no computed-font MUST is fabricated.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "visual-atoms",
+      "original_clause": "Title hierarchy, wrapping, overlap and clipping remain separate required visual propositions.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "horizontal-clipping",
+        "row-overlap",
+        "title-hierarchy",
+        "title-wrapping"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Independent qualitative questions, ownership, typed true expectations and provenance are generated by the real catalog API. Two-panel consensus retains disagreement as unknown.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "native-evidence",
+      "original_clause": "Selected/enabled semantic checks and successful native dispatch must precede callback verdict.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "choice-receipt",
+        "choice-selected",
+        "disclosure-receipt",
+        "primary-enabled",
+        "request-receipt"
+      ],
+      "source_audit_ids": [
+        "android-choice-native-disabled",
+        "android-native-selected",
+        "android-no-choice-callback-on-disabled",
+        "android-no-primary-callback-on-disabled",
+        "android-primary-native-disabled",
+        "ios-choice-native-disabled",
+        "ios-native-selected",
+        "ios-no-choice-callback-on-disabled",
+        "ios-no-primary-callback-on-disabled",
+        "ios-primary-native-disabled"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "callback_verdict rejects disabled-empty-interval controls as unassessed. Selected/enabled observations and actual callback dispatch are separate assertions.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "swift-exact-api",
+      "original_clause": "Exact public Swift model declarations, Equatable/Identifiable conformances, stored public values, initializers and View signature.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:10",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:14",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:20",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:31"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-production-component",
+        "ios-caller-driven-rendering",
+        "ios-exact-api-AudioTourChapter",
+        "ios-exact-api-OfflineAudioTour",
+        "ios-exact-api-OfflineAudioTourPanel",
+        "ios-production-component"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "All three exact declaration contracts preserve public lets, initializers, conformances and View/body. The future14 module/client check additionally exercises the real exported module.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "ios14",
+      "original_clause": "Production component remains iOS14 compatible.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:5"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-production-component",
+        "ios-api14-availability",
+        "ios-production-component"
+      ],
+      "additional_routes": [
+        "compatibility.json shared checker argv",
+        "check_minimum_api.py run() read only; never imported/executed during review",
+        "compatibility.json shared real-library module emission and unchanged bridge typecheck at14, plus manual availability audit; no packaging/link/runtime claim"
+      ],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "The original minimum14 SOURCE/API constraint has manual availability audit plus pinned real-library module emission and unchanged bridge typecheck at14. Current observer17 is not reused as proof. Legacy packaging/link/runtime remain unverified.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "kotlin-exact-api",
+      "original_clause": "Exact Kotlin data classes, package, Composable signature and modifier:Modifier=Modifier.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:38",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:41",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:48"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-exact-api-AudioTourChapter",
+        "android-exact-api-OfflineAudioTour",
+        "android-exact-api-OfflineAudioTourPanel",
+        "android-production-component",
+        "ios-caller-driven-rendering",
+        "ios-production-component"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "All three declaration contracts preserve data classes, vals, types, package and Composable callback signature including modifier:Modifier=Modifier. No Swift module result is used for Android.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "thin-bridges",
+      "original_clause": "Bridges decode current model and forward real callbacks, own no UI/state/layout/results or replacement.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:51",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-bridge-callback-forwarding",
+        "android-bridge-current-input",
+        "android-bridge-no-identity-reset",
+        "android-bridge-no-state",
+        "android-bridge-no-ui",
+        "ios-bridge-callback-forwarding",
+        "ios-bridge-current-input",
+        "ios-bridge-no-identity-reset",
+        "ios-bridge-no-state",
+        "ios-bridge-no-ui"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Inspected bridge code only decodes current fields, constructs models, invokes the production component and forwards actual callbacks. No state, layout, identity wrapper or expectation logic is present.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "unique-ids",
+      "original_clause": "Every literal semantic identifier belongs to exactly one real node, with no proxy duplicates.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:53"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "ink-accent-label",
+        "status-label",
+        "status-text-label",
+        "title-label"
+      ],
+      "source_audit_ids": [
+        "android-status-band-provenance",
+        "android-status-text-provenance",
+        "android-unique-semantic-ids",
+        "ios-status-band-provenance",
+        "ios-status-text-provenance",
+        "ios-unique-semantic-ids"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Runtime exact selectors require unique native nodes; source propositions require real-node IDs, actual band/text allocations and no proxy duplication. The added statusText ID is distinct.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "noninteractive-carriers",
+      "original_clause": "Canvas/surface are noninteractive containers; ink rectangle is accessible and noninteractive.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:53"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "canvas-fill",
+        "ink-accent-label",
+        "ink-fill",
+        "ink-rectangle",
+        "surface-fill"
+      ],
+      "source_audit_ids": [
+        "android-canvas-noninteractive",
+        "android-canvas-preserve-controls",
+        "android-ink-noninteractive",
+        "android-surface-noninteractive",
+        "android-surface-preserve-controls",
+        "android-unique-semantic-ids",
+        "ios-canvas-noninteractive",
+        "ios-canvas-preserve-controls",
+        "ios-ink-noninteractive",
+        "ios-surface-noninteractive",
+        "ios-surface-preserve-controls",
+        "ios-unique-semantic-ids"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Explicit source propositions cover canvas/surface/ink noninteractive roles and container descendant preservation. Native label/pixel evidence remains separate.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "status-band",
+      "original_clause": "Status identifier belongs to whole painted band; no duplicate status ID on text.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:53"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "status-fill",
+        "status-label",
+        "status-leading-inset",
+        "status-text-label"
+      ],
+      "source_audit_ids": [
+        "android-status-band-provenance",
+        "android-status-text-provenance",
+        "android-unique-semantic-ids",
+        "ios-status-band-provenance",
+        "ios-status-text-provenance",
+        "ios-unique-semantic-ids"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Both source provenance propositions and separate native band/text labels/inset remain mandatory. Parent status ID may not be repeated on Text.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "native-buttons",
+      "original_clause": "Disclosure, choice, primary are actual Buttons; selected and disabled native semantics; descendant controls preserved.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "choice-selected",
+        "disclosure-enabled",
+        "primary-enabled"
+      ],
+      "source_audit_ids": [
+        "android-canvas-preserve-controls",
+        "android-choice-native-disabled",
+        "android-native-choice-button",
+        "android-native-disclosure-button",
+        "android-native-primary-button",
+        "android-native-selected",
+        "android-primary-native-disabled",
+        "android-surface-preserve-controls",
+        "ios-canvas-preserve-controls",
+        "ios-choice-native-disabled",
+        "ios-native-choice-button",
+        "ios-native-disclosure-button",
+        "ios-native-primary-button",
+        "ios-native-selected",
+        "ios-primary-native-disabled",
+        "ios-surface-preserve-controls"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Both platforms retain real Button source obligations and native control selected/disabled checks. Canvas/surface source obligations preserve independently addressable descendants.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "ax-labels",
+      "original_clause": "AX labels exclude decorative marks and status concatenation.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "choice-label",
+        "disclosure-label",
+        "primary-label"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Exact native choice/disclosure/primary labels reject concatenated status or decorative marks. This is directly observable on the real controls.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "primary-allocation",
+      "original_clause": "Primary label fills rectangular56 native control allocation with matching content shape.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [
+        "primary-fill",
+        "primary-height",
+        "primary-painted-allocation",
+        "primary-rectangle"
+      ],
+      "source_audit_ids": [
+        "android-native-primary-button",
+        "android-primary-content-shape-config",
+        "android-primary-label-allocation-config",
+        "ios-native-primary-button",
+        "ios-primary-content-shape-config",
+        "ios-primary-label-allocation-config"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Native control-basis height56 +/-0.75, visible rectangular paint/full allocation and fill are separate from source full-label/content-shape configuration. None claims physical hit-area verification.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "production-state",
+      "original_clause": "All disclosure/choice/requested state and identity reset logic remain production-owned.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "priority": "must",
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-bridge-no-identity-reset",
+        "android-bridge-no-state",
+        "android-choice-production-state",
+        "android-disclosure-production-state",
+        "android-identity-reset-choice",
+        "android-identity-reset-disclosure",
+        "android-identity-reset-requested",
+        "android-requested-production-state",
+        "ios-bridge-no-identity-reset",
+        "ios-bridge-no-state",
+        "ios-choice-production-state",
+        "ios-disclosure-production-state",
+        "ios-identity-reset-choice",
+        "ios-identity-reset-disclosure",
+        "ios-identity-reset-requested",
+        "ios-requested-production-state"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Both component state and reset paths are explicitly production-scoped; approved bridges have no state or .id/key wrapper.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "uncapped-lines",
+      "original_clause": "All text is configured without a finite line limit.",
+      "original_source": {
+        "path": "design-proposals/v1/design/T2/public/BRIEF.md",
+        "sha256": "4fb183c223216e99c98219d7be5ab79ae2297876407ad2543c5a6ac9e1157db4",
+        "line": 15
+      },
+      "priority": "must",
+      "runtime_rule_ids": [
+        "title-wrapping",
+        "subtitle-wrapping",
+        "status-wrapping",
+        "disclosure-wrapping",
+        "choice-wrapping",
+        "primary-wrapping",
+        "heading-wrapping",
+        "body-wrapping"
+      ],
+      "source_audit_ids": [
+        "ios-uncapped-text-lines",
+        "android-uncapped-text-lines"
+      ],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Source configuration forbids finite line caps separately from all eight rendered wrapping questions. Source review cannot make rendered wrapping pass.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "retained-rendered-status-rectangle",
+      "original_clause": "Retain the original/revised visible status-rectangle requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "priority": "must",
+      "runtime_rule_ids": [
+        "status-rectangle"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Separate source-backed original-native-frame visual proposition retained. Rectangle/no-border/paint allocation are not inferred from pixel fill or source shape configuration.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "retained-rendered-status-no-border",
+      "original_clause": "Retain the original/revised visible status-no-border requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "priority": "must",
+      "runtime_rule_ids": [
+        "status-no-border"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Separate source-backed original-native-frame visual proposition retained. Rectangle/no-border/paint allocation are not inferred from pixel fill or source shape configuration.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "retained-rendered-primary-rectangle",
+      "original_clause": "Retain the original/revised visible primary-rectangle requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "priority": "must",
+      "runtime_rule_ids": [
+        "primary-rectangle"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Separate source-backed original-native-frame visual proposition retained. Rectangle/no-border/paint allocation are not inferred from pixel fill or source shape configuration.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "retained-rendered-primary-no-border",
+      "original_clause": "Retain the original/revised visible primary-no-border requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "priority": "must",
+      "runtime_rule_ids": [
+        "primary-no-border"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Separate source-backed original-native-frame visual proposition retained. Rectangle/no-border/paint allocation are not inferred from pixel fill or source shape configuration.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "retained-rendered-primary-painted-allocation",
+      "original_clause": "Retain the original/revised visible primary-painted-allocation requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "priority": "must",
+      "runtime_rule_ids": [
+        "primary-painted-allocation"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Separate source-backed original-native-frame visual proposition retained. Rectangle/no-border/paint allocation are not inferred from pixel fill or source shape configuration.",
+      "actual_product_acceptance": "unverified"
+    },
+    {
+      "id": "retained-rendered-ink-rectangle",
+      "original_clause": "Retain the original/revised visible ink-rectangle requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "priority": "must",
+      "runtime_rule_ids": [
+        "ink-rectangle"
+      ],
+      "source_audit_ids": [],
+      "additional_routes": [],
+      "ios_route_feasible": true,
+      "android_route_feasible": true,
+      "mapping_complete": true,
+      "independent_review": "Separate source-backed original-native-frame visual proposition retained. Rectangle/no-border/paint allocation are not inferred from pixel fill or source shape configuration.",
+      "actual_product_acceptance": "unverified"
+    }
+  ]
+}

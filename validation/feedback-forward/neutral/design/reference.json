@@ -1,0 +1,235 @@
+{
+  "provenance": {
+    "owner": "Independent neutral forward-test author",
+    "input": "Parent task dated 2026-10-24: domain-neutral SwiftUI long content; real action, caller replacement, disabled action; four states; ordinary/narrow large-text fixtures.",
+    "interpretation": "A reading-notes panel with ten neutral cards and one review action. This design was fixed before source implementation and before any native image or execution.",
+    "independence_limit": "Separate from the Skill implementation/optimizer and earlier validation results. Design and component are authored sequentially in this tester context; hashes cannot prove semantic correctness."
+  },
+  "labels": {
+    "titleA": {
+      "value": "Observation notes",
+      "unit": "string"
+    },
+    "titleB": {
+      "value": "Revised observation notes",
+      "unit": "string"
+    },
+    "summaryA": {
+      "value": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.",
+      "unit": "string"
+    },
+    "summaryB": {
+      "value": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.",
+      "unit": "string"
+    },
+    "revisionA": {
+      "value": "Input revision: A",
+      "unit": "string"
+    },
+    "revisionB": {
+      "value": "Input revision: B",
+      "unit": "string"
+    },
+    "status0": {
+      "value": "Review count: 0",
+      "unit": "string"
+    },
+    "status1": {
+      "value": "Review count: 1",
+      "unit": "string"
+    },
+    "actionReady": {
+      "value": "Mark notes reviewed",
+      "unit": "string"
+    },
+    "actionDone": {
+      "value": "Review marked",
+      "unit": "string"
+    },
+    "footerA0": {
+      "value": "End note: revision A; review count 0",
+      "unit": "string"
+    },
+    "footerA1": {
+      "value": "End note: revision A; review count 1",
+      "unit": "string"
+    },
+    "footerB1": {
+      "value": "End note: revision B; review count 1",
+      "unit": "string"
+    },
+    "opening": {
+      "value": "01 · Opening note",
+      "unit": "string"
+    },
+    "middle": {
+      "value": "05 · Pause note",
+      "unit": "string"
+    },
+    "closing": {
+      "value": "10 · Closing note",
+      "unit": "string"
+    },
+    "buttonRole": {
+      "value": "button",
+      "unit": "string"
+    }
+  },
+  "behavior": {
+    "yes": {
+      "value": true,
+      "unit": "bool"
+    },
+    "no": {
+      "value": false,
+      "unit": "bool"
+    },
+    "reviewed": {
+      "value": [
+        "notes.reviewed.A"
+      ],
+      "unit": "events"
+    },
+    "quiet": {
+      "value": [],
+      "unit": "events"
+    }
+  },
+  "geometry": {
+    "minimumActionHeight": {
+      "value": 52,
+      "unit": "pt"
+    },
+    "minimumActionHeightAndroid": {
+      "value": 52,
+      "unit": "dp"
+    }
+  },
+  "visual": {
+    "fullLayout": {
+      "value": "One vertical reading sequence: heading, summary, revision, review count, cards 01–06, review action, cards 07–10, and end note. Cards have distinct neutral surfaces and vertical gaps. No horizontal clipping, overlap, missing cards, or accidental reordering. Required full-content evidence must reach the real bottom with overlap.",
+      "unit": "string"
+    },
+    "wrapping": {
+      "value": "At the approved offered width and Dynamic Type, all headings, summaries, card text, review labels, and end note remain readable and wrap naturally without truncation or ellipses. Narrow text may increase the content height.",
+      "unit": "string"
+    },
+    "enabledAction": {
+      "value": "The review action uses a dark blue-gray fill #263746 with white readable text, rounded corners, and at least a 52 pt accessibility control height.",
+      "unit": "string"
+    },
+    "disabledAction": {
+      "value": "The disabled review action uses a pale gray fill #DCE2E7 with dark gray readable text #55616C, rounded corners, and at least a 52 pt accessibility control height.",
+      "unit": "string"
+    },
+    "surface": {
+      "value": "The canvas is white #FFFFFF. Cards use #F4F6F8. Main text is #17212B and secondary text is #43515E. These are rendered visual expectations; public SwiftUI AX cannot establish computed color or font attributes.",
+      "unit": "string"
+    }
+  },
+  "design": {
+    "offeredWidths": [
+      400,
+      280
+    ],
+    "hostHorizontalPaddingPt": 16,
+    "childWidthsPt": [
+      368,
+      248
+    ],
+    "ordinaryDynamicType": "large",
+    "narrowDynamicType": "xxxLarge",
+    "layout": "VStack spacing 18 pt; each card content padding 16 pt, minimum outer height 180 pt; card radius 12 pt; review action minimum height 52 pt. Typography uses scalable title2, body, headline and subheadline styles. No fixed text heights.",
+    "heightIntent": "Approximately four to five 600 pt viewports at the ordinary fixture. Narrow large text may grow; actual native content height is recorded rather than forced to an expected height."
+  },
+  "obligations": [
+    {
+      "id": "current-input",
+      "clause": "Visible title, summary and revision match the current caller input in every required state.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "review-state",
+      "clause": "The review starts at zero, becomes one after activation, and remains one across caller replacement and disabled observation.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "real-review",
+      "clause": "The enabled review action is uniquely dispatched through XCUI tap and emits exactly notes.reviewed.A once.",
+      "priority": "must",
+      "states": [
+        "reviewed"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "quiet-replacement",
+      "clause": "Caller replacement advances exactly one input in the same mounted instance without a business callback.",
+      "priority": "must",
+      "states": [
+        "replaced"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "availability",
+      "clause": "The review action is enabled for revision A and disabled for revision B; disabled observation is not dispatched or scored as callback success.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "long-content",
+      "clause": "All ten cards and the footer remain reachable in the required full-content states, and the remote anchors remain observed for every target checkpoint.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "readable-layout",
+      "clause": "Both fixture configurations have readable wrapping, no horizontal clipping or overlap, and the approved vertical order.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "replaced"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "appearance",
+      "clause": "The neutral surfaces and action appearance follow the approved colors and minimum native control height.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "reviewed",
+        "replaced",
+        "disabled"
+      ],
+      "risk": "style"
+    }
+  ]
+}

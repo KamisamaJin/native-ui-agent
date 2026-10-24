@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "artifact_root": ".",
+  "stages": {
+    "tools": {
+      "members": [
+        "release"
+      ],
+      "requires": []
+    },
+    "design": {
+      "members": [
+        "T1",
+        "T2"
+      ],
+      "requires": [
+        "tools"
+      ]
+    },
+    "design-review": {
+      "members": [
+        "T1",
+        "T2"
+      ],
+      "requires": [
+        "design"
+      ]
+    },
+    "d0-sources": {
+      "members": [
+        "T1",
+        "T2"
+      ],
+      "requires": [
+        "design-review"
+      ]
+    },
+    "d0-raw": {
+      "members": [
+        "T1",
+        "T2"
+      ],
+      "requires": [
+        "d0-sources"
+      ]
+    },
+    "public-final": {
+      "members": [
+        "unit1",
+        "unit2",
+        "unit3",
+        "unit4"
+      ],
+      "requires": [
+        "d0-raw"
+      ]
+    },
+    "hidden": {
+      "members": [
+        "T1",
+        "T2"
+      ],
+      "requires": [
+        "public-final"
+      ]
+    },
+    "grade-d0-one": {
+      "members": [
+        "T1",
+        "T2"
+      ],
+      "requires": [
+        "hidden"
+      ]
+    },
+    "grade-d0-two": {
+      "members": [
+        "T1",
+        "T2"
+      ],
+      "requires": [
+        "grade-d0-one"
+      ]
+    },
+    "grade-final-one": {
+      "members": [
+        "T1",
+        "T2"
+      ],
+      "requires": [
+        "grade-d0-two"
+      ]
+    },
+    "grade-final-two": {
+      "members": [
+        "T1",
+        "T2"
+      ],
+      "requires": [
+        "grade-final-one"
+      ]
+    },
+    "claims-one": {
+      "members": [
+        "T1",
+        "T2"
+      ],
+      "requires": [
+        "grade-final-two"
+      ]
+    },
+    "claims-two": {
+      "members": [
+        "T1",
+        "T2"
+      ],
+      "requires": [
+        "claims-one"
+      ]
+    },
+    "reveal": {
+      "members": [
+        "assignment"
+      ],
+      "requires": [
+        "claims-two"
+      ]
+    }
+  }
+}

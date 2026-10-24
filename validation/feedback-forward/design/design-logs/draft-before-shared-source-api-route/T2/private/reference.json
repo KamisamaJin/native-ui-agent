@@ -1,0 +1,5595 @@
+{
+  "version": 3,
+  "component": "OfflineAudioTourPanel",
+  "design_owner": "Independent original design author, final prospective completeness revision",
+  "prior_source_sha256": "1ee34c8c22709cc8c1e4462460c02b5c4e7cddd448f7e478ad707bc9d61f73e7",
+  "palette": {
+    "canvas": {
+      "value": "#FFF4F6FA",
+      "unit": "argb"
+    },
+    "surface": {
+      "value": "#FFFFFFFF",
+      "unit": "argb"
+    },
+    "ink": {
+      "value": "#FF172B4D",
+      "unit": "argb"
+    },
+    "waiting": {
+      "value": "#FFE9EFF8",
+      "unit": "argb"
+    },
+    "ready": {
+      "value": "#FFDDF4EC",
+      "unit": "argb"
+    },
+    "requested": {
+      "value": "#FFDDEBFF",
+      "unit": "argb"
+    },
+    "blocked": {
+      "value": "#FFFFE5B3",
+      "unit": "argb"
+    },
+    "enabled": {
+      "value": "#FF2463C5",
+      "unit": "argb"
+    },
+    "disabled": {
+      "value": "#FFD8DEE8",
+      "unit": "argb"
+    }
+  },
+  "geometry": {
+    "ios": {
+      "primaryHeight": {
+        "value": 56,
+        "unit": "pt"
+      },
+      "tolerance": {
+        "value": 0.75,
+        "unit": "pt"
+      },
+      "outerGutter": {
+        "value": 8,
+        "unit": "pt"
+      },
+      "innerPadding": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "mainGap": {
+        "value": 12,
+        "unit": "pt"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "choicePrimaryGap": {
+        "value": 12,
+        "unit": "pt"
+      },
+      "statusLeadingMinimum": {
+        "value": 16,
+        "unit": "pt"
+      }
+    },
+    "android": {
+      "primaryHeight": {
+        "value": 56,
+        "unit": "dp"
+      },
+      "tolerance": {
+        "value": 0.75,
+        "unit": "dp"
+      },
+      "outerGutter": {
+        "value": 8,
+        "unit": "dp"
+      },
+      "innerPadding": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "mainGap": {
+        "value": 12,
+        "unit": "dp"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "choicePrimaryGap": {
+        "value": 12,
+        "unit": "dp"
+      },
+      "statusLeadingMinimum": {
+        "value": 16,
+        "unit": "dp"
+      }
+    }
+  },
+  "typography_guidance": {
+    "priority": "advisory",
+    "ios": {
+      "title": {
+        "value": 22,
+        "unit": "pt"
+      },
+      "heading": {
+        "value": 17,
+        "unit": "pt"
+      },
+      "body": {
+        "value": 17,
+        "unit": "pt"
+      }
+    },
+    "android": {
+      "title": {
+        "value": 22,
+        "unit": "sp"
+      },
+      "heading": {
+        "value": 17,
+        "unit": "sp"
+      },
+      "body": {
+        "value": 16,
+        "unit": "sp"
+      }
+    },
+    "computed_swiftui": "Unavailable to generic AX; not a measurable MUST"
+  },
+  "truth": {
+    "value": true,
+    "unit": "bool"
+  },
+  "quiet": {
+    "value": [],
+    "unit": "events"
+  },
+  "labels": {
+    "inkAccent": {
+      "value": "Ink accent",
+      "unit": "string"
+    }
+  },
+  "questions": {
+    "title-wrapping": {
+      "value": "The title visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "subtitle-wrapping": {
+      "value": "The subtitle visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "status-wrapping": {
+      "value": "The status text visibly displays its complete status string through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "disclosure-wrapping": {
+      "value": "The disclosure button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "choice-wrapping": {
+      "value": "The choice button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "primary-wrapping": {
+      "value": "The primary button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "heading-wrapping": {
+      "value": "Every expanded chapters heading visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "body-wrapping": {
+      "value": "Every expanded body paragraph visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "unit": "string"
+    },
+    "title-hierarchy": {
+      "value": "The title is visually more prominent than the expanded section headings.",
+      "unit": "string"
+    },
+    "horizontal-clipping": {
+      "value": "Visible content remains inside the component horizontal bounds without clipping.",
+      "unit": "string"
+    },
+    "row-overlap": {
+      "value": "Successive rows in the component do not visually overlap.",
+      "unit": "string"
+    },
+    "flow-order": {
+      "value": "Main component blocks occur in this reading order: ink accent, title, subtitle, status, disclosure, any expanded sections, choice, primary.",
+      "unit": "string"
+    },
+    "single-column": {
+      "value": "Main component blocks form one vertical column.",
+      "unit": "string"
+    },
+    "full-width-canvas": {
+      "value": "The component-painted pale canvas spans the complete width offered inside the host horizontal gutters.",
+      "unit": "string"
+    },
+    "collapsed-headings": {
+      "value": "No chapters section heading is visible while the disclosure is closed.",
+      "unit": "string"
+    },
+    "collapsed-bodies": {
+      "value": "No chapters body paragraph is visible while the disclosure is closed.",
+      "unit": "string"
+    },
+    "expanded-order": {
+      "value": "The eight expanded chapters heading/body pairs appear in caller order.",
+      "unit": "string"
+    },
+    "status-rectangle": {
+      "value": "The visible painted status band is a rectangle with four square corners.",
+      "unit": "string"
+    },
+    "status-no-border": {
+      "value": "No border stroke is visible around the painted status band.",
+      "unit": "string"
+    },
+    "primary-rectangle": {
+      "value": "The visible painted primary surface is a rectangle with four square corners.",
+      "unit": "string"
+    },
+    "primary-no-border": {
+      "value": "No border stroke is visible around the painted primary surface.",
+      "unit": "string"
+    },
+    "primary-painted-allocation": {
+      "value": "The painted primary label surface fills the observed rectangular native control boundary without uncovered strips.",
+      "unit": "string"
+    },
+    "ink-rectangle": {
+      "value": "The visible solid ink accent is a rectangle with four square corners.",
+      "unit": "string"
+    }
+  },
+  "cases": {
+    "H1": {
+      "caller": {
+        "initial": {
+          "id": "TOUR-745",
+          "title": "River instruments: stories from the navigation hall",
+          "language": "English · river collection",
+          "downloadSizeMB": 284,
+          "availableMB": 680,
+          "meteredConnection": true,
+          "chapters": [
+            {
+              "id": "n1",
+              "title": "A river pilots desk",
+              "body": "Start at the pilots desk and examine the folded river chart beneath its glass cover. The opening voice explains how crews planned a passage around shifting sandbanks and why a familiar route still needed careful attention on every journey."
+            },
+            {
+              "id": "n2",
+              "title": "Measuring the current",
+              "body": "Beside the current meter, listen to a surveyor describe taking a reading from a small boat. The account connects the instrument to a practical decision about when to leave the landing, without asking you to perform a calculation yourself."
+            },
+            {
+              "id": "n3",
+              "title": "The bridge watch",
+              "body": "At the bridge model, follow the lookout route from one side of the deck to the other. A retired crew member recalls watching for a low marker while another person kept track of the approaching bend in the river."
+            },
+            {
+              "id": "n4",
+              "title": "Soundings in shallow water",
+              "body": "The sounding line display introduces a job that required patience and clear spoken signals. Listen while looking at the marked lengths on the rope, then compare the working line with the later mechanical instrument in the neighboring case."
+            },
+            {
+              "id": "n5",
+              "title": "Keeping a voyage log",
+              "body": "Pause at the open logbook and notice the short entries written beside each date. This chapter explains how observations about weather, repairs, and waiting at a landing could help the next crew prepare for the same stretch of river."
+            },
+            {
+              "id": "n6",
+              "title": "Repairing a navigation lamp",
+              "body": "The lamp bench shows the small parts a keeper carried when a light failed. The narrator follows one routine repair and describes checking the beam from the water, where an apparently bright lamp might still be difficult to recognize."
+            },
+            {
+              "id": "n7",
+              "title": "Voices at the crossing",
+              "body": "Listen near the ferry photograph to hear three short memories of the crossing. Each speaker describes a different task, and the pauses between their accounts leave time to compare the landing shown in the image with the route map."
+            },
+            {
+              "id": "n8",
+              "title": "Reading the river today",
+              "body": "End beside the modern river map and find the old crossing on its edge. The closing chapter describes which habits of observation remain useful, even when the crew also carries electronic charts and receives regular messages from the shore station."
+            }
+          ]
+        },
+        "updates": [
+          {
+            "id": "TOUR-816",
+            "title": "Stone and shadow: the sculpture courtyard",
+            "language": "English · courtyard collection",
+            "downloadSizeMB": 372,
+            "availableMB": 148,
+            "meteredConnection": false,
+            "chapters": [
+              {
+                "id": "rn1",
+                "title": "A river pilots desk",
+                "body": "Start at the pilots desk and examine the folded river chart beneath its glass cover. The opening voice explains how crews planned a passage around shifting sandbanks and why a familiar route still needed careful attention on every journey."
+              },
+              {
+                "id": "rn2",
+                "title": "Measuring the current",
+                "body": "Beside the current meter, listen to a surveyor describe taking a reading from a small boat. The account connects the instrument to a practical decision about when to leave the landing, without asking you to perform a calculation yourself."
+              },
+              {
+                "id": "rn3",
+                "title": "The bridge watch",
+                "body": "At the bridge model, follow the lookout route from one side of the deck to the other. A retired crew member recalls watching for a low marker while another person kept track of the approaching bend in the river."
+              },
+              {
+                "id": "rn4",
+                "title": "Soundings in shallow water",
+                "body": "The sounding line display introduces a job that required patience and clear spoken signals. Listen while looking at the marked lengths on the rope, then compare the working line with the later mechanical instrument in the neighboring case."
+              },
+              {
+                "id": "rn5",
+                "title": "Keeping a voyage log",
+                "body": "Pause at the open logbook and notice the short entries written beside each date. This chapter explains how observations about weather, repairs, and waiting at a landing could help the next crew prepare for the same stretch of river."
+              },
+              {
+                "id": "rn6",
+                "title": "Repairing a navigation lamp",
+                "body": "The lamp bench shows the small parts a keeper carried when a light failed. The narrator follows one routine repair and describes checking the beam from the water, where an apparently bright lamp might still be difficult to recognize."
+              },
+              {
+                "id": "rn7",
+                "title": "Voices at the crossing",
+                "body": "Listen near the ferry photograph to hear three short memories of the crossing. Each speaker describes a different task, and the pauses between their accounts leave time to compare the landing shown in the image with the route map."
+              },
+              {
+                "id": "rn8",
+                "title": "Reading the river today",
+                "body": "End beside the modern river map and find the old crossing on its edge. The closing chapter describes which habits of observation remain useful, even when the crew also carries electronic charts and receives regular messages from the shore station."
+              }
+            ]
+          },
+          {
+            "id": "TOUR-982",
+            "title": "Stone and shadow: the sculpture courtyard",
+            "language": "English · courtyard collection",
+            "downloadSizeMB": 372,
+            "availableMB": 331,
+            "meteredConnection": true,
+            "chapters": [
+              {
+                "id": "rn1",
+                "title": "A river pilots desk",
+                "body": "Start at the pilots desk and examine the folded river chart beneath its glass cover. The opening voice explains how crews planned a passage around shifting sandbanks and why a familiar route still needed careful attention on every journey."
+              },
+              {
+                "id": "rn2",
+                "title": "Measuring the current",
+                "body": "Beside the current meter, listen to a surveyor describe taking a reading from a small boat. The account connects the instrument to a practical decision about when to leave the landing, without asking you to perform a calculation yourself."
+              },
+              {
+                "id": "rn3",
+                "title": "The bridge watch",
+                "body": "At the bridge model, follow the lookout route from one side of the deck to the other. A retired crew member recalls watching for a low marker while another person kept track of the approaching bend in the river."
+              },
+              {
+                "id": "rn4",
+                "title": "Soundings in shallow water",
+                "body": "The sounding line display introduces a job that required patience and clear spoken signals. Listen while looking at the marked lengths on the rope, then compare the working line with the later mechanical instrument in the neighboring case."
+              },
+              {
+                "id": "rn5",
+                "title": "Keeping a voyage log",
+                "body": "Pause at the open logbook and notice the short entries written beside each date. This chapter explains how observations about weather, repairs, and waiting at a landing could help the next crew prepare for the same stretch of river."
+              },
+              {
+                "id": "rn6",
+                "title": "Repairing a navigation lamp",
+                "body": "The lamp bench shows the small parts a keeper carried when a light failed. The narrator follows one routine repair and describes checking the beam from the water, where an apparently bright lamp might still be difficult to recognize."
+              },
+              {
+                "id": "rn7",
+                "title": "Voices at the crossing",
+                "body": "Listen near the ferry photograph to hear three short memories of the crossing. Each speaker describes a different task, and the pauses between their accounts leave time to compare the landing shown in the image with the route map."
+              },
+              {
+                "id": "rn8",
+                "title": "Reading the river today",
+                "body": "End beside the modern river map and find the old crossing on its edge. The closing chapter describes which habits of observation remain useful, even when the crew also carries electronic charts and receives regular messages from the shore station."
+              }
+            ]
+          }
+        ],
+        "width": 400,
+        "viewportHeight": 600,
+        "theme": "light",
+        "dynamic_type": "large",
+        "fontScale": 1.0,
+        "direction": "rtl",
+        "canvas_color": "#F4F6FA",
+        "max_scrolls": 18,
+        "state_capture": true,
+        "required_identifiers": [
+          "audio.canvas",
+          "audio.surface",
+          "audio.inkMark",
+          "audio.title",
+          "audio.subtitle",
+          "audio.status",
+          "audio.disclosure",
+          "audio.choice",
+          "audio.primary",
+          "audio.statusText"
+        ]
+      },
+      "states": {
+        "overview": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFE9EFF8",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "opened": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFE9EFF8",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "permitted": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready to download",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "cleared": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Wi-Fi required",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFE9EFF8",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "restored": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Ready to download",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDF4EC",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FF2463C5",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "requested": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Download requested",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Hide chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Requested",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDEBFF",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": true,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "requested-closed": {
+          "title": {
+            "value": "River instruments: stories from the navigation hall",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · river collection · 284 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Download requested",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Requested",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFDDEBFF",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-745:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-745:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "replaced": {
+          "title": {
+            "value": "Stone and shadow: the sculpture courtyard",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · courtyard collection · 372 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Storage needed",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-816:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-816:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "held-choice": {
+          "title": {
+            "value": "Stone and shadow: the sculpture courtyard",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · courtyard collection · 372 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Storage needed",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-816:false"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-816:mobile"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "competing-gates": {
+          "title": {
+            "value": "Stone and shadow: the sculpture courtyard",
+            "unit": "string"
+          },
+          "subtitle": {
+            "value": "English · courtyard collection · 372 MB",
+            "unit": "string"
+          },
+          "status": {
+            "value": "Storage needed",
+            "unit": "string"
+          },
+          "disclosure": {
+            "value": "Review chapters",
+            "unit": "string"
+          },
+          "disclosureEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choice": {
+            "value": "Wi-Fi only",
+            "unit": "string"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "choiceEnabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "primary": {
+            "value": "Get audio",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "statusColor": {
+            "value": "#FFFFE5B3",
+            "unit": "argb"
+          },
+          "buttonColor": {
+            "value": "#FFD8DEE8",
+            "unit": "argb"
+          },
+          "choiceEvents": {
+            "value": [
+              "audio.wifiOnly:TOUR-982:true"
+            ],
+            "unit": "events"
+          },
+          "requestEvents": {
+            "value": [
+              "audio.download:TOUR-982:wifi"
+            ],
+            "unit": "events"
+          },
+          "open": {
+            "value": false,
+            "unit": "bool"
+          },
+          "requested": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "rows": [
+        {
+          "id": "n1",
+          "title": "A river pilots desk",
+          "body": "Start at the pilots desk and examine the folded river chart beneath its glass cover. The opening voice explains how crews planned a passage around shifting sandbanks and why a familiar route still needed careful attention on every journey."
+        },
+        {
+          "id": "n2",
+          "title": "Measuring the current",
+          "body": "Beside the current meter, listen to a surveyor describe taking a reading from a small boat. The account connects the instrument to a practical decision about when to leave the landing, without asking you to perform a calculation yourself."
+        },
+        {
+          "id": "n3",
+          "title": "The bridge watch",
+          "body": "At the bridge model, follow the lookout route from one side of the deck to the other. A retired crew member recalls watching for a low marker while another person kept track of the approaching bend in the river."
+        },
+        {
+          "id": "n4",
+          "title": "Soundings in shallow water",
+          "body": "The sounding line display introduces a job that required patience and clear spoken signals. Listen while looking at the marked lengths on the rope, then compare the working line with the later mechanical instrument in the neighboring case."
+        },
+        {
+          "id": "n5",
+          "title": "Keeping a voyage log",
+          "body": "Pause at the open logbook and notice the short entries written beside each date. This chapter explains how observations about weather, repairs, and waiting at a landing could help the next crew prepare for the same stretch of river."
+        },
+        {
+          "id": "n6",
+          "title": "Repairing a navigation lamp",
+          "body": "The lamp bench shows the small parts a keeper carried when a light failed. The narrator follows one routine repair and describes checking the beam from the water, where an apparently bright lamp might still be difficult to recognize."
+        },
+        {
+          "id": "n7",
+          "title": "Voices at the crossing",
+          "body": "Listen near the ferry photograph to hear three short memories of the crossing. Each speaker describes a different task, and the pauses between their accounts leave time to compare the landing shown in the image with the route map."
+        },
+        {
+          "id": "n8",
+          "title": "Reading the river today",
+          "body": "End beside the modern river map and find the old crossing on its edge. The closing chapter describes which habits of observation remain useful, even when the crew also carries electronic charts and receives regular messages from the shore station."
+        }
+      ],
+      "rowAssertions": [
+        {
+          "title": {
+            "value": "A river pilots desk",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Start at the pilots desk and examine the folded river chart beneath its glass cover. The opening voice explains how crews planned a passage around shifting sandbanks and why a familiar route still needed careful attention on every journey.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Measuring the current",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Beside the current meter, listen to a surveyor describe taking a reading from a small boat. The account connects the instrument to a practical decision about when to leave the landing, without asking you to perform a calculation yourself.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "The bridge watch",
+            "unit": "string"
+          },
+          "body": {
+            "value": "At the bridge model, follow the lookout route from one side of the deck to the other. A retired crew member recalls watching for a low marker while another person kept track of the approaching bend in the river.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Soundings in shallow water",
+            "unit": "string"
+          },
+          "body": {
+            "value": "The sounding line display introduces a job that required patience and clear spoken signals. Listen while looking at the marked lengths on the rope, then compare the working line with the later mechanical instrument in the neighboring case.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Keeping a voyage log",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Pause at the open logbook and notice the short entries written beside each date. This chapter explains how observations about weather, repairs, and waiting at a landing could help the next crew prepare for the same stretch of river.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Repairing a navigation lamp",
+            "unit": "string"
+          },
+          "body": {
+            "value": "The lamp bench shows the small parts a keeper carried when a light failed. The narrator follows one routine repair and describes checking the beam from the water, where an apparently bright lamp might still be difficult to recognize.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Voices at the crossing",
+            "unit": "string"
+          },
+          "body": {
+            "value": "Listen near the ferry photograph to hear three short memories of the crossing. Each speaker describes a different task, and the pauses between their accounts leave time to compare the landing shown in the image with the route map.",
+            "unit": "string"
+          }
+        },
+        {
+          "title": {
+            "value": "Reading the river today",
+            "unit": "string"
+          },
+          "body": {
+            "value": "End beside the modern river map and find the old crossing on its edge. The closing chapter describes which habits of observation remain useful, even when the crew also carries electronic charts and receives regular messages from the shore station.",
+            "unit": "string"
+          }
+        }
+      ],
+      "original_initial_sha256": "d58ae507c1c373e5a79f4e2d62fec25266a3a2d99ec5c23794b4c90405ec734e",
+      "original_update_sha256": "787b9173e44df90e82864e99250fde08b5d0f0898dbeb1cfdb0d1e00c421bae5"
+    }
+  },
+  "launch": {
+    "H1": {
+      "ios": {
+        "fixtures_sha256": "eb4172d9c8c6d9cf1223cfa1d76665043fdff1fd6a45a310987cff9720d282d3",
+        "bridge_sha256": "c6708b2b76c2dddad9a31d755d3bcf6558b60aa903cf885a8c3a69ec196ec621",
+        "scenario": "H1",
+        "platform": "ios"
+      },
+      "android": {
+        "fixtures_sha256": "eb4172d9c8c6d9cf1223cfa1d76665043fdff1fd6a45a310987cff9720d282d3",
+        "bridge_sha256": "44c55a28afff21d69001e2c4f62554cb23f9b287c68cbd19c450cb0350cbb8a9",
+        "scenario": "H1",
+        "platform": "android"
+      }
+    }
+  },
+  "obligations": [
+    {
+      "id": "title-label",
+      "clause": "The current caller title has its complete exact accessible text.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "subtitle-label",
+      "clause": "The current caller summary uses the exact specified string composition.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "status-label",
+      "clause": "The status follows the original independently specified business guard/state precedence.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "status-text-label",
+      "clause": "The actual status Text node exposes the exact current status string independently of the painted band.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "disclosure-label",
+      "clause": "The disclosure label reflects the open or closed local state.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "disclosure-enabled",
+      "clause": "The actual disclosure Button remains enabled, including after a business request.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "choice-label",
+      "clause": "The actual choice Button exposes its exact specified accessible label.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "choice-selected",
+      "clause": "The native selected trait reflects the current Wi-Fi-only preference.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "choice-enabled",
+      "clause": "The actual choice is disabled after request and enabled after identity replacement.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "primary-label",
+      "clause": "The primary exposes its exact normal or requested label.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "primary-enabled",
+      "clause": "The actual primary enabled state follows the original complete business predicate.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "ink-accent-label",
+      "clause": "The actual accessible solid ink mark has the exact label Ink accent.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "primary-height",
+      "clause": "The actual native primary control height is 56 pt/dp within the independently fixed 0.75 pt/dp tolerance.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "choice-primary-gap",
+      "clause": "The primary actual native control top edge is 12 pt/dp below the choice control bottom edge within 0.75 pt/dp.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "status-leading-inset",
+      "clause": "The actual status Text semantic boundary is at least 16 pt/dp inside the painted band logical leading semantic boundary.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "status-fill",
+      "clause": "The approved status-band solid region has the independently fixed opaque state-role fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "primary-fill",
+      "clause": "The approved primary solid region has the independently fixed enabled or disabled fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "surface-fill",
+      "clause": "The component surface gutter renders the independently fixed opaque white role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "canvas-fill",
+      "clause": "The component canvas gutter renders the independently fixed opaque pale role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "ink-fill",
+      "clause": "The solid ink accent renders the independently fixed opaque navy role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "status-leading-clear",
+      "clause": "The entire logical leading 4% strip of the painted status band contains only the current status fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "section-0-heading",
+      "clause": "Expanded section-0-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-0-body",
+      "clause": "Expanded section-0-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-1-heading",
+      "clause": "Expanded section-1-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-1-body",
+      "clause": "Expanded section-1-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-2-heading",
+      "clause": "Expanded section-2-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-2-body",
+      "clause": "Expanded section-2-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-3-heading",
+      "clause": "Expanded section-3-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-3-body",
+      "clause": "Expanded section-3-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-4-heading",
+      "clause": "Expanded section-4-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-4-body",
+      "clause": "Expanded section-4-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-5-heading",
+      "clause": "Expanded section-5-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-5-body",
+      "clause": "Expanded section-5-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-6-heading",
+      "clause": "Expanded section-6-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-6-body",
+      "clause": "Expanded section-6-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-7-heading",
+      "clause": "Expanded section-7-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "section-7-body",
+      "clause": "Expanded section-7-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "title-wrapping",
+      "clause": "The title visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "subtitle-wrapping",
+      "clause": "The subtitle visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "status-wrapping",
+      "clause": "The status text visibly displays its complete status string through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "disclosure-wrapping",
+      "clause": "The disclosure button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "choice-wrapping",
+      "clause": "The choice button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "primary-wrapping",
+      "clause": "The primary button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "heading-wrapping",
+      "clause": "Every expanded chapters heading visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "body-wrapping",
+      "clause": "Every expanded body paragraph visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "title-hierarchy",
+      "clause": "The title is visually more prominent than the expanded section headings.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "horizontal-clipping",
+      "clause": "Visible content remains inside the component horizontal bounds without clipping.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "row-overlap",
+      "clause": "Successive rows in the component do not visually overlap.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "flow-order",
+      "clause": "Main component blocks occur in this reading order: ink accent, title, subtitle, status, disclosure, any expanded sections, choice, primary.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "single-column",
+      "clause": "Main component blocks form one vertical column.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "full-width-canvas",
+      "clause": "The component-painted pale canvas spans the complete width offered inside the host horizontal gutters.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "collapsed-headings",
+      "clause": "No chapters section heading is visible while the disclosure is closed.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "collapsed-bodies",
+      "clause": "No chapters body paragraph is visible while the disclosure is closed.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "expanded-order",
+      "clause": "The eight expanded chapters heading/body pairs appear in caller order.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "status-rectangle",
+      "clause": "The visible painted status band is a rectangle with four square corners.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "status-no-border",
+      "clause": "No border stroke is visible around the painted status band.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "primary-rectangle",
+      "clause": "The visible painted primary surface is a rectangle with four square corners.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "primary-no-border",
+      "clause": "No border stroke is visible around the painted primary surface.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "primary-painted-allocation",
+      "clause": "The painted primary label surface fills the observed rectangular native control boundary without uncovered strips.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "ink-rectangle",
+      "clause": "The visible solid ink accent is a rectangle with four square corners.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "choice-receipt",
+      "clause": "Each selected forward, reverse, restored, or held choice activation emits exactly its independent one-event receipt after demonstrated native dispatch.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "cleared",
+        "restored",
+        "held-choice"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "request-receipt",
+      "clause": "The successful native primary activation emits exactly the independently fixed business callback event.",
+      "priority": "must",
+      "states": [
+        "requested"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "disclosure-receipt",
+      "clause": "Each selected successful disclosure open or close activation has its own empty original business callback interval.",
+      "priority": "must",
+      "states": [
+        "opened",
+        "requested-closed"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "replacement-quiet",
+      "clause": "Each selected same-process caller replacement has an empty original business callback interval.",
+      "priority": "must",
+      "states": [
+        "replaced",
+        "competing-gates"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "typography-nominal",
+      "clause": "Nominal title/body fonts, text ink, and internal spacing tokens follow the documented platform authoring values; exact computed SwiftUI fields and generic layout allocations are advisory.",
+      "priority": "advisory",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice",
+        "competing-gates"
+      ],
+      "risk": "style"
+    }
+  ],
+  "status_role_mapping": {
+    "Wi-Fi required": {
+      "value": "waiting",
+      "unit": "string"
+    },
+    "Ready to download": {
+      "value": "ready",
+      "unit": "string"
+    },
+    "Download requested": {
+      "value": "requested",
+      "unit": "string"
+    },
+    "Storage needed": {
+      "value": "blocked",
+      "unit": "string"
+    }
+  },
+  "compatibility": {
+    "version": 1,
+    "platform": "ios",
+    "priority": "must",
+    "deployment_target": {
+      "value": "14.0",
+      "unit": "string"
+    },
+    "source_api_audit_id": "ios14-api-availability",
+    "production_files": [
+      "Sources/AlertToast/OfflineAudioTourPanel.swift"
+    ],
+    "future_build": {
+      "working_directory": "Actual AlertToast package checkout containing the final production source",
+      "argv": [
+        "xcodebuild",
+        "-scheme",
+        "AlertToast",
+        "-destination",
+        "generic/platform=iOS Simulator",
+        "-sdk",
+        "iphonesimulator",
+        "-derivedDataPath",
+        "<fresh-evidence>/ios14-derived-data",
+        "IPHONEOS_DEPLOYMENT_TARGET=14.0",
+        "ARCHS=arm64",
+        "ONLY_ACTIVE_ARCH=YES",
+        "CODE_SIGNING_ALLOWED=NO",
+        "build"
+      ],
+      "environment": {
+        "DEVELOPER_DIR": "Explicit selected Xcode from the approved native host configuration"
+      },
+      "expected_exit_code": {
+        "value": 0,
+        "unit": "count"
+      },
+      "evidence_required": [
+        "exact command and actual package working directory",
+        "actual SDK/Xcode identity",
+        "actual compiler deployment target 14.0 in build settings/logs",
+        "fresh unedited build log with successful package product build",
+        "final production source SHA before/after build and match to the separately source-bound final capture/audit"
+      ]
+    },
+    "scope": "Deployment-target package compilation plus source API-availability review; never an iOS-14 native-render or behavior claim. Do not run during design."
+  },
+  "audit_propositions": {
+    "ios-production-component": {
+      "value": "The declared native component is implemented in the exact production file named by its public API.",
+      "unit": "string"
+    },
+    "ios-caller-driven-rendering": {
+      "value": "The production component renders the supplied caller model values rather than a separate observer-only approximation.",
+      "unit": "string"
+    },
+    "ios-disclosure-production-state": {
+      "value": "Disclosure state is owned by the production component.",
+      "unit": "string"
+    },
+    "ios-choice-production-state": {
+      "value": "Choice state is owned by the production component.",
+      "unit": "string"
+    },
+    "ios-requested-production-state": {
+      "value": "Requested state is owned by the production component.",
+      "unit": "string"
+    },
+    "ios-identity-reset-disclosure": {
+      "value": "The production component resets disclosure to closed when the caller model ID changes.",
+      "unit": "string"
+    },
+    "ios-identity-reset-choice": {
+      "value": "The production component resets choice to true when the caller model ID changes.",
+      "unit": "string"
+    },
+    "ios-identity-reset-requested": {
+      "value": "The production component resets requested to false when the caller model ID changes.",
+      "unit": "string"
+    },
+    "ios-reset-quiet": {
+      "value": "The production identity-reset path invokes no caller business callback.",
+      "unit": "string"
+    },
+    "ios-native-disclosure-button": {
+      "value": "Disclosure is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "ios-native-choice-button": {
+      "value": "Choice is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "ios-native-primary-button": {
+      "value": "Primary is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "ios-native-selected": {
+      "value": "The choice exposes its actual selected state through native selected semantics.",
+      "unit": "string"
+    },
+    "ios-choice-native-disabled": {
+      "value": "The choice uses actual native disabled semantics when disabled.",
+      "unit": "string"
+    },
+    "ios-primary-native-disabled": {
+      "value": "The primary uses actual native disabled semantics when disabled.",
+      "unit": "string"
+    },
+    "ios-canvas-preserve-controls": {
+      "value": "The canvas accessibility container preserves descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "ios-surface-preserve-controls": {
+      "value": "The surface accessibility container preserves descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "ios-unique-semantic-ids": {
+      "value": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "unit": "string"
+    },
+    "ios-status-band-provenance": {
+      "value": "The status semantic identifier belongs to the actual painted status band, not a geometry proxy.",
+      "unit": "string"
+    },
+    "ios-status-text-provenance": {
+      "value": "The statusText semantic identifier belongs to the actual displayed status Text allocation, not a geometry proxy.",
+      "unit": "string"
+    },
+    "ios-no-nested-scroll": {
+      "value": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "unit": "string"
+    },
+    "ios-no-blank-padding-rows": {
+      "value": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "unit": "string"
+    },
+    "ios-model-row-order": {
+      "value": "Expanded section nodes are generated from caller rows in caller order.",
+      "unit": "string"
+    },
+    "ios-no-hidden-input-special-cases": {
+      "value": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "unit": "string"
+    },
+    "ios-callback-model-id": {
+      "value": "The business request callback forwards the current caller model ID.",
+      "unit": "string"
+    },
+    "ios-callbacks-only-actions": {
+      "value": "The component invokes caller business callbacks only from enabled user-action paths.",
+      "unit": "string"
+    },
+    "ios-no-callback-on-disclosure": {
+      "value": "The disclosure open and close paths invoke no caller business callback.",
+      "unit": "string"
+    },
+    "ios-no-primary-callback-on-disabled": {
+      "value": "A disabled primary cannot invoke its caller business callback.",
+      "unit": "string"
+    },
+    "ios-no-choice-callback-on-disabled": {
+      "value": "A disabled choice cannot invoke its caller business callback.",
+      "unit": "string"
+    },
+    "ios-uncapped-text-lines": {
+      "value": "The component configures no finite line cap on title, subtitle, status, disclosure, choice, primary, section-heading, or section-body text.",
+      "unit": "string"
+    },
+    "ios-primary-label-allocation-config": {
+      "value": "The primary Button label is constructed to fill the available control width and its 56-native-unit height.",
+      "unit": "string"
+    },
+    "ios-primary-content-shape-config": {
+      "value": "The primary activation-content shape is configured as the same full rectangle as the primary label allocation.",
+      "unit": "string"
+    },
+    "ios-canvas-noninteractive": {
+      "value": "The canvas semantic carrier has no activation action or interactive role of its own.",
+      "unit": "string"
+    },
+    "ios-surface-noninteractive": {
+      "value": "The surface semantic carrier has no activation action or interactive role of its own.",
+      "unit": "string"
+    },
+    "ios-ink-noninteractive": {
+      "value": "The ink-mark semantic carrier has no activation action or interactive role of its own.",
+      "unit": "string"
+    },
+    "ios-guard-predicate": {
+      "value": "The download enabled predicate is exactly availableMB >= downloadSizeMB && !(meteredConnection && wifiOnly) && !requested.",
+      "unit": "string"
+    },
+    "ios-guard-priority": {
+      "value": "The status decision order is insufficient storage, requested, metered connection with Wi-Fi only, then ready.",
+      "unit": "string"
+    },
+    "ios-choice-toggle": {
+      "value": "Every successful pre-request Wi-Fi-only toggle flips the current Wi-Fi-only Boolean.",
+      "unit": "string"
+    },
+    "ios-choice-callback-value": {
+      "value": "The Wi-Fi-only callback forwards the resulting preference Boolean.",
+      "unit": "string"
+    },
+    "ios-choice-callback-count": {
+      "value": "A successful pre-request Wi-Fi-only toggle invokes its caller callback exactly once.",
+      "unit": "string"
+    },
+    "ios-download-requested-state": {
+      "value": "A successful eligible download request changes local requested state to true.",
+      "unit": "string"
+    },
+    "ios-download-callback-count": {
+      "value": "A successful eligible download request invokes onDownload exactly once.",
+      "unit": "string"
+    },
+    "ios-callback-preference": {
+      "value": "The download request callback forwards the current local Wi-Fi-only preference.",
+      "unit": "string"
+    },
+    "ios-no-disk-measurement": {
+      "value": "The component does not measure disk capacity; it uses the caller-supplied whole-MB availableMB and downloadSizeMB values.",
+      "unit": "string"
+    },
+    "ios-no-audio-fetch": {
+      "value": "The component does not fetch or download audio data.",
+      "unit": "string"
+    },
+    "ios-exact-api-AudioTourChapter": {
+      "value": "The production source exposes this exact public Swift declaration contract (implementation bodies may supply the declared behavior):\npublic struct AudioTourChapter: Equatable, Identifiable {\n    public let id: String\n    public let title: String\n    public let body: String\n    public init(id: String, title: String, body: String)\n}",
+      "unit": "string"
+    },
+    "ios-exact-api-OfflineAudioTour": {
+      "value": "The production source exposes this exact public Swift declaration contract (implementation bodies may supply the declared behavior):\npublic struct OfflineAudioTour: Equatable, Identifiable {\n    public let id: String\n    public let title: String\n    public let language: String\n    public let downloadSizeMB: Int\n    public let availableMB: Int\n    public let meteredConnection: Bool\n    public let chapters: [AudioTourChapter]\n    public init(id: String, title: String, language: String, downloadSizeMB: Int,\n                availableMB: Int, meteredConnection: Bool, chapters: [AudioTourChapter])\n}",
+      "unit": "string"
+    },
+    "ios-exact-api-OfflineAudioTourPanel": {
+      "value": "The production source exposes this exact public Swift declaration contract (implementation bodies may supply the declared behavior):\npublic struct OfflineAudioTourPanel: View {\n    public init(tour: OfflineAudioTour, onWifiOnlyChange: @escaping (Bool) -> Void,\n                onDownload: @escaping (String, Bool) -> Void)\n    public var body: some View { get }\n}",
+      "unit": "string"
+    },
+    "ios14-api-availability": {
+      "value": "Every unguarded API used by the production Swift component is available on iOS 14; any newer API is availability-guarded with an iOS-14-compatible fallback.",
+      "unit": "string"
+    },
+    "ios-bridge-no-ui": {
+      "value": "The approved bridge constructs no substitute component UI.",
+      "unit": "string"
+    },
+    "ios-bridge-no-state": {
+      "value": "The approved bridge owns no local component business state.",
+      "unit": "string"
+    },
+    "ios-bridge-no-identity-reset": {
+      "value": "The approved bridge applies no identity-reset wrapper around the production component.",
+      "unit": "string"
+    },
+    "ios-bridge-current-input": {
+      "value": "The approved bridge decodes the current supplied fixture into the declared production model.",
+      "unit": "string"
+    },
+    "ios-bridge-callback-forwarding": {
+      "value": "The approved bridge forwards actual production callbacks into observer event receipt.",
+      "unit": "string"
+    },
+    "android-production-component": {
+      "value": "The declared native component is implemented in the exact production file named by its public API.",
+      "unit": "string"
+    },
+    "android-caller-driven-rendering": {
+      "value": "The production component renders the supplied caller model values rather than a separate observer-only approximation.",
+      "unit": "string"
+    },
+    "android-disclosure-production-state": {
+      "value": "Disclosure state is owned by the production component.",
+      "unit": "string"
+    },
+    "android-choice-production-state": {
+      "value": "Choice state is owned by the production component.",
+      "unit": "string"
+    },
+    "android-requested-production-state": {
+      "value": "Requested state is owned by the production component.",
+      "unit": "string"
+    },
+    "android-identity-reset-disclosure": {
+      "value": "The production component resets disclosure to closed when the caller model ID changes.",
+      "unit": "string"
+    },
+    "android-identity-reset-choice": {
+      "value": "The production component resets choice to true when the caller model ID changes.",
+      "unit": "string"
+    },
+    "android-identity-reset-requested": {
+      "value": "The production component resets requested to false when the caller model ID changes.",
+      "unit": "string"
+    },
+    "android-reset-quiet": {
+      "value": "The production identity-reset path invokes no caller business callback.",
+      "unit": "string"
+    },
+    "android-native-disclosure-button": {
+      "value": "Disclosure is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "android-native-choice-button": {
+      "value": "Choice is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "android-native-primary-button": {
+      "value": "Primary is implemented as a native Button control.",
+      "unit": "string"
+    },
+    "android-native-selected": {
+      "value": "The choice exposes its actual selected state through native selected semantics.",
+      "unit": "string"
+    },
+    "android-choice-native-disabled": {
+      "value": "The choice uses actual native disabled semantics when disabled.",
+      "unit": "string"
+    },
+    "android-primary-native-disabled": {
+      "value": "The primary uses actual native disabled semantics when disabled.",
+      "unit": "string"
+    },
+    "android-canvas-preserve-controls": {
+      "value": "The canvas accessibility container preserves descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "android-surface-preserve-controls": {
+      "value": "The surface accessibility container preserves descendant Buttons as independently addressable controls.",
+      "unit": "string"
+    },
+    "android-unique-semantic-ids": {
+      "value": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "unit": "string"
+    },
+    "android-status-band-provenance": {
+      "value": "The status semantic identifier belongs to the actual painted status band, not a geometry proxy.",
+      "unit": "string"
+    },
+    "android-status-text-provenance": {
+      "value": "The statusText semantic identifier belongs to the actual displayed status Text allocation, not a geometry proxy.",
+      "unit": "string"
+    },
+    "android-no-nested-scroll": {
+      "value": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "unit": "string"
+    },
+    "android-no-blank-padding-rows": {
+      "value": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "unit": "string"
+    },
+    "android-model-row-order": {
+      "value": "Expanded section nodes are generated from caller rows in caller order.",
+      "unit": "string"
+    },
+    "android-no-hidden-input-special-cases": {
+      "value": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "unit": "string"
+    },
+    "android-callback-model-id": {
+      "value": "The business request callback forwards the current caller model ID.",
+      "unit": "string"
+    },
+    "android-callbacks-only-actions": {
+      "value": "The component invokes caller business callbacks only from enabled user-action paths.",
+      "unit": "string"
+    },
+    "android-no-callback-on-disclosure": {
+      "value": "The disclosure open and close paths invoke no caller business callback.",
+      "unit": "string"
+    },
+    "android-no-primary-callback-on-disabled": {
+      "value": "A disabled primary cannot invoke its caller business callback.",
+      "unit": "string"
+    },
+    "android-no-choice-callback-on-disabled": {
+      "value": "A disabled choice cannot invoke its caller business callback.",
+      "unit": "string"
+    },
+    "android-uncapped-text-lines": {
+      "value": "The component configures no finite line cap on title, subtitle, status, disclosure, choice, primary, section-heading, or section-body text.",
+      "unit": "string"
+    },
+    "android-primary-label-allocation-config": {
+      "value": "The primary Button label is constructed to fill the available control width and its 56-native-unit height.",
+      "unit": "string"
+    },
+    "android-primary-content-shape-config": {
+      "value": "The primary activation-content shape is configured as the same full rectangle as the primary label allocation.",
+      "unit": "string"
+    },
+    "android-canvas-noninteractive": {
+      "value": "The canvas semantic carrier has no activation action or interactive role of its own.",
+      "unit": "string"
+    },
+    "android-surface-noninteractive": {
+      "value": "The surface semantic carrier has no activation action or interactive role of its own.",
+      "unit": "string"
+    },
+    "android-ink-noninteractive": {
+      "value": "The ink-mark semantic carrier has no activation action or interactive role of its own.",
+      "unit": "string"
+    },
+    "android-guard-predicate": {
+      "value": "The download enabled predicate is exactly availableMB >= downloadSizeMB && !(meteredConnection && wifiOnly) && !requested.",
+      "unit": "string"
+    },
+    "android-guard-priority": {
+      "value": "The status decision order is insufficient storage, requested, metered connection with Wi-Fi only, then ready.",
+      "unit": "string"
+    },
+    "android-choice-toggle": {
+      "value": "Every successful pre-request Wi-Fi-only toggle flips the current Wi-Fi-only Boolean.",
+      "unit": "string"
+    },
+    "android-choice-callback-value": {
+      "value": "The Wi-Fi-only callback forwards the resulting preference Boolean.",
+      "unit": "string"
+    },
+    "android-choice-callback-count": {
+      "value": "A successful pre-request Wi-Fi-only toggle invokes its caller callback exactly once.",
+      "unit": "string"
+    },
+    "android-download-requested-state": {
+      "value": "A successful eligible download request changes local requested state to true.",
+      "unit": "string"
+    },
+    "android-download-callback-count": {
+      "value": "A successful eligible download request invokes onDownload exactly once.",
+      "unit": "string"
+    },
+    "android-callback-preference": {
+      "value": "The download request callback forwards the current local Wi-Fi-only preference.",
+      "unit": "string"
+    },
+    "android-no-disk-measurement": {
+      "value": "The component does not measure disk capacity; it uses the caller-supplied whole-MB availableMB and downloadSizeMB values.",
+      "unit": "string"
+    },
+    "android-no-audio-fetch": {
+      "value": "The component does not fetch or download audio data.",
+      "unit": "string"
+    },
+    "android-exact-api-AudioTourChapter": {
+      "value": "The production source exposes this exact Kotlin declaration contract (implementation bodies may supply the declared behavior):\ndata class AudioTourChapter(val id: String, val title: String, val body: String)",
+      "unit": "string"
+    },
+    "android-exact-api-OfflineAudioTour": {
+      "value": "The production source exposes this exact Kotlin declaration contract (implementation bodies may supply the declared behavior):\ndata class OfflineAudioTour(val id: String, val title: String, val language: String,\n    val downloadSizeMB: Int, val availableMB: Int, val meteredConnection: Boolean,\n    val chapters: List<AudioTourChapter>)",
+      "unit": "string"
+    },
+    "android-exact-api-OfflineAudioTourPanel": {
+      "value": "The production source exposes this exact Kotlin declaration contract (implementation bodies may supply the declared behavior):\n@Composable\nfun OfflineAudioTourPanel(tour: OfflineAudioTour, onWifiOnlyChange: (Boolean) -> Unit,\n    onDownload: (String, Boolean) -> Unit, modifier: Modifier = Modifier)",
+      "unit": "string"
+    },
+    "android-bridge-no-ui": {
+      "value": "The approved bridge constructs no substitute component UI.",
+      "unit": "string"
+    },
+    "android-bridge-no-state": {
+      "value": "The approved bridge owns no local component business state.",
+      "unit": "string"
+    },
+    "android-bridge-no-identity-reset": {
+      "value": "The approved bridge applies no identity-reset wrapper around the production component.",
+      "unit": "string"
+    },
+    "android-bridge-current-input": {
+      "value": "The approved bridge decodes the current supplied fixture into the declared production model.",
+      "unit": "string"
+    },
+    "android-bridge-callback-forwarding": {
+      "value": "The approved bridge forwards actual production callbacks into observer event receipt.",
+      "unit": "string"
+    }
+  },
+  "api_declaration_contracts": {
+    "ios": {
+      "AudioTourChapter": {
+        "value": "public struct AudioTourChapter: Equatable, Identifiable {\n    public let id: String\n    public let title: String\n    public let body: String\n    public init(id: String, title: String, body: String)\n}",
+        "unit": "string"
+      },
+      "OfflineAudioTour": {
+        "value": "public struct OfflineAudioTour: Equatable, Identifiable {\n    public let id: String\n    public let title: String\n    public let language: String\n    public let downloadSizeMB: Int\n    public let availableMB: Int\n    public let meteredConnection: Bool\n    public let chapters: [AudioTourChapter]\n    public init(id: String, title: String, language: String, downloadSizeMB: Int,\n                availableMB: Int, meteredConnection: Bool, chapters: [AudioTourChapter])\n}",
+        "unit": "string"
+      },
+      "OfflineAudioTourPanel": {
+        "value": "public struct OfflineAudioTourPanel: View {\n    public init(tour: OfflineAudioTour, onWifiOnlyChange: @escaping (Bool) -> Void,\n                onDownload: @escaping (String, Bool) -> Void)\n    public var body: some View { get }\n}",
+        "unit": "string"
+      }
+    },
+    "android": {
+      "AudioTourChapter": {
+        "value": "data class AudioTourChapter(val id: String, val title: String, val body: String)",
+        "unit": "string"
+      },
+      "OfflineAudioTour": {
+        "value": "data class OfflineAudioTour(val id: String, val title: String, val language: String,\n    val downloadSizeMB: Int, val availableMB: Int, val meteredConnection: Boolean,\n    val chapters: List<AudioTourChapter>)",
+        "unit": "string"
+      },
+      "OfflineAudioTourPanel": {
+        "value": "@Composable\nfun OfflineAudioTourPanel(tour: OfflineAudioTour, onWifiOnlyChange: (Boolean) -> Unit,\n    onDownload: (String, Boolean) -> Unit, modifier: Modifier = Modifier)",
+        "unit": "string"
+      }
+    }
+  },
+  "implementation_audits": [
+    {
+      "id": "ios-production-component",
+      "clause": "The declared native component is implemented in the exact production file named by its public API.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-production-component"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-caller-driven-rendering",
+      "clause": "The production component renders the supplied caller model values rather than a separate observer-only approximation.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-caller-driven-rendering"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-disclosure-production-state",
+      "clause": "Disclosure state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-disclosure-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-production-state",
+      "clause": "Choice state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-requested-production-state",
+      "clause": "Requested state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-requested-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-identity-reset-disclosure",
+      "clause": "The production component resets disclosure to closed when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-identity-reset-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-identity-reset-choice",
+      "clause": "The production component resets choice to true when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-identity-reset-choice"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-identity-reset-requested",
+      "clause": "The production component resets requested to false when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-identity-reset-requested"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-reset-quiet",
+      "clause": "The production identity-reset path invokes no caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-reset-quiet"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-disclosure-button",
+      "clause": "Disclosure is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-disclosure-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-choice-button",
+      "clause": "Choice is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-choice-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-primary-button",
+      "clause": "Primary is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-primary-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-native-selected",
+      "clause": "The choice exposes its actual selected state through native selected semantics.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-native-selected"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-native-disabled",
+      "clause": "The choice uses actual native disabled semantics when disabled.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-primary-native-disabled",
+      "clause": "The primary uses actual native disabled semantics when disabled.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-primary-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-canvas-preserve-controls",
+      "clause": "The canvas accessibility container preserves descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-canvas-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-surface-preserve-controls",
+      "clause": "The surface accessibility container preserves descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-surface-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-unique-semantic-ids",
+      "clause": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-unique-semantic-ids"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-status-band-provenance",
+      "clause": "The status semantic identifier belongs to the actual painted status band, not a geometry proxy.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-status-band-provenance"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-status-text-provenance",
+      "clause": "The statusText semantic identifier belongs to the actual displayed status Text allocation, not a geometry proxy.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-status-text-provenance"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-nested-scroll",
+      "clause": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-nested-scroll"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-blank-padding-rows",
+      "clause": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-blank-padding-rows"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-model-row-order",
+      "clause": "Expanded section nodes are generated from caller rows in caller order.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-model-row-order"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-hidden-input-special-cases",
+      "clause": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-hidden-input-special-cases"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-callback-model-id",
+      "clause": "The business request callback forwards the current caller model ID.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-callback-model-id"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-callbacks-only-actions",
+      "clause": "The component invokes caller business callbacks only from enabled user-action paths.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-callbacks-only-actions"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-callback-on-disclosure",
+      "clause": "The disclosure open and close paths invoke no caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-callback-on-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-primary-callback-on-disabled",
+      "clause": "A disabled primary cannot invoke its caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-primary-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-choice-callback-on-disabled",
+      "clause": "A disabled choice cannot invoke its caller business callback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-choice-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-uncapped-text-lines",
+      "clause": "The component configures no finite line cap on title, subtitle, status, disclosure, choice, primary, section-heading, or section-body text.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-uncapped-text-lines"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-primary-label-allocation-config",
+      "clause": "The primary Button label is constructed to fill the available control width and its 56-native-unit height.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-primary-label-allocation-config"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-primary-content-shape-config",
+      "clause": "The primary activation-content shape is configured as the same full rectangle as the primary label allocation.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-primary-content-shape-config"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-canvas-noninteractive",
+      "clause": "The canvas semantic carrier has no activation action or interactive role of its own.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-canvas-noninteractive"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-surface-noninteractive",
+      "clause": "The surface semantic carrier has no activation action or interactive role of its own.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-surface-noninteractive"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-ink-noninteractive",
+      "clause": "The ink-mark semantic carrier has no activation action or interactive role of its own.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-ink-noninteractive"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-guard-predicate",
+      "clause": "The download enabled predicate is exactly availableMB >= downloadSizeMB && !(meteredConnection && wifiOnly) && !requested.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-guard-predicate"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-guard-priority",
+      "clause": "The status decision order is insufficient storage, requested, metered connection with Wi-Fi only, then ready.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-guard-priority"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-toggle",
+      "clause": "Every successful pre-request Wi-Fi-only toggle flips the current Wi-Fi-only Boolean.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-toggle"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-callback-value",
+      "clause": "The Wi-Fi-only callback forwards the resulting preference Boolean.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-callback-value"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-choice-callback-count",
+      "clause": "A successful pre-request Wi-Fi-only toggle invokes its caller callback exactly once.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-choice-callback-count"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-download-requested-state",
+      "clause": "A successful eligible download request changes local requested state to true.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-download-requested-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-download-callback-count",
+      "clause": "A successful eligible download request invokes onDownload exactly once.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-download-callback-count"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-callback-preference",
+      "clause": "The download request callback forwards the current local Wi-Fi-only preference.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-callback-preference"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-disk-measurement",
+      "clause": "The component does not measure disk capacity; it uses the caller-supplied whole-MB availableMB and downloadSizeMB values.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-disk-measurement"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-no-audio-fetch",
+      "clause": "The component does not fetch or download audio data.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-no-audio-fetch"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-exact-api-AudioTourChapter",
+      "clause": "The production source exposes this exact public Swift declaration contract (implementation bodies may supply the declared behavior):\npublic struct AudioTourChapter: Equatable, Identifiable {\n    public let id: String\n    public let title: String\n    public let body: String\n    public init(id: String, title: String, body: String)\n}",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-exact-api-AudioTourChapter"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-exact-api-OfflineAudioTour",
+      "clause": "The production source exposes this exact public Swift declaration contract (implementation bodies may supply the declared behavior):\npublic struct OfflineAudioTour: Equatable, Identifiable {\n    public let id: String\n    public let title: String\n    public let language: String\n    public let downloadSizeMB: Int\n    public let availableMB: Int\n    public let meteredConnection: Bool\n    public let chapters: [AudioTourChapter]\n    public init(id: String, title: String, language: String, downloadSizeMB: Int,\n                availableMB: Int, meteredConnection: Bool, chapters: [AudioTourChapter])\n}",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-exact-api-OfflineAudioTour"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-exact-api-OfflineAudioTourPanel",
+      "clause": "The production source exposes this exact public Swift declaration contract (implementation bodies may supply the declared behavior):\npublic struct OfflineAudioTourPanel: View {\n    public init(tour: OfflineAudioTour, onWifiOnlyChange: @escaping (Bool) -> Void,\n                onDownload: @escaping (String, Bool) -> Void)\n    public var body: some View { get }\n}",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-exact-api-OfflineAudioTourPanel"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios14-api-availability",
+      "clause": "Every unguarded API used by the production Swift component is available on iOS 14; any newer API is availability-guarded with an iOS-14-compatible fallback.",
+      "priority": "must",
+      "files": [
+        "Sources/AlertToast/OfflineAudioTourPanel.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios14-api-availability"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-no-ui",
+      "clause": "The approved bridge constructs no substitute component UI.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-no-ui"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-no-state",
+      "clause": "The approved bridge owns no local component business state.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-no-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-no-identity-reset",
+      "clause": "The approved bridge applies no identity-reset wrapper around the production component.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-no-identity-reset"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-current-input",
+      "clause": "The approved bridge decodes the current supplied fixture into the declared production model.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-current-input"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "ios-bridge-callback-forwarding",
+      "clause": "The approved bridge forwards actual production callbacks into observer event receipt.",
+      "priority": "must",
+      "files": [
+        "@design/Bridge.swift"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/ios-bridge-callback-forwarding"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-production-component",
+      "clause": "The declared native component is implemented in the exact production file named by its public API.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-production-component"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-caller-driven-rendering",
+      "clause": "The production component renders the supplied caller model values rather than a separate observer-only approximation.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-caller-driven-rendering"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-disclosure-production-state",
+      "clause": "Disclosure state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-disclosure-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-production-state",
+      "clause": "Choice state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-requested-production-state",
+      "clause": "Requested state is owned by the production component.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-requested-production-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-identity-reset-disclosure",
+      "clause": "The production component resets disclosure to closed when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-identity-reset-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-identity-reset-choice",
+      "clause": "The production component resets choice to true when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-identity-reset-choice"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-identity-reset-requested",
+      "clause": "The production component resets requested to false when the caller model ID changes.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-identity-reset-requested"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-reset-quiet",
+      "clause": "The production identity-reset path invokes no caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-reset-quiet"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-disclosure-button",
+      "clause": "Disclosure is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-disclosure-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-choice-button",
+      "clause": "Choice is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-choice-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-primary-button",
+      "clause": "Primary is implemented as a native Button control.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-primary-button"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-native-selected",
+      "clause": "The choice exposes its actual selected state through native selected semantics.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-native-selected"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-native-disabled",
+      "clause": "The choice uses actual native disabled semantics when disabled.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-primary-native-disabled",
+      "clause": "The primary uses actual native disabled semantics when disabled.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-primary-native-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-canvas-preserve-controls",
+      "clause": "The canvas accessibility container preserves descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-canvas-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-surface-preserve-controls",
+      "clause": "The surface accessibility container preserves descendant Buttons as independently addressable controls.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-surface-preserve-controls"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-unique-semantic-ids",
+      "clause": "Each declared component semantic identifier is attached to exactly one real component node.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-unique-semantic-ids"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-status-band-provenance",
+      "clause": "The status semantic identifier belongs to the actual painted status band, not a geometry proxy.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-status-band-provenance"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-status-text-provenance",
+      "clause": "The statusText semantic identifier belongs to the actual displayed status Text allocation, not a geometry proxy.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-status-text-provenance"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-nested-scroll",
+      "clause": "The production component introduces no nested scrolling container; scrolling belongs to the supplied parent.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-nested-scroll"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-blank-padding-rows",
+      "clause": "The production component inserts no fixed-height blank row or spacer for the purpose of manufacturing long-content scrolling.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-blank-padding-rows"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-model-row-order",
+      "clause": "Expanded section nodes are generated from caller rows in caller order.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-model-row-order"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-hidden-input-special-cases",
+      "clause": "Rendering and business decisions do not special-case observer scenario names, fixture IDs, or expected test values.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-hidden-input-special-cases"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-callback-model-id",
+      "clause": "The business request callback forwards the current caller model ID.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-callback-model-id"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-callbacks-only-actions",
+      "clause": "The component invokes caller business callbacks only from enabled user-action paths.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-callbacks-only-actions"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-callback-on-disclosure",
+      "clause": "The disclosure open and close paths invoke no caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-callback-on-disclosure"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-primary-callback-on-disabled",
+      "clause": "A disabled primary cannot invoke its caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-primary-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-choice-callback-on-disabled",
+      "clause": "A disabled choice cannot invoke its caller business callback.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-choice-callback-on-disabled"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-uncapped-text-lines",
+      "clause": "The component configures no finite line cap on title, subtitle, status, disclosure, choice, primary, section-heading, or section-body text.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-uncapped-text-lines"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-primary-label-allocation-config",
+      "clause": "The primary Button label is constructed to fill the available control width and its 56-native-unit height.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-primary-label-allocation-config"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-primary-content-shape-config",
+      "clause": "The primary activation-content shape is configured as the same full rectangle as the primary label allocation.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-primary-content-shape-config"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-canvas-noninteractive",
+      "clause": "The canvas semantic carrier has no activation action or interactive role of its own.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-canvas-noninteractive"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-surface-noninteractive",
+      "clause": "The surface semantic carrier has no activation action or interactive role of its own.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-surface-noninteractive"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-ink-noninteractive",
+      "clause": "The ink-mark semantic carrier has no activation action or interactive role of its own.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-ink-noninteractive"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-guard-predicate",
+      "clause": "The download enabled predicate is exactly availableMB >= downloadSizeMB && !(meteredConnection && wifiOnly) && !requested.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-guard-predicate"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-guard-priority",
+      "clause": "The status decision order is insufficient storage, requested, metered connection with Wi-Fi only, then ready.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-guard-priority"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-toggle",
+      "clause": "Every successful pre-request Wi-Fi-only toggle flips the current Wi-Fi-only Boolean.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-toggle"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-callback-value",
+      "clause": "The Wi-Fi-only callback forwards the resulting preference Boolean.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-callback-value"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-choice-callback-count",
+      "clause": "A successful pre-request Wi-Fi-only toggle invokes its caller callback exactly once.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-choice-callback-count"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-download-requested-state",
+      "clause": "A successful eligible download request changes local requested state to true.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-download-requested-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-download-callback-count",
+      "clause": "A successful eligible download request invokes onDownload exactly once.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-download-callback-count"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-callback-preference",
+      "clause": "The download request callback forwards the current local Wi-Fi-only preference.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-callback-preference"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-disk-measurement",
+      "clause": "The component does not measure disk capacity; it uses the caller-supplied whole-MB availableMB and downloadSizeMB values.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-disk-measurement"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-no-audio-fetch",
+      "clause": "The component does not fetch or download audio data.",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-no-audio-fetch"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-exact-api-AudioTourChapter",
+      "clause": "The production source exposes this exact Kotlin declaration contract (implementation bodies may supply the declared behavior):\ndata class AudioTourChapter(val id: String, val title: String, val body: String)",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-exact-api-AudioTourChapter"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-exact-api-OfflineAudioTour",
+      "clause": "The production source exposes this exact Kotlin declaration contract (implementation bodies may supply the declared behavior):\ndata class OfflineAudioTour(val id: String, val title: String, val language: String,\n    val downloadSizeMB: Int, val availableMB: Int, val meteredConnection: Boolean,\n    val chapters: List<AudioTourChapter>)",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-exact-api-OfflineAudioTour"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-exact-api-OfflineAudioTourPanel",
+      "clause": "The production source exposes this exact Kotlin declaration contract (implementation bodies may supply the declared behavior):\n@Composable\nfun OfflineAudioTourPanel(tour: OfflineAudioTour, onWifiOnlyChange: (Boolean) -> Unit,\n    onDownload: (String, Boolean) -> Unit, modifier: Modifier = Modifier)",
+      "priority": "must",
+      "files": [
+        "app/src/main/java/com/example/reply/ui/components/OfflineAudioTourPanel.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-exact-api-OfflineAudioTourPanel"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-no-ui",
+      "clause": "The approved bridge constructs no substitute component UI.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-no-ui"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-no-state",
+      "clause": "The approved bridge owns no local component business state.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-no-state"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-no-identity-reset",
+      "clause": "The approved bridge applies no identity-reset wrapper around the production component.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-no-identity-reset"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-current-input",
+      "clause": "The approved bridge decodes the current supplied fixture into the declared production model.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-current-input"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    },
+    {
+      "id": "android-bridge-callback-forwarding",
+      "clause": "The approved bridge forwards actual production callbacks into observer event receipt.",
+      "priority": "must",
+      "files": [
+        "@design/ObserverBridge.kt"
+      ],
+      "proposition": {
+        "source": "reference",
+        "pointer": "/audit_propositions/android-bridge-callback-forwarding"
+      },
+      "expected": {
+        "source": "reference",
+        "pointer": "/truth"
+      }
+    }
+  ],
+  "requirement_crosswalk": [
+    {
+      "id": "production",
+      "original_clause": "Real reusable SwiftUI and Compose production components in the exact exported paths.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:3",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:3"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-bridge-no-ui",
+        "android-caller-driven-rendering",
+        "android-production-component",
+        "ios-bridge-no-ui",
+        "ios-caller-driven-rendering",
+        "ios-production-component"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "storage-boundary",
+      "original_clause": "availableMB >= downloadSizeMB, supplied whole decimal MB, with no disk measurement.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:5"
+      ],
+      "runtime_rule_ids": [
+        "primary-enabled"
+      ],
+      "source_audit_ids": [
+        "android-guard-predicate",
+        "android-no-disk-measurement",
+        "ios-guard-predicate",
+        "ios-no-disk-measurement"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "storage-priority",
+      "original_clause": "Insufficient storage wins over network gate.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:5",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:11"
+      ],
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "status-label"
+      ],
+      "source_audit_ids": [
+        "android-guard-predicate",
+        "android-guard-priority",
+        "ios-guard-predicate",
+        "ios-guard-priority"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "initial-choice",
+      "original_clause": "Wi-Fi-only starts selected and remains independently observable.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:6",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:11"
+      ],
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "choice-label",
+        "choice-selected"
+      ],
+      "source_audit_ids": [
+        "android-choice-production-state",
+        "android-native-selected",
+        "ios-choice-production-state",
+        "ios-native-selected"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "network-gate",
+      "original_clause": "Metered Wi-Fi-only selection blocks; deselection permits when storage sufficient.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:6",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:11"
+      ],
+      "runtime_rule_ids": [
+        "choice-selected",
+        "primary-enabled",
+        "status-label"
+      ],
+      "source_audit_ids": [
+        "android-guard-predicate",
+        "android-guard-priority",
+        "ios-guard-predicate",
+        "ios-guard-priority"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "choice-reversals",
+      "original_clause": "Each native choice activation toggles and calls onWifiOnlyChange(result) once.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:6"
+      ],
+      "runtime_rule_ids": [
+        "choice-receipt",
+        "choice-selected",
+        "primary-enabled",
+        "status-label"
+      ],
+      "source_audit_ids": [
+        "android-choice-callback-count",
+        "android-choice-callback-value",
+        "android-choice-toggle",
+        "ios-choice-callback-count",
+        "ios-choice-callback-value",
+        "ios-choice-toggle"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "request-callback",
+      "original_clause": "Eligible primary invokes onDownload(current tour.id,current wifiOnly) exactly once.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:7",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:51"
+      ],
+      "runtime_rule_ids": [
+        "request-receipt"
+      ],
+      "source_audit_ids": [
+        "android-callback-model-id",
+        "android-callback-preference",
+        "android-callbacks-only-actions",
+        "android-download-callback-count",
+        "ios-callback-model-id",
+        "ios-callback-preference",
+        "ios-callbacks-only-actions",
+        "ios-download-callback-count"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "requested-state",
+      "original_clause": "Request changes local requested state and disables choice and primary, with requested labels/status.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:7",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "primary-enabled",
+        "primary-label",
+        "status-label"
+      ],
+      "source_audit_ids": [
+        "android-choice-native-disabled",
+        "android-download-requested-state",
+        "android-primary-native-disabled",
+        "android-requested-production-state",
+        "ios-choice-native-disabled",
+        "ios-download-requested-state",
+        "ios-primary-native-disabled",
+        "ios-requested-production-state"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "no-fetch",
+      "original_clause": "Records request only; does not fetch audio.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:7"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-no-audio-fetch",
+        "ios-no-audio-fetch"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "disclosure-toggle",
+      "original_clause": "Initially closed; disclosure toggles all chapter pairs in caller order.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:8"
+      ],
+      "runtime_rule_ids": [
+        "collapsed-bodies",
+        "collapsed-headings",
+        "disclosure-label",
+        "expanded-order",
+        "section-0-body",
+        "section-0-heading",
+        "section-1-body",
+        "section-1-heading",
+        "section-2-body",
+        "section-2-heading",
+        "section-3-body",
+        "section-3-heading",
+        "section-4-body",
+        "section-4-heading",
+        "section-5-body",
+        "section-5-heading",
+        "section-6-body",
+        "section-6-heading",
+        "section-7-body",
+        "section-7-heading"
+      ],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-disclosure-production-state",
+        "android-model-row-order",
+        "ios-caller-driven-rendering",
+        "ios-disclosure-production-state",
+        "ios-model-row-order"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "disclosure-quiet",
+      "original_clause": "Disclosure open and close have no caller business callback.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:8"
+      ],
+      "runtime_rule_ids": [
+        "disclosure-receipt"
+      ],
+      "source_audit_ids": [
+        "android-no-callback-on-disclosure",
+        "ios-no-callback-on-disclosure"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "disclosure-enabled",
+      "original_clause": "Disclosure remains enabled after request.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "runtime_rule_ids": [
+        "disclosure-enabled",
+        "disclosure-receipt"
+      ],
+      "source_audit_ids": [
+        "android-native-disclosure-button",
+        "ios-native-disclosure-button"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "identity-choice-reset",
+      "original_clause": "New ID resets local Wi-Fi-only to true.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:9",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "choice-selected"
+      ],
+      "source_audit_ids": [
+        "android-identity-reset-choice",
+        "ios-identity-reset-choice"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "identity-disclosure-reset",
+      "original_clause": "New ID resets local disclosure to closed.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:9",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "runtime_rule_ids": [
+        "collapsed-bodies",
+        "collapsed-headings",
+        "disclosure-label"
+      ],
+      "source_audit_ids": [
+        "android-identity-reset-disclosure",
+        "ios-identity-reset-disclosure"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "identity-requested-reset",
+      "original_clause": "New ID resets requested false and current rendered model values together.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:9",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "primary-label",
+        "status-label",
+        "subtitle-label",
+        "title-label"
+      ],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-identity-reset-requested",
+        "ios-caller-driven-rendering",
+        "ios-identity-reset-requested"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "identity-quiet-mounted",
+      "original_clause": "Same mounted component receives actual caller fixture update with no callbacks.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:9",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "runtime_rule_ids": [
+        "replacement-quiet"
+      ],
+      "source_audit_ids": [
+        "android-bridge-current-input",
+        "android-bridge-no-identity-reset",
+        "android-reset-quiet",
+        "ios-bridge-current-input",
+        "ios-bridge-no-identity-reset",
+        "ios-reset-quiet"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "business-strings",
+      "original_clause": "Exact title/subtitle, status precedence, Review/Hide, Get audio/Requested, Wi-Fi only labels.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:11"
+      ],
+      "runtime_rule_ids": [
+        "choice-label",
+        "disclosure-label",
+        "primary-label",
+        "status-label",
+        "subtitle-label",
+        "title-label"
+      ],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-guard-priority",
+        "ios-caller-driven-rendering",
+        "ios-guard-priority"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "environment",
+      "original_clause": "P1 400x600; P2 280x600 xxxLarge/1.3; light LTR; host horizontal16 top24; same API/source.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:13"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-no-hidden-input-special-cases",
+        "ios-no-hidden-input-special-cases"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "original-checkpoints",
+      "original_clause": "Retain original overview/permitted/requested/replaced full-state checkpoints.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:13",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19"
+      ],
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "status-label",
+        "title-label"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "layout-flow",
+      "original_clause": "Full-width pale canvas, white surface, accent/title/subtitle/status/disclosure/chapters/choice/primary in vertical flow.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "runtime_rule_ids": [
+        "canvas-fill",
+        "flow-order",
+        "full-width-canvas",
+        "ink-fill",
+        "single-column",
+        "surface-fill"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "nominal-layout",
+      "original_clause": "8 gutter,16 padding,6x40 accent,12/16 internal gaps, nominal status56 are advisory layout tokens.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "advisory",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "choice-primary-gap",
+      "original_clause": "Actual native choice-to-primary edge gap is12 +/-0.75 pt/dp in same coherent frame.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "runtime_rule_ids": [
+        "choice-primary-gap"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "status-inset",
+      "original_clause": "Actual displayed status text starts at least16 native units inside painted band.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "runtime_rule_ids": [
+        "status-leading-inset",
+        "status-text-label"
+      ],
+      "source_audit_ids": [
+        "android-status-band-provenance",
+        "android-status-text-provenance",
+        "ios-status-band-provenance",
+        "ios-status-text-provenance"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "leading-clear",
+      "original_clause": "Whole leading4% status strip stays fill-only.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "runtime_rule_ids": [
+        "status-leading-clear"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "wrapping",
+      "original_clause": "All displayed text wraps without truncation/ellipsis.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17"
+      ],
+      "runtime_rule_ids": [
+        "body-wrapping",
+        "choice-wrapping",
+        "disclosure-wrapping",
+        "heading-wrapping",
+        "primary-wrapping",
+        "status-wrapping",
+        "subtitle-wrapping",
+        "title-wrapping"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "scroll-ownership",
+      "original_clause": "Parent provides scrolling; no nested scroller or manufactured fixed-height blank rows.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-no-blank-padding-rows",
+        "android-no-nested-scroll",
+        "ios-no-blank-padding-rows",
+        "ios-no-nested-scroll"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "long-content",
+      "original_clause": "Overlapping complete content and bottom reachability for representative expanded states.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19"
+      ],
+      "runtime_rule_ids": [
+        "body-wrapping",
+        "expanded-order",
+        "heading-wrapping"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "status-distinct-colors",
+      "original_clause": "Fixed distinct waiting/ready/requested/blocked rendered status fills.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17",
+        "validation/feedback-forward/design/T2/public/reference.json#/palette"
+      ],
+      "runtime_rule_ids": [
+        "status-fill"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "other-colors",
+      "original_clause": "Exact opaque canvas/surface/solid ink and enabled/disabled primary region colors.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17"
+      ],
+      "runtime_rule_ids": [
+        "canvas-fill",
+        "ink-fill",
+        "primary-fill",
+        "surface-fill"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "advisory-typography",
+      "original_clause": "Exact computed SwiftUI font/text ink unavailable and advisory.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "advisory",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "visual-atoms",
+      "original_clause": "Title hierarchy, wrapping, overlap and clipping remain separate required visual propositions.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19"
+      ],
+      "runtime_rule_ids": [
+        "horizontal-clipping",
+        "row-overlap",
+        "title-hierarchy",
+        "title-wrapping"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "native-evidence",
+      "original_clause": "Selected/enabled semantic checks and successful native dispatch must precede callback verdict.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19"
+      ],
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "choice-receipt",
+        "choice-selected",
+        "disclosure-receipt",
+        "primary-enabled",
+        "request-receipt"
+      ],
+      "source_audit_ids": [
+        "android-choice-native-disabled",
+        "android-native-selected",
+        "android-no-choice-callback-on-disabled",
+        "android-no-primary-callback-on-disabled",
+        "android-primary-native-disabled",
+        "ios-choice-native-disabled",
+        "ios-native-selected",
+        "ios-no-choice-callback-on-disabled",
+        "ios-no-primary-callback-on-disabled",
+        "ios-primary-native-disabled"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "swift-exact-api",
+      "original_clause": "Exact public Swift model declarations, Equatable/Identifiable conformances, stored public values, initializers and View signature.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:10",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:14",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:20",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:31"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-production-component",
+        "ios-caller-driven-rendering",
+        "ios-exact-api-AudioTourChapter",
+        "ios-exact-api-OfflineAudioTour",
+        "ios-exact-api-OfflineAudioTourPanel",
+        "ios-production-component"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "ios14",
+      "original_clause": "Production component remains iOS14 compatible.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:5"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-production-component",
+        "ios-production-component",
+        "ios14-api-availability"
+      ],
+      "other_verification_routes": [
+        "compatibility.json future deployment-14.0 package build, not the observer-17 build"
+      ],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "kotlin-exact-api",
+      "original_clause": "Exact Kotlin data classes, package, Composable signature and modifier:Modifier=Modifier.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:38",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:41",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:48"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-exact-api-AudioTourChapter",
+        "android-exact-api-OfflineAudioTour",
+        "android-exact-api-OfflineAudioTourPanel",
+        "android-production-component",
+        "ios-caller-driven-rendering",
+        "ios-production-component"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "thin-bridges",
+      "original_clause": "Bridges decode current model and forward real callbacks, own no UI/state/layout/results or replacement.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:51",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-bridge-callback-forwarding",
+        "android-bridge-current-input",
+        "android-bridge-no-identity-reset",
+        "android-bridge-no-state",
+        "android-bridge-no-ui",
+        "ios-bridge-callback-forwarding",
+        "ios-bridge-current-input",
+        "ios-bridge-no-identity-reset",
+        "ios-bridge-no-state",
+        "ios-bridge-no-ui"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "unique-ids",
+      "original_clause": "Every literal semantic identifier belongs to exactly one real node, with no proxy duplicates.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:53"
+      ],
+      "runtime_rule_ids": [
+        "ink-accent-label",
+        "status-label",
+        "status-text-label",
+        "title-label"
+      ],
+      "source_audit_ids": [
+        "android-status-band-provenance",
+        "android-status-text-provenance",
+        "android-unique-semantic-ids",
+        "ios-status-band-provenance",
+        "ios-status-text-provenance",
+        "ios-unique-semantic-ids"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "noninteractive-carriers",
+      "original_clause": "Canvas/surface are noninteractive containers; ink rectangle is accessible and noninteractive.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:53"
+      ],
+      "runtime_rule_ids": [
+        "canvas-fill",
+        "ink-accent-label",
+        "ink-fill",
+        "ink-rectangle",
+        "surface-fill"
+      ],
+      "source_audit_ids": [
+        "android-canvas-noninteractive",
+        "android-canvas-preserve-controls",
+        "android-ink-noninteractive",
+        "android-surface-noninteractive",
+        "android-surface-preserve-controls",
+        "android-unique-semantic-ids",
+        "ios-canvas-noninteractive",
+        "ios-canvas-preserve-controls",
+        "ios-ink-noninteractive",
+        "ios-surface-noninteractive",
+        "ios-surface-preserve-controls",
+        "ios-unique-semantic-ids"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "status-band",
+      "original_clause": "Status identifier belongs to whole painted band; no duplicate status ID on text.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:53"
+      ],
+      "runtime_rule_ids": [
+        "status-fill",
+        "status-label",
+        "status-leading-inset",
+        "status-text-label"
+      ],
+      "source_audit_ids": [
+        "android-status-band-provenance",
+        "android-status-text-provenance",
+        "android-unique-semantic-ids",
+        "ios-status-band-provenance",
+        "ios-status-text-provenance",
+        "ios-unique-semantic-ids"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "native-buttons",
+      "original_clause": "Disclosure, choice, primary are actual Buttons; selected and disabled native semantics; descendant controls preserved.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "choice-selected",
+        "disclosure-enabled",
+        "primary-enabled"
+      ],
+      "source_audit_ids": [
+        "android-canvas-preserve-controls",
+        "android-choice-native-disabled",
+        "android-native-choice-button",
+        "android-native-disclosure-button",
+        "android-native-primary-button",
+        "android-native-selected",
+        "android-primary-native-disabled",
+        "android-surface-preserve-controls",
+        "ios-canvas-preserve-controls",
+        "ios-choice-native-disabled",
+        "ios-native-choice-button",
+        "ios-native-disclosure-button",
+        "ios-native-primary-button",
+        "ios-native-selected",
+        "ios-primary-native-disabled",
+        "ios-surface-preserve-controls"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "ax-labels",
+      "original_clause": "AX labels exclude decorative marks and status concatenation.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "runtime_rule_ids": [
+        "choice-label",
+        "disclosure-label",
+        "primary-label"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "primary-allocation",
+      "original_clause": "Primary label fills rectangular56 native control allocation with matching content shape.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "runtime_rule_ids": [
+        "primary-fill",
+        "primary-height",
+        "primary-painted-allocation",
+        "primary-rectangle"
+      ],
+      "source_audit_ids": [
+        "android-native-primary-button",
+        "android-primary-content-shape-config",
+        "android-primary-label-allocation-config",
+        "ios-native-primary-button",
+        "ios-primary-content-shape-config",
+        "ios-primary-label-allocation-config"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "production-state",
+      "original_clause": "All disclosure/choice/requested state and identity reset logic remain production-owned.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-bridge-no-identity-reset",
+        "android-bridge-no-state",
+        "android-choice-production-state",
+        "android-disclosure-production-state",
+        "android-identity-reset-choice",
+        "android-identity-reset-disclosure",
+        "android-identity-reset-requested",
+        "android-requested-production-state",
+        "ios-bridge-no-identity-reset",
+        "ios-bridge-no-state",
+        "ios-choice-production-state",
+        "ios-disclosure-production-state",
+        "ios-identity-reset-choice",
+        "ios-identity-reset-disclosure",
+        "ios-identity-reset-requested",
+        "ios-requested-production-state"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "uncapped-lines",
+      "original_clause": "All text is configured without a finite line limit.",
+      "original_source": {
+        "path": "design-proposals/v1/design/T2/public/BRIEF.md",
+        "sha256": "4fb183c223216e99c98219d7be5ab79ae2297876407ad2543c5a6ac9e1157db4",
+        "line": 15
+      },
+      "runtime_rule_ids": [
+        "title-wrapping",
+        "subtitle-wrapping",
+        "status-wrapping",
+        "disclosure-wrapping",
+        "choice-wrapping",
+        "primary-wrapping",
+        "heading-wrapping",
+        "body-wrapping"
+      ],
+      "source_audit_ids": [
+        "ios-uncapped-text-lines",
+        "android-uncapped-text-lines"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "retained-rendered-status-rectangle",
+      "original_clause": "Retain the original/revised visible status-rectangle requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "runtime_rule_ids": [
+        "status-rectangle"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_rendered_route_pending_original_native_evidence"
+    },
+    {
+      "id": "retained-rendered-status-no-border",
+      "original_clause": "Retain the original/revised visible status-no-border requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "runtime_rule_ids": [
+        "status-no-border"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_rendered_route_pending_original_native_evidence"
+    },
+    {
+      "id": "retained-rendered-primary-rectangle",
+      "original_clause": "Retain the original/revised visible primary-rectangle requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "runtime_rule_ids": [
+        "primary-rectangle"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_rendered_route_pending_original_native_evidence"
+    },
+    {
+      "id": "retained-rendered-primary-no-border",
+      "original_clause": "Retain the original/revised visible primary-no-border requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "runtime_rule_ids": [
+        "primary-no-border"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_rendered_route_pending_original_native_evidence"
+    },
+    {
+      "id": "retained-rendered-primary-painted-allocation",
+      "original_clause": "Retain the original/revised visible primary-painted-allocation requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "runtime_rule_ids": [
+        "primary-painted-allocation"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_rendered_route_pending_original_native_evidence"
+    },
+    {
+      "id": "retained-rendered-ink-rectangle",
+      "original_clause": "Retain the original/revised visible ink-rectangle requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "runtime_rule_ids": [
+        "ink-rectangle"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_rendered_route_pending_original_native_evidence"
+    }
+  ],
+  "design_corrections": [
+    {
+      "case": "H1",
+      "state": "overview",
+      "source_pointer": "/cases/H1/states/overview/statusColor",
+      "prior_reference_sha256": "5cb1769566e11d02aa9c0d4bfdcdd82120e6ca311fabe46b7dd3458036f9ea9e",
+      "before": {
+        "value": "#FFFFE5B3",
+        "unit": "argb"
+      },
+      "after": {
+        "value": "#FFE9EFF8",
+        "unit": "argb"
+      },
+      "reason": "Resolve the internally inconsistent waiting-to-blocked collapse in the old typed design. Original BRIEF requires distinct waiting/ready/requested/blocked fills; waiting for Wi-Fi uses the original waiting palette value. No caller/business/event value changes.",
+      "intent_source": {
+        "path": "design-proposals/v1/design/T2/private/BRIEF.md",
+        "sha256": "94f5537dbf4a87224da52b4dcbc5b71629014a83509f075a394d81cd0ba69c14",
+        "line": 17
+      }
+    },
+    {
+      "case": "H1",
+      "state": "opened",
+      "source_pointer": "/cases/H1/states/opened/statusColor",
+      "prior_reference_sha256": "5cb1769566e11d02aa9c0d4bfdcdd82120e6ca311fabe46b7dd3458036f9ea9e",
+      "before": {
+        "value": "#FFFFE5B3",
+        "unit": "argb"
+      },
+      "after": {
+        "value": "#FFE9EFF8",
+        "unit": "argb"
+      },
+      "reason": "Resolve the internally inconsistent waiting-to-blocked collapse in the old typed design. Original BRIEF requires distinct waiting/ready/requested/blocked fills; waiting for Wi-Fi uses the original waiting palette value. No caller/business/event value changes.",
+      "intent_source": {
+        "path": "design-proposals/v1/design/T2/private/BRIEF.md",
+        "sha256": "94f5537dbf4a87224da52b4dcbc5b71629014a83509f075a394d81cd0ba69c14",
+        "line": 17
+      }
+    },
+    {
+      "case": "H1",
+      "state": "cleared",
+      "source_pointer": "/cases/H1/states/cleared/statusColor",
+      "prior_reference_sha256": "5cb1769566e11d02aa9c0d4bfdcdd82120e6ca311fabe46b7dd3458036f9ea9e",
+      "before": {
+        "value": "#FFFFE5B3",
+        "unit": "argb"
+      },
+      "after": {
+        "value": "#FFE9EFF8",
+        "unit": "argb"
+      },
+      "reason": "Resolve the internally inconsistent waiting-to-blocked collapse in the old typed design. Original BRIEF requires distinct waiting/ready/requested/blocked fills; waiting for Wi-Fi uses the original waiting palette value. No caller/business/event value changes.",
+      "intent_source": {
+        "path": "design-proposals/v1/design/T2/private/BRIEF.md",
+        "sha256": "94f5537dbf4a87224da52b4dcbc5b71629014a83509f075a394d81cd0ba69c14",
+        "line": 17
+      }
+    }
+  ],
+  "state_definitions": [
+    {
+      "id": "overview",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "opened",
+      "input_index": 0,
+      "after_action": 1,
+      "coverage": "targets",
+      "stimulus_action": 1
+    },
+    {
+      "id": "permitted",
+      "input_index": 0,
+      "after_action": 3,
+      "coverage": "full_content",
+      "stimulus_action": 2
+    },
+    {
+      "id": "cleared",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 4
+    },
+    {
+      "id": "restored",
+      "input_index": 0,
+      "after_action": 5,
+      "coverage": "targets",
+      "stimulus_action": 5
+    },
+    {
+      "id": "requested",
+      "input_index": 0,
+      "after_action": 7,
+      "coverage": "full_content",
+      "stimulus_action": 6
+    },
+    {
+      "id": "requested-closed",
+      "input_index": 0,
+      "after_action": 9,
+      "coverage": "full_content",
+      "stimulus_action": 8
+    },
+    {
+      "id": "replaced",
+      "input_index": 1,
+      "after_action": 11,
+      "coverage": "full_content",
+      "stimulus_action": 10
+    },
+    {
+      "id": "held-choice",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "targets",
+      "stimulus_action": 12
+    },
+    {
+      "id": "competing-gates",
+      "input_index": 2,
+      "after_action": 13,
+      "stimulus_action": 13,
+      "coverage": "targets"
+    }
+  ],
+  "sampling_limits": {
+    "runtime": "Representative states; not a Cartesian truth table. Exact-capacity equality and a Wi-Fi-only true unmetered request are not claimed as native executions.",
+    "source_audit": "Source audit is a mandatory separate conjunct and cannot prove native rendered facts or actual dispatch.",
+    "provider": "Frozen Android may perform additional sweeps after targeted actions; the plan makes only its declared target-coverage claim."
+  }
+}

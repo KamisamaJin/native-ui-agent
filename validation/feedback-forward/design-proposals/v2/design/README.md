@@ -1,0 +1,9 @@
+# Independent prospective design revision 2
+
+T1 retains ColdStorageTransferPanel; T2 retains OfflineAudioTourPanel. Original v1 proposal and official source-pinned reviews remain immutable under design-proposals/v1. No existing initial/update caller values, bridge APIs, business guards, callback or disabled/reset intent was weakened. All review issues have proposed new runtime or separately source-only routes, awaiting fresh independent feasibility review.
+
+Root explicitly approved 9 T1 / 10 T2 representative states and a shared generic source-audit gate before any implementation/native output. Four original full states remain, with an additional full same-model disclosure-close state and targeted transition checkpoints. T2 appends a competing-gates caller fixture without mutating either original caller record. The original helper must not be silently bypassed; the explicit protocol amendment and separate root mechanical verifier apply. Frozen candidate-v9 runtime tools, evaluator and metrics are unchanged.
+
+Every bundle contains exact production API paths, byte-identical thin bridges, fixed references and all public/private fixtures, contracts, source-only audit indexes, locks, policies, routes, launch/environment approvals, generated plans/actions/coverage/execution manifests/catalogs and seals. Source-only MUSTs are separately indexed at reference.json /implementation_audits in the same sealed source/lock. They remain a required release conjunct. No rendered or native behavior is proven from source alone.
+
+Do not expose private fixtures or design-logs (which retain private inputs) to builders. No product source, implementation, SDK execution, native render, other cases, or outcomes were accessed. Static reconstruction is not feasibility or product acceptance. Previous unsuccessful authoring attempts and all v1 approvals are retained in the immutable archive; new unsuccessful revisions will be preserved in design-logs.

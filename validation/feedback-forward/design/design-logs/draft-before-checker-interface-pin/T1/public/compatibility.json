@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "platform": "ios",
+  "priority": "must",
+  "deployment_target": {
+    "value": "14.0",
+    "unit": "string"
+  },
+  "source_api_audit_id": "ios-api14-availability",
+  "production_files": [
+    "Sources/AlertToast/ColdStorageTransferPanel.swift"
+  ],
+  "future_source_api_check": {
+    "working_directory": "Actual AlertToast package checkout containing the final production source",
+    "target": "arm64-apple-ios14.0-simulator",
+    "module_name": "AlertToast",
+    "module_source_rule": "All real .swift files under actual Sources/AlertToast, sorted; exclude hidden/dotfiles and AppleDouble ._ files.",
+    "module_argv": [
+      "<selected-toolchain>/swiftc",
+      "-parse-as-library",
+      "-emit-module",
+      "-module-name",
+      "AlertToast",
+      "-target",
+      "arm64-apple-ios14.0-simulator",
+      "-sdk",
+      "<actual iphonesimulator SDK>",
+      "-module-cache-path",
+      "<fresh-evidence>/module-cache",
+      "-emit-module-path",
+      "<fresh-evidence>/AlertToast.swiftmodule",
+      "<approved sorted real library Swift sources>"
+    ],
+    "bridge_argv": [
+      "<selected-toolchain>/swiftc",
+      "-typecheck",
+      "-parse-as-library",
+      "-target",
+      "arm64-apple-ios14.0-simulator",
+      "-sdk",
+      "<actual iphonesimulator SDK>",
+      "-I",
+      "<fresh-evidence>",
+      "-module-cache-path",
+      "<fresh-evidence>/module-cache",
+      "@design/Bridge.swift"
+    ],
+    "expected_module_exit_code": {
+      "value": 0,
+      "unit": "count"
+    },
+    "expected_bridge_exit_code": {
+      "value": 0,
+      "unit": "count"
+    },
+    "evidence_required": [
+      "exact shared checker/Swift compiler/SDK identity and command records",
+      "real emitted library module with its original byte SHA",
+      "successful module emission for target14 from real library inputs",
+      "successful unchanged approved public bridge typecheck against that real module at14",
+      "all actual library source and bridge SHA before/after, matching the final source/API evidence",
+      "original fresh logs and explicit no-link/no-launch scope"
+    ]
+  },
+  "environment_limit": "Pinned current Xcode rejects a simulator Xcodebuild deployment target14. Do not promise a clean target14 package/app Xcodebuild.",
+  "scope": "Original minimum14 SOURCE/API requirement: shared real-library module emission and unchanged bridge typecheck at14 plus manual API availability audit. No linking, launch, native render or iOS14 runtime claim. Clean legacy packaging/runtime remain unverified. Do not run during design."
+}

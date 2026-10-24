@@ -1,0 +1,3082 @@
+{
+  "scope": "Every normative original BRIEF/API clause, with original advisory values and explicit scope separately retained",
+  "original_clause_mappings": [
+    {
+      "id": "B01",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 3
+      },
+      "clause": "Reusable genuine native SwiftUI/Compose production component.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-production-component",
+          "ios-caller-driven-rendering"
+        ],
+        "android": [
+          "android-production-component",
+          "android-caller-driven-rendering"
+        ]
+      },
+      "harness_or_review_routes": [
+        "API.md:3-50",
+        "Bridge.swift",
+        "ObserverBridge.kt"
+      ],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B02",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 5
+      },
+      "clause": "Both sealIntact and coolantReady are required for release.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "status-label"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-guard-predicate"
+        ],
+        "android": [
+          "android-guard-predicate"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Both eligible initial models, P1 broken-seal replacement and P2 missing-coolant replacement; held-choice remains disabled. General predicate is separately source-audited."
+    },
+    {
+      "id": "B03",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 5
+      },
+      "clause": "Broken seal has priority over missing coolant.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "status-label"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-guard-priority"
+        ],
+        "android": [
+          "android-guard-priority"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Both-false is not a native sample. The explicit full status-order source audit supplies this unsampled decision branch; it cannot certify native text or dispatch."
+    },
+    {
+      "id": "B04",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 5
+      },
+      "clause": "Missing coolant is independently exercised by P2 replacement.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "status-label",
+        "primary-enabled"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-guard-predicate"
+        ],
+        "android": [
+          "android-guard-predicate"
+        ]
+      },
+      "harness_or_review_routes": [
+        "cases/P2/fixtures.json#/updates/0",
+        "contract.json#/scenarios/P2/states"
+      ],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B05",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 6
+      },
+      "clause": "Acknowledgement starts unchecked.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "choice-selected",
+        "choice-label"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-choice-production-state"
+        ],
+        "android": [
+          "android-choice-production-state"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B06",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 6
+      },
+      "clause": "Forward acknowledgement selection sets true and emits onAcknowledgementChange(true) exactly once.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "choice-selected",
+        "choice-receipt"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-choice-toggle",
+          "ios-choice-callback-value",
+          "ios-choice-callback-count"
+        ],
+        "android": [
+          "android-choice-toggle",
+          "android-choice-callback-value",
+          "android-choice-callback-count"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "permitted uses successful action 2, retained after checkpoint action 3; restored uses action 5. Exact one-event arrays reject duplicate callbacks."
+    },
+    {
+      "id": "B07",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 6
+      },
+      "clause": "Selecting acknowledgement again before release clears it and emits false.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "choice-selected",
+        "choice-label",
+        "primary-enabled",
+        "choice-receipt"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-choice-toggle",
+          "ios-choice-callback-value",
+          "ios-choice-callback-count"
+        ],
+        "android": [
+          "android-choice-toggle",
+          "android-choice-callback-value",
+          "android-choice-callback-count"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "cleared is a separately bound target checkpoint at actual action 4, with its own false receipt."
+    },
+    {
+      "id": "B08",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 6
+      },
+      "clause": "Acknowledgement cannot override seal/coolant holds.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "choice-selected",
+        "primary-enabled",
+        "status-label",
+        "choice-receipt"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-guard-predicate",
+          "ios-guard-priority"
+        ],
+        "android": [
+          "android-guard-predicate",
+          "android-guard-priority"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "held-choice is successful action 12 on each different guard-held replacement; acknowledged true, release disabled, guard status retained."
+    },
+    {
+      "id": "B09",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 7
+      },
+      "clause": "Eligible acknowledged unrequested primary calls onRelease(current ID) exactly once.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "request-receipt"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-guard-predicate",
+          "ios-callback-model-id",
+          "ios-release-callback-count"
+        ],
+        "android": [
+          "android-guard-predicate",
+          "android-callback-model-id",
+          "android-release-callback-count"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Successful native action 6 is required; requested checkpoint after action 7 uses that exact stimulus interval."
+    },
+    {
+      "id": "B10",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 7
+      },
+      "clause": "Successful release records requested state.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "status-label",
+        "primary-label",
+        "choice-enabled",
+        "primary-enabled"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-release-requested-state",
+          "ios-requested-production-state"
+        ],
+        "android": [
+          "android-release-requested-state",
+          "android-requested-production-state"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B11",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 7
+      },
+      "clause": "No second release is possible in requested local state.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "choice-enabled"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-guard-predicate",
+          "ios-no-primary-callback-on-disabled"
+        ],
+        "android": [
+          "android-guard-predicate",
+          "android-no-primary-callback-on-disabled"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Requested controls are checked disabled. No blocked attempt is falsely treated as a successful callback test; generic prohibition is source-reviewed."
+    },
+    {
+      "id": "B12",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 7
+      },
+      "clause": "Component only records a request and performs no physical transfer.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-no-physical-transfer",
+          "ios-callback-model-id"
+        ],
+        "android": [
+          "android-no-physical-transfer",
+          "android-callback-model-id"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B13",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 8
+      },
+      "clause": "Disclosure starts closed.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "disclosure-label",
+        "collapsed-headings",
+        "collapsed-bodies"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-disclosure-production-state"
+        ],
+        "android": [
+          "android-disclosure-production-state"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B14",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 8
+      },
+      "clause": "Disclosure toggles open and closed, showing or hiding all note headings and bodies.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "disclosure-label",
+        "collapsed-headings",
+        "collapsed-bodies",
+        "expanded-order",
+        "section-0-heading",
+        "section-0-body",
+        "section-1-heading",
+        "section-1-body",
+        "section-2-heading",
+        "section-2-body",
+        "section-3-heading",
+        "section-3-body",
+        "section-4-heading",
+        "section-4-body",
+        "section-5-heading",
+        "section-5-body",
+        "section-6-heading",
+        "section-6-body",
+        "section-7-heading",
+        "section-7-body"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-model-row-order",
+          "ios-disclosure-production-state"
+        ],
+        "android": [
+          "android-model-row-order",
+          "android-disclosure-production-state"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Open stimulus 1; close stimulus 8 after request. Complete permitted/requested sweeps check all 16 note nodes, requested-closed sweep establishes absence."
+    },
+    {
+      "id": "B15",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 8
+      },
+      "clause": "Disclosure preserves caller pair order.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "expanded-order"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-model-row-order"
+        ],
+        "android": [
+          "android-model-row-order"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B16",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 8
+      },
+      "clause": "Disclosure emits no caller callback.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "disclosure-receipt"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-no-callback-on-disclosure"
+        ],
+        "android": [
+          "android-no-callback-on-disclosure"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "opened and requested-closed separately use real stimuli 1 and 8, with independent empty event intervals gated by successful dispatch."
+    },
+    {
+      "id": "B17",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 8
+      },
+      "clause": "Review handling / Hide handling labels track disclosure.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "disclosure-label"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B18",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 9
+      },
+      "clause": "Different model ID resets acknowledgement to false.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "choice-selected",
+        "choice-label"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-identity-reset-choice"
+        ],
+        "android": [
+          "android-identity-reset-choice"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B19",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 9
+      },
+      "clause": "Different model ID resets disclosure to closed.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "disclosure-label",
+        "collapsed-headings",
+        "collapsed-bodies"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-identity-reset-disclosure"
+        ],
+        "android": [
+          "android-identity-reset-disclosure"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Runtime replacement follows already-closed disclosure, so that transition alone cannot prove open-to-closed reset. Explicit production source reset audit complements it."
+    },
+    {
+      "id": "B20",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 9
+      },
+      "clause": "Different model ID resets requested to false.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "status-label",
+        "primary-label",
+        "choice-enabled"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-identity-reset-requested"
+        ],
+        "android": [
+          "android-identity-reset-requested"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B21",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 9
+      },
+      "clause": "New title, destination, temperature and guards render in same mounted component.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "title-label",
+        "subtitle-label",
+        "status-label",
+        "primary-enabled"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-caller-driven-rendering",
+          "ios-bridge-current-input",
+          "ios-bridge-no-identity-reset"
+        ],
+        "android": [
+          "android-caller-driven-rendering",
+          "android-bridge-current-input",
+          "android-bridge-no-identity-reset"
+        ]
+      },
+      "harness_or_review_routes": [
+        "execution_plan.py launch validation",
+        "ObserverApp.swift stable ObserverBridge call",
+        "NativeObserverTest.kt current fixture assignment"
+      ],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B22",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 9
+      },
+      "clause": "Caller update emits zero business callbacks.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "replacement-quiet"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-reset-quiet",
+          "ios-callbacks-only-actions"
+        ],
+        "android": [
+          "android-reset-quiet",
+          "android-callbacks-only-actions"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "stimulus caller_update at action 10; replaced after action 11. Frozen callback_verdict requires caller_fixture_update, same process/instance and input advance plus original event interval."
+    },
+    {
+      "id": "B23",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 11
+      },
+      "clause": "Exact five-way status precedence and exact visible/accessibility strings.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "status-label",
+        "status-text-label"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-guard-priority"
+        ],
+        "android": [
+          "android-guard-priority"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Sampled waiting/ready/requested/seal-held/coolant-held strings exactly match BRIEF replay; competing guard precedence is source-only and explicitly unsampled."
+    },
+    {
+      "id": "B24",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 11
+      },
+      "clause": "Primary enabled iff sealIntact && coolantReady && acknowledged && !requested.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "primary-enabled"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-guard-predicate"
+        ],
+        "android": [
+          "android-guard-predicate"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B25",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 11
+      },
+      "clause": "Subtitle is destination + middle-dot separator + temperatureRange.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "subtitle-label"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-caller-driven-rendering"
+        ],
+        "android": [
+          "android-caller-driven-rendering"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B26",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 11
+      },
+      "clause": "Exact normal/requested primary labels and unchecked/checked confirmation labels.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "primary-label",
+        "choice-label"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B27",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 13
+      },
+      "clause": "Original overview/permitted/requested/replaced checkpoints remain full with original action meaning.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [
+        "contract.json#/scenarios/P1/states",
+        "contract.json#/scenarios/P2/states",
+        "mechanical-summary.json"
+      ],
+      "rationale": "Prospectively amended 9 states and 13 actions; all four original full checkpoints retained plus full requested-closed. New target states never replace complete evidence."
+    },
+    {
+      "id": "B28",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 13
+      },
+      "clause": "Ordinary 400x600 and narrow 280x600 with iOS xxxLarge / Android 1.3 scale.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [
+        "cases/P1/environment.ios.json",
+        "cases/P1/environment.android.json",
+        "cases/P2/environment.ios.json",
+        "cases/P2/environment.android.json",
+        "approval.json#/environment_sha256"
+      ],
+      "rationale": "Environment approvals exactly reconstruct; actual native environment validation remains required later."
+    },
+    {
+      "id": "B29",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 13
+      },
+      "clause": "Public light/LTR parent padding 16 horizontal and 24 top, offered component width requested minus 32.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [
+        "cases/P1/fixtures.json",
+        "cases/P2/fixtures.json",
+        "candidate-v9/assets/ios-observer/ObserverApp.swift:58-69",
+        "candidate-v9/assets/android-observer/NativeObserverTest.kt:262-263"
+      ],
+      "rationale": "Both generic hosts supply declared padding; Float32 Android request-to-viewport encoding is explicit. Actual native dimensions are not claimed now."
+    },
+    {
+      "id": "B30",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 13
+      },
+      "clause": "Same source and production APIs in every case.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-production-component",
+          "ios-no-hidden-input-special-cases"
+        ],
+        "android": [
+          "android-production-component",
+          "android-no-hidden-input-special-cases"
+        ]
+      },
+      "harness_or_review_routes": [
+        "approval.json#/production_paths",
+        "execution_plan.py source_fingerprint",
+        "sealed launch bridge SHAs"
+      ],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B31",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 15
+      },
+      "clause": "Full-width pale canvas with white surface.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "full-width-canvas",
+        "canvas-fill",
+        "surface-fill"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-canvas-preserve-controls",
+          "ios-surface-preserve-controls"
+        ],
+        "android": [
+          "android-canvas-preserve-controls",
+          "android-surface-preserve-controls"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Canvas and surface roles are separately component-owned pixel atoms; full width is a separate full-content visual proposition. Exact 8/16 internal padding tokens remain advisory as originally stated."
+    },
+    {
+      "id": "B32",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 15
+      },
+      "clause": "Ink accent, title, subtitle, status, disclosure, expanded material, choice and primary occur in one vertical flow.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "flow-order",
+        "single-column",
+        "ink-accent-label",
+        "ink-fill"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B33",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 15
+      },
+      "clause": "Actual choice-to-primary control-edge gap is 12 +/-0.75 native units in one frame.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "choice-primary-gap"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "control basis, accessibility_box, independently typed near tolerance in pt/dp; both actual controls must be fully visible in same coherent native frame. Source padding cannot substitute."
+    },
+    {
+      "id": "B34",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 15
+      },
+      "clause": "Status text starts at least 16 native units inside actual painted band.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "status-leading-inset"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-status-band-provenance",
+          "ios-status-text-provenance"
+        ],
+        "android": [
+          "android-status-band-provenance",
+          "android-status-text-provenance"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Separate real statusText and band semantic allocations, gte 16 without tolerance. Source provenance does not certify the measured distance; both public plans use LTR inset_left."
+    },
+    {
+      "id": "B35",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 15
+      },
+      "clause": "Whole leading 4 percent of status is empty of text/other paint and contains only status fill.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "status-leading-clear"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Full physical-left strip [0,0,.04,1], support 1.0, zero RGB tolerance and opaque exact state fill in original fully visible frame. RTL private variant is not present in this scoped public design."
+    },
+    {
+      "id": "B36",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 15
+      },
+      "clause": "All text visibly wraps completely.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "title-wrapping",
+        "subtitle-wrapping",
+        "status-wrapping",
+        "disclosure-wrapping",
+        "choice-wrapping",
+        "primary-wrapping",
+        "heading-wrapping",
+        "body-wrapping"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Eight separately sourced propositions; six compact text-role target rules in every state, expanded heading/body rules on permitted and requested full sweeps. No computed font is fabricated."
+    },
+    {
+      "id": "B37",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 15
+      },
+      "clause": "Text uses no line limits.",
+      "assessment": "partial",
+      "runtime_rule_ids": [
+        "title-wrapping",
+        "subtitle-wrapping",
+        "status-wrapping",
+        "disclosure-wrapping",
+        "choice-wrapping",
+        "primary-wrapping",
+        "heading-wrapping",
+        "body-wrapping"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Current rendered propositions can detect clipping on fixed samples but do not establish uncapped line configuration. No source-audit proposition covers absence of line limits. R2 requires this source constraint in addition to retained runtime wrapping."
+    },
+    {
+      "id": "B38",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 15
+      },
+      "clause": "Status grows to accommodate wrapped status text.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "status-wrapping",
+        "row-overlap",
+        "horizontal-clipping"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "P2 ready/requested/held status wraps; complete text and non-overlap are rendered judgments. Nominal minimum 56 is originally advisory, so no unavailable layout-height fact is required."
+    },
+    {
+      "id": "B39",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 15
+      },
+      "clause": "Do not manufacture scrolling with fixed-height blank spacer rows.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-no-blank-padding-rows"
+        ],
+        "android": [
+          "android-no-blank-padding-rows"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B40",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 15
+      },
+      "clause": "Parent owns scrolling; component has no nested scroller.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-no-nested-scroll"
+        ],
+        "android": [
+          "android-no-nested-scroll"
+        ]
+      },
+      "harness_or_review_routes": [
+        "ObserverApp.swift ScrollView",
+        "NativeObserverTest.kt parent verticalScroll"
+      ],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B41",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 17
+      },
+      "clause": "Fixed opaque sRGB canvas/surface/ink/status/primary roles have separate rendered evidence.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "status-fill",
+        "primary-fill",
+        "surface-fill",
+        "canvas-fill",
+        "ink-fill"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "All exact expected ARGB values and approved solid regions are independent. Pixel support establishes only sampled painted regions; text ink remains advisory and distinct."
+    },
+    {
+      "id": "B42",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 17
+      },
+      "clause": "Title hierarchy, wrapping, overlap and clipping have separate source-backed visual propositions.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "title-hierarchy",
+        "title-wrapping",
+        "subtitle-wrapping",
+        "status-wrapping",
+        "disclosure-wrapping",
+        "choice-wrapping",
+        "primary-wrapping",
+        "heading-wrapping",
+        "body-wrapping",
+        "row-overlap",
+        "horizontal-clipping"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B43",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 19
+      },
+      "clause": "Native semantic labels, selected and enabled facts establish state.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "title-label",
+        "subtitle-label",
+        "status-label",
+        "disclosure-label",
+        "choice-label",
+        "choice-selected",
+        "choice-enabled",
+        "primary-label",
+        "primary-enabled"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-native-selected",
+          "ios-choice-native-disabled",
+          "ios-primary-native-disabled"
+        ],
+        "android": [
+          "android-native-selected",
+          "android-choice-native-disabled",
+          "android-primary-native-disabled"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B44",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 19
+      },
+      "clause": "Two independent judges inspect original evidence for qualitative atoms.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [
+        "policy.json visual atoms",
+        "candidate-v9/scripts/acceptance.py",
+        "candidate-v9/scripts/review_contract.py"
+      ],
+      "rationale": "Frozen acceptance requires both original bound judge submissions. This review is feasibility only and does not supply native judge actuals."
+    },
+    {
+      "id": "B45",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 19
+      },
+      "clause": "Static reference rasterization is not a cross-platform native pixel baseline.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [
+        "reference.svg disclaimer",
+        "BRIEF.md:19",
+        "policy.json native_pixels sampling"
+      ],
+      "rationale": "All 18 SVG/PNG pairs have matching dimensions and source copy. Reference images illustrate structure; target-local native samples use typed values, never static image pixel comparison."
+    },
+    {
+      "id": "B46",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 19
+      },
+      "clause": "Long expanded content requires overlapping sweeps and actual bottom reachability.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "heading-wrapping",
+        "body-wrapping",
+        "expanded-order"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [
+        "contract.json permitted/requested coverage full_content",
+        "execution_plan.py coverage_receipt",
+        "native_checks.py bound_state_evidence"
+      ],
+      "rationale": "Amended representative permitted/requested full sweeps retain original expanded-state duty. Extra opened/cleared/restored targets are explicitly incomplete for content acceptance."
+    },
+    {
+      "id": "B47",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 19
+      },
+      "clause": "Disabled attempts do not count as callback dispatch.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "choice-enabled"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-no-primary-callback-on-disabled",
+          "ios-no-choice-callback-on-disabled"
+        ],
+        "android": [
+          "android-no-primary-callback-on-disabled",
+          "android-no-choice-callback-on-disabled"
+        ]
+      },
+      "harness_or_review_routes": [
+        "native_checks.py callback_verdict",
+        "mechanical-summary.json API disabled controls"
+      ],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B48",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 19
+      },
+      "clause": "Choice/primary callbacks require successful native activation; update requires actual same-process update method and original interval.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "choice-receipt",
+        "request-receipt",
+        "replacement-quiet"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [
+        "native_checks.py callback_verdict",
+        "mechanical-summary.json API method controls"
+      ],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B49",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 21
+      },
+      "clause": "Prove mounted production component under declared observer parent; exclude unrelated app/hardware/lifecycle scope.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-production-component",
+          "ios-caller-driven-rendering",
+          "ios-no-physical-transfer",
+          "ios-bridge-no-ui"
+        ],
+        "android": [
+          "android-production-component",
+          "android-caller-driven-rendering",
+          "android-no-physical-transfer",
+          "android-bridge-no-ui"
+        ]
+      },
+      "harness_or_review_routes": [
+        "pinned launch fixture and bridge hashes",
+        "generic observer direct API calls"
+      ],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "B50",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/BRIEF.md",
+        "sha256": "365761e13dc5faf89f0f2e086d292a37120523c540271d30109b378c661719f7",
+        "line": 21
+      },
+      "clause": "Design and feasibility review precede implementation and SDK use.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [
+        "PREIMPLEMENTATION-AMENDMENT.md",
+        "review.json scope and phase timestamps"
+      ],
+      "rationale": "This reviewer accessed no product implementation, SDK/native capture, previous review conclusion or other task. Definitions-only source audit is planning only."
+    },
+    {
+      "id": "A01",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 3
+      },
+      "clause": "Exact production file locations, module/package and pinned host versions.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-production-component"
+        ],
+        "android": [
+          "android-production-component"
+        ]
+      },
+      "harness_or_review_routes": [
+        "API.md:5-8",
+        "approval.json#/production_paths",
+        "Bridge.swift imports",
+        "ObserverBridge.kt imports"
+      ],
+      "rationale": "Exact file scopes are indexed for both platforms and bridge calls are direct. No pinned repository source was inspected under this review scope."
+    },
+    {
+      "id": "A02",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 5
+      },
+      "clause": "iOS 14 compatibility.",
+      "assessment": "partial",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-production-component"
+        ],
+        "android": [
+          "android-production-component"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "The broad production-component proposition does not state deployment/API compatibility. No explicit independently indexed iOS 14 review or pinned minimum-version build route is provided. Frozen observer host targets 17.0; a host run alone would not establish this clause. R1."
+    },
+    {
+      "id": "A03",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 14
+      },
+      "clause": "Swift TransferHandlingNote public struct, Equatable/Identifiable, public immutable String fields and public initializer.",
+      "assessment": "partial",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-production-component"
+        ],
+        "android": [
+          "android-production-component"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Bridge compilation will exercise public initialization, but not public property access or Equatable/Identifiable conformance. None of the 84 source propositions specifies complete model API shape. R1."
+    },
+    {
+      "id": "A04",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 20
+      },
+      "clause": "Swift ColdStorageTransfer public struct, Equatable/Identifiable, declared public immutable typed stored values and public initializer.",
+      "assessment": "partial",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-production-component"
+        ],
+        "android": [
+          "android-production-component"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Direct public initializer signature is exercised by bridge; exported field access and conformance remain outside explicit propositions. R1."
+    },
+    {
+      "id": "A05",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 31
+      },
+      "clause": "Swift panel exported View and exact callback initializer plus public body.",
+      "assessment": "partial",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-production-component"
+        ],
+        "android": [
+          "android-production-component"
+        ]
+      },
+      "harness_or_review_routes": [
+        "Bridge.swift direct imported initializer"
+      ],
+      "rationale": "Direct external component construction and AnyView conversion exercise public initializer and View conformance; full public surface still belongs in the API audit gap R1."
+    },
+    {
+      "id": "A06",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 43
+      },
+      "clause": "Kotlin declared data classes, immutable typed values and model shapes.",
+      "assessment": "partial",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-production-component"
+        ],
+        "android": [
+          "android-production-component"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Bridge exercises constructor labels/types but does not establish data-class/value-property contract. R1 requires exact declaration audit."
+    },
+    {
+      "id": "A07",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 47
+      },
+      "clause": "Kotlin @Composable component exact callbacks and Modifier = Modifier argument.",
+      "assessment": "partial",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-production-component"
+        ],
+        "android": [
+          "android-production-component"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Direct bridge call exercises composability and callbacks but omits modifier, so absence or incorrect type/default of that argument could escape. No exact-API source proposition. R1."
+    },
+    {
+      "id": "A08",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 53
+      },
+      "clause": "Real production callbacks; bridge only decodes input and forwards callbacks with no UI/state/layout/expected-result/replacement logic.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-bridge-no-ui",
+          "ios-bridge-no-state",
+          "ios-bridge-no-identity-reset",
+          "ios-bridge-current-input",
+          "ios-bridge-callback-forwarding",
+          "ios-callbacks-only-actions"
+        ],
+        "android": [
+          "android-bridge-no-ui",
+          "android-bridge-no-state",
+          "android-bridge-no-identity-reset",
+          "android-bridge-current-input",
+          "android-bridge-callback-forwarding",
+          "android-callbacks-only-actions"
+        ]
+      },
+      "harness_or_review_routes": [
+        "Bridge.swift lines 1-17",
+        "ObserverBridge.kt lines 1-28"
+      ],
+      "rationale": "Both approved bridge bodies were directly inspected, contain only model construction/component call/callback forwarding, and match locked launch byte SHAs. No wrapper identity or layout is present."
+    },
+    {
+      "id": "A09",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 53
+      },
+      "clause": "Stable String IDs and unique note IDs within each model.",
+      "assessment": "partial",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [
+        "API.md declared String field types",
+        "semantic-checks.json unique_note_ids",
+        "cases/P1/fixtures.json",
+        "cases/P2/fixtures.json"
+      ],
+      "rationale": "Fixed caller IDs and note uniqueness are valid. Model API declaration enforcement is covered by R1 rather than claimed from runtime."
+    },
+    {
+      "id": "A10",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 53
+      },
+      "clause": "Observers call exact bridge make/Content APIs and Swift initializers are public.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-bridge-current-input",
+          "ios-production-component"
+        ],
+        "android": [
+          "android-bridge-current-input",
+          "android-production-component"
+        ]
+      },
+      "harness_or_review_routes": [
+        "Bridge.swift:5-16",
+        "ObserverBridge.kt:12-26",
+        "ObserverApp.swift:60",
+        "NativeObserverTest.kt:263"
+      ],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "A11",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 55
+      },
+      "clause": "Literal declared identifiers belong to exactly one actual node, without duplicate proxies.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "title-label",
+        "subtitle-label",
+        "status-label",
+        "ink-accent-label",
+        "section-0-heading",
+        "section-0-body",
+        "section-1-heading",
+        "section-1-body",
+        "section-2-heading",
+        "section-2-body",
+        "section-3-heading",
+        "section-3-body",
+        "section-4-heading",
+        "section-4-body",
+        "section-5-heading",
+        "section-5-body",
+        "section-6-heading",
+        "section-6-body",
+        "section-7-heading",
+        "section-7-body"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-unique-semantic-ids",
+          "ios-status-band-provenance",
+          "ios-status-text-provenance"
+        ],
+        "android": [
+          "android-unique-semantic-ids",
+          "android-status-band-provenance",
+          "android-status-text-provenance"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "All 26 original+statusText targets are bound literally; native checks and pixels require unique resolution. Source audit preserves real node provenance."
+    },
+    {
+      "id": "A12",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 55
+      },
+      "clause": "Canvas/surface preserve descendant native controls.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-canvas-preserve-controls",
+          "ios-surface-preserve-controls"
+        ],
+        "android": [
+          "android-canvas-preserve-controls",
+          "android-surface-preserve-controls"
+        ]
+      },
+      "harness_or_review_routes": [
+        "native_controls uniquely resolved for button routes"
+      ],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "A13",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 55
+      },
+      "clause": "Canvas and surface are noninteractive semantic containers.",
+      "assessment": "partial",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-canvas-preserve-controls",
+          "ios-surface-preserve-controls"
+        ],
+        "android": [
+          "android-canvas-preserve-controls",
+          "android-surface-preserve-controls"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Preserving descendants does not assert that canvas/surface have no activation action. There is no noninteractive control fact/assertion or source proposition for these containers. R4."
+    },
+    {
+      "id": "A14",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 55
+      },
+      "clause": "Ink mark is accessible and has exact Ink accent label on its real solid rectangle.",
+      "assessment": "partial",
+      "runtime_rule_ids": [
+        "ink-accent-label",
+        "ink-fill"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-unique-semantic-ids"
+        ],
+        "android": [
+          "android-unique-semantic-ids"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Accessible label, exact solid color sample and real unique identifier route exist; shape and noninteractive qualification remain separate R3/R4."
+    },
+    {
+      "id": "A15",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 55
+      },
+      "clause": "Ink mark is noninteractive.",
+      "assessment": "unmapped",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "No source proposition and no native activation-count/role assertion excludes ink-mark interaction. R4."
+    },
+    {
+      "id": "A16",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 55
+      },
+      "clause": "Status band label identifies entire actual painted allocation and no duplicate status identifier is placed on its Text.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "status-label",
+        "status-text-label",
+        "status-leading-inset",
+        "status-fill"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-unique-semantic-ids",
+          "ios-status-band-provenance",
+          "ios-status-text-provenance"
+        ],
+        "android": [
+          "android-unique-semantic-ids",
+          "android-status-band-provenance",
+          "android-status-text-provenance"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "A17",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 57
+      },
+      "clause": "Disclosure, choice and primary are real native Buttons.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "disclosure-enabled",
+        "choice-enabled",
+        "primary-enabled"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-native-disclosure-button",
+          "ios-native-choice-button",
+          "ios-native-primary-button"
+        ],
+        "android": [
+          "android-native-disclosure-button",
+          "android-native-choice-button",
+          "android-native-primary-button"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Runtime native control ancestry is required, and explicit source audit requires Button construction rather than a generic clickable substitute."
+    },
+    {
+      "id": "A18",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 57
+      },
+      "clause": "Choice exposes native selected semantics; primary exposes native disabled semantics.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "choice-selected",
+        "primary-enabled"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-native-selected",
+          "ios-primary-native-disabled"
+        ],
+        "android": [
+          "android-native-selected",
+          "android-primary-native-disabled"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "A19",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 57
+      },
+      "clause": "Selected choice remains enabled before request; both choice and primary disable after request; disclosure stays enabled.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "primary-enabled",
+        "disclosure-enabled"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-choice-native-disabled",
+          "ios-primary-native-disabled"
+        ],
+        "android": [
+          "android-choice-native-disabled",
+          "android-primary-native-disabled"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "A20",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 57
+      },
+      "clause": "AX labels exclude decorative checkmarks and do not concatenate status into button labels.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "choice-label",
+        "primary-label",
+        "disclosure-label"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Exact accessible label equality tests these exclusions on each selected state. Decorative checkbox marks are present only in static illustrations, not expected AX text."
+    },
+    {
+      "id": "A21",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 57
+      },
+      "clause": "Primary actual native control height is 56; geometry uses control boundary rather than text glyphs.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "primary-height",
+        "choice-primary-gap"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Source-backed 56 +/-0.75 current measurement rule uses control/accessibility_box. It does not prove content shape or physical touch bounds."
+    },
+    {
+      "id": "A22",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 57
+      },
+      "clause": "Primary label fills a rectangular native control allocation with matching content shape.",
+      "assessment": "partial",
+      "runtime_rule_ids": [
+        "primary-height",
+        "primary-fill"
+      ],
+      "source_audit_ids": {
+        "ios": [],
+        "android": []
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Height and a narrow solid-fill region do not check complete rectangular silhouette, full label allocation or matching content shape. Native AX/control edges are explicitly not physical hit-area proof. No source proposition covers matching content shape. R3."
+    },
+    {
+      "id": "A23",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 57
+      },
+      "clause": "Do not merge all descendant Buttons into canvas/surface nodes.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-canvas-preserve-controls",
+          "ios-surface-preserve-controls"
+        ],
+        "android": [
+          "android-canvas-preserve-controls",
+          "android-surface-preserve-controls"
+        ]
+      },
+      "harness_or_review_routes": [
+        "native_checks.py unique native control resolution",
+        "native callback dispatch gate"
+      ],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "A24",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 59
+      },
+      "clause": "Disclosure, acknowledgement and requested state belong to production component.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-disclosure-production-state",
+          "ios-choice-production-state",
+          "ios-requested-production-state",
+          "ios-bridge-no-state"
+        ],
+        "android": [
+          "android-disclosure-production-state",
+          "android-choice-production-state",
+          "android-requested-production-state",
+          "android-bridge-no-state"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "A25",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 59
+      },
+      "clause": "Reset all three states with rendered identity replacement and without callbacks.",
+      "assessment": "covered",
+      "runtime_rule_ids": [
+        "replacement-quiet",
+        "choice-selected",
+        "disclosure-label",
+        "primary-label"
+      ],
+      "source_audit_ids": {
+        "ios": [
+          "ios-identity-reset-disclosure",
+          "ios-identity-reset-choice",
+          "ios-identity-reset-requested",
+          "ios-reset-quiet"
+        ],
+        "android": [
+          "android-identity-reset-disclosure",
+          "android-identity-reset-choice",
+          "android-identity-reset-requested",
+          "android-reset-quiet"
+        ]
+      },
+      "harness_or_review_routes": [],
+      "rationale": "Feasible representative runtime route and/or separate source proposition; no actual product pass is claimed."
+    },
+    {
+      "id": "A26",
+      "original_source": {
+        "path": "validation/feedback-forward/design-proposals/v1/design/T1/public/API.md",
+        "sha256": "e2e56f0564dfe4fe01ab61d4f39dcc0547c1c0906cb57f6b487d21489d448e88",
+        "line": 59
+      },
+      "clause": "Bridge cannot wrap production component in .id/key; same-ID behavior remains unspecified.",
+      "assessment": "covered",
+      "runtime_rule_ids": [],
+      "source_audit_ids": {
+        "ios": [
+          "ios-bridge-no-identity-reset"
+        ],
+        "android": [
+          "android-bridge-no-identity-reset"
+        ]
+      },
+      "harness_or_review_routes": [
+        "byte-pinned Bridge.swift and ObserverBridge.kt"
+      ],
+      "rationale": "Actual bridge source has neither wrapper; source index explicitly audits it. No new same-ID obligation is invented."
+    }
+  ],
+  "revised_additions": [
+    {
+      "id": "V2-shape",
+      "source": "validation/feedback-forward/design/T1/public/BRIEF.md:15",
+      "clause": "Status and primary fills rectangular, without rounded corners or borders.",
+      "assessment": "partial",
+      "issue": "R3",
+      "rationale": "Current fill/left-strip pixel atoms do not establish complete silhouettes or right-edge/corner/border absence; no visual shape proposition exists."
+    },
+    {
+      "id": "V2-source-gate",
+      "source": "validation/feedback-forward/design/T1/public/BRIEF.md:24",
+      "assessment": "covered",
+      "rationale": "84 typed source-only MUSTs, exact path scopes and hash/line-bound actual/unknown binding are supported. Definitions-only binding and missing implementation catalog are correctly rejected."
+    },
+    {
+      "id": "V2-inset",
+      "source": "validation/feedback-forward/design/T1/public/API.md:55",
+      "assessment": "covered_public_only",
+      "rationale": "Native semantic boundary inset is measured with exact gte 16; separate status/band source provenance and support-1 whole leading strip remain. Private RTL inputs/routes were not supplied in authorized design/T1; no RTL approval is inferred."
+    }
+  ],
+  "runtime_index_assessments": [
+    {
+      "id": "title-label",
+      "clause": "The current caller title has its complete exact accessible text.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "title-label"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "subtitle-label",
+      "clause": "The current caller summary uses the exact specified string composition.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "subtitle-label"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "status-label",
+      "clause": "The status follows the original independently specified business guard/state precedence.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "status-label"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "status-text-label",
+      "clause": "The actual status Text node exposes the exact current status string independently of the painted band.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "status-text-label"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "disclosure-label",
+      "clause": "The disclosure label reflects the open or closed local state.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "disclosure-label"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "disclosure-enabled",
+      "clause": "The actual disclosure Button remains enabled, including after a business request.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "behavior",
+      "rule_ids": [
+        "disclosure-enabled"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "choice-label",
+      "clause": "The actual choice Button exposes its exact specified accessible label.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "choice-label"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "choice-selected",
+      "clause": "The native selected trait reflects the current acknowledgement.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "behavior",
+      "rule_ids": [
+        "choice-selected"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "choice-enabled",
+      "clause": "The actual choice is disabled after request and enabled after identity replacement.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "behavior",
+      "rule_ids": [
+        "choice-enabled"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "primary-label",
+      "clause": "The primary exposes its exact normal or requested label.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "primary-label"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "primary-enabled",
+      "clause": "The actual primary enabled state follows the original complete business predicate.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "behavior",
+      "rule_ids": [
+        "primary-enabled"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "ink-accent-label",
+      "clause": "The actual accessible solid ink mark has the exact label Ink accent.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "ink-accent-label"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "primary-height",
+      "clause": "The actual native primary control height is 56 pt/dp within the independently fixed 0.75 pt/dp tolerance.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "primary-height"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "choice-primary-gap",
+      "clause": "The primary actual native control top edge is 12 pt/dp below the choice control bottom edge within 0.75 pt/dp.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "choice-primary-gap"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "status-leading-inset",
+      "clause": "The actual status Text semantic boundary is at least 16 pt/dp inside the painted band logical leading semantic boundary.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "status-leading-inset"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "status-fill",
+      "clause": "The approved status-band solid region has the independently fixed opaque state-role fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "status-fill"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "primary-fill",
+      "clause": "The approved primary solid region has the independently fixed enabled or disabled fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "primary-fill"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "surface-fill",
+      "clause": "The component surface gutter renders the independently fixed opaque white role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "surface-fill"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "canvas-fill",
+      "clause": "The component canvas gutter renders the independently fixed opaque pale role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "canvas-fill"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "ink-fill",
+      "clause": "The solid ink accent renders the independently fixed opaque navy role.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "ink-fill"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "status-leading-clear",
+      "clause": "The entire logical leading 4% strip of the painted status band contains only the current status fill.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "status-leading-clear"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-0-heading",
+      "clause": "Expanded section-0-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-0-heading"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-0-body",
+      "clause": "Expanded section-0-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-0-body"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-1-heading",
+      "clause": "Expanded section-1-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-1-heading"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-1-body",
+      "clause": "Expanded section-1-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-1-body"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-2-heading",
+      "clause": "Expanded section-2-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-2-heading"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-2-body",
+      "clause": "Expanded section-2-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-2-body"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-3-heading",
+      "clause": "Expanded section-3-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-3-heading"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-3-body",
+      "clause": "Expanded section-3-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-3-body"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-4-heading",
+      "clause": "Expanded section-4-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-4-heading"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-4-body",
+      "clause": "Expanded section-4-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-4-body"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-5-heading",
+      "clause": "Expanded section-5-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-5-heading"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-5-body",
+      "clause": "Expanded section-5-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-5-body"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-6-heading",
+      "clause": "Expanded section-6-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-6-heading"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-6-body",
+      "clause": "Expanded section-6-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-6-body"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-7-heading",
+      "clause": "Expanded section-7-heading exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-7-heading"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "section-7-body",
+      "clause": "Expanded section-7-body exposes its exact caller text.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "content",
+      "rule_ids": [
+        "section-7-body"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "title-wrapping",
+      "clause": "The title visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "title-wrapping"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "subtitle-wrapping",
+      "clause": "The subtitle visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "subtitle-wrapping"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "status-wrapping",
+      "clause": "The status text visibly displays its complete status string through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "status-wrapping"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "disclosure-wrapping",
+      "clause": "The disclosure button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "disclosure-wrapping"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "choice-wrapping",
+      "clause": "The choice button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "choice-wrapping"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "primary-wrapping",
+      "clause": "The primary button visibly displays its complete label through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "primary-wrapping"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "heading-wrapping",
+      "clause": "Every expanded handling notes heading visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "heading-wrapping"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "body-wrapping",
+      "clause": "Every expanded body paragraph visibly displays its complete supplied text through natural wrapping, without truncation or an ellipsis.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "body-wrapping"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "title-hierarchy",
+      "clause": "The title is visually more prominent than the expanded section headings.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "title-hierarchy"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "horizontal-clipping",
+      "clause": "Visible content remains inside the component horizontal bounds without clipping.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "horizontal-clipping"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "row-overlap",
+      "clause": "Successive rows in the component do not visually overlap.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "layout",
+      "rule_ids": [
+        "row-overlap"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "flow-order",
+      "clause": "Main component blocks occur in this reading order: ink accent, title, subtitle, status, disclosure, any expanded sections, choice, primary.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "flow-order"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "single-column",
+      "clause": "Main component blocks form one vertical column.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "single-column"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "full-width-canvas",
+      "clause": "The component-painted pale canvas spans the complete width offered inside the host horizontal gutters.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "permitted",
+        "requested",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "full-width-canvas"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "collapsed-headings",
+      "clause": "No handling notes section heading is visible while the disclosure is closed.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "collapsed-headings"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "collapsed-bodies",
+      "clause": "No handling notes body paragraph is visible while the disclosure is closed.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "requested-closed",
+        "replaced"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "collapsed-bodies"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "expanded-order",
+      "clause": "The eight expanded handling notes heading/body pairs appear in caller order.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "requested"
+      ],
+      "risk": "style",
+      "rule_ids": [
+        "expanded-order"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "choice-receipt",
+      "clause": "Each selected forward, reverse, restored, or held choice activation emits exactly its independent one-event receipt after demonstrated native dispatch.",
+      "priority": "must",
+      "states": [
+        "permitted",
+        "cleared",
+        "restored",
+        "held-choice"
+      ],
+      "risk": "behavior",
+      "rule_ids": [
+        "choice-receipt"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "request-receipt",
+      "clause": "The successful native primary activation emits exactly the independently fixed business callback event.",
+      "priority": "must",
+      "states": [
+        "requested"
+      ],
+      "risk": "behavior",
+      "rule_ids": [
+        "request-receipt"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "disclosure-receipt",
+      "clause": "Each selected successful disclosure open or close activation has its own empty original business callback interval.",
+      "priority": "must",
+      "states": [
+        "opened",
+        "requested-closed"
+      ],
+      "risk": "behavior",
+      "rule_ids": [
+        "disclosure-receipt"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "replacement-quiet",
+      "clause": "Each selected same-process caller replacement has an empty original business callback interval.",
+      "priority": "must",
+      "states": [
+        "replaced"
+      ],
+      "risk": "behavior",
+      "rule_ids": [
+        "replacement-quiet"
+      ],
+      "assessment": "available_for_declared_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    },
+    {
+      "id": "typography-nominal",
+      "clause": "Nominal title/body fonts, text ink, and internal spacing tokens follow the documented platform authoring values; exact computed SwiftUI fields and generic layout allocations are advisory.",
+      "priority": "advisory",
+      "states": [
+        "overview",
+        "opened",
+        "permitted",
+        "cleared",
+        "restored",
+        "requested",
+        "requested-closed",
+        "replaced",
+        "held-choice"
+      ],
+      "risk": "style",
+      "rule_ids": [],
+      "assessment": "advisory_original_scope",
+      "source": "reference.json#/obligations",
+      "limit": "Index availability is not whole-prose completeness or actual product acceptance."
+    }
+  ],
+  "source_index_assessment": {
+    "definition_count": 84,
+    "file": "mechanical/source-audit-definitions.json",
+    "all_rows_have_typed_boolean_expectation_and_string_proposition": true,
+    "actual_source_acceptance": false
+  },
+  "original_advisory_values": [
+    "8-unit outer gutter and 16-unit inner content padding tokens",
+    "6x40 ink mark authoring dimensions",
+    "12 nominal main gaps and 16 section gaps",
+    "nominal 56-unit status minimum",
+    "approximate 3-5 viewports of reading copy",
+    "exact computed SwiftUI text font and text color",
+    "nominal title/heading/body typography"
+  ],
+  "not_specified": [
+    "Same-ID update semantics",
+    "Out-of-component app navigation, network transfer, downloads, hardware and background lifecycle"
+  ]
+}

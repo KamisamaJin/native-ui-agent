@@ -1,0 +1,51 @@
+[
+  {
+    "type": "sweep",
+    "state_id": "overview",
+    "max_steps": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "transfer.disclosure"
+    },
+    "reveal": true,
+    "max_steps": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "transfer.choice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "expect_callback": "transfer.ack:XFR-4821:true"
+  },
+  {
+    "type": "sweep",
+    "state_id": "permitted",
+    "max_steps": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "transfer.primary"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "expect_callback": "transfer.release:XFR-4821"
+  },
+  {
+    "type": "sweep",
+    "state_id": "requested",
+    "max_steps": 18
+  },
+  {
+    "type": "apply_next_fixture"
+  },
+  {
+    "type": "sweep",
+    "state_id": "replaced",
+    "max_steps": 18
+  }
+]

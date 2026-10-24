@@ -96,22 +96,21 @@ jobs:
         run: python3 -B validation/multitask-forward/audit_grader_disagreements.py
       - name: Atomic review metric controls
         run: python3 -B validation/atomic-forward/test_metrics.py
-      - name: Verify frozen atomic forward study and original evidence
+      - name: Replay immutable v8 tools and publication in historical source view
+        run: python3 -B validation/publications/atomic-v8/verify.py
+      - name: Decision and feedback metric controls
         run: |
-          python3 -B validation/publications/atomic-v8-completion/test_publication_closure.py
-          python3 -B validation/publications/atomic-v8-completion/verify_completion.py --prepare
-          python3 -B validation/atomic-forward/verify_adapters.py
-          python3 -B validation/atomic-forward/verify_study.py
-      - name: Recompute atomic forward comparison and costs
+          python3 -B validation/feedback-forward/test_metrics.py
+          python3 -B validation/feedback-forward/test_delivery_metrics.py
+          python3 -B validation/feedback-forward/test_final_outcome_metrics.py
+          python3 -B validation/feedback-forward/test_implementation_audit.py
+          python3 -B validation/feedback-forward/test_source_outcomes.py
+      - name: Replay decision and feedback forward evidence
         run: |
-          python3 -B validation/atomic-forward/build_summary.py --check
-          python3 -B validation/atomic-forward/costs.py --check
-          python3 -B validation/atomic-forward/grading_costs.py --check
-          python3 -B validation/atomic-forward/observation_costs.py --check
-          python3 -B validation/atomic-forward/action_scope.py --check
-          python3 -B validation/atomic-forward/build_tables.py --check
-          python3 -B validation/atomic-forward/build_gallery.py --check
-          python3 -B validation/atomic-forward/failure_index.py --check
-          python3 -B validation/atomic-forward/disagreements.py --check
-      - name: Verify atomic forward publication bytes
-        run: python3 -B validation/publications/atomic-v8-completion/verify_completion.py
+          python3 -B validation/feedback-forward/verify.py
+          python3 -B validation/feedback-forward/benchmark_summary.py --check
+          python3 -B validation/feedback-forward/build_summary.py --check
+          python3 -B validation/feedback-forward/build_failure_index.py --check
+          python3 -B validation/feedback-forward/build_tables.py --check
+          python3 -B validation/feedback-forward/build_gallery.py --check
+          python3 -B validation/feedback-forward/artifacts.py

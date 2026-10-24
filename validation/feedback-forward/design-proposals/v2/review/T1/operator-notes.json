@@ -1,0 +1,35 @@
+{
+  "startedAtUnix": 1792856643.0,
+  "first_recorded_utc": "2026-10-24 15:44:03 UTC",
+  "timing_note": "First explicit clock reading followed initial read-only request/path-listing commands. No fabricated per-command timestamps are assigned to those early inspections. All reconstruction subprocesses have actual start/end Unix times in command-log.jsonl.",
+  "read_only_inspections": [
+    "Scoped operator request",
+    "Raw original v1 BRIEF.md and API.md only",
+    "Revised T1/public artifacts and source hashes",
+    "Frozen candidate-v9 docs/tool source and reference artifacts",
+    "Shared implementation_audit.py, SOURCE-AUDIT.md, PREIMPLEMENTATION-AMENDMENT.md"
+  ],
+  "real_operator_errors": [
+    {
+      "command": "pwd && rg --files validation/feedback-forward/design/T1 validation/feedback-forward/candidate-v9 design-proposals/v1/design/T1/public | sort",
+      "error": "rg: design-proposals/v1/design/T1/public: No such file or directory (os error 2)",
+      "handling": "Located the expressly allowed originals at validation/feedback-forward/design-proposals/v1/design/T1/public, then read only BRIEF.md/API.md. No source or expectations changed."
+    }
+  ],
+  "tool_output_limits": [
+    "An early unfiltered concatenation including design-lock.json was truncated by the output budget. Subsequent narrow JSON extraction and full programmatic frozen reconstruction supplied the required evidence.",
+    "Image tool resized tall originals/contact sheets for display. SVG text/PNG dimensions were checked independently; images were not used as exact native metrics."
+  ],
+  "parser_or_authoring_rejections": [],
+  "intentional_generic_controls": [
+    "Definition-only source bind rejected with ValueError",
+    "Missing production source catalog rejected with ValueError",
+    "41-action request rejected with ValueError",
+    "Blocked-disabled/wrong update methods remain unassessed"
+  ],
+  "writes_outside_output": false,
+  "design_or_source_edits": false,
+  "sdk_invoked": false,
+  "agents_spawned": false,
+  "agent_messages_sent": false
+}

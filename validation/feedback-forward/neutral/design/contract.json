@@ -1,0 +1,1750 @@
+{
+  "version": 1,
+  "design_owner": "Independent neutral forward-test author",
+  "approval_reference": "neutral/design/PREIMPLEMENTATION.json and neutral/APPROVAL.json; frozen before native launch",
+  "sources": [
+    {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "9b2e24c2da1a53999fbcd278da7b09601f1f9750bdfd916f56624e42b98d37ba"
+    },
+    {
+      "id": "launch",
+      "path": "launch.json",
+      "sha256": "92b073cee0cb0eda2489ac3a340af80142928e48015d8e5d18f8d2458bb6565a"
+    }
+  ],
+  "required_rule_ids": [
+    "title",
+    "summary",
+    "revision",
+    "review-count",
+    "action-label",
+    "action-enabled",
+    "action-unique",
+    "action-role",
+    "action-height",
+    "opening-anchor",
+    "middle-anchor",
+    "closing-anchor",
+    "footer",
+    "activation-receipt",
+    "replacement-receipt",
+    "full-layout",
+    "text-wrapping",
+    "neutral-surfaces",
+    "action-appearance"
+  ],
+  "rules": [
+    {
+      "id": "title",
+      "kind": "control",
+      "target": "title",
+      "property": "label"
+    },
+    {
+      "id": "summary",
+      "kind": "control",
+      "target": "summary",
+      "property": "label"
+    },
+    {
+      "id": "revision",
+      "kind": "control",
+      "target": "revision",
+      "property": "label"
+    },
+    {
+      "id": "review-count",
+      "kind": "control",
+      "target": "status",
+      "property": "label"
+    },
+    {
+      "id": "action-label",
+      "kind": "control",
+      "target": "action",
+      "property": "label"
+    },
+    {
+      "id": "action-enabled",
+      "kind": "control",
+      "target": "action",
+      "property": "enabled"
+    },
+    {
+      "id": "action-unique",
+      "kind": "control",
+      "target": "action",
+      "property": "unique"
+    },
+    {
+      "id": "action-role",
+      "kind": "control",
+      "target": "action",
+      "property": "control_role"
+    },
+    {
+      "id": "action-height",
+      "kind": "geometry",
+      "target": "action",
+      "property": "height",
+      "basis": "control",
+      "measurement": "accessibility_box",
+      "op": "gte"
+    },
+    {
+      "id": "opening-anchor",
+      "kind": "control",
+      "target": "opening",
+      "property": "label"
+    },
+    {
+      "id": "middle-anchor",
+      "kind": "control",
+      "target": "middle",
+      "property": "label"
+    },
+    {
+      "id": "closing-anchor",
+      "kind": "control",
+      "target": "closing",
+      "property": "label"
+    },
+    {
+      "id": "footer",
+      "kind": "control",
+      "target": "footer",
+      "property": "label"
+    },
+    {
+      "id": "activation-receipt",
+      "kind": "event",
+      "required_method": "xcui_tap"
+    },
+    {
+      "id": "replacement-receipt",
+      "kind": "event",
+      "stimulus": "caller_update",
+      "required_method": "caller_fixture_update"
+    },
+    {
+      "id": "full-layout",
+      "kind": "manual",
+      "target": "title",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "text-wrapping",
+      "kind": "manual",
+      "target": "summary",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "neutral-surfaces",
+      "kind": "manual",
+      "target": "middle",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "action-appearance",
+      "kind": "manual",
+      "target": "action",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    }
+  ],
+  "scenarios": {
+    "ordinary400": {
+      "states": [
+        {
+          "id": "ready",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        },
+        {
+          "id": "reviewed",
+          "input_index": 0,
+          "after_action": 1,
+          "coverage": "targets"
+        },
+        {
+          "id": "replaced",
+          "input_index": 1,
+          "after_action": 3,
+          "stimulus_action": 2,
+          "coverage": "full_content"
+        },
+        {
+          "id": "disabled",
+          "input_index": 1,
+          "after_action": 4,
+          "coverage": "targets"
+        }
+      ],
+      "actions": [
+        {
+          "type": "sweep",
+          "state_id": "ready",
+          "max_steps": 28
+        },
+        {
+          "type": "tap",
+          "target": "action",
+          "reveal": true,
+          "expect_callback": "notes.reviewed.A",
+          "state_id": "reviewed",
+          "observation_max_scrolls": 36
+        },
+        {
+          "type": "apply_next_fixture"
+        },
+        {
+          "type": "sweep",
+          "state_id": "replaced",
+          "max_steps": 28
+        },
+        {
+          "type": "tap",
+          "target": "action",
+          "reveal": true,
+          "allow_disabled": true,
+          "state_id": "disabled",
+          "observation_max_scrolls": 36
+        }
+      ],
+      "values": {
+        "title": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/titleA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/titleA"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/titleA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/titleA"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/titleB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/titleB"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/titleB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/titleB"
+            }
+          }
+        },
+        "summary": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/summaryA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/summaryA"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/summaryA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/summaryA"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/summaryB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/summaryB"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/summaryB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/summaryB"
+            }
+          }
+        },
+        "revision": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/revisionA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/revisionA"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/revisionA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/revisionA"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/revisionB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/revisionB"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/revisionB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/revisionB"
+            }
+          }
+        },
+        "review-count": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/status0"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/status0"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/status1"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/status1"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/status1"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/status1"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/status1"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/status1"
+            }
+          }
+        },
+        "action-label": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/actionReady"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/actionReady"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/actionDone"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/actionDone"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/actionDone"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/actionDone"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/actionDone"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/actionDone"
+            }
+          }
+        },
+        "action-role": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            }
+          }
+        },
+        "opening-anchor": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            }
+          }
+        },
+        "middle-anchor": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            }
+          }
+        },
+        "closing-anchor": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            }
+          }
+        },
+        "footer": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/footerA0"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/footerA0"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/footerA1"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/footerA1"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/footerB1"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/footerB1"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/footerB1"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/footerB1"
+            }
+          }
+        },
+        "action-enabled": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/no"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/no"
+            }
+          }
+        },
+        "action-unique": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            }
+          }
+        },
+        "action-height": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeightAndroid"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeightAndroid"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeightAndroid"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeightAndroid"
+            }
+          }
+        },
+        "activation-receipt": {
+          "ready": {
+            "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/reviewed"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/reviewed"
+            }
+          },
+          "replaced": {
+            "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+          },
+          "disabled": {
+            "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+          }
+        },
+        "replacement-receipt": {
+          "ready": {
+            "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+          },
+          "reviewed": {
+            "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/quiet"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/quiet"
+            }
+          },
+          "disabled": {
+            "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+          }
+        },
+        "full-layout": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/fullLayout"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/fullLayout"
+            }
+          },
+          "reviewed": {
+            "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/fullLayout"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/fullLayout"
+            }
+          },
+          "disabled": {
+            "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+          }
+        },
+        "text-wrapping": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            }
+          },
+          "reviewed": {
+            "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            }
+          },
+          "disabled": {
+            "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+          }
+        },
+        "neutral-surfaces": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            }
+          }
+        },
+        "action-appearance": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/enabledAction"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/enabledAction"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/enabledAction"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/enabledAction"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/disabledAction"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/disabledAction"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/disabledAction"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/disabledAction"
+            }
+          }
+        }
+      }
+    },
+    "narrow280-large": {
+      "states": [
+        {
+          "id": "ready",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        },
+        {
+          "id": "reviewed",
+          "input_index": 0,
+          "after_action": 1,
+          "coverage": "targets"
+        },
+        {
+          "id": "replaced",
+          "input_index": 1,
+          "after_action": 3,
+          "stimulus_action": 2,
+          "coverage": "full_content"
+        },
+        {
+          "id": "disabled",
+          "input_index": 1,
+          "after_action": 4,
+          "coverage": "targets"
+        }
+      ],
+      "actions": [
+        {
+          "type": "sweep",
+          "state_id": "ready",
+          "max_steps": 28
+        },
+        {
+          "type": "tap",
+          "target": "action",
+          "reveal": true,
+          "expect_callback": "notes.reviewed.A",
+          "state_id": "reviewed",
+          "observation_max_scrolls": 36
+        },
+        {
+          "type": "apply_next_fixture"
+        },
+        {
+          "type": "sweep",
+          "state_id": "replaced",
+          "max_steps": 28
+        },
+        {
+          "type": "tap",
+          "target": "action",
+          "reveal": true,
+          "allow_disabled": true,
+          "state_id": "disabled",
+          "observation_max_scrolls": 36
+        }
+      ],
+      "values": {
+        "title": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/titleA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/titleA"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/titleA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/titleA"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/titleB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/titleB"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/titleB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/titleB"
+            }
+          }
+        },
+        "summary": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/summaryA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/summaryA"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/summaryA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/summaryA"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/summaryB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/summaryB"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/summaryB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/summaryB"
+            }
+          }
+        },
+        "revision": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/revisionA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/revisionA"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/revisionA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/revisionA"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/revisionB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/revisionB"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/revisionB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/revisionB"
+            }
+          }
+        },
+        "review-count": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/status0"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/status0"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/status1"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/status1"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/status1"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/status1"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/status1"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/status1"
+            }
+          }
+        },
+        "action-label": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/actionReady"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/actionReady"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/actionDone"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/actionDone"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/actionDone"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/actionDone"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/actionDone"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/actionDone"
+            }
+          }
+        },
+        "action-role": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/buttonRole"
+            }
+          }
+        },
+        "opening-anchor": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/opening"
+            }
+          }
+        },
+        "middle-anchor": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/middle"
+            }
+          }
+        },
+        "closing-anchor": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/closing"
+            }
+          }
+        },
+        "footer": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/footerA0"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/footerA0"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/footerA1"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/footerA1"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/footerB1"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/footerB1"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/footerB1"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/footerB1"
+            }
+          }
+        },
+        "action-enabled": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/no"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/no"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/no"
+            }
+          }
+        },
+        "action-unique": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/yes"
+            }
+          }
+        },
+        "action-height": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeightAndroid"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeightAndroid"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeightAndroid"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/minimumActionHeightAndroid"
+            }
+          }
+        },
+        "activation-receipt": {
+          "ready": {
+            "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/reviewed"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/reviewed"
+            }
+          },
+          "replaced": {
+            "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+          },
+          "disabled": {
+            "not_applicable": "No successful activation is requested at this checkpoint. In particular a blocked disabled control cannot establish callback behavior."
+          }
+        },
+        "replacement-receipt": {
+          "ready": {
+            "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+          },
+          "reviewed": {
+            "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/behavior/quiet"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/behavior/quiet"
+            }
+          },
+          "disabled": {
+            "not_applicable": "This checkpoint does not follow the independently requested caller replacement stimulus."
+          }
+        },
+        "full-layout": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/fullLayout"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/fullLayout"
+            }
+          },
+          "reviewed": {
+            "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/fullLayout"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/fullLayout"
+            }
+          },
+          "disabled": {
+            "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+          }
+        },
+        "text-wrapping": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            }
+          },
+          "reviewed": {
+            "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/wrapping"
+            }
+          },
+          "disabled": {
+            "not_applicable": "This checkpoint deliberately requires named targets, not a whole-content visual acceptance claim."
+          }
+        },
+        "neutral-surfaces": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/surface"
+            }
+          }
+        },
+        "action-appearance": {
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/enabledAction"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/enabledAction"
+            }
+          },
+          "reviewed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/enabledAction"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/enabledAction"
+            }
+          },
+          "replaced": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/disabledAction"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/disabledAction"
+            }
+          },
+          "disabled": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/disabledAction"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/disabledAction"
+            }
+          }
+        }
+      }
+    }
+  }
+}

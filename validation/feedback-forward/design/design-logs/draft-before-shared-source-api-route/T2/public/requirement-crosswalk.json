@@ -1,0 +1,1028 @@
+{
+  "version": 3,
+  "clauses": [
+    {
+      "id": "production",
+      "original_clause": "Real reusable SwiftUI and Compose production components in the exact exported paths.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:3",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:3"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-bridge-no-ui",
+        "android-caller-driven-rendering",
+        "android-production-component",
+        "ios-bridge-no-ui",
+        "ios-caller-driven-rendering",
+        "ios-production-component"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "storage-boundary",
+      "original_clause": "availableMB >= downloadSizeMB, supplied whole decimal MB, with no disk measurement.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:5"
+      ],
+      "runtime_rule_ids": [
+        "primary-enabled"
+      ],
+      "source_audit_ids": [
+        "android-guard-predicate",
+        "android-no-disk-measurement",
+        "ios-guard-predicate",
+        "ios-no-disk-measurement"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "storage-priority",
+      "original_clause": "Insufficient storage wins over network gate.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:5",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:11"
+      ],
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "status-label"
+      ],
+      "source_audit_ids": [
+        "android-guard-predicate",
+        "android-guard-priority",
+        "ios-guard-predicate",
+        "ios-guard-priority"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "initial-choice",
+      "original_clause": "Wi-Fi-only starts selected and remains independently observable.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:6",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:11"
+      ],
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "choice-label",
+        "choice-selected"
+      ],
+      "source_audit_ids": [
+        "android-choice-production-state",
+        "android-native-selected",
+        "ios-choice-production-state",
+        "ios-native-selected"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "network-gate",
+      "original_clause": "Metered Wi-Fi-only selection blocks; deselection permits when storage sufficient.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:6",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:11"
+      ],
+      "runtime_rule_ids": [
+        "choice-selected",
+        "primary-enabled",
+        "status-label"
+      ],
+      "source_audit_ids": [
+        "android-guard-predicate",
+        "android-guard-priority",
+        "ios-guard-predicate",
+        "ios-guard-priority"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "choice-reversals",
+      "original_clause": "Each native choice activation toggles and calls onWifiOnlyChange(result) once.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:6"
+      ],
+      "runtime_rule_ids": [
+        "choice-receipt",
+        "choice-selected",
+        "primary-enabled",
+        "status-label"
+      ],
+      "source_audit_ids": [
+        "android-choice-callback-count",
+        "android-choice-callback-value",
+        "android-choice-toggle",
+        "ios-choice-callback-count",
+        "ios-choice-callback-value",
+        "ios-choice-toggle"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "request-callback",
+      "original_clause": "Eligible primary invokes onDownload(current tour.id,current wifiOnly) exactly once.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:7",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:51"
+      ],
+      "runtime_rule_ids": [
+        "request-receipt"
+      ],
+      "source_audit_ids": [
+        "android-callback-model-id",
+        "android-callback-preference",
+        "android-callbacks-only-actions",
+        "android-download-callback-count",
+        "ios-callback-model-id",
+        "ios-callback-preference",
+        "ios-callbacks-only-actions",
+        "ios-download-callback-count"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "requested-state",
+      "original_clause": "Request changes local requested state and disables choice and primary, with requested labels/status.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:7",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "primary-enabled",
+        "primary-label",
+        "status-label"
+      ],
+      "source_audit_ids": [
+        "android-choice-native-disabled",
+        "android-download-requested-state",
+        "android-primary-native-disabled",
+        "android-requested-production-state",
+        "ios-choice-native-disabled",
+        "ios-download-requested-state",
+        "ios-primary-native-disabled",
+        "ios-requested-production-state"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "no-fetch",
+      "original_clause": "Records request only; does not fetch audio.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:7"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-no-audio-fetch",
+        "ios-no-audio-fetch"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "disclosure-toggle",
+      "original_clause": "Initially closed; disclosure toggles all chapter pairs in caller order.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:8"
+      ],
+      "runtime_rule_ids": [
+        "collapsed-bodies",
+        "collapsed-headings",
+        "disclosure-label",
+        "expanded-order",
+        "section-0-body",
+        "section-0-heading",
+        "section-1-body",
+        "section-1-heading",
+        "section-2-body",
+        "section-2-heading",
+        "section-3-body",
+        "section-3-heading",
+        "section-4-body",
+        "section-4-heading",
+        "section-5-body",
+        "section-5-heading",
+        "section-6-body",
+        "section-6-heading",
+        "section-7-body",
+        "section-7-heading"
+      ],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-disclosure-production-state",
+        "android-model-row-order",
+        "ios-caller-driven-rendering",
+        "ios-disclosure-production-state",
+        "ios-model-row-order"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "disclosure-quiet",
+      "original_clause": "Disclosure open and close have no caller business callback.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:8"
+      ],
+      "runtime_rule_ids": [
+        "disclosure-receipt"
+      ],
+      "source_audit_ids": [
+        "android-no-callback-on-disclosure",
+        "ios-no-callback-on-disclosure"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "disclosure-enabled",
+      "original_clause": "Disclosure remains enabled after request.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "runtime_rule_ids": [
+        "disclosure-enabled",
+        "disclosure-receipt"
+      ],
+      "source_audit_ids": [
+        "android-native-disclosure-button",
+        "ios-native-disclosure-button"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "identity-choice-reset",
+      "original_clause": "New ID resets local Wi-Fi-only to true.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:9",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "choice-selected"
+      ],
+      "source_audit_ids": [
+        "android-identity-reset-choice",
+        "ios-identity-reset-choice"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "identity-disclosure-reset",
+      "original_clause": "New ID resets local disclosure to closed.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:9",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "runtime_rule_ids": [
+        "collapsed-bodies",
+        "collapsed-headings",
+        "disclosure-label"
+      ],
+      "source_audit_ids": [
+        "android-identity-reset-disclosure",
+        "ios-identity-reset-disclosure"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "identity-requested-reset",
+      "original_clause": "New ID resets requested false and current rendered model values together.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:9",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "primary-label",
+        "status-label",
+        "subtitle-label",
+        "title-label"
+      ],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-identity-reset-requested",
+        "ios-caller-driven-rendering",
+        "ios-identity-reset-requested"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "identity-quiet-mounted",
+      "original_clause": "Same mounted component receives actual caller fixture update with no callbacks.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:9",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "runtime_rule_ids": [
+        "replacement-quiet"
+      ],
+      "source_audit_ids": [
+        "android-bridge-current-input",
+        "android-bridge-no-identity-reset",
+        "android-reset-quiet",
+        "ios-bridge-current-input",
+        "ios-bridge-no-identity-reset",
+        "ios-reset-quiet"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "business-strings",
+      "original_clause": "Exact title/subtitle, status precedence, Review/Hide, Get audio/Requested, Wi-Fi only labels.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:11"
+      ],
+      "runtime_rule_ids": [
+        "choice-label",
+        "disclosure-label",
+        "primary-label",
+        "status-label",
+        "subtitle-label",
+        "title-label"
+      ],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-guard-priority",
+        "ios-caller-driven-rendering",
+        "ios-guard-priority"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "environment",
+      "original_clause": "P1 400x600; P2 280x600 xxxLarge/1.3; light LTR; host horizontal16 top24; same API/source.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:13"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-no-hidden-input-special-cases",
+        "ios-no-hidden-input-special-cases"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "original-checkpoints",
+      "original_clause": "Retain original overview/permitted/requested/replaced full-state checkpoints.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:13",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19"
+      ],
+      "runtime_rule_ids": [
+        "primary-enabled",
+        "status-label",
+        "title-label"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "layout-flow",
+      "original_clause": "Full-width pale canvas, white surface, accent/title/subtitle/status/disclosure/chapters/choice/primary in vertical flow.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "runtime_rule_ids": [
+        "canvas-fill",
+        "flow-order",
+        "full-width-canvas",
+        "ink-fill",
+        "single-column",
+        "surface-fill"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "nominal-layout",
+      "original_clause": "8 gutter,16 padding,6x40 accent,12/16 internal gaps, nominal status56 are advisory layout tokens.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "advisory",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "choice-primary-gap",
+      "original_clause": "Actual native choice-to-primary edge gap is12 +/-0.75 pt/dp in same coherent frame.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "runtime_rule_ids": [
+        "choice-primary-gap"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "status-inset",
+      "original_clause": "Actual displayed status text starts at least16 native units inside painted band.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "runtime_rule_ids": [
+        "status-leading-inset",
+        "status-text-label"
+      ],
+      "source_audit_ids": [
+        "android-status-band-provenance",
+        "android-status-text-provenance",
+        "ios-status-band-provenance",
+        "ios-status-text-provenance"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "leading-clear",
+      "original_clause": "Whole leading4% status strip stays fill-only.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "runtime_rule_ids": [
+        "status-leading-clear"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "wrapping",
+      "original_clause": "All displayed text wraps without truncation/ellipsis.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17"
+      ],
+      "runtime_rule_ids": [
+        "body-wrapping",
+        "choice-wrapping",
+        "disclosure-wrapping",
+        "heading-wrapping",
+        "primary-wrapping",
+        "status-wrapping",
+        "subtitle-wrapping",
+        "title-wrapping"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "scroll-ownership",
+      "original_clause": "Parent provides scrolling; no nested scroller or manufactured fixed-height blank rows.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:15"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-no-blank-padding-rows",
+        "android-no-nested-scroll",
+        "ios-no-blank-padding-rows",
+        "ios-no-nested-scroll"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "long-content",
+      "original_clause": "Overlapping complete content and bottom reachability for representative expanded states.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19"
+      ],
+      "runtime_rule_ids": [
+        "body-wrapping",
+        "expanded-order",
+        "heading-wrapping"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "status-distinct-colors",
+      "original_clause": "Fixed distinct waiting/ready/requested/blocked rendered status fills.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17",
+        "validation/feedback-forward/design/T2/public/reference.json#/palette"
+      ],
+      "runtime_rule_ids": [
+        "status-fill"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "other-colors",
+      "original_clause": "Exact opaque canvas/surface/solid ink and enabled/disabled primary region colors.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17"
+      ],
+      "runtime_rule_ids": [
+        "canvas-fill",
+        "ink-fill",
+        "primary-fill",
+        "surface-fill"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "advisory-typography",
+      "original_clause": "Exact computed SwiftUI font/text ink unavailable and advisory.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "advisory",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "visual-atoms",
+      "original_clause": "Title hierarchy, wrapping, overlap and clipping remain separate required visual propositions.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:17",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19"
+      ],
+      "runtime_rule_ids": [
+        "horizontal-clipping",
+        "row-overlap",
+        "title-hierarchy",
+        "title-wrapping"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "native-evidence",
+      "original_clause": "Selected/enabled semantic checks and successful native dispatch must precede callback verdict.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/BRIEF.md:19"
+      ],
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "choice-receipt",
+        "choice-selected",
+        "disclosure-receipt",
+        "primary-enabled",
+        "request-receipt"
+      ],
+      "source_audit_ids": [
+        "android-choice-native-disabled",
+        "android-native-selected",
+        "android-no-choice-callback-on-disabled",
+        "android-no-primary-callback-on-disabled",
+        "android-primary-native-disabled",
+        "ios-choice-native-disabled",
+        "ios-native-selected",
+        "ios-no-choice-callback-on-disabled",
+        "ios-no-primary-callback-on-disabled",
+        "ios-primary-native-disabled"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "swift-exact-api",
+      "original_clause": "Exact public Swift model declarations, Equatable/Identifiable conformances, stored public values, initializers and View signature.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:10",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:14",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:20",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:31"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-production-component",
+        "ios-caller-driven-rendering",
+        "ios-exact-api-AudioTourChapter",
+        "ios-exact-api-OfflineAudioTour",
+        "ios-exact-api-OfflineAudioTourPanel",
+        "ios-production-component"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "ios14",
+      "original_clause": "Production component remains iOS14 compatible.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:5"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-production-component",
+        "ios-production-component",
+        "ios14-api-availability"
+      ],
+      "other_verification_routes": [
+        "compatibility.json future deployment-14.0 package build, not the observer-17 build"
+      ],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "kotlin-exact-api",
+      "original_clause": "Exact Kotlin data classes, package, Composable signature and modifier:Modifier=Modifier.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:38",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:41",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:48"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-caller-driven-rendering",
+        "android-exact-api-AudioTourChapter",
+        "android-exact-api-OfflineAudioTour",
+        "android-exact-api-OfflineAudioTourPanel",
+        "android-production-component",
+        "ios-caller-driven-rendering",
+        "ios-production-component"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "thin-bridges",
+      "original_clause": "Bridges decode current model and forward real callbacks, own no UI/state/layout/results or replacement.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:51",
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-bridge-callback-forwarding",
+        "android-bridge-current-input",
+        "android-bridge-no-identity-reset",
+        "android-bridge-no-state",
+        "android-bridge-no-ui",
+        "ios-bridge-callback-forwarding",
+        "ios-bridge-current-input",
+        "ios-bridge-no-identity-reset",
+        "ios-bridge-no-state",
+        "ios-bridge-no-ui"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "unique-ids",
+      "original_clause": "Every literal semantic identifier belongs to exactly one real node, with no proxy duplicates.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:53"
+      ],
+      "runtime_rule_ids": [
+        "ink-accent-label",
+        "status-label",
+        "status-text-label",
+        "title-label"
+      ],
+      "source_audit_ids": [
+        "android-status-band-provenance",
+        "android-status-text-provenance",
+        "android-unique-semantic-ids",
+        "ios-status-band-provenance",
+        "ios-status-text-provenance",
+        "ios-unique-semantic-ids"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "noninteractive-carriers",
+      "original_clause": "Canvas/surface are noninteractive containers; ink rectangle is accessible and noninteractive.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:53"
+      ],
+      "runtime_rule_ids": [
+        "canvas-fill",
+        "ink-accent-label",
+        "ink-fill",
+        "ink-rectangle",
+        "surface-fill"
+      ],
+      "source_audit_ids": [
+        "android-canvas-noninteractive",
+        "android-canvas-preserve-controls",
+        "android-ink-noninteractive",
+        "android-surface-noninteractive",
+        "android-surface-preserve-controls",
+        "android-unique-semantic-ids",
+        "ios-canvas-noninteractive",
+        "ios-canvas-preserve-controls",
+        "ios-ink-noninteractive",
+        "ios-surface-noninteractive",
+        "ios-surface-preserve-controls",
+        "ios-unique-semantic-ids"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "status-band",
+      "original_clause": "Status identifier belongs to whole painted band; no duplicate status ID on text.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:53"
+      ],
+      "runtime_rule_ids": [
+        "status-fill",
+        "status-label",
+        "status-leading-inset",
+        "status-text-label"
+      ],
+      "source_audit_ids": [
+        "android-status-band-provenance",
+        "android-status-text-provenance",
+        "android-unique-semantic-ids",
+        "ios-status-band-provenance",
+        "ios-status-text-provenance",
+        "ios-unique-semantic-ids"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "native-buttons",
+      "original_clause": "Disclosure, choice, primary are actual Buttons; selected and disabled native semantics; descendant controls preserved.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "runtime_rule_ids": [
+        "choice-enabled",
+        "choice-selected",
+        "disclosure-enabled",
+        "primary-enabled"
+      ],
+      "source_audit_ids": [
+        "android-canvas-preserve-controls",
+        "android-choice-native-disabled",
+        "android-native-choice-button",
+        "android-native-disclosure-button",
+        "android-native-primary-button",
+        "android-native-selected",
+        "android-primary-native-disabled",
+        "android-surface-preserve-controls",
+        "ios-canvas-preserve-controls",
+        "ios-choice-native-disabled",
+        "ios-native-choice-button",
+        "ios-native-disclosure-button",
+        "ios-native-primary-button",
+        "ios-native-selected",
+        "ios-primary-native-disabled",
+        "ios-surface-preserve-controls"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "ax-labels",
+      "original_clause": "AX labels exclude decorative marks and status concatenation.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "runtime_rule_ids": [
+        "choice-label",
+        "disclosure-label",
+        "primary-label"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "primary-allocation",
+      "original_clause": "Primary label fills rectangular56 native control allocation with matching content shape.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:55"
+      ],
+      "runtime_rule_ids": [
+        "primary-fill",
+        "primary-height",
+        "primary-painted-allocation",
+        "primary-rectangle"
+      ],
+      "source_audit_ids": [
+        "android-native-primary-button",
+        "android-primary-content-shape-config",
+        "android-primary-label-allocation-config",
+        "ios-native-primary-button",
+        "ios-primary-content-shape-config",
+        "ios-primary-label-allocation-config"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "production-state",
+      "original_clause": "All disclosure/choice/requested state and identity reset logic remain production-owned.",
+      "original_source": [
+        "validation/feedback-forward/design-proposals/v1/design/T2/public/API.md:57"
+      ],
+      "runtime_rule_ids": [],
+      "source_audit_ids": [
+        "android-bridge-no-identity-reset",
+        "android-bridge-no-state",
+        "android-choice-production-state",
+        "android-disclosure-production-state",
+        "android-identity-reset-choice",
+        "android-identity-reset-disclosure",
+        "android-identity-reset-requested",
+        "android-requested-production-state",
+        "ios-bridge-no-identity-reset",
+        "ios-bridge-no-state",
+        "ios-choice-production-state",
+        "ios-disclosure-production-state",
+        "ios-identity-reset-choice",
+        "ios-identity-reset-disclosure",
+        "ios-identity-reset-requested",
+        "ios-requested-production-state"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "uncapped-lines",
+      "original_clause": "All text is configured without a finite line limit.",
+      "original_source": {
+        "path": "design-proposals/v1/design/T2/public/BRIEF.md",
+        "sha256": "4fb183c223216e99c98219d7be5ab79ae2297876407ad2543c5a6ac9e1157db4",
+        "line": 15
+      },
+      "runtime_rule_ids": [
+        "title-wrapping",
+        "subtitle-wrapping",
+        "status-wrapping",
+        "disclosure-wrapping",
+        "choice-wrapping",
+        "primary-wrapping",
+        "heading-wrapping",
+        "body-wrapping"
+      ],
+      "source_audit_ids": [
+        "ios-uncapped-text-lines",
+        "android-uncapped-text-lines"
+      ],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_explicit_routes_pending_independent_final_review"
+    },
+    {
+      "id": "retained-rendered-status-rectangle",
+      "original_clause": "Retain the original/revised visible status-rectangle requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "runtime_rule_ids": [
+        "status-rectangle"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_rendered_route_pending_original_native_evidence"
+    },
+    {
+      "id": "retained-rendered-status-no-border",
+      "original_clause": "Retain the original/revised visible status-no-border requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "runtime_rule_ids": [
+        "status-no-border"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_rendered_route_pending_original_native_evidence"
+    },
+    {
+      "id": "retained-rendered-primary-rectangle",
+      "original_clause": "Retain the original/revised visible primary-rectangle requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "runtime_rule_ids": [
+        "primary-rectangle"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_rendered_route_pending_original_native_evidence"
+    },
+    {
+      "id": "retained-rendered-primary-no-border",
+      "original_clause": "Retain the original/revised visible primary-no-border requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "runtime_rule_ids": [
+        "primary-no-border"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_rendered_route_pending_original_native_evidence"
+    },
+    {
+      "id": "retained-rendered-primary-painted-allocation",
+      "original_clause": "Retain the original/revised visible primary-painted-allocation requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "runtime_rule_ids": [
+        "primary-painted-allocation"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_rendered_route_pending_original_native_evidence"
+    },
+    {
+      "id": "retained-rendered-ink-rectangle",
+      "original_clause": "Retain the original/revised visible ink-rectangle requirement.",
+      "original_source": {
+        "path": "design-proposals/v2/design/T2/public/API.md",
+        "sha256": "c05883d91f9489d7545d5c1ea54de350630545ac62eb1343d3bbc276b011d673"
+      },
+      "runtime_rule_ids": [
+        "ink-rectangle"
+      ],
+      "source_audit_ids": [],
+      "other_verification_routes": [],
+      "priority": "must",
+      "status": "proposed_rendered_route_pending_original_native_evidence"
+    }
+  ],
+  "independent_review_required": true
+}

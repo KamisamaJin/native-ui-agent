@@ -1,0 +1,19 @@
+{
+  "scope": "Builder manual source/API availability review; separate from independent source audit and all rendered/runtime acceptance.",
+  "source": "alerttoast/Sources/AlertToast/OfflineAudioTourPanel.swift",
+  "sha256": "152ec01bb5fa268f8aeee0aa629933730d96bd462cab8d0b3d0944da189bf0c1",
+  "minimum_ios": "14.0",
+  "review": "Every unguarded API in the new Swift production source is available by iOS 14. No newer API or availability-dependent fallback is used.",
+  "reviewed_swiftui_apis": [
+    "View, ViewBuilder, State, Button, ButtonStyle, Text, Image(systemName:), Rectangle, VStack, HStack, ForEach, Color(.sRGB), Font.title2/body/headline and weight",
+    "id, frame, padding, background, fill, fixedSize, lineLimit(nil), multilineTextAlignment, foregroundColor, contentShape, buttonStyle, disabled",
+    "accessibilityElement(children:), accessibilityLabel, accessibilityIdentifier, accessibilityHidden, accessibilityAddTraits and isSelected"
+  ],
+  "reviewed_standard_library_apis": [
+    "Equatable, Identifiable, Array, enumerated, String(Int), Bool.toggle(), UInt32 arithmetic and Double conversion"
+  ],
+  "compiler_supporting_evidence": "agent-output/compile-evidence/ios-api14-final/record.json",
+  "limitations": [
+    "The API check emits the actual library module and typechecks the unchanged bridge for arm64-apple-ios14.0-simulator. It does not link, launch or test iOS 14 runtime behavior."
+  ]
+}

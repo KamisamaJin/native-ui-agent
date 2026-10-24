@@ -1,0 +1,586 @@
+{
+  "version": 1,
+  "platform": "ios",
+  "scope": "full",
+  "parent_plan_sha256": "1b1301c8044753e408bc6c4dc12203714b48080606becc518ec05eb338dd39b4",
+  "design_lock_sha256": "131851b42f31e531b78dca6625ebe84b2bcdde4724e1c9f8b5d1e8b38091fe72",
+  "launch_ref": {
+    "source": "launch",
+    "pointer": "/narrow280-large"
+  },
+  "fixtures_sha256": "874caa825885cc604d73a0eb7a11d3077c6267ae82e28123f7b50c6b72dba19f",
+  "bridge_sha256": "e305444db6b8b4a47c122d0f18615ae889cedd1daf8b2509b8d6bac82b783c1a",
+  "selected_states": [
+    "ready",
+    "reviewed",
+    "replaced",
+    "disabled"
+  ],
+  "required_coverage": [
+    {
+      "state_id": "ready",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "notes.title"
+        },
+        {
+          "identifier": "notes.summary"
+        },
+        {
+          "identifier": "notes.revision"
+        },
+        {
+          "identifier": "notes.status"
+        },
+        {
+          "identifier": "notes.action"
+        },
+        {
+          "identifier": "notes.opening"
+        },
+        {
+          "identifier": "notes.middle"
+        },
+        {
+          "identifier": "notes.closing"
+        },
+        {
+          "identifier": "notes.footer"
+        }
+      ]
+    },
+    {
+      "state_id": "reviewed",
+      "coverage": "targets",
+      "targets": [
+        {
+          "identifier": "notes.title"
+        },
+        {
+          "identifier": "notes.summary"
+        },
+        {
+          "identifier": "notes.revision"
+        },
+        {
+          "identifier": "notes.status"
+        },
+        {
+          "identifier": "notes.action"
+        },
+        {
+          "identifier": "notes.opening"
+        },
+        {
+          "identifier": "notes.middle"
+        },
+        {
+          "identifier": "notes.closing"
+        },
+        {
+          "identifier": "notes.footer"
+        }
+      ]
+    },
+    {
+      "state_id": "replaced",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "notes.title"
+        },
+        {
+          "identifier": "notes.summary"
+        },
+        {
+          "identifier": "notes.revision"
+        },
+        {
+          "identifier": "notes.status"
+        },
+        {
+          "identifier": "notes.action"
+        },
+        {
+          "identifier": "notes.opening"
+        },
+        {
+          "identifier": "notes.middle"
+        },
+        {
+          "identifier": "notes.closing"
+        },
+        {
+          "identifier": "notes.footer"
+        }
+      ]
+    },
+    {
+      "state_id": "disabled",
+      "coverage": "targets",
+      "targets": [
+        {
+          "identifier": "notes.title"
+        },
+        {
+          "identifier": "notes.summary"
+        },
+        {
+          "identifier": "notes.revision"
+        },
+        {
+          "identifier": "notes.status"
+        },
+        {
+          "identifier": "notes.action"
+        },
+        {
+          "identifier": "notes.opening"
+        },
+        {
+          "identifier": "notes.middle"
+        },
+        {
+          "identifier": "notes.closing"
+        },
+        {
+          "identifier": "notes.footer"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "sweep",
+      "state_id": "ready",
+      "max_steps": 28,
+      "capture_scope": "full_content"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "notes.action"
+      },
+      "reveal": true,
+      "expect_callback": "notes.reviewed.A",
+      "state_id": "reviewed",
+      "observation_max_scrolls": 36,
+      "after_targets": [
+        {
+          "identifier": "notes.title"
+        },
+        {
+          "identifier": "notes.summary"
+        },
+        {
+          "identifier": "notes.revision"
+        },
+        {
+          "identifier": "notes.status"
+        },
+        {
+          "identifier": "notes.action"
+        },
+        {
+          "identifier": "notes.opening"
+        },
+        {
+          "identifier": "notes.middle"
+        },
+        {
+          "identifier": "notes.closing"
+        },
+        {
+          "identifier": "notes.footer"
+        }
+      ],
+      "capture_scope": "targets"
+    },
+    {
+      "type": "apply_next_fixture",
+      "capture_scope": "none"
+    },
+    {
+      "type": "sweep",
+      "state_id": "replaced",
+      "max_steps": 28,
+      "capture_scope": "full_content"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "notes.action"
+      },
+      "reveal": true,
+      "allow_disabled": true,
+      "state_id": "disabled",
+      "observation_max_scrolls": 36,
+      "after_targets": [
+        {
+          "identifier": "notes.title"
+        },
+        {
+          "identifier": "notes.summary"
+        },
+        {
+          "identifier": "notes.revision"
+        },
+        {
+          "identifier": "notes.status"
+        },
+        {
+          "identifier": "notes.action"
+        },
+        {
+          "identifier": "notes.opening"
+        },
+        {
+          "identifier": "notes.middle"
+        },
+        {
+          "identifier": "notes.closing"
+        },
+        {
+          "identifier": "notes.footer"
+        }
+      ],
+      "capture_scope": "targets"
+    }
+  ],
+  "config": {
+    "initial": {
+      "title": "Observation notes",
+      "summary": "Ten short notes form one continuous reading sequence. Review them once, then compare the replacement revision.",
+      "revision": "A",
+      "can_review": true,
+      "sections": [
+        {
+          "number": 1,
+          "title": "Opening note",
+          "body": "Start with a single purpose. Keep the opening note specific enough to recognize later."
+        },
+        {
+          "number": 2,
+          "title": "Scope note",
+          "body": "Name the edges of the work. A short boundary makes the rest of the notes easier to read."
+        },
+        {
+          "number": 3,
+          "title": "Order note",
+          "body": "Put the next useful idea after the current one. Readers should be able to follow the sequence."
+        },
+        {
+          "number": 4,
+          "title": "Detail note",
+          "body": "Keep one concrete detail close to each main point. Separate details that serve different purposes."
+        },
+        {
+          "number": 5,
+          "title": "Pause note",
+          "body": "Leave a clear pause between groups. A little space helps the reader find the next section."
+        },
+        {
+          "number": 6,
+          "title": "Review note",
+          "body": "Read the notes once from top to bottom. Mark the review only after considering the whole sequence."
+        },
+        {
+          "number": 7,
+          "title": "Continuity note",
+          "body": "Keep the current review count when the caller supplies a new revision of these notes."
+        },
+        {
+          "number": 8,
+          "title": "Context note",
+          "body": "A replacement can change the title and summary while leaving the same component mounted."
+        },
+        {
+          "number": 9,
+          "title": "Reach note",
+          "body": "The final sections should remain reachable. Long content must keep its ordinary reading order."
+        },
+        {
+          "number": 10,
+          "title": "Closing note",
+          "body": "Finish with a clear end note. The revision and review count should agree with the current state."
+        }
+      ]
+    },
+    "updates": [
+      {
+        "title": "Revised observation notes",
+        "summary": "The caller supplied revision B. The notes remain in the same component, and the completed review stays visible.",
+        "revision": "B",
+        "can_review": false,
+        "sections": [
+          {
+            "number": 1,
+            "title": "Opening note",
+            "body": "Start with a single purpose. Keep the opening note specific enough to recognize later."
+          },
+          {
+            "number": 2,
+            "title": "Scope note",
+            "body": "Name the edges of the work. A short boundary makes the rest of the notes easier to read."
+          },
+          {
+            "number": 3,
+            "title": "Order note",
+            "body": "Put the next useful idea after the current one. Readers should be able to follow the sequence."
+          },
+          {
+            "number": 4,
+            "title": "Detail note",
+            "body": "Keep one concrete detail close to each main point. Separate details that serve different purposes."
+          },
+          {
+            "number": 5,
+            "title": "Pause note",
+            "body": "Leave a clear pause between groups. A little space helps the reader find the next section."
+          },
+          {
+            "number": 6,
+            "title": "Review note",
+            "body": "Read the notes once from top to bottom. Mark the review only after considering the whole sequence."
+          },
+          {
+            "number": 7,
+            "title": "Continuity note",
+            "body": "Keep the current review count when the caller supplies a new revision of these notes."
+          },
+          {
+            "number": 8,
+            "title": "Context note",
+            "body": "A replacement can change the title and summary while leaving the same component mounted."
+          },
+          {
+            "number": 9,
+            "title": "Reach note",
+            "body": "The final sections should remain reachable. Long content must keep its ordinary reading order."
+          },
+          {
+            "number": 10,
+            "title": "Closing note",
+            "body": "Finish with a clear end note. The revision and review count should agree with the current state."
+          }
+        ]
+      }
+    ],
+    "width": 280,
+    "theme": "light",
+    "dynamic_type": "xxxLarge",
+    "direction": "ltr",
+    "canvas_color": "#FFFFFF",
+    "required_identifiers": [
+      "notes.title",
+      "notes.summary",
+      "notes.revision",
+      "notes.status",
+      "notes.opening",
+      "notes.middle",
+      "notes.action",
+      "notes.closing",
+      "notes.footer"
+    ],
+    "max_scrolls": 28,
+    "trace_reveal_images": true,
+    "state_capture": true,
+    "observation_strategy": "legacy",
+    "execution_states": [
+      {
+        "state_id": "ready",
+        "coverage": "full_content",
+        "targets": [
+          {
+            "identifier": "notes.title"
+          },
+          {
+            "identifier": "notes.summary"
+          },
+          {
+            "identifier": "notes.revision"
+          },
+          {
+            "identifier": "notes.status"
+          },
+          {
+            "identifier": "notes.action"
+          },
+          {
+            "identifier": "notes.opening"
+          },
+          {
+            "identifier": "notes.middle"
+          },
+          {
+            "identifier": "notes.closing"
+          },
+          {
+            "identifier": "notes.footer"
+          }
+        ]
+      },
+      {
+        "state_id": "reviewed",
+        "coverage": "targets",
+        "targets": [
+          {
+            "identifier": "notes.title"
+          },
+          {
+            "identifier": "notes.summary"
+          },
+          {
+            "identifier": "notes.revision"
+          },
+          {
+            "identifier": "notes.status"
+          },
+          {
+            "identifier": "notes.action"
+          },
+          {
+            "identifier": "notes.opening"
+          },
+          {
+            "identifier": "notes.middle"
+          },
+          {
+            "identifier": "notes.closing"
+          },
+          {
+            "identifier": "notes.footer"
+          }
+        ]
+      },
+      {
+        "state_id": "replaced",
+        "coverage": "full_content",
+        "targets": [
+          {
+            "identifier": "notes.title"
+          },
+          {
+            "identifier": "notes.summary"
+          },
+          {
+            "identifier": "notes.revision"
+          },
+          {
+            "identifier": "notes.status"
+          },
+          {
+            "identifier": "notes.action"
+          },
+          {
+            "identifier": "notes.opening"
+          },
+          {
+            "identifier": "notes.middle"
+          },
+          {
+            "identifier": "notes.closing"
+          },
+          {
+            "identifier": "notes.footer"
+          }
+        ]
+      },
+      {
+        "state_id": "disabled",
+        "coverage": "targets",
+        "targets": [
+          {
+            "identifier": "notes.title"
+          },
+          {
+            "identifier": "notes.summary"
+          },
+          {
+            "identifier": "notes.revision"
+          },
+          {
+            "identifier": "notes.status"
+          },
+          {
+            "identifier": "notes.action"
+          },
+          {
+            "identifier": "notes.opening"
+          },
+          {
+            "identifier": "notes.middle"
+          },
+          {
+            "identifier": "notes.closing"
+          },
+          {
+            "identifier": "notes.footer"
+          }
+        ]
+      }
+    ],
+    "execution_state_definitions": [
+      {
+        "id": "ready",
+        "input_index": 0,
+        "after_action": 0,
+        "coverage": "full_content"
+      },
+      {
+        "id": "reviewed",
+        "input_index": 0,
+        "after_action": 1,
+        "coverage": "targets"
+      },
+      {
+        "id": "replaced",
+        "input_index": 1,
+        "after_action": 3,
+        "stimulus_action": 2,
+        "coverage": "full_content"
+      },
+      {
+        "id": "disabled",
+        "input_index": 1,
+        "after_action": 4,
+        "coverage": "targets"
+      }
+    ],
+    "execution_scope": "full",
+    "observation_targets": [
+      {
+        "identifier": "notes.title"
+      },
+      {
+        "identifier": "notes.summary"
+      },
+      {
+        "identifier": "notes.revision"
+      },
+      {
+        "identifier": "notes.status"
+      },
+      {
+        "identifier": "notes.action"
+      },
+      {
+        "identifier": "notes.opening"
+      },
+      {
+        "identifier": "notes.middle"
+      },
+      {
+        "identifier": "notes.closing"
+      },
+      {
+        "identifier": "notes.footer"
+      }
+    ]
+  },
+  "parent_action_count": 5,
+  "executed_action_count": 5,
+  "scope_limit": "Full execution retains the business route; targeted execution keeps its original action prefix and indices. Original parent expectations stay fixed; omitted states are unverified.",
+  "execution_sha256": "2114654f7dbc1aabfcb8f06a08efcfc481bd2fb0a8efae3d5543e6432c128168"
+}

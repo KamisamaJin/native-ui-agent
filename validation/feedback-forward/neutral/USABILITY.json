@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "phase": "prepared_before_native_launch",
+  "observed_failures": [
+    {
+      "id": "operator-relative-path-1",
+      "classification": "operator_error",
+      "evidence": "logs/compile-attempts.jsonl first record",
+      "observation": "The local helper initially constructed development/candidate-attempt-1 relative to the repository instead of validation/feedback-forward. Python could not open design_contract.py; no Skill parser or SDK executed.",
+      "resolution": "Corrected the local helper snapshot path, retained the original failed command, and reran the actual snapshot compiler successfully.",
+      "skill_defect_claim": false
+    }
+  ],
+  "workflow_observations": [
+    {
+      "id": "ios-only-cross-platform-cells",
+      "classification": "authoring_friction",
+      "observation": "The design contract validator requires both ios and android expressions even for this iOS-only test. The neutral reference supplies a matching 52 dp anchor for the unused Android branch. No Android execution or coverage is claimed.",
+      "source": "candidate-attempt-1/scripts/design_contract.py validate_contract lines 154–161"
+    },
+    {
+      "id": "full-replacement-with-event",
+      "classification": "usable_after_documentation_read",
+      "observation": "A full-content caller-replacement checkpoint needs an explicit later sweep and stimulus_action pointing to the earlier replacement. This was supported by the snapshot compiler and preserved action index 2 for the callback assertion.",
+      "source": "candidate-attempt-1/references/state-evidence.md; scripts/design_contract.py compile_contract"
+    },
+    {
+      "id": "negative-controls",
+      "classification": "successful_guard",
+      "observation": "For both cases the snapshot APIs rejected a missing required target in the execution manifest, a changed launch width, and a changed expected title. No source or runtime input was relaxed to obtain acceptance.",
+      "evidence": "logs/prelaunch-verification.json"
+    }
+  ],
+  "parser_failures_in_valid_skill_inputs": [],
+  "native_execution": false,
+  "remaining_observation": "Actual Swift compile, scroll sampling, disabled action handling and image review may reveal further usability problems. Append completion evidence without overwriting this prelaunch record."
+}
