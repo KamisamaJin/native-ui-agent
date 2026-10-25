@@ -1,0 +1,606 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "Independent neutral benchmark author r11_neutral_benchmark",
+    "approval_reference": "SPECIFICATION.md fixed before any SDK execution; seal.json binds this author decision",
+    "sources": [
+      {
+        "id": "reference",
+        "path": "reference.json",
+        "sha256": "811cf4f1444edc4ea0d2ca4a66068e1e7b0a3e741dfb41172cf029acb2ec93aa"
+      }
+    ],
+    "required_rule_ids": [
+      "heading-label",
+      "instruction-label",
+      "status-label",
+      "diagram-width",
+      "diagram-height",
+      "action-height",
+      "action-enabled",
+      "crease-event",
+      "diagram-content",
+      "instruction-clear"
+    ],
+    "rules": [
+      {
+        "id": "heading-label",
+        "kind": "control",
+        "target": "heading",
+        "property": "label"
+      },
+      {
+        "id": "instruction-label",
+        "kind": "control",
+        "target": "instruction",
+        "property": "label"
+      },
+      {
+        "id": "status-label",
+        "kind": "control",
+        "target": "status",
+        "property": "label"
+      },
+      {
+        "id": "diagram-width",
+        "kind": "geometry",
+        "target": "diagram",
+        "property": "width",
+        "measurement": "accessibility_box"
+      },
+      {
+        "id": "diagram-height",
+        "kind": "geometry",
+        "target": "diagram",
+        "property": "height",
+        "measurement": "accessibility_box"
+      },
+      {
+        "id": "action-height",
+        "kind": "geometry",
+        "target": "action",
+        "property": "height",
+        "measurement": "accessibility_box"
+      },
+      {
+        "id": "action-enabled",
+        "kind": "control",
+        "target": "action",
+        "property": "enabled"
+      },
+      {
+        "id": "crease-event",
+        "kind": "event",
+        "stimulus": "activation"
+      },
+      {
+        "id": "diagram-content",
+        "kind": "manual",
+        "target": "diagram",
+        "property": "content_presence",
+        "coverage": "full_content",
+        "allowed_methods": [
+          "visual"
+        ]
+      },
+      {
+        "id": "instruction-clear",
+        "kind": "manual",
+        "target": "instruction",
+        "property": "overlap",
+        "coverage": "full_content",
+        "allowed_methods": [
+          "visual"
+        ]
+      }
+    ],
+    "scenarios": {
+      "neutral": {
+        "states": [
+          {
+            "id": "overview",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          },
+          {
+            "id": "creased",
+            "input_index": 0,
+            "after_action": 1,
+            "coverage": "full_content"
+          },
+          {
+            "id": "reversed",
+            "input_index": 1,
+            "after_action": 2,
+            "coverage": "full_content"
+          }
+        ],
+        "actions": [
+          {
+            "type": "checkpoint",
+            "state_id": "overview"
+          },
+          {
+            "type": "tap",
+            "target": "action",
+            "reveal": true,
+            "state_id": "creased"
+          },
+          {
+            "type": "apply_next_fixture",
+            "state_id": "reversed"
+          }
+        ],
+        "values": {
+          "heading-label": {
+            "overview": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/heading"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/heading"
+              }
+            },
+            "creased": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/heading"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/heading"
+              }
+            },
+            "reversed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/heading"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/heading"
+              }
+            }
+          },
+          "instruction-label": {
+            "overview": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/instructions/front"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/instructions/front"
+              }
+            },
+            "creased": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/instructions/front"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/instructions/front"
+              }
+            },
+            "reversed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/instructions/reverse"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/instructions/reverse"
+              }
+            }
+          },
+          "status-label": {
+            "overview": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/status/overview"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/status/overview"
+              }
+            },
+            "creased": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/status/creased"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/status/creased"
+              }
+            },
+            "reversed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/status/reversed"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/status/reversed"
+              }
+            }
+          },
+          "diagram-width": {
+            "overview": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/width/ios"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/width/android"
+              }
+            },
+            "creased": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/width/ios"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/width/android"
+              }
+            },
+            "reversed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/width/ios"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/width/android"
+              }
+            }
+          },
+          "diagram-height": {
+            "overview": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/height/ios"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/height/android"
+              }
+            },
+            "creased": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/height/ios"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/height/android"
+              }
+            },
+            "reversed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/height/ios"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/height/android"
+              }
+            }
+          },
+          "action-height": {
+            "overview": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/actionHeight/ios"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/actionHeight/android"
+              }
+            },
+            "creased": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/actionHeight/ios"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/actionHeight/android"
+              }
+            },
+            "reversed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/geometry/actionHeight/ios"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/geometry/actionHeight/android"
+              }
+            }
+          },
+          "action-enabled": {
+            "overview": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/true"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/true"
+              }
+            },
+            "creased": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/false"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/false"
+              }
+            },
+            "reversed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/true"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/true"
+              }
+            }
+          },
+          "crease-event": {
+            "overview": {
+              "not_applicable": "No activation stimulus at this checkpoint."
+            },
+            "creased": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/crease_event"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/crease_event"
+              }
+            },
+            "reversed": {
+              "not_applicable": "No activation stimulus at this checkpoint."
+            }
+          },
+          "diagram-content": {
+            "overview": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/true"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/true"
+              }
+            },
+            "creased": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/true"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/true"
+              }
+            },
+            "reversed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/true"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/true"
+              }
+            }
+          },
+          "instruction-clear": {
+            "overview": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/true"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/true"
+              }
+            },
+            "creased": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/true"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/true"
+              }
+            },
+            "reversed": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/true"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/true"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "reference": {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "811cf4f1444edc4ea0d2ca4a66068e1e7b0a3e741dfb41172cf029acb2ec93aa",
+      "document": {
+        "heading": {
+          "value": "Fold guide",
+          "unit": "string"
+        },
+        "instructions": {
+          "front": {
+            "value": "Fold the front sheet along the dashed diagonal.",
+            "unit": "string"
+          },
+          "reverse": {
+            "value": "Turn the sheet. Fold along the reverse diagonal.",
+            "unit": "string"
+          }
+        },
+        "status": {
+          "overview": {
+            "value": "Sheet ready",
+            "unit": "string"
+          },
+          "creased": {
+            "value": "Crease marked",
+            "unit": "string"
+          },
+          "reversed": {
+            "value": "Reverse side",
+            "unit": "string"
+          }
+        },
+        "true": {
+          "value": true,
+          "unit": "bool"
+        },
+        "false": {
+          "value": false,
+          "unit": "bool"
+        },
+        "crease_event": {
+          "value": [
+            "crease.marked"
+          ],
+          "unit": "events"
+        },
+        "geometry": {
+          "width": {
+            "ios": {
+              "value": 180,
+              "unit": "pt"
+            },
+            "android": {
+              "value": 180,
+              "unit": "dp"
+            }
+          },
+          "height": {
+            "ios": {
+              "value": 100,
+              "unit": "pt"
+            },
+            "android": {
+              "value": 100,
+              "unit": "dp"
+            }
+          },
+          "actionHeight": {
+            "ios": {
+              "value": 44,
+              "unit": "pt"
+            },
+            "android": {
+              "value": 44,
+              "unit": "dp"
+            }
+          }
+        },
+        "questions": {
+          "diagram": {
+            "value": "Does the visible paper diagram show an upper-left to lower-right dashed crease in overview/creased, and an upper-right to lower-left dashed crease in reversed, with the paper outline visible?",
+            "unit": "string"
+          },
+          "instruction": {
+            "value": "Is the instruction visibly clear of the heading, diagram, status and action?",
+            "unit": "string"
+          }
+        },
+        "launch": {
+          "fixtures_sha256": "1ddaa8e2933e50569e277f2986d310bc1eadf56e764a93263ab2bf53fdea6819",
+          "bridge_sha256": "a57ebc9de8862ed2f863683d737df5aeb8156a1f2f63ebd0f8b1d17f938f676b",
+          "scenario": "neutral",
+          "platform": "ios"
+        },
+        "obligations": [
+          {
+            "id": "native-content",
+            "clause": "The title, instruction and status match the fixed per-state copy.",
+            "priority": "must",
+            "states": [
+              "overview",
+              "creased",
+              "reversed"
+            ],
+            "risk": "content"
+          },
+          {
+            "id": "native-bounds",
+            "clause": "The diagram AX bounds are 180 by 100pt and the action AX height is 44pt in every state.",
+            "priority": "must",
+            "states": [
+              "overview",
+              "creased",
+              "reversed"
+            ],
+            "risk": "layout"
+          },
+          {
+            "id": "interaction",
+            "clause": "Marking delivers one crease.marked callback and disables the action; caller replacement restores enabled reverse input.",
+            "priority": "must",
+            "states": [
+              "overview",
+              "creased",
+              "reversed"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "diagram",
+            "clause": "The crease diagonal follows the front/reverse state while retaining the paper outline.",
+            "priority": "must",
+            "states": [
+              "overview",
+              "creased",
+              "reversed"
+            ],
+            "risk": "content"
+          },
+          {
+            "id": "clarity",
+            "clause": "The instruction never overlaps other visible component content.",
+            "priority": "must",
+            "states": [
+              "overview",
+              "creased",
+              "reversed"
+            ],
+            "risk": "layout"
+          }
+        ]
+      },
+      "raw_utf8": "{\n  \"heading\": {\n    \"value\": \"Fold guide\",\n    \"unit\": \"string\"\n  },\n  \"instructions\": {\n    \"front\": {\n      \"value\": \"Fold the front sheet along the dashed diagonal.\",\n      \"unit\": \"string\"\n    },\n    \"reverse\": {\n      \"value\": \"Turn the sheet. Fold along the reverse diagonal.\",\n      \"unit\": \"string\"\n    }\n  },\n  \"status\": {\n    \"overview\": {\n      \"value\": \"Sheet ready\",\n      \"unit\": \"string\"\n    },\n    \"creased\": {\n      \"value\": \"Crease marked\",\n      \"unit\": \"string\"\n    },\n    \"reversed\": {\n      \"value\": \"Reverse side\",\n      \"unit\": \"string\"\n    }\n  },\n  \"true\": {\n    \"value\": true,\n    \"unit\": \"bool\"\n  },\n  \"false\": {\n    \"value\": false,\n    \"unit\": \"bool\"\n  },\n  \"crease_event\": {\n    \"value\": [\n      \"crease.marked\"\n    ],\n    \"unit\": \"events\"\n  },\n  \"geometry\": {\n    \"width\": {\n      \"ios\": {\n        \"value\": 180,\n        \"unit\": \"pt\"\n      },\n      \"android\": {\n        \"value\": 180,\n        \"unit\": \"dp\"\n      }\n    },\n    \"height\": {\n      \"ios\": {\n        \"value\": 100,\n        \"unit\": \"pt\"\n      },\n      \"android\": {\n        \"value\": 100,\n        \"unit\": \"dp\"\n      }\n    },\n    \"actionHeight\": {\n      \"ios\": {\n        \"value\": 44,\n        \"unit\": \"pt\"\n      },\n      \"android\": {\n        \"value\": 44,\n        \"unit\": \"dp\"\n      }\n    }\n  },\n  \"questions\": {\n    \"diagram\": {\n      \"value\": \"Does the visible paper diagram show an upper-left to lower-right dashed crease in overview/creased, and an upper-right to lower-left dashed crease in reversed, with the paper outline visible?\",\n      \"unit\": \"string\"\n    },\n    \"instruction\": {\n      \"value\": \"Is the instruction visibly clear of the heading, diagram, status and action?\",\n      \"unit\": \"string\"\n    }\n  },\n  \"launch\": {\n    \"fixtures_sha256\": \"1ddaa8e2933e50569e277f2986d310bc1eadf56e764a93263ab2bf53fdea6819\",\n    \"bridge_sha256\": \"a57ebc9de8862ed2f863683d737df5aeb8156a1f2f63ebd0f8b1d17f938f676b\",\n    \"scenario\": \"neutral\",\n    \"platform\": \"ios\"\n  },\n  \"obligations\": [\n    {\n      \"id\": \"native-content\",\n      \"clause\": \"The title, instruction and status match the fixed per-state copy.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"overview\",\n        \"creased\",\n        \"reversed\"\n      ],\n      \"risk\": \"content\"\n    },\n    {\n      \"id\": \"native-bounds\",\n      \"clause\": \"The diagram AX bounds are 180 by 100pt and the action AX height is 44pt in every state.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"overview\",\n        \"creased\",\n        \"reversed\"\n      ],\n      \"risk\": \"layout\"\n    },\n    {\n      \"id\": \"interaction\",\n      \"clause\": \"Marking delivers one crease.marked callback and disables the action; caller replacement restores enabled reverse input.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"overview\",\n        \"creased\",\n        \"reversed\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"diagram\",\n      \"clause\": \"The crease diagonal follows the front/reverse state while retaining the paper outline.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"overview\",\n        \"creased\",\n        \"reversed\"\n      ],\n      \"risk\": \"content\"\n    },\n    {\n      \"id\": \"clarity\",\n      \"clause\": \"The instruction never overlaps other visible component content.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"overview\",\n        \"creased\",\n        \"reversed\"\n      ],\n      \"risk\": \"layout\"\n    }\n  ]\n}\n"
+    }
+  },
+  "contract_sha256": "e5eb456c95cf64b7aeacb85e8c807f34caed9ae4f5b93b124583b3e98051dfdf",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

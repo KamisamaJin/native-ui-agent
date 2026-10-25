@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "name": "folded-paper-sample",
+  "platforms": [
+    "ios",
+    "android"
+  ],
+  "source": "fixture/SampleView.swift",
+  "states": [
+    {
+      "id": "front",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content",
+      "expected_label": "Front"
+    },
+    {
+      "id": "reverse",
+      "input_index": 1,
+      "after_action": 2,
+      "coverage": "full_content",
+      "stimulus_action": 1,
+      "expected_label": "Reverse"
+    }
+  ],
+  "actions": [
+    {
+      "type": "checkpoint",
+      "state_id": "front"
+    },
+    {
+      "type": "replace_fixture",
+      "index": 1
+    },
+    {
+      "type": "checkpoint",
+      "state_id": "reverse"
+    }
+  ],
+  "inputs": [
+    {
+      "reverse": false
+    },
+    {
+      "reverse": true
+    }
+  ],
+  "bindings": {
+    "caption": {
+      "identifier": "paper.caption"
+    },
+    "sample": {
+      "identifier": "paper.sample"
+    }
+  },
+  "rules": [
+    {
+      "id": "caption-label",
+      "kind": "control",
+      "target": "caption",
+      "property": "label",
+      "op": "eq",
+      "by_state": {
+        "front": "Front",
+        "reverse": "Reverse"
+      },
+      "source": "independent neutral fixture labels"
+    },
+    {
+      "id": "sample-box",
+      "kind": "geometry",
+      "target": "sample",
+      "property": "width",
+      "measurement": "accessibility_box",
+      "expected": 66,
+      "op": "eq",
+      "tolerance": 0,
+      "unit": {
+        "ios": "pt",
+        "android": "dp"
+      },
+      "source": "independent neutral geometry contract"
+    },
+    {
+      "id": "caption-clear",
+      "kind": "manual",
+      "target": "caption",
+      "property": "no_overlap",
+      "expected": true,
+      "unit": "bool",
+      "question": "The caption is fully visible and does not overlap the sample.",
+      "source": "independent neutral visual proposition"
+    }
+  ],
+  "diagnostic_geometry": {
+    "height": 44,
+    "gap_y": 12,
+    "tolerance": 0,
+    "measurement": "accessibility_box"
+  },
+  "diagnostic_unsupported": {
+    "kind": "geometry",
+    "measurement": "layout_box",
+    "property": "width",
+    "expected": 66
+  },
+  "regressions": {
+    "reverse/caption-clear": [
+      "reverse/sample-box"
+    ]
+  },
+  "selected_cells": [
+    "front/caption-label",
+    "front/sample-box",
+    "front/caption-clear",
+    "reverse/caption-label",
+    "reverse/sample-box",
+    "reverse/caption-clear"
+  ],
+  "retry_policy": {
+    "max_retry_transitions": 2,
+    "max_total_attempts": 3,
+    "scope": "work-item"
+  },
+  "binding_keys": [
+    "fixture_index",
+    "input_sha256",
+    "event_revision",
+    "instance",
+    "pid"
+  ],
+  "numeric_controls": {
+    "ios_exact": {
+      "frame": {
+        "x": 1e+16,
+        "y": 1e+16,
+        "width": 66,
+        "height": 44
+      },
+      "expected": "passed"
+    },
+    "android_exact": {
+      "native_geometry": {
+        "version": 1,
+        "provider": "compose_semantics_int_size",
+        "coordinate_unit": "px",
+        "density": 2.5,
+        "position_px": [
+          825000.0,
+          1500000.0
+        ],
+        "size_px": [
+          165,
+          110
+        ]
+      },
+      "unclipped_bounds_dp": [
+        330000,
+        600000,
+        330065.9999,
+        600043.9999
+      ],
+      "expected": "passed"
+    },
+    "ios_real_violation": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "width": 65.75,
+        "height": 44
+      },
+      "expected": "failed"
+    },
+    "android_real_violation": {
+      "size_px": [
+        164,
+        110
+      ],
+      "density": 2.5,
+      "expected": "failed"
+    },
+    "provider_boundary": {
+      "width": 65.99999999999999,
+      "expected": "failed"
+    },
+    "conflicting_provider_samples": {
+      "widths": [
+        65.99999999999999,
+        66.00000000000001
+      ],
+      "expected": "unassessed"
+    }
+  }
+}

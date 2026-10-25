@@ -1,0 +1,444 @@
+{
+  "version": 1,
+  "design_owner": "Independent neutral benchmark author r11_neutral_benchmark",
+  "approval_reference": "SPECIFICATION.md fixed before any SDK execution; seal.json binds this author decision",
+  "sources": [
+    {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "811cf4f1444edc4ea0d2ca4a66068e1e7b0a3e741dfb41172cf029acb2ec93aa"
+    }
+  ],
+  "required_rule_ids": [
+    "heading-label",
+    "instruction-label",
+    "status-label",
+    "diagram-width",
+    "diagram-height",
+    "action-height",
+    "action-enabled",
+    "crease-event",
+    "diagram-content",
+    "instruction-clear"
+  ],
+  "rules": [
+    {
+      "id": "heading-label",
+      "kind": "control",
+      "target": "heading",
+      "property": "label"
+    },
+    {
+      "id": "instruction-label",
+      "kind": "control",
+      "target": "instruction",
+      "property": "label"
+    },
+    {
+      "id": "status-label",
+      "kind": "control",
+      "target": "status",
+      "property": "label"
+    },
+    {
+      "id": "diagram-width",
+      "kind": "geometry",
+      "target": "diagram",
+      "property": "width",
+      "measurement": "accessibility_box"
+    },
+    {
+      "id": "diagram-height",
+      "kind": "geometry",
+      "target": "diagram",
+      "property": "height",
+      "measurement": "accessibility_box"
+    },
+    {
+      "id": "action-height",
+      "kind": "geometry",
+      "target": "action",
+      "property": "height",
+      "measurement": "accessibility_box"
+    },
+    {
+      "id": "action-enabled",
+      "kind": "control",
+      "target": "action",
+      "property": "enabled"
+    },
+    {
+      "id": "crease-event",
+      "kind": "event",
+      "stimulus": "activation"
+    },
+    {
+      "id": "diagram-content",
+      "kind": "manual",
+      "target": "diagram",
+      "property": "content_presence",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "instruction-clear",
+      "kind": "manual",
+      "target": "instruction",
+      "property": "overlap",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    }
+  ],
+  "scenarios": {
+    "neutral": {
+      "states": [
+        {
+          "id": "overview",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        },
+        {
+          "id": "creased",
+          "input_index": 0,
+          "after_action": 1,
+          "coverage": "full_content"
+        },
+        {
+          "id": "reversed",
+          "input_index": 1,
+          "after_action": 2,
+          "coverage": "full_content"
+        }
+      ],
+      "actions": [
+        {
+          "type": "checkpoint",
+          "state_id": "overview"
+        },
+        {
+          "type": "tap",
+          "target": "action",
+          "reveal": true,
+          "state_id": "creased"
+        },
+        {
+          "type": "apply_next_fixture",
+          "state_id": "reversed"
+        }
+      ],
+      "values": {
+        "heading-label": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/heading"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/heading"
+            }
+          },
+          "creased": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/heading"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/heading"
+            }
+          },
+          "reversed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/heading"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/heading"
+            }
+          }
+        },
+        "instruction-label": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/instructions/front"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/instructions/front"
+            }
+          },
+          "creased": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/instructions/front"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/instructions/front"
+            }
+          },
+          "reversed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/instructions/reverse"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/instructions/reverse"
+            }
+          }
+        },
+        "status-label": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/status/overview"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/status/overview"
+            }
+          },
+          "creased": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/status/creased"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/status/creased"
+            }
+          },
+          "reversed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/status/reversed"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/status/reversed"
+            }
+          }
+        },
+        "diagram-width": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/width/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/width/android"
+            }
+          },
+          "creased": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/width/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/width/android"
+            }
+          },
+          "reversed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/width/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/width/android"
+            }
+          }
+        },
+        "diagram-height": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/height/android"
+            }
+          },
+          "creased": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/height/android"
+            }
+          },
+          "reversed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/height/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/height/android"
+            }
+          }
+        },
+        "action-height": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/actionHeight/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/actionHeight/android"
+            }
+          },
+          "creased": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/actionHeight/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/actionHeight/android"
+            }
+          },
+          "reversed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/geometry/actionHeight/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/geometry/actionHeight/android"
+            }
+          }
+        },
+        "action-enabled": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/true"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/true"
+            }
+          },
+          "creased": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/false"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/false"
+            }
+          },
+          "reversed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/true"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/true"
+            }
+          }
+        },
+        "crease-event": {
+          "overview": {
+            "not_applicable": "No activation stimulus at this checkpoint."
+          },
+          "creased": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/crease_event"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/crease_event"
+            }
+          },
+          "reversed": {
+            "not_applicable": "No activation stimulus at this checkpoint."
+          }
+        },
+        "diagram-content": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/true"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/true"
+            }
+          },
+          "creased": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/true"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/true"
+            }
+          },
+          "reversed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/true"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/true"
+            }
+          }
+        },
+        "instruction-clear": {
+          "overview": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/true"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/true"
+            }
+          },
+          "creased": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/true"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/true"
+            }
+          },
+          "reversed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/true"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/true"
+            }
+          }
+        }
+      }
+    }
+  }
+}

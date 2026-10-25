@@ -61,7 +61,7 @@ class DefaultLoopTests(unittest.TestCase):
         with patch.object(loop.xp, 'compile_execution', return_value={'parent_plan_sha256': d.digest(self.plan), 'design_lock_sha256': self.lock_sha, 'selected_states': ['ready', 'chosen', 'updated'], 'scope': 'full'}) as compile_spy, patch.object(loop.xp, 'run_execution', side_effect=native):
             result = loop.run_cycle(config, root / 'cycle')
         self.assertEqual(compile_spy.call_args.kwargs['states'], ['ready', 'chosen', 'updated'])
-        self.assertEqual(result['trace'][:3], ['route_findings', 'locator_diagnostics', 'retest_plan.unresolved'])
+        self.assertEqual(result['trace'][:3], ['route_findings', 'locator_diagnostics', 'retest_plan.dispatch'])
         self.assertTrue(result['native_executed'])
         with self.assertRaises(TypeError): loop.run_cycle(config, root / 'other', states=['ready'])
 

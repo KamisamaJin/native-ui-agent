@@ -1,0 +1,71 @@
+{
+  "candidate": "candidate-2cf4bb56",
+  "original_sha256": "1a7e3d7120b8e5daeeb7b39368ba8be1dbc70b38d919b7e533a7ba46100119dc",
+  "findings": [
+    {
+      "id": "IOS-IDENTIFIERS-D0",
+      "classification": "product",
+      "summary": "The canvas identifier overrides all descendant identifiers, leaving the required targets unaddressable in the original iOS native tree.",
+      "requirements": [
+        "R05"
+      ],
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/corpora/initial/public-retry-2/ios/quiet-library/native/observation.json#snapshots[3].nodes",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/handoff/unit-40372769/ios/quiet-library/intake/before-diagnostics.json",
+        "agent-output/initial-ListeningBreakPanel.swift:169"
+      ],
+      "reasoning": "Eleven separately labeled descendants have identifier listening.canvas; title, switch, primary and option ID queries are missing. This is a production accessibility composition defect, not evidence that content is absent.",
+      "repair": "Add explicit children: .contain to the canvas.",
+      "verification": "Request 1 exposes one canvas container and the separate title/text/switch/action IDs. Request 2 retains these identities and all 199 automatic/native assertions pass on iOS."
+    },
+    {
+      "id": "IOS-OPTION-SEMANTICS",
+      "classification": "product",
+      "summary": "Options expose their required IDs and exact label on generic wrappers around unnamed native buttons.",
+      "requirements": [
+        "R05",
+        "R06"
+      ],
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/feedback/unit-40372769/request-1/evidence/ios/quiet-library/capture/native/observation.json#snapshots[3].nodes[11:15]",
+        "agent-output/initial-ListeningBreakPanel.swift:211",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/feedback/unit-40372769/request-2/evidence/ios/quiet-library/capture/native/observation.json"
+      ],
+      "reasoning": "The named wrapper has raw role 1; a child has native button role 9 with no required ID. The strict button selector cannot dispatch option setup. Adding button traits to the wrapper would retain an extra nested button; removing the redundant synthetic accessibility element instead attaches the existing label, selected trait and ID directly to the native Button.",
+      "repair": "Remove accessibilityElement(children: .ignore) from option Button.",
+      "verification": "Request 2 ready tree exposes each listening.option.<id> directly on exactly one native button (raw role 9), including enabled=false for unavailable harbor; all option native assertions and dispatches pass in that capture."
+    },
+    {
+      "id": "IOS-D0-DEPENDENT-STATES",
+      "classification": "not_assessed",
+      "summary": "Original iOS validation/start/renew/cancel checkpoints do not establish action outcomes because the requested native dispatch never occurred.",
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/corpora/initial/public-retry-2/ios/quiet-library/native/observation.json#steps",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/d0-review/REVIEW.json"
+      ],
+      "reasoning": "Missing validation error and success summary in those unchanged editing frames are downstream consequences of unavailable stimuli; they are not independently confirmed validation or business-state defects."
+    },
+    {
+      "id": "IOS-REQUEST1-DEPENDENT-START",
+      "classification": "not_assessed",
+      "summary": "The first repair allowed primary/switch/Cancel activation, but option setup remained unavailable; success and renewal were not reached.",
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/feedback/unit-40372769/request-1/evidence/ios/quiet-library/capture/native/observation.json#steps[2:6]",
+        "agent-output/ios-request-1-actuals.json"
+      ],
+      "reasoning": "The post-Start image correctly shows editing with Choose an available soundscape. after no successful option selection. Strict started-state failures do not establish a separate start/callback defect."
+    },
+    {
+      "id": "ANDROID-SCOPE-LIMIT",
+      "classification": "not_assessed",
+      "summary": "No Android product defect was identified within the supplied public route; configurations outside captured public evidence are not claimed passed.",
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/corpora/initial/public-retry-2/android/quiet-library/native/observation.json",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/feedback/unit-40372769/request-1/evidence/android/quiet-library/capture/automatic.json",
+        "agent-output/android-request-1-actuals.json"
+      ],
+      "reasoning": "Original native and current request 1 evidence covers the approved route; screenshots do not independently establish computed source fonts, padding, or physical hit regions."
+    }
+  ],
+  "scope": "Original participant statements, not established truth. Opaque workspace names are not treatment labels; read only allowed anonymous evidence."
+}

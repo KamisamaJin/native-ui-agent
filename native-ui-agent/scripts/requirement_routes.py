@@ -123,6 +123,7 @@ def route_findings(coverage, plan, report, observation, *, discoveries=(), execu
             rule = planned[rid]; found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']])
             if report.get('environment', {}).get('status', 'P') != 'P': action = 'repair_environment'
             elif row.get('panel_disagreement'): action = 'clarify_oracle'
+            elif row.get('measurement_calibration', {}).get('classification') in {'boundary_overlap', 'outside_calibrated_scope'}: action = 'review_calibrated_measurement'
             elif not found or (states[rule['state']].get('coverage') == 'full_content' and not complete): action = 'acquire_evidence'
             elif row['status'] == 'failed':
                 owner = row.get('responsibility', 'component')

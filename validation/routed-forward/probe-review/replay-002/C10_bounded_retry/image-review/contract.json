@@ -1,0 +1,142 @@
+{
+  "version": 1,
+  "design_owner": "sealed-neutral-probe",
+  "approval_reference": "../probe-design/seal.json",
+  "sources": [
+    {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "59a328e9f37195c56afb0c60236339879139806fa2a21346bb7377fcb4771d6d"
+    }
+  ],
+  "rules": [
+    {
+      "id": "caption-label",
+      "kind": "control",
+      "target": "caption",
+      "property": "label",
+      "op": "eq"
+    },
+    {
+      "id": "sample-box",
+      "kind": "geometry",
+      "target": "sample",
+      "property": "width",
+      "op": "eq",
+      "measurement": "accessibility_box"
+    },
+    {
+      "id": "caption-clear",
+      "kind": "manual",
+      "target": "caption",
+      "property": "no_overlap",
+      "op": "eq",
+      "allowed_methods": [
+        "visual"
+      ]
+    }
+  ],
+  "required_rule_ids": [
+    "caption-label",
+    "sample-box",
+    "caption-clear"
+  ],
+  "scenarios": {
+    "paper": {
+      "states": [
+        {
+          "id": "front",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        },
+        {
+          "id": "reverse",
+          "input_index": 1,
+          "after_action": 2,
+          "coverage": "full_content",
+          "stimulus_action": 1
+        }
+      ],
+      "actions": [
+        {
+          "type": "checkpoint"
+        },
+        {
+          "type": "apply_next_fixture"
+        },
+        {
+          "type": "checkpoint"
+        }
+      ],
+      "values": {
+        "caption-label": {
+          "front": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/front"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/front"
+            }
+          },
+          "reverse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/labels/reverse"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/labels/reverse"
+            }
+          }
+        },
+        "sample-box": {
+          "front": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/width/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/width/android"
+            }
+          },
+          "reverse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/width/ios"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/width/android"
+            }
+          }
+        },
+        "caption-clear": {
+          "front": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/clear"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/clear"
+            }
+          },
+          "reverse": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/clear"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/clear"
+            }
+          }
+        }
+      }
+    }
+  }
+}

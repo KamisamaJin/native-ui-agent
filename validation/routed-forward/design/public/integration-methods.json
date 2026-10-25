@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "evidence_owner": "integration operator; not the two-file source reviewer",
+  "method_files": {
+    "close_initial.py": {
+      "path": "validation/routed-forward/close_initial.py",
+      "sha256": "7fc9c8187030d9358482105ba686ad8211bf44a38a5f02f05935c021af5707e6"
+    },
+    "close_session.py": {
+      "path": "validation/routed-forward/close_session.py",
+      "sha256": "d3b866645eeb8fe77fcb697c6ca56705837c5494e67346a59a0818521bf628f9"
+    },
+    "study.py": {
+      "path": "validation/routed-forward/study.py",
+      "sha256": "8ef2b5577817c5ce48de5c8fe4a75bb383507f334f9c721479798ebe308909d2"
+    },
+    "PROTOCOL.json": {
+      "path": "validation/routed-forward/PROTOCOL.json",
+      "sha256": "913e7691fe7389c95984f47ab168dd1a91a35040a3d372cf24149abec23b3618"
+    },
+    "operators/stock-production.json": {
+      "path": "validation/routed-forward/operators/stock-production.json",
+      "sha256": "cd6ccb67214587d1b03db38acbd1d6fca2b1266ac5d3edbf9a43ac3cb6e6617b"
+    }
+  },
+  "production_roots": [
+    "alerttoast/Sources",
+    "reply/Reply/app/src/main"
+  ],
+  "approved_new_paths": [
+    "alerttoast/Sources/AlertToast/ListeningBreakPanel.swift",
+    "reply/Reply/app/src/main/java/com/example/reply/ui/components/ListeningBreakPanel.kt"
+  ],
+  "baseline": {
+    "path": "validation/routed-forward/operators/stock-production.json",
+    "sha256": "cd6ccb67214587d1b03db38acbd1d6fca2b1266ac5d3edbf9a43ac3cb6e6617b",
+    "canonical_sha256": "1f31a1ed254cbf48f7365bc6a07d56ef27e8981c967ece7456334e18c8b604b1",
+    "recordedAtUnix": 1792907616.058219,
+    "file_count": 83
+  },
+  "methods": {
+    "G-initial-diff": "close_initial.py recomputes study.fingerprint over both complete production roots, compares stock versus current over the union of keys, and requires changed == exactly the approved added paths before study.capsule seals the initial source.",
+    "G-final-scope": "close_session.py recomputes the same full fingerprint, compares shared initial versus final over the union of keys, and requires changed <= approved added paths before study.capsule seals final source.",
+    "G-capture-identity": "study.collect recomputes the complete fingerprint against source_seal at entry, again before each platform SDK collection and after collection; study.capsule stores all fingerprinted source bytes and the exact files mapping."
+  },
+  "limits": "These gates establish preservation of pre-recorded bytes and change scope within the declared production roots, not runtime regression testing, files outside those roots, or computed visual properties. A gate failure or missing receipt remains unverified; two-file source review cannot replace these gates."
+}

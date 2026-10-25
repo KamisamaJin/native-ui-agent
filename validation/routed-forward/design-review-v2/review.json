@@ -1,0 +1,748 @@
+{
+  "version": 2,
+  "reviewedAtUTC": "2026-10-25T06:26:46.284099Z",
+  "reviewer": "r11_design_review",
+  "role": "Independent design semantics/acceptance reviewer; neither implementation nor tool author",
+  "decision": "needs_revision",
+  "approval_granted": false,
+  "input_identity": {
+    "design_seal_sha256": "de3b909e4f8c0c4ba396ae07a7cd4ff4a549978b916719851bc43f6e02e65552",
+    "manifest_sha256": "f81829b146792a3af955de7f068eefe4c32ba225ad8608255f3694e42197839f",
+    "sealedAtUTC": "2026-10-25T06:22:41Z",
+    "sealed_file_count": 66,
+    "sealed_hashes_verified": true
+  },
+  "previous_review": {
+    "path": "validation/routed-forward/design-review/SEAL.json",
+    "sha256": "beba13f2777998df079f5f6acfcb2c985a6b5bb43e1d36c2f9a49df50be0aa75",
+    "files_verified_unchanged": true,
+    "decision": "needs_revision",
+    "not_overwritten": true
+  },
+  "boundaries": {
+    "read_v2_only_business_design": true,
+    "read_allowed_operator_methods_and_baseline_metadata": true,
+    "read_assignment_files": false,
+    "read_product_implementation": false,
+    "read_previous_trial_results": false,
+    "invoked_sdk": false,
+    "injected_defects": false,
+    "modified_design_tools_or_product": false,
+    "private_values_in_report": false
+  },
+  "revision_disposition": [
+    {
+      "original_id": "D01",
+      "status": "partially_addressed",
+      "remaining_findings": [
+        "V2-01"
+      ],
+      "review": "精确完整垂直顺序已由 O-vertical-order / vertical-order 独立 hierarchy 原子在六个 checkpoint 评估，option title/detail 顺序也明确。新 O-replacement-exclusion 仅在 replaced 评估，并与 presence 分开，真实归属存在；其共享子串边界仍需澄清。",
+      "evidence": [
+        {
+          "path": "validation/routed-forward/design/public/reference.json",
+          "sha256": "5f75b421f30712bd8807faeba7e291f517272bb9c4ec6a51e27bdf85567953a3",
+          "pointer": "/questions/order"
+        },
+        {
+          "path": "validation/routed-forward/design/public/reference.json",
+          "sha256": "5f75b421f30712bd8807faeba7e291f517272bb9c4ec6a51e27bdf85567953a3",
+          "pointer": "/questions/replacement_exclusion"
+        },
+        {
+          "path": "validation/routed-forward/design/public/routes.json",
+          "sha256": "40bdde0d7dbe2749f6653383c219cf1bca82d1473c26a9b5010095a15b32cec9",
+          "pointer": "/routes/O-vertical-order"
+        },
+        {
+          "path": "validation/routed-forward/design/public/routes.json",
+          "sha256": "40bdde0d7dbe2749f6653383c219cf1bca82d1473c26a9b5010095a15b32cec9",
+          "pointer": "/routes/O-replacement-exclusion"
+        },
+        {
+          "path": "validation/routed-forward/design/public/policy.json",
+          "sha256": "c8396dc2e001ff8b86b53c1d784dc38855cc525cbc686f1eaa685b196ada6851",
+          "pointer": "/atoms/3"
+        },
+        {
+          "path": "validation/routed-forward/design/public/policy.json",
+          "sha256": "c8396dc2e001ff8b86b53c1d784dc38855cc525cbc686f1eaa685b196ada6851",
+          "pointer": "/atoms/4"
+        }
+      ]
+    },
+    {
+      "original_id": "D02",
+      "status": "addressed",
+      "remaining_findings": [],
+      "review": "R22 逐一列出 leading 对齐的内容、primary/Cancel label 及 trailing switch；A-leading 以 /source/leading 独立 source-only 审查布局参数。未拿 visual wrapping 或 AX bounds 代替对齐源码审查。",
+      "evidence": [
+        {
+          "path": "validation/routed-forward/design/public/requirements.md",
+          "sha256": "bb78f567b7a3edf29e9bd3091c8daafbe07c73d664e14fd9042ab11a3f014e8b",
+          "line": 45
+        },
+        {
+          "path": "validation/routed-forward/design/public/audit-index.json",
+          "sha256": "7891382f2a64296b2c0abdd83fa4f63483dd8f7d2bdfe70ce19fdbb701a3e543",
+          "pointer": "/items/16",
+          "line": 213
+        },
+        {
+          "path": "validation/routed-forward/design/public/source-review-ledger.json",
+          "sha256": "8bd24ba9741dc58dcdbf010338653f5fbb1f0a95b1c9b733532898b096031381",
+          "pointer": "/clauses/21"
+        }
+      ]
+    },
+    {
+      "original_id": "D03",
+      "status": "addressed",
+      "remaining_findings": [],
+      "review": "R10 将 synchronously 收敛为同一个 native activation handler 内先赋 started 再调用 current onStart 且无 timer/task/dispatch deferral。A-start-transition 审源码控制流；O-success 仍只查最终 post-action native 状态与准确 callback interval。设计明确不声称同步像素渲染。",
+      "evidence": [
+        {
+          "path": "validation/routed-forward/design/public/requirements.md",
+          "sha256": "bb78f567b7a3edf29e9bd3091c8daafbe07c73d664e14fd9042ab11a3f014e8b",
+          "line": 21
+        },
+        {
+          "path": "validation/routed-forward/design/public/reference.json",
+          "sha256": "5f75b421f30712bd8807faeba7e291f517272bb9c4ec6a51e27bdf85567953a3",
+          "pointer": "/source/start_transition"
+        },
+        {
+          "path": "validation/routed-forward/design/public/audit-index.json",
+          "sha256": "7891382f2a64296b2c0abdd83fa4f63483dd8f7d2bdfe70ce19fdbb701a3e543",
+          "pointer": "/items/17",
+          "line": 226
+        },
+        {
+          "path": "validation/routed-forward/design/public/source-review-ledger.json",
+          "sha256": "8bd24ba9741dc58dcdbf010338653f5fbb1f0a95b1c9b733532898b096031381",
+          "pointer": "/clauses/9"
+        }
+      ]
+    },
+    {
+      "original_id": "D04",
+      "status": "addressed_at_design_level",
+      "remaining_findings": [],
+      "review": "ROI 改为 [0.01,0.35,0.03,0.65]。公开 R19 为 label ink 保留16-unit纯fill侧带、圆角半径12；R21/primary-width-upper 用真实 control rectangle 在六状态检查宽<=358，原有height>=48保留，A-primary-fill-boundary独立审shared painted/control composition。数学复核 x_max=0.03*358=10.74<16；上下clearance>=0.35*48=16.8>12，因此在这些条件成立时避开文字与圆角。源码条件、原生尺寸与原图像素仍是三类证据，不把设计论证当已有渲染观测。",
+      "evidence": [
+        {
+          "path": "validation/routed-forward/design/public/sampling-proof.json",
+          "sha256": "bba00f826f1da303ae6ddf524c4d950dc922771284ad2677fbaa5cb861ffdb72",
+          "pointer": "/inequalities"
+        },
+        {
+          "path": "validation/routed-forward/design/public/sampling-proof.json",
+          "sha256": "bba00f826f1da303ae6ddf524c4d950dc922771284ad2677fbaa5cb861ffdb72",
+          "pointer": "/argument"
+        },
+        {
+          "path": "validation/routed-forward/design/public/policy.json",
+          "sha256": "c8396dc2e001ff8b86b53c1d784dc38855cc525cbc686f1eaa685b196ada6851",
+          "pointer": "/atoms/1/sampling"
+        },
+        {
+          "path": "validation/routed-forward/design/public/reference.json",
+          "sha256": "5f75b421f30712bd8807faeba7e291f517272bb9c4ec6a51e27bdf85567953a3",
+          "pointer": "/source/primary_fill_boundary"
+        },
+        {
+          "path": "validation/routed-forward/design/public/contract.json",
+          "sha256": "06794f046411ec3bca8e80fd904fda188d13c5a91feee4a8bfc8d1570b8af447",
+          "pointer": "/rules"
+        },
+        {
+          "path": "validation/routed-forward/design/public/routes.json",
+          "sha256": "40bdde0d7dbe2749f6653383c219cf1bca82d1473c26a9b5010095a15b32cec9",
+          "pointer": "/routes/O-control-size"
+        }
+      ]
+    },
+    {
+      "original_id": "D05",
+      "status": "addressed_at_design_level",
+      "remaining_findings": [],
+      "review": "R01 已公开改为两个列明 production roots 内预记录字节保留，并放弃用两文件源码审查证明 unlisted upstream 或旧运行行为。A-file-scope仅查新增声明/副作用；三个独立 integration gates、83文件stock baseline、method file hashes 与未来receipt规则均已封存。只读核对算法与声明一致：stock/current union exact change、initial/final union allowed change、capture entry/SDK前/结束fingerprint及capsule文件映射。方法身份与基线hash均匹配，未执行这些gate或读取产品树；未发生的receipts仍unverified。",
+      "evidence": [
+        {
+          "path": "validation/routed-forward/design/public/requirements.md",
+          "sha256": "bb78f567b7a3edf29e9bd3091c8daafbe07c73d664e14fd9042ab11a3f014e8b",
+          "line": 3
+        },
+        {
+          "path": "validation/routed-forward/design/public/audit-index.json",
+          "sha256": "7891382f2a64296b2c0abdd83fa4f63483dd8f7d2bdfe70ce19fdbb701a3e543",
+          "pointer": "/items/0"
+        },
+        {
+          "path": "validation/routed-forward/design/public/integration-methods.json",
+          "sha256": "fa2450fd0f2d2d40dcf8209c20315340b694dad46d4ae3195938264f00d7ea41"
+        },
+        {
+          "path": "validation/routed-forward/design/public/integration-gates.json",
+          "sha256": "d02014247a46a7eb9e6889df24b2cc51e7cda24a53fe80ad6924ae4124be1a05"
+        },
+        {
+          "path": "validation/routed-forward/close_initial.py",
+          "sha256": "7fc9c8187030d9358482105ba686ad8211bf44a38a5f02f05935c021af5707e6",
+          "line": 7
+        },
+        {
+          "path": "validation/routed-forward/close_session.py",
+          "sha256": "d3b866645eeb8fe77fcb697c6ca56705837c5494e67346a59a0818521bf628f9",
+          "line": 9
+        },
+        {
+          "path": "validation/routed-forward/study.py",
+          "sha256": "8ef2b5577817c5ce48de5c8fe4a75bb383507f334f9c721479798ebe308909d2",
+          "line": 20
+        },
+        {
+          "path": "validation/routed-forward/study.py",
+          "sha256": "8ef2b5577817c5ce48de5c8fe4a75bb383507f334f9c721479798ebe308909d2",
+          "line": 54
+        },
+        {
+          "path": "validation/routed-forward/study.py",
+          "sha256": "8ef2b5577817c5ce48de5c8fe4a75bb383507f334f9c721479798ebe308909d2",
+          "line": 63
+        },
+        {
+          "path": "validation/routed-forward/study.py",
+          "sha256": "8ef2b5577817c5ce48de5c8fe4a75bb383507f334f9c721479798ebe308909d2",
+          "line": 86
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "V2-01",
+      "priority": "P2",
+      "status": "needs_revision",
+      "confidence": "high",
+      "continuation_of": "D01",
+      "clauses": [
+        "R26"
+      ],
+      "title": "旧文案排除的匹配边界未明确，与公开共享子串输入存在歧义",
+      "observation": "新的 replacement-exclusion 原子已取得明确 runtime/visual 归属，但 /questions/replacement_exclusion 要求所有不同于 replacement 的 initial strings 从 visible UI 消失。它只豁免完全相同的字段值，没有规定排除检查针对完整字段/独立文案实例，还是针对任何可见子串。公开 initial option[2].title 为 Harbor bells，replacement 为 Harbor bells — still unavailable：两字段不同，但正确的新标题仍包含旧字符串。按子串缺席解释，合规的新标题会使该原子失败；按独立完整字段解释可以通过。设计尚未固定这两种解释的边界。",
+      "impact": "缺口已从缺少验收归属收敛为 oracle 判定歧义；不能在实现前批准唯一、可重复的排除性判定。此发现来自封存公开输入的字符串包含关系，未创建产品实现或注入缺陷。",
+      "requested_design_revision": "明确 stale-copy 排除针对 superseded 字段/独立文案实例，并规定与合法新文案共享子串或词组时的处理；使公开共享子串输入在显示正确 replacement 且无额外旧字段时能被无歧义判定。保持新文案 presence 与 stale-copy exclusion 两个原子独立，不必改变产品代码或 hidden 输入。",
+      "evidence": [
+        {
+          "path": "validation/routed-forward/design/public/reference.json",
+          "sha256": "5f75b421f30712bd8807faeba7e291f517272bb9c4ec6a51e27bdf85567953a3",
+          "pointer": "/questions/replacement_exclusion",
+          "line": 269,
+          "original_excerpt": "At replaced, after inspecting the complete component, are all superseded initial title, introduction, option-title, option-detail, quietNote and footer strings absent from the visible UI whenever the corresponding replacement string differs? Identical strings are exempt; compare sealed inputs.initial and inputs.replacement. This question judges stale-copy exclusion only, not whether new copy is present."
+        },
+        {
+          "path": "validation/routed-forward/design/public/reference.json",
+          "sha256": "5f75b421f30712bd8807faeba7e291f517272bb9c4ec6a51e27bdf85567953a3",
+          "pointer": "/inputs/initial/options/2/title",
+          "line": 758,
+          "original_excerpt": "Harbor bells"
+        },
+        {
+          "path": "validation/routed-forward/design/public/reference.json",
+          "sha256": "5f75b421f30712bd8807faeba7e291f517272bb9c4ec6a51e27bdf85567953a3",
+          "pointer": "/inputs/replacement/options/2/title",
+          "line": 785,
+          "original_excerpt": "Harbor bells — still unavailable"
+        },
+        {
+          "path": "validation/routed-forward/design/public/policy.json",
+          "sha256": "c8396dc2e001ff8b86b53c1d784dc38855cc525cbc686f1eaa685b196ada6851",
+          "pointer": "/atoms/4",
+          "line": 64
+        },
+        {
+          "path": "validation/routed-forward/design/public/source-review-ledger.json",
+          "sha256": "8bd24ba9741dc58dcdbf010338653f5fbb1f0a95b1c9b733532898b096031381",
+          "pointer": "/clauses/25"
+        },
+        {
+          "path": "validation/routed-forward/design/public/requirements.md",
+          "sha256": "bb78f567b7a3edf29e9bd3091c8daafbe07c73d664e14fd9042ab11a3f014e8b",
+          "line": 53
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "structural_verifier": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 validation/routed-forward/design/verify_design.py",
+      "status": "passed",
+      "public_and_private_each": {
+        "clauses": 27,
+        "source_audits": 59,
+        "integration_gates": 3,
+        "runtime_obligations": 14,
+        "rules": 41,
+        "assertions_per_platform": 224
+      },
+      "sdk_invoked": false,
+      "limit": "Typed identity, source-pointer derivation, ownership rows and generated contracts; semantic finding V2-01 is independent."
+    },
+    "public_private_semantic_consistency": {
+      "status": "passed",
+      "same_requirements_api_bridges_audits_routes_methods_gates_sampling_proof_rules_states_actions_value_pointers": true,
+      "private_changes": "Input/environment and their derivations only; public domain unchanged. No private values disclosed."
+    },
+    "roi_math": {
+      "status": "valid_conditional_design_argument",
+      "x_max_native": 10.74,
+      "side_fill_band_native": 16,
+      "minimum_top_and_bottom_clearance_native": 16.8,
+      "circular_corner_radius_native": 12,
+      "actual_native_and_rendered_proof_obtained": false,
+      "scope": "Requires later passing source composition audit, native width/height assertions, full visibility, original coordinate mapping, pixel count/support and rendered color result. Missing conditions stay unverified."
+    },
+    "method_identity": [
+      {
+        "method": "close_initial.py",
+        "path": "validation/routed-forward/close_initial.py",
+        "sha256": "7fc9c8187030d9358482105ba686ad8211bf44a38a5f02f05935c021af5707e6",
+        "identity_verified": true
+      },
+      {
+        "method": "close_session.py",
+        "path": "validation/routed-forward/close_session.py",
+        "sha256": "d3b866645eeb8fe77fcb697c6ca56705837c5494e67346a59a0818521bf628f9",
+        "identity_verified": true
+      },
+      {
+        "method": "study.py",
+        "path": "validation/routed-forward/study.py",
+        "sha256": "8ef2b5577817c5ce48de5c8fe4a75bb383507f334f9c721479798ebe308909d2",
+        "identity_verified": true
+      },
+      {
+        "method": "PROTOCOL.json",
+        "path": "validation/routed-forward/PROTOCOL.json",
+        "sha256": "913e7691fe7389c95984f47ab168dd1a91a35040a3d372cf24149abec23b3618",
+        "identity_verified": true
+      },
+      {
+        "method": "operators/stock-production.json",
+        "path": "validation/routed-forward/operators/stock-production.json",
+        "sha256": "cd6ccb67214587d1b03db38acbd1d6fca2b1266ac5d3edbf9a43ac3cb6e6617b",
+        "identity_verified": true
+      }
+    ],
+    "baseline": {
+      "file_count": 83,
+      "canonical_hash_verified": true,
+      "raw_hash_verified": true,
+      "all_paths_within_declared_roots": true,
+      "approved_added_paths_absent_from_stock": true
+    },
+    "integration_gate_receipts": {
+      "G-initial-diff": "not_executed_preimplementation",
+      "G-final-scope": "not_executed_preimplementation",
+      "G-capture-identity": "not_executed_preimplementation",
+      "status": "unverified_until_actual_receipts; not a design-review pass substitute"
+    },
+    "ios14_and_collector_feasibility": {
+      "status": "no_new_contract_level_blocker",
+      "basis": "Public API/bridges remain unchanged. Added geometry uses supported native control width/lte; hierarchy/content_presence visual aspects and normalized pixel sampling use existing schemas. No generic computed font/padding/color or physical hit geometry requested."
+    }
+  },
+  "clause_review": [
+    {
+      "clause_id": "R01",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-file-scope"
+      ],
+      "integration_gate_ids": [
+        "G-initial-diff",
+        "G-final-scope",
+        "G-capture-identity"
+      ],
+      "findings": []
+    },
+    {
+      "clause_id": "R02",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-api"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R03",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-input-domain"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R04",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [
+        "O-copy",
+        "O-vertical-order"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R05",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-identifiers"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R06",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [
+        "O-semantics"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R07",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [
+        "O-initial"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R08",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-selection"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R09",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-validation"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R10",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [
+        "O-success"
+      ],
+      "source_audit_ids": [
+        "A-start-transition"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R11",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [
+        "O-started-controls"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R12",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [
+        "O-renew"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R13",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-cancel"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R14",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-edit-error"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R15",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-replacement"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R16",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-bridge-boundary"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R17",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-colors",
+        "A-color-canvas",
+        "A-color-option",
+        "A-color-selectedOption",
+        "A-color-unavailableOption",
+        "A-color-primary",
+        "A-color-primaryInk",
+        "A-color-title",
+        "A-color-body",
+        "A-color-muted",
+        "A-color-error",
+        "A-color-border"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R18",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [
+        "O-rendered-colors"
+      ],
+      "source_audit_ids": [
+        "A-primary-fill-boundary"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R19",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-spacing",
+        "A-primary-fill-boundary",
+        "A-space-canvasPadding-ios",
+        "A-space-canvasPadding-android",
+        "A-space-blockGap-ios",
+        "A-space-blockGap-android",
+        "A-space-optionTextGap-ios",
+        "A-space-optionTextGap-android",
+        "A-space-cornerRadius-ios",
+        "A-space-cornerRadius-android",
+        "A-space-horizontalPadding-ios",
+        "A-space-horizontalPadding-android",
+        "A-space-verticalPadding-ios",
+        "A-space-verticalPadding-android",
+        "A-space-borderWidth-ios",
+        "A-space-borderWidth-android"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R20",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-type",
+        "A-font-title-ios",
+        "A-font-title-android",
+        "A-weight-title",
+        "A-font-body-ios",
+        "A-font-body-android",
+        "A-weight-body",
+        "A-font-optionTitle-ios",
+        "A-font-optionTitle-android",
+        "A-weight-optionTitle",
+        "A-font-detail-ios",
+        "A-font-detail-android",
+        "A-weight-detail",
+        "A-font-action-ios",
+        "A-font-action-android",
+        "A-weight-action"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R21",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [
+        "O-control-size"
+      ],
+      "source_audit_ids": [
+        "A-primary-fill-boundary"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R22",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [
+        "O-long-content"
+      ],
+      "source_audit_ids": [
+        "A-leading"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R23",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-evidence-boundary"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R24",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R25",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [
+        "O-visual-integrity"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "findings": []
+    },
+    {
+      "clause_id": "R26",
+      "review_status": "needs_revision",
+      "runtime_obligation_ids": [
+        "O-route-behavior",
+        "O-replacement-exclusion"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "findings": [
+        "V2-01"
+      ]
+    },
+    {
+      "clause_id": "R27",
+      "review_status": "covered_at_design_level",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-callback-boundaries"
+      ],
+      "integration_gate_ids": [],
+      "findings": []
+    }
+  ],
+  "checkpoint_review": [
+    {
+      "checkpoint": "ready",
+      "status": "fixed_route_covered",
+      "runtime_obligation_ids": [
+        "O-initial"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ]
+    },
+    {
+      "checkpoint": "validation",
+      "status": "fixed_route_covered",
+      "runtime_obligation_ids": [
+        "O-route-behavior"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ]
+    },
+    {
+      "checkpoint": "started",
+      "status": "fixed_route_covered",
+      "runtime_obligation_ids": [
+        "O-success"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ]
+    },
+    {
+      "checkpoint": "renewed",
+      "status": "fixed_route_covered",
+      "runtime_obligation_ids": [
+        "O-renew"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ]
+    },
+    {
+      "checkpoint": "canceled",
+      "status": "fixed_route_covered",
+      "runtime_obligation_ids": [
+        "O-route-behavior"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ]
+    },
+    {
+      "checkpoint": "replaced",
+      "status": "fixed_route_covered",
+      "runtime_obligation_ids": [
+        "O-route-behavior"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ]
+    }
+  ],
+  "conclusion": "D02-D05 and the vertical-order half of D01 are addressed at the design level. The stale-copy atom now has real acceptance ownership, but its substring versus whole-field matching boundary is ambiguous for the actual public replacement data. Clarify that one proposition and reseal before independent second-person approval. No runtime correctness or preservation receipt is claimed."
+}

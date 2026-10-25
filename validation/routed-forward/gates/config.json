@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "artifact_root": ".",
+  "stages": {
+    "design-approved": {
+      "members": [
+        "independent-design",
+        "tool-and-methods"
+      ],
+      "requires": []
+    },
+    "initial-source": {
+      "members": [
+        "shared-initial",
+        "unit-40372769",
+        "unit-5a10e47c"
+      ],
+      "requires": [
+        "design-approved"
+      ]
+    },
+    "d0-raw": {
+      "members": [
+        "initial-capture"
+      ],
+      "requires": [
+        "initial-source"
+      ]
+    },
+    "all-self-closed": {
+      "members": [
+        "unit-40372769",
+        "unit-5a10e47c"
+      ],
+      "requires": [
+        "d0-raw"
+      ]
+    },
+    "hidden": {
+      "members": [
+        "initial",
+        "unit-40372769",
+        "unit-5a10e47c"
+      ],
+      "requires": [
+        "all-self-closed"
+      ]
+    },
+    "quality-inputs": {
+      "members": [
+        "anonymous-inputs"
+      ],
+      "requires": [
+        "hidden"
+      ]
+    },
+    "quality-panels": {
+      "members": [
+        "panel-one",
+        "panel-two"
+      ],
+      "requires": [
+        "quality-inputs"
+      ]
+    },
+    "revealed": {
+      "members": [
+        "assignment"
+      ],
+      "requires": [
+        "quality-panels"
+      ]
+    }
+  }
+}

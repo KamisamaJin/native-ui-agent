@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "platform": "ios",
+  "scope": "full",
+  "parent_plan_sha256": "d6f524172cd907a0dd95d6bea29a795209075c6a797df3de845ec0114c0a5774",
+  "design_lock_sha256": "a6fdbff834cf55cde0cde88512771adaf90505e9a59032e8bfbf426a17d08ce3",
+  "launch_ref": {
+    "source": "reference",
+    "pointer": "/launch"
+  },
+  "fixtures_sha256": "1ddaa8e2933e50569e277f2986d310bc1eadf56e764a93263ab2bf53fdea6819",
+  "bridge_sha256": "a57ebc9de8862ed2f863683d737df5aeb8156a1f2f63ebd0f8b1d17f938f676b",
+  "selected_states": [
+    "overview",
+    "creased",
+    "reversed"
+  ],
+  "required_coverage": [
+    {
+      "state_id": "overview",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "fold.heading"
+        },
+        {
+          "identifier": "fold.instruction"
+        },
+        {
+          "identifier": "fold.status"
+        },
+        {
+          "identifier": "fold.diagram"
+        },
+        {
+          "identifier": "fold.action",
+          "role": "button"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "creased",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "fold.heading"
+        },
+        {
+          "identifier": "fold.instruction"
+        },
+        {
+          "identifier": "fold.status"
+        },
+        {
+          "identifier": "fold.diagram"
+        },
+        {
+          "identifier": "fold.action",
+          "role": "button"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "reversed",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "fold.heading"
+        },
+        {
+          "identifier": "fold.instruction"
+        },
+        {
+          "identifier": "fold.status"
+        },
+        {
+          "identifier": "fold.diagram"
+        },
+        {
+          "identifier": "fold.action",
+          "role": "button"
+        }
+      ],
+      "absence_targets": []
+    }
+  ],
+  "actions": [
+    {
+      "type": "checkpoint",
+      "state_id": "overview",
+      "capture_scope": "full_content"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "fold.action",
+        "role": "button"
+      },
+      "reveal": true,
+      "state_id": "creased",
+      "capture_scope": "full_content"
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "reversed",
+      "capture_scope": "full_content"
+    }
+  ],
+  "config": {
+    "initial": {
+      "side": "front"
+    },
+    "updates": [
+      {
+        "side": "reverse"
+      }
+    ],
+    "width": 360,
+    "theme": "light",
+    "dynamic_type": "large",
+    "direction": "ltr",
+    "canvas_color": "#FFFFFF",
+    "max_scrolls": 4,
+    "required_identifiers": [
+      "fold.heading",
+      "fold.diagram",
+      "fold.instruction",
+      "fold.status",
+      "fold.action"
+    ],
+    "state_capture": true,
+    "observation_strategy": "coalesced",
+    "execution_states": [
+      {
+        "state_id": "overview",
+        "coverage": "full_content",
+        "targets": [
+          {
+            "identifier": "fold.heading"
+          },
+          {
+            "identifier": "fold.instruction"
+          },
+          {
+            "identifier": "fold.status"
+          },
+          {
+            "identifier": "fold.diagram"
+          },
+          {
+            "identifier": "fold.action",
+            "role": "button"
+          }
+        ],
+        "absence_targets": []
+      },
+      {
+        "state_id": "creased",
+        "coverage": "full_content",
+        "targets": [
+          {
+            "identifier": "fold.heading"
+          },
+          {
+            "identifier": "fold.instruction"
+          },
+          {
+            "identifier": "fold.status"
+          },
+          {
+            "identifier": "fold.diagram"
+          },
+          {
+            "identifier": "fold.action",
+            "role": "button"
+          }
+        ],
+        "absence_targets": []
+      },
+      {
+        "state_id": "reversed",
+        "coverage": "full_content",
+        "targets": [
+          {
+            "identifier": "fold.heading"
+          },
+          {
+            "identifier": "fold.instruction"
+          },
+          {
+            "identifier": "fold.status"
+          },
+          {
+            "identifier": "fold.diagram"
+          },
+          {
+            "identifier": "fold.action",
+            "role": "button"
+          }
+        ],
+        "absence_targets": []
+      }
+    ],
+    "execution_state_definitions": [
+      {
+        "id": "overview",
+        "input_index": 0,
+        "after_action": 0,
+        "coverage": "full_content"
+      },
+      {
+        "id": "creased",
+        "input_index": 0,
+        "after_action": 1,
+        "coverage": "full_content"
+      },
+      {
+        "id": "reversed",
+        "input_index": 1,
+        "after_action": 2,
+        "coverage": "full_content"
+      }
+    ],
+    "execution_scope": "full",
+    "observation_targets": [
+      {
+        "identifier": "fold.heading"
+      },
+      {
+        "identifier": "fold.instruction"
+      },
+      {
+        "identifier": "fold.status"
+      },
+      {
+        "identifier": "fold.diagram"
+      },
+      {
+        "identifier": "fold.action",
+        "role": "button"
+      }
+    ]
+  },
+  "parent_action_count": 3,
+  "executed_action_count": 3,
+  "scope_limit": "Full execution retains the business route; targeted execution keeps its original action prefix and indices. Original parent expectations stay fixed; omitted states are unverified.",
+  "execution_sha256": "f0280049a0b5bb3568c8cbd36ace52edf7760c11daeba006d13279f162d4c649"
+}

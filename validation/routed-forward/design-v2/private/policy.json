@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "design_lock_sha256": "2e0613a8c0ed9618f47f5b890ccbc9da19544af176f01ff216e446549a90486e",
+  "approval_reference": "Independent design-owner visual atom approval before implementation",
+  "ownership": {
+    "canvas": "component",
+    "primary": "component"
+  },
+  "atoms": [
+    {
+      "rule_id": "canvas-color",
+      "aspect": "rendered_canvas",
+      "method": "native_pixels",
+      "sampling": {
+        "region": [
+          0.01,
+          0.01,
+          0.03,
+          0.99
+        ],
+        "minimum_pixels": 12,
+        "minimum_support": 0.8,
+        "channel_tolerance": 2,
+        "basis": "semantic",
+        "visibility": "visible_fragment"
+      }
+    },
+    {
+      "rule_id": "primary-color",
+      "aspect": "rendered_fill",
+      "method": "native_pixels",
+      "sampling": {
+        "region": [
+          0.01,
+          0.35,
+          0.03,
+          0.65
+        ],
+        "minimum_pixels": 12,
+        "minimum_support": 0.8,
+        "channel_tolerance": 2,
+        "basis": "control",
+        "visibility": "fully_visible"
+      }
+    },
+    {
+      "rule_id": "content-complete",
+      "aspect": "content_presence",
+      "method": "visual",
+      "question": {
+        "source": "reference",
+        "pointer": "/questions/content"
+      }
+    },
+    {
+      "rule_id": "vertical-order",
+      "aspect": "hierarchy",
+      "method": "visual",
+      "question": {
+        "source": "reference",
+        "pointer": "/questions/order"
+      }
+    },
+    {
+      "rule_id": "replacement-exclusion",
+      "aspect": "content_presence",
+      "method": "visual",
+      "question": {
+        "source": "reference",
+        "pointer": "/questions/replacement_exclusion"
+      }
+    },
+    {
+      "rule_id": "text-wrap",
+      "aspect": "wrapping",
+      "method": "visual",
+      "question": {
+        "source": "reference",
+        "pointer": "/questions/wrapping"
+      }
+    },
+    {
+      "rule_id": "content-overlap",
+      "aspect": "overlap",
+      "method": "visual",
+      "question": {
+        "source": "reference",
+        "pointer": "/questions/overlap"
+      }
+    }
+  ]
+}

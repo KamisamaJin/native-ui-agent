@@ -1,0 +1,679 @@
+{
+  "version": 1,
+  "reviewer": "r11_design_review",
+  "role": "Independent design semantics and acceptance coverage reviewer; neither product implementer nor tool author",
+  "reviewedAtUTC": "2026-10-25T06:14:52.353798Z",
+  "decision": "needs_revision",
+  "approval_granted": false,
+  "input_identity": {
+    "design_seal_sha256": "c8c8ae916299f5c1b0d38ec9bf9b85b508f28f10e5782a2096f0785ca104ba81",
+    "manifest_sha256": "82282283a8ef7bcf46ccab3a986d6d1d3447f7d15e7bec8b2ed69d9e3c485325",
+    "sealedAtUTC": "2026-10-25T06:09:03Z",
+    "sealed_file_count": 59,
+    "sealed_hashes_verified": true
+  },
+  "boundaries": {
+    "waited_for_design_seal": true,
+    "read_product_implementation": false,
+    "read_previous_business_or_results": false,
+    "read_controller_or_assignment": false,
+    "invoked_sdk": false,
+    "injected_defects": false,
+    "modified_design": false,
+    "modified_tools_or_product": false,
+    "private_values_in_report": false
+  },
+  "checks": {
+    "structural_verifier": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 validation/routed-forward/design/verify_design.py",
+      "status": "passed",
+      "public": {
+        "clauses": 27,
+        "source_audits": 56,
+        "runtime_obligations": 12,
+        "rules": 38,
+        "assertions_per_platform": 211
+      },
+      "private": {
+        "clauses": 27,
+        "source_audits": 56,
+        "runtime_obligations": 12,
+        "rules": 38,
+        "assertions_per_platform": 211
+      },
+      "sdk_invoked": false,
+      "limit": "Structure, source-pointer regeneration and immutable identity; not semantic sufficiency."
+    },
+    "public_private_consistency": {
+      "same_requirements": true,
+      "same_api": true,
+      "same_bridges": true,
+      "same_audit_ledger_and_index": true,
+      "same_rules_states_logical_actions_and_value_pointers": true,
+      "private_changes": "Only input data, bindings to those data, environment and derived identities/expected values; within public domain. No private value disclosed here."
+    },
+    "ios14_feasibility": {
+      "status": "no_contract_level_blocker_found",
+      "basis": "Public data/value API, SwiftUI View, button/switch state, input equality reset and scaled system text do not force a newer platform API. This is design feasibility only, not compilation or SDK verification."
+    },
+    "native_evidence": {
+      "status": "supported_subject_to_D04",
+      "basis": "Only identifiers, labels, enabled/selected/switch values, conditional presence, AX/semantics rectangles and dispatch-bound callbacks requested at runtime; no generic computed font/padding/foreground/background attributes requested."
+    },
+    "source_style_boundary": {
+      "status": "clear",
+      "basis": "Source-only color, spacing and type declarations are audited against typed source data; none is promoted to computed runtime style. Rendered canvas and primary colors are separate original-pixel atoms."
+    },
+    "callback_paths": {
+      "status": "explicit_with_D03_timing_gap",
+      "basis": "Public prose/API covers all three invalid conditions, valid Start, Choose again, Cancel including repeated empty Cancel, changing either editing choice, equal/unequal input replacement, recomposition and current caller callbacks. Unsampled universal cases explicitly use source audits. Actual event intervals require demonstrated successful dispatch or same-process caller update."
+    }
+  },
+  "findings": [
+    {
+      "id": "D01",
+      "priority": "P1",
+      "status": "needs_revision",
+      "confidence": "high",
+      "clauses": [
+        "R04",
+        "R26"
+      ],
+      "title": "精确垂直顺序与 replacement 后仅有新文案没有完整验收命题",
+      "observation": "R04 由 O-copy 独占 runtime 覆盖，但其路由只有标签和 content-complete。content 问题检查文案存在与 verbatim，仅对 option 使用 ordered；没有检查标题、说明、note、switch、status、条件文案、primary、Cancel、footer 的完整垂直顺序。R26 的 only the new copy 也没有旧文案排除命题。非重叠和正确标签不能建立这两项事实，ledger 对 R04/R26 均未提供 source-only 补足。",
+      "impact": "条目覆盖完整的结构校验可通过，验收命题仍遗漏公开要求的部分含义。",
+      "requested_design_revision": "为公开顺序以及 replacement 后旧文案不得残留指定明确、独立且可回答的 runtime/visual 命题或明确 source-only 审查归属；保持原有 presence、wrapping、overlap 原子独立，并更新 ledger/routes/locks。",
+      "evidence": [
+        {
+          "path": "validation/routed-forward/design/public/requirements.md",
+          "sha256": "3218f622efa62f3fa14aa5fc81873aa1283cdd0f81384bf4b14476916c6910da",
+          "line": 9
+        },
+        {
+          "path": "validation/routed-forward/design/public/requirements.md",
+          "sha256": "3218f622efa62f3fa14aa5fc81873aa1283cdd0f81384bf4b14476916c6910da",
+          "line": 53
+        },
+        {
+          "path": "validation/routed-forward/design/public/reference.json",
+          "sha256": "2dd4c056f5f0d1d09ecf4dc709956471ce7842415aa8df0f50e54839dbbb96af",
+          "pointer": "/questions/content",
+          "line": 236,
+          "original_excerpt": "Are the input title, introduction, every ordered option title/detail, note and footer visibly rendered verbatim, plus the exact acknowledgement, status, action labels and applicable error/summary for this checkpoint?"
+        },
+        {
+          "path": "validation/routed-forward/design/public/routes.json",
+          "sha256": "b302c4206fd7c3074e9acb51f1ae49ec58e9f79547fa1379ff5d54526f797227",
+          "pointer": "/routes/O-copy",
+          "line": 8
+        },
+        {
+          "path": "validation/routed-forward/design/public/routes.json",
+          "sha256": "b302c4206fd7c3074e9acb51f1ae49ec58e9f79547fa1379ff5d54526f797227",
+          "pointer": "/routes/O-route-behavior",
+          "line": 130
+        },
+        {
+          "path": "validation/routed-forward/design/public/source-review-ledger.json",
+          "sha256": "0fec2884a45762d33cd26816aedf53963eee9cc054f23531ff8152974922984b",
+          "pointer": "/clauses/3",
+          "line": 51
+        },
+        {
+          "path": "validation/routed-forward/design/public/source-review-ledger.json",
+          "sha256": "0fec2884a45762d33cd26816aedf53963eee9cc054f23531ff8152974922984b",
+          "pointer": "/clauses/25",
+          "line": 421
+        }
+      ]
+    },
+    {
+      "id": "D02",
+      "priority": "P2",
+      "status": "needs_revision",
+      "confidence": "high",
+      "clauses": [
+        "R22"
+      ],
+      "title": "leading alignment 没有被 runtime 问题或 source audit 覆盖",
+      "observation": "R22 含 use leading alignment；ledger 只归 O-long-content，routes 只归 text-wrap。/questions/wrapping 问可读、换行与截断等，没有对齐命题；其余问题也不检查对齐，audit-index 没有 R22 对齐的 source-only 条目。R19 的单列及 padding 审查并不等价于文字 leading 对齐。",
+      "impact": "一个满足所有现有问题的居中文字布局仍可违反这条公开要求；本审查没有创建或运行此类实现。",
+      "requested_design_revision": "明确 leading 对齐适用的文字/控件范围，并把该语义交给明确的 source-only 审查或独立 visual 命题。",
+      "evidence": [
+        {
+          "path": "validation/routed-forward/design/public/requirements.md",
+          "sha256": "3218f622efa62f3fa14aa5fc81873aa1283cdd0f81384bf4b14476916c6910da",
+          "line": 45
+        },
+        {
+          "path": "validation/routed-forward/design/public/reference.json",
+          "sha256": "2dd4c056f5f0d1d09ecf4dc709956471ce7842415aa8df0f50e54839dbbb96af",
+          "pointer": "/questions/wrapping",
+          "line": 240,
+          "original_excerpt": "Can every supplied text and action label be read in the full vertical sweep with wrapping and no truncation, ellipsis, scaling down, horizontal scrolling or clipping?"
+        },
+        {
+          "path": "validation/routed-forward/design/public/routes.json",
+          "sha256": "b302c4206fd7c3074e9acb51f1ae49ec58e9f79547fa1379ff5d54526f797227",
+          "pointer": "/routes/O-long-content",
+          "line": 115
+        },
+        {
+          "path": "validation/routed-forward/design/public/source-review-ledger.json",
+          "sha256": "0fec2884a45762d33cd26816aedf53963eee9cc054f23531ff8152974922984b",
+          "pointer": "/clauses/21",
+          "line": 361
+        },
+        {
+          "path": "validation/routed-forward/design/public/audit-index.json",
+          "sha256": "9d31a86cf3458198ed18f48fc5307d7b8f4a4023c9825b486c6e1f9cfd9d6e1c",
+          "pointer": "/items"
+        }
+      ]
+    },
+    {
+      "id": "D03",
+      "priority": "P2",
+      "status": "needs_revision",
+      "confidence": "high",
+      "clauses": [
+        "R10"
+      ],
+      "title": "同步进入 started 的时序条件没有验收归属",
+      "observation": "O-success 检查 activation-events、status-label、summary-present、summary-label，均为成功 dispatch 后的 callback interval 或 checkpoint 事实。通用 callback_verdict 验证唯一启用控件、同 input epoch、进程与事件区间，不验证 started 变更是否同步发生；checkpoint 的后续状态也不能证明同步。R10 的 source_audit_ids 为空，其他 source 条目没有补充此时序条件。",
+      "impact": "现有验收可说明最终 checkpoint 内容和准确回调，不能说明公开要求中的 synchronously。",
+      "requested_design_revision": "为 synchronously 明确可实现、可核对的语义边界和相应 source-only/runtime 归属，或公开修订该要求；不要把后续截图或空区间当作同步证明。",
+      "evidence": [
+        {
+          "path": "validation/routed-forward/design/public/requirements.md",
+          "sha256": "3218f622efa62f3fa14aa5fc81873aa1283cdd0f81384bf4b14476916c6910da",
+          "line": 21
+        },
+        {
+          "path": "validation/routed-forward/design/public/routes.json",
+          "sha256": "b302c4206fd7c3074e9acb51f1ae49ec58e9f79547fa1379ff5d54526f797227",
+          "pointer": "/routes/O-success",
+          "line": 54
+        },
+        {
+          "path": "validation/routed-forward/design/public/source-review-ledger.json",
+          "sha256": "0fec2884a45762d33cd26816aedf53963eee9cc054f23531ff8152974922984b",
+          "pointer": "/clauses/9",
+          "line": 141
+        },
+        {
+          "path": "native-ui-agent/scripts/native_checks.py",
+          "sha256": "760f53d1664bb351f662654f4bb5b857d9fcc3357a54e6a3e8df93a41e3cf81e",
+          "line": 127
+        }
+      ]
+    },
+    {
+      "id": "D04",
+      "priority": "P2",
+      "status": "needs_revision",
+      "confidence": "medium",
+      "clauses": [
+        "R18",
+        "R19",
+        "R22"
+      ],
+      "title": "primary 固定百分比像素采样区缺少避开文字的几何保证",
+      "observation": "primary-color 采样 x=2.5%..6%、y=35%..65%，但 R19 仅保证 16 native-unit 水平 padding，R22 要求 leading alignment。根据公开 offered width 与 inset/padding，action 宽度为 offeredWidth-72：公开 390 下区域为 x=7.95..19.08；公开允许的 430 下为 x=8.95..21.48。两个区域的右侧均越过 16-unit 内边距，进入合法 leading label 可绘制的区域。80% dominant 支持阈值并不能在设计层证明所有合法字体尺寸/字形都不会污染这个区域。",
+      "impact": "不能在实现前把此区域批准为通用的纯 fill 量测点；合规文字可能使像素 atom unassessed，或使结果依赖字形。此处是政策安全性发现，不声称已有渲染失败，也未伪造样本。",
+      "requested_design_revision": "在设计中给出对公开域成立的 ink-free 采样论证，或改用具有明确背景归属/留白保证的独立像素 policy；保持原图、AX 坐标和实际字体/padding 各自证据边界。",
+      "evidence": [
+        {
+          "path": "validation/routed-forward/design/public/requirements.md",
+          "sha256": "3218f622efa62f3fa14aa5fc81873aa1283cdd0f81384bf4b14476916c6910da",
+          "line": 39
+        },
+        {
+          "path": "validation/routed-forward/design/public/requirements.md",
+          "sha256": "3218f622efa62f3fa14aa5fc81873aa1283cdd0f81384bf4b14476916c6910da",
+          "line": 45
+        },
+        {
+          "path": "validation/routed-forward/design/public/policy.json",
+          "sha256": "bad41d36c996ba6dc2eced5eed6f5bbfce271234e027423b755d6783a9e587dd",
+          "pointer": "/atoms/1/sampling",
+          "line": 32
+        },
+        {
+          "path": "native-ui-agent/scripts/native_pixels.py",
+          "sha256": "253fdcbb7ed5c01383fbcee83481b50050f26551bf84e5db3f8fa192a0c7fcc6",
+          "line": 100
+        }
+      ]
+    },
+    {
+      "id": "D05",
+      "priority": "P1",
+      "status": "needs_revision",
+      "confidence": "high",
+      "clauses": [
+        "R01"
+      ],
+      "title": "保留 upstream 与单文件变更范围超出 source-only 证据目录",
+      "observation": "R01 全句只归 A-file-scope。source_self.catalog 为每个审查项仅绑定 approval.production_paths 的两个新增文件的 hash/bytes/line_count；没有整份提交文件清单、基线 diff 或 upstream 身份。仅阅读新增文件不能建立其他 upstream 文件未被更改或保留原行为。当前设计未把这一部分交给其他明确的证据计划。",
+      "impact": "A-file-scope 的 proposition 比它绑定的可复核证据范围更大；不能把该项 source actual=True 解释为 upstream 保留已验收。",
+      "requested_design_revision": "在设计中明确并绑定 upstream/变更范围的独立基线与审查证据，或把 R01 的 source-only 结论严格限于可从新增文件建立的事实，并为其余义务安排明确归属。本审查不修改 adapter 或其他工具。",
+      "evidence": [
+        {
+          "path": "validation/routed-forward/design/public/requirements.md",
+          "sha256": "3218f622efa62f3fa14aa5fc81873aa1283cdd0f81384bf4b14476916c6910da",
+          "line": 3
+        },
+        {
+          "path": "validation/routed-forward/design/public/source-review-ledger.json",
+          "sha256": "0fec2884a45762d33cd26816aedf53963eee9cc054f23531ff8152974922984b",
+          "pointer": "/clauses/0",
+          "line": 6
+        },
+        {
+          "path": "validation/routed-forward/design/public/audit-index.json",
+          "sha256": "9d31a86cf3458198ed18f48fc5307d7b8f4a4023c9825b486c6e1f9cfd9d6e1c",
+          "pointer": "/items/0",
+          "line": 5
+        },
+        {
+          "path": "validation/routed-forward/design/public/approval.json",
+          "sha256": "5989ff83142d1d7c41e9bb5c43293064c5c822e156bfea7bac7fd706ffbd4cb6",
+          "pointer": "/production_paths"
+        },
+        {
+          "path": "validation/routed-forward/source_self.py",
+          "sha256": "83927fc90bbbcf4d73fc375a1896fb0468944b43cc6bb275896ceed864f9b61a",
+          "line": 14
+        }
+      ]
+    }
+  ],
+  "clause_review": [
+    {
+      "clause_id": "R01",
+      "review_status": "needs_revision",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-file-scope"
+      ],
+      "findings": [
+        "D05"
+      ],
+      "review_note": "新增文件路径已明确，但 upstream 保留证据范围不匹配。"
+    },
+    {
+      "clause_id": "R02",
+      "review_status": "covered",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-api"
+      ],
+      "findings": [],
+      "review_note": "API、模型 Equatable/data class、公开初始化与最低平台归 A-api；设计未强制任何 iOS 14 之后的 API。"
+    },
+    {
+      "clause_id": "R03",
+      "review_status": "covered",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-input-domain"
+      ],
+      "findings": [],
+      "review_note": "有效输入域、调用方顺序、无音频/网络归 A-input-domain。"
+    },
+    {
+      "clause_id": "R04",
+      "review_status": "needs_revision",
+      "runtime_obligation_ids": [
+        "O-copy"
+      ],
+      "source_audit_ids": [],
+      "findings": [
+        "D01"
+      ],
+      "review_note": "文案/标签存在有原生与图像覆盖；完整垂直顺序尚缺。"
+    },
+    {
+      "clause_id": "R05",
+      "review_status": "covered",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-identifiers"
+      ],
+      "findings": [],
+      "review_note": "稳定 ID 及动态 option ID 模式归 A-identifiers；bindings 只供身份/角色。"
+    },
+    {
+      "clause_id": "R06",
+      "review_status": "covered",
+      "runtime_obligation_ids": [
+        "O-semantics"
+      ],
+      "source_audit_ids": [],
+      "findings": [],
+      "review_note": "按钮/switch 角色 bindings、唯一 native control 解析、标签、selected/value 事实有明确路径。"
+    },
+    {
+      "clause_id": "R07",
+      "review_status": "covered",
+      "runtime_obligation_ids": [
+        "O-initial"
+      ],
+      "source_audit_ids": [],
+      "findings": [],
+      "review_note": "ready 的初始选择、ack、conditional presence、status/primary/enabled 完整。"
+    },
+    {
+      "clause_id": "R08",
+      "review_status": "source_only",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-selection"
+      ],
+      "findings": [],
+      "review_note": "互斥、再次点击、替换选择、unavailable 语义明确归 A-selection；不声称六点路由穷尽这些分支。"
+    },
+    {
+      "clause_id": "R09",
+      "review_status": "source_only",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-validation"
+      ],
+      "findings": [],
+      "review_note": "三种验证错误与回调边界来自公开 API/prose，归 A-validation。"
+    },
+    {
+      "clause_id": "R10",
+      "review_status": "needs_revision",
+      "runtime_obligation_ids": [
+        "O-success"
+      ],
+      "source_audit_ids": [],
+      "findings": [
+        "D03"
+      ],
+      "review_note": "准确 start event 与最终 started 内容可核对；同步时序尚缺。"
+    },
+    {
+      "clause_id": "R11",
+      "review_status": "covered",
+      "runtime_obligation_ids": [
+        "O-started-controls"
+      ],
+      "source_audit_ids": [],
+      "findings": [],
+      "review_note": "started 的保留内容、selection/ack、禁用与 enabled Choose again 完整矩阵。"
+    },
+    {
+      "clause_id": "R12",
+      "review_status": "covered",
+      "runtime_obligation_ids": [
+        "O-renew"
+      ],
+      "source_audit_ids": [],
+      "findings": [],
+      "review_note": "renewed 重置选择、ack、error/summary 和空回调有独立 dispatch 证明门槛。"
+    },
+    {
+      "clause_id": "R13",
+      "review_status": "source_only",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-cancel"
+      ],
+      "findings": [],
+      "review_note": "每状态 Cancel、反复 Cancel 与 current sessionID 归 A-cancel；路由只示范一次。"
+    },
+    {
+      "clause_id": "R14",
+      "review_status": "source_only",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-edit-error"
+      ],
+      "findings": [],
+      "review_note": "两种 editing choice 清 error 与 ack off 保留 selection 归 A-edit-error。"
+    },
+    {
+      "clause_id": "R15",
+      "review_status": "source_only",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-replacement"
+      ],
+      "findings": [],
+      "review_note": "full input 等值/不等值与同 ID 替换归 A-replacement；dirty replacement 路由补充 runtime 个案。"
+    },
+    {
+      "clause_id": "R16",
+      "review_status": "covered",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-bridge-boundary"
+      ],
+      "findings": [],
+      "review_note": "两个封存 bridge 仅值解码与真实参数转发，没有 key/id、remember、业务 UI 或 outcome 合成；A-bridge-boundary 明确。"
+    },
+    {
+      "clause_id": "R17",
+      "review_status": "source_only",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-colors",
+        "A-color-canvas",
+        "A-color-option",
+        "A-color-selectedOption",
+        "A-color-unavailableOption",
+        "A-color-primary",
+        "A-color-primaryInk",
+        "A-color-title",
+        "A-color-body",
+        "A-color-muted",
+        "A-color-error",
+        "A-color-border"
+      ],
+      "findings": [],
+      "review_note": "11 个 color role、opaque sRGB、用法与禁止 shadow/gradient/translucency 由总体及逐值 source audits 绑定；不声称 computed color。"
+    },
+    {
+      "clause_id": "R18",
+      "review_status": "needs_revision",
+      "runtime_obligation_ids": [
+        "O-rendered-colors"
+      ],
+      "source_audit_ids": [],
+      "findings": [
+        "D04"
+      ],
+      "review_note": "canvas/primary 有分离 rendered atom；primary ROI 的纯 fill 安全性需补足。"
+    },
+    {
+      "clause_id": "R19",
+      "review_status": "source_only",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-spacing",
+        "A-space-canvasPadding-ios",
+        "A-space-canvasPadding-android",
+        "A-space-blockGap-ios",
+        "A-space-blockGap-android",
+        "A-space-optionTextGap-ios",
+        "A-space-optionTextGap-android",
+        "A-space-cornerRadius-ios",
+        "A-space-cornerRadius-android",
+        "A-space-horizontalPadding-ios",
+        "A-space-horizontalPadding-android",
+        "A-space-verticalPadding-ios",
+        "A-space-verticalPadding-android",
+        "A-space-borderWidth-ios",
+        "A-space-borderWidth-android"
+      ],
+      "findings": [],
+      "review_note": "pt/dp padding/gap/radius/border 的逐值与放置归 A-spacing；不从 AX 尺寸推 padding。"
+    },
+    {
+      "clause_id": "R20",
+      "review_status": "source_only",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-type",
+        "A-font-title-ios",
+        "A-font-title-android",
+        "A-weight-title",
+        "A-font-body-ios",
+        "A-font-body-android",
+        "A-weight-body",
+        "A-font-optionTitle-ios",
+        "A-font-optionTitle-android",
+        "A-weight-optionTitle",
+        "A-font-detail-ios",
+        "A-font-detail-android",
+        "A-weight-detail",
+        "A-font-action-ios",
+        "A-font-action-android",
+        "A-weight-action"
+      ],
+      "findings": [],
+      "review_note": "pt/sp 基字号、weight 与 system scaling 归 A-type 及逐值 audits；不声称 collector 可读 SwiftUI computed font。"
+    },
+    {
+      "clause_id": "R21",
+      "review_status": "covered",
+      "runtime_obligation_ids": [
+        "O-control-size"
+      ],
+      "source_audit_ids": [],
+      "findings": [],
+      "review_note": "只测 accessible/control rectangle，原生 pt/dp、>= 与 semantic/control basis 均明确；没有物理 hit 区断言。"
+    },
+    {
+      "clause_id": "R22",
+      "review_status": "needs_revision",
+      "runtime_obligation_ids": [
+        "O-long-content"
+      ],
+      "source_audit_ids": [],
+      "findings": [
+        "D02"
+      ],
+      "review_note": "换行/无省略等与完整 vertical sweep 有明确 visual 归属；leading alignment 遗漏。"
+    },
+    {
+      "clause_id": "R23",
+      "review_status": "covered",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-evidence-boundary"
+      ],
+      "findings": [],
+      "review_note": "源码声明与原生框/文字/像素分开，证据边界在公开 prose、source audits 和 generic collector 中一致。"
+    },
+    {
+      "clause_id": "R24",
+      "review_status": "covered",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ],
+      "findings": [],
+      "review_note": "六点 route 固定；五个 event checkpoints 使用 activation/caller_update；callback_verdict 对 dispatch、唯一 control、enabled、epoch/进程和准确区间设门槛。"
+    },
+    {
+      "clause_id": "R25",
+      "review_status": "covered",
+      "runtime_obligation_ids": [
+        "O-visual-integrity"
+      ],
+      "source_audit_ids": [],
+      "findings": [],
+      "review_note": "content presence、wrapping、overlap 与两色是独立 atoms；validation/error 与 started/summary 纳入问题。"
+    },
+    {
+      "clause_id": "R26",
+      "review_status": "needs_revision",
+      "runtime_obligation_ids": [
+        "O-route-behavior"
+      ],
+      "source_audit_ids": [],
+      "findings": [
+        "D01"
+      ],
+      "review_note": "route events 与 reset 状态明确；only new copy 的排除性命题待补。"
+    },
+    {
+      "clause_id": "R27",
+      "review_status": "source_only",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-callback-boundaries"
+      ],
+      "findings": [],
+      "review_note": "全部 allowed/forbidden callback 路径及 current callbacks 归 A-callback-boundaries；没有 hidden-only 业务。"
+    }
+  ],
+  "checkpoint_review": [
+    {
+      "checkpoint": "ready",
+      "status": "covered_route",
+      "runtime_obligation_ids": [
+        "O-initial"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ]
+    },
+    {
+      "checkpoint": "validation",
+      "status": "covered_route",
+      "runtime_obligation_ids": [
+        "O-route-behavior"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ]
+    },
+    {
+      "checkpoint": "started",
+      "status": "covered_route",
+      "runtime_obligation_ids": [
+        "O-success"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ]
+    },
+    {
+      "checkpoint": "renewed",
+      "status": "covered_route",
+      "runtime_obligation_ids": [
+        "O-renew"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ]
+    },
+    {
+      "checkpoint": "canceled",
+      "status": "covered_route",
+      "runtime_obligation_ids": [
+        "O-route-behavior"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ]
+    },
+    {
+      "checkpoint": "replaced",
+      "status": "covered_route",
+      "runtime_obligation_ids": [
+        "O-route-behavior"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ]
+    }
+  ],
+  "conclusion": "Needs design revision before second-person approval. Structural completeness and independent authorship boundary are accepted; five original findings remain open. No implementation or tool changes were made."
+}

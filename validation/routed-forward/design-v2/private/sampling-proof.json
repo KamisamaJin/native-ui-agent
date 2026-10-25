@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "scope": "Independent geometric design argument, not rendered/native evidence.",
+  "collector_reference": {
+    "path": "native-ui-agent/scripts/native_pixels.py",
+    "sha256": "253fdcbb7ed5c01383fbcee83481b50050f26551bf84e5db3f8fa192a0c7fcc6",
+    "schema": "normalized target-local region; existing sampling fields only"
+  },
+  "primary_sampling": {
+    "region": [
+      0.01,
+      0.35,
+      0.03,
+      0.65
+    ],
+    "minimum_pixels": 12,
+    "minimum_support": 0.8,
+    "channel_tolerance": 2,
+    "basis": "control",
+    "visibility": "fully_visible"
+  },
+  "assumptions": [
+    "R19 and A-primary-fill-boundary establish 16-native-unit horizontal bands containing fill only, no primary border and a painted rectangle matching the native control rectangle.",
+    "R21/primary-width-upper assesses native control width <= 430 - 32 - 2*20 = 358 native units; primary-height assesses native control height >= 48.",
+    "R19 fixes circular corner radius 12, with no shadows/gradients/translucency under R17. Each action label remains inside its inner content rectangle."
+  ],
+  "inequalities": {
+    "x_max_native": 10.74,
+    "x_padding_native": 16,
+    "y_min_at_min_height_native": 16.799999999999997,
+    "corner_radius_native": 12,
+    "bottom_clearance_at_min_height_native": 16.799999999999997
+  },
+  "argument": "For any width <=358, every sampled x is <10.74<16, strictly inside the reserved side padding and outside the inner label content. For any height >=48, y=35%..65% stays at least 16.8 from top and bottom, beyond both 12-unit rounded corners. Thus the ROI lies in plain opaque fill, independent of font metrics. The contract still requires valid original mapping, visibility, pixel count and unambiguous support; failures remain U, never inferred pass.",
+  "unchanged_collector_policy": "No collector/schema/tolerance changes; minimum_pixels=12, support=0.8 and channel_tolerance=2 are unchanged from v1."
+}

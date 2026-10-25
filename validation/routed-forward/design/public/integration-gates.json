@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "G-initial-diff",
+      "clause": "close_initial.py recomputes study.fingerprint over both complete production roots, compares stock versus current over the union of keys, and requires changed == exactly the approved added paths before study.capsule seals the initial source.",
+      "priority": "must",
+      "responsibility": "integration",
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/G-initial-diff"
+      },
+      "method_reference": {
+        "source": "reference",
+        "pointer": "/source/integration_methods"
+      },
+      "receipt_required": true,
+      "missing_or_failed_receipt": "unverified; no source-review substitution"
+    },
+    {
+      "id": "G-final-scope",
+      "clause": "close_session.py recomputes the same full fingerprint, compares shared initial versus final over the union of keys, and requires changed <= approved added paths before study.capsule seals final source.",
+      "priority": "must",
+      "responsibility": "integration",
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/G-final-scope"
+      },
+      "method_reference": {
+        "source": "reference",
+        "pointer": "/source/integration_methods"
+      },
+      "receipt_required": true,
+      "missing_or_failed_receipt": "unverified; no source-review substitution"
+    },
+    {
+      "id": "G-capture-identity",
+      "clause": "study.collect recomputes the complete fingerprint against source_seal at entry, again before each platform SDK collection and after collection; study.capsule stores all fingerprinted source bytes and the exact files mapping.",
+      "priority": "must",
+      "responsibility": "integration",
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/G-capture-identity"
+      },
+      "method_reference": {
+        "source": "reference",
+        "pointer": "/source/integration_methods"
+      },
+      "receipt_required": true,
+      "missing_or_failed_receipt": "unverified; no source-review substitution"
+    }
+  ],
+  "limits": "These gates establish preservation of pre-recorded bytes and change scope within the declared production roots, not runtime regression testing, files outside those roots, or computed visual properties. A gate failure or missing receipt remains unverified; two-file source review cannot replace these gates."
+}

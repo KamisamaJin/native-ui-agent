@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "platform": "ios",
+  "scope": "full",
+  "parent_plan_sha256": "1b3a7187f2aa28ed254cb31bf78e07ae1ef018ae095696597d8312441a665869",
+  "design_lock_sha256": "42029c431113b47d82537557328b4b8a2efae9d22d2bb1f92d14d7949843c282",
+  "launch_ref": {
+    "source": "reference",
+    "pointer": "/launch"
+  },
+  "fixtures_sha256": "bf079c221bfa9dda166a7a0a42a2c2adee3d055441911a60d5653b100569305a",
+  "bridge_sha256": "86b401c72f8addb78e81dac67880a8d504665b8de656643aed4f9d2837f1fb9e",
+  "selected_states": [
+    "front",
+    "reverse"
+  ],
+  "required_coverage": [
+    {
+      "state_id": "front",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "paper.caption"
+        },
+        {
+          "identifier": "paper.sample"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "reverse",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "paper.caption"
+        },
+        {
+          "identifier": "paper.sample"
+        }
+      ],
+      "absence_targets": []
+    }
+  ],
+  "actions": [
+    {
+      "type": "checkpoint",
+      "state_id": "front",
+      "capture_scope": "full_content"
+    },
+    {
+      "type": "apply_next_fixture",
+      "capture_scope": "none"
+    },
+    {
+      "type": "checkpoint",
+      "state_id": "reverse",
+      "capture_scope": "full_content"
+    }
+  ],
+  "config": {
+    "initial": {
+      "reverse": false
+    },
+    "updates": [
+      {
+        "reverse": true
+      }
+    ],
+    "state_capture": true,
+    "observation_strategy": "coalesced",
+    "execution_states": [
+      {
+        "state_id": "front",
+        "coverage": "full_content",
+        "targets": [
+          {
+            "identifier": "paper.caption"
+          },
+          {
+            "identifier": "paper.sample"
+          }
+        ],
+        "absence_targets": []
+      },
+      {
+        "state_id": "reverse",
+        "coverage": "full_content",
+        "targets": [
+          {
+            "identifier": "paper.caption"
+          },
+          {
+            "identifier": "paper.sample"
+          }
+        ],
+        "absence_targets": []
+      }
+    ],
+    "execution_state_definitions": [
+      {
+        "id": "front",
+        "input_index": 0,
+        "after_action": 0,
+        "coverage": "full_content"
+      },
+      {
+        "id": "reverse",
+        "input_index": 1,
+        "after_action": 2,
+        "coverage": "full_content",
+        "stimulus_action": 1
+      }
+    ],
+    "execution_scope": "full",
+    "observation_targets": [
+      {
+        "identifier": "paper.caption"
+      },
+      {
+        "identifier": "paper.sample"
+      }
+    ]
+  },
+  "parent_action_count": 3,
+  "executed_action_count": 3,
+  "scope_limit": "Full execution retains the business route; targeted execution keeps its original action prefix and indices. Original parent expectations stay fixed; omitted states are unverified.",
+  "execution_sha256": "d029db105014a8332194963b2ba90e79ec0a397c2cff10f7706b5ddbea34ddaa"
+}

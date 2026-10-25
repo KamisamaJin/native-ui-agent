@@ -1,11 +1,21 @@
 # 默认执行服务
 
-新增/修改原生 UI 使用 `python scripts/ui_loop.py native --config PROJECT.json --output NEW_DIR`。集成端固定项目配置并保留返回的 `cycle.json`、原始 `capture/result.json` 及摘要。修复后传 `--previous ORIGINAL_RESULT --previous-sha256 PINNED_SHA`；交付用 `--final`。集成端传 `--history PINNED_CYCLE_LIST` 以限制同源码重复采集。不要让模型选择状态、覆盖范围或预期；API 不接受这些覆盖参数。
+新增/修改原生 UI 使用 `python scripts/ui_loop.py native --config PROJECT.json --output NEW_DIR`。集成端固定项目配置并保存 cycle、原始 capture、任务队列及摘要。每轮传上一原始 `--previous RESULT --previous-sha256 SHA`；交付传 `--final`，重复历史传 `--history PINNED_CYCLE_LIST`。模型不能覆盖预期或手选状态。
 
-项目配置字段：`plan`、`design_lock`、`design_sha256`、`routes`、`routes_sha256`、`fixtures`、`bridge`、`launch_ref`（独立来源及 pointer）、`source_roots`、`native_options`、`environment`、`environment_sha256`，可选独立 `policy` 与 `policy_sha256`。路径是集成端实际路径；原生参数与 execution_plan 相同。SHA 由独立批准方保留，不能由实现者重新批准。配置不是新预期来源。
+配置字段：`plan`、`design_lock`、`design_sha256`、`routes`、`routes_sha256`、`fixtures`、`bridge`、`launch_ref`、`source_roots`、`native_options`、`environment`、`environment_sha256`；可选独立批准的 `policy`/`policy_sha256`。有视觉原子项时必须配置生产源码目录以外的 `review_store`，供集成端保存追加式审查注册表；不是临时传给模型的可选开关。摘要由独立批准方保留，配置不产生新预期。
 
-固定执行顺序：重建原始证据 → 需求路由 → 状态绑定定位诊断 → 复验规划 → 统一原生执行 → 新证据路由/诊断 → 完整性门控。缺失叶节点、重复身份、未取得状态、无法测量分别保留原始节点/帧和源码字面引用。候选不能自动替代批准选择器；源码声明不能冒充运行时属性或断言通过。
+固定链路：重建原始采集 → 自动读取该 capture 的审查注册表 → 重建绑定的实际观察 → 需求路由 → 定位诊断 → 按工作类型派发。`review_images`、`repair_source`、`review_measurement` 和定位/能力诊断在源码未变时不启动 SDK。缺少状态证据才进入 `acquire_native`；源码修改后依据实际差异、原始发现和批准回归依赖选择定向复验；未知影响或上一包不完整时回退全量。最终总是新鲜完整采集。
 
-复验规划包含原始失败和未知项及批准的回归依赖；未请求状态留待全量检查，不是新定位失败。上一包本身是定向包时回退完整计划，避免遗失更早未关闭状态。源码影响不能由依赖图证明；最终始终新鲜完整执行。相同源码/同问题的两次反馈采集后，服务历史会阻止继续无效重跑；修复原因后换源码，或执行必需全量最终验证。任何阻止、未知、环境错误均不能交付通过。
+集成端把 `before-review-request.json` / `after-review-request.json` 派给看图工作者，读取原始帧并填写 template 的 actual、reason、snapshot_indices；预期、单位、责任与出处由批准契约生成。提交：
 
-此服务自动执行工具，不自动解释设计含义或改代码。模型仍负责看图、源码诊断和有依据的修复；原子视觉判断与独立最终质量评估保留其适用范围。旧 `capture/review` profile 是兼容入口；复杂业务的默认集成必须调用 `native`，不能绕过服务后宣称执行了本流程。
+```sh
+python scripts/ui_loop.py bind-native-review --config PROJECT.json \
+  --capture-result RESULT --capture-sha256 SHA \
+  --submission ORIGINAL_ACTUALS --submission-sha256 SHA --output REVIEW_STORE/NEW
+```
+
+工具验证源码/输入/状态/图像/策略身份、重新计算结论并自动注册；下一次 `native` 自动加载，模型无需记住 review 参数。多个不重叠审查可合并；矛盾不能 last-wins，必须用 `--supersedes-sha256` 和 `--revision-reason` 明确保存原判断与修订。原始采集目录不可覆写。已修改源码可以使用历史发现规划修复范围，不能获得当前通过信用。
+
+最终采集后仍有图审查时，绑定新图的实际观察，再执行 `finish-native-review --config PROJECT.json --cycle FINAL_CYCLE --cycle-sha256 SHA --output NEW`。该入口重建最终原包并强制当前源码一致、全量覆盖和完整门控，不再次采集。定向包或普通反馈 cycle 不能用于交付接受。CLI `native` 的 0 表示已完成派发（也可能在等审查/修复），1 表示阻塞，2 表示配置/证据错误；只有结果的 `status: accepted` 表示交付门控通过。
+
+缺失叶节点、重复身份、未取得状态、无法测量分别保留原始节点/帧和源码引用。候选不替代批准选择器；源码声明不冒充运行时属性。相同源码/问题的两次反馈采集后，历史阻止无效重跑；任何未知、环境错误或阻塞不能写成通过。此服务执行工具和任务队列，不自动理解设计或修改代码。

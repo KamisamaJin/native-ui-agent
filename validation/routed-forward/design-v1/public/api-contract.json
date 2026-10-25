@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "ios": {
+    "module": "AlertToast",
+    "minimum": "iOS 14.0",
+    "models": [
+      {
+        "name": "ListeningBreakOption",
+        "conformance": [
+          "Equatable"
+        ],
+        "access": "public",
+        "properties": {
+          "id": "String",
+          "title": "String",
+          "detail": "String",
+          "isAvailable": "Bool"
+        },
+        "initializer": "public init(id: String, title: String, detail: String, isAvailable: Bool)"
+      },
+      {
+        "name": "ListeningBreakInput",
+        "conformance": [
+          "Equatable"
+        ],
+        "access": "public",
+        "properties": {
+          "sessionID": "String",
+          "title": "String",
+          "introduction": "String",
+          "options": "[ListeningBreakOption]",
+          "quietNote": "String",
+          "footer": "String"
+        },
+        "initializer": "public init(sessionID: String, title: String, introduction: String, options: [ListeningBreakOption], quietNote: String, footer: String)"
+      }
+    ],
+    "component": "public struct ListeningBreakPanel: View",
+    "initializer": "public init(input: ListeningBreakInput, onStart: @escaping (String, String) -> Void, onCancel: @escaping (String) -> Void)"
+  },
+  "android": {
+    "package": "com.example.reply.ui.components",
+    "minimum": "upstream Reply Compose toolchain",
+    "models": [
+      "data class ListeningBreakOption(val id: String, val title: String, val detail: String, val isAvailable: Boolean)",
+      "data class ListeningBreakInput(val sessionID: String, val title: String, val introduction: String, val options: List<ListeningBreakOption>, val quietNote: String, val footer: String)"
+    ],
+    "component": "@Composable fun ListeningBreakPanel(input: ListeningBreakInput, onStart: (String, String) -> Unit, onCancel: (String) -> Unit, modifier: Modifier = Modifier)"
+  },
+  "callbacks": {
+    "onStart": [
+      "current input sessionID",
+      "selected option ID"
+    ],
+    "onCancel": [
+      "current input sessionID"
+    ]
+  },
+  "copy": {
+    "acknowledgement": "I have read the quiet-space note",
+    "start": "Start listening",
+    "again": "Choose again",
+    "cancel": "Cancel",
+    "ready": "Choose a soundscape for your break.",
+    "started": "Your listening break is ready.",
+    "summaryPrefix": "Ready to begin: ",
+    "errors": {
+      "both": "Choose a soundscape and confirm the quiet-space note.",
+      "selection": "Choose an available soundscape.",
+      "acknowledgement": "Confirm the quiet-space note before starting."
+    }
+  },
+  "identity": "Complete value equality across all declared input and ordered option fields; no forced identity from the caller."
+}

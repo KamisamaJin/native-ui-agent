@@ -442,15 +442,45 @@ def main():
     native.add_argument("--final", action="store_true")
     native.add_argument("--history", type=Path)
     native.add_argument("--intake", action="store_true")
+    native.add_argument("--review-result", type=Path)
+    native.add_argument("--review-result-sha256")
+    bind = commands.add_parser("bind-native-review", help="Bind actual review to exact original source/state/images")
+    bind.add_argument("--config", type=Path, required=True)
+    bind.add_argument("--capture-result", type=Path, required=True)
+    bind.add_argument("--capture-sha256", required=True)
+    bind.add_argument("--submission", type=Path, required=True)
+    bind.add_argument("--submission-sha256", required=True)
+    bind.add_argument("--output", type=Path, required=True)
+    bind.add_argument("--supersedes-sha256", action="append", default=[])
+    bind.add_argument("--revision-reason")
+    finish = commands.add_parser("finish-native-review", help="Close original final review without recapturing")
+    finish.add_argument("--config", type=Path, required=True)
+    finish.add_argument("--cycle", type=Path, required=True)
+    finish.add_argument("--cycle-sha256", required=True)
+    finish.add_argument("--review-result", type=Path)
+    finish.add_argument("--review-result-sha256")
+    finish.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     try:
+        if args.action == "bind-native-review":
+            import evidence_review
+            result = evidence_review.bind(json.loads(args.config.read_text()), args.capture_result, args.capture_sha256,
+                args.submission, args.submission_sha256, args.output, supersedes=args.supersedes_sha256, revision_reason=args.revision_reason)
+            print(json.dumps(result, indent=2)); return 0
+        if args.action == "finish-native-review":
+            import feedback_loop
+            result = feedback_loop.complete_review(json.loads(args.config.read_text()), args.cycle, args.cycle_sha256,
+                {"path": str(args.review_result), "sha256": args.review_result_sha256} if args.review_result else None, args.output)
+            print(json.dumps(result, indent=2)); return 0 if result["status"] == "accepted" else 1
         if args.action == "native":
             import feedback_loop
             result = feedback_loop.run_cycle(json.loads(args.config.read_text()), args.output, previous=args.previous,
                 previous_sha=args.previous_sha256, final=args.final,
-                history=json.loads(args.history.read_text()) if args.history else [], intake=args.intake)
+                history=json.loads(args.history.read_text()) if args.history else [], intake=args.intake,
+                review_result={"path": str(args.review_result), "sha256": args.review_result_sha256} if args.review_result else None)
             print(json.dumps(result, indent=2))
-            return 0 if result["status"] == "verified_capture" else 1
+            # A queued review/repair is a successful dispatch, not delivery acceptance.
+            return 1 if result["status"].startswith("blocked") else 0
         return capture(args) if args.action == "capture" else review(args)
     except (ValueError, OSError, KeyError, TypeError, StopIteration) as exc:
         print("Configuration/evidence error: " + str(exc), file=sys.stderr)

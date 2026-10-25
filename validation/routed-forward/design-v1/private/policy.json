@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "design_lock_sha256": "e58da60b4183ec5951f464974a2244a1c7c4b9a52ca8564cf1a39bc897ad1eed",
+  "approval_reference": "Independent design-owner visual atom approval before implementation",
+  "ownership": {
+    "canvas": "component",
+    "primary": "component"
+  },
+  "atoms": [
+    {
+      "rule_id": "canvas-color",
+      "aspect": "rendered_canvas",
+      "method": "native_pixels",
+      "sampling": {
+        "region": [
+          0.01,
+          0.01,
+          0.03,
+          0.99
+        ],
+        "minimum_pixels": 12,
+        "minimum_support": 0.8,
+        "channel_tolerance": 2,
+        "basis": "semantic",
+        "visibility": "visible_fragment"
+      }
+    },
+    {
+      "rule_id": "primary-color",
+      "aspect": "rendered_fill",
+      "method": "native_pixels",
+      "sampling": {
+        "region": [
+          0.025,
+          0.35,
+          0.06,
+          0.65
+        ],
+        "minimum_pixels": 12,
+        "minimum_support": 0.8,
+        "channel_tolerance": 2,
+        "basis": "control",
+        "visibility": "fully_visible"
+      }
+    },
+    {
+      "rule_id": "content-complete",
+      "aspect": "content_presence",
+      "method": "visual",
+      "question": {
+        "source": "reference",
+        "pointer": "/questions/content"
+      }
+    },
+    {
+      "rule_id": "text-wrap",
+      "aspect": "wrapping",
+      "method": "visual",
+      "question": {
+        "source": "reference",
+        "pointer": "/questions/wrapping"
+      }
+    },
+    {
+      "rule_id": "content-overlap",
+      "aspect": "overlap",
+      "method": "visual",
+      "question": {
+        "source": "reference",
+        "pointer": "/questions/overlap"
+      }
+    }
+  ]
+}

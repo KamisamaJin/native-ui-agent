@@ -1,0 +1,614 @@
+{
+  "initial": {
+    "sessionID": "afternoon-pause",
+    "title": "Make room for a listening break",
+    "introduction": "Choose one soundscape for a short pause. You can change your choice before you begin.",
+    "options": [
+      {
+        "id": "rain",
+        "title": "Rain on the conservatory roof",
+        "detail": "A gentle, even texture for a quiet five-minute pause.",
+        "isAvailable": true
+      },
+      {
+        "id": "garden",
+        "title": "Morning in the community garden",
+        "detail": "Bird calls and distant leaves with occasional moments of silence.",
+        "isAvailable": true
+      },
+      {
+        "id": "harbor",
+        "title": "Harbor bells",
+        "detail": "This soundscape is being refreshed and is currently unavailable.",
+        "isAvailable": false
+      }
+    ],
+    "quietNote": "Find a comfortable volume and a place where you can pause safely. You can stop whenever you wish.",
+    "footer": "Your choice stays on this device for this session. Starting here does not play audio automatically."
+  },
+  "updates": [
+    {
+      "sessionID": "afternoon-pause",
+      "title": "A fresh collection for your next pause",
+      "introduction": "The library has refreshed these listening notes. Please choose again for this updated session.",
+      "options": [
+        {
+          "id": "rain",
+          "title": "Rain beneath the glass canopy",
+          "detail": "Soft rainfall, recorded from the sheltered side of the conservatory.",
+          "isAvailable": true
+        },
+        {
+          "id": "garden",
+          "title": "Evening garden after the volunteers leave",
+          "detail": "A slower mix of rustling leaves and the last birds of the day.",
+          "isAvailable": true
+        },
+        {
+          "id": "harbor",
+          "title": "Harbor bells \u2014 still unavailable",
+          "detail": "The recording team is preparing a new version.",
+          "isAvailable": false
+        }
+      ],
+      "quietNote": "Check your volume again before beginning. Leave room to hear the people and sounds around you.",
+      "footer": "These updated descriptions replace the previous collection; make a new choice when you are ready."
+    }
+  ],
+  "width": 390,
+  "viewportHeight": 600,
+  "theme": "light",
+  "dynamic_type": "large",
+  "fontScale": 1.0,
+  "direction": "ltr",
+  "canvas_color": "#F2F6F4",
+  "max_scrolls": 32,
+  "state_capture": true,
+  "required_identifiers": [
+    "listening.title",
+    "listening.introduction",
+    "listening.option.rain",
+    "listening.option.garden",
+    "listening.option.harbor",
+    "listening.note",
+    "listening.acknowledge",
+    "listening.status",
+    "listening.primary",
+    "listening.cancel",
+    "listening.footer"
+  ],
+  "observation_strategy": "coalesced",
+  "execution_states": [
+    {
+      "state_id": "ready",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "listening.title"
+        },
+        {
+          "identifier": "listening.introduction"
+        },
+        {
+          "identifier": "listening.note"
+        },
+        {
+          "identifier": "listening.footer"
+        },
+        {
+          "identifier": "listening.status"
+        },
+        {
+          "identifier": "listening.primary",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.rain",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.garden",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.harbor",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.acknowledge",
+          "role": "switch"
+        },
+        {
+          "identifier": "listening.cancel",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.canvas"
+        }
+      ],
+      "absence_targets": [
+        {
+          "identifier": "listening.error"
+        },
+        {
+          "identifier": "listening.summary"
+        }
+      ]
+    },
+    {
+      "state_id": "validation",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "listening.title"
+        },
+        {
+          "identifier": "listening.introduction"
+        },
+        {
+          "identifier": "listening.note"
+        },
+        {
+          "identifier": "listening.footer"
+        },
+        {
+          "identifier": "listening.status"
+        },
+        {
+          "identifier": "listening.primary",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.rain",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.garden",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.harbor",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.acknowledge",
+          "role": "switch"
+        },
+        {
+          "identifier": "listening.cancel",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.error"
+        },
+        {
+          "identifier": "listening.canvas"
+        }
+      ],
+      "absence_targets": [
+        {
+          "identifier": "listening.summary"
+        }
+      ]
+    },
+    {
+      "state_id": "started",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "listening.title"
+        },
+        {
+          "identifier": "listening.introduction"
+        },
+        {
+          "identifier": "listening.note"
+        },
+        {
+          "identifier": "listening.footer"
+        },
+        {
+          "identifier": "listening.status"
+        },
+        {
+          "identifier": "listening.primary",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.rain",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.garden",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.harbor",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.acknowledge",
+          "role": "switch"
+        },
+        {
+          "identifier": "listening.cancel",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.summary"
+        },
+        {
+          "identifier": "listening.canvas"
+        }
+      ],
+      "absence_targets": [
+        {
+          "identifier": "listening.error"
+        }
+      ]
+    },
+    {
+      "state_id": "renewed",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "listening.title"
+        },
+        {
+          "identifier": "listening.introduction"
+        },
+        {
+          "identifier": "listening.note"
+        },
+        {
+          "identifier": "listening.footer"
+        },
+        {
+          "identifier": "listening.status"
+        },
+        {
+          "identifier": "listening.primary",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.rain",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.garden",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.harbor",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.acknowledge",
+          "role": "switch"
+        },
+        {
+          "identifier": "listening.cancel",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.canvas"
+        }
+      ],
+      "absence_targets": [
+        {
+          "identifier": "listening.error"
+        },
+        {
+          "identifier": "listening.summary"
+        }
+      ]
+    },
+    {
+      "state_id": "canceled",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "listening.title"
+        },
+        {
+          "identifier": "listening.introduction"
+        },
+        {
+          "identifier": "listening.note"
+        },
+        {
+          "identifier": "listening.footer"
+        },
+        {
+          "identifier": "listening.status"
+        },
+        {
+          "identifier": "listening.primary",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.rain",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.garden",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.harbor",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.acknowledge",
+          "role": "switch"
+        },
+        {
+          "identifier": "listening.cancel",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.canvas"
+        }
+      ],
+      "absence_targets": [
+        {
+          "identifier": "listening.error"
+        },
+        {
+          "identifier": "listening.summary"
+        }
+      ]
+    },
+    {
+      "state_id": "replaced",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "identifier": "listening.title"
+        },
+        {
+          "identifier": "listening.introduction"
+        },
+        {
+          "identifier": "listening.note"
+        },
+        {
+          "identifier": "listening.footer"
+        },
+        {
+          "identifier": "listening.status"
+        },
+        {
+          "identifier": "listening.primary",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.rain",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.garden",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.option.harbor",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.acknowledge",
+          "role": "switch"
+        },
+        {
+          "identifier": "listening.cancel",
+          "role": "button"
+        },
+        {
+          "identifier": "listening.canvas"
+        }
+      ],
+      "absence_targets": [
+        {
+          "identifier": "listening.error"
+        },
+        {
+          "identifier": "listening.summary"
+        }
+      ]
+    }
+  ],
+  "execution_state_definitions": [
+    {
+      "id": "ready",
+      "after_action": 0,
+      "input_index": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "validation",
+      "after_action": 1,
+      "input_index": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "started",
+      "after_action": 4,
+      "input_index": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "renewed",
+      "after_action": 5,
+      "input_index": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "canceled",
+      "after_action": 8,
+      "input_index": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "replaced",
+      "after_action": 11,
+      "input_index": 1,
+      "coverage": "full_content"
+    }
+  ],
+  "execution_scope": "full",
+  "observation_targets": [
+    {
+      "identifier": "listening.title"
+    },
+    {
+      "identifier": "listening.introduction"
+    },
+    {
+      "identifier": "listening.note"
+    },
+    {
+      "identifier": "listening.footer"
+    },
+    {
+      "identifier": "listening.status"
+    },
+    {
+      "identifier": "listening.primary",
+      "role": "button"
+    },
+    {
+      "identifier": "listening.option.rain",
+      "role": "button"
+    },
+    {
+      "identifier": "listening.option.garden",
+      "role": "button"
+    },
+    {
+      "identifier": "listening.option.harbor",
+      "role": "button"
+    },
+    {
+      "identifier": "listening.acknowledge",
+      "role": "switch"
+    },
+    {
+      "identifier": "listening.cancel",
+      "role": "button"
+    },
+    {
+      "identifier": "listening.canvas"
+    },
+    {
+      "identifier": "listening.error"
+    },
+    {
+      "identifier": "listening.summary"
+    }
+  ],
+  "actions": [
+    {
+      "type": "checkpoint",
+      "state_id": "ready",
+      "capture_scope": "full_content"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "listening.primary",
+        "role": "button"
+      },
+      "reveal": true,
+      "state_id": "validation",
+      "capture_scope": "full_content"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "listening.option.rain",
+        "role": "button"
+      },
+      "reveal": true,
+      "capture_scope": "targets"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "listening.acknowledge",
+        "role": "switch"
+      },
+      "reveal": true,
+      "capture_scope": "targets"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "listening.primary",
+        "role": "button"
+      },
+      "reveal": true,
+      "state_id": "started",
+      "capture_scope": "full_content"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "listening.primary",
+        "role": "button"
+      },
+      "reveal": true,
+      "state_id": "renewed",
+      "capture_scope": "full_content"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "listening.option.garden",
+        "role": "button"
+      },
+      "reveal": true,
+      "capture_scope": "targets"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "listening.acknowledge",
+        "role": "switch"
+      },
+      "reveal": true,
+      "capture_scope": "targets"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "listening.cancel",
+        "role": "button"
+      },
+      "reveal": true,
+      "state_id": "canceled",
+      "capture_scope": "full_content"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "listening.option.rain",
+        "role": "button"
+      },
+      "reveal": true,
+      "capture_scope": "targets"
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "listening.acknowledge",
+        "role": "switch"
+      },
+      "reveal": true,
+      "capture_scope": "targets"
+    },
+    {
+      "type": "apply_next_fixture",
+      "state_id": "replaced",
+      "capture_scope": "full_content"
+    }
+  ]
+}

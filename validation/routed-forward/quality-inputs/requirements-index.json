@@ -1,0 +1,819 @@
+{
+  "version": 1,
+  "native": {
+    "public": {
+      "ios": [
+        "O-copy",
+        "O-semantics",
+        "O-initial",
+        "O-success",
+        "O-started-controls",
+        "O-renew",
+        "O-rendered-colors",
+        "O-control-size",
+        "O-long-content",
+        "O-visual-integrity",
+        "O-route-behavior",
+        "O-vertical-order",
+        "O-replacement-exclusion",
+        "O-native-state"
+      ],
+      "android": [
+        "O-copy",
+        "O-semantics",
+        "O-initial",
+        "O-success",
+        "O-started-controls",
+        "O-renew",
+        "O-rendered-colors",
+        "O-control-size",
+        "O-long-content",
+        "O-visual-integrity",
+        "O-route-behavior",
+        "O-vertical-order",
+        "O-replacement-exclusion",
+        "O-native-state"
+      ]
+    },
+    "private": {
+      "ios": [
+        "O-copy",
+        "O-semantics",
+        "O-initial",
+        "O-success",
+        "O-started-controls",
+        "O-renew",
+        "O-rendered-colors",
+        "O-control-size",
+        "O-long-content",
+        "O-visual-integrity",
+        "O-route-behavior",
+        "O-vertical-order",
+        "O-replacement-exclusion",
+        "O-native-state"
+      ],
+      "android": [
+        "O-copy",
+        "O-semantics",
+        "O-initial",
+        "O-success",
+        "O-started-controls",
+        "O-renew",
+        "O-rendered-colors",
+        "O-control-size",
+        "O-long-content",
+        "O-visual-integrity",
+        "O-route-behavior",
+        "O-vertical-order",
+        "O-replacement-exclusion",
+        "O-native-state"
+      ]
+    }
+  },
+  "source_items": [
+    {
+      "id": "A-file-scope",
+      "clause": "The two approved newly added files only declare ListeningBreakPanel, its public value models and necessary private helpers; they contain no unrelated declarations or global side effects. File locations: {\"android\": [\"app/src/main/java/com/example/reply/ui/components/ListeningBreakPanel.kt\"], \"ios\": [\"Sources/AlertToast/ListeningBreakPanel.swift\"]}. This source proposition makes no claim about unlisted upstream files.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/file_addition"
+      }
+    },
+    {
+      "id": "A-api",
+      "clause": "Expose the exact public, value-equatable data models and callable signatures in api-contract.json; the iOS component is a SwiftUI View available on iOS 14 and Android is a Compose @Composable in com.example.reply.ui.components.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/api"
+      }
+    },
+    {
+      "id": "A-input-domain",
+      "clause": "Accept valid caller inputs with a nonempty sessionID, at least one available option, unique ASCII option IDs matching [A-Za-z0-9_-]+, nonempty copy, and caller-preserved option order; the component owns no audio engine or network operation.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/input_domain"
+      }
+    },
+    {
+      "id": "A-identifiers",
+      "clause": "Expose stable identifiers listening.canvas, listening.title, listening.introduction, listening.note, listening.acknowledge, listening.status, listening.primary, listening.cancel, listening.footer, listening.error and listening.summary; each option control uses listening.option.<id>.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/identifiers"
+      }
+    },
+    {
+      "id": "A-selection",
+      "clause": "Selecting an available option exclusively selects its ID; selecting it again preserves that selection, changing to another available option replaces it, and unavailable options remain disabled and never selectable.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/selection"
+      }
+    },
+    {
+      "id": "A-validation",
+      "clause": "While editing, a successful Start listening activation validates both an available selected option and acknowledgement on; unmet conditions leave editing active and show the applicable exact error text defined in api-contract.json without emitting onStart or onCancel.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/validation"
+      }
+    },
+    {
+      "id": "A-cancel",
+      "clause": "Cancel remains enabled in every state; each activation invokes onCancel(current sessionID) once and returns to initial editing for that same input, including repeated Cancel activations with no choices.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/cancel"
+      }
+    },
+    {
+      "id": "A-edit-error",
+      "clause": "Changing either editing choice clears the visible validation error; turning acknowledgement off is allowed while editing and does not clear the selected option.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/edit_error"
+      }
+    },
+    {
+      "id": "A-replacement",
+      "clause": "Any unequal full input replacement resets selection, acknowledgement, validation and started state before the replacement is rendered, even when sessionID and option IDs are unchanged; rendering an equal input preserves local state and neither case emits callbacks.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/replacement"
+      }
+    },
+    {
+      "id": "A-bridge-boundary",
+      "clause": "Keep the component identity and business logic in production: the supplied bridges adapt fixture values and real callback arguments only, and neither bridge may force identity changes, supply local product state, or synthesize callback outcomes.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/bridge_boundary"
+      }
+    },
+    {
+      "id": "A-colors",
+      "clause": "Use exact opaque sRGB colors from reference.json: canvas behind the column and Cancel; option/selectedOption/unavailableOption on option surfaces; primary and primaryInk on the primary button; title on the heading; body on introduction, note, available option titles, acknowledgement, status, summary and Cancel text; muted on option details, unavailable option titles and footer; error on error text; border on every option outline; use no shadows, gradients or translucency.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/colors"
+      }
+    },
+    {
+      "id": "A-spacing",
+      "clause": "Use a single column filling its parent content width (the observer offers total width minus its own 32-unit horizontal inset), with 20 native units of internal canvas padding, 12 units between major blocks and options, 12-unit circular option and action corner radii, 16-unit option/action horizontal padding and 12-unit vertical padding, and a 1-unit option border; each title/detail option pair has a 4-unit internal gap and actions fill the available column width. Keep primary label ink and any content strictly inside its horizontal content inset, leaving both 16-unit side padding bands as plain fill with no border, icons or decorations.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/spacing"
+      }
+    },
+    {
+      "id": "A-type",
+      "clause": "Use platform-scaled system text at the base sizes and weights in reference.json: title 24 semibold, introduction/note/option title 16 regular except option title semibold, option detail/footer 14 regular, status/error/summary 16 regular, and action text 16 semibold.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/typography"
+      }
+    },
+    {
+      "id": "A-evidence-boundary",
+      "clause": "Keep source font and padding review separate from native rectangle and text facts: AX bounds do not establish computed font, padding, color or physical hit regions.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/evidence"
+      }
+    },
+    {
+      "id": "A-callback-evidence",
+      "clause": "The six route checkpoints and all assertions are fixed before implementation; callback verdicts require demonstrated successful dispatch to exactly one enabled native control in one input epoch, or demonstrated same-process caller replacement for caller_update, before comparing the exact callback interval.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/callback_evidence"
+      }
+    },
+    {
+      "id": "A-callback-boundaries",
+      "clause": "Only valid Start listening and Cancel activations invoke the supplied callbacks; selection changes, acknowledgement changes, validation failures, Choose again, recomposition and caller replacements invoke neither callback, and each actual action uses the callbacks supplied by the current caller.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/callback_boundaries"
+      }
+    },
+    {
+      "id": "A-leading",
+      "clause": "Use leading content alignment for heading, introduction, every option title/detail, quietNote, acknowledgement label, status, conditional error/summary, primary and Cancel labels, and footer; place the acknowledgement switch at the trailing edge of its row. Inspect alignment/modifier arguments in production; the wrapping atom does not establish this.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/leading"
+      }
+    },
+    {
+      "id": "A-start-transition",
+      "clause": "Within the valid native Start activation handler, assign the local started state before invoking current onStart exactly once with current sessionID and selected optionID, with no scheduled timer, task or dispatch between validation, assignment and callback. Review source control flow only; no claim of synchronous pixel rendering is made.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/start_transition"
+      }
+    },
+    {
+      "id": "A-primary-fill-boundary",
+      "clause": "The visual painted primary circular-corner rounded rectangle and native accessible control rectangle share their boundary; its horizontal 16-native-unit padding bands contain only opaque primary fill with no border, text ink, icon or decoration. Corners use circular radius 12 native units. The label drawing is confined to its inner content area. Source evidence verifies this composition/padding fact; AX geometry alone does not.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/primary_fill_boundary"
+      }
+    },
+    {
+      "id": "A-color-canvas",
+      "clause": "Use the canvas color role exactly as specified in R17.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/colors/canvas"
+      }
+    },
+    {
+      "id": "A-color-option",
+      "clause": "Use the option color role exactly as specified in R17.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/colors/option"
+      }
+    },
+    {
+      "id": "A-color-selectedOption",
+      "clause": "Use the selectedOption color role exactly as specified in R17.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/colors/selectedOption"
+      }
+    },
+    {
+      "id": "A-color-unavailableOption",
+      "clause": "Use the unavailableOption color role exactly as specified in R17.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/colors/unavailableOption"
+      }
+    },
+    {
+      "id": "A-color-primary",
+      "clause": "Use the primary color role exactly as specified in R17.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/colors/primary"
+      }
+    },
+    {
+      "id": "A-color-primaryInk",
+      "clause": "Use the primaryInk color role exactly as specified in R17.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/colors/primaryInk"
+      }
+    },
+    {
+      "id": "A-color-title",
+      "clause": "Use the title color role exactly as specified in R17.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/colors/title"
+      }
+    },
+    {
+      "id": "A-color-body",
+      "clause": "Use the body color role exactly as specified in R17.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/colors/body"
+      }
+    },
+    {
+      "id": "A-color-muted",
+      "clause": "Use the muted color role exactly as specified in R17.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/colors/muted"
+      }
+    },
+    {
+      "id": "A-color-error",
+      "clause": "Use the error color role exactly as specified in R17.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/colors/error"
+      }
+    },
+    {
+      "id": "A-color-border",
+      "clause": "Use the border color role exactly as specified in R17.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/colors/border"
+      }
+    },
+    {
+      "id": "A-space-canvasPadding-ios",
+      "clause": "Use canvasPadding in ios at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "ios"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/canvasPadding/ios"
+      }
+    },
+    {
+      "id": "A-space-canvasPadding-android",
+      "clause": "Use canvasPadding in android at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/canvasPadding/android"
+      }
+    },
+    {
+      "id": "A-space-blockGap-ios",
+      "clause": "Use blockGap in ios at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "ios"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/blockGap/ios"
+      }
+    },
+    {
+      "id": "A-space-blockGap-android",
+      "clause": "Use blockGap in android at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/blockGap/android"
+      }
+    },
+    {
+      "id": "A-space-optionTextGap-ios",
+      "clause": "Use optionTextGap in ios at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "ios"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/optionTextGap/ios"
+      }
+    },
+    {
+      "id": "A-space-optionTextGap-android",
+      "clause": "Use optionTextGap in android at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/optionTextGap/android"
+      }
+    },
+    {
+      "id": "A-space-cornerRadius-ios",
+      "clause": "Use cornerRadius in ios at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "ios"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/cornerRadius/ios"
+      }
+    },
+    {
+      "id": "A-space-cornerRadius-android",
+      "clause": "Use cornerRadius in android at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/cornerRadius/android"
+      }
+    },
+    {
+      "id": "A-space-horizontalPadding-ios",
+      "clause": "Use horizontalPadding in ios at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "ios"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/horizontalPadding/ios"
+      }
+    },
+    {
+      "id": "A-space-horizontalPadding-android",
+      "clause": "Use horizontalPadding in android at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/horizontalPadding/android"
+      }
+    },
+    {
+      "id": "A-space-verticalPadding-ios",
+      "clause": "Use verticalPadding in ios at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "ios"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/verticalPadding/ios"
+      }
+    },
+    {
+      "id": "A-space-verticalPadding-android",
+      "clause": "Use verticalPadding in android at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/verticalPadding/android"
+      }
+    },
+    {
+      "id": "A-space-borderWidth-ios",
+      "clause": "Use borderWidth in ios at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "ios"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/borderWidth/ios"
+      }
+    },
+    {
+      "id": "A-space-borderWidth-android",
+      "clause": "Use borderWidth in android at the source value and placement defined in R19.",
+      "priority": "must",
+      "platforms": [
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/borderWidth/android"
+      }
+    },
+    {
+      "id": "A-font-title-ios",
+      "clause": "Use scaled system title text at the base size defined in R20 on ios.",
+      "priority": "must",
+      "platforms": [
+        "ios"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/title/ios"
+      }
+    },
+    {
+      "id": "A-font-title-android",
+      "clause": "Use scaled system title text at the base size defined in R20 on android.",
+      "priority": "must",
+      "platforms": [
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/title/android"
+      }
+    },
+    {
+      "id": "A-weight-title",
+      "clause": "Use title text at the system weight defined in R20.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/title/weight"
+      }
+    },
+    {
+      "id": "A-font-body-ios",
+      "clause": "Use scaled system body text at the base size defined in R20 on ios.",
+      "priority": "must",
+      "platforms": [
+        "ios"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/body/ios"
+      }
+    },
+    {
+      "id": "A-font-body-android",
+      "clause": "Use scaled system body text at the base size defined in R20 on android.",
+      "priority": "must",
+      "platforms": [
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/body/android"
+      }
+    },
+    {
+      "id": "A-weight-body",
+      "clause": "Use body text at the system weight defined in R20.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/body/weight"
+      }
+    },
+    {
+      "id": "A-font-optionTitle-ios",
+      "clause": "Use scaled system optionTitle text at the base size defined in R20 on ios.",
+      "priority": "must",
+      "platforms": [
+        "ios"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/optionTitle/ios"
+      }
+    },
+    {
+      "id": "A-font-optionTitle-android",
+      "clause": "Use scaled system optionTitle text at the base size defined in R20 on android.",
+      "priority": "must",
+      "platforms": [
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/optionTitle/android"
+      }
+    },
+    {
+      "id": "A-weight-optionTitle",
+      "clause": "Use optionTitle text at the system weight defined in R20.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/optionTitle/weight"
+      }
+    },
+    {
+      "id": "A-font-detail-ios",
+      "clause": "Use scaled system detail text at the base size defined in R20 on ios.",
+      "priority": "must",
+      "platforms": [
+        "ios"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/detail/ios"
+      }
+    },
+    {
+      "id": "A-font-detail-android",
+      "clause": "Use scaled system detail text at the base size defined in R20 on android.",
+      "priority": "must",
+      "platforms": [
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/detail/android"
+      }
+    },
+    {
+      "id": "A-weight-detail",
+      "clause": "Use detail text at the system weight defined in R20.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/detail/weight"
+      }
+    },
+    {
+      "id": "A-font-action-ios",
+      "clause": "Use scaled system action text at the base size defined in R20 on ios.",
+      "priority": "must",
+      "platforms": [
+        "ios"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/action/ios"
+      }
+    },
+    {
+      "id": "A-font-action-android",
+      "clause": "Use scaled system action text at the base size defined in R20 on android.",
+      "priority": "must",
+      "platforms": [
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/action/android"
+      }
+    },
+    {
+      "id": "A-weight-action",
+      "clause": "Use action text at the system weight defined in R20.",
+      "priority": "must",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/typography/action/weight"
+      }
+    }
+  ],
+  "scope": "Use scope:platform:obligation_id and source:item_id; inspect complete original prose and explicit source-review ledger too."
+}

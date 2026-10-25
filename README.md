@@ -4,6 +4,37 @@
 
 这个仓库包含可加载的 **Skill**、确定性的 **证据 runner**，以及两个真实开源工程的接入代码和实跑记录。模型由宿主 coding agent 提供；runner 不内置 LLM，也不假装提供通用完整的原生样式树。
 
+## 本轮 v11：审查结果进入派发，受控提速成立，完整交付优势仍未证实
+
+`ui_loop.py native` 自动读取按原始 capture 注册的审查实际值，校验源码/输入/动作状态/图像身份后再规划。`review_images`、`repair_source`、`review_measurement` 与实际 `acquire_native` 分开；源码未变时的非采集工作不启动 SDK。定向审查关闭后自动补齐全量，最终新图可以直接绑定原包完成门控。审查注册、冲突修订与重复空转限制都由脚本执行。
+
+- 封存后同代码、同 28 个必评项的 AB/BA：旧反馈 8.85/10.85 秒，新反馈 0.079/0.076 秒，平均服务耗时降低 **99.2%**；两组仍完成新鲜完整最终采集和原图审查。这是条件明确的服务提速，不是整个 PR 的提速。
+- 全新 ListeningBreakPanel 自然初版原字节复制给两组，没有缺陷注入；先独立设计/批准，再写一次代码，所有最终源/自验关闭后隐藏评估、匿名双评和原因匹配，最后揭盲。
+- 两组都发现并修复相同 **2 个 iOS 可访问性/可测性原因**，确认残留/回归均为 0；没有确认业务逻辑或视觉样式缺陷分母来证明这两类质量优势。
+- 最终每组 **883P/0F/13U** native/image，source 两场景 **112P/0F/6U**；完整成功交付均 0/1，成功交付成本 **N/A**。v10/v11 实际作者派发至自验绑定墙钟约 **41.76/41.84 分**。新版用了两轮诊断，基线一轮，不能把小中性组件收益外推。
+- AX 校准不改原始判定、预期或容差；普通外部 AX 缺少原生 reference 时超出探针范围。零残差探针不提供 SwiftUI 通用精度担保。144 项工具测试通过，独立合成重放 9/10，原始差异/失败保留。
+
+[完整报告与瓶颈](validation/routed-forward/RESULTS.md) · [对比表](validation/routed-forward/TABLES.md) · [受控速度证据](validation/routed-forward/benchmark-results.json) · [原图](validation/routed-forward/GALLERY.md) · [复现与限制](validation/routed-forward/REPRODUCE.md) · [失败记录](validation/routed-forward/failure-index.json)
+
+```mermaid
+flowchart LR
+    A[原始采集与源码身份] --> B[自动导入绑定的审查结果]
+    B --> C[路由 诊断 复验规划]
+    C --> D[待看图]
+    D --> E[实际值绑定并注册]
+    E --> B
+    C --> F[修源码或测量争议]
+    F --> C
+    C --> G[必要原生采集]
+    G --> A
+    G --> H[新鲜全量最终包]
+    H --> I[绑定新图并完成原生计划门控]
+```
+
+模型由宿主 agent 提供，集成端消费工作队列；runner 不内置 LLM。配置有视觉规则时必须提供独立 `review_store`。使用 [默认执行服务](native-ui-agent/references/default-feedback.md) 的 `native`、`bind-native-review`、`finish-native-review`；CLI 返回 0 也可能只是成功派发，只有结果状态才能说明当前门控。`accepted` 限于配置内原生计划；项目还需联合 source/integration 等必需门控，未知不能省略。
+
+下面保留上一轮结果；v10 的原始 manifest/数据未改写，由独立历史源码视图重放。
+
 ## 本轮 v10：默认执行链路已接通，盲测未体现质量或成功交付成本优势
 
 `ui_loop.py native` 现在自动执行需求路由、F/U 定位诊断、实际源码变更测量、复验规划和统一采集/门控。交接诊断、每次反馈和完整最终检查都有必需 trace；调用方不能手选状态绕过默认规划。四类通用失败先在独立中性状态机复现并修复，原始失败保留，139 项工具测试通过。工具/指标先冻结，再独立设计全新组件并修订源码前发现的契约遗漏。

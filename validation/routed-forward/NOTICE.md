@@ -1,0 +1,5 @@
+# Licensing and evidence scope
+
+Original v11 work dispatch, review registry, empirical AX diagnostics, neutral probes/designs, study harness, new business component additions and reports are covered by the repository MIT LICENSE. Upstream AlertToast and Reply retain their MIT and Apache-2.0 terms; each production capsule and anonymous delivery preserves their license texts and source headers. See repository THIRD_PARTY_NOTICES.md.
+
+Screenshots, compiler/native logs and observations document local integrations. They do not relicense Apple/Android SDKs, fonts, system assets or dependencies, or imply endorsement. SDK/runtime images, signing material, build caches and full upstream checkouts remain ignored. Portable records preserve exact original input/source/image identities; build product hashes describe the execution, not a promise to publish SDK caches. Source-only style declarations and minimum-target module/caller typechecking do not establish computed runtime style or old-OS linking/runtime support.

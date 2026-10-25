@@ -1,0 +1,180 @@
+{
+  "version": 3,
+  "reviewedAtUTC": "2026-10-25T06:32:08.439605Z",
+  "reviewer": "r11_design_review",
+  "role": "Independent design semantics/acceptance reviewer; neither product implementer nor tool author",
+  "decision": "approve",
+  "approval_granted": true,
+  "approval_scope": "Independent preimplementation design semantics and acceptance coverage only; no runtime correctness, implementation quality or integration receipts are approved.",
+  "input_identity": {
+    "design_seal_sha256": "030df09dc0088666de2ec66f143b4cf41c36febcd9c32a91a4f54358fb53a837",
+    "manifest_sha256": "50fbbee5e2e905b03fa97fd97469ec6ef5604c96bfd60cecb26b3e94d2b816a4",
+    "sealedAtUTC": "2026-10-25T06:29:51Z",
+    "sealed_file_count": 66,
+    "hashes_verified": true,
+    "public_design_lock_sha256": "ea53179e689ff8c645662865f444ca983cfa12e61f3bcc417f45453a9330b492"
+  },
+  "comparison_base": {
+    "path": "validation/routed-forward/design-v2/SEAL.json",
+    "sha256": "de3b909e4f8c0c4ba396ae07a7cd4ff4a549978b916719851bc43f6e02e65552",
+    "manifest_sha256": "f81829b146792a3af955de7f068eefe4c32ba225ad8608255f3694e42197839f",
+    "hashes_verified": true
+  },
+  "previous_failed_reviews": [
+    {
+      "path": "validation/routed-forward/design-review",
+      "seal_sha256": "beba13f2777998df079f5f6acfcb2c985a6b5bb43e1d36c2f9a49df50be0aa75",
+      "files_unchanged": true
+    },
+    {
+      "path": "validation/routed-forward/design-review-v2",
+      "seal_sha256": "d89a88a79f28e1f5cbd4257bea026124b75d30bb0410a1896813ff54a00c3bf5",
+      "files_unchanged": true
+    }
+  ],
+  "v1_original_design_seal_identity_preserved": true,
+  "finding_disposition": [
+    {
+      "id": "V2-01",
+      "status": "resolved",
+      "confidence": "high",
+      "basis": "R26, typed question, independent O-replacement-exclusion and ledger evidence_parts consistently match complete logical field/independent old-copy instances, by named field and option ID. They explicitly exclude arbitrary substrings, wrapped lines and native node fragments. Legitimate replacement fields sharing an old substring or another field value are allowed; separately retained superseded old-field copies remain stale. Equal corresponding values are exempt. New-copy presence remains a separate atom.",
+      "evidence": [
+        {
+          "path": "validation/routed-forward/design/revision-response.json",
+          "sha256": "243366f63948e835e9bfcd2ba2c7ffd2b3b1c6b3c4fc3e584863f3124bafe2a7",
+          "pointer": "/findings/0"
+        },
+        {
+          "path": "validation/routed-forward/design/public/requirements.md",
+          "sha256": "6d9a2935951591867b42f49636584e8010bf2f6865c088789c98de90a2011845",
+          "line": 53
+        },
+        {
+          "path": "validation/routed-forward/design/public/reference.json",
+          "sha256": "b5e399afa71e914ef33a2319ceebace3db98a71662eb3d261e3dd8f5bc083012",
+          "pointer": "/questions/replacement_exclusion",
+          "line": 269
+        },
+        {
+          "path": "validation/routed-forward/design/public/reference.json",
+          "sha256": "b5e399afa71e914ef33a2319ceebace3db98a71662eb3d261e3dd8f5bc083012",
+          "pointer": "/source/route_behavior"
+        },
+        {
+          "path": "validation/routed-forward/design/public/reference.json",
+          "sha256": "b5e399afa71e914ef33a2319ceebace3db98a71662eb3d261e3dd8f5bc083012",
+          "pointer": "/obligations/12"
+        },
+        {
+          "path": "validation/routed-forward/design/public/source-review-ledger.json",
+          "sha256": "8a4af6793f1f8548ce2623a08a45a9d0d79600d6f8243a99e2ecb359bf111dc8",
+          "pointer": "/clauses/25/evidence_parts"
+        },
+        {
+          "path": "validation/routed-forward/design/public/policy.json",
+          "sha256": "04a7078a4b795be628c052d935a92600e16061cc3fc4b742cad8d23b7f5b1d69",
+          "pointer": "/atoms/4"
+        },
+        {
+          "path": "validation/routed-forward/design/public/routes.json",
+          "sha256": "40bdde0d7dbe2749f6653383c219cf1bca82d1473c26a9b5010095a15b32cec9",
+          "pointer": "/routes/O-replacement-exclusion"
+        }
+      ]
+    }
+  ],
+  "findings": [],
+  "matching_semantics_review": {
+    "status": "consistent",
+    "unit": "complete logical field / independently retained old-copy instance",
+    "field_identity": "Named top-level field; option title/detail paired by option ID",
+    "cases": [
+      {
+        "situation": "Legitimate replacement field contains a shared old substring/phrase with no independently retained old copy",
+        "design_verdict": "not stale"
+      },
+      {
+        "situation": "Separate superseded old-field instance remains, including beside a correct new field containing the same phrase",
+        "design_verdict": "stale"
+      },
+      {
+        "situation": "One logical field wraps across visual lines or native text nodes",
+        "design_verdict": "reconstruct the complete logical field; do not treat fragments as matching units"
+      },
+      {
+        "situation": "Corresponding full initial and replacement field values are identical",
+        "design_verdict": "exempt"
+      },
+      {
+        "situation": "A legitimate complete new field equals an old value from another named field",
+        "design_verdict": "not stale solely for that cross-field equality"
+      }
+    ],
+    "case_scope": "Conceptual interpretation of the sealed design, not fabricated UI actuals or injected defects."
+  },
+  "v2_preservation_checks": [
+    {
+      "scope": "public",
+      "same_input_environment_api_bridges_bindings": true,
+      "same_rules_states_actions_value_pointers": true,
+      "same_styles_source_audits_integration_methods_sampling_and_thresholds": true,
+      "same_compiled_assertion_behavioral_values": true,
+      "exclusion_question_reaches_both_native_review_catalogs": true
+    },
+    {
+      "scope": "private",
+      "same_input_environment_api_bridges_bindings": true,
+      "same_rules_states_actions_value_pointers": true,
+      "same_styles_source_audits_integration_methods_sampling_and_thresholds": true,
+      "same_compiled_assertion_behavioral_values": true,
+      "exclusion_question_reaches_both_native_review_catalogs": true
+    }
+  ],
+  "allowed_semantic_delta": {
+    "public_prose": "Only R26 changed; all other requirement lines unchanged.",
+    "reference_paths": [
+      "/questions/replacement_exclusion/value",
+      "/source/route_behavior",
+      "/obligations/10/clause",
+      "/obligations/12/clause"
+    ],
+    "ledger_paths": [
+      "/clauses/25/clause",
+      "/clauses/25/expected/pointer",
+      "/clauses/25/reason",
+      "/clauses/25/evidence_parts"
+    ],
+    "derived_identity": "Updated source digests, design locks, policy lock identity, approvals and regenerated plan/catalog provenance follow the new sealed source; operation rules and values remain unchanged."
+  },
+  "structural_verifier": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 validation/routed-forward/design/verify_design.py",
+    "status": "passed",
+    "public_and_private_each": {
+      "clauses": 27,
+      "source_audits": 59,
+      "integration_gates": 3,
+      "runtime_obligations": 14,
+      "rules": 41,
+      "assertions_per_platform": 224
+    },
+    "sdk_invoked": false
+  },
+  "boundaries": {
+    "read_assignment_files": false,
+    "read_product_implementation": false,
+    "ran_sdk": false,
+    "injected_defects": false,
+    "modified_existing_design_tools_or_product": false,
+    "relaxed_tests_thresholds_or_sampling": false,
+    "private_values_disclosed": false,
+    "new_files_only": "validation/routed-forward/design-review-v3/{review.json,REVIEW.md,SEAL.json}"
+  },
+  "remaining_execution_obligations": [
+    "Future source-only audits need original source/line evidence; declarations are not computed runtime styles.",
+    "G-initial-diff, G-final-scope and G-capture-identity require actual receipts; currently unexecuted/unverified.",
+    "Native state/action/dispatch, full-content visual atoms and original-pixel sampling need actual platform observations.",
+    "Approval here does not claim SDK compatibility or successful product behavior."
+  ],
+  "conclusion": "Approve v3 as the independent second-person preimplementation design review. V2-01 is resolved, earlier D01-D05 design dispositions remain valid, and no new design issue was found within this narrow final review."
+}

@@ -1,0 +1,49 @@
+--- initial/alerttoast/Sources/AlertToast/ListeningBreakPanel.swift
++++ current/alerttoast/Sources/AlertToast/ListeningBreakPanel.swift
+@@ -33,6 +33,7 @@
+     }
+ }
+ 
++@available(iOS 14.0, *)
+ public struct ListeningBreakPanel: View {
+     private let input: ListeningBreakInput
+     private let onStart: (String, String) -> Void
+@@ -77,6 +78,7 @@
+     }
+ }
+ 
++@available(iOS 14.0, *)
+ private struct ListeningBreakContent: View {
+     let input: ListeningBreakInput
+     let onStart: (String, String) -> Void
+@@ -165,6 +167,7 @@
+         .frame(maxWidth: .infinity, alignment: .leading)
+         .padding(20)
+         .background(ListeningBreakColors.canvas)
++        .accessibilityElement(children: .contain)
+         .accessibilityIdentifier("listening.canvas")
+     }
+ 
+@@ -206,7 +209,6 @@
+         }
+         .buttonStyle(ListeningBreakButtonStyle())
+         .disabled(started || !option.isAvailable)
+-        .accessibilityElement(children: .ignore)
+         .accessibilityLabel(Text(verbatim: option.title + " — " + option.detail))
+         .accessibilityAddTraits(selected ? .isSelected : [])
+         .accessibilityIdentifier("listening.option." + option.id)
+@@ -250,12 +252,14 @@
+     }
+ }
+ 
++@available(iOS 14.0, *)
+ private struct ListeningBreakButtonStyle: ButtonStyle {
+     func makeBody(configuration: Configuration) -> some View {
+         configuration.label
+     }
+ }
+ 
++@available(iOS 14.0, *)
+ private enum ListeningBreakColors {
+     static let canvas = Color(.sRGB, red: 242 / 255, green: 246 / 255, blue: 244 / 255, opacity: 1)
+     static let option = Color(.sRGB, red: 1, green: 1, blue: 1, opacity: 1)

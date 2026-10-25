@@ -48,7 +48,7 @@ private struct ObserverHost: View {
         ["pid": ProcessInfo.processInfo.processIdentifier, "instance": instance, "fixture_index": index,
               "input_sha256": SHA256.hash(data: Data(json(fixtures[index]).utf8)).map { String(format: "%02x", $0) }.joined(), "event_revision": events.count,
               "content_frame": ["x": contentFrame.minX, "y": contentFrame.minY, "width": contentFrame.width, "height": contentFrame.height],
-              "screen_scale": UIScreen.main.scale, "offered_width": offeredWidth, "viewport_height": 600,
+              "screen_scale": UIScreen.main.scale, "os_version": UIDevice.current.systemVersion, "device_model": UIDevice.current.model, "offered_width": offeredWidth, "viewport_height": 600,
               "viewport": ["x": viewport.minX, "y": viewport.minY, "width": viewport.width, "height": viewport.height],
               "theme": config["theme"] as? String ?? "light", "direction": config["direction"] as? String ?? "ltr",
               "dynamic_type": config["dynamic_type"] as? String ?? "large", "canvas_color": config["canvas_color"] as? String ?? "systemBackground"]

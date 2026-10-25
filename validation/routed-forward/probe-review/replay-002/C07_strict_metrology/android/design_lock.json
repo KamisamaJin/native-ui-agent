@@ -1,0 +1,247 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "sealed-neutral-probe",
+    "approval_reference": "../probe-design/seal.json",
+    "sources": [
+      {
+        "id": "reference",
+        "path": "reference.json",
+        "sha256": "b87665f1977d2a65ed780ece7527d881a94b51a75e077ed3ac60061ab809ee91"
+      }
+    ],
+    "rules": [
+      {
+        "id": "caption-label",
+        "kind": "control",
+        "target": "caption",
+        "property": "label",
+        "op": "eq"
+      },
+      {
+        "id": "sample-box",
+        "kind": "geometry",
+        "target": "sample",
+        "property": "width",
+        "op": "eq",
+        "measurement": "accessibility_box"
+      },
+      {
+        "id": "caption-clear",
+        "kind": "manual",
+        "target": "caption",
+        "property": "no_overlap",
+        "op": "eq",
+        "allowed_methods": [
+          "visual"
+        ]
+      }
+    ],
+    "required_rule_ids": [
+      "caption-label",
+      "sample-box",
+      "caption-clear"
+    ],
+    "scenarios": {
+      "paper": {
+        "states": [
+          {
+            "id": "front",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          },
+          {
+            "id": "reverse",
+            "input_index": 1,
+            "after_action": 2,
+            "coverage": "full_content",
+            "stimulus_action": 1
+          }
+        ],
+        "actions": [
+          {
+            "type": "checkpoint"
+          },
+          {
+            "type": "apply_next_fixture"
+          },
+          {
+            "type": "checkpoint"
+          }
+        ],
+        "values": {
+          "caption-label": {
+            "front": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/front"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/front"
+              }
+            },
+            "reverse": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/reverse"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/reverse"
+              }
+            }
+          },
+          "sample-box": {
+            "front": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/width/ios"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/width/android"
+              }
+            },
+            "reverse": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/width/ios"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/width/android"
+              }
+            }
+          },
+          "caption-clear": {
+            "front": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/clear"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/clear"
+              }
+            },
+            "reverse": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/clear"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/clear"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "reference": {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "b87665f1977d2a65ed780ece7527d881a94b51a75e077ed3ac60061ab809ee91",
+      "document": {
+        "labels": {
+          "front": {
+            "value": "Front",
+            "unit": "string"
+          },
+          "reverse": {
+            "value": "Reverse",
+            "unit": "string"
+          }
+        },
+        "width": {
+          "ios": {
+            "value": 66,
+            "unit": "pt"
+          },
+          "android": {
+            "value": 66,
+            "unit": "dp"
+          }
+        },
+        "clear": {
+          "value": true,
+          "unit": "bool"
+        },
+        "question": {
+          "value": "The caption is fully visible and does not overlap the sample.",
+          "unit": "string"
+        },
+        "launch": {
+          "fixtures_sha256": "bf079c221bfa9dda166a7a0a42a2c2adee3d055441911a60d5653b100569305a",
+          "bridge_sha256": "86b401c72f8addb78e81dac67880a8d504665b8de656643aed4f9d2837f1fb9e",
+          "scenario": "paper",
+          "platform": "android"
+        },
+        "obligations": [
+          {
+            "id": "front/caption-label",
+            "clause": "Paper front: caption-label.",
+            "priority": "must",
+            "states": [
+              "front"
+            ],
+            "risk": "content"
+          },
+          {
+            "id": "front/sample-box",
+            "clause": "Paper front: sample-box.",
+            "priority": "must",
+            "states": [
+              "front"
+            ],
+            "risk": "layout"
+          },
+          {
+            "id": "front/caption-clear",
+            "clause": "Paper front: caption-clear.",
+            "priority": "must",
+            "states": [
+              "front"
+            ],
+            "risk": "style"
+          },
+          {
+            "id": "reverse/caption-label",
+            "clause": "Paper reverse: caption-label.",
+            "priority": "must",
+            "states": [
+              "reverse"
+            ],
+            "risk": "content"
+          },
+          {
+            "id": "reverse/sample-box",
+            "clause": "Paper reverse: sample-box.",
+            "priority": "must",
+            "states": [
+              "reverse"
+            ],
+            "risk": "layout"
+          },
+          {
+            "id": "reverse/caption-clear",
+            "clause": "Paper reverse: caption-clear.",
+            "priority": "must",
+            "states": [
+              "reverse"
+            ],
+            "risk": "style"
+          }
+        ]
+      },
+      "raw_utf8": "{\n  \"labels\": {\n    \"front\": {\n      \"value\": \"Front\",\n      \"unit\": \"string\"\n    },\n    \"reverse\": {\n      \"value\": \"Reverse\",\n      \"unit\": \"string\"\n    }\n  },\n  \"width\": {\n    \"ios\": {\n      \"value\": 66,\n      \"unit\": \"pt\"\n    },\n    \"android\": {\n      \"value\": 66,\n      \"unit\": \"dp\"\n    }\n  },\n  \"clear\": {\n    \"value\": true,\n    \"unit\": \"bool\"\n  },\n  \"question\": {\n    \"value\": \"The caption is fully visible and does not overlap the sample.\",\n    \"unit\": \"string\"\n  },\n  \"launch\": {\n    \"fixtures_sha256\": \"bf079c221bfa9dda166a7a0a42a2c2adee3d055441911a60d5653b100569305a\",\n    \"bridge_sha256\": \"86b401c72f8addb78e81dac67880a8d504665b8de656643aed4f9d2837f1fb9e\",\n    \"scenario\": \"paper\",\n    \"platform\": \"android\"\n  },\n  \"obligations\": [\n    {\n      \"id\": \"front/caption-label\",\n      \"clause\": \"Paper front: caption-label.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"front\"\n      ],\n      \"risk\": \"content\"\n    },\n    {\n      \"id\": \"front/sample-box\",\n      \"clause\": \"Paper front: sample-box.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"front\"\n      ],\n      \"risk\": \"layout\"\n    },\n    {\n      \"id\": \"front/caption-clear\",\n      \"clause\": \"Paper front: caption-clear.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"front\"\n      ],\n      \"risk\": \"style\"\n    },\n    {\n      \"id\": \"reverse/caption-label\",\n      \"clause\": \"Paper reverse: caption-label.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"reverse\"\n      ],\n      \"risk\": \"content\"\n    },\n    {\n      \"id\": \"reverse/sample-box\",\n      \"clause\": \"Paper reverse: sample-box.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"reverse\"\n      ],\n      \"risk\": \"layout\"\n    },\n    {\n      \"id\": \"reverse/caption-clear\",\n      \"clause\": \"Paper reverse: caption-clear.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"reverse\"\n      ],\n      \"risk\": \"style\"\n    }\n  ]\n}\n"
+    }
+  },
+  "contract_sha256": "ecba434ca22eb08551a0346dcf062991afdb01e3a030da3f339d3fe4a87b7d64",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

@@ -142,3 +142,70 @@ def unresolved(coverage, parent, report, *, changed_files, source_before, source
             'reason': 'mandatory full final' if final else 'unresolved checks and approved regression closure' if not full else 'scope unavailable or no supported issue; full fallback',
             'full_final_required': True,
             'scope': 'Diagnostic scope only; approved regression edges are not a source-impact proof. Unknowns retain their status. Fresh full final capture is required.'}
+
+
+def dispatch(coverage, parent, report, routed, *, changed_files, source_before, source_after,
+             final=False, selected_states=None, visual_ids=(), capture_available=True):
+    """Route by required work, not merely by every non-passing row.
+
+    Historical bound actuals may choose repair scope. No historical result
+    establishes acceptance for edited source, and final still captures fully.
+    """
+    if design.digest(parent) != coverage['plan_sha256']: raise ValueError('Foreign dispatch plan')
+    rows = report_rows(report, parent); rules = {v['id']: v for v in parent['assertions']}
+    visual = set(visual_ids); selected = set(selected_states or [s['id'] for s in parent['states']])
+    changed = source_before != source_after
+    if changed != bool(changed_files): raise ValueError('Measured source change and file delta disagree')
+    jobs = []; seeds = set(); acquisition = set()
+    for task in routed['tasks']:
+        ids = task['assertion_ids']; action = task['action']
+        if action == 'defer_to_full_verification': kind = 'deferred_full_coverage'
+        elif action == 'repair_contract_route': kind = 'repair_contract'
+        elif action in {'clarify_oracle', 'validate_execution_scope'}: kind = 'resolve_oracle_or_scope'
+        elif action == 'repair_environment': kind = 'repair_environment'
+        elif action == 'acquire_evidence': kind = 'acquire_native'; acquisition.update(ids)
+        elif action == 'review_calibrated_measurement': kind = 'review_measurement'
+        elif any(key in visual and rows[key]['status'] == 'unassessed' for key in ids): kind = 'review_images'
+        elif any(key in visual and rows[key]['status'] == 'failed' for key in ids): kind = 'repair_source'
+        elif action in {'diagnose_product', 'investigate_attribution'}: kind = 'repair_source'
+        else: kind = 'diagnose_capability_or_locator'
+        if kind in {'repair_source', 'diagnose_capability_or_locator', 'review_measurement', 'acquire_native'}: seeds.update(ids)
+        jobs.append(dict(task, kind=kind, source_basis='historical' if changed else 'current',
+                         needs_new_capture=kind == 'acquire_native'))
+    all_states = [v['id'] for v in parent['states']]
+    owners={o['id']for o in coverage['obligations']if set(o['assertion_ids'])&seeds}
+    while True:
+        expanded=owners|{v for o in coverage['obligations']if o['id']in owners for v in o['route']['regression_obligations']}
+        if expanded==owners:break
+        owners=expanded
+    impact_states=[v for v in all_states if any(o['id']in owners and v in o['states']for o in coverage['obligations'])]
+    repair_states=[v for v in all_states if any(j['kind']=='repair_source'and j.get('state')==v for j in jobs)]
+    states = []
+    if final or not capture_available: states = all_states
+    elif changed:
+        # A repaired visual finding also needs a new image; an unresolved old
+        # visual judgment is not fabricated for edited source.
+        seeds.update(k for k, row in rows.items() if k in visual and row['status'] == 'failed')
+        states=all_states if selected!=set(all_states)or not seeds else impact_states
+    elif acquisition:
+        states = [v for v in all_states if any(rows[k]['state'] == v for k in acquisition)]
+    elif selected!=set(all_states) and not any(v['kind']!='deferred_full_coverage' and v.get('priority')!='advisory' for v in jobs):
+        # Closing the targeted review must actually enqueue remaining coverage;
+        # it cannot depend on the model remembering a later full-sweep command.
+        states=all_states
+    if coverage['must_route_gaps']: states = []
+    actionable = [v for v in jobs if v['kind'] != 'deferred_full_coverage' and v.get('priority') != 'advisory']
+    status = ('blocked_contract' if coverage['must_route_gaps'] else 'capture_required' if states else
+              'awaiting_review' if any(v['kind'] == 'review_images' for v in actionable) else
+              'awaiting_measurement' if any(v['kind'] == 'review_measurement' for v in actionable) else
+              'awaiting_source_repair' if any(v['kind'] == 'repair_source' for v in actionable) else
+              'awaiting_diagnosis' if actionable else 'awaiting_full_final' if selected!=set(all_states) else 'feedback_complete')
+    return {'version': 3, 'parent_plan_sha256': coverage['plan_sha256'], 'source_before': source_before,
+            'source_after': source_after, 'source_changed': changed, 'changed_files': changed_files,
+            'status': status, 'states': states, 'jobs': jobs, 'repair_states':repair_states,'retest_states_after_edit':impact_states,
+            'full_coverage_pending':selected!=set(all_states),'delivery_complete':False,
+            'original_failed_ids': sorted(k for k,r in rows.items() if r['status']=='failed'),
+            'original_unknown_ids': sorted(k for k,r in rows.items() if r['status']=='unassessed'),
+            'review_only_ids': sorted(k for k in visual if rows[k]['status']=='unassessed' and rows[k]['state'] in selected),
+            'requires_fresh_capture': bool(states), 'full_final_required': True,
+            'scope': 'Unchanged-source review/repair/measurement jobs do not launch SDKs. Changed source invalidates acceptance; only historical problem scope is reused. Full final remains fresh.'}

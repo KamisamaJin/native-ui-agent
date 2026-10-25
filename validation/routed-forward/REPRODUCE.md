@@ -1,0 +1,13 @@
+# Reproduction and limits
+
+`python3 -B -m unittest discover -s native-ui-agent/tests` exercises the live tools. `python3 -B validation/routed-forward/replay_controls.py` re-executes the sealed independent synthetic packets against candidate-v11 and compares the original ten-case outcomes, including the retained C08 oracle difference. Synthetic controls are not product-defect observations or native SDK runs.
+
+The portable publication verifier rechecks literal files, source capsules, cohort gates, original native receipts, raw images, independent actuals, full required coverage and derived metrics without rerendering or changing judgments. The exact final-head GitHub workflow is the publication integrity check. Historical v10 uses a separate temporary source/index view; original results/manifests are not revised to match new tools.
+
+Native reruns require local Xcode and the captured iOS runtime/device configuration, Android SDK, Java, pinned upstream revisions and dependencies. SDKs, simulators and build caches are deliberately absent. Bootstrap uses the pinned repositories and compatibility host changes, not business code from earlier trials. `setup_workspace.py`, sealed design launch inputs and `study.collect` describe actual execution. Replacing a runtime or dependency constitutes a new run and must produce a new evidence directory; it cannot replace an original image or baseline.
+
+Both arms share the same native observers. iOS uses real Simulator/XCUITest actions, state/epoch-bound AX snapshots and original screenshots. Android uses Paparazzi/Compose host rendering and actual semantic OnClick dispatch, not emulator touch, system-navigation or physical-device coverage. These are component PR tests in real upstream test hosts, not end-to-end backend/application integration tests.
+
+Minimum-iOS source/module/caller checks are compile/API evidence only. A declared font/padding/color audit is source-only; AX boxes do not expose all computed SwiftUI/Compose layout properties, glyph bounds or touch regions. The empirical calibration probe validates only the collected identity UIKit records. Zero observed residuals do not validate positive error behavior or universal SwiftUI accuracy. Strict failed values remain failed and block acceptance when unresolved.
+
+Required U and failed deliveries remain in the denominator. Product causes, false alarms and ambiguous strict alarms are independently judged and kept distinct. Zero confirmed defect or accepted delivery denominators are N/A. Raw phase timestamps support wall-time comparisons; no monetary/token billing data is available, and a single paired PR cannot establish population-level quality or cost superiority.

@@ -107,21 +107,11 @@ jobs:
           python3 -B validation/feedback-forward/test_source_outcomes.py
       - name: Replay immutable v9 publication in historical source view
         run: python3 -B validation/publications/feedback-v9-replay/verify.py
-      - name: Default-chain metric and independent neutral controls
+      - name: Replay immutable v10 publication in historical source view
+        run: python3 -B validation/publications/default-v10-replay/verify.py
+      - name: Routed-chain independent synthetic controls
         run: |
-          python3 -B validation/default-forward/test_metrics.py
-          python3 -B validation/default-forward/probe-design/verify_manifest.py
-          python3 -B validation/default-forward/probe-review/replay_after.py --output validation/default-forward/cache/ci-neutral-after
-      - name: Verify default-chain blind evidence
-        run: |
-          python3 -B validation/default-forward/design/verify_design.py
-          python3 -B validation/default-forward/verify.py
-          python3 -B validation/default-forward/verify_quality.py
-          python3 -B validation/default-forward/execution_audit.py > validation/default-forward/cache/execution-recomputed.json
-          cmp validation/default-forward/execution-audit.json validation/default-forward/cache/execution-recomputed.json
-          python3 -B validation/default-forward/costs.py > validation/default-forward/cache/costs-recomputed.json
-          cmp validation/default-forward/costs.json validation/default-forward/cache/costs-recomputed.json
-          python3 -B validation/default-forward/derive_results.py > validation/default-forward/cache/results-recomputed.json
-          cmp validation/default-forward/results.json validation/default-forward/cache/results-recomputed.json
-          python3 -B validation/default-forward/build_docs.py --check
-          python3 -B validation/default-forward/artifacts.py --tracked
+          python3 -B validation/routed-forward/test_metrics.py
+          python3 -B validation/routed-forward/replay_controls.py
+      - name: Routed-chain native evidence and paired cost replay
+        run: python3 -B validation/routed-forward/verify_publication.py --tracked

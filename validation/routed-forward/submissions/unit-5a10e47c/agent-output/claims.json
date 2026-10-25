@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "findings": [
+    {
+      "id": "IOS-AX-IDENTIFIERS",
+      "classification": "product",
+      "summary": "The original iOS canvas accessibility identifier propagated to every field and control, replacing the required stable child identifiers. Original option semantics also placed the em-dash label on an Other wrapper while the inner native button retained its automatic comma label.",
+      "requirements": [
+        "R05",
+        "R06"
+      ],
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/corpora/initial/public-retry-2/ios/quiet-library/native/observation.json snapshots 3 and 4: title/status/actions/options all carry listening.canvas; option wrappers are role_raw 1 and inner buttons role_raw 9",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/cache/unit-5a10e47c/agent-output/swift-initial.txt original canvas identifier and option accessibilityElement(children: .ignore)",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/d0-review/REVIEW.json unavailable iOS actions and qualified-state limits"
+      ],
+      "reasoning": "The original native tree demonstrates the product identifier and native-label composition problem. The unchanged ready visuals do not prove actions worked. The repair adds a containing canvas accessibility element and leaves labels/selected traits on each native option button.",
+      "repair": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/cache/unit-5a10e47c/agent-output/swift-repair.diff",
+      "retest": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/feedback/unit-5a10e47c/request-1/evidence/ios/quiet-library/capture/result.json",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/feedback/unit-5a10e47c/request-1/evidence/ios/quiet-library/capture/native/observation.json native controls have exact identifiers/labels, one enabled activation target, successful dispatch, and expected callback intervals"
+      ]
+    },
+    {
+      "id": "IOS-ORIGINAL-POSTACTION",
+      "classification": "uncertain",
+      "summary": "Original strict error-present and summary-present failures are not independently established business-logic defects: prerequisite native actions did not dispatch.",
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/corpora/initial/public-retry-2/ios/quiet-library/automatic.json failed ids validation/error-present and started/summary-present",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/corpora/initial/public-retry-2/ios/quiet-library/native/observation.json steps 1 through 10 attempted=false and succeeded=false",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/d0-review/REVIEW.json null visual decisions for unavailable action-result checkpoints"
+      ],
+      "resolution": "Preserved as original evidence limitations. Fresh request-1 successfully dispatches the route and observes both error and summary, without changing validation/start business flow."
+    },
+    {
+      "id": "UNSAMPLED-DOMAIN",
+      "classification": "not_assessed",
+      "summary": "The captured configuration cannot establish every supported width/text-size combination, physical hit regions, or iOS 14 runtime behavior.",
+      "evidence": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/feedback/unit-5a10e47c/request-1/evidence/ios/quiet-library/capture/result.json",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/feedback/unit-5a10e47c/request-1/evidence/android/quiet-library/capture/result.json",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/routed-forward/cache/unit-5a10e47c/agent-output/minimum-api-1/record.json"
+      ],
+      "reasoning": "Source supports wrapping and scaling, while native rectangles and PNG observations have the exact captured configuration only. The minimum check typechecks source and its client for iOS 14; it does not launch iOS 14. Mandatory independent full-public final collection and source-only audit are subsequent integration work."
+    }
+  ]
+}

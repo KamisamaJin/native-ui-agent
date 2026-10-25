@@ -1,0 +1,679 @@
+{
+  "version": 1,
+  "requirements_format": "Every normative prose clause is a bracketed R identifier; API and route tables are incorporated by R02 and R24.",
+  "clauses": [
+    {
+      "clause_id": "R01",
+      "clause": "Add ListeningBreakPanel and its value models/private helpers in exactly the approved new production file on each platform, with no unrelated declarations or global side effects in those files; preserve all pre-recorded upstream production bytes in the two roots listed by integration-methods.json through the registered stock-to-initial exact-change gate, initial-to-final allowed-change gate and per-capture source identity gate.",
+      "responsibility": "component_and_integration",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-file-scope"
+      ],
+      "integration_gate_ids": [
+        "G-initial-diff",
+        "G-final-scope",
+        "G-capture-identity"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/file_scope"
+      },
+      "boundary": "source_and_integration",
+      "reason": "A-file-scope inspects the two additions only. Preservation of all baseline bytes/change scope requires the three separately registered full-root integration gate receipts."
+    },
+    {
+      "clause_id": "R02",
+      "clause": "Expose the exact public, value-equatable data models and callable signatures in api-contract.json; the iOS component is a SwiftUI View available on iOS 14 and Android is a Compose @Composable in com.example.reply.ui.components.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-api"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/api"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R03",
+      "clause": "Accept valid caller inputs with a nonempty sessionID, at least one available option, unique ASCII option IDs matching [A-Za-z0-9_-]+, nonempty copy, and caller-preserved option order; the component owns no audio engine or network operation.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-input-domain"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/input_domain"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R04",
+      "clause": "Display this exact vertical order: input title, introduction, all option title/detail pairs in caller order, quietNote, fixed acknowledgement switch, status, conditional error, conditional success summary, primary action, Cancel action, and footer; display all caller copy verbatim.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-copy",
+        "O-vertical-order"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/questions/content"
+      },
+      "boundary": "runtime_or_atomic_visual",
+      "reason": "Presence/native copy and exact visual vertical order have independent runtime atoms."
+    },
+    {
+      "clause_id": "R05",
+      "clause": "Expose stable identifiers listening.canvas, listening.title, listening.introduction, listening.note, listening.acknowledge, listening.status, listening.primary, listening.cancel, listening.footer, listening.error and listening.summary; each option control uses listening.option.<id>.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-identifiers"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/identifiers"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R06",
+      "clause": "Give each option one native button with accessible label title + \" — \" + detail and a selected trait that matches its local selection; the acknowledgement is one labeled native switch with its real Boolean value.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-semantics"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/semantics"
+      },
+      "boundary": "runtime_or_atomic_visual",
+      "reason": "Fixed input-bound state and independent original-image atoms."
+    },
+    {
+      "clause_id": "R07",
+      "clause": "Begin editing with no selection, acknowledgement off, no error or success summary, status \"Choose a soundscape for your break.\", and enabled Start listening and Cancel controls.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-initial"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/state/ready/status"
+      },
+      "boundary": "runtime_or_atomic_visual",
+      "reason": "Fixed input-bound state and independent original-image atoms."
+    },
+    {
+      "clause_id": "R08",
+      "clause": "Selecting an available option exclusively selects its ID; selecting it again preserves that selection, changing to another available option replaces it, and unavailable options remain disabled and never selectable.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-selection"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/selection"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R09",
+      "clause": "While editing, a successful Start listening activation validates both an available selected option and acknowledgement on; unmet conditions leave editing active and show the applicable exact error text defined in api-contract.json without emitting onStart or onCancel.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-validation"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/validation"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R10",
+      "clause": "On valid Start listening activation, assign the local started state inside that same native activation handler before invoking onStart(sessionID, optionID) exactly once, without timer/task/dispatch deferral; the final post-action checkpoint shows status \"Your listening break is ready.\" and summary \"Ready to begin: \" + selected option title. Same-handler ordering is source-only; post-action native state and the callback interval do not prove render timing.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-success"
+      ],
+      "source_audit_ids": [
+        "A-start-transition"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/state/started/status"
+      },
+      "boundary": "source_and_runtime",
+      "reason": "Same-handler state assignment before callback is A-start-transition source control-flow review; the native route checks only final state and dispatch-bound callback interval."
+    },
+    {
+      "clause_id": "R11",
+      "clause": "In the started state, retain all caller content, preserve the selected option and on acknowledgement, disable every option and the acknowledgement, and change the enabled primary label to \"Choose again\".",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-started-controls"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/state/started/primary"
+      },
+      "boundary": "runtime_or_atomic_visual",
+      "reason": "Fixed input-bound state and independent original-image atoms."
+    },
+    {
+      "clause_id": "R12",
+      "clause": "A Choose again activation returns to the initial editing state for the current input, clears selection, acknowledgement, errors and summary, and emits no callbacks.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-renew"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/state/renewed/status"
+      },
+      "boundary": "runtime_or_atomic_visual",
+      "reason": "Fixed input-bound state and independent original-image atoms."
+    },
+    {
+      "clause_id": "R13",
+      "clause": "Cancel remains enabled in every state; each activation invokes onCancel(current sessionID) once and returns to initial editing for that same input, including repeated Cancel activations with no choices.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-cancel"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/cancel"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R14",
+      "clause": "Changing either editing choice clears the visible validation error; turning acknowledgement off is allowed while editing and does not clear the selected option.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-edit-error"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/edit_error"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R15",
+      "clause": "Any unequal full input replacement resets selection, acknowledgement, validation and started state before the replacement is rendered, even when sessionID and option IDs are unchanged; rendering an equal input preserves local state and neither case emits callbacks.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-replacement"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/replacement"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R16",
+      "clause": "Keep the component identity and business logic in production: the supplied bridges adapt fixture values and real callback arguments only, and neither bridge may force identity changes, supply local product state, or synthesize callback outcomes.",
+      "responsibility": "integration",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-bridge-boundary"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/bridge_boundary"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R17",
+      "clause": "Use exact opaque sRGB colors from reference.json: canvas behind the column and Cancel; option/selectedOption/unavailableOption on option surfaces; primary and primaryInk on the primary button; title on the heading; body on introduction, note, available option titles, acknowledgement, status, summary and Cancel text; muted on option details, unavailable option titles and footer; error on error text; border on every option outline; use no shadows, gradients or translucency.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-colors",
+        "A-color-canvas",
+        "A-color-option",
+        "A-color-selectedOption",
+        "A-color-unavailableOption",
+        "A-color-primary",
+        "A-color-primaryInk",
+        "A-color-title",
+        "A-color-body",
+        "A-color-muted",
+        "A-color-error",
+        "A-color-border"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/colors"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R18",
+      "clause": "Render the component canvas in its canvas role color throughout all states and the primary button in its primary role color in both Start listening and Choose again states.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-rendered-colors"
+      ],
+      "source_audit_ids": [
+        "A-primary-fill-boundary"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/colors/canvas"
+      },
+      "boundary": "source_and_runtime",
+      "reason": "Rendered primary fill is sampled only in a geometrically justified padding ROI; source composition plus native upper width and lower height bounds establish its scope. Exact declared colors retain source audits."
+    },
+    {
+      "clause_id": "R19",
+      "clause": "Use a single column filling its parent content width (the observer offers total width minus its own 32-unit horizontal inset), with 20 native units of internal canvas padding, 12 units between major blocks and options, 12-unit circular option and action corner radii, 16-unit option/action horizontal padding and 12-unit vertical padding, and a 1-unit option border; each title/detail option pair has a 4-unit internal gap and actions fill the available column width. Keep primary label ink and any content strictly inside its horizontal content inset, leaving both 16-unit side padding bands as plain fill with no border, icons or decorations.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-spacing",
+        "A-primary-fill-boundary",
+        "A-space-canvasPadding-ios",
+        "A-space-canvasPadding-android",
+        "A-space-blockGap-ios",
+        "A-space-blockGap-android",
+        "A-space-optionTextGap-ios",
+        "A-space-optionTextGap-android",
+        "A-space-cornerRadius-ios",
+        "A-space-cornerRadius-android",
+        "A-space-horizontalPadding-ios",
+        "A-space-horizontalPadding-android",
+        "A-space-verticalPadding-ios",
+        "A-space-verticalPadding-android",
+        "A-space-borderWidth-ios",
+        "A-space-borderWidth-android"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/spacing"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R20",
+      "clause": "Use platform-scaled system text at the base sizes and weights in reference.json: title 24 semibold, introduction/note/option title 16 regular except option title semibold, option detail/footer 14 regular, status/error/summary 16 regular, and action text 16 semibold.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-type",
+        "A-font-title-ios",
+        "A-font-title-android",
+        "A-weight-title",
+        "A-font-body-ios",
+        "A-font-body-android",
+        "A-weight-body",
+        "A-font-optionTitle-ios",
+        "A-font-optionTitle-android",
+        "A-weight-optionTitle",
+        "A-font-detail-ios",
+        "A-font-detail-android",
+        "A-weight-detail",
+        "A-font-action-ios",
+        "A-font-action-android",
+        "A-weight-action"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/typography"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R21",
+      "clause": "Give the primary and Cancel native accessible/control rectangles minimum height 48 native units and minimum width 120 native units; option rectangles have minimum height 64 native units and may grow for content or text size. The primary control rectangle is the painted primary rectangle, and its width is at most offered maximum width minus host horizontal inset minus twice canvas padding (358 native units over the supported domain); source review establishes the shared painted/control boundary and native geometry checks the width bound.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-control-size"
+      ],
+      "source_audit_ids": [
+        "A-primary-fill-boundary"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/geometry/actionMinHeight/ios"
+      },
+      "boundary": "source_and_runtime",
+      "reason": "Native dimensions do not establish the shared visual/control boundary; A-primary-fill-boundary separately reviews that source composition."
+    },
+    {
+      "clause_id": "R22",
+      "clause": "Allow all supplied copy and action labels to wrap without truncation, ellipsis, text scaling down, horizontal scrolling, clipping, or overlap; align heading, introduction, option title/detail, note, acknowledgement label, status, error, summary, primary label, Cancel label and footer to their leading content edge, with the switch at the trailing edge of its label row. Let the parent vertical scroller reach every item at offered widths 320 through 430 and system text sizes through iOS accessibility2 / Android fontScale 1.6; leading alignment is audited in source independently from the visual wrapping atom.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-long-content"
+      ],
+      "source_audit_ids": [
+        "A-leading"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/questions/wrapping"
+      },
+      "boundary": "source_and_runtime",
+      "reason": "A-leading reviews each specified content alignment; text-wrap independently judges visible wrapping/truncation."
+    },
+    {
+      "clause_id": "R23",
+      "clause": "Keep source font and padding review separate from native rectangle and text facts: AX bounds do not establish computed font, padding, color or physical hit regions.",
+      "responsibility": "integration",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-evidence-boundary"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/evidence"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R24",
+      "clause": "The six route checkpoints and all assertions are fixed before implementation; callback verdicts require demonstrated successful dispatch to exactly one enabled native control in one input epoch, or demonstrated same-process caller replacement for caller_update, before comparing the exact callback interval.",
+      "responsibility": "integration",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/callback_evidence"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    },
+    {
+      "clause_id": "R25",
+      "clause": "At every route checkpoint the visible content must be complete and mutually non-overlapping, including validation and success text when present; the canvas and primary color, content presence, wrapping and overlap are independent review atoms.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-visual-integrity"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/questions/overlap"
+      },
+      "boundary": "runtime_or_atomic_visual",
+      "reason": "Fixed input-bound state and independent original-image atoms."
+    },
+    {
+      "clause_id": "R26",
+      "clause": "For the route, an invalid Start emits no events, a valid Start emits only the selected start event, Choose again emits no events, Cancel emits only its cancel event, and dirty-state caller replacement emits no events and displays only the new copy with reset local choices.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-route-behavior",
+        "O-replacement-exclusion"
+      ],
+      "source_audit_ids": [],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/events/empty"
+      },
+      "boundary": "runtime_or_atomic_visual",
+      "reason": "The route event/local reset facts, replacement native copy and independent stale-copy exclusion atom have separate owners."
+    },
+    {
+      "clause_id": "R27",
+      "clause": "Only valid Start listening and Cancel activations invoke the supplied callbacks; selection changes, acknowledgement changes, validation failures, Choose again, recomposition and caller replacements invoke neither callback, and each actual action uses the callbacks supplied by the current caller.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [],
+      "source_audit_ids": [
+        "A-callback-boundaries"
+      ],
+      "integration_gate_ids": [],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/callback_boundaries"
+      },
+      "boundary": "source_only",
+      "reason": "Native tools cannot establish internal source choices or universal transition semantics."
+    }
+  ],
+  "checkpoint_clauses": [
+    {
+      "checkpoint": "ready",
+      "clause": "Initial empty editing state.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-initial"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/checkpoint_ready"
+      }
+    },
+    {
+      "checkpoint": "validation",
+      "clause": "Activate Start listening with neither requirement satisfied; show both-condition error.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-route-behavior"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/checkpoint_validation"
+      }
+    },
+    {
+      "checkpoint": "started",
+      "clause": "Choose the first available option, turn acknowledgement on, then Start listening; one start callback.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-success"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/checkpoint_started"
+      }
+    },
+    {
+      "checkpoint": "renewed",
+      "clause": "Activate Choose again; empty editing state and no callback.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-renew"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/checkpoint_renewed"
+      }
+    },
+    {
+      "checkpoint": "canceled",
+      "clause": "Choose the second available option, acknowledge, then Cancel; one cancel callback and empty editing state.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-route-behavior"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/checkpoint_canceled"
+      }
+    },
+    {
+      "checkpoint": "replaced",
+      "clause": "Make editing dirty with the first option and acknowledgement, then replace the entire input without remounting; new copy, empty local state, no callback.",
+      "responsibility": "component",
+      "runtime_obligation_ids": [
+        "O-route-behavior"
+      ],
+      "source_audit_ids": [
+        "A-callback-evidence"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/checkpoint_replaced"
+      }
+    }
+  ],
+  "incorporated_artifacts": [
+    {
+      "artifact": "api-contract.json",
+      "responsibility": "component",
+      "source_audit_ids": [
+        "A-api"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/api"
+      }
+    },
+    {
+      "artifact": "integration-methods.json",
+      "responsibility": "integration",
+      "integration_gate_ids": [
+        "G-initial-diff",
+        "G-final-scope",
+        "G-capture-identity"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/integration_methods"
+      }
+    }
+  ],
+  "integration_gates": [
+    {
+      "id": "G-initial-diff",
+      "clause": "close_initial.py recomputes study.fingerprint over both complete production roots, compares stock versus current over the union of keys, and requires changed == exactly the approved added paths before study.capsule seals the initial source.",
+      "priority": "must",
+      "responsibility": "integration",
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/G-initial-diff"
+      },
+      "method_reference": {
+        "source": "reference",
+        "pointer": "/source/integration_methods"
+      },
+      "receipt_required": true,
+      "missing_or_failed_receipt": "unverified; no source-review substitution"
+    },
+    {
+      "id": "G-final-scope",
+      "clause": "close_session.py recomputes the same full fingerprint, compares shared initial versus final over the union of keys, and requires changed <= approved added paths before study.capsule seals final source.",
+      "priority": "must",
+      "responsibility": "integration",
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/G-final-scope"
+      },
+      "method_reference": {
+        "source": "reference",
+        "pointer": "/source/integration_methods"
+      },
+      "receipt_required": true,
+      "missing_or_failed_receipt": "unverified; no source-review substitution"
+    },
+    {
+      "id": "G-capture-identity",
+      "clause": "study.collect recomputes the complete fingerprint against source_seal at entry, again before each platform SDK collection and after collection; study.capsule stores all fingerprinted source bytes and the exact files mapping.",
+      "priority": "must",
+      "responsibility": "integration",
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/G-capture-identity"
+      },
+      "method_reference": {
+        "source": "reference",
+        "pointer": "/source/integration_methods"
+      },
+      "receipt_required": true,
+      "missing_or_failed_receipt": "unverified; no source-review substitution"
+    }
+  ],
+  "supplemental_obligations": {
+    "O-native-state": {
+      "owner_clauses": [
+        "R04",
+        "R06",
+        "R07",
+        "R10",
+        "R11",
+        "R12",
+        "R21",
+        "R26"
+      ],
+      "expected": {
+        "source": "reference",
+        "pointer": "/source/native_matrix"
+      }
+    }
+  }
+}

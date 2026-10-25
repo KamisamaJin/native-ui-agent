@@ -44,3 +44,29 @@ records the authorization receipt before invoking the SDK. A barrier is a proces
 guard, not a secure sandbox against direct SDK invocation or a declaration that
 maliciously omits cohort members. Pin cohort membership before design, preserve
 rejected early-launch controls and audit actual command times against seals.
+
+## Empirical AX calibration
+
+`ax_calibration.py` fits a separately sealed neutral UIKit probe: public runtime
+bounds/window conversion and raw XCUI dimensions, with disjoint fit/held-out native
+identities. It uses binary64 ULP propagation, predeclared factor cap, fully visible
+identity transforms, exact reference dimensions and matching runtime/density.
+A failed holdout or out-of-domain input supplies no calibrated conclusion.
+Configure a pinned `calibration: {path, sha256}` in the default service.
+
+Calibration annotates a failed geometry row as `boundary_overlap`,
+`definite_within_profile` or `outside_calibrated_scope`; it never edits raw status,
+expectation, tolerance or acceptance. Boundary overlap routes to measurement review
+without repeated SDK capture of unchanged code. This empirical UIKit model is not
+a universal error bound for SwiftUI, glyphs, padding, touch regions or other OSes.
+An uncertain strict failure remains a delivery blocker until independently supported
+measurement resolves it; a small difference alone cannot become a pass. Preserve
+raw records and the calibration context so a probe transport failure is distinguishable
+from a product defect.
+
+An OS/scale/domain match alone never proves the target is an identity UIKit leaf.
+This implementation admits only an exact pinned probe-reference identity and raw
+frame present in the profile; ordinary external AX packets lack that proof and
+remain `outside_calibrated_scope`. The observed zero residuals validate agreement
+of the collected records, not a universal positive-error bound. This deliberately
+limits automatic calibration benefit rather than weakening thresholds.

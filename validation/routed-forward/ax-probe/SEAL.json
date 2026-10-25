@@ -1,0 +1,61 @@
+{
+  "schema": "ax-probe.source-seal.v2",
+  "wire_version": 2,
+  "sealed_utc": "2026-10-25T05:31:07.615179+00:00",
+  "phase": "v2_authored_after_generic_transport_failure_before_profile_fit_and_v2_native_execution",
+  "v2_native_sdk_execution_performed": false,
+  "native_sdk_execution_by_author": false,
+  "source_and_specification_frozen": true,
+  "prior_source_seal": {
+    "path": "../ax-probe-v1/SEAL.json",
+    "sha256": "bd51b06f6e51b0bcaea94f72c03ec4737a8e0bc0ac8409dfe8e01af1c631090b"
+  },
+  "revision_reason": "Root reported first native capture passed/full coverage but all 612 public XCUI value strings were truncated to 512 characters. Complete v1 runtime JSON was unavailable, extractor rejected all rows, and no profile fit was performed. V2 only compacts wire transport and normalizes extraction. No numerical correction.",
+  "files": {
+    "AXProbeBridge.swift": {
+      "sha256": "48f7b5f8c7f0ecb067e89a87a92301a9660547161ee6b8f481f4e45a5aecb32c",
+      "bytes": 8126
+    },
+    "fixtures.json": {
+      "sha256": "07f4f68ae3aacd60be5186f97d4fb74cb7fc2cffe4ea3c57b7ae52334ff398c7",
+      "bytes": 6504
+    },
+    "actions.json": {
+      "sha256": "bdb1ce056d74dafaf16191ebd768c93fedac4e58fad690fca457232ba3a98c12",
+      "bytes": 228
+    },
+    "samples.json": {
+      "sha256": "7c6e958d73c87c72f56dfc080d0930be3f3445bd9f652db7945863005782c13a",
+      "bytes": 3786
+    },
+    "SPECIFICATION.md": {
+      "sha256": "48dfc841fed66674c312fa2b404ca1bcccd605d32831ee8ef5e123dd0f0b1750",
+      "bytes": 7416
+    },
+    "extract_calibration.py": {
+      "sha256": "96ff577a6cff8aa69ee2f79a752093bf1af98bfbc2c7c107dd608c652cf8c5c3",
+      "bytes": 12956
+    },
+    "TRANSPORT-PREFLIGHT.json": {
+      "sha256": "a3e6a413d5617dd181166d95679a541466b0533bacb79aba98e87a4490b1f351",
+      "bytes": 535
+    }
+  },
+  "unchanged_inputs_verified_against_v1": {
+    "fixtures.json": "07f4f68ae3aacd60be5186f97d4fb74cb7fc2cffe4ea3c57b7ae52334ff398c7",
+    "actions.json": "bdb1ce056d74dafaf16191ebd768c93fedac4e58fad690fca457232ba3a98c12",
+    "samples.json": "7c6e958d73c87c72f56dfc080d0930be3f3445bd9f652db7945863005782c13a"
+  },
+  "validation": {
+    "fixture_specification": "valid: unchanged 18 views, 12 fit, 6 heldout",
+    "extractor_python_ast": "passed",
+    "compact_wire_normalization": "passed synthetic check; restores bounds, accessibility_frame, window_converted_bounds, transforms, scale, OS, identities and xcui_frame",
+    "representative_worst_case_wire_bytes": 431,
+    "native_wire_guard_bytes_exclusive": 480,
+    "observed_xcui_truncation_characters": 512,
+    "truncated_or_overflow_wire_values": "synthetic check rejected without runtime inference",
+    "negative_fractional_projection": "synthetic check passed; no rounding",
+    "swift_compilation": "deferred; no SDK invocation for v2"
+  },
+  "provenance": "Neutral presealed geometry and split preserved. Used only original authored probe, current generic observer contract and root-reported generic XCUI truncation failure. No business source/output inspection."
+}

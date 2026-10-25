@@ -1,0 +1,149 @@
+{
+  "heading": {
+    "value": "Fold guide",
+    "unit": "string"
+  },
+  "instructions": {
+    "front": {
+      "value": "Fold the front sheet along the dashed diagonal.",
+      "unit": "string"
+    },
+    "reverse": {
+      "value": "Turn the sheet. Fold along the reverse diagonal.",
+      "unit": "string"
+    }
+  },
+  "status": {
+    "overview": {
+      "value": "Sheet ready",
+      "unit": "string"
+    },
+    "creased": {
+      "value": "Crease marked",
+      "unit": "string"
+    },
+    "reversed": {
+      "value": "Reverse side",
+      "unit": "string"
+    }
+  },
+  "true": {
+    "value": true,
+    "unit": "bool"
+  },
+  "false": {
+    "value": false,
+    "unit": "bool"
+  },
+  "crease_event": {
+    "value": [
+      "crease.marked"
+    ],
+    "unit": "events"
+  },
+  "geometry": {
+    "width": {
+      "ios": {
+        "value": 180,
+        "unit": "pt"
+      },
+      "android": {
+        "value": 180,
+        "unit": "dp"
+      }
+    },
+    "height": {
+      "ios": {
+        "value": 100,
+        "unit": "pt"
+      },
+      "android": {
+        "value": 100,
+        "unit": "dp"
+      }
+    },
+    "actionHeight": {
+      "ios": {
+        "value": 44,
+        "unit": "pt"
+      },
+      "android": {
+        "value": 44,
+        "unit": "dp"
+      }
+    }
+  },
+  "questions": {
+    "diagram": {
+      "value": "Does the visible paper diagram show an upper-left to lower-right dashed crease in overview/creased, and an upper-right to lower-left dashed crease in reversed, with the paper outline visible?",
+      "unit": "string"
+    },
+    "instruction": {
+      "value": "Is the instruction visibly clear of the heading, diagram, status and action?",
+      "unit": "string"
+    }
+  },
+  "launch": {
+    "fixtures_sha256": "1ddaa8e2933e50569e277f2986d310bc1eadf56e764a93263ab2bf53fdea6819",
+    "bridge_sha256": "a57ebc9de8862ed2f863683d737df5aeb8156a1f2f63ebd0f8b1d17f938f676b",
+    "scenario": "neutral",
+    "platform": "ios"
+  },
+  "obligations": [
+    {
+      "id": "native-content",
+      "clause": "The title, instruction and status match the fixed per-state copy.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "creased",
+        "reversed"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "native-bounds",
+      "clause": "The diagram AX bounds are 180 by 100pt and the action AX height is 44pt in every state.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "creased",
+        "reversed"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "interaction",
+      "clause": "Marking delivers one crease.marked callback and disables the action; caller replacement restores enabled reverse input.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "creased",
+        "reversed"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "diagram",
+      "clause": "The crease diagonal follows the front/reverse state while retaining the paper outline.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "creased",
+        "reversed"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "clarity",
+      "clause": "The instruction never overlaps other visible component content.",
+      "priority": "must",
+      "states": [
+        "overview",
+        "creased",
+        "reversed"
+      ],
+      "risk": "layout"
+    }
+  ]
+}

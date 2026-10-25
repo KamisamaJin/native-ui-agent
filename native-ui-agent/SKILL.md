@@ -47,7 +47,7 @@ description: 在现有 iOS 或 Android 工程中新增或修改原生 UI 组件�
 
 ## 默认原生反馈入口
 
-复杂原生组件开发由[默认执行服务](references/default-feedback.md)接入 `ui_loop.py native`；集成端在每次反馈和最终验收无条件调用路由、定位诊断与复验规划，模型只提交源码修改。禁止手选状态绕过该链路。保留服务 trace、开放任务、原始包与完整最终门控。下面旧 profile 的 capture/review 仅用于兼容既有简单项目。
+复杂原生组件开发由[默认执行服务](references/default-feedback.md)接入 `ui_loop.py native`；集成端每轮自动读绑定源码/原图的审查注册表，调用路由、定位诊断与复验规划。待看图、修源码、测量争议与实际原生采集按任务类型分流；最终新图审查用原包闭环，无需再采集。禁止手选状态绕过该链路。保留服务 trace、开放任务、原始包与完整最终门控。下面旧 profile 的 capture/review 仅用于兼容既有简单项目。
 
 ## 实现并取得反馈
 
