@@ -1,0 +1,96 @@
+[
+  {
+    "probe": "raw-intake-boundary",
+    "reproduced": true,
+    "detail": {
+      "classification": "unsupported_raw_intake_format_not_runtime_wrong_decision",
+      "error": "Configuration/evidence error: 'plan'"
+    }
+  },
+  {
+    "probe": "approved-target-absence",
+    "reproduced": true,
+    "detail": {
+      "automatic_status": "passed",
+      "cycle_status": "invalid_or_incomplete_capture",
+      "missing_states": [
+        "checkpoint-00"
+      ],
+      "finding": "Approved presence=false passes native assertion, but execution coverage requires observing the intentionally absent target."
+    }
+  },
+  {
+    "probe": "missing-and-ambiguous-targets",
+    "reproduced": true,
+    "detail": {
+      "classification": "safe_refusal_but_source_diagnosis_gap",
+      "cases": [
+        {
+          "case": "missing",
+          "automatic_status": "failed",
+          "diagnostic_items": 0,
+          "next_actions": [
+            "diagnose_product"
+          ],
+          "cycle_status": "invalid_or_incomplete_capture",
+          "fresh_repaired_source_rechecked": "verified_capture"
+        },
+        {
+          "case": "ambiguous",
+          "automatic_status": "failed",
+          "diagnostic_items": 0,
+          "next_actions": [
+            "diagnose_product"
+          ],
+          "cycle_status": "invalid_or_incomplete_capture",
+          "fresh_repaired_source_rechecked": "verified_capture"
+        }
+      ],
+      "finding": "Definite missing/duplicate semantic failures get generic diagnose_product but no source/topology diagnostics because diagnose() skips failed rows."
+    }
+  },
+  {
+    "probe": "partial-and-bounded-evidence",
+    "reproduced": true,
+    "detail": {
+      "no_packet": "invalid_or_incomplete_capture",
+      "repeat_with_pinned_history": "blocked_repeated_unchanged_evidence",
+      "missing_png": "ValueError escapes without capture/result.json or cycle.json; CLI normalizes it to exit 2.",
+      "classification": "missing_packet_safe_bounded; partial_packet_diagnostic_receipt_gap"
+    }
+  },
+  {
+    "probe": "clean-history-fresh-source-and-provenance",
+    "reproduced": true,
+    "detail": {
+      "clean_typed_subset": "accepted",
+      "fresh_source_changed_files": [
+        "0/PulseLab/SessionView.swift"
+      ],
+      "edited_final_native_report": "failed",
+      "edited_final_admission": "not_accepted",
+      "clone_adoption_then_edit": "source_changed detected",
+      "image_tamper": "rejected",
+      "scope": "Typed phase/count/identity subset only; this does not satisfy the complete frozen prose/visual oracle."
+    }
+  },
+  {
+    "probe": "intake-final-boundary",
+    "reproduced": true,
+    "detail": {
+      "rejected": "Intake is diagnostic only and cannot be final acceptance"
+    }
+  },
+  {
+    "probe": "pending-to-settled-history",
+    "reproduced": true,
+    "detail": {
+      "first_report": "unassessed",
+      "first_reason": "native values conflict within state; inspect changing UI or capture drift",
+      "default_next_cycle": "blocked_repeated_unchanged_evidence",
+      "new_native_capture_attempted": false,
+      "explicit_final_recovery": "verified_capture",
+      "finding": "History signature equates unchanged source/plan/states/unresolved IDs with unchanged evidence; a normal settled-state recapture is blocked before observing the now settled native state. Final bypass remains available."
+    }
+  }
+]

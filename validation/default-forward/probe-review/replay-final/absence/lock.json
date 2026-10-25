@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "independent-neutral-probe-adapter",
+    "approval_reference": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/default-forward/probe-design/SHA256SUMS",
+    "sources": [
+      {
+        "id": "approved",
+        "path": "approved.json",
+        "sha256": "e3a923fe1b503ce9d1383e2dad599666bd6c1eced29b89fc532821811628f832"
+      }
+    ],
+    "rules": [
+      {
+        "id": "step-absent",
+        "kind": "control",
+        "target": "session.step",
+        "property": "present"
+      }
+    ],
+    "required_rule_ids": [
+      "step-absent"
+    ],
+    "scenarios": {
+      "neutral": {
+        "states": [
+          {
+            "id": "checkpoint-00",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          }
+        ],
+        "actions": [
+          {
+            "type": "checkpoint"
+          }
+        ],
+        "values": {
+          "step-absent": {
+            "checkpoint-00": {
+              "ios": {
+                "source": "approved",
+                "pointer": "/expected/step-absent/0"
+              },
+              "android": {
+                "source": "approved",
+                "pointer": "/expected/step-absent/0"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "approved": {
+      "id": "approved",
+      "path": "approved.json",
+      "sha256": "e3a923fe1b503ce9d1383e2dad599666bd6c1eced29b89fc532821811628f832",
+      "document": {
+        "expected": {
+          "step-absent": [
+            {
+              "value": false,
+              "unit": "bool"
+            }
+          ]
+        },
+        "launch": {
+          "fixtures_sha256": "8ba367a5face432cefae47c99d247f83c2030c3418cd4016b460eedc5c84a997",
+          "bridge_sha256": "8411f12d746e09ae6d86d287a19404de0b7d7b2d019ccb6f206028ebe0bc0484",
+          "scenario": "neutral",
+          "platform": "ios"
+        },
+        "obligations": [
+          {
+            "id": "step-absent",
+            "clause": "Neutral approved subset: step-absent",
+            "priority": "must",
+            "states": [
+              "checkpoint-00"
+            ],
+            "risk": "behavior"
+          }
+        ]
+      },
+      "raw_utf8": "{\n  \"expected\": {\n    \"step-absent\": [\n      {\n        \"value\": false,\n        \"unit\": \"bool\"\n      }\n    ]\n  },\n  \"launch\": {\n    \"fixtures_sha256\": \"8ba367a5face432cefae47c99d247f83c2030c3418cd4016b460eedc5c84a997\",\n    \"bridge_sha256\": \"8411f12d746e09ae6d86d287a19404de0b7d7b2d019ccb6f206028ebe0bc0484\",\n    \"scenario\": \"neutral\",\n    \"platform\": \"ios\"\n  },\n  \"obligations\": [\n    {\n      \"id\": \"step-absent\",\n      \"clause\": \"Neutral approved subset: step-absent\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"checkpoint-00\"\n      ],\n      \"risk\": \"behavior\"\n    }\n  ]\n}\n"
+    }
+  },
+  "contract_sha256": "1857c64eacbe668579ba2c7861d3a01ff31662252f3856fd0eb223a5ccb0b6ab",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

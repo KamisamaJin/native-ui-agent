@@ -434,8 +434,23 @@ def main():
     check.add_argument("--capture", required=True, type=Path)
     check.add_argument("--findings", type=Path)
     check.add_argument("--output", required=True, type=Path, help="New directory")
+    native = commands.add_parser("native", help="Default approved native feedback chain: routing, diagnosis, planning, capture")
+    native.add_argument("--config", required=True, type=Path)
+    native.add_argument("--output", required=True, type=Path)
+    native.add_argument("--previous", type=Path)
+    native.add_argument("--previous-sha256")
+    native.add_argument("--final", action="store_true")
+    native.add_argument("--history", type=Path)
+    native.add_argument("--intake", action="store_true")
     args = parser.parse_args()
     try:
+        if args.action == "native":
+            import feedback_loop
+            result = feedback_loop.run_cycle(json.loads(args.config.read_text()), args.output, previous=args.previous,
+                previous_sha=args.previous_sha256, final=args.final,
+                history=json.loads(args.history.read_text()) if args.history else [], intake=args.intake)
+            print(json.dumps(result, indent=2))
+            return 0 if result["status"] == "verified_capture" else 1
         return capture(args) if args.action == "capture" else review(args)
     except (ValueError, OSError, KeyError, TypeError, StopIteration) as exc:
         print("Configuration/evidence error: " + str(exc), file=sys.stderr)

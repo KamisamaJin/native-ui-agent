@@ -114,3 +114,31 @@ def main():
         value['change_basis'] = 'Caller-declared source changes; not independently measured. Prefer capture-result mode.'
     with a.output.open('x') as stream: stream.write(__import__('json').dumps(value, indent=2, ensure_ascii=False) + '\n')
 if __name__ == '__main__': main()
+
+
+def unresolved(coverage, parent, report, *, changed_files, source_before, source_after, final=False, selected_states=None):
+    """Default planner accepts honest unknowns, including incomplete native packets.
+
+    It does not convert an unknown to a failure. Its caller must reconstruct the
+    original report from pinned raw evidence, and measure the source maps.
+    """
+    if design.digest(parent) != coverage['plan_sha256']:
+        raise ValueError('Retest coverage belongs to another plan')
+    rows = report_rows(report, parent)
+    allowed = set(selected_states or [s['id'] for s in parent['states']])
+    issues = {k for k, row in rows.items() if row['state'] in allowed and row['status'] != 'passed'}
+    owners = {o['id'] for o in coverage['obligations'] if set(o['assertion_ids']) & issues or (o['priority'] == 'must' and not o['route_available'])}
+    while True:
+        expanded = owners | {r for o in coverage['obligations'] if o['id'] in owners for r in o['route']['regression_obligations']}
+        if expanded == owners: break
+        owners = expanded
+    full = final or not owners or bool(coverage['must_route_gaps'])
+    states = [s['id'] for s in parent['states'] if full or any(o['id'] in owners and s['id'] in o['states'] for o in coverage['obligations'])]
+    return {'version': 2, 'parent_plan_sha256': coverage['plan_sha256'], 'states': states,
+            'original_failed_ids': sorted(k for k in issues if rows[k]['status'] == 'failed'),
+            'original_unknown_ids': sorted(k for k in issues if rows[k]['status'] == 'unassessed'),
+            'changed_files': changed_files, 'source_before': source_before, 'source_after': source_after,
+            'source_changed': source_before != source_after, 'obligations': sorted(owners),
+            'reason': 'mandatory full final' if final else 'unresolved checks and approved regression closure' if not full else 'scope unavailable or no supported issue; full fallback',
+            'full_final_required': True,
+            'scope': 'Diagnostic scope only; approved regression edges are not a source-impact proof. Unknowns retain their status. Fresh full final capture is required.'}

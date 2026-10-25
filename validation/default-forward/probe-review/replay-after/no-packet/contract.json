@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "design_owner": "independent-neutral-probe-adapter",
+  "approval_reference": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/default-forward/probe-design/SHA256SUMS",
+  "sources": [
+    {
+      "id": "approved",
+      "path": "approved.json",
+      "sha256": "742a4e7c832061482234fc689df7aacf4c927475933f3c221acbf5a01d318056"
+    }
+  ],
+  "rules": [
+    {
+      "id": "phase",
+      "kind": "control",
+      "target": "session.phase",
+      "property": "label"
+    }
+  ],
+  "required_rule_ids": [
+    "phase"
+  ],
+  "scenarios": {
+    "neutral": {
+      "states": [
+        {
+          "id": "checkpoint-00",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        }
+      ],
+      "actions": [
+        {
+          "type": "checkpoint"
+        }
+      ],
+      "values": {
+        "phase": {
+          "checkpoint-00": {
+            "ios": {
+              "source": "approved",
+              "pointer": "/expected/phase/0"
+            },
+            "android": {
+              "source": "approved",
+              "pointer": "/expected/phase/0"
+            }
+          }
+        }
+      }
+    }
+  }
+}

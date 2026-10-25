@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "states": [
+    {
+      "id": "checkpoint-00",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "control",
+      "property": "label",
+      "id": "checkpoint-00/phase",
+      "state": "checkpoint-00",
+      "requirement_id": "phase",
+      "expected": "Idle",
+      "unit": "string",
+      "expectation_provenance": [
+        {
+          "source": "approved",
+          "path": "approved.json",
+          "sha256": "c86b87ea7f96dabae0d925ac8d22eff3bc5397ce901dd07221868724acb6922c",
+          "pointer": "/expected/phase/0",
+          "source_datum": {
+            "value": "Idle",
+            "unit": "string"
+          }
+        }
+      ],
+      "source": "design-lock:336a03ce81c5a7de5397bdc6327a9e18de4f26ec6449f37e8377ef1e3f4e6b62",
+      "target": {
+        "identifier": "session.phase",
+        "role": "text"
+      }
+    }
+  ],
+  "required_assertion_ids": [
+    "checkpoint-00/phase"
+  ],
+  "matrix_contract": {
+    "selected_states": [
+      "checkpoint-00"
+    ],
+    "selected_requirements": [
+      "phase"
+    ],
+    "cells": [
+      {
+        "id": "checkpoint-00/phase",
+        "state": "checkpoint-00",
+        "requirement_id": "phase",
+        "disposition": "required",
+        "provenance": [
+          {
+            "source": "approved",
+            "path": "approved.json",
+            "sha256": "c86b87ea7f96dabae0d925ac8d22eff3bc5397ce901dd07221868724acb6922c",
+            "pointer": "/expected/phase/0",
+            "source_datum": {
+              "value": "Idle",
+              "unit": "string"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "design_contract": {
+    "lock_sha256": "336a03ce81c5a7de5397bdc6327a9e18de4f26ec6449f37e8377ef1e3f4e6b62",
+    "scenario": "neutral",
+    "platform": "ios",
+    "bindings": {
+      "session.phase": {
+        "identifier": "session.phase",
+        "role": "text"
+      }
+    },
+    "base_actions": [
+      {
+        "type": "checkpoint"
+      }
+    ]
+  }
+}

@@ -37,13 +37,22 @@ def compile_execution(plan, lock, lock_sha, fixtures, bridge_sha, *, launch_ref,
     required = []
     for state in plan['states']:
         if state['id'] not in selected: continue
-        targets = []
+        targets, absence_targets, presence_targets = [], [], []
         for rule in plan['assertions']:
             if rule['state'] == state['id']:
                 for key in ['target', 'reference_target']:
                     target = rule.get(key)
-                    if target and target not in targets: validate_selector(target); targets.append(copy.deepcopy(target))
-        required.append({'state_id': state['id'], 'coverage': state.get('coverage', 'targets'), 'targets': targets})
+                    if target:
+                        validate_selector(target)
+                        destination = absence_targets if key == 'target' and rule['kind'] == 'control' and rule.get('property') == 'present' and rule.get('op', 'eq') == 'eq' and rule.get('expected') is False else presence_targets
+                        if target not in destination: destination.append(copy.deepcopy(target))
+                        if target not in targets: targets.append(copy.deepcopy(target))
+        # An approved absence is acquired by a coherent full sweep, not by
+        # locating the deliberately absent node. Existence remains assertion
+        # truth: an unexpected node must yield a valid capture with a failure.
+        targets = [t for t in targets if t in presence_targets]
+        required.append({'state_id': state['id'], 'coverage': 'full_content' if absence_targets else state.get('coverage', 'targets'),
+                         'targets': targets, 'absence_targets': absence_targets})
     enriched = copy.deepcopy(actions)
     for action in enriched:
         state_id = action.get('state_id')
@@ -184,6 +193,7 @@ def run_execution(value, plan, lock, lock_sha, fixtures, bridge, output, source_
     for key, item in native_options.items():
         if item is not None: command += ['--' + key, str(item)]
     record = {'version': 1, 'startedAtUnix': time.time(), 'execution_sha256': value['execution_sha256'],
+              'parent_plan_sha256': design.digest(plan),
               'source_sha256': design.digest(before), 'source_roots': list(map(str, roots)), 'argv': command,
               'scope': value['scope'], 'input_hashes': {name: hashlib.sha256((output / name).read_bytes()).hexdigest() for name in ['fixtures.json', 'actions.json']}}
     save('request.json', record)
@@ -199,33 +209,38 @@ def run_execution(value, plan, lock, lock_sha, fixtures, bridge, output, source_
     save('source-after.json', after)
     record['inputs_unchanged'] = all(hashlib.sha256((output / name).read_bytes()).hexdigest() == h for name, h in record['input_hashes'].items())
     observation_path = output / 'native/observation.json'
-    if observation_path.is_file() and record['source_unchanged'] and record['inputs_unchanged']:
-        import native_checks
-        observation = design.load(observation_path); obs_sha = hashlib.sha256(observation_path.read_bytes()).hexdigest()
-        record['image_hashes'] = {}
-        for snapshot in observation.get('snapshots', []):
-            relative = snapshot['screenshot']; path = (observation_path.parent / relative).resolve()
-            if not path.is_relative_to(observation_path.parent) or not path.is_file(): raise ValueError('Native image missing or outside output')
-            record['image_hashes'][relative] = hashlib.sha256(path.read_bytes()).hexdigest()
-        verify_capture_images(record, observation_path.parent)
-        environment = acceptance.environment(observation, expected_environment, value['platform']) if expected_environment is not None else None
-        if environment is not None:
-            save('environment-check.json', environment); record['environment_status'] = environment['status']
-            record['environment_expectation_sha256'] = environment_sha
-        receipt = coverage_receipt(value, observation); save('execution-coverage.json', receipt)
-        record['coverage_satisfied'] = receipt['satisfied']
-        manual = None
-        if policy is not None:
-            catalog = review_contract.catalog(plan, lock, lock_sha, policy, policy_sha, value['platform'])
-            submission = {'version': 1, 'catalog_sha256': design.digest(catalog), 'observation_sha256': obs_sha, 'decisions': []}
-            manual = review_contract.bind(plan, lock, lock_sha, policy, policy_sha, observation, obs_sha, observation_path.parent, submission, value['platform'])
-        report = native_checks.evaluate(plan, observation, value['platform'], manual, observation_path.parent, obs_sha, lock, lock_sha, policy, policy_sha)
-        if environment is not None: report['environment'] = environment
-        save('automatic.json', report); record['automatic_counts'] = report['counts']
-        record['automatic_sha256'] = hashlib.sha256((output / 'automatic.json').read_bytes()).hexdigest()
-        record['observation_sha256'] = obs_sha
-        record['parent_plan_sha256'] = design.digest(plan)
-    else: record['coverage_satisfied'] = False
+    try:
+        if observation_path.is_file() and record['source_unchanged'] and record['inputs_unchanged']:
+            import native_checks
+            observation = design.load(observation_path); obs_sha = hashlib.sha256(observation_path.read_bytes()).hexdigest()
+            record['image_hashes'] = {}
+            for snapshot in observation.get('snapshots', []):
+                relative = snapshot['screenshot']; path = (observation_path.parent / relative).resolve()
+                if not path.is_relative_to(observation_path.parent) or not path.is_file(): raise ValueError('Native image missing or outside output')
+                record['image_hashes'][relative] = hashlib.sha256(path.read_bytes()).hexdigest()
+            verify_capture_images(record, observation_path.parent)
+            environment = acceptance.environment(observation, expected_environment, value['platform']) if expected_environment is not None else None
+            if environment is not None:
+                save('environment-check.json', environment); record['environment_status'] = environment['status']
+                record['environment_expectation_sha256'] = environment_sha
+            receipt = coverage_receipt(value, observation); save('execution-coverage.json', receipt)
+            record['coverage_satisfied'] = receipt['satisfied']
+            manual = None
+            if policy is not None:
+                catalog = review_contract.catalog(plan, lock, lock_sha, policy, policy_sha, value['platform'])
+                submission = {'version': 1, 'catalog_sha256': design.digest(catalog), 'observation_sha256': obs_sha, 'decisions': []}
+                manual = review_contract.bind(plan, lock, lock_sha, policy, policy_sha, observation, obs_sha, observation_path.parent, submission, value['platform'])
+            report = native_checks.evaluate(plan, observation, value['platform'], manual, observation_path.parent, obs_sha, lock, lock_sha, policy, policy_sha)
+            if environment is not None: report['environment'] = environment
+            save('automatic.json', report); record['automatic_counts'] = report['counts']
+            record['automatic_sha256'] = hashlib.sha256((output / 'automatic.json').read_bytes()).hexdigest()
+            record['observation_sha256'] = obs_sha
+            record['parent_plan_sha256'] = design.digest(plan)
+        else: record['coverage_satisfied'] = False
+    except Exception as error:
+        record['coverage_satisfied'] = False
+        record['evidence_error'] = {'type': type(error).__name__, 'message': str(error)}
+        if observation_path.is_file(): record['observation_sha256'] = hashlib.sha256(observation_path.read_bytes()).hexdigest()
     record['finishedAtUnix'] = time.time(); record['status'] = ('verified_capture' if record['native_exit_code'] == 0 and record['source_unchanged'] and record['inputs_unchanged'] and record['coverage_satisfied'] and record.get('environment_status', 'P') == 'P' else 'invalid_or_incomplete_capture')
     record['scope_limit'] = 'A source-bound capture/automatic-check result, not full PR acceptance or independent visual truth.'
     save('result.json', record)

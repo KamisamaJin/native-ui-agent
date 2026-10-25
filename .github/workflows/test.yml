@@ -105,12 +105,23 @@ jobs:
           python3 -B validation/feedback-forward/test_final_outcome_metrics.py
           python3 -B validation/feedback-forward/test_implementation_audit.py
           python3 -B validation/feedback-forward/test_source_outcomes.py
-      - name: Replay decision and feedback forward evidence
+      - name: Replay immutable v9 publication in historical source view
+        run: python3 -B validation/publications/feedback-v9-replay/verify.py
+      - name: Default-chain metric and independent neutral controls
         run: |
-          python3 -B validation/feedback-forward/verify.py
-          python3 -B validation/feedback-forward/benchmark_summary.py --check
-          python3 -B validation/feedback-forward/build_summary.py --check
-          python3 -B validation/feedback-forward/build_failure_index.py --check
-          python3 -B validation/feedback-forward/build_tables.py --check
-          python3 -B validation/feedback-forward/build_gallery.py --check
-          python3 -B validation/publications/feedback-v9/verify.py
+          python3 -B validation/default-forward/test_metrics.py
+          python3 -B validation/default-forward/probe-design/verify_manifest.py
+          python3 -B validation/default-forward/probe-review/replay_after.py --output validation/default-forward/cache/ci-neutral-after
+      - name: Verify default-chain blind evidence
+        run: |
+          python3 -B validation/default-forward/design/verify_design.py
+          python3 -B validation/default-forward/verify.py
+          python3 -B validation/default-forward/verify_quality.py
+          python3 -B validation/default-forward/execution_audit.py > validation/default-forward/cache/execution-recomputed.json
+          cmp validation/default-forward/execution-audit.json validation/default-forward/cache/execution-recomputed.json
+          python3 -B validation/default-forward/costs.py > validation/default-forward/cache/costs-recomputed.json
+          cmp validation/default-forward/costs.json validation/default-forward/cache/costs-recomputed.json
+          python3 -B validation/default-forward/derive_results.py > validation/default-forward/cache/results-recomputed.json
+          cmp validation/default-forward/results.json validation/default-forward/cache/results-recomputed.json
+          python3 -B validation/default-forward/build_docs.py --check
+          python3 -B validation/default-forward/artifacts.py --tracked

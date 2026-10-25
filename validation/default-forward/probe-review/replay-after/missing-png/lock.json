@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "independent-neutral-probe-adapter",
+    "approval_reference": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/default-forward/probe-design/SHA256SUMS",
+    "sources": [
+      {
+        "id": "approved",
+        "path": "approved.json",
+        "sha256": "742a4e7c832061482234fc689df7aacf4c927475933f3c221acbf5a01d318056"
+      }
+    ],
+    "rules": [
+      {
+        "id": "phase",
+        "kind": "control",
+        "target": "session.phase",
+        "property": "label"
+      }
+    ],
+    "required_rule_ids": [
+      "phase"
+    ],
+    "scenarios": {
+      "neutral": {
+        "states": [
+          {
+            "id": "checkpoint-00",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          }
+        ],
+        "actions": [
+          {
+            "type": "checkpoint"
+          }
+        ],
+        "values": {
+          "phase": {
+            "checkpoint-00": {
+              "ios": {
+                "source": "approved",
+                "pointer": "/expected/phase/0"
+              },
+              "android": {
+                "source": "approved",
+                "pointer": "/expected/phase/0"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "approved": {
+      "id": "approved",
+      "path": "approved.json",
+      "sha256": "742a4e7c832061482234fc689df7aacf4c927475933f3c221acbf5a01d318056",
+      "document": {
+        "expected": {
+          "phase": [
+            {
+              "value": "Running",
+              "unit": "string"
+            }
+          ]
+        },
+        "launch": {
+          "fixtures_sha256": "8ba367a5face432cefae47c99d247f83c2030c3418cd4016b460eedc5c84a997",
+          "bridge_sha256": "8411f12d746e09ae6d86d287a19404de0b7d7b2d019ccb6f206028ebe0bc0484",
+          "scenario": "neutral",
+          "platform": "ios"
+        },
+        "obligations": [
+          {
+            "id": "phase",
+            "clause": "Neutral approved subset: phase",
+            "priority": "must",
+            "states": [
+              "checkpoint-00"
+            ],
+            "risk": "behavior"
+          }
+        ]
+      },
+      "raw_utf8": "{\n  \"expected\": {\n    \"phase\": [\n      {\n        \"value\": \"Running\",\n        \"unit\": \"string\"\n      }\n    ]\n  },\n  \"launch\": {\n    \"fixtures_sha256\": \"8ba367a5face432cefae47c99d247f83c2030c3418cd4016b460eedc5c84a997\",\n    \"bridge_sha256\": \"8411f12d746e09ae6d86d287a19404de0b7d7b2d019ccb6f206028ebe0bc0484\",\n    \"scenario\": \"neutral\",\n    \"platform\": \"ios\"\n  },\n  \"obligations\": [\n    {\n      \"id\": \"phase\",\n      \"clause\": \"Neutral approved subset: phase\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"checkpoint-00\"\n      ],\n      \"risk\": \"behavior\"\n    }\n  ]\n}\n"
+    }
+  },
+  "contract_sha256": "187565247e36fa3d8d5d1d5d46c8534915f7d59b2bc2d40820d6540d97fda46b",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

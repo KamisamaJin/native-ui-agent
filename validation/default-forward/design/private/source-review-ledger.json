@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "scope": "Separate source-only obligation ledger; never supplied to requirement_routes.py as native rule IDs.",
+  "acceptance_conjunction": {
+    "operator": "all",
+    "requirements": [
+      "independently accepted complete native/visual evidence under routes.json",
+      "independent source review passing every must obligation in this ledger with original production file/line evidence",
+      "separate successful minimum-iOS API module and unchanged-caller typecheck"
+    ],
+    "native_admission_alone_is_complete_acceptance": false,
+    "source_review_can_close_native_unknowns": false
+  },
+  "obligations": [
+    {
+      "id": "style-declarations-source",
+      "clause": "Source-only: declare and apply the original typed font, color and spacing values.",
+      "priority": "must",
+      "audit_item_ids": [
+        "ios-titleSize",
+        "ios-rowTitleSize",
+        "ios-bodySize",
+        "ios-metadataSize",
+        "ios-semiboldWeight",
+        "ios-regularWeight",
+        "ios-cardPadding",
+        "ios-rowPadding",
+        "ios-sectionGap",
+        "ios-textGap",
+        "ios-cardRadius",
+        "ios-controlRadius",
+        "ios-selectedBorderWidth",
+        "ios-rowMinHeight",
+        "ios-primaryMinHeight",
+        "ios-disclosureMinHeight",
+        "android-titleSize",
+        "android-rowTitleSize",
+        "android-bodySize",
+        "android-metadataSize",
+        "android-semiboldWeight",
+        "android-regularWeight",
+        "android-cardPadding",
+        "android-rowPadding",
+        "android-sectionGap",
+        "android-textGap",
+        "android-cardRadius",
+        "android-controlRadius",
+        "android-selectedBorderWidth",
+        "android-rowMinHeight",
+        "android-primaryMinHeight",
+        "android-disclosureMinHeight",
+        "light-surface",
+        "light-ink",
+        "light-secondary",
+        "light-neutralRow",
+        "light-selectedRow",
+        "light-accent",
+        "light-disabledInk",
+        "light-primaryInk",
+        "dark-surface",
+        "dark-ink",
+        "dark-secondary",
+        "dark-neutralRow",
+        "dark-selectedRow",
+        "dark-accent",
+        "dark-disabledInk",
+        "dark-primaryInk"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "method": "source-only",
+      "runtime_limit": "Source declarations do not establish computed fonts, colors, effective padding, rendering, or their runtime use. Independent native/pixel/visual evidence remains separately required."
+    },
+    {
+      "id": "notes-close-source",
+      "clause": "Source-only: the open-to-closed notes Button transition hides the body and emits exactly one notes:<current requestID>:closed event.",
+      "priority": "must",
+      "audit_item_ids": [
+        "notes-close-source"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "method": "source-only",
+      "runtime_limit": "Closing notes is not dispatched by the selected runtime route. Source review cannot establish an actual callback, native activation, interval, or closed-state rendering after this transition."
+    },
+    {
+      "id": "self-choice-source",
+      "clause": "Source-only: changing an unsent delegate selection back to self sets the self selection, hides acknowledgment, makes confirmation valid, and emits exactly one collector:<current requestID>:self event.",
+      "priority": "must",
+      "audit_item_ids": [
+        "self-choice-source"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "method": "source-only",
+      "runtime_limit": "The route starts with self selected but never activates self after choosing delegate. Initial/reset self facts do not prove the self-choice callback branch."
+    },
+    {
+      "id": "ack-false-source",
+      "clause": "Source-only: a real true-to-false acknowledgment toggle emits exactly one ack:<current requestID>:false event and makes unsubmitted delegate confirmation invalid.",
+      "priority": "must",
+      "audit_item_ids": [
+        "ack-false-source"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "method": "source-only",
+      "runtime_limit": "Only false-to-true acknowledgment is dispatched. Its callback and initial false value do not prove true-to-false activation or its callback interval."
+    },
+    {
+      "id": "self-submit-source",
+      "clause": "Source-only: an enabled self-collection confirmation emits exactly one submit:<current requestID>:self event and applies the original submitted-state behavior.",
+      "priority": "must",
+      "audit_item_ids": [
+        "self-submit-source"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "method": "source-only",
+      "runtime_limit": "Runtime confirmation is exercised only for delegate. Self primary-enabled facts do not prove an actual self submission callback or its resulting rendering."
+    },
+    {
+      "id": "same-choice-quiet-source",
+      "clause": "Source-only: reselecting the already selected collector leaves selection unchanged and emits no collector event, consistent with the original different-collector requirement.",
+      "priority": "must",
+      "audit_item_ids": [
+        "same-choice-quiet-source"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "method": "source-only",
+      "runtime_limit": "No same-choice activation is dispatched; an empty callback interval is not inferred from the selected route."
+    },
+    {
+      "id": "disabled-callback-guard-source",
+      "clause": "Source-only: disabled choice, acknowledgment and confirmation controls cannot invoke their business callbacks; guards preserve the original submitted and invalid-state behavior.",
+      "priority": "must",
+      "audit_item_ids": [
+        "disabled-callback-guard-source"
+      ],
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "method": "source-only",
+      "runtime_limit": "Runtime enabled/disabled native facts are asserted, but disabled controls are not activated and no runtime no-callback verdict is claimed."
+    },
+    {
+      "id": "minimum-ios-api-source",
+      "clause": "Source-only preliminary API review followed by the separately required minimum-target compiler check.",
+      "priority": "must",
+      "audit_item_ids": [
+        "ios14-public-api-source"
+      ],
+      "platforms": [
+        "ios"
+      ],
+      "method": "source-only",
+      "runtime_limit": "No compiler or SDK is executed by this design. Neither source review nor later typechecking proves iOS14 runtime rendering."
+    }
+  ]
+}

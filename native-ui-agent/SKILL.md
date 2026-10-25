@@ -45,6 +45,10 @@ description: 在现有 iOS 或 Android 工程中新增或修改原生 UI 组件�
 
 按 [执行与证据协议](references/protocol.md)为项目生成真实 profile。随附 [Android 示例](assets/profile.example.json)和 [iOS 示例](assets/profile.ios.example.json)展示字段结构，需要替换为当前项目确认的命令、路径和期望。必需检查在实现前固定；改变检查时保留需求依据。
 
+## 默认原生反馈入口
+
+复杂原生组件开发由[默认执行服务](references/default-feedback.md)接入 `ui_loop.py native`；集成端在每次反馈和最终验收无条件调用路由、定位诊断与复验规划，模型只提交源码修改。禁止手选状态绕过该链路。保留服务 trace、开放任务、原始包与完整最终门控。下面旧 profile 的 capture/review 仅用于兼容既有简单项目。
+
 ## 实现并取得反馈
 
 1. 先记录相关构建和原有视觉基线。

@@ -1,0 +1,3273 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "Independent print-shop collection design author",
+    "approval_reference": "approval.json; preimplementation independent original design seal",
+    "sources": [
+      {
+        "id": "reference",
+        "path": "reference.json",
+        "sha256": "c3576d200a8e6b6e8781d640850d020fe1780296447a4e2a154367ab11768ff6"
+      }
+    ],
+    "required_rule_ids": [
+      "title-label",
+      "summary-label",
+      "status-label",
+      "notes-label",
+      "notes-presence",
+      "delegate-enabled",
+      "self-enabled",
+      "self-selected",
+      "delegate-selected",
+      "ack-presence",
+      "primary-enabled",
+      "primary-label",
+      "notes-content",
+      "ack-value",
+      "ack-label",
+      "notes-receipt",
+      "collector-receipt",
+      "ack-receipt",
+      "submit-receipt",
+      "replacement-silent",
+      "primary-min-height",
+      "delegate-min-height",
+      "delegate-fill",
+      "content-overlap",
+      "content-wrap",
+      "window-label",
+      "self-title-content",
+      "self-detail-content",
+      "delegate-title-content",
+      "delegate-detail-content",
+      "unavailable-presence",
+      "unavailable-label",
+      "ack-enabled",
+      "notes-enabled"
+    ],
+    "rules": [
+      {
+        "id": "title-label",
+        "kind": "control",
+        "target": "title",
+        "property": "label"
+      },
+      {
+        "id": "summary-label",
+        "kind": "control",
+        "target": "summary",
+        "property": "label"
+      },
+      {
+        "id": "status-label",
+        "kind": "control",
+        "target": "status",
+        "property": "label"
+      },
+      {
+        "id": "notes-label",
+        "kind": "control",
+        "target": "notes",
+        "property": "label"
+      },
+      {
+        "id": "notes-presence",
+        "kind": "control",
+        "target": "notesBody",
+        "property": "present"
+      },
+      {
+        "id": "delegate-enabled",
+        "kind": "control",
+        "target": "delegate",
+        "property": "enabled"
+      },
+      {
+        "id": "self-enabled",
+        "kind": "control",
+        "target": "self",
+        "property": "enabled"
+      },
+      {
+        "id": "self-selected",
+        "kind": "control",
+        "target": "self",
+        "property": "selected"
+      },
+      {
+        "id": "delegate-selected",
+        "kind": "control",
+        "target": "delegate",
+        "property": "selected"
+      },
+      {
+        "id": "ack-presence",
+        "kind": "control",
+        "target": "ack",
+        "property": "present"
+      },
+      {
+        "id": "primary-enabled",
+        "kind": "control",
+        "target": "confirm",
+        "property": "enabled"
+      },
+      {
+        "id": "primary-label",
+        "kind": "control",
+        "target": "confirm",
+        "property": "label"
+      },
+      {
+        "id": "notes-content",
+        "kind": "control",
+        "target": "notesBody",
+        "property": "label"
+      },
+      {
+        "id": "ack-value",
+        "kind": "control",
+        "target": "ack",
+        "property": "value"
+      },
+      {
+        "id": "ack-label",
+        "kind": "control",
+        "target": "ack",
+        "property": "label"
+      },
+      {
+        "id": "notes-receipt",
+        "kind": "event"
+      },
+      {
+        "id": "collector-receipt",
+        "kind": "event"
+      },
+      {
+        "id": "ack-receipt",
+        "kind": "event"
+      },
+      {
+        "id": "submit-receipt",
+        "kind": "event"
+      },
+      {
+        "id": "replacement-silent",
+        "kind": "event",
+        "stimulus": "caller_update"
+      },
+      {
+        "id": "primary-min-height",
+        "kind": "geometry",
+        "target": "confirm",
+        "property": "height",
+        "op": "gte",
+        "basis": "control",
+        "measurement": "accessibility_box"
+      },
+      {
+        "id": "delegate-min-height",
+        "kind": "geometry",
+        "target": "delegate",
+        "property": "height",
+        "op": "gte",
+        "basis": "control",
+        "measurement": "accessibility_box"
+      },
+      {
+        "id": "delegate-fill",
+        "kind": "manual",
+        "target": "delegate",
+        "property": "rendered_fill_argb",
+        "coverage": "target",
+        "allowed_methods": [
+          "native_pixels"
+        ]
+      },
+      {
+        "id": "content-overlap",
+        "kind": "manual",
+        "target": "card",
+        "property": "overlap",
+        "coverage": "full_content",
+        "allowed_methods": [
+          "visual"
+        ]
+      },
+      {
+        "id": "content-wrap",
+        "kind": "manual",
+        "target": "card",
+        "property": "wrapping",
+        "coverage": "full_content",
+        "allowed_methods": [
+          "visual"
+        ]
+      },
+      {
+        "id": "window-label",
+        "kind": "control",
+        "target": "window",
+        "property": "label"
+      },
+      {
+        "id": "self-title-content",
+        "kind": "control",
+        "target": "self",
+        "property": "label",
+        "op": "contains"
+      },
+      {
+        "id": "self-detail-content",
+        "kind": "control",
+        "target": "self",
+        "property": "label",
+        "op": "contains"
+      },
+      {
+        "id": "delegate-title-content",
+        "kind": "control",
+        "target": "delegate",
+        "property": "label",
+        "op": "contains"
+      },
+      {
+        "id": "delegate-detail-content",
+        "kind": "control",
+        "target": "delegate",
+        "property": "label",
+        "op": "contains"
+      },
+      {
+        "id": "unavailable-presence",
+        "kind": "control",
+        "target": "unavailable",
+        "property": "present"
+      },
+      {
+        "id": "unavailable-label",
+        "kind": "control",
+        "target": "unavailable",
+        "property": "label"
+      },
+      {
+        "id": "ack-enabled",
+        "kind": "control",
+        "target": "ack",
+        "property": "enabled"
+      },
+      {
+        "id": "notes-enabled",
+        "kind": "control",
+        "target": "notes",
+        "property": "enabled"
+      }
+    ],
+    "scenarios": {
+      "courtyard-collection": {
+        "states": [
+          {
+            "id": "ready",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          },
+          {
+            "id": "notes_open",
+            "input_index": 0,
+            "after_action": 1,
+            "coverage": "full_content"
+          },
+          {
+            "id": "delegate_chosen",
+            "input_index": 0,
+            "after_action": 2,
+            "coverage": "full_content"
+          },
+          {
+            "id": "authorized",
+            "input_index": 0,
+            "after_action": 3,
+            "coverage": "full_content"
+          },
+          {
+            "id": "submitted",
+            "input_index": 0,
+            "after_action": 4,
+            "coverage": "full_content"
+          },
+          {
+            "id": "replacement",
+            "input_index": 1,
+            "after_action": 5,
+            "coverage": "full_content"
+          }
+        ],
+        "actions": [
+          {
+            "type": "sweep",
+            "state_id": "ready",
+            "max_scrolls": 32
+          },
+          {
+            "type": "tap",
+            "target": "notes",
+            "reveal": true,
+            "state_id": "notes_open"
+          },
+          {
+            "type": "tap",
+            "target": "delegate",
+            "reveal": true,
+            "state_id": "delegate_chosen"
+          },
+          {
+            "type": "tap",
+            "target": "ack",
+            "reveal": true,
+            "state_id": "authorized"
+          },
+          {
+            "type": "tap",
+            "target": "confirm",
+            "reveal": true,
+            "state_id": "submitted"
+          },
+          {
+            "type": "apply_next_fixture",
+            "state_id": "replacement"
+          }
+        ],
+        "values": {
+          "title-label": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/title"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/title"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/title"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/title"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/title"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/title"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/title"
+              }
+            }
+          },
+          "summary-label": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/jobSummary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/jobSummary"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/jobSummary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/jobSummary"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/jobSummary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/jobSummary"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/jobSummary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/jobSummary"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/jobSummary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/jobSummary"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/jobSummary"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/jobSummary"
+              }
+            }
+          },
+          "status-label": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/status"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/status"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/status"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/status"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/status"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/status"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/status"
+              }
+            }
+          },
+          "notes-label": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/notesLabel"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/notesLabel"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/notesLabel"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/notesLabel"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/notesLabel"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/notesLabel"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/notesLabel"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/notesLabel"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/notesLabel"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/notesLabel"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/notesLabel"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/notesLabel"
+              }
+            }
+          },
+          "notes-presence": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/notesPresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/notesPresent"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/notesPresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/notesPresent"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/notesPresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/notesPresent"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/notesPresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/notesPresent"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/notesPresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/notesPresent"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/notesPresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/notesPresent"
+              }
+            }
+          },
+          "delegate-enabled": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/delegateEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/delegateEnabled"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/delegateEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/delegateEnabled"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/delegateEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/delegateEnabled"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/delegateEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/delegateEnabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/delegateEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/delegateEnabled"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/delegateEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/delegateEnabled"
+              }
+            }
+          },
+          "self-enabled": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/selfEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/selfEnabled"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/selfEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/selfEnabled"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/selfEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/selfEnabled"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/selfEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/selfEnabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/selfEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/selfEnabled"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/selfEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/selfEnabled"
+              }
+            }
+          },
+          "self-selected": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/selfSelected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/selfSelected"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/selfSelected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/selfSelected"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/selfSelected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/selfSelected"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/selfSelected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/selfSelected"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/selfSelected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/selfSelected"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/selfSelected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/selfSelected"
+              }
+            }
+          },
+          "delegate-selected": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/delegateSelected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/delegateSelected"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/delegateSelected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/delegateSelected"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/delegateSelected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/delegateSelected"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/delegateSelected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/delegateSelected"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/delegateSelected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/delegateSelected"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/delegateSelected"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/delegateSelected"
+              }
+            }
+          },
+          "ack-presence": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/ackPresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/ackPresent"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/ackPresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/ackPresent"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/ackPresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/ackPresent"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/ackPresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/ackPresent"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/ackPresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/ackPresent"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/ackPresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/ackPresent"
+              }
+            }
+          },
+          "primary-enabled": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/confirmEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/confirmEnabled"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/confirmEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/confirmEnabled"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/confirmEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/confirmEnabled"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/confirmEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/confirmEnabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/confirmEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/confirmEnabled"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/confirmEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/confirmEnabled"
+              }
+            }
+          },
+          "primary-label": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/confirmLabel"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/confirmLabel"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/confirmLabel"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/confirmLabel"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/confirmLabel"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/confirmLabel"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/confirmLabel"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/confirmLabel"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/confirmLabel"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/confirmLabel"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/confirmLabel"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/confirmLabel"
+              }
+            }
+          },
+          "notes-content": {
+            "ready": {
+              "not_applicable": "Notes are collapsed for the initial and newly replaced order; absence is asserted separately."
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/notesBody"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/notesBody"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/notesBody"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/notesBody"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/notesBody"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/notesBody"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/notesBody"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/notesBody"
+              }
+            },
+            "replacement": {
+              "not_applicable": "Notes are collapsed for the initial and newly replaced order; absence is asserted separately."
+            }
+          },
+          "ack-value": {
+            "ready": {
+              "not_applicable": "No acknowledgment control exists while self is selected; presence/absence has its own assertion."
+            },
+            "notes_open": {
+              "not_applicable": "No acknowledgment control exists while self is selected; presence/absence has its own assertion."
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/ackValue"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/ackValue"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/ackValue"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/ackValue"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/ackValue"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/ackValue"
+              }
+            },
+            "replacement": {
+              "not_applicable": "No acknowledgment control exists while self is selected; presence/absence has its own assertion."
+            }
+          },
+          "ack-label": {
+            "ready": {
+              "not_applicable": "The self-collection state has no acknowledgment label or native switch."
+            },
+            "notes_open": {
+              "not_applicable": "The self-collection state has no acknowledgment label or native switch."
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/acknowledgement"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/acknowledgement"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/acknowledgement"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/acknowledgement"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/acknowledgement"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/acknowledgement"
+              }
+            },
+            "replacement": {
+              "not_applicable": "The self-collection state has no acknowledgment label or native switch."
+            }
+          },
+          "notes-receipt": {
+            "ready": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/events/open"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/events/open"
+              }
+            },
+            "delegate_chosen": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "authorized": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "submitted": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "replacement": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            }
+          },
+          "collector-receipt": {
+            "ready": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "notes_open": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/events/choose"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/events/choose"
+              }
+            },
+            "authorized": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "submitted": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "replacement": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            }
+          },
+          "ack-receipt": {
+            "ready": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "notes_open": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "delegate_chosen": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/events/ack"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/events/ack"
+              }
+            },
+            "submitted": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "replacement": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            }
+          },
+          "submit-receipt": {
+            "ready": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "notes_open": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "delegate_chosen": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "authorized": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/events/submit"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/events/submit"
+              }
+            },
+            "replacement": {
+              "not_applicable": "This state is not the successful native dispatch interval for the named action."
+            }
+          },
+          "replacement-silent": {
+            "ready": {
+              "not_applicable": "Only the caller-fixture replacement is assessed as a quiet caller update."
+            },
+            "notes_open": {
+              "not_applicable": "Only the caller-fixture replacement is assessed as a quiet caller update."
+            },
+            "delegate_chosen": {
+              "not_applicable": "Only the caller-fixture replacement is assessed as a quiet caller update."
+            },
+            "authorized": {
+              "not_applicable": "Only the caller-fixture replacement is assessed as a quiet caller update."
+            },
+            "submitted": {
+              "not_applicable": "Only the caller-fixture replacement is assessed as a quiet caller update."
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/events/quiet"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/events/quiet"
+              }
+            }
+          },
+          "primary-min-height": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/layout/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/layout/android/primaryMinHeight"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/layout/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/layout/android/primaryMinHeight"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/layout/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/layout/android/primaryMinHeight"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/layout/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/layout/android/primaryMinHeight"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/layout/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/layout/android/primaryMinHeight"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/layout/ios/primaryMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/layout/android/primaryMinHeight"
+              }
+            }
+          },
+          "delegate-min-height": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/layout/ios/rowMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/layout/android/rowMinHeight"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/layout/ios/rowMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/layout/android/rowMinHeight"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/layout/ios/rowMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/layout/android/rowMinHeight"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/layout/ios/rowMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/layout/android/rowMinHeight"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/layout/ios/rowMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/layout/android/rowMinHeight"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/style/layout/ios/rowMinHeight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/style/layout/android/rowMinHeight"
+              }
+            }
+          },
+          "delegate-fill": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/delegateFill"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/delegateFill"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/delegateFill"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/delegateFill"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/delegateFill"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/delegateFill"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/delegateFill"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/delegateFill"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/delegateFill"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/delegateFill"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/delegateFill"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/delegateFill"
+              }
+            }
+          },
+          "content-overlap": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/clear"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/clear"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/clear"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/clear"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/clear"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/clear"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/clear"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/clear"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/clear"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/clear"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/clear"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/clear"
+              }
+            }
+          },
+          "content-wrap": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapped"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapped"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapped"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapped"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapped"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapped"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapped"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapped"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapped"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapped"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/visual/wrapped"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/visual/wrapped"
+              }
+            }
+          },
+          "window-label": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/pickupWindow"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/pickupWindow"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/pickupWindow"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/pickupWindow"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/pickupWindow"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/pickupWindow"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/pickupWindow"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/pickupWindow"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/pickupWindow"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/pickupWindow"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/pickupWindow"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/pickupWindow"
+              }
+            }
+          },
+          "self-title-content": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfTitle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfTitle"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfTitle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfTitle"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfTitle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfTitle"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfTitle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfTitle"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfTitle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfTitle"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/selfTitle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/selfTitle"
+              }
+            }
+          },
+          "self-detail-content": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfDetail"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfDetail"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfDetail"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfDetail"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfDetail"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfDetail"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfDetail"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfDetail"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfDetail"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/selfDetail"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/selfDetail"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/selfDetail"
+              }
+            }
+          },
+          "delegate-title-content": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateTitle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateTitle"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateTitle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateTitle"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateTitle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateTitle"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateTitle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateTitle"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateTitle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateTitle"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/delegateTitle"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/delegateTitle"
+              }
+            }
+          },
+          "delegate-detail-content": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateDetail"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateDetail"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateDetail"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateDetail"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateDetail"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateDetail"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateDetail"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateDetail"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateDetail"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/original/delegateDetail"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/delegateDetail"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/delegateDetail"
+              }
+            }
+          },
+          "unavailable-presence": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/unavailablePresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/unavailablePresent"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/unavailablePresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/unavailablePresent"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/unavailablePresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/unavailablePresent"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/unavailablePresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/unavailablePresent"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/unavailablePresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/unavailablePresent"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/unavailablePresent"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/unavailablePresent"
+              }
+            }
+          },
+          "unavailable-label": {
+            "ready": {
+              "not_applicable": "The availability explanation is absent while caller delegateAvailable is true, including submitted; its absence is separately asserted."
+            },
+            "notes_open": {
+              "not_applicable": "The availability explanation is absent while caller delegateAvailable is true, including submitted; its absence is separately asserted."
+            },
+            "delegate_chosen": {
+              "not_applicable": "The availability explanation is absent while caller delegateAvailable is true, including submitted; its absence is separately asserted."
+            },
+            "authorized": {
+              "not_applicable": "The availability explanation is absent while caller delegateAvailable is true, including submitted; its absence is separately asserted."
+            },
+            "submitted": {
+              "not_applicable": "The availability explanation is absent while caller delegateAvailable is true, including submitted; its absence is separately asserted."
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/delegateUnavailableMessage"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/inputs/replacement/delegateUnavailableMessage"
+              }
+            }
+          },
+          "ack-enabled": {
+            "ready": {
+              "not_applicable": "No acknowledgment control exists while self is selected; its absence is separately asserted."
+            },
+            "notes_open": {
+              "not_applicable": "No acknowledgment control exists while self is selected; its absence is separately asserted."
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/ackEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/ackEnabled"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/ackEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/ackEnabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/ackEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/ackEnabled"
+              }
+            },
+            "replacement": {
+              "not_applicable": "No acknowledgment control exists while self is selected; its absence is separately asserted."
+            }
+          },
+          "notes-enabled": {
+            "ready": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/ready/notesEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/ready/notesEnabled"
+              }
+            },
+            "notes_open": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/notesEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/notes_open/notesEnabled"
+              }
+            },
+            "delegate_chosen": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/notesEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/delegate_chosen/notesEnabled"
+              }
+            },
+            "authorized": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/authorized/notesEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/authorized/notesEnabled"
+              }
+            },
+            "submitted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/submitted/notesEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/submitted/notesEnabled"
+              }
+            },
+            "replacement": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/ui/replacement/notesEnabled"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/ui/replacement/notesEnabled"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "reference": {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "c3576d200a8e6b6e8781d640850d020fe1780296447a4e2a154367ab11768ff6",
+      "document": {
+        "identity": {
+          "domain": "Print-shop collection authorization",
+          "authorship": "Independent original requirements and design values authored before implementation; no candidate source or screenshot read.",
+          "scope": "private"
+        },
+        "style": {
+          "colors": {
+            "light": {
+              "surface": {
+                "value": "#FFFFFFFF",
+                "unit": "argb"
+              },
+              "ink": {
+                "value": "#FF172B3A",
+                "unit": "argb"
+              },
+              "secondary": {
+                "value": "#FF526675",
+                "unit": "argb"
+              },
+              "neutralRow": {
+                "value": "#FFF1F5F8",
+                "unit": "argb"
+              },
+              "selectedRow": {
+                "value": "#FFDFF3EE",
+                "unit": "argb"
+              },
+              "accent": {
+                "value": "#FF007F78",
+                "unit": "argb"
+              },
+              "disabledInk": {
+                "value": "#FF687C8A",
+                "unit": "argb"
+              },
+              "primaryInk": {
+                "value": "#FFFFFFFF",
+                "unit": "argb"
+              }
+            },
+            "dark": {
+              "surface": {
+                "value": "#FF142232",
+                "unit": "argb"
+              },
+              "ink": {
+                "value": "#FFF3F6FA",
+                "unit": "argb"
+              },
+              "secondary": {
+                "value": "#FFB6C7D5",
+                "unit": "argb"
+              },
+              "neutralRow": {
+                "value": "#FF223548",
+                "unit": "argb"
+              },
+              "selectedRow": {
+                "value": "#FF164C50",
+                "unit": "argb"
+              },
+              "accent": {
+                "value": "#FF4FD1C5",
+                "unit": "argb"
+              },
+              "disabledInk": {
+                "value": "#FF8DA4B5",
+                "unit": "argb"
+              },
+              "primaryInk": {
+                "value": "#FF102C30",
+                "unit": "argb"
+              }
+            }
+          },
+          "typography": {
+            "ios": {
+              "titleSize": {
+                "value": 22,
+                "unit": "pt"
+              },
+              "rowTitleSize": {
+                "value": 16,
+                "unit": "pt"
+              },
+              "bodySize": {
+                "value": 15,
+                "unit": "pt"
+              },
+              "metadataSize": {
+                "value": 13,
+                "unit": "pt"
+              },
+              "semiboldWeight": {
+                "value": 600,
+                "unit": "count"
+              },
+              "regularWeight": {
+                "value": 400,
+                "unit": "count"
+              }
+            },
+            "android": {
+              "titleSize": {
+                "value": 22,
+                "unit": "sp"
+              },
+              "rowTitleSize": {
+                "value": 16,
+                "unit": "sp"
+              },
+              "bodySize": {
+                "value": 15,
+                "unit": "sp"
+              },
+              "metadataSize": {
+                "value": 13,
+                "unit": "sp"
+              },
+              "semiboldWeight": {
+                "value": 600,
+                "unit": "count"
+              },
+              "regularWeight": {
+                "value": 400,
+                "unit": "count"
+              }
+            }
+          },
+          "layout": {
+            "ios": {
+              "cardPadding": {
+                "value": 20,
+                "unit": "pt"
+              },
+              "rowPadding": {
+                "value": 16,
+                "unit": "pt"
+              },
+              "sectionGap": {
+                "value": 12,
+                "unit": "pt"
+              },
+              "textGap": {
+                "value": 8,
+                "unit": "pt"
+              },
+              "cardRadius": {
+                "value": 20,
+                "unit": "pt"
+              },
+              "controlRadius": {
+                "value": 12,
+                "unit": "pt"
+              },
+              "selectedBorderWidth": {
+                "value": 1,
+                "unit": "pt"
+              },
+              "rowMinHeight": {
+                "value": 80,
+                "unit": "pt"
+              },
+              "primaryMinHeight": {
+                "value": 48,
+                "unit": "pt"
+              },
+              "disclosureMinHeight": {
+                "value": 48,
+                "unit": "pt"
+              }
+            },
+            "android": {
+              "cardPadding": {
+                "value": 20,
+                "unit": "dp"
+              },
+              "rowPadding": {
+                "value": 16,
+                "unit": "dp"
+              },
+              "sectionGap": {
+                "value": 12,
+                "unit": "dp"
+              },
+              "textGap": {
+                "value": 8,
+                "unit": "dp"
+              },
+              "cardRadius": {
+                "value": 20,
+                "unit": "dp"
+              },
+              "controlRadius": {
+                "value": 12,
+                "unit": "dp"
+              },
+              "selectedBorderWidth": {
+                "value": 1,
+                "unit": "dp"
+              },
+              "rowMinHeight": {
+                "value": 80,
+                "unit": "dp"
+              },
+              "primaryMinHeight": {
+                "value": 48,
+                "unit": "dp"
+              },
+              "disclosureMinHeight": {
+                "value": 48,
+                "unit": "dp"
+              }
+            }
+          }
+        },
+        "booleans": {
+          "yes": {
+            "value": true,
+            "unit": "bool"
+          },
+          "no": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "visual": {
+          "clear": {
+            "value": true,
+            "unit": "bool"
+          },
+          "wrapped": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "questions": {
+          "clear": {
+            "value": "Throughout the complete captured component, do visible text and controls remain clear of one another without unintended overlap?",
+            "unit": "string"
+          },
+          "wrapped": {
+            "value": "Throughout the complete captured component, does every displayed caller label and notes paragraph wrap within the available content width without clipping or ellipsis?",
+            "unit": "string"
+          }
+        },
+        "inputs": {
+          "original": {
+            "requestID": {
+              "value": "PRINT-7316",
+              "unit": "string"
+            },
+            "title": {
+              "value": "Authorize collection for the neighbourhood exhibition",
+              "unit": "string"
+            },
+            "jobSummary": {
+              "value": "North Quays Community Archive · 64 large-print catalogues and six folded location maps",
+              "unit": "string"
+            },
+            "pickupWindow": {
+              "value": "Collect Saturday 31 October, 09:30–11:45 · Accessible side entrance beside the loading courtyard",
+              "unit": "string"
+            },
+            "notesClosedTitle": {
+              "value": "Show pickup notes",
+              "unit": "string"
+            },
+            "notesOpenTitle": {
+              "value": "Hide pickup notes",
+              "unit": "string"
+            },
+            "notesBody": {
+              "value": "Keep this collection reference available when you arrive. The counter team will check the job number before handing over the sealed cartons.\n\nThe programmes are packed flat in three reusable cartons. Please bring a trolley or ask the counter team for help before moving the full order to your vehicle.\n\nIf someone collects for you, they must show their own photo ID and quote the same collection reference. This authorization covers collection only; it does not allow changes to artwork, quantities, or payment details.\n\nCheck the carton labels before leaving. If a carton looks damaged or a quantity differs from the packing slip, keep it at the counter so the team can record the issue with you.\n\nUncollected print work is stored indoors for seven calendar days. Contact the shop before the end of that period if your event has moved, because bulky orders may require a new collection arrangement.\n\nThe accessible entrance is reached from the courtyard rather than the main pavement. A staff member can bring the order to that entrance if the collector asks at the door. Leave the route clear for other visitors while cartons are checked.",
+              "unit": "string"
+            },
+            "selfTitle": {
+              "value": "I will collect the complete order",
+              "unit": "string"
+            },
+            "selfDetail": {
+              "value": "The counter team will check the order name and collection reference together",
+              "unit": "string"
+            },
+            "delegateTitle": {
+              "value": "A colleague will collect on my behalf",
+              "unit": "string"
+            },
+            "delegateDetail": {
+              "value": "They need their own photo ID, this reference, and space for all cartons",
+              "unit": "string"
+            },
+            "acknowledgement": {
+              "value": "I have given my colleague the full collection reference, the photo ID requirement, and the accessible entrance instructions.",
+              "unit": "string"
+            },
+            "confirmTitle": {
+              "value": "Confirm collection authorization",
+              "unit": "string"
+            },
+            "sentTitle": {
+              "value": "Authorization sent",
+              "unit": "string"
+            },
+            "readyMessage": {
+              "value": "Ready to authorize collection.",
+              "unit": "string"
+            },
+            "needsAcknowledgementMessage": {
+              "value": "Share the reference and ID requirement before confirming.",
+              "unit": "string"
+            },
+            "sentMessage": {
+              "value": "The counter team has your authorization.",
+              "unit": "string"
+            },
+            "delegateUnavailableMessage": {
+              "value": "Delegate collection is unavailable for this order.",
+              "unit": "string"
+            },
+            "delegateAvailable": {
+              "value": true,
+              "unit": "bool"
+            }
+          },
+          "replacement": {
+            "requestID": {
+              "value": "PRINT-7402",
+              "unit": "string"
+            },
+            "title": {
+              "value": "Authorize the replacement print order",
+              "unit": "string"
+            },
+            "jobSummary": {
+              "value": "Harbour Makers Cooperative · 48 rainproof direction signs with separate fixing packs",
+              "unit": "string"
+            },
+            "pickupWindow": {
+              "value": "Collect Monday 2 November, 13:15–15:00 · Workshop collection hatch",
+              "unit": "string"
+            },
+            "notesClosedTitle": {
+              "value": "Show pickup notes",
+              "unit": "string"
+            },
+            "notesOpenTitle": {
+              "value": "Hide pickup notes",
+              "unit": "string"
+            },
+            "notesBody": {
+              "value": "This replacement order contains new fixing packs. Please check the pack count against the labels before departing. The original order authorization does not apply to these signs, so confirm this collection separately.",
+              "unit": "string"
+            },
+            "selfTitle": {
+              "value": "I will collect",
+              "unit": "string"
+            },
+            "selfDetail": {
+              "value": "Use my order name at the counter",
+              "unit": "string"
+            },
+            "delegateTitle": {
+              "value": "Someone else will collect",
+              "unit": "string"
+            },
+            "delegateDetail": {
+              "value": "Their photo ID and this reference are required",
+              "unit": "string"
+            },
+            "acknowledgement": {
+              "value": "I have shared the collection reference and ID requirement with my collector.",
+              "unit": "string"
+            },
+            "confirmTitle": {
+              "value": "Confirm collection authorization",
+              "unit": "string"
+            },
+            "sentTitle": {
+              "value": "Authorization sent",
+              "unit": "string"
+            },
+            "readyMessage": {
+              "value": "Ready to authorize collection.",
+              "unit": "string"
+            },
+            "needsAcknowledgementMessage": {
+              "value": "Share the reference and ID requirement before confirming.",
+              "unit": "string"
+            },
+            "sentMessage": {
+              "value": "The counter team has your authorization.",
+              "unit": "string"
+            },
+            "delegateUnavailableMessage": {
+              "value": "Delegate collection is unavailable for this order.",
+              "unit": "string"
+            },
+            "delegateAvailable": {
+              "value": false,
+              "unit": "bool"
+            }
+          }
+        },
+        "ui": {
+          "ready": {
+            "status": {
+              "value": "Ready to authorize collection.",
+              "unit": "string"
+            },
+            "notesLabel": {
+              "value": "Show pickup notes",
+              "unit": "string"
+            },
+            "confirmLabel": {
+              "value": "Confirm collection authorization",
+              "unit": "string"
+            },
+            "notesPresent": {
+              "value": false,
+              "unit": "bool"
+            },
+            "ackPresent": {
+              "value": false,
+              "unit": "bool"
+            },
+            "ackValue": {
+              "value": false,
+              "unit": "bool"
+            },
+            "delegateEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "selfEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "selfSelected": {
+              "value": true,
+              "unit": "bool"
+            },
+            "delegateSelected": {
+              "value": false,
+              "unit": "bool"
+            },
+            "confirmEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "delegateFill": {
+              "value": "#FF223548",
+              "unit": "argb"
+            },
+            "ackEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "notesEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "unavailablePresent": {
+              "value": false,
+              "unit": "bool"
+            }
+          },
+          "notes_open": {
+            "status": {
+              "value": "Ready to authorize collection.",
+              "unit": "string"
+            },
+            "notesLabel": {
+              "value": "Hide pickup notes",
+              "unit": "string"
+            },
+            "confirmLabel": {
+              "value": "Confirm collection authorization",
+              "unit": "string"
+            },
+            "notesPresent": {
+              "value": true,
+              "unit": "bool"
+            },
+            "ackPresent": {
+              "value": false,
+              "unit": "bool"
+            },
+            "ackValue": {
+              "value": false,
+              "unit": "bool"
+            },
+            "delegateEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "selfEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "selfSelected": {
+              "value": true,
+              "unit": "bool"
+            },
+            "delegateSelected": {
+              "value": false,
+              "unit": "bool"
+            },
+            "confirmEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "delegateFill": {
+              "value": "#FF223548",
+              "unit": "argb"
+            },
+            "ackEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "notesEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "unavailablePresent": {
+              "value": false,
+              "unit": "bool"
+            }
+          },
+          "delegate_chosen": {
+            "status": {
+              "value": "Share the reference and ID requirement before confirming.",
+              "unit": "string"
+            },
+            "notesLabel": {
+              "value": "Hide pickup notes",
+              "unit": "string"
+            },
+            "confirmLabel": {
+              "value": "Confirm collection authorization",
+              "unit": "string"
+            },
+            "notesPresent": {
+              "value": true,
+              "unit": "bool"
+            },
+            "ackPresent": {
+              "value": true,
+              "unit": "bool"
+            },
+            "ackValue": {
+              "value": false,
+              "unit": "bool"
+            },
+            "delegateEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "selfEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "selfSelected": {
+              "value": false,
+              "unit": "bool"
+            },
+            "delegateSelected": {
+              "value": true,
+              "unit": "bool"
+            },
+            "confirmEnabled": {
+              "value": false,
+              "unit": "bool"
+            },
+            "delegateFill": {
+              "value": "#FF164C50",
+              "unit": "argb"
+            },
+            "ackEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "notesEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "unavailablePresent": {
+              "value": false,
+              "unit": "bool"
+            }
+          },
+          "authorized": {
+            "status": {
+              "value": "Ready to authorize collection.",
+              "unit": "string"
+            },
+            "notesLabel": {
+              "value": "Hide pickup notes",
+              "unit": "string"
+            },
+            "confirmLabel": {
+              "value": "Confirm collection authorization",
+              "unit": "string"
+            },
+            "notesPresent": {
+              "value": true,
+              "unit": "bool"
+            },
+            "ackPresent": {
+              "value": true,
+              "unit": "bool"
+            },
+            "ackValue": {
+              "value": true,
+              "unit": "bool"
+            },
+            "delegateEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "selfEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "selfSelected": {
+              "value": false,
+              "unit": "bool"
+            },
+            "delegateSelected": {
+              "value": true,
+              "unit": "bool"
+            },
+            "confirmEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "delegateFill": {
+              "value": "#FF164C50",
+              "unit": "argb"
+            },
+            "ackEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "notesEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "unavailablePresent": {
+              "value": false,
+              "unit": "bool"
+            }
+          },
+          "submitted": {
+            "status": {
+              "value": "The counter team has your authorization.",
+              "unit": "string"
+            },
+            "notesLabel": {
+              "value": "Hide pickup notes",
+              "unit": "string"
+            },
+            "confirmLabel": {
+              "value": "Authorization sent",
+              "unit": "string"
+            },
+            "notesPresent": {
+              "value": true,
+              "unit": "bool"
+            },
+            "ackPresent": {
+              "value": true,
+              "unit": "bool"
+            },
+            "ackValue": {
+              "value": true,
+              "unit": "bool"
+            },
+            "delegateEnabled": {
+              "value": false,
+              "unit": "bool"
+            },
+            "selfEnabled": {
+              "value": false,
+              "unit": "bool"
+            },
+            "selfSelected": {
+              "value": false,
+              "unit": "bool"
+            },
+            "delegateSelected": {
+              "value": true,
+              "unit": "bool"
+            },
+            "confirmEnabled": {
+              "value": false,
+              "unit": "bool"
+            },
+            "delegateFill": {
+              "value": "#FF164C50",
+              "unit": "argb"
+            },
+            "ackEnabled": {
+              "value": false,
+              "unit": "bool"
+            },
+            "notesEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "unavailablePresent": {
+              "value": false,
+              "unit": "bool"
+            }
+          },
+          "replacement": {
+            "status": {
+              "value": "Ready to authorize collection.",
+              "unit": "string"
+            },
+            "notesLabel": {
+              "value": "Show pickup notes",
+              "unit": "string"
+            },
+            "confirmLabel": {
+              "value": "Confirm collection authorization",
+              "unit": "string"
+            },
+            "notesPresent": {
+              "value": false,
+              "unit": "bool"
+            },
+            "ackPresent": {
+              "value": false,
+              "unit": "bool"
+            },
+            "ackValue": {
+              "value": false,
+              "unit": "bool"
+            },
+            "delegateEnabled": {
+              "value": false,
+              "unit": "bool"
+            },
+            "selfEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "selfSelected": {
+              "value": true,
+              "unit": "bool"
+            },
+            "delegateSelected": {
+              "value": false,
+              "unit": "bool"
+            },
+            "confirmEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "delegateFill": {
+              "value": "#FF223548",
+              "unit": "argb"
+            },
+            "ackEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "notesEnabled": {
+              "value": true,
+              "unit": "bool"
+            },
+            "unavailablePresent": {
+              "value": true,
+              "unit": "bool"
+            }
+          }
+        },
+        "events": {
+          "open": {
+            "value": [
+              "notes:PRINT-7316:open"
+            ],
+            "unit": "events"
+          },
+          "choose": {
+            "value": [
+              "collector:PRINT-7316:delegate"
+            ],
+            "unit": "events"
+          },
+          "ack": {
+            "value": [
+              "ack:PRINT-7316:true"
+            ],
+            "unit": "events"
+          },
+          "submit": {
+            "value": [
+              "submit:PRINT-7316:delegate"
+            ],
+            "unit": "events"
+          },
+          "quiet": {
+            "value": [],
+            "unit": "events"
+          }
+        },
+        "obligations": [
+          {
+            "id": "caller-content",
+            "clause": "Every caller title, order summary, pickup window and live status reflects the current order.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "notes_open",
+              "delegate_chosen",
+              "authorized",
+              "submitted",
+              "replacement"
+            ],
+            "risk": "content"
+          },
+          {
+            "id": "notes-content",
+            "clause": "Disclosure reflects state; the exact full body appears only while open.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "notes_open",
+              "delegate_chosen",
+              "authorized",
+              "submitted",
+              "replacement"
+            ],
+            "risk": "content"
+          },
+          {
+            "id": "collector-state",
+            "clause": "Native selected traits and both choice enabled states follow current selection, submission and caller availability.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "notes_open",
+              "delegate_chosen",
+              "authorized",
+              "submitted",
+              "replacement"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "ack-visibility",
+            "clause": "Only a delegate selection reveals the native acknowledgment switch.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "notes_open",
+              "delegate_chosen",
+              "authorized",
+              "submitted",
+              "replacement"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "ack-state",
+            "clause": "Delegate acknowledgment exposes its full caller label and native Boolean value, remains enabled before submission, and is disabled after submission.",
+            "priority": "must",
+            "states": [
+              "delegate_chosen",
+              "authorized",
+              "submitted"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "primary-state",
+            "clause": "Primary label, enabled state and native measured minimum height follow validity and submission.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "notes_open",
+              "delegate_chosen",
+              "authorized",
+              "submitted",
+              "replacement"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "notes-callback",
+            "clause": "Opening notes emits the exact request-bound event once after successful native activation.",
+            "priority": "must",
+            "states": [
+              "notes_open"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "collector-callback",
+            "clause": "Choosing delegate emits the exact request-bound event once after successful native activation.",
+            "priority": "must",
+            "states": [
+              "delegate_chosen"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "ack-callback",
+            "clause": "Acknowledgment emits the exact request-bound event once after successful native activation.",
+            "priority": "must",
+            "states": [
+              "authorized"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "submit-callback",
+            "clause": "Confirmation emits one exact request-bound submit event after successful native activation.",
+            "priority": "must",
+            "states": [
+              "submitted"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "caller-replacement",
+            "clause": "The same-process caller replacement emits no event; the separately checked replacement state has reset labels, choices and local state.",
+            "priority": "must",
+            "states": [
+              "replacement"
+            ],
+            "risk": "behavior"
+          },
+          {
+            "id": "choice-size",
+            "clause": "Delegate Button native accessibility/control boundary is at least 80 native units high and may grow for content.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "notes_open",
+              "delegate_chosen",
+              "authorized",
+              "submitted",
+              "replacement"
+            ],
+            "risk": "layout"
+          },
+          {
+            "id": "choice-color",
+            "clause": "Delegate Button has the exact opaque theme-aware selected or neutral fill in the approved visible solid region.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "notes_open",
+              "delegate_chosen",
+              "authorized",
+              "submitted",
+              "replacement"
+            ],
+            "risk": "style"
+          },
+          {
+            "id": "overlap",
+            "clause": "All content and controls remain clear of unintended overlap in full-content scans.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "notes_open",
+              "delegate_chosen",
+              "authorized",
+              "submitted",
+              "replacement"
+            ],
+            "risk": "layout"
+          },
+          {
+            "id": "wrapping",
+            "clause": "Displayed labels and paragraphs remain within content width, wrapping without clipping or ellipsis.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "notes_open",
+              "delegate_chosen",
+              "authorized",
+              "submitted",
+              "replacement"
+            ],
+            "risk": "layout"
+          },
+          {
+            "id": "collector-content",
+            "clause": "Each visible choice row exposes both exact caller-provided title and detail substrings for the current order.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "notes_open",
+              "delegate_chosen",
+              "authorized",
+              "submitted",
+              "replacement"
+            ],
+            "risk": "content"
+          },
+          {
+            "id": "unavailability-content",
+            "clause": "The exact caller unavailability explanation appears if and only if delegateAvailable is false.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "notes_open",
+              "delegate_chosen",
+              "authorized",
+              "submitted",
+              "replacement"
+            ],
+            "risk": "content"
+          },
+          {
+            "id": "notes-availability",
+            "clause": "The notes disclosure remains a native enabled control in every state, including after submission.",
+            "priority": "must",
+            "states": [
+              "ready",
+              "notes_open",
+              "delegate_chosen",
+              "authorized",
+              "submitted",
+              "replacement"
+            ],
+            "risk": "behavior"
+          }
+        ],
+        "launch": {
+          "courtyard-collection": {
+            "ios": {
+              "scenario": "courtyard-collection",
+              "platform": "ios",
+              "fixtures_sha256": "4b37332e3b68fbe6940eb0efe622af92ac1a07fa50bb34bab9c2e85caffa9e4d",
+              "bridge_sha256": "d8638683d3fa93355f106f069ea95adb55cfa9649ef8c2bd71e39f253d83fd15"
+            },
+            "android": {
+              "scenario": "courtyard-collection",
+              "platform": "android",
+              "fixtures_sha256": "4b37332e3b68fbe6940eb0efe622af92ac1a07fa50bb34bab9c2e85caffa9e4d",
+              "bridge_sha256": "b188c749ff378f4b4824345a1a75a3ea0c84a1834fbe6152410cb6d43763e81f"
+            }
+          }
+        },
+        "source_review": {
+          "branch_events": {
+            "notesClosed": {
+              "value": [
+                "notes:PRINT-7316:closed"
+              ],
+              "unit": "events"
+            },
+            "chooseSelf": {
+              "value": [
+                "collector:PRINT-7316:self"
+              ],
+              "unit": "events"
+            },
+            "acknowledgeFalse": {
+              "value": [
+                "ack:PRINT-7316:false"
+              ],
+              "unit": "events"
+            },
+            "submitSelf": {
+              "value": [
+                "submit:PRINT-7316:self"
+              ],
+              "unit": "events"
+            },
+            "sameChoiceQuiet": {
+              "value": [],
+              "unit": "events"
+            },
+            "disabledQuiet": {
+              "value": [],
+              "unit": "events"
+            }
+          },
+          "ios14PublicAPI": {
+            "value": "The complete public production module and unchanged Bridge.swift caller use APIs available at iOS 14.0; the evaluator must separately typecheck the real module and caller for the minimum target.",
+            "unit": "string"
+          }
+        }
+      },
+      "raw_utf8": "{\n  \"identity\": {\n    \"domain\": \"Print-shop collection authorization\",\n    \"authorship\": \"Independent original requirements and design values authored before implementation; no candidate source or screenshot read.\",\n    \"scope\": \"private\"\n  },\n  \"style\": {\n    \"colors\": {\n      \"light\": {\n        \"surface\": {\n          \"value\": \"#FFFFFFFF\",\n          \"unit\": \"argb\"\n        },\n        \"ink\": {\n          \"value\": \"#FF172B3A\",\n          \"unit\": \"argb\"\n        },\n        \"secondary\": {\n          \"value\": \"#FF526675\",\n          \"unit\": \"argb\"\n        },\n        \"neutralRow\": {\n          \"value\": \"#FFF1F5F8\",\n          \"unit\": \"argb\"\n        },\n        \"selectedRow\": {\n          \"value\": \"#FFDFF3EE\",\n          \"unit\": \"argb\"\n        },\n        \"accent\": {\n          \"value\": \"#FF007F78\",\n          \"unit\": \"argb\"\n        },\n        \"disabledInk\": {\n          \"value\": \"#FF687C8A\",\n          \"unit\": \"argb\"\n        },\n        \"primaryInk\": {\n          \"value\": \"#FFFFFFFF\",\n          \"unit\": \"argb\"\n        }\n      },\n      \"dark\": {\n        \"surface\": {\n          \"value\": \"#FF142232\",\n          \"unit\": \"argb\"\n        },\n        \"ink\": {\n          \"value\": \"#FFF3F6FA\",\n          \"unit\": \"argb\"\n        },\n        \"secondary\": {\n          \"value\": \"#FFB6C7D5\",\n          \"unit\": \"argb\"\n        },\n        \"neutralRow\": {\n          \"value\": \"#FF223548\",\n          \"unit\": \"argb\"\n        },\n        \"selectedRow\": {\n          \"value\": \"#FF164C50\",\n          \"unit\": \"argb\"\n        },\n        \"accent\": {\n          \"value\": \"#FF4FD1C5\",\n          \"unit\": \"argb\"\n        },\n        \"disabledInk\": {\n          \"value\": \"#FF8DA4B5\",\n          \"unit\": \"argb\"\n        },\n        \"primaryInk\": {\n          \"value\": \"#FF102C30\",\n          \"unit\": \"argb\"\n        }\n      }\n    },\n    \"typography\": {\n      \"ios\": {\n        \"titleSize\": {\n          \"value\": 22,\n          \"unit\": \"pt\"\n        },\n        \"rowTitleSize\": {\n          \"value\": 16,\n          \"unit\": \"pt\"\n        },\n        \"bodySize\": {\n          \"value\": 15,\n          \"unit\": \"pt\"\n        },\n        \"metadataSize\": {\n          \"value\": 13,\n          \"unit\": \"pt\"\n        },\n        \"semiboldWeight\": {\n          \"value\": 600,\n          \"unit\": \"count\"\n        },\n        \"regularWeight\": {\n          \"value\": 400,\n          \"unit\": \"count\"\n        }\n      },\n      \"android\": {\n        \"titleSize\": {\n          \"value\": 22,\n          \"unit\": \"sp\"\n        },\n        \"rowTitleSize\": {\n          \"value\": 16,\n          \"unit\": \"sp\"\n        },\n        \"bodySize\": {\n          \"value\": 15,\n          \"unit\": \"sp\"\n        },\n        \"metadataSize\": {\n          \"value\": 13,\n          \"unit\": \"sp\"\n        },\n        \"semiboldWeight\": {\n          \"value\": 600,\n          \"unit\": \"count\"\n        },\n        \"regularWeight\": {\n          \"value\": 400,\n          \"unit\": \"count\"\n        }\n      }\n    },\n    \"layout\": {\n      \"ios\": {\n        \"cardPadding\": {\n          \"value\": 20,\n          \"unit\": \"pt\"\n        },\n        \"rowPadding\": {\n          \"value\": 16,\n          \"unit\": \"pt\"\n        },\n        \"sectionGap\": {\n          \"value\": 12,\n          \"unit\": \"pt\"\n        },\n        \"textGap\": {\n          \"value\": 8,\n          \"unit\": \"pt\"\n        },\n        \"cardRadius\": {\n          \"value\": 20,\n          \"unit\": \"pt\"\n        },\n        \"controlRadius\": {\n          \"value\": 12,\n          \"unit\": \"pt\"\n        },\n        \"selectedBorderWidth\": {\n          \"value\": 1,\n          \"unit\": \"pt\"\n        },\n        \"rowMinHeight\": {\n          \"value\": 80,\n          \"unit\": \"pt\"\n        },\n        \"primaryMinHeight\": {\n          \"value\": 48,\n          \"unit\": \"pt\"\n        },\n        \"disclosureMinHeight\": {\n          \"value\": 48,\n          \"unit\": \"pt\"\n        }\n      },\n      \"android\": {\n        \"cardPadding\": {\n          \"value\": 20,\n          \"unit\": \"dp\"\n        },\n        \"rowPadding\": {\n          \"value\": 16,\n          \"unit\": \"dp\"\n        },\n        \"sectionGap\": {\n          \"value\": 12,\n          \"unit\": \"dp\"\n        },\n        \"textGap\": {\n          \"value\": 8,\n          \"unit\": \"dp\"\n        },\n        \"cardRadius\": {\n          \"value\": 20,\n          \"unit\": \"dp\"\n        },\n        \"controlRadius\": {\n          \"value\": 12,\n          \"unit\": \"dp\"\n        },\n        \"selectedBorderWidth\": {\n          \"value\": 1,\n          \"unit\": \"dp\"\n        },\n        \"rowMinHeight\": {\n          \"value\": 80,\n          \"unit\": \"dp\"\n        },\n        \"primaryMinHeight\": {\n          \"value\": 48,\n          \"unit\": \"dp\"\n        },\n        \"disclosureMinHeight\": {\n          \"value\": 48,\n          \"unit\": \"dp\"\n        }\n      }\n    }\n  },\n  \"booleans\": {\n    \"yes\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    },\n    \"no\": {\n      \"value\": false,\n      \"unit\": \"bool\"\n    }\n  },\n  \"visual\": {\n    \"clear\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    },\n    \"wrapped\": {\n      \"value\": true,\n      \"unit\": \"bool\"\n    }\n  },\n  \"questions\": {\n    \"clear\": {\n      \"value\": \"Throughout the complete captured component, do visible text and controls remain clear of one another without unintended overlap?\",\n      \"unit\": \"string\"\n    },\n    \"wrapped\": {\n      \"value\": \"Throughout the complete captured component, does every displayed caller label and notes paragraph wrap within the available content width without clipping or ellipsis?\",\n      \"unit\": \"string\"\n    }\n  },\n  \"inputs\": {\n    \"original\": {\n      \"requestID\": {\n        \"value\": \"PRINT-7316\",\n        \"unit\": \"string\"\n      },\n      \"title\": {\n        \"value\": \"Authorize collection for the neighbourhood exhibition\",\n        \"unit\": \"string\"\n      },\n      \"jobSummary\": {\n        \"value\": \"North Quays Community Archive · 64 large-print catalogues and six folded location maps\",\n        \"unit\": \"string\"\n      },\n      \"pickupWindow\": {\n        \"value\": \"Collect Saturday 31 October, 09:30–11:45 · Accessible side entrance beside the loading courtyard\",\n        \"unit\": \"string\"\n      },\n      \"notesClosedTitle\": {\n        \"value\": \"Show pickup notes\",\n        \"unit\": \"string\"\n      },\n      \"notesOpenTitle\": {\n        \"value\": \"Hide pickup notes\",\n        \"unit\": \"string\"\n      },\n      \"notesBody\": {\n        \"value\": \"Keep this collection reference available when you arrive. The counter team will check the job number before handing over the sealed cartons.\\n\\nThe programmes are packed flat in three reusable cartons. Please bring a trolley or ask the counter team for help before moving the full order to your vehicle.\\n\\nIf someone collects for you, they must show their own photo ID and quote the same collection reference. This authorization covers collection only; it does not allow changes to artwork, quantities, or payment details.\\n\\nCheck the carton labels before leaving. If a carton looks damaged or a quantity differs from the packing slip, keep it at the counter so the team can record the issue with you.\\n\\nUncollected print work is stored indoors for seven calendar days. Contact the shop before the end of that period if your event has moved, because bulky orders may require a new collection arrangement.\\n\\nThe accessible entrance is reached from the courtyard rather than the main pavement. A staff member can bring the order to that entrance if the collector asks at the door. Leave the route clear for other visitors while cartons are checked.\",\n        \"unit\": \"string\"\n      },\n      \"selfTitle\": {\n        \"value\": \"I will collect the complete order\",\n        \"unit\": \"string\"\n      },\n      \"selfDetail\": {\n        \"value\": \"The counter team will check the order name and collection reference together\",\n        \"unit\": \"string\"\n      },\n      \"delegateTitle\": {\n        \"value\": \"A colleague will collect on my behalf\",\n        \"unit\": \"string\"\n      },\n      \"delegateDetail\": {\n        \"value\": \"They need their own photo ID, this reference, and space for all cartons\",\n        \"unit\": \"string\"\n      },\n      \"acknowledgement\": {\n        \"value\": \"I have given my colleague the full collection reference, the photo ID requirement, and the accessible entrance instructions.\",\n        \"unit\": \"string\"\n      },\n      \"confirmTitle\": {\n        \"value\": \"Confirm collection authorization\",\n        \"unit\": \"string\"\n      },\n      \"sentTitle\": {\n        \"value\": \"Authorization sent\",\n        \"unit\": \"string\"\n      },\n      \"readyMessage\": {\n        \"value\": \"Ready to authorize collection.\",\n        \"unit\": \"string\"\n      },\n      \"needsAcknowledgementMessage\": {\n        \"value\": \"Share the reference and ID requirement before confirming.\",\n        \"unit\": \"string\"\n      },\n      \"sentMessage\": {\n        \"value\": \"The counter team has your authorization.\",\n        \"unit\": \"string\"\n      },\n      \"delegateUnavailableMessage\": {\n        \"value\": \"Delegate collection is unavailable for this order.\",\n        \"unit\": \"string\"\n      },\n      \"delegateAvailable\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      }\n    },\n    \"replacement\": {\n      \"requestID\": {\n        \"value\": \"PRINT-7402\",\n        \"unit\": \"string\"\n      },\n      \"title\": {\n        \"value\": \"Authorize the replacement print order\",\n        \"unit\": \"string\"\n      },\n      \"jobSummary\": {\n        \"value\": \"Harbour Makers Cooperative · 48 rainproof direction signs with separate fixing packs\",\n        \"unit\": \"string\"\n      },\n      \"pickupWindow\": {\n        \"value\": \"Collect Monday 2 November, 13:15–15:00 · Workshop collection hatch\",\n        \"unit\": \"string\"\n      },\n      \"notesClosedTitle\": {\n        \"value\": \"Show pickup notes\",\n        \"unit\": \"string\"\n      },\n      \"notesOpenTitle\": {\n        \"value\": \"Hide pickup notes\",\n        \"unit\": \"string\"\n      },\n      \"notesBody\": {\n        \"value\": \"This replacement order contains new fixing packs. Please check the pack count against the labels before departing. The original order authorization does not apply to these signs, so confirm this collection separately.\",\n        \"unit\": \"string\"\n      },\n      \"selfTitle\": {\n        \"value\": \"I will collect\",\n        \"unit\": \"string\"\n      },\n      \"selfDetail\": {\n        \"value\": \"Use my order name at the counter\",\n        \"unit\": \"string\"\n      },\n      \"delegateTitle\": {\n        \"value\": \"Someone else will collect\",\n        \"unit\": \"string\"\n      },\n      \"delegateDetail\": {\n        \"value\": \"Their photo ID and this reference are required\",\n        \"unit\": \"string\"\n      },\n      \"acknowledgement\": {\n        \"value\": \"I have shared the collection reference and ID requirement with my collector.\",\n        \"unit\": \"string\"\n      },\n      \"confirmTitle\": {\n        \"value\": \"Confirm collection authorization\",\n        \"unit\": \"string\"\n      },\n      \"sentTitle\": {\n        \"value\": \"Authorization sent\",\n        \"unit\": \"string\"\n      },\n      \"readyMessage\": {\n        \"value\": \"Ready to authorize collection.\",\n        \"unit\": \"string\"\n      },\n      \"needsAcknowledgementMessage\": {\n        \"value\": \"Share the reference and ID requirement before confirming.\",\n        \"unit\": \"string\"\n      },\n      \"sentMessage\": {\n        \"value\": \"The counter team has your authorization.\",\n        \"unit\": \"string\"\n      },\n      \"delegateUnavailableMessage\": {\n        \"value\": \"Delegate collection is unavailable for this order.\",\n        \"unit\": \"string\"\n      },\n      \"delegateAvailable\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      }\n    }\n  },\n  \"ui\": {\n    \"ready\": {\n      \"status\": {\n        \"value\": \"Ready to authorize collection.\",\n        \"unit\": \"string\"\n      },\n      \"notesLabel\": {\n        \"value\": \"Show pickup notes\",\n        \"unit\": \"string\"\n      },\n      \"confirmLabel\": {\n        \"value\": \"Confirm collection authorization\",\n        \"unit\": \"string\"\n      },\n      \"notesPresent\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"ackPresent\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"ackValue\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"delegateEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"selfEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"selfSelected\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"delegateSelected\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"confirmEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"delegateFill\": {\n        \"value\": \"#FF223548\",\n        \"unit\": \"argb\"\n      },\n      \"ackEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"notesEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"unavailablePresent\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      }\n    },\n    \"notes_open\": {\n      \"status\": {\n        \"value\": \"Ready to authorize collection.\",\n        \"unit\": \"string\"\n      },\n      \"notesLabel\": {\n        \"value\": \"Hide pickup notes\",\n        \"unit\": \"string\"\n      },\n      \"confirmLabel\": {\n        \"value\": \"Confirm collection authorization\",\n        \"unit\": \"string\"\n      },\n      \"notesPresent\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"ackPresent\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"ackValue\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"delegateEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"selfEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"selfSelected\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"delegateSelected\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"confirmEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"delegateFill\": {\n        \"value\": \"#FF223548\",\n        \"unit\": \"argb\"\n      },\n      \"ackEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"notesEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"unavailablePresent\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      }\n    },\n    \"delegate_chosen\": {\n      \"status\": {\n        \"value\": \"Share the reference and ID requirement before confirming.\",\n        \"unit\": \"string\"\n      },\n      \"notesLabel\": {\n        \"value\": \"Hide pickup notes\",\n        \"unit\": \"string\"\n      },\n      \"confirmLabel\": {\n        \"value\": \"Confirm collection authorization\",\n        \"unit\": \"string\"\n      },\n      \"notesPresent\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"ackPresent\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"ackValue\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"delegateEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"selfEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"selfSelected\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"delegateSelected\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"confirmEnabled\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"delegateFill\": {\n        \"value\": \"#FF164C50\",\n        \"unit\": \"argb\"\n      },\n      \"ackEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"notesEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"unavailablePresent\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      }\n    },\n    \"authorized\": {\n      \"status\": {\n        \"value\": \"Ready to authorize collection.\",\n        \"unit\": \"string\"\n      },\n      \"notesLabel\": {\n        \"value\": \"Hide pickup notes\",\n        \"unit\": \"string\"\n      },\n      \"confirmLabel\": {\n        \"value\": \"Confirm collection authorization\",\n        \"unit\": \"string\"\n      },\n      \"notesPresent\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"ackPresent\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"ackValue\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"delegateEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"selfEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"selfSelected\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"delegateSelected\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"confirmEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"delegateFill\": {\n        \"value\": \"#FF164C50\",\n        \"unit\": \"argb\"\n      },\n      \"ackEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"notesEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"unavailablePresent\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      }\n    },\n    \"submitted\": {\n      \"status\": {\n        \"value\": \"The counter team has your authorization.\",\n        \"unit\": \"string\"\n      },\n      \"notesLabel\": {\n        \"value\": \"Hide pickup notes\",\n        \"unit\": \"string\"\n      },\n      \"confirmLabel\": {\n        \"value\": \"Authorization sent\",\n        \"unit\": \"string\"\n      },\n      \"notesPresent\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"ackPresent\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"ackValue\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"delegateEnabled\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"selfEnabled\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"selfSelected\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"delegateSelected\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"confirmEnabled\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"delegateFill\": {\n        \"value\": \"#FF164C50\",\n        \"unit\": \"argb\"\n      },\n      \"ackEnabled\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"notesEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"unavailablePresent\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      }\n    },\n    \"replacement\": {\n      \"status\": {\n        \"value\": \"Ready to authorize collection.\",\n        \"unit\": \"string\"\n      },\n      \"notesLabel\": {\n        \"value\": \"Show pickup notes\",\n        \"unit\": \"string\"\n      },\n      \"confirmLabel\": {\n        \"value\": \"Confirm collection authorization\",\n        \"unit\": \"string\"\n      },\n      \"notesPresent\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"ackPresent\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"ackValue\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"delegateEnabled\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"selfEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"selfSelected\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"delegateSelected\": {\n        \"value\": false,\n        \"unit\": \"bool\"\n      },\n      \"confirmEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"delegateFill\": {\n        \"value\": \"#FF223548\",\n        \"unit\": \"argb\"\n      },\n      \"ackEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"notesEnabled\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      },\n      \"unavailablePresent\": {\n        \"value\": true,\n        \"unit\": \"bool\"\n      }\n    }\n  },\n  \"events\": {\n    \"open\": {\n      \"value\": [\n        \"notes:PRINT-7316:open\"\n      ],\n      \"unit\": \"events\"\n    },\n    \"choose\": {\n      \"value\": [\n        \"collector:PRINT-7316:delegate\"\n      ],\n      \"unit\": \"events\"\n    },\n    \"ack\": {\n      \"value\": [\n        \"ack:PRINT-7316:true\"\n      ],\n      \"unit\": \"events\"\n    },\n    \"submit\": {\n      \"value\": [\n        \"submit:PRINT-7316:delegate\"\n      ],\n      \"unit\": \"events\"\n    },\n    \"quiet\": {\n      \"value\": [],\n      \"unit\": \"events\"\n    }\n  },\n  \"obligations\": [\n    {\n      \"id\": \"caller-content\",\n      \"clause\": \"Every caller title, order summary, pickup window and live status reflects the current order.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"notes_open\",\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\",\n        \"replacement\"\n      ],\n      \"risk\": \"content\"\n    },\n    {\n      \"id\": \"notes-content\",\n      \"clause\": \"Disclosure reflects state; the exact full body appears only while open.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"notes_open\",\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\",\n        \"replacement\"\n      ],\n      \"risk\": \"content\"\n    },\n    {\n      \"id\": \"collector-state\",\n      \"clause\": \"Native selected traits and both choice enabled states follow current selection, submission and caller availability.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"notes_open\",\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\",\n        \"replacement\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"ack-visibility\",\n      \"clause\": \"Only a delegate selection reveals the native acknowledgment switch.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"notes_open\",\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\",\n        \"replacement\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"ack-state\",\n      \"clause\": \"Delegate acknowledgment exposes its full caller label and native Boolean value, remains enabled before submission, and is disabled after submission.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"primary-state\",\n      \"clause\": \"Primary label, enabled state and native measured minimum height follow validity and submission.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"notes_open\",\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\",\n        \"replacement\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"notes-callback\",\n      \"clause\": \"Opening notes emits the exact request-bound event once after successful native activation.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"notes_open\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"collector-callback\",\n      \"clause\": \"Choosing delegate emits the exact request-bound event once after successful native activation.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"delegate_chosen\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"ack-callback\",\n      \"clause\": \"Acknowledgment emits the exact request-bound event once after successful native activation.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"authorized\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"submit-callback\",\n      \"clause\": \"Confirmation emits one exact request-bound submit event after successful native activation.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"submitted\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"caller-replacement\",\n      \"clause\": \"The same-process caller replacement emits no event; the separately checked replacement state has reset labels, choices and local state.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"replacement\"\n      ],\n      \"risk\": \"behavior\"\n    },\n    {\n      \"id\": \"choice-size\",\n      \"clause\": \"Delegate Button native accessibility/control boundary is at least 80 native units high and may grow for content.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"notes_open\",\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\",\n        \"replacement\"\n      ],\n      \"risk\": \"layout\"\n    },\n    {\n      \"id\": \"choice-color\",\n      \"clause\": \"Delegate Button has the exact opaque theme-aware selected or neutral fill in the approved visible solid region.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"notes_open\",\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\",\n        \"replacement\"\n      ],\n      \"risk\": \"style\"\n    },\n    {\n      \"id\": \"overlap\",\n      \"clause\": \"All content and controls remain clear of unintended overlap in full-content scans.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"notes_open\",\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\",\n        \"replacement\"\n      ],\n      \"risk\": \"layout\"\n    },\n    {\n      \"id\": \"wrapping\",\n      \"clause\": \"Displayed labels and paragraphs remain within content width, wrapping without clipping or ellipsis.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"notes_open\",\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\",\n        \"replacement\"\n      ],\n      \"risk\": \"layout\"\n    },\n    {\n      \"id\": \"collector-content\",\n      \"clause\": \"Each visible choice row exposes both exact caller-provided title and detail substrings for the current order.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"notes_open\",\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\",\n        \"replacement\"\n      ],\n      \"risk\": \"content\"\n    },\n    {\n      \"id\": \"unavailability-content\",\n      \"clause\": \"The exact caller unavailability explanation appears if and only if delegateAvailable is false.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"notes_open\",\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\",\n        \"replacement\"\n      ],\n      \"risk\": \"content\"\n    },\n    {\n      \"id\": \"notes-availability\",\n      \"clause\": \"The notes disclosure remains a native enabled control in every state, including after submission.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"ready\",\n        \"notes_open\",\n        \"delegate_chosen\",\n        \"authorized\",\n        \"submitted\",\n        \"replacement\"\n      ],\n      \"risk\": \"behavior\"\n    }\n  ],\n  \"launch\": {\n    \"courtyard-collection\": {\n      \"ios\": {\n        \"scenario\": \"courtyard-collection\",\n        \"platform\": \"ios\",\n        \"fixtures_sha256\": \"4b37332e3b68fbe6940eb0efe622af92ac1a07fa50bb34bab9c2e85caffa9e4d\",\n        \"bridge_sha256\": \"d8638683d3fa93355f106f069ea95adb55cfa9649ef8c2bd71e39f253d83fd15\"\n      },\n      \"android\": {\n        \"scenario\": \"courtyard-collection\",\n        \"platform\": \"android\",\n        \"fixtures_sha256\": \"4b37332e3b68fbe6940eb0efe622af92ac1a07fa50bb34bab9c2e85caffa9e4d\",\n        \"bridge_sha256\": \"b188c749ff378f4b4824345a1a75a3ea0c84a1834fbe6152410cb6d43763e81f\"\n      }\n    }\n  },\n  \"source_review\": {\n    \"branch_events\": {\n      \"notesClosed\": {\n        \"value\": [\n          \"notes:PRINT-7316:closed\"\n        ],\n        \"unit\": \"events\"\n      },\n      \"chooseSelf\": {\n        \"value\": [\n          \"collector:PRINT-7316:self\"\n        ],\n        \"unit\": \"events\"\n      },\n      \"acknowledgeFalse\": {\n        \"value\": [\n          \"ack:PRINT-7316:false\"\n        ],\n        \"unit\": \"events\"\n      },\n      \"submitSelf\": {\n        \"value\": [\n          \"submit:PRINT-7316:self\"\n        ],\n        \"unit\": \"events\"\n      },\n      \"sameChoiceQuiet\": {\n        \"value\": [],\n        \"unit\": \"events\"\n      },\n      \"disabledQuiet\": {\n        \"value\": [],\n        \"unit\": \"events\"\n      }\n    },\n    \"ios14PublicAPI\": {\n      \"value\": \"The complete public production module and unchanged Bridge.swift caller use APIs available at iOS 14.0; the evaluator must separately typecheck the real module and caller for the minimum target.\",\n      \"unit\": \"string\"\n    }\n  }\n}\n"
+    }
+  },
+  "contract_sha256": "95db79acd838c30db92c2212d47321096667c45bbd9033d5e270d48708a63979",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

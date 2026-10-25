@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "states": [
+    {
+      "id": "checkpoint-00",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "control",
+      "property": "present",
+      "id": "checkpoint-00/step-absent",
+      "state": "checkpoint-00",
+      "requirement_id": "step-absent",
+      "expected": false,
+      "unit": "bool",
+      "expectation_provenance": [
+        {
+          "source": "approved",
+          "path": "approved.json",
+          "sha256": "e3a923fe1b503ce9d1383e2dad599666bd6c1eced29b89fc532821811628f832",
+          "pointer": "/expected/step-absent/0",
+          "source_datum": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      ],
+      "source": "design-lock:d388d92de8a8b27131f6c510584849465b5d51897a07e919369a7c87e2f094d4",
+      "target": {
+        "identifier": "session.step",
+        "role": "button"
+      }
+    }
+  ],
+  "required_assertion_ids": [
+    "checkpoint-00/step-absent"
+  ],
+  "matrix_contract": {
+    "selected_states": [
+      "checkpoint-00"
+    ],
+    "selected_requirements": [
+      "step-absent"
+    ],
+    "cells": [
+      {
+        "id": "checkpoint-00/step-absent",
+        "state": "checkpoint-00",
+        "requirement_id": "step-absent",
+        "disposition": "required",
+        "provenance": [
+          {
+            "source": "approved",
+            "path": "approved.json",
+            "sha256": "e3a923fe1b503ce9d1383e2dad599666bd6c1eced29b89fc532821811628f832",
+            "pointer": "/expected/step-absent/0",
+            "source_datum": {
+              "value": false,
+              "unit": "bool"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "design_contract": {
+    "lock_sha256": "d388d92de8a8b27131f6c510584849465b5d51897a07e919369a7c87e2f094d4",
+    "scenario": "neutral",
+    "platform": "ios",
+    "bindings": {
+      "session.step": {
+        "identifier": "session.step",
+        "role": "button"
+      }
+    },
+    "base_actions": [
+      {
+        "type": "checkpoint"
+      }
+    ]
+  }
+}

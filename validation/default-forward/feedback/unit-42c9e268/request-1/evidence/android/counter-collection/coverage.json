@@ -1,0 +1,667 @@
+{
+  "version": 1,
+  "design_lock_sha256": "38b35ca981fb272dec8ff18365021673d81ec064e5c4723f262e8910d91943f6",
+  "plan_sha256": "5b43cf8c680f9261f414ccd69305142bbd24665041b348f2b666554c99e0dc8a",
+  "routes_sha256": "0d66f7f5f7c25f57903a335a5cd9f0cec0130b1447fa552c416edf10956c77b9",
+  "obligations": [
+    {
+      "id": "caller-content",
+      "clause": "Every caller title, order summary, pickup window and live status reflects the current order.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "notes_open",
+        "delegate_chosen",
+        "authorized",
+        "submitted",
+        "replacement"
+      ],
+      "risk": "content",
+      "assertion_ids": [
+        "ready/title-label",
+        "ready/summary-label",
+        "ready/status-label",
+        "ready/window-label",
+        "notes_open/title-label",
+        "notes_open/summary-label",
+        "notes_open/status-label",
+        "notes_open/window-label",
+        "delegate_chosen/title-label",
+        "delegate_chosen/summary-label",
+        "delegate_chosen/status-label",
+        "delegate_chosen/window-label",
+        "authorized/title-label",
+        "authorized/summary-label",
+        "authorized/status-label",
+        "authorized/window-label",
+        "submitted/title-label",
+        "submitted/summary-label",
+        "submitted/status-label",
+        "submitted/window-label",
+        "replacement/title-label",
+        "replacement/summary-label",
+        "replacement/status-label",
+        "replacement/window-label"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "title-label",
+          "summary-label",
+          "status-label",
+          "window-label"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "notes-content",
+      "clause": "Disclosure reflects state; the exact full body appears only while open.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "notes_open",
+        "delegate_chosen",
+        "authorized",
+        "submitted",
+        "replacement"
+      ],
+      "risk": "content",
+      "assertion_ids": [
+        "ready/notes-label",
+        "ready/notes-presence",
+        "notes_open/notes-label",
+        "notes_open/notes-presence",
+        "notes_open/notes-content",
+        "delegate_chosen/notes-label",
+        "delegate_chosen/notes-presence",
+        "delegate_chosen/notes-content",
+        "authorized/notes-label",
+        "authorized/notes-presence",
+        "authorized/notes-content",
+        "submitted/notes-label",
+        "submitted/notes-presence",
+        "submitted/notes-content",
+        "replacement/notes-label",
+        "replacement/notes-presence"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "notes-label",
+          "notes-presence",
+          "notes-content"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "collector-state",
+      "clause": "Native selected traits and both choice enabled states follow current selection, submission and caller availability.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "notes_open",
+        "delegate_chosen",
+        "authorized",
+        "submitted",
+        "replacement"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "ready/delegate-enabled",
+        "ready/self-enabled",
+        "ready/self-selected",
+        "ready/delegate-selected",
+        "notes_open/delegate-enabled",
+        "notes_open/self-enabled",
+        "notes_open/self-selected",
+        "notes_open/delegate-selected",
+        "delegate_chosen/delegate-enabled",
+        "delegate_chosen/self-enabled",
+        "delegate_chosen/self-selected",
+        "delegate_chosen/delegate-selected",
+        "authorized/delegate-enabled",
+        "authorized/self-enabled",
+        "authorized/self-selected",
+        "authorized/delegate-selected",
+        "submitted/delegate-enabled",
+        "submitted/self-enabled",
+        "submitted/self-selected",
+        "submitted/delegate-selected",
+        "replacement/delegate-enabled",
+        "replacement/self-enabled",
+        "replacement/self-selected",
+        "replacement/delegate-selected"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "self-selected",
+          "delegate-selected",
+          "delegate-enabled",
+          "self-enabled"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "ack-visibility",
+      "clause": "Only a delegate selection reveals the native acknowledgment switch.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "notes_open",
+        "delegate_chosen",
+        "authorized",
+        "submitted",
+        "replacement"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "ready/ack-presence",
+        "notes_open/ack-presence",
+        "delegate_chosen/ack-presence",
+        "authorized/ack-presence",
+        "submitted/ack-presence",
+        "replacement/ack-presence"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "ack-presence"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "ack-state",
+      "clause": "Delegate acknowledgment exposes its full caller label and native Boolean value, remains enabled before submission, and is disabled after submission.",
+      "priority": "must",
+      "states": [
+        "delegate_chosen",
+        "authorized",
+        "submitted"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "delegate_chosen/ack-value",
+        "delegate_chosen/ack-label",
+        "delegate_chosen/ack-enabled",
+        "authorized/ack-value",
+        "authorized/ack-label",
+        "authorized/ack-enabled",
+        "submitted/ack-value",
+        "submitted/ack-label",
+        "submitted/ack-enabled"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "ack-value",
+          "ack-label",
+          "ack-enabled"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "primary-state",
+      "clause": "Primary label, enabled state and native measured minimum height follow validity and submission.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "notes_open",
+        "delegate_chosen",
+        "authorized",
+        "submitted",
+        "replacement"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "ready/primary-enabled",
+        "ready/primary-label",
+        "ready/primary-min-height",
+        "notes_open/primary-enabled",
+        "notes_open/primary-label",
+        "notes_open/primary-min-height",
+        "delegate_chosen/primary-enabled",
+        "delegate_chosen/primary-label",
+        "delegate_chosen/primary-min-height",
+        "authorized/primary-enabled",
+        "authorized/primary-label",
+        "authorized/primary-min-height",
+        "submitted/primary-enabled",
+        "submitted/primary-label",
+        "submitted/primary-min-height",
+        "replacement/primary-enabled",
+        "replacement/primary-label",
+        "replacement/primary-min-height"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "primary-enabled",
+          "primary-label",
+          "primary-min-height"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "notes-callback",
+      "clause": "Opening notes emits the exact request-bound event once after successful native activation.",
+      "priority": "must",
+      "states": [
+        "notes_open"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "notes_open/notes-receipt"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "notes-receipt"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "collector-callback",
+      "clause": "Choosing delegate emits the exact request-bound event once after successful native activation.",
+      "priority": "must",
+      "states": [
+        "delegate_chosen"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "delegate_chosen/collector-receipt"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "collector-receipt"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "ack-callback",
+      "clause": "Acknowledgment emits the exact request-bound event once after successful native activation.",
+      "priority": "must",
+      "states": [
+        "authorized"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "authorized/ack-receipt"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "ack-receipt"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "submit-callback",
+      "clause": "Confirmation emits one exact request-bound submit event after successful native activation.",
+      "priority": "must",
+      "states": [
+        "submitted"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "submitted/submit-receipt"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "submit-receipt"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "caller-replacement",
+      "clause": "The same-process caller replacement emits no event; the separately checked replacement state has reset labels, choices and local state.",
+      "priority": "must",
+      "states": [
+        "replacement"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "replacement/replacement-silent"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "replacement-silent"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "choice-size",
+      "clause": "Delegate Button native accessibility/control boundary is at least 80 native units high and may grow for content.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "notes_open",
+        "delegate_chosen",
+        "authorized",
+        "submitted",
+        "replacement"
+      ],
+      "risk": "layout",
+      "assertion_ids": [
+        "ready/delegate-min-height",
+        "notes_open/delegate-min-height",
+        "delegate_chosen/delegate-min-height",
+        "authorized/delegate-min-height",
+        "submitted/delegate-min-height",
+        "replacement/delegate-min-height"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "delegate-min-height"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "choice-color",
+      "clause": "Delegate Button has the exact opaque theme-aware selected or neutral fill in the approved visible solid region.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "notes_open",
+        "delegate_chosen",
+        "authorized",
+        "submitted",
+        "replacement"
+      ],
+      "risk": "style",
+      "assertion_ids": [
+        "ready/delegate-fill",
+        "notes_open/delegate-fill",
+        "delegate_chosen/delegate-fill",
+        "authorized/delegate-fill",
+        "submitted/delegate-fill",
+        "replacement/delegate-fill"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "delegate-fill"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping"
+        ]
+      }
+    },
+    {
+      "id": "overlap",
+      "clause": "All content and controls remain clear of unintended overlap in full-content scans.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "notes_open",
+        "delegate_chosen",
+        "authorized",
+        "submitted",
+        "replacement"
+      ],
+      "risk": "layout",
+      "assertion_ids": [
+        "ready/content-overlap",
+        "notes_open/content-overlap",
+        "delegate_chosen/content-overlap",
+        "authorized/content-overlap",
+        "submitted/content-overlap",
+        "replacement/content-overlap"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "content-overlap"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "caller-content"
+        ]
+      }
+    },
+    {
+      "id": "wrapping",
+      "clause": "Displayed labels and paragraphs remain within content width, wrapping without clipping or ellipsis.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "notes_open",
+        "delegate_chosen",
+        "authorized",
+        "submitted",
+        "replacement"
+      ],
+      "risk": "layout",
+      "assertion_ids": [
+        "ready/content-wrap",
+        "notes_open/content-wrap",
+        "delegate_chosen/content-wrap",
+        "authorized/content-wrap",
+        "submitted/content-wrap",
+        "replacement/content-wrap"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "content-wrap"
+        ],
+        "reason": "Independently selected state-specific checks for this clause; preserve exact N/A cells.",
+        "regression_obligations": [
+          "caller-content"
+        ]
+      }
+    },
+    {
+      "id": "collector-content",
+      "clause": "Each visible choice row exposes both exact caller-provided title and detail substrings for the current order.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "notes_open",
+        "delegate_chosen",
+        "authorized",
+        "submitted",
+        "replacement"
+      ],
+      "risk": "content",
+      "assertion_ids": [
+        "ready/self-title-content",
+        "ready/self-detail-content",
+        "ready/delegate-title-content",
+        "ready/delegate-detail-content",
+        "notes_open/self-title-content",
+        "notes_open/self-detail-content",
+        "notes_open/delegate-title-content",
+        "notes_open/delegate-detail-content",
+        "delegate_chosen/self-title-content",
+        "delegate_chosen/self-detail-content",
+        "delegate_chosen/delegate-title-content",
+        "delegate_chosen/delegate-detail-content",
+        "authorized/self-title-content",
+        "authorized/self-detail-content",
+        "authorized/delegate-title-content",
+        "authorized/delegate-detail-content",
+        "submitted/self-title-content",
+        "submitted/self-detail-content",
+        "submitted/delegate-title-content",
+        "submitted/delegate-detail-content",
+        "replacement/self-title-content",
+        "replacement/self-detail-content",
+        "replacement/delegate-title-content",
+        "replacement/delegate-detail-content"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "self-title-content",
+          "self-detail-content",
+          "delegate-title-content",
+          "delegate-detail-content"
+        ],
+        "reason": "Prospectively added native checks for visible facts in the original six checkpoints, with no new runtime route.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping",
+          "caller-content"
+        ]
+      }
+    },
+    {
+      "id": "unavailability-content",
+      "clause": "The exact caller unavailability explanation appears if and only if delegateAvailable is false.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "notes_open",
+        "delegate_chosen",
+        "authorized",
+        "submitted",
+        "replacement"
+      ],
+      "risk": "content",
+      "assertion_ids": [
+        "ready/unavailable-presence",
+        "notes_open/unavailable-presence",
+        "delegate_chosen/unavailable-presence",
+        "authorized/unavailable-presence",
+        "submitted/unavailable-presence",
+        "replacement/unavailable-presence",
+        "replacement/unavailable-label"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "unavailable-presence",
+          "unavailable-label"
+        ],
+        "reason": "Prospectively added native checks for visible facts in the original six checkpoints, with no new runtime route.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping",
+          "caller-content"
+        ]
+      }
+    },
+    {
+      "id": "notes-availability",
+      "clause": "The notes disclosure remains a native enabled control in every state, including after submission.",
+      "priority": "must",
+      "states": [
+        "ready",
+        "notes_open",
+        "delegate_chosen",
+        "authorized",
+        "submitted",
+        "replacement"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "ready/notes-enabled",
+        "notes_open/notes-enabled",
+        "delegate_chosen/notes-enabled",
+        "authorized/notes-enabled",
+        "submitted/notes-enabled",
+        "replacement/notes-enabled"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "notes-enabled"
+        ],
+        "reason": "Prospectively added native checks for visible facts in the original six checkpoints, with no new runtime route.",
+        "regression_obligations": [
+          "overlap",
+          "wrapping",
+          "caller-content"
+        ]
+      }
+    }
+  ],
+  "must_route_gaps": [],
+  "unowned_assertions": [],
+  "scope": "Completeness against the independently approved index, not proof that prose was completely translated or that any check passed."
+}

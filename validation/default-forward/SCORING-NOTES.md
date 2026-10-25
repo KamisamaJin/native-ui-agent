@@ -1,0 +1,11 @@
+# Pre-implementation scoring conventions
+
+These conventions implement the frozen protocol before the initial production PR exists. Tool and metric release hashes remain unchanged.
+
+- All three source versions (shared initial, anonymous final A, anonymous final B) get two fresh independent quality reviews after both repair source/claim barriers. Reviewers see original public/hidden contracts, actual source and original native images/data; arm identities and prior opinions stay withheld.
+- Requirement IDs are qualified as `scope:platform:obligation_id`. Source audit IDs are `source:platform:item_id`. Every approved MUST needs both reviewers' P; disagreement or unverifiable runtime claims remain U. Source-only declaration checks remain labelled source-only.
+- Confirmed product defects need agreement on a real contradiction with the independent contract and actual source/native/visual evidence. Related manifestations are grouped by the demonstrated common cause. Source-root/capture/evaluator issues, unknown attribution and qualitative disagreements cannot become confirmed product bugs or false alarms.
+- Initial strict native alarms, agent product claims and capability investigations are separate populations. Only original product alarms have TP/FP attribution. Classic FPR remains unavailable without a defined true-negative opportunity population.
+- Final successful delivery requires fresh full-public evidence, deployment source/API compatibility, complete mandatory source audit and independent public/hidden quality. Zero confirmed initial defects yields N/A for repair/miss rates. A failed endpoint cannot yield successful-delivery cost.
+- The observed consumer workflow cost includes initial authoring, shared initial acquisition, and each arm's handoff through required API/full-public endpoint. The independent blind experiment's design, generic engineering, cohort waits, external panels/hidden validation, publication and CI are itemized separately; they are not silently omitted from the study's total wall cost. Resource queues are reported so simultaneous-study contention is visible.
+- This is one paired complex dual-platform PR, with one shared initial code version. It cannot establish population quality or cost superiority. No tasks are replaced or defects injected after observing results.

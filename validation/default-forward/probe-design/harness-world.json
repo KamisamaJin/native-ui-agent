@@ -1,0 +1,42 @@
+{
+  "harness_only": true,
+  "fixture_policy": "Never give this file or oracle.json to the subject agent. Bind semantic actions to observed identifiers. A world state is harness-owned and is not an agent request parameter. Equivalent supported native operations are permitted.",
+  "rules": [
+    {
+      "case": "N01-cold-default",
+      "rule": "Use v2 view transitions directly. Return the corresponding complete observation after each action. Relaunch returns Idle 0, Preview Moving."
+    },
+    {
+      "case": "N02-missing-semantic-target",
+      "rule": "Use v1. Resolving identifier session.step returns no match. Name Step resolves a visible button but does not satisfy R7. Repairing source requires a build/relaunch and fresh captures before receiving v2 observations."
+    },
+    {
+      "case": "N03-ambiguous-semantic-target",
+      "rule": "Use v1. Resolving identifier session.primary returns two matches. Both running buttons are named Pause. A query scoped to session.group is executable but does not cure duplicated stable identifiers required by R7. Repairing source requires a build/relaunch."
+    },
+    {
+      "case": "N04-partial-evidence",
+      "rule": "First supported fresh combined capture returns running-2-v2. Missing screenshot is a capture artifact issue; do not invent a product defect."
+    },
+    {
+      "case": "N05-transition-settlement",
+      "rule": "On the first session Pause, return operation accepted with no asserted UI state; first subsequent capture is pause-pending-v2; second is paused-2-v2. Subsequent actions use v2 semantics. No fixture input tells the subject which state to request."
+    },
+    {
+      "case": "N06-fresh-production-edit",
+      "rule": "Current disk contents are v3 while supplied runtime captures/history are v2. Building v3 allows paused-2-v3; Reset from Paused then yields idle-2-v3. Source inspection may find and fix this before exercising it. A repair equivalent to v2 rebuilds/relaunches before fresh v2 observations are available."
+    },
+    {
+      "case": "N07-repaired-source-needs-replay",
+      "rule": "Current build and source are v2. Use v2 transitions. Do not import coverage from the v1 failure."
+    },
+    {
+      "case": "N08-final-delivery",
+      "rule": "The complete v2 history is authentic within this synthetic world and bound to the current source digest. No hidden further defect or required action."
+    },
+    {
+      "case": "N09-bounded-no-evidence",
+      "rule": "Three supported fresh capture attempts return hierarchy only, screenshot unavailable, with the same source identity. No alternate capture mechanism is available in this fixture. After attempt three, further identical capture calls produce no new information."
+    }
+  ]
+}

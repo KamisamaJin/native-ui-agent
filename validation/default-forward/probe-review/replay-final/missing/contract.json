@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "design_owner": "independent-neutral-probe-adapter",
+  "approval_reference": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/default-forward/probe-design/SHA256SUMS",
+  "sources": [
+    {
+      "id": "approved",
+      "path": "approved.json",
+      "sha256": "57ab19e2dbeaab39f9592aaaeafe4ace51f031a1afc6f655df1b9136ddc13184"
+    }
+  ],
+  "rules": [
+    {
+      "id": "step-present",
+      "kind": "control",
+      "target": "session.step",
+      "property": "present"
+    }
+  ],
+  "required_rule_ids": [
+    "step-present"
+  ],
+  "scenarios": {
+    "neutral": {
+      "states": [
+        {
+          "id": "checkpoint-00",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        }
+      ],
+      "actions": [
+        {
+          "type": "checkpoint"
+        }
+      ],
+      "values": {
+        "step-present": {
+          "checkpoint-00": {
+            "ios": {
+              "source": "approved",
+              "pointer": "/expected/step-present/0"
+            },
+            "android": {
+              "source": "approved",
+              "pointer": "/expected/step-present/0"
+            }
+          }
+        }
+      }
+    }
+  }
+}

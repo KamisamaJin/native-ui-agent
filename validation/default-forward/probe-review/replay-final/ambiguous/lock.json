@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "independent-neutral-probe-adapter",
+    "approval_reference": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/default-forward/probe-design/SHA256SUMS",
+    "sources": [
+      {
+        "id": "approved",
+        "path": "approved.json",
+        "sha256": "2a3bdb0e07e056eeeacbd2811671e3864a8c867ba12a44877cbace072fd10f83"
+      }
+    ],
+    "rules": [
+      {
+        "id": "primary-unique",
+        "kind": "control",
+        "target": "session.primary",
+        "property": "unique"
+      }
+    ],
+    "required_rule_ids": [
+      "primary-unique"
+    ],
+    "scenarios": {
+      "neutral": {
+        "states": [
+          {
+            "id": "checkpoint-00",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "full_content"
+          }
+        ],
+        "actions": [
+          {
+            "type": "checkpoint"
+          }
+        ],
+        "values": {
+          "primary-unique": {
+            "checkpoint-00": {
+              "ios": {
+                "source": "approved",
+                "pointer": "/expected/primary-unique/0"
+              },
+              "android": {
+                "source": "approved",
+                "pointer": "/expected/primary-unique/0"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "approved": {
+      "id": "approved",
+      "path": "approved.json",
+      "sha256": "2a3bdb0e07e056eeeacbd2811671e3864a8c867ba12a44877cbace072fd10f83",
+      "document": {
+        "expected": {
+          "primary-unique": [
+            {
+              "value": true,
+              "unit": "bool"
+            }
+          ]
+        },
+        "launch": {
+          "fixtures_sha256": "8ba367a5face432cefae47c99d247f83c2030c3418cd4016b460eedc5c84a997",
+          "bridge_sha256": "8411f12d746e09ae6d86d287a19404de0b7d7b2d019ccb6f206028ebe0bc0484",
+          "scenario": "neutral",
+          "platform": "ios"
+        },
+        "obligations": [
+          {
+            "id": "primary-unique",
+            "clause": "Neutral approved subset: primary-unique",
+            "priority": "must",
+            "states": [
+              "checkpoint-00"
+            ],
+            "risk": "behavior"
+          }
+        ]
+      },
+      "raw_utf8": "{\n  \"expected\": {\n    \"primary-unique\": [\n      {\n        \"value\": true,\n        \"unit\": \"bool\"\n      }\n    ]\n  },\n  \"launch\": {\n    \"fixtures_sha256\": \"8ba367a5face432cefae47c99d247f83c2030c3418cd4016b460eedc5c84a997\",\n    \"bridge_sha256\": \"8411f12d746e09ae6d86d287a19404de0b7d7b2d019ccb6f206028ebe0bc0484\",\n    \"scenario\": \"neutral\",\n    \"platform\": \"ios\"\n  },\n  \"obligations\": [\n    {\n      \"id\": \"primary-unique\",\n      \"clause\": \"Neutral approved subset: primary-unique\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"checkpoint-00\"\n      ],\n      \"risk\": \"behavior\"\n    }\n  ]\n}\n"
+    }
+  },
+  "contract_sha256": "7c305a3cee30162ec059ecddcffb1af26ce6a9f348d3b65c9115b8a3a4d0e983",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "design_owner": "independent-neutral-probe-adapter",
+  "approval_reference": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/default-forward/probe-design/SHA256SUMS",
+  "sources": [
+    {
+      "id": "approved",
+      "path": "approved.json",
+      "sha256": "2a3bdb0e07e056eeeacbd2811671e3864a8c867ba12a44877cbace072fd10f83"
+    }
+  ],
+  "rules": [
+    {
+      "id": "primary-unique",
+      "kind": "control",
+      "target": "session.primary",
+      "property": "unique"
+    }
+  ],
+  "required_rule_ids": [
+    "primary-unique"
+  ],
+  "scenarios": {
+    "neutral": {
+      "states": [
+        {
+          "id": "checkpoint-00",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        }
+      ],
+      "actions": [
+        {
+          "type": "checkpoint"
+        }
+      ],
+      "values": {
+        "primary-unique": {
+          "checkpoint-00": {
+            "ios": {
+              "source": "approved",
+              "pointer": "/expected/primary-unique/0"
+            },
+            "android": {
+              "source": "approved",
+              "pointer": "/expected/primary-unique/0"
+            }
+          }
+        }
+      }
+    }
+  }
+}

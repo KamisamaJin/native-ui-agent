@@ -1,0 +1,46 @@
+# Independent quality panel one
+
+This is an arm-blind review of `candidate-15932628`, `candidate-3c33c5ce`, and `candidate-fbe2e9a9`. I used the sealed `quality-inputs` copies, the original independent `design/public` and `design/private` requirements, reference values, drawing, ledgers, catalogs and caller, the quality-review schema, `source_self.py`, and the frozen candidate-v10 binding/geometry scripts. I did not inspect assignment/quality-map material, repair contexts, other panels, prior studies or participant self-claims, and did not contact participants or reviewers. No SDK, app, simulator, or source mutation was run.
+
+The submitted originals are the two `source/<scope>/shared-identical-sources/submission.json` files, the twelve `visual/<candidate>/<scope>/<platform>/<case>/submission.json` files, `alarm-judgments.json`, and `extra-findings.json`. There is no overall acceptance judgment. Source-only matches, visual actuals, original automatic native measurements and alarm attribution remain separate.
+
+## Source coverage
+
+I read the complete real 329-line Swift and 398-line Kotlin production card implementations, their data API, state/handler logic, palette and layout declarations and actual modifier/style applications. Both scope identity records prove the SHA of every declared review file is equal for all three candidates. I independently checked those bytes against the catalog and each candidate source capsule before sharing the source review. This sharing concerns the two declared files, not every file in the repository or runtime output.
+
+There are 55 decisions in each scope, 110 in total. Each known source decision cites every declared file with exact SHA and valid line ranges; declaration and application locations are both included. The original style data match the declarations and applications I read. The six additional branch obligations have source guards/state updates and a single appropriate request-bound event call. These are source-only observations: closing notes, choosing self after delegate, acknowledgment false, self submission, same-choice reselection and attempted disabled-control callbacks were not dispatched by the selected runtime route. Neither initial/reset state nor another callback is used as runtime proof of those branches.
+
+The public Swift data/init and View init match the original Bridge caller shape. The separate sealed minimum-api records for all candidates report module emission and unchanged-caller typechecking against the iOS 14 minimum target, both commands exiting 0 with source unchanged. I read those records; I did not rerun a compiler. They establish a separate source/module/client availability result, not an iOS 14 launch, archive/link, runtime behavior or rendered-style result. The source-only API row retains this distinction.
+
+## Native and image coverage
+
+All three candidates were reviewed in both public `counter-collection` and held-out `courtyard-collection` scopes, on iOS and Android. Each case has the exact six states: ready, notes_open, delegate_chosen, authorized, submitted and replacement. Each state has two visual decisions, for overlap and wrapping. All 144 visual actuals are true for the captured content.
+
+| Scope and platform | Frames per candidate | Checkpoints per candidate | Visual decisions per candidate |
+| --- | ---: | ---: | ---: |
+| Public Android | 14 | 6 | 12 |
+| Public iOS | 14 | 6 | 12 |
+| Private Android | 35 | 6 | 12 |
+| Private iOS | 39 | 6 | 12 |
+
+This is 306 exact original checkpoint frame references, 72 full-content scans and 199 distinct original image SHA groups. `inspection/image-manifest.json` maps every candidate/scope/platform/state/index to its original path and SHA. Every chosen original hash was checked against the sealed image-sha-index. I inspected all 53 contact sheets, which display those original screenshots with only proportional resizing and labels, and additionally opened all three public iOS ready originals directly. Contact sheets are inspection aids, not replacement evidence. Every submission points to the original observation and original snapshot indices. Android image equality across candidates and repeated frames was reused only when the exact original image hashes proved equality. Distinct iOS images were inspected separately.
+
+The normal-font light LTR content and larger-font dark RTL content keep text inside the available card width and controls separate. Long title/choice text wraps, the native acknowledgment label has room beside its switch, notes continue through all paragraphs, and the final confirmation/sent button is visible at the bottom. I checked all overlap frames, including frames containing only middle notes paragraphs. Partial text at the scroll viewport edge is completed in adjacent frames; it is not treated as card clipping. The replacement scans show new order text, the disabled visible delegate row and explanation, collapsed notes and the restored self confirmation. No independent missed product concern was established, so `extra-findings.json` is `[]`.
+
+I checked the original state-image-index against raw state_captures and frozen bound_state_evidence. All 72 scans have matching exact indices and complete, stable, top-to-bottom zero-gap coverage. Before/after source records match. Each environment check reports P. I also inspected native control resolutions in all states and exact dispatch receipts: one successful notes, delegate, acknowledgment and confirmation activation, each with its own bound event interval, followed by a same-instance caller fixture update with no callback. The exact original input hashes, instance identifiers, native dispatch methods and callback lists are retained in `inspection/native-evidence-summary.json`. `inspection/native-control-summary.json` preserves raw control-role, enabled, selected and switch-value evidence per scan. Offscreen resolution in an individual sweep frame is not treated as absence when another original frame resolves that control.
+
+Android evidence comes from an attached native ComposeView in a continuous Paparazzi session and invokes Compose semantic OnClick. It is not an Activity/lifecycle, OS gesture or physical touch test. iOS dispatch uses XCUI taps; its public AX rectangle is not a full layout allocation or physical OS hit-region measurement. The source/visual review does not extend either collector's capability. The source-only font/color/layout declarations are not computed runtime styles. Pixel actuals were not entered by this reviewer; the operator can replay the native-pixel atoms from original images.
+
+## Original alarms and attribution
+
+Across the twelve original automatic reports there are 1,809 passed, three failed and 144 unassessed assertions. The three failures are exactly the same assertion in each candidate: public iOS `ready/primary-min-height`, original snapshot 2. The original unique fully visible confirmation control reports height **47.99999999999994 pt** against **gte 48 pt**, without tolerance. That strict numeric F is retained exactly; I did not round, snap, change units, add epsilon, alter an expected value or relabel the native assertion as a pass.
+
+I classify each alarm cause as **uncertain**. Source line 293 declares 48 and lines 163–172 apply frame(minHeight:) on the production button label. The original image shows a complete ordinary button. Those facts do not establish its exact observed AX height. A floating-point/AX representation artifact is plausible, but the records do not demonstrate the exact point at which such an artifact arose, nor a product layout cause. Therefore I establish neither a product defect nor a conclusive false alarm. The one unresolved alarm group is this public iOS ready-confirmation rectangle; it is not counted as a confirmed product root cause. No confirmed product defect grouping is asserted.
+
+## Verification and limits
+
+`inspection/verification.json` records successful local checks of both source catalog bindings and evidence ranges, all twelve visual catalog/observation bindings, the exact native state indices, complete raw scan bindings, control evidence availability, and all alarm evidence file hashes/ranges. This validation used Python and frozen binding helpers only. Native assertions and acceptance conjunctions remain for the operator's independent replay and conservative combination with the other original panel.
+
+Qualitative overlap/wrapping observations concern the captured inputs, environment and selected route. They cannot prove every possible string, category, direction, device or branch. Screenshot scaling cannot resolve a difference on the order of the retained AX numeric discrepancy. A source review cannot close that native uncertainty. No unknown was converted into a product defect merely to differentiate candidates.
+
+Failed preliminary path lookups, oversized diagnostic outputs and one corrected alarm evidence line range are recorded in `inspection/ATTEMPTS.md`. The initial alarm draft and the fresh corrected draft are both preserved under `inspection/drafts`; the canonical alarm-judgments file uses the corrected valid range. No source/visual submission required a corrected draft.

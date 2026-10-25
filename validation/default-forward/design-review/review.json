@@ -1,0 +1,52 @@
+{
+  "status": "needs_revision",
+  "findings": [
+    {
+      "severity": "high",
+      "file": "validation/default-forward/design/public/reference.json",
+      "reason": "The independently approved obligation index omits mandatory visible caller content. Its caller-content route covers only title, job summary, and status. Neither scope has an explicit content route for pickupWindow, the choice titles/details, or the delegateUnavailableMessage required when replacement disables delegate collection. A fully passing selected matrix can therefore coexist with stale or missing required caller text.",
+      "evidence": [
+        "Both scopes' REQUIREMENTS.md requires replacement of every visible caller field and requires delegateUnavailableMessage below an unavailable delegate row.",
+        "Both scopes' reference.json#/obligations contains caller-content limited to caller title, order summary, and live status.",
+        "Both scopes' routes.json#/routes/caller-content/rule_ids is [title-label, summary-label, status-label].",
+        "Both scopes' contract.json#/rules has no pickup-window, choice-label/detail, or unavailable-message content assertion; bindings.json has no logical target for window or the unavailable message.",
+        "The window's presence in fixtures.required_identifiers does not assert its current label. The visual questions ask about displayed content wrapping/overlap, not required text presence or exact caller content. SOURCE-STYLE-AUDIT.json contains style/API audits only."
+      ]
+    },
+    {
+      "severity": "high",
+      "file": "validation/default-forward/design/public/contract.json",
+      "reason": "The required submitted acknowledgment disabled state has no verification route. The selected submitted checkpoint retains the acknowledgment and checks its label/value, but never checks enabled=false. This is directly measurable through the existing native control checker and needs no additional state.",
+      "evidence": [
+        "Both scopes' REQUIREMENTS.md says valid confirmation disables the confirmation and collection-choice/acknowledgment controls while preserving the selected choice and acknowledgment.",
+        "Both scopes' reference.json#/ui/submitted contains selfEnabled=false, delegateEnabled=false, and confirmEnabled=false, but no acknowledgment enabled expectation.",
+        "Both scopes' contract.json#/rules contains ack-presence, ack-value, and ack-label, but no acknowledgment enabled rule.",
+        "Both scopes' routes.json#/routes/ack-state names only ack-value and ack-label; no source-only audit covers the submission guard.",
+        "candidate-v10/scripts/native_checks.py resolve() exports the unique native control's enabled value; evaluate() supports an atomic control enabled assertion."
+      ]
+    },
+      {
+      "severity": "medium",
+      "file": "validation/default-forward/design/public/reference.json",
+      "reason": "Several mandatory interaction branches have neither a runtime route nor an explicit source-only audit route: notes closing, choosing self after a different selection, acknowledgment false, and notes operation after submission. These are stated behavior requirements, while the approved callback obligations deliberately name opening/delegate/true only. The six-state route can remain small, but excluded runtime branches must have an explicit disposition and declared evidence limits before full requirement closure is claimed.",
+      "evidence": [
+        "Both scopes' REQUIREMENTS.md specifies notes open and closed events, collector self and delegate events on a changed choice, and acknowledgment true and false events once per real toggle; notes remain readable after submission.",
+        "Both scopes' reference.json#/events fixes only open, choose-delegate, acknowledgment-true, submit, and quiet-update receipts.",
+        "Both scopes' reference.json#/obligations and routes.json cover only those selected callback directions; no notes-enabled or post-submission disclosure operation is asserted.",
+        "Both scopes' SOURCE-STYLE-AUDIT.json and audit-index.json have 48 typography, layout, and palette items and an API availability requirement; they do not audit these business event branches or control guards.",
+        "candidate-v10/scripts/requirement_routes.py audit() explicitly proves completeness only against the supplied approved index, not completeness of its translation from prose."
+      ]
+    }
+  ],
+  "limitations": [
+    "This is a preimplementation specification review of both design scopes, candidate-v10 tools/docs/tests, and the explicitly permitted pinned host configurations. No business production source, business screenshots, prior study outputs, or native SDK execution was used.",
+    "The frozen design verifier passed for both scopes: 25 rules, six states, 117 applicable assertions and 33 explicit N/A cells per platform; all 117 assertions are owned by the approved 15-obligation index. This identity/derivation result does not resolve the semantic completeness findings.",
+    "All 48 source-only audit IDs in each scope resolve to the exact original typed reference datum and matching audit-index pointer, with correct platform/native units. A source declaration or modifier match cannot prove computed native font, color, padding, effective layout, or runtime use.",
+    "The approved action sequence and existing typed state values are consistent. The N/A cells are justified by absent acknowledgment, collapsed notes, or a different stimulus interval; they must remain N/A rather than silently become passes.",
+    "The two reference drawings are annotated schematic design intentions. Their illustrative labels, wrapping, and renderer typography are not native screenshot goldens. Native evidence must establish the solid sampling band and the actual geometry.",
+    "The pixel policy establishes only dominant rendered sRGB in the approved native delegate control region. It does not establish whole-component color, generic SwiftUI computed style, font, padding, or OS hit area. Missing/malformed native mapping or insufficient support must remain unknown.",
+    "The runtime iOS observer host targets iOS 17 and uses a later-OS simulator. Its successful future execution would not establish iOS 14 compatibility. The pinned production package declares iOS 14; the full module plus the original public Bridge.swift caller still require the separate iOS 14 compiler check stated in the design.",
+    "The observers' source contracts support real XCUI dispatch on iOS, semantic OnClick invocation on Android, same-process caller replacement, and overlapping state sweeps. They still require the independent native capability preflight and fresh production capture; Android semantic dispatch is not OS touch, and these component hosts do not establish real-app navigation, safe-area, keyboard, or lifecycle behavior.",
+    "All 139 candidate-v10 SDK-free unit tests passed. These tests validate tool boundaries and synthetic evidence handling, not a production implementation or native runtime capability."
+  ]
+}
