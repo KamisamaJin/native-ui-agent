@@ -34,7 +34,7 @@ def inventory(root,entries):
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--tracked',action='store_true');a=parser.parse_args()
  cache_archives();spec=R/'probes/spec/seal-manifest.json';s=read(spec);inventory(spec.parent,s['files']);counts=[]
- for folder,freeze in [('candidate-v12','CANDIDATE-FREEZE.json'),('candidate-v12.1','CANDIDATE-FREEZE-2.json'),('candidate-v12.2','CANDIDATE-FREEZE-3.json'),('candidate-v12.3','CANDIDATE-FREEZE-4.json')]:assert table(R/folder)==read(R/freeze)['files']
+ for folder,freeze in [('candidate-v12','CANDIDATE-FREEZE.json'),('candidate-v12.1','CANDIDATE-FREEZE-2.json'),('candidate-v12.2','CANDIDATE-FREEZE-3.json'),('candidate-v12.3','CANDIDATE-FREEZE-4.json'),('candidate-v12.4','CANDIDATE-FREEZE-5.json')]:assert table(R/folder)==read(R/freeze)['files']
  latest=read(R/'LATEST-ENGINEERING.json')
  assert table(REPO/'native-ui-agent')==table(R/latest['candidate'])
  assert table(R/'baseline-v11')==read(R/'baseline-v11-seal.json')['files']
@@ -92,6 +92,11 @@ def main():
  for name in ['pre-cleanup','host-setup']:verify_capsule(R/'evidence'/name)
  cleanup=read(R/'CLEANUP.json');assert cleanup['status']=='complete'and cleanup['post_cleanup']['path_exists']is False and cleanup['remaining_owned_cache_bytes']==0
  assert cleanup['owned_native_devices_remaining']==[]and cleanup['live_working_directories']==[]
+ archive_root=R/'operators/local-ci-after-compatibility';partial=read(archive_root/'partial-grade-archive.json');archive=archive_root/partial['archive']
+ assert sha(archive)==partial['sha256']and sha(archive_root/'partial-historical-grade-replay/inventory.json')==partial['original_inventory_sha256']
+ with tarfile.open(archive,'r:gz')as stream:
+  for row in partial['entries']:
+   data=stream.extractfile(row['file']).read();assert len(data)==row['bytes']and hashlib.sha256(data).hexdigest()==row['sha256']
  checkpoint=read(R/'PHASE1.json')
  assert checkpoint['business_blind_trial']=='not_started'and not checkpoint['business_design_dispatched']and not checkpoint['initial_business_source_authored']
  if a.tracked:

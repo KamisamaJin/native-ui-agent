@@ -1,4 +1,4 @@
-import importlib.util,json,tempfile,unittest,hashlib
+import importlib.util,json,tempfile,unittest,hashlib,subprocess,sys
 from pathlib import Path
 spec=importlib.util.spec_from_file_location('native_checks',Path(__file__).resolve().parents[1]/'scripts/native_checks.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 class NativeChecks(unittest.TestCase):
@@ -26,6 +26,14 @@ class NativeChecks(unittest.TestCase):
  def test_state_union_recomputed_not_trusting_complete_boolean(self):
   o=self.observation();o['snapshots'][1]['runtime']['content_frame']['y']=-750
   self.assertFalse(m.state_evidence(o,{'id':'initial','input_index':0})[1])
+ def test_legacy_coverage_reader_isolated_file_import(self):
+  # A fresh isolated interpreter prevents other test modules from masking a
+  # missing sibling path in the public standalone native-fact reader.
+  source=Path(__file__).resolve().parents[1]/'scripts/native_checks.py'
+  body='import importlib.util,json,sys;spec=importlib.util.spec_from_file_location("standalone_checks",'+repr(str(source))+');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);o=json.loads('+repr(json.dumps(self.observation()))+');assert m.state_evidence(o,{"id":"initial","input_index":0})[1];assert "action_guard" not in sys.modules'
+  with tempfile.TemporaryDirectory()as cwd:
+   result=subprocess.run([sys.executable,'-I','-B','-c',body],cwd=cwd,text=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+  self.assertEqual(result.returncode,0,result.stderr)
  def test_input_and_callback_epoch_cannot_borrow_other_state(self):
   o=self.observation();o['snapshots'][1]['binding']=dict(o['snapshots'][1]['binding'],event_revision=1)
   self.assertEqual(m.evaluate(self.plan(),o,'ios')['counts']['unassessed'],1)

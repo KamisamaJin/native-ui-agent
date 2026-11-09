@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.4/scripts/resource_manager.py", line 169, in __enter__
+    try: fcntl.flock(self.stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+BlockingIOError: [Errno 35] Resource temporarily unavailable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.4/scripts/resource_manager.py", line 418, in <module>
+    else: main()
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.4/scripts/resource_manager.py", line 400, in main
+    with Resources(json.loads(a.config.read_text()), a.output, final=a.command == 'cleanup') as manager:
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.4/scripts/resource_manager.py", line 172, in __enter__
+    raise RuntimeError('Resource lease is active; concurrent acquisition refused')
+RuntimeError: Resource lease is active; concurrent acquisition refused

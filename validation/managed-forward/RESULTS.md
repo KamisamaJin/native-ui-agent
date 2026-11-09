@@ -24,10 +24,11 @@
 | attempt-3 | candidate-v12.1 | 106 | 0 | 23 | 原 spec 通用行为通过；保留原生补证分母。 |
 | attempt-4 | candidate-v12.2 | 106 | 0 | 23 | 平台选项先校验、独立 iOS 桥接的平台传递修正后复跑。 |
 | attempt-5 | candidate-v12.3 | 106 | 0 | 23 | SDK 日志改为运行中落盘后，仍按相同原 spec 复跑；未做执行后判定校正。 |
+| attempt-6 | candidate-v12.4 | 106 | 0 | 23 | 修复远端 CI 暴露的旧包单文件加载依赖回归后，原 spec 复跑及冻结后验均通过。 |
 
 最新候选及后续原 spec 复跑见 [LATEST-ENGINEERING.json](LATEST-ENGINEERING.json)。106P 中 **27 项是真实临时进程/文件，79 项是合成协议检查**；23U 不能从单元测试或成功 CLI 推导为原生通过。原生补证另外列示，不覆盖这张表。首轮 raw 与 adjudication 也都保留，不能将所有原始拒绝都归为产品缺陷。
 
-通用修复依据是独立中性任务：真实忽略 SIGTERM 的后代、被中断写入的资源日志、被替换的原始动作、同一进程合法的解释器路径变化、非法平台选项与中途 SDK 日志丢失。没有使用下一轮业务需求或向产品注入缺陷来获得分母。164 项工具测试通过，测试前后源码摘要一致，见 [原始执行记录](operators/engineering-1794232500545834000.json) 及同名 `.log`。
+通用修复依据是独立中性任务：真实忽略 SIGTERM 的后代、被中断写入的资源日志、被替换的原始动作、同一进程合法的解释器路径变化、非法平台选项与中途 SDK 日志丢失。没有使用下一轮业务需求或向产品注入缺陷来获得分母。v12.3 的 164 项工具测试通过且前后源码摘要一致，见 [原始执行记录](operators/engineering-1794232500545834000.json) 及同名 `.log`；远端 CI 之后新增的隔离解释器回归使当前工具测试增至 165 项。
 
 ## 真实 Android 补证
 
@@ -66,6 +67,10 @@
 ## 证据、清理和发布
 
 所有冻结工具、原始失败、原生包、判据与归档摘要可离线重放。`verify_probes.py` 校验封存身份、实际图片/输入/源码、原检查结果和资源收尾；不会在 CI 启动模拟器或对外清理资源。此前 v11 的验证改用固定历史源码视图，不用 v12 的变化重写旧成绩。
+
+首次[远端 CI](https://github.com/KamisamaJin/native-ui-agent/actions/runs/42633193301)的 164 项工具测试通过，但旧 `tool-forward/verify_engineering.py` 用 `importlib` 单文件加载 `native_checks` 时，因新增无条件导入 `action_guard` 而失败。组合测试的 `sys.path` 修改掩盖了这个**实际向后兼容回归**。v12.4 将该依赖延后到 protocol-1 观测包才加载；守卫协议的校验逻辑没有放宽。新增 `python -I` 隔离进程回归后，本地 165 项及原工程验证通过。见 [完整失败日志与分类](operators/ci-42633193301.json) 和新冻结候选。已有 SDK 包仍是各自 v12.1/v12.2/v12.3 执行，不给 v12.4 虚构一次新 SDK 信用；这些均在业务设计开始前发生。
+
+本地随后按工作流顺序执行余下离线检查，前 14 项通过；旧 `dispatch-forward/verify_evaluation.py` 的全量历史图像评分在本地驱动的 300 秒上限终止，未完成部分不算通过，也不属于产品缺陷或原生采集失败。[逐命令记录与原日志](operators/local-ci-after-compatibility/commands.json)、[超时记录](operators/local-ci-after-compatibility/timeout.json) 保留；没有调整评分预期、阈值或原实验数据。
 
 主项目专用工作缓存已在闭包核验后清理：**4048 个文件、500,346,880 allocated bytes（477.17 MiB）**，主 cache 目录已不存在。[CLEANUP.json](CLEANUP.json) 保留实际前后统计与证据清单；独立探针自己的 per-run cache 归档另见各轮记录。没有创建新 iOS 模拟器，也没有清理用户设备、共享 SDK 缓存、旧证据或 Git 历史。
 

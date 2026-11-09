@@ -1,0 +1,101 @@
+{
+  "id": "R03/command-timeout",
+  "verdict": "P",
+  "scope": "real_process_and_filesystem",
+  "reason": "Actual public timeout and owned-group cleanup checked",
+  "candidate_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.4",
+  "freeze_manifest_sha256": "7056f1caf253284f3cd920ba6113384061abb359d2025747a0daeac0f35f2e2b",
+  "observations": {
+    "exit_code": 1,
+    "primary_error": {
+      "type": "TimeoutExpired",
+      "message": "Command '['/Library/Developer/CommandLineTools/usr/bin/python3', '-B', '/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-6/fixture_process.py', '--root', '/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-6/cache/R03__command-timeout/fixture', '--token', 'ef751ff322874261a6e4cd38f499b514', '--role', 'body', '--mode', 'tree-hang']' timed out after 1 seconds"
+    },
+    "public_signature": "(self, argv, *, env, stdout, timeout=None)"
+  },
+  "protected_ok": true,
+  "duration_seconds": 1.112321916,
+  "commands": [
+    {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-6/resource_worker.py",
+        "--scripts",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.4/scripts",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-6/raw/R03__command-timeout/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-6/raw/R03__command-timeout/tool-output",
+        "--fixture",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-6/fixture_process.py",
+        "--fixture-root",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-6/cache/R03__command-timeout/fixture",
+        "--token",
+        "ef751ff322874261a6e4cd38f499b514",
+        "--mode",
+        "tree-timeout",
+        "--final"
+      ],
+      "pid": 38078,
+      "started_monotonic": 1.054161083,
+      "tool_identity_before": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+      "exit_code": 1,
+      "finished_monotonic": 2.136585,
+      "tool_identity_after": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6"
+    }
+  ],
+  "trace": [
+    {
+      "kind": "borrowed_ready",
+      "trace": [
+        {
+          "elapsed": 6.137500000003016e-05,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.060134916999999954,
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "kind": "sealed_10_second_cleanup_deadline",
+      "deadline_monotonic": 12.136883333,
+      "observations": [
+        {
+          "at_monotonic": 2.151917541,
+          "owned_live": [],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 38083,
+              "ppid": 38082,
+              "pgid": 38079,
+              "token": "ef751ff322874261a6e4cd38f499b514",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794234469.1357021,
+              "heartbeat_at": 1794234469.998233,
+              "heartbeat_monotonic": 0.87473875
+            },
+            "heartbeat-body.json": {
+              "pid": 38082,
+              "ppid": 38079,
+              "pgid": 38079,
+              "token": "ef751ff322874261a6e4cd38f499b514",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794234469.117333,
+              "heartbeat_at": 1794234470.003495,
+              "heartbeat_monotonic": 0.898960916
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "tool_identity_before": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+  "tool_identity_after": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+  "raw_directory": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-6/raw/R03__command-timeout",
+  "snapshot": "before-harness-teardown.json"
+}

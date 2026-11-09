@@ -183,11 +183,14 @@ def callback_verdict(step, expected, platform, required_method=None, stimulus='a
 
 
 def state_evidence(observation,state):
-    import action_guard
-    platform = observation.get('guard_platform', 'ios' if observation.get('measurement_kind', '').startswith('XCUI') else 'android')
-    guard = action_guard.state_verdict(observation, state, platform)
-    if guard is not None and not guard['established']:
-        return [], False, 'blocked_precondition: ' + guard['reason'], {'precondition': guard}
+    # Legacy coverage packets have no guarded route. Keep this standalone reader
+    # usable through a file loader without importing an unrelated protocol.
+    if observation.get('guard_protocol') == 1:
+        import action_guard
+        platform = observation.get('guard_platform', 'ios' if observation.get('measurement_kind', '').startswith('XCUI') else 'android')
+        guard = action_guard.state_verdict(observation, state, platform)
+        if guard is not None and not guard['established']:
+            return [], False, 'blocked_precondition: ' + guard['reason'], {'precondition': guard}
     captures=[c for c in observation.get('state_captures',[])if c.get('state_id')==state['id']]
     if not captures and state.get('coverage')=='targets':
         index=state.get('after_action');steps=observation.get('steps',[])
