@@ -1,0 +1,281 @@
+{
+  "version": 1,
+  "platform": "android",
+  "scope": "full",
+  "parent_plan_sha256": "94ee3cae03ab9d2722da8625859b2ac3f7cebf33fb31b5354fd2c1cc13f89911",
+  "design_lock_sha256": "6fde18c18b0be9fa445629ad34f0df325261b5c9cd797dda5b053ea045953f4d",
+  "launch_ref": {
+    "source": "reference",
+    "pointer": "/launch"
+  },
+  "fixtures_sha256": "a3dc56ebbc054c3dfc85e635310d3ce8321b7f7bb4b14e49adfb8d64ce9a2579",
+  "bridge_sha256": "0f1cdf96714dd874cb51680c5335b0436fc7a1fcee86f2064863ff3ca99f6e93",
+  "selected_states": [
+    "front",
+    "counted",
+    "replaced",
+    "continued"
+  ],
+  "required_coverage": [
+    {
+      "state_id": "front",
+      "coverage": "targets",
+      "targets": [
+        {
+          "identifier": "counter.tally",
+          "role": "text"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "counted",
+      "coverage": "targets",
+      "targets": [
+        {
+          "identifier": "counter.tally",
+          "role": "text"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "replaced",
+      "coverage": "targets",
+      "targets": [
+        {
+          "identifier": "counter.tally",
+          "role": "text"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "continued",
+      "coverage": "targets",
+      "targets": [
+        {
+          "identifier": "counter.tally",
+          "role": "text"
+        }
+      ],
+      "absence_targets": []
+    }
+  ],
+  "actions": [
+    {
+      "type": "checkpoint",
+      "state_id": "front",
+      "after_targets": [
+        {
+          "identifier": "counter.tally",
+          "role": "text"
+        }
+      ],
+      "capture_scope": "targets",
+      "depends_on": [],
+      "callback_dependencies": [],
+      "preconditions": []
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "counter.increment",
+        "role": "button"
+      },
+      "preconditions": [
+        {
+          "target": {
+            "identifier": "counter.increment",
+            "role": "button"
+          },
+          "property": "enabled",
+          "op": "eq",
+          "expected": true
+        }
+      ],
+      "state_id": "counted",
+      "after_targets": [
+        {
+          "identifier": "counter.tally",
+          "role": "text"
+        }
+      ],
+      "capture_scope": "targets",
+      "depends_on": [
+        0
+      ],
+      "callback_dependencies": []
+    },
+    {
+      "type": "apply_next_fixture",
+      "callback_dependencies": [
+        {
+          "action_index": 1,
+          "expected_events": [
+            "increment"
+          ]
+        }
+      ],
+      "state_id": "replaced",
+      "after_targets": [
+        {
+          "identifier": "counter.tally",
+          "role": "text"
+        }
+      ],
+      "capture_scope": "targets",
+      "depends_on": [
+        1
+      ],
+      "preconditions": []
+    },
+    {
+      "type": "tap",
+      "target": {
+        "identifier": "counter.continue",
+        "role": "button"
+      },
+      "preconditions": [
+        {
+          "target": {
+            "identifier": "counter.tally",
+            "role": "text"
+          },
+          "property": "label",
+          "op": "eq",
+          "expected": "Tally: 8"
+        },
+        {
+          "target": {
+            "identifier": "counter.continue",
+            "role": "button"
+          },
+          "property": "enabled",
+          "op": "eq",
+          "expected": true
+        }
+      ],
+      "callback_dependencies": [
+        {
+          "action_index": 2,
+          "expected_events": []
+        }
+      ],
+      "state_id": "continued",
+      "after_targets": [
+        {
+          "identifier": "counter.tally",
+          "role": "text"
+        }
+      ],
+      "capture_scope": "targets",
+      "depends_on": [
+        2
+      ]
+    }
+  ],
+  "config": {
+    "width": 390,
+    "viewportHeight": 600,
+    "theme": "light",
+    "direction": "ltr",
+    "dynamic_type": "large",
+    "fontScale": 1,
+    "initial": {
+      "seed": 0
+    },
+    "updates": [
+      {
+        "seed": 8
+      }
+    ],
+    "max_scrolls": 4,
+    "state_capture": true,
+    "guard_protocol": 1,
+    "observation_strategy": "coalesced",
+    "execution_states": [
+      {
+        "state_id": "front",
+        "coverage": "targets",
+        "targets": [
+          {
+            "identifier": "counter.tally",
+            "role": "text"
+          }
+        ],
+        "absence_targets": []
+      },
+      {
+        "state_id": "counted",
+        "coverage": "targets",
+        "targets": [
+          {
+            "identifier": "counter.tally",
+            "role": "text"
+          }
+        ],
+        "absence_targets": []
+      },
+      {
+        "state_id": "replaced",
+        "coverage": "targets",
+        "targets": [
+          {
+            "identifier": "counter.tally",
+            "role": "text"
+          }
+        ],
+        "absence_targets": []
+      },
+      {
+        "state_id": "continued",
+        "coverage": "targets",
+        "targets": [
+          {
+            "identifier": "counter.tally",
+            "role": "text"
+          }
+        ],
+        "absence_targets": []
+      }
+    ],
+    "execution_state_definitions": [
+      {
+        "id": "front",
+        "input_index": 0,
+        "after_action": 0,
+        "coverage": "targets"
+      },
+      {
+        "id": "counted",
+        "input_index": 0,
+        "after_action": 1,
+        "coverage": "targets"
+      },
+      {
+        "id": "replaced",
+        "input_index": 1,
+        "after_action": 2,
+        "coverage": "targets"
+      },
+      {
+        "id": "continued",
+        "input_index": 1,
+        "after_action": 3,
+        "coverage": "targets"
+      }
+    ],
+    "execution_scope": "full",
+    "observation_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ]
+  },
+  "parent_action_count": 4,
+  "executed_action_count": 4,
+  "scope_limit": "Full execution retains the business route; targeted execution keeps its original action prefix and indices. Original parent expectations stay fixed; omitted states are unverified.",
+  "execution_sha256": "844d5def2f3cb7227605237d3d22bb065fce8d1fab122f97057347a67dd7ffd3"
+}

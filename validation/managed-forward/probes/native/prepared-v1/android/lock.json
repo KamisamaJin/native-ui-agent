@@ -1,0 +1,487 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "independent neutral resource/action/evidence spec",
+    "approval_reference": "presealed probes/spec/seal-manifest.json",
+    "sources": [
+      {
+        "id": "reference",
+        "path": "reference.json",
+        "sha256": "39e2a26ad1645c33cb2c35f0efabb7a4306e829ec8e627caadaf0691c6e7ee0c"
+      }
+    ],
+    "rules": [
+      {
+        "id": "caption",
+        "kind": "control",
+        "target": "tally",
+        "property": "label"
+      },
+      {
+        "id": "event",
+        "kind": "event"
+      }
+    ],
+    "required_rule_ids": [
+      "caption",
+      "event"
+    ],
+    "scenarios": {
+      "neutral": {
+        "states": [
+          {
+            "id": "front",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "targets"
+          },
+          {
+            "id": "counted",
+            "input_index": 0,
+            "after_action": 1,
+            "coverage": "targets"
+          },
+          {
+            "id": "disabled_attempt",
+            "input_index": 0,
+            "after_action": 2,
+            "coverage": "targets"
+          },
+          {
+            "id": "dependent_disabled",
+            "input_index": 0,
+            "after_action": 3,
+            "coverage": "targets"
+          },
+          {
+            "id": "independent_one",
+            "input_index": 0,
+            "after_action": 4,
+            "coverage": "targets"
+          },
+          {
+            "id": "replaced",
+            "input_index": 1,
+            "after_action": 5,
+            "coverage": "targets"
+          },
+          {
+            "id": "missing_attempt",
+            "input_index": 1,
+            "after_action": 6,
+            "coverage": "targets"
+          },
+          {
+            "id": "dependent_missing",
+            "input_index": 1,
+            "after_action": 7,
+            "coverage": "targets"
+          },
+          {
+            "id": "ambiguous_attempt",
+            "input_index": 1,
+            "after_action": 8,
+            "coverage": "targets"
+          },
+          {
+            "id": "dependent_ambiguous",
+            "input_index": 1,
+            "after_action": 9,
+            "coverage": "targets"
+          },
+          {
+            "id": "independent_two",
+            "input_index": 1,
+            "after_action": 10,
+            "coverage": "targets"
+          },
+          {
+            "id": "continued",
+            "input_index": 1,
+            "after_action": 11,
+            "coverage": "targets"
+          }
+        ],
+        "actions": [
+          {
+            "type": "checkpoint"
+          },
+          {
+            "type": "tap",
+            "target": {
+              "identifier": "counter.increment",
+              "role": "button"
+            },
+            "preconditions": [
+              {
+                "target": {
+                  "identifier": "counter.increment",
+                  "role": "button"
+                },
+                "property": "enabled",
+                "op": "eq",
+                "expected": true
+              }
+            ]
+          },
+          {
+            "type": "tap",
+            "target": {
+              "identifier": "counter.disabled",
+              "role": "button"
+            },
+            "allow_disabled": true
+          },
+          {
+            "type": "tap",
+            "target": {
+              "identifier": "counter.continue",
+              "role": "button"
+            }
+          },
+          {
+            "type": "checkpoint",
+            "depends_on": []
+          },
+          {
+            "type": "apply_next_fixture"
+          },
+          {
+            "type": "tap",
+            "target": {
+              "identifier": "counter.missing",
+              "role": "button"
+            },
+            "max_steps": 1
+          },
+          {
+            "type": "tap",
+            "target": {
+              "identifier": "counter.continue",
+              "role": "button"
+            }
+          },
+          {
+            "type": "tap",
+            "target": {
+              "identifier": "counter.pair",
+              "role": "other"
+            },
+            "depends_on": []
+          },
+          {
+            "type": "tap",
+            "target": {
+              "identifier": "counter.continue",
+              "role": "button"
+            }
+          },
+          {
+            "type": "checkpoint",
+            "depends_on": []
+          },
+          {
+            "type": "tap",
+            "target": {
+              "identifier": "counter.continue",
+              "role": "button"
+            },
+            "preconditions": [
+              {
+                "target": {
+                  "identifier": "counter.tally",
+                  "role": "text"
+                },
+                "property": "label",
+                "op": "eq",
+                "expected": "Tally: 8"
+              },
+              {
+                "target": {
+                  "identifier": "counter.continue",
+                  "role": "button"
+                },
+                "property": "enabled",
+                "op": "eq",
+                "expected": true
+              }
+            ]
+          }
+        ],
+        "values": {
+          "caption": {
+            "front": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/zero"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/zero"
+              }
+            },
+            "counted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/one"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/one"
+              }
+            },
+            "disabled_attempt": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/one"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/one"
+              }
+            },
+            "dependent_disabled": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/one"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/one"
+              }
+            },
+            "independent_one": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/one"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/one"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              }
+            },
+            "missing_attempt": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              }
+            },
+            "dependent_missing": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              }
+            },
+            "ambiguous_attempt": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              }
+            },
+            "dependent_ambiguous": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              }
+            },
+            "independent_two": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              }
+            },
+            "continued": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              }
+            }
+          },
+          "event": {
+            "front": {
+              "not_applicable": "No event behavior assertion requested for this checkpoint/stimulus."
+            },
+            "counted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/increments"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/increments"
+              }
+            },
+            "disabled_attempt": {
+              "not_applicable": "No event behavior assertion requested for this checkpoint/stimulus."
+            },
+            "dependent_disabled": {
+              "not_applicable": "No event behavior assertion requested for this checkpoint/stimulus."
+            },
+            "independent_one": {
+              "not_applicable": "No event behavior assertion requested for this checkpoint/stimulus."
+            },
+            "replaced": {
+              "not_applicable": "No event behavior assertion requested for this checkpoint/stimulus."
+            },
+            "missing_attempt": {
+              "not_applicable": "No event behavior assertion requested for this checkpoint/stimulus."
+            },
+            "dependent_missing": {
+              "not_applicable": "No event behavior assertion requested for this checkpoint/stimulus."
+            },
+            "ambiguous_attempt": {
+              "not_applicable": "No event behavior assertion requested for this checkpoint/stimulus."
+            },
+            "dependent_ambiguous": {
+              "not_applicable": "No event behavior assertion requested for this checkpoint/stimulus."
+            },
+            "independent_two": {
+              "not_applicable": "No event behavior assertion requested for this checkpoint/stimulus."
+            },
+            "continued": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/continues"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/continues"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "reference": {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "39e2a26ad1645c33cb2c35f0efabb7a4306e829ec8e627caadaf0691c6e7ee0c",
+      "document": {
+        "labels": {
+          "zero": {
+            "value": "Tally: 0",
+            "unit": "string"
+          },
+          "one": {
+            "value": "Tally: 1",
+            "unit": "string"
+          },
+          "eight": {
+            "value": "Tally: 8",
+            "unit": "string"
+          }
+        },
+        "increments": {
+          "value": [
+            "increment"
+          ],
+          "unit": "events"
+        },
+        "continues": {
+          "value": [
+            "continue"
+          ],
+          "unit": "events"
+        },
+        "launch": {
+          "fixtures_sha256": "a3dc56ebbc054c3dfc85e635310d3ce8321b7f7bb4b14e49adfb8d64ce9a2579",
+          "bridge_sha256": "0f1cdf96714dd874cb51680c5335b0436fc7a1fcee86f2064863ff3ca99f6e93",
+          "scenario": "neutral",
+          "platform": "android"
+        },
+        "obligations": [
+          {
+            "id": "caption",
+            "clause": "The counter label matches the established caller/action path.",
+            "priority": "must",
+            "states": [
+              "front",
+              "counted",
+              "disabled_attempt",
+              "dependent_disabled",
+              "independent_one",
+              "replaced",
+              "missing_attempt",
+              "dependent_missing",
+              "ambiguous_attempt",
+              "dependent_ambiguous",
+              "independent_two",
+              "continued"
+            ],
+            "risk": "content"
+          },
+          {
+            "id": "events",
+            "clause": "Real counter actions emit their actual callbacks.",
+            "priority": "must",
+            "states": [
+              "counted",
+              "continued"
+            ],
+            "risk": "behavior"
+          }
+        ],
+        "claims": [
+          {
+            "id": "caption-source",
+            "clause": "The component renders the counter from its caller-keyed state.",
+            "priority": "must",
+            "owner": "component",
+            "method": "source",
+            "subject": "component",
+            "rule_ids": []
+          },
+          {
+            "id": "bridge-source",
+            "clause": "The bridge forwards actual caller seed and event handler.",
+            "priority": "must",
+            "owner": "bridge",
+            "method": "source",
+            "subject": "bridge",
+            "rule_ids": []
+          }
+        ]
+      },
+      "raw_utf8": "{\n  \"labels\": {\n    \"zero\": {\n      \"value\": \"Tally: 0\",\n      \"unit\": \"string\"\n    },\n    \"one\": {\n      \"value\": \"Tally: 1\",\n      \"unit\": \"string\"\n    },\n    \"eight\": {\n      \"value\": \"Tally: 8\",\n      \"unit\": \"string\"\n    }\n  },\n  \"increments\": {\n    \"value\": [\n      \"increment\"\n    ],\n    \"unit\": \"events\"\n  },\n  \"continues\": {\n    \"value\": [\n      \"continue\"\n    ],\n    \"unit\": \"events\"\n  },\n  \"launch\": {\n    \"fixtures_sha256\": \"a3dc56ebbc054c3dfc85e635310d3ce8321b7f7bb4b14e49adfb8d64ce9a2579\",\n    \"bridge_sha256\": \"0f1cdf96714dd874cb51680c5335b0436fc7a1fcee86f2064863ff3ca99f6e93\",\n    \"scenario\": \"neutral\",\n    \"platform\": \"android\"\n  },\n  \"obligations\": [\n    {\n      \"id\": \"caption\",\n      \"clause\": \"The counter label matches the established caller/action path.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"front\",\n        \"counted\",\n        \"disabled_attempt\",\n        \"dependent_disabled\",\n        \"independent_one\",\n        \"replaced\",\n        \"missing_attempt\",\n        \"dependent_missing\",\n        \"ambiguous_attempt\",\n        \"dependent_ambiguous\",\n        \"independent_two\",\n        \"continued\"\n      ],\n      \"risk\": \"content\"\n    },\n    {\n      \"id\": \"events\",\n      \"clause\": \"Real counter actions emit their actual callbacks.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"counted\",\n        \"continued\"\n      ],\n      \"risk\": \"behavior\"\n    }\n  ],\n  \"claims\": [\n    {\n      \"id\": \"caption-source\",\n      \"clause\": \"The component renders the counter from its caller-keyed state.\",\n      \"priority\": \"must\",\n      \"owner\": \"component\",\n      \"method\": \"source\",\n      \"subject\": \"component\",\n      \"rule_ids\": []\n    },\n    {\n      \"id\": \"bridge-source\",\n      \"clause\": \"The bridge forwards actual caller seed and event handler.\",\n      \"priority\": \"must\",\n      \"owner\": \"bridge\",\n      \"method\": \"source\",\n      \"subject\": \"bridge\",\n      \"rule_ids\": []\n    }\n  ]\n}\n"
+    }
+  },
+  "contract_sha256": "d861025f0a5a008b4447cc35b21023ee2feae03fe04b18156be305dab819beaf",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

@@ -1,0 +1,267 @@
+{
+  "id": "R05/SIGKILL-after-acquire",
+  "verdict": "P",
+  "scope": "real_process_and_filesystem",
+  "reason": "Dead-owner reconcile reclaimed only owned resources",
+  "candidate_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.3",
+  "freeze_manifest_sha256": "13e3b62a8693a87db0e2e127af89053da90ad01d2c228ee1fdcca2fd2fa44ac7",
+  "observations": {
+    "before_owned_live": [
+      {
+        "pid": 34681,
+        "ppid": 34679,
+        "pgid": 34679,
+        "token": "e5639c1128cf4b87a0ed018b1eb30c9b",
+        "role": "body",
+        "mode": "tree-hang",
+        "at": 1794232845.784492,
+        "observed_identity": {
+          "pid": 34681,
+          "raw": "Mon Nov  9 23:00:45 2026     34679 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python -B /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/fixture_process.py --root /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/cache/R05__SIGKILL-after-acquire/fixture --token e5639c1128cf4b87a0ed018b1eb30c9b --role body --mode tree-hang",
+          "stat": "S",
+          "live": true
+        }
+      },
+      {
+        "pid": 34682,
+        "ppid": 34681,
+        "pgid": 34679,
+        "token": "e5639c1128cf4b87a0ed018b1eb30c9b",
+        "role": "descendant",
+        "mode": "hang",
+        "at": 1794232845.8038678,
+        "observed_identity": {
+          "pid": 34682,
+          "raw": "Mon Nov  9 23:00:45 2026     34679 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python -B /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/fixture_process.py --root /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/cache/R05__SIGKILL-after-acquire/fixture --token e5639c1128cf4b87a0ed018b1eb30c9b --role descendant --mode hang",
+          "stat": "S",
+          "live": true
+        }
+      }
+    ],
+    "after_owned_live": [],
+    "reconcile": {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.3/scripts/resource_manager.py",
+        "cleanup",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/raw/R05__SIGKILL-after-acquire/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/raw/R05__SIGKILL-after-acquire/reconcile-1"
+      ],
+      "exit_code": 0,
+      "duration": 0.047026792000000484,
+      "receipt": {
+        "version": 1,
+        "root": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/cache/R05__SIGKILL-after-acquire/resources",
+        "owner": {
+          "format": "native-ui-owned-resources-v1",
+          "owner_key": "3e6c2dcba4315a8de8225e965c30fcc7f748311950a82bc0489ed0527110af62",
+          "token": "211de0b11b1f4b27b7ffed0b56bbd722"
+        },
+        "policy": {
+          "max_bytes": 268435456,
+          "min_free_bytes": 0,
+          "max_simulators": 1
+        },
+        "sample_seconds": 0.1,
+        "observed_peak_allocated_bytes": 32768,
+        "samples": [
+          {
+            "at_unix": 1794232845.910938,
+            "allocated_bytes": 32768,
+            "free_bytes": 756338507776
+          },
+          {
+            "at_unix": 1794232845.91115,
+            "allocated_bytes": 32768,
+            "free_bytes": 756338507776
+          },
+          {
+            "at_unix": 1794232845.9113789,
+            "allocated_bytes": 32768,
+            "free_bytes": 756338507776
+          }
+        ],
+        "cleanup_errors": [],
+        "remaining_directories": [],
+        "remaining_devices": [],
+        "final": true,
+        "primary_error": null,
+        "command_exit_code": null,
+        "borrowed_build_paths": [
+          "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/cache/R05__SIGKILL-after-acquire/shared-build-cache"
+        ],
+        "scope": "Sampled owned scratch plus borrowed project build paths and owned simulator data. Borrowed paths are measured and budgeted, never deleted. Not exact transient peak, APFS physical usage, shared SDK caches, or user devices."
+      },
+      "tool_identity_before": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+      "tool_identity_after": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6"
+    }
+  },
+  "protected_ok": true,
+  "duration_seconds": 0.28256141700000015,
+  "commands": [
+    {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/resource_worker.py",
+        "--scripts",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.3/scripts",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/raw/R05__SIGKILL-after-acquire/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/raw/R05__SIGKILL-after-acquire/tool-output",
+        "--fixture",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/fixture_process.py",
+        "--fixture-root",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/cache/R05__SIGKILL-after-acquire/fixture",
+        "--token",
+        "e5639c1128cf4b87a0ed018b1eb30c9b",
+        "--mode",
+        "tree-hang",
+        "--final"
+      ],
+      "pid": 34678,
+      "started_monotonic": 8.317791916,
+      "tool_identity_before": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+      "exit_code": -9,
+      "finished_monotonic": 8.513004041,
+      "tool_identity_after": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6"
+    },
+    {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.3/scripts/resource_manager.py",
+        "cleanup",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/raw/R05__SIGKILL-after-acquire/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/raw/R05__SIGKILL-after-acquire/reconcile-1"
+      ],
+      "exit_code": 0,
+      "duration": 0.047026792000000484,
+      "receipt": {
+        "version": 1,
+        "root": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/cache/R05__SIGKILL-after-acquire/resources",
+        "owner": {
+          "format": "native-ui-owned-resources-v1",
+          "owner_key": "3e6c2dcba4315a8de8225e965c30fcc7f748311950a82bc0489ed0527110af62",
+          "token": "211de0b11b1f4b27b7ffed0b56bbd722"
+        },
+        "policy": {
+          "max_bytes": 268435456,
+          "min_free_bytes": 0,
+          "max_simulators": 1
+        },
+        "sample_seconds": 0.1,
+        "observed_peak_allocated_bytes": 32768,
+        "samples": [
+          {
+            "at_unix": 1794232845.910938,
+            "allocated_bytes": 32768,
+            "free_bytes": 756338507776
+          },
+          {
+            "at_unix": 1794232845.91115,
+            "allocated_bytes": 32768,
+            "free_bytes": 756338507776
+          },
+          {
+            "at_unix": 1794232845.9113789,
+            "allocated_bytes": 32768,
+            "free_bytes": 756338507776
+          }
+        ],
+        "cleanup_errors": [],
+        "remaining_directories": [],
+        "remaining_devices": [],
+        "final": true,
+        "primary_error": null,
+        "command_exit_code": null,
+        "borrowed_build_paths": [
+          "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/cache/R05__SIGKILL-after-acquire/shared-build-cache"
+        ],
+        "scope": "Sampled owned scratch plus borrowed project build paths and owned simulator data. Borrowed paths are measured and budgeted, never deleted. Not exact transient peak, APFS physical usage, shared SDK caches, or user devices."
+      },
+      "tool_identity_before": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+      "tool_identity_after": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6"
+    }
+  ],
+  "trace": [
+    {
+      "kind": "borrowed_ready",
+      "trace": [
+        {
+          "elapsed": 6.291700000105038e-05,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.054787125000000714,
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "kind": "owned_tree_ready",
+      "trace": [
+        {
+          "elapsed": 5.3707999999375033e-05,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.058760541999999916,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.11880812499999927,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.17890929200000016,
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "kind": "sealed_10_second_cleanup_deadline",
+      "deadline_monotonic": 18.5265635,
+      "observations": [
+        {
+          "at_monotonic": 8.586923958,
+          "owned_live": [],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 34682,
+              "ppid": 34681,
+              "pgid": 34679,
+              "token": "e5639c1128cf4b87a0ed018b1eb30c9b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794232845.8038678,
+              "heartbeat_at": 1794232845.8039439,
+              "heartbeat_monotonic": 0.01287
+            },
+            "heartbeat-body.json": {
+              "pid": 34681,
+              "ppid": 34679,
+              "pgid": 34679,
+              "token": "e5639c1128cf4b87a0ed018b1eb30c9b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794232845.784492,
+              "heartbeat_at": 1794232845.806217,
+              "heartbeat_monotonic": 0.035835583
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "tool_identity_before": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+  "tool_identity_after": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+  "raw_directory": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-5/raw/R05__SIGKILL-after-acquire",
+  "snapshot": "before-harness-teardown.json"
+}

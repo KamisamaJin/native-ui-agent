@@ -460,8 +460,23 @@ def main():
     finish.add_argument("--review-result", type=Path)
     finish.add_argument("--review-result-sha256")
     finish.add_argument("--output", type=Path, required=True)
+    source = commands.add_parser("bind-source-review", help="Bind actual source review to approved responsibility and current subject files")
+    source.add_argument("--config", type=Path, required=True)
+    source.add_argument("--submission", type=Path, required=True)
+    source.add_argument("--output", type=Path, required=True)
+    cleanup = commands.add_parser("cleanup-native-resources", help="Reconcile and remove this project's positively owned native scratch")
+    cleanup.add_argument("--config", type=Path, required=True)
+    cleanup.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     try:
+        if args.action == "bind-source-review":
+            import evidence_responsibility
+            result = evidence_responsibility.bind(json.loads(args.config.read_text()), json.loads(args.submission.read_text()), args.output)
+            print(json.dumps(result, indent=2)); return 0
+        if args.action == "cleanup-native-resources":
+            import resource_manager
+            with resource_manager.Resources(json.loads(args.config.read_text()), args.output, final=True): pass
+            print(json.dumps({"status": "cleaned", "receipt": str(args.output / "resources.json")})); return 0
         if args.action == "bind-native-review":
             import evidence_review
             result = evidence_review.bind(json.loads(args.config.read_text()), args.capture_result, args.capture_sha256,

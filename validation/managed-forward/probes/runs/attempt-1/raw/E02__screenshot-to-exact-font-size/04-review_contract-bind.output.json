@@ -1,0 +1,345 @@
+{
+  "ok": true,
+  "value": {
+    "observation_sha256": "24fe919094468685a8ab3d2d135e89c33891b4456ddcd8df156e6e2afd717fdc",
+    "decisions": [
+      {
+        "id": "s/visual",
+        "status": "passed",
+        "method": "visual",
+        "snapshot_indices": [
+          0
+        ],
+        "reason": "Protocol sample observation; no native or product claim",
+        "evidence": [
+          {
+            "path": "board.png",
+            "sha256": "66ba497f5866564543a1d50133fe014383dc141f2ea35b1832f96e8204063690"
+          }
+        ]
+      },
+      {
+        "id": "s/pixel",
+        "status": "passed",
+        "method": "native_pixels",
+        "snapshot_indices": [
+          0
+        ],
+        "reason": "Original rendered color matches approved atomic role",
+        "evidence": [
+          {
+            "path": "board.png",
+            "sha256": "66ba497f5866564543a1d50133fe014383dc141f2ea35b1832f96e8204063690"
+          }
+        ]
+      }
+    ],
+    "review_contract": {
+      "version": 1,
+      "catalog_sha256": "959254b545f415ea9911a88038ff76b5ecd5dccc1b8c5b751ed11106e4e19717",
+      "policy_sha256": "8982d474c0daeda5a12a13c654c5c709e2b053e9353ae180be9bdb1ad6c77061",
+      "design_lock_sha256": "c513599f4f35d0296ff02c2b3e235070f93d63306a76d8ea5a9d05d3228bf74f",
+      "observation_object_sha256": "4358f25143099e60e6d8941dea046704fabcddd667c09fa1278af61dd11eda89",
+      "submission": {
+        "version": 1,
+        "catalog_sha256": "959254b545f415ea9911a88038ff76b5ecd5dccc1b8c5b751ed11106e4e19717",
+        "observation_sha256": "24fe919094468685a8ab3d2d135e89c33891b4456ddcd8df156e6e2afd717fdc",
+        "decisions": [
+          {
+            "review_id": "3eb0108a990c2f8ae45778364dcbc0ff70c047aa6634da4fc51a266116fc1786",
+            "actual": true,
+            "reason": "Protocol sample observation; no native or product claim",
+            "snapshot_indices": [
+              0
+            ]
+          }
+        ]
+      },
+      "findings": [
+        {
+          "id": "s/visual",
+          "review_id": "3eb0108a990c2f8ae45778364dcbc0ff70c047aa6634da4fc51a266116fc1786",
+          "state": "s",
+          "requirement_id": "visual",
+          "aspect": "content_presence",
+          "target": {
+            "identifier": "probe.atom"
+          },
+          "expected": true,
+          "unit": "bool",
+          "op": "eq",
+          "expectation_provenance": [
+            {
+              "source": "reference",
+              "path": "reference.json",
+              "sha256": "c63d1610ca3558ac40cd379e57cad10e2394dac8fe9388c9bc34196e88aa06a6",
+              "pointer": "/visual",
+              "source_datum": {
+                "value": true,
+                "unit": "bool"
+              }
+            }
+          ],
+          "status": "passed",
+          "actual": true,
+          "responsibility": "component",
+          "reason": "Protocol sample observation; no native or product claim",
+          "evidence": [
+            {
+              "path": "board.png",
+              "sha256": "66ba497f5866564543a1d50133fe014383dc141f2ea35b1832f96e8204063690"
+            }
+          ],
+          "snapshot_indices": [
+            0
+          ],
+          "pixel_proofs": []
+        },
+        {
+          "id": "s/pixel",
+          "review_id": "fe219fdbeeb2642c24b2bbd57c5cb26aebf680e1aabdbb69e8ea4a918823d0df",
+          "state": "s",
+          "requirement_id": "pixel",
+          "aspect": "rendered_fill",
+          "target": {
+            "identifier": "probe.atom"
+          },
+          "expected": 4280303712,
+          "unit": "argb",
+          "op": "eq",
+          "expectation_provenance": [
+            {
+              "source": "reference",
+              "path": "reference.json",
+              "sha256": "c63d1610ca3558ac40cd379e57cad10e2394dac8fe9388c9bc34196e88aa06a6",
+              "pointer": "/pixel",
+              "source_datum": {
+                "value": "#FF204060",
+                "unit": "argb"
+              }
+            }
+          ],
+          "status": "passed",
+          "actual": {
+            "samples": [
+              {
+                "status": "measured",
+                "eligible": true,
+                "argb": 4280303712,
+                "reason": "Dominant rendered sRGB in approved native-target region",
+                "proof": {
+                  "path": "board.png",
+                  "sha256": "66ba497f5866564543a1d50133fe014383dc141f2ea35b1832f96e8204063690",
+                  "image_size": [
+                    64,
+                    64
+                  ],
+                  "native_selector": {
+                    "identifier": "probe.atom"
+                  },
+                  "native_box_basis": "semantic",
+                  "native_box_in_image": [
+                    0.0,
+                    0.0,
+                    16.0,
+                    16.0
+                  ],
+                  "native_geometry": null,
+                  "native_viewport_px": null,
+                  "viewport_in_image": [
+                    0,
+                    0,
+                    64,
+                    64
+                  ],
+                  "region_pixels": [
+                    0,
+                    0,
+                    16,
+                    16
+                  ],
+                  "sample_count": 256,
+                  "histogram": [
+                    {
+                      "rgba": [
+                        32,
+                        64,
+                        96,
+                        255
+                      ],
+                      "count": 256
+                    }
+                  ],
+                  "sampling_policy": {
+                    "region": [
+                      0,
+                      0,
+                      1,
+                      1
+                    ],
+                    "minimum_pixels": 16,
+                    "minimum_support": 1,
+                    "channel_tolerance": 0,
+                    "basis": "semantic",
+                    "visibility": "fully_visible"
+                  }
+                },
+                "snapshot_index": 0
+              }
+            ],
+            "scope": "Rendered original pixels, not computed UI properties"
+          },
+          "responsibility": "component",
+          "reason": "Original rendered color matches approved atomic role",
+          "evidence": [
+            {
+              "path": "board.png",
+              "sha256": "66ba497f5866564543a1d50133fe014383dc141f2ea35b1832f96e8204063690"
+            }
+          ],
+          "snapshot_indices": [
+            0
+          ],
+          "pixel_proofs": [
+            {
+              "path": "board.png",
+              "sha256": "66ba497f5866564543a1d50133fe014383dc141f2ea35b1832f96e8204063690",
+              "image_size": [
+                64,
+                64
+              ],
+              "native_selector": {
+                "identifier": "probe.atom"
+              },
+              "native_box_basis": "semantic",
+              "native_box_in_image": [
+                0.0,
+                0.0,
+                16.0,
+                16.0
+              ],
+              "native_geometry": null,
+              "native_viewport_px": null,
+              "viewport_in_image": [
+                0,
+                0,
+                64,
+                64
+              ],
+              "region_pixels": [
+                0,
+                0,
+                16,
+                16
+              ],
+              "sample_count": 256,
+              "histogram": [
+                {
+                  "rgba": [
+                    32,
+                    64,
+                    96,
+                    255
+                  ],
+                  "count": 256
+                }
+              ],
+              "sampling_policy": {
+                "region": [
+                  0,
+                  0,
+                  1,
+                  1
+                ],
+                "minimum_pixels": 16,
+                "minimum_support": 1,
+                "channel_tolerance": 0,
+                "basis": "semantic",
+                "visibility": "fully_visible"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "public_api": "review_contract.bind",
+  "tool_identity_before": {
+    "native-ui-agent/scripts/acceptance.py": "e5055b0dd09bc9a3fe98048cae2a4d81744b0007de6a4ce061ba8755a9f946b5",
+    "native-ui-agent/scripts/action_guard.py": "97ecfa7105164e09f7f6a3ee4b80d8b5dadf4e16b0b285b32c2532059ae90fdb",
+    "native-ui-agent/scripts/android_observe.py": "f065d6586a80ca9e6510db59e52cbf3da0cbccaf32c8b8d89635d7e799f45c18",
+    "native-ui-agent/scripts/ax_calibration.py": "a65e0e0b366f12ce786d741eef0c182724788ea5c3922de5f4d3e79d3bb338c2",
+    "native-ui-agent/scripts/cohort_gate.py": "be3f12652c584505cf41f8baf9d4e731afa7b194765ef4144fea7d4808ab3559",
+    "native-ui-agent/scripts/coverage.py": "fe5f6fd910bfcb8bd8b2b260b3557bfa04ff5f41ce9b3608e739cebc1e5c188e",
+    "native-ui-agent/scripts/design_contract.py": "01f6eafb3111e3fcb096ff11c3f26742bbe57583b4ccded7bf8de33ffd035e4e",
+    "native-ui-agent/scripts/evidence_responsibility.py": "4fee94a8f19059bd7dba24cfc9170a1267997f138128284f6a2e87c5b6445221",
+    "native-ui-agent/scripts/evidence_review.py": "30b92e082bfd9fad97badb7a2df4f6801986095a3d7211653f2fabf96a7e15e7",
+    "native-ui-agent/scripts/execution_plan.py": "c25793fd38da93b6026f054a6b1ac3339c02f590b3f5fedf102b810e13165c71",
+    "native-ui-agent/scripts/feedback_loop.py": "c2462115c50994f089b10e2e7ff3eddc702677e5d3208c7816d4f29ca997390f",
+    "native-ui-agent/scripts/ios_observe.py": "406a76af8c6a3a8892c4525819a12d7a0dee060a267ef57057ddf85ac203d76d",
+    "native-ui-agent/scripts/locator_diagnostics.py": "db6944fc670ddbce10f317c672caffe807797ba607e6c348764df06b16b53c82",
+    "native-ui-agent/scripts/native_checks.py": "3afa06e6abfb2fa1d9f5eb972546d7dec63d560b207bc5872733f39e03314577",
+    "native-ui-agent/scripts/native_environment.py": "e3cbd6bc592396106642e812b84f35c0d1819aff87442313a88e4f5863e8c5c4",
+    "native-ui-agent/scripts/native_geometry.py": "61919e611e7b29397e17b2aa66bee01391fa7cba0dbdab8cc7fc78ecd04d9841",
+    "native-ui-agent/scripts/native_pixels.py": "253fdcbb7ed5c01383fbcee83481b50050f26551bf84e5db3f8fa192a0c7fcc6",
+    "native-ui-agent/scripts/observation_contract.py": "d4c2484d998443389d02ab6a5ec3f4e1b8ac029e8bc63942d3a0767269b739a7",
+    "native-ui-agent/scripts/requirement_routes.py": "60f8bd43b58ec4e1b4f66c955940cfe16fa4adfa860e720e6aac8f642b25338a",
+    "native-ui-agent/scripts/resource_manager.py": "85551c602f403af2e2918c73a19d51a1652baac9757d12248d382e195ceb91af",
+    "native-ui-agent/scripts/retest_plan.py": "0d9416b0c10d0486e82af39ace7db3814846a57b334b5688271b35c703c720a8",
+    "native-ui-agent/scripts/review_contract.py": "a460a04019796a336fca01fd25eef686790b61eb6881826efbbd9923e26991a2",
+    "native-ui-agent/scripts/state_plan.py": "1db7efd5aa42f1cd925fdf94781999832e85c3540821194f66e553fa61839071",
+    "native-ui-agent/scripts/ui_loop.py": "22e873c6052ef328d398123291a96a4b23440e237c7734c8167b4dd50773b67b"
+  },
+  "tool_identity_after": {
+    "native-ui-agent/scripts/acceptance.py": "e5055b0dd09bc9a3fe98048cae2a4d81744b0007de6a4ce061ba8755a9f946b5",
+    "native-ui-agent/scripts/action_guard.py": "97ecfa7105164e09f7f6a3ee4b80d8b5dadf4e16b0b285b32c2532059ae90fdb",
+    "native-ui-agent/scripts/android_observe.py": "f065d6586a80ca9e6510db59e52cbf3da0cbccaf32c8b8d89635d7e799f45c18",
+    "native-ui-agent/scripts/ax_calibration.py": "a65e0e0b366f12ce786d741eef0c182724788ea5c3922de5f4d3e79d3bb338c2",
+    "native-ui-agent/scripts/cohort_gate.py": "be3f12652c584505cf41f8baf9d4e731afa7b194765ef4144fea7d4808ab3559",
+    "native-ui-agent/scripts/coverage.py": "fe5f6fd910bfcb8bd8b2b260b3557bfa04ff5f41ce9b3608e739cebc1e5c188e",
+    "native-ui-agent/scripts/design_contract.py": "01f6eafb3111e3fcb096ff11c3f26742bbe57583b4ccded7bf8de33ffd035e4e",
+    "native-ui-agent/scripts/evidence_responsibility.py": "4fee94a8f19059bd7dba24cfc9170a1267997f138128284f6a2e87c5b6445221",
+    "native-ui-agent/scripts/evidence_review.py": "30b92e082bfd9fad97badb7a2df4f6801986095a3d7211653f2fabf96a7e15e7",
+    "native-ui-agent/scripts/execution_plan.py": "c25793fd38da93b6026f054a6b1ac3339c02f590b3f5fedf102b810e13165c71",
+    "native-ui-agent/scripts/feedback_loop.py": "c2462115c50994f089b10e2e7ff3eddc702677e5d3208c7816d4f29ca997390f",
+    "native-ui-agent/scripts/ios_observe.py": "406a76af8c6a3a8892c4525819a12d7a0dee060a267ef57057ddf85ac203d76d",
+    "native-ui-agent/scripts/locator_diagnostics.py": "db6944fc670ddbce10f317c672caffe807797ba607e6c348764df06b16b53c82",
+    "native-ui-agent/scripts/native_checks.py": "3afa06e6abfb2fa1d9f5eb972546d7dec63d560b207bc5872733f39e03314577",
+    "native-ui-agent/scripts/native_environment.py": "e3cbd6bc592396106642e812b84f35c0d1819aff87442313a88e4f5863e8c5c4",
+    "native-ui-agent/scripts/native_geometry.py": "61919e611e7b29397e17b2aa66bee01391fa7cba0dbdab8cc7fc78ecd04d9841",
+    "native-ui-agent/scripts/native_pixels.py": "253fdcbb7ed5c01383fbcee83481b50050f26551bf84e5db3f8fa192a0c7fcc6",
+    "native-ui-agent/scripts/observation_contract.py": "d4c2484d998443389d02ab6a5ec3f4e1b8ac029e8bc63942d3a0767269b739a7",
+    "native-ui-agent/scripts/requirement_routes.py": "60f8bd43b58ec4e1b4f66c955940cfe16fa4adfa860e720e6aac8f642b25338a",
+    "native-ui-agent/scripts/resource_manager.py": "85551c602f403af2e2918c73a19d51a1652baac9757d12248d382e195ceb91af",
+    "native-ui-agent/scripts/retest_plan.py": "0d9416b0c10d0486e82af39ace7db3814846a57b334b5688271b35c703c720a8",
+    "native-ui-agent/scripts/review_contract.py": "a460a04019796a336fca01fd25eef686790b61eb6881826efbbd9923e26991a2",
+    "native-ui-agent/scripts/state_plan.py": "1db7efd5aa42f1cd925fdf94781999832e85c3540821194f66e553fa61839071",
+    "native-ui-agent/scripts/ui_loop.py": "22e873c6052ef328d398123291a96a4b23440e237c7734c8167b4dd50773b67b"
+  },
+  "loaded_module_source_identity": {
+    "native-ui-agent/scripts/acceptance.py": "e5055b0dd09bc9a3fe98048cae2a4d81744b0007de6a4ce061ba8755a9f946b5",
+    "native-ui-agent/scripts/action_guard.py": "97ecfa7105164e09f7f6a3ee4b80d8b5dadf4e16b0b285b32c2532059ae90fdb",
+    "native-ui-agent/scripts/android_observe.py": "f065d6586a80ca9e6510db59e52cbf3da0cbccaf32c8b8d89635d7e799f45c18",
+    "native-ui-agent/scripts/ax_calibration.py": "a65e0e0b366f12ce786d741eef0c182724788ea5c3922de5f4d3e79d3bb338c2",
+    "native-ui-agent/scripts/cohort_gate.py": "be3f12652c584505cf41f8baf9d4e731afa7b194765ef4144fea7d4808ab3559",
+    "native-ui-agent/scripts/coverage.py": "fe5f6fd910bfcb8bd8b2b260b3557bfa04ff5f41ce9b3608e739cebc1e5c188e",
+    "native-ui-agent/scripts/design_contract.py": "01f6eafb3111e3fcb096ff11c3f26742bbe57583b4ccded7bf8de33ffd035e4e",
+    "native-ui-agent/scripts/evidence_responsibility.py": "4fee94a8f19059bd7dba24cfc9170a1267997f138128284f6a2e87c5b6445221",
+    "native-ui-agent/scripts/evidence_review.py": "30b92e082bfd9fad97badb7a2df4f6801986095a3d7211653f2fabf96a7e15e7",
+    "native-ui-agent/scripts/execution_plan.py": "c25793fd38da93b6026f054a6b1ac3339c02f590b3f5fedf102b810e13165c71",
+    "native-ui-agent/scripts/feedback_loop.py": "c2462115c50994f089b10e2e7ff3eddc702677e5d3208c7816d4f29ca997390f",
+    "native-ui-agent/scripts/ios_observe.py": "406a76af8c6a3a8892c4525819a12d7a0dee060a267ef57057ddf85ac203d76d",
+    "native-ui-agent/scripts/locator_diagnostics.py": "db6944fc670ddbce10f317c672caffe807797ba607e6c348764df06b16b53c82",
+    "native-ui-agent/scripts/native_checks.py": "3afa06e6abfb2fa1d9f5eb972546d7dec63d560b207bc5872733f39e03314577",
+    "native-ui-agent/scripts/native_environment.py": "e3cbd6bc592396106642e812b84f35c0d1819aff87442313a88e4f5863e8c5c4",
+    "native-ui-agent/scripts/native_geometry.py": "61919e611e7b29397e17b2aa66bee01391fa7cba0dbdab8cc7fc78ecd04d9841",
+    "native-ui-agent/scripts/native_pixels.py": "253fdcbb7ed5c01383fbcee83481b50050f26551bf84e5db3f8fa192a0c7fcc6",
+    "native-ui-agent/scripts/observation_contract.py": "d4c2484d998443389d02ab6a5ec3f4e1b8ac029e8bc63942d3a0767269b739a7",
+    "native-ui-agent/scripts/requirement_routes.py": "60f8bd43b58ec4e1b4f66c955940cfe16fa4adfa860e720e6aac8f642b25338a",
+    "native-ui-agent/scripts/resource_manager.py": "85551c602f403af2e2918c73a19d51a1652baac9757d12248d382e195ceb91af",
+    "native-ui-agent/scripts/retest_plan.py": "0d9416b0c10d0486e82af39ace7db3814846a57b334b5688271b35c703c720a8",
+    "native-ui-agent/scripts/review_contract.py": "a460a04019796a336fca01fd25eef686790b61eb6881826efbbd9923e26991a2",
+    "native-ui-agent/scripts/state_plan.py": "1db7efd5aa42f1cd925fdf94781999832e85c3540821194f66e553fa61839071",
+    "native-ui-agent/scripts/ui_loop.py": "22e873c6052ef328d398123291a96a4b23440e237c7734c8167b4dd50773b67b"
+  }
+}

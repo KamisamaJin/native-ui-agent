@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "design_lock_sha256": "d51ad5bfb79979c99b845100f93afb5b1d19d37f670df646f1c47d5f8ec39858",
+  "plan_sha256": "21c01556199be215f8cd566a8b1f3e974cc41493d187174e5e7c8d3c7b0fc62e",
+  "routes_sha256": "4725795e0c51e35b944bfb76259add4ed872d5fc76c37d1a40dd38552b7a8488",
+  "obligations": [
+    {
+      "id": "caption",
+      "clause": "The counter label matches the established caller/action path.",
+      "priority": "must",
+      "states": [
+        "front",
+        "counted",
+        "disabled_attempt",
+        "dependent_disabled",
+        "independent_one",
+        "replaced",
+        "missing_attempt",
+        "dependent_missing",
+        "ambiguous_attempt",
+        "dependent_ambiguous",
+        "independent_two",
+        "continued"
+      ],
+      "risk": "content",
+      "assertion_ids": [
+        "front/caption",
+        "counted/caption",
+        "disabled_attempt/caption",
+        "dependent_disabled/caption",
+        "independent_one/caption",
+        "replaced/caption",
+        "missing_attempt/caption",
+        "dependent_missing/caption",
+        "ambiguous_attempt/caption",
+        "dependent_ambiguous/caption",
+        "independent_two/caption",
+        "continued/caption"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "caption"
+        ],
+        "reason": "Native current label in each declared causal/independent branch.",
+        "regression_obligations": []
+      }
+    },
+    {
+      "id": "events",
+      "clause": "Real counter actions emit their actual callbacks.",
+      "priority": "must",
+      "states": [
+        "counted",
+        "continued"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "counted/event",
+        "continued/event"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "event"
+        ],
+        "reason": "Successful native stimuli only.",
+        "regression_obligations": [
+          "caption"
+        ]
+      }
+    }
+  ],
+  "must_route_gaps": [],
+  "unowned_assertions": [],
+  "scope": "Completeness against the independently approved index, not proof that prose was completely translated or that any check passed."
+}

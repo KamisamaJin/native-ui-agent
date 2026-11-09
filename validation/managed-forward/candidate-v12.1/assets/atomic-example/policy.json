@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "design_lock_sha256": "da636ce60085cb597c4b9d4b02256687607a01c16e3fc0b7e313ed689182216a",
+  "approval_reference": "Neutral probe sampling; freeze before capture",
+  "ownership": {
+    "tile": "component",
+    "canvas": "component",
+    "title": "component"
+  },
+  "atoms": [
+    {
+      "rule_id": "tile-fill",
+      "aspect": "rendered_fill",
+      "method": "native_pixels",
+      "sampling": {
+        "region": [
+          0.08,
+          0.12,
+          0.22,
+          0.88
+        ],
+        "minimum_pixels": 12,
+        "minimum_support": 0.8,
+        "channel_tolerance": 0,
+        "basis": "semantic",
+        "visibility": "fully_visible"
+      }
+    },
+    {
+      "rule_id": "canvas-fill",
+      "aspect": "rendered_canvas",
+      "method": "native_pixels",
+      "sampling": {
+        "region": [
+          0.82,
+          0.08,
+          0.96,
+          0.92
+        ],
+        "minimum_pixels": 12,
+        "minimum_support": 0.8,
+        "channel_tolerance": 0,
+        "basis": "semantic",
+        "visibility": "visible_fragment"
+      }
+    },
+    {
+      "rule_id": "title-overlap",
+      "aspect": "overlap",
+      "method": "visual",
+      "question": {
+        "source": "reference",
+        "pointer": "/questions/titleClear"
+      }
+    }
+  ]
+}

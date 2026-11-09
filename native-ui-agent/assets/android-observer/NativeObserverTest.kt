@@ -67,6 +67,22 @@ class NativeObserverTest {
  private var pendingStep:JsonObject?=null
  private var eventStart=0
  private var dispatch=JsonObject(emptyMap())
+ private var currentGuard=JsonObject(emptyMap())
+ private val guarded=fixture["guard_protocol"]?.jsonPrimitive?.intOrNull==1
+ private fun preconditions(action:JsonObject):List<JsonObject> = (action["preconditions"]?.jsonArray ?: JsonArray(emptyList())).map{entry->
+  val condition=entry.jsonObject;val found=select(condition["target"]!!.jsonObject);val semantic=found.singleOrNull();val control=semantic?.let{leaves(it).singleOrNull()}
+  val property=string(condition,"property")
+  val actual:JsonElement=when(property){
+   "present"->if(found.isNotEmpty())JsonPrimitive(true)else JsonNull
+   "label"->semantic?.let{JsonPrimitive(label(it))} ?: JsonNull
+   "enabled"->control?.let{JsonPrimitive(!it.config.contains(SemanticsProperties.Disabled))} ?: JsonNull
+   "selected"->control?.let{JsonPrimitive((semantic!!.config.getOrNull(SemanticsProperties.Selected) ?: false) || (it.config.getOrNull(SemanticsProperties.Selected) ?: false))} ?: JsonNull
+   "value"->control?.config?.getOrNull(SemanticsProperties.ToggleableState)?.let{JsonPrimitive(it.toString())} ?: JsonNull
+   else->JsonNull
+  }
+  val expected=condition["expected"]!!;val passed=actual!=JsonNull && if(string(condition,"op")=="contains")actual.jsonPrimitive.content.contains(expected.jsonPrimitive.content)else actual==expected
+  buildJsonObject{put("condition",condition);put("actual",actual);put("passed",passed);put("match_count",found.size);put("semantic_node",semantic?.id ?: -1);put("control_node",control?.id ?: -1)}
+ }
  private var afterBinding:JsonObject?=null
  private var afterDelta:List<String> = emptyList()
  private var immediateSnapshot=-1
@@ -185,6 +201,7 @@ class NativeObserverTest {
    if(afterBinding==null){
     capture(pendingName,image);immediateSnapshot=records.lastIndex;afterBinding=binding();afterDelta=events.drop(eventStart).toList();postIndices.add(immediateSnapshot)
     postTargets=if(action["observe_after"]?.jsonPrimitive?.booleanOrNull==false)emptyList()else action["after_targets"]?.jsonArray?.map{it.jsonObject} ?: if(optional(action,"type")=="tap")listOf(action["after_target"]?.jsonObject ?: action["target"]?.jsonObject ?: buildJsonObject{put("identifier",optional(action,"identifier") ?: "")})else emptyList()
+    if(guarded && optional(action,"type") in listOf("tap","apply_next_fixture") && dispatch["succeeded"]?.jsonPrimitive?.booleanOrNull!=true)postTargets=emptyList()
    }
    if(postOrder.isEmpty())postOrder=postTargets.indices.toMutableList()
    val needsImage=postTrace.isNotEmpty() && postTargets.any{spec->targetEvidence(spec)["status"]!!.jsonPrimitive.content!="observed" && select(spec).singleOrNull()?.let{targetReady(it)}==true}
@@ -213,19 +230,36 @@ class NativeObserverTest {
    val item=pendingStep!!;val finished=actionIndex
    val results=postTargets.map{targetEvidence(it)};val stable=binding()==afterBinding && postIndices.all{records[it]["binding"]==afterBinding && records[it]["capture_consistent"]?.jsonPrimitive?.booleanOrNull!=false}
    val observationSet=if(postTargets.isEmpty())JsonObject(emptyMap())else buildJsonObject{put("state_id",activeState);put("after_action",actionIndex);put("binding",afterBinding!!);put("binding_after_observation",binding());put("binding_stable",stable);put("snapshot_indices",buildJsonArray{postIndices.forEach{add(it)}});put("requested_targets",JsonArray(postTargets));put("targets",JsonArray(results));put("all_targets_observed",stable && results.all{it["status"]!!.jsonPrimitive.content=="observed"});put("scroll_budget",limit);put("scrolls_used",postAttempts);put("trace",JsonArray(postTrace));put("scope","targets_only; never full-content or absence proof")}
-   steps.add(buildJsonObject{item.forEach{(k,v)->put(k,v)};put("dispatch",buildJsonObject{dispatch.forEach{(k,v)->put(k,v)};put("event_end",afterBinding!!["event_revision"]!!)});put("callback_delta",buildJsonArray{afterDelta.forEach{add(it)}});put("snapshot",records.lastIndex);put("immediate_after",immediateSnapshot);put("binding_after",afterBinding!!);put("state_id",activeState)
+   val established=currentGuard["ready"]?.jsonPrimitive?.booleanOrNull==true && if(string(action,"type") in listOf("tap","apply_next_fixture"))dispatch["succeeded"]?.jsonPrimitive?.booleanOrNull==true else item["outcome"]?.jsonPrimitive?.content in listOf("observed","completed")
+   steps.add(buildJsonObject{item.forEach{(k,v)->put(k,v)};put("action",action);put("guard",buildJsonObject{currentGuard.forEach{(k,v)->put(k,v)};put("established",established)});put("dispatch",buildJsonObject{dispatch.forEach{(k,v)->put(k,v)};put("event_end",afterBinding!!["event_revision"]!!)});put("callback_delta",buildJsonArray{afterDelta.forEach{add(it)}});put("snapshot",records.lastIndex);put("immediate_after",immediateSnapshot);put("binding_after",afterBinding!!);put("state_id",activeState)
     put("observation_set",observationSet);put("post_action_viewport",buildJsonObject{val first=results.firstOrNull();if(first!=null)first.forEach{(k,v)->put(k,v)}else put("status","not_requested");put("snapshot",first?.get("snapshot_indices")?.jsonArray?.firstOrNull() ?: JsonPrimitive(records.lastIndex));put("binding_stable",stable)})})
    afterBinding=null;postAttempts=0;postTrace.clear();postIndices.clear();postTargets=emptyList();postOrder.clear();postTargetIndex=0;postDirection=0;postReversed=false
    val state=optional(actions[finished],"state_id");actionIndex++;attempts=0
-   if(stateCapture && state!=null)startSweep(state,finished,"after")else phase="actions"
+   if(stateCapture && state!=null && (!guarded || established))startSweep(state,finished,"after")else phase="actions"
    return
   }
   if(actionIndex>=actions.size){if(!finalCaptured){finalCaptured=true;startSweep("final",actionIndex-1,"final")}else phase="complete";return}
   val action=actions[actionIndex];val type=string(action,"type")
+  val dependencies=action["depends_on"]?.jsonArray?.map{it.jsonPrimitive.int} ?: emptyList()
+  val blocked=dependencies.filter{it>=steps.size || steps[it]["guard"]?.jsonObject?.get("established")?.jsonPrimitive?.booleanOrNull!=true}
+  val callbackChecks=(action["callback_dependencies"]?.jsonArray ?: JsonArray(emptyList())).map{entry->
+   val required=entry.jsonObject;val index=required["action_index"]!!.jsonPrimitive.int;val previous=steps.getOrNull(index)
+   val actual=previous?.get("callback_delta")?.jsonArray ?: JsonArray(emptyList())
+   buildJsonObject{put("required",required);put("actual_events",actual);put("passed",previous?.get("guard")?.jsonObject?.get("established")?.jsonPrimitive?.booleanOrNull==true && actual==required["expected_events"])}
+  }
+  val guardBinding=binding();val conditions=if(blocked.isEmpty())preconditions(action)else emptyList()
+  val ready=blocked.isEmpty() && callbackChecks.all{it["passed"]!!.jsonPrimitive.boolean} && conditions.all{it["passed"]!!.jsonPrimitive.boolean} && guardBinding==binding()
+  currentGuard=buildJsonObject{put("protocol",1);put("ready",ready);put("depends_on",buildJsonArray{dependencies.forEach{add(it)}});put("conditions",JsonArray(conditions));put("callback_predicates",JsonArray(callbackChecks));put("binding",guardBinding)}
+  if(guarded && !ready){
+   activeState=optional(action,"state_id") ?: "action-$actionIndex"
+   if(blocked.isEmpty())capture("action-$actionIndex-precondition-blocked",image)
+   steps.add(buildJsonObject{put("action",action);put("type",type);put("outcome","blocked_precondition");put("state_id",activeState);put("guard",buildJsonObject{currentGuard.forEach{(k,v)->put(k,v)};put("established",false);put("blocked_on",buildJsonArray{blocked.forEach{add(it)}})});put("dispatch",buildJsonObject{put("attempted",false);put("succeeded",false)});put("callback_delta",JsonArray(emptyList()));put("binding_after",binding())})
+   actionIndex++;attempts=0;return
+  }
   if(type=="apply_next_fixture" && stateCapture && preparedUpdate!=actionIndex){preparedUpdate=actionIndex;startSweep("before-update-$actionIndex",actionIndex-1,"before");return}
   eventStart=events.size;pendingName=optional(action,"name") ?: "action-$actionIndex";activeState=optional(action,"state_id") ?: "action-$actionIndex"
   dispatch=buildJsonObject{put("attempted",false);put("succeeded",false)}
-  if(type=="sweep"){val state=optional(action,"state_id") ?: "action-$actionIndex";val n=action["max_steps"]?.jsonPrimitive?.intOrNull ?: 80;steps.add(buildJsonObject{put("type",type);put("outcome","observed");put("callback_delta",JsonArray(emptyList()));put("binding_after",binding())});actionIndex++;startSweep(state,actionIndex-1,"explicit",n);return}
+  if(type=="sweep"){val state=optional(action,"state_id") ?: "action-$actionIndex";val n=action["max_steps"]?.jsonPrimitive?.intOrNull ?: 80;steps.add(buildJsonObject{put("action",action);put("guard",buildJsonObject{currentGuard.forEach{(k,v)->put(k,v)};put("established",ready)});put("type",type);put("outcome","observed");put("callback_delta",JsonArray(emptyList()));put("binding_after",binding())});actionIndex++;startSweep(state,actionIndex-1,"explicit",n);return}
   if(type=="capture" || type=="checkpoint"){pendingStep=buildJsonObject{put("type",type);put("outcome","observed")};phase="after_action";return}
   if(type=="scroll"){scrollBy(viewportHeight*(if(optional(action,"direction")=="up")-0.45f else 0.45f));pendingStep=buildJsonObject{put("type",type);put("outcome","observed")};phase="after_action";return}
   if(type=="apply_next_fixture"){
@@ -268,6 +302,7 @@ class NativeObserverTest {
   }
   try{paparazzi.gif(view,"session",0L,600_000L,4)}catch(done:ObservationComplete){check(phase=="complete")}
   File(output,"observation.json").writeText(buildJsonObject{
+   put("guard_protocol",if(guarded)1 else 0);put("guard_platform","android");put("guard_actions",JsonArray(actions))
    put("schema_version",3);put("state_captures",JsonArray(stateCaptures));put("native_test","NativeObserverTest.capture");put("phase",phase);put("rendered_frames",frame);put("completion_stop","native_state_machine_complete");put("snapshots",JsonArray(records));put("steps",JsonArray(steps));put("events",buildJsonArray{events.forEach{add(it)}})
    put("coverage",buildJsonObject{put("bottom_reached",bottomReached);put("observed_identifiers",buildJsonArray{observed.sorted().forEach{add(it)}})})
    put("configuration",buildJsonObject{put("dimension_encoding","paparazzi-float32-screen-config-v1");put("requested_width_dp",number("width",390f).toDouble());put("requested_height_dp",number("viewportHeight",600f).toDouble());put("night_mode_mask",actualNight);put("font_scale",actualScale);put("density",density);put("direction",actualDirection)})

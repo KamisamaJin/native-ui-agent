@@ -1,0 +1,957 @@
+{
+  "id": "R05/SIGKILL-after-acquire",
+  "verdict": "F",
+  "scope": "real_process_and_filesystem",
+  "reason": "Crash reconciliation retained live owned resources / could not recover earlier ownership",
+  "candidate_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12",
+  "freeze_manifest_sha256": "40959a3f3fddf55e198cc4a15ab37ea70097220d9e968db191b3fd434ca76349",
+  "observations": {
+    "before_owned_live": [
+      {
+        "pid": 25908,
+        "ppid": 25906,
+        "pgid": 25906,
+        "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+        "role": "body",
+        "mode": "tree-hang",
+        "at": 1794228383.055061,
+        "observed_identity": {
+          "pid": 25908,
+          "raw": "Mon Nov  9 21:46:23 2026     25906 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python -B /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/fixture_process.py --root /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/cache/R05__SIGKILL-after-acquire/fixture --token 8613e8ecd7fd4c9d8ee300b894613c5b --role body --mode tree-hang",
+          "stat": "S",
+          "live": true
+        }
+      },
+      {
+        "pid": 25909,
+        "ppid": 25908,
+        "pgid": 25906,
+        "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+        "role": "descendant",
+        "mode": "hang",
+        "at": 1794228383.0738719,
+        "observed_identity": {
+          "pid": 25909,
+          "raw": "Mon Nov  9 21:46:23 2026     25906 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python -B /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/fixture_process.py --root /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/cache/R05__SIGKILL-after-acquire/fixture --token 8613e8ecd7fd4c9d8ee300b894613c5b --role descendant --mode hang",
+          "stat": "S",
+          "live": true
+        }
+      }
+    ],
+    "after_owned_live": [
+      {
+        "pid": 25908,
+        "ppid": 25906,
+        "pgid": 25906,
+        "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+        "role": "body",
+        "mode": "tree-hang",
+        "at": 1794228383.055061,
+        "observed_identity": {
+          "pid": 25908,
+          "raw": "Mon Nov  9 21:46:23 2026     25906 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python -B /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/fixture_process.py --root /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/cache/R05__SIGKILL-after-acquire/fixture --token 8613e8ecd7fd4c9d8ee300b894613c5b --role body --mode tree-hang",
+          "stat": "S",
+          "live": true
+        }
+      },
+      {
+        "pid": 25909,
+        "ppid": 25908,
+        "pgid": 25906,
+        "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+        "role": "descendant",
+        "mode": "hang",
+        "at": 1794228383.0738719,
+        "observed_identity": {
+          "pid": 25909,
+          "raw": "Mon Nov  9 21:46:23 2026     25906 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python -B /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/fixture_process.py --root /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/cache/R05__SIGKILL-after-acquire/fixture --token 8613e8ecd7fd4c9d8ee300b894613c5b --role descendant --mode hang",
+          "stat": "S",
+          "live": true
+        }
+      }
+    ],
+    "reconcile": {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12/scripts/resource_manager.py",
+        "cleanup",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/raw/R05__SIGKILL-after-acquire/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/raw/R05__SIGKILL-after-acquire/reconcile-1"
+      ],
+      "exit_code": 1,
+      "duration": 0.02815262499999882,
+      "receipt": null,
+      "tool_identity_before": "13394580bcde4f863c344b1fd684ec27344d593e493a4894e3d097b3ea907ed4",
+      "tool_identity_after": "13394580bcde4f863c344b1fd684ec27344d593e493a4894e3d097b3ea907ed4"
+    }
+  },
+  "protected_ok": true,
+  "duration_seconds": 10.183205,
+  "commands": [
+    {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/resource_worker.py",
+        "--scripts",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12/scripts",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/raw/R05__SIGKILL-after-acquire/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/raw/R05__SIGKILL-after-acquire/tool-output",
+        "--fixture",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/fixture_process.py",
+        "--fixture-root",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/cache/R05__SIGKILL-after-acquire/fixture",
+        "--token",
+        "8613e8ecd7fd4c9d8ee300b894613c5b",
+        "--mode",
+        "tree-hang",
+        "--final"
+      ],
+      "pid": 25905,
+      "started_monotonic": 8.006185833,
+      "tool_identity_before": "13394580bcde4f863c344b1fd684ec27344d593e493a4894e3d097b3ea907ed4",
+      "exit_code": -9,
+      "finished_monotonic": 8.134688791,
+      "tool_identity_after": "13394580bcde4f863c344b1fd684ec27344d593e493a4894e3d097b3ea907ed4"
+    },
+    {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12/scripts/resource_manager.py",
+        "cleanup",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/raw/R05__SIGKILL-after-acquire/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/raw/R05__SIGKILL-after-acquire/reconcile-1"
+      ],
+      "exit_code": 1,
+      "duration": 0.02815262499999882,
+      "receipt": null,
+      "tool_identity_before": "13394580bcde4f863c344b1fd684ec27344d593e493a4894e3d097b3ea907ed4",
+      "tool_identity_after": "13394580bcde4f863c344b1fd684ec27344d593e493a4894e3d097b3ea907ed4"
+    }
+  ],
+  "trace": [
+    {
+      "kind": "borrowed_ready",
+      "trace": [
+        {
+          "elapsed": 7.241599999918691e-05,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.060202790999999145,
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "kind": "owned_tree_ready",
+      "trace": [
+        {
+          "elapsed": 7.599999999996498e-05,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.051585375000000155,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.11175775000000066,
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "kind": "sealed_10_second_cleanup_deadline",
+      "deadline_monotonic": 18.148371458,
+      "observations": [
+        {
+          "at_monotonic": 8.190118666,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228383.073947,
+              "heartbeat_monotonic": 0.012433458
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228383.086334,
+              "heartbeat_monotonic": 0.04381525
+            }
+          }
+        },
+        {
+          "at_monotonic": 8.654863875,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228383.611254,
+              "heartbeat_monotonic": 0.549740541
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228383.620096,
+              "heartbeat_monotonic": 0.577577166
+            }
+          }
+        },
+        {
+          "at_monotonic": 9.080696833,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228384.043705,
+              "heartbeat_monotonic": 0.982190291
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228383.9511209,
+              "heartbeat_monotonic": 0.908601625
+            }
+          }
+        },
+        {
+          "at_monotonic": 9.5009305,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228384.374649,
+              "heartbeat_monotonic": 1.313134416
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228384.385448,
+              "heartbeat_monotonic": 1.342927583
+            }
+          }
+        },
+        {
+          "at_monotonic": 9.919194333,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228384.815825,
+              "heartbeat_monotonic": 1.754309666
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228384.8165529,
+              "heartbeat_monotonic": 1.774033125
+            }
+          }
+        },
+        {
+          "at_monotonic": 10.34664725,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228385.257011,
+              "heartbeat_monotonic": 2.19549575
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228385.25744,
+              "heartbeat_monotonic": 2.21491975
+            }
+          }
+        },
+        {
+          "at_monotonic": 10.771744,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228385.698216,
+              "heartbeat_monotonic": 2.636699708
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228385.6982021,
+              "heartbeat_monotonic": 2.655681708
+            }
+          }
+        },
+        {
+          "at_monotonic": 11.194706625,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228386.139752,
+              "heartbeat_monotonic": 3.078235541
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228386.136116,
+              "heartbeat_monotonic": 3.093595
+            }
+          }
+        },
+        {
+          "at_monotonic": 11.619777916,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228386.5682108,
+              "heartbeat_monotonic": 3.506694458
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228386.568191,
+              "heartbeat_monotonic": 3.52566925
+            }
+          }
+        },
+        {
+          "at_monotonic": 12.04513075,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228387.009516,
+              "heartbeat_monotonic": 3.947999166
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228387.0095308,
+              "heartbeat_monotonic": 3.967009583
+            }
+          }
+        },
+        {
+          "at_monotonic": 12.4701225,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228387.3359349,
+              "heartbeat_monotonic": 4.274418166
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228387.340373,
+              "heartbeat_monotonic": 4.2978505
+            }
+          }
+        },
+        {
+          "at_monotonic": 12.895361916,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228387.7684228,
+              "heartbeat_monotonic": 4.706905958
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228387.781536,
+              "heartbeat_monotonic": 4.73901375
+            }
+          }
+        },
+        {
+          "at_monotonic": 13.320669125,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228388.202637,
+              "heartbeat_monotonic": 5.14111925
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228388.2225752,
+              "heartbeat_monotonic": 5.180051916
+            }
+          }
+        },
+        {
+          "at_monotonic": 13.746249833,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228388.641558,
+              "heartbeat_monotonic": 5.580040041
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228388.656972,
+              "heartbeat_monotonic": 5.614449125
+            }
+          }
+        },
+        {
+          "at_monotonic": 14.16543975,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228389.082581,
+              "heartbeat_monotonic": 6.021062333
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228389.097962,
+              "heartbeat_monotonic": 6.055438166
+            }
+          }
+        },
+        {
+          "at_monotonic": 14.590877708,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228389.5237818,
+              "heartbeat_monotonic": 6.46226325
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228389.523742,
+              "heartbeat_monotonic": 6.481217833
+            }
+          }
+        },
+        {
+          "at_monotonic": 15.01683025,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228389.965495,
+              "heartbeat_monotonic": 6.903975833
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228389.9621701,
+              "heartbeat_monotonic": 6.919646041
+            }
+          }
+        },
+        {
+          "at_monotonic": 15.438895083,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228390.393368,
+              "heartbeat_monotonic": 7.331848166
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228390.3933718,
+              "heartbeat_monotonic": 7.350848083
+            }
+          }
+        },
+        {
+          "at_monotonic": 15.863897416,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228390.827913,
+              "heartbeat_monotonic": 7.766392625
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228390.830512,
+              "heartbeat_monotonic": 7.787987375
+            }
+          }
+        },
+        {
+          "at_monotonic": 16.289572,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228391.25493,
+              "heartbeat_monotonic": 8.193409416
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228391.161281,
+              "heartbeat_monotonic": 8.118755875
+            }
+          }
+        },
+        {
+          "at_monotonic": 16.715234708,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228391.6866171,
+              "heartbeat_monotonic": 8.62509675
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228391.594008,
+              "heartbeat_monotonic": 8.551482291
+            }
+          }
+        },
+        {
+          "at_monotonic": 17.140281583,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228392.013123,
+              "heartbeat_monotonic": 8.951601791
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228392.0272,
+              "heartbeat_monotonic": 8.984674333
+            }
+          }
+        },
+        {
+          "at_monotonic": 17.565954,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228392.4473019,
+              "heartbeat_monotonic": 9.385781291
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228392.4682539,
+              "heartbeat_monotonic": 9.42572825
+            }
+          }
+        },
+        {
+          "at_monotonic": 17.990358083,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228392.888757,
+              "heartbeat_monotonic": 9.827235291
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228392.909216,
+              "heartbeat_monotonic": 9.866689333
+            }
+          }
+        },
+        {
+          "at_monotonic": 18.173801875,
+          "owned_live": [
+            25908,
+            25909
+          ],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25909,
+              "ppid": 25908,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228383.0738719,
+              "heartbeat_at": 1794228393.106421,
+              "heartbeat_monotonic": 10.0449
+            },
+            "heartbeat-body.json": {
+              "pid": 25908,
+              "ppid": 25906,
+              "pgid": 25906,
+              "token": "8613e8ecd7fd4c9d8ee300b894613c5b",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228383.055061,
+              "heartbeat_at": 1794228393.129652,
+              "heartbeat_monotonic": 10.087125583
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "tool_identity_before": "13394580bcde4f863c344b1fd684ec27344d593e493a4894e3d097b3ea907ed4",
+  "tool_identity_after": "13394580bcde4f863c344b1fd684ec27344d593e493a4894e3d097b3ea907ed4",
+  "raw_directory": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/raw/R05__SIGKILL-after-acquire",
+  "snapshot": "before-harness-teardown.json"
+}

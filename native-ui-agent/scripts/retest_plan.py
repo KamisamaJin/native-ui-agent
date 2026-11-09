@@ -165,6 +165,7 @@ def dispatch(coverage, parent, report, routed, *, changed_files, source_before, 
         elif action == 'repair_environment': kind = 'repair_environment'
         elif action == 'acquire_evidence': kind = 'acquire_native'; acquisition.update(ids)
         elif action == 'review_calibrated_measurement': kind = 'review_measurement'
+        elif action == 'diagnose_action_precondition': kind = 'diagnose_action_precondition'
         elif any(key in visual and rows[key]['status'] == 'unassessed' for key in ids): kind = 'review_images'
         elif any(key in visual and rows[key]['status'] == 'failed' for key in ids): kind = 'repair_source'
         elif action in {'diagnose_product', 'investigate_attribution'}: kind = 'repair_source'

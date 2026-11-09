@@ -1,0 +1,114 @@
+{
+  "id": "R04/SIGTERM",
+  "verdict": "P",
+  "scope": "real_process_and_filesystem",
+  "reason": "Actual signal and owned-resource cleanup checked",
+  "candidate_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12",
+  "freeze_manifest_sha256": "40959a3f3fddf55e198cc4a15ab37ea70097220d9e968db191b3fd434ca76349",
+  "observations": {
+    "exit_code": 1,
+    "owned_live": []
+  },
+  "protected_ok": true,
+  "duration_seconds": 0.21808945799999968,
+  "commands": [
+    {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/resource_worker.py",
+        "--scripts",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12/scripts",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/raw/R04__SIGTERM/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/raw/R04__SIGTERM/tool-output",
+        "--fixture",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/fixture_process.py",
+        "--fixture-root",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/cache/R04__SIGTERM/fixture",
+        "--token",
+        "99220ec63ec84eb8826ee6dd98e79999",
+        "--mode",
+        "tree-hang",
+        "--final"
+      ],
+      "pid": 25866,
+      "started_monotonic": 7.706892875,
+      "tool_identity_before": "13394580bcde4f863c344b1fd684ec27344d593e493a4894e3d097b3ea907ed4",
+      "exit_code": 1,
+      "finished_monotonic": 7.883904291,
+      "tool_identity_after": "13394580bcde4f863c344b1fd684ec27344d593e493a4894e3d097b3ea907ed4"
+    }
+  ],
+  "trace": [
+    {
+      "kind": "borrowed_ready",
+      "trace": [
+        {
+          "elapsed": 8.462500000039341e-05,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.0602216250000005,
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "kind": "owned_tree_ready",
+      "trace": [
+        {
+          "elapsed": 8.483399999992258e-05,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.06016329200000037,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.12025100000000055,
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "kind": "sealed_10_second_cleanup_deadline",
+      "deadline_monotonic": 17.842930625,
+      "observations": [
+        {
+          "at_monotonic": 7.911311708,
+          "owned_live": [],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 25870,
+              "ppid": 25869,
+              "pgid": 25867,
+              "token": "99220ec63ec84eb8826ee6dd98e79999",
+              "role": "descendant",
+              "mode": "hang",
+              "at": 1794228382.77518,
+              "heartbeat_at": 1794228382.775265,
+              "heartbeat_monotonic": 0.012402916
+            },
+            "heartbeat-body.json": {
+              "pid": 25869,
+              "ppid": 25867,
+              "pgid": 25867,
+              "token": "99220ec63ec84eb8826ee6dd98e79999",
+              "role": "body",
+              "mode": "tree-hang",
+              "at": 1794228382.756459,
+              "heartbeat_at": 1794228382.787782,
+              "heartbeat_monotonic": 0.04387025
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "tool_identity_before": "13394580bcde4f863c344b1fd684ec27344d593e493a4894e3d097b3ea907ed4",
+  "tool_identity_after": "13394580bcde4f863c344b1fd684ec27344d593e493a4894e3d097b3ea907ed4",
+  "raw_directory": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-2/raw/R04__SIGTERM",
+  "snapshot": "before-harness-teardown.json"
+}

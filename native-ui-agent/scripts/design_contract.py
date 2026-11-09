@@ -224,6 +224,7 @@ def compile_contract(lock, trusted_sha256, scenario, platform, bindings, actions
     validate_actions(enriched)
     logical = {r['target'] for r in contract['rules'] if 'target' in r} | {r['reference_target'] for r in contract['rules'] if 'reference_target' in r}
     logical |= {a[field] for a in selected['actions'] for field in ['target', 'after_target'] if isinstance(a.get(field), str)}
+    logical |= {c['target'] for a in selected['actions'] for c in a.get('preconditions', []) if isinstance(c.get('target'), str)}
     if set(bindings) != logical:
         raise ValueError('Bindings may only supply the complete logical-target selector map; no expected overrides')
     for selector in bindings.values():
@@ -235,6 +236,8 @@ def compile_contract(lock, trusted_sha256, scenario, platform, bindings, actions
         for field in ['target', 'after_target']:
             if isinstance(action.get(field), str):
                 action[field] = copy.deepcopy(bindings[action[field]])
+        for condition in action.get('preconditions', []):
+            if isinstance(condition.get('target'), str): condition['target'] = copy.deepcopy(bindings[condition['target']])
     if canonical(actions) != canonical(approved_actions):
         raise ValueError('Stimulus route differs from the independent design; only selectors can be bound')
     assertions, ledger = [], []

@@ -10,6 +10,8 @@ The atomic-forward WorkshopSlotPlanner, RiverSensorTriageBoard and BicycleServic
 
 The feedback-forward requirement-routing, execution and retest tools, independent neutral probes, new component implementations, designs/references, review material and comparison harness are original MIT-licensed additions. Its source capsules preserve the applicable upstream Reply/AlertToast license texts; original source headers remain intact. Native screenshots/reports are integration evidence and do not relicense upstream code, assets or SDKs.
 
+The managed-forward resource lifecycle, action-precondition and evidence-responsibility tools, neutral Counter components, independent protocol probes, evidence reviews and qualification harness are original MIT-licensed additions. Its pinned stock host identities and upstream license texts are retained in `validation/managed-forward/evidence/probes/upstreams.json` and `licenses/`. Frozen historical tool bundles retain their original license context. Native frames and test reports document the controlled-host integration; no SDK, simulator runtime or dependency cache is redistributed. The pending business comparison has no implementation or results yet.
+
 | Material | Source | License / notice |
 | --- | --- | --- |
 | Reply component patches and screenshots containing its UI/assets | [android/compose-samples](https://github.com/android/compose-samples), revision `53dccc7836952e3a04ed4bc1ec7afa7c8e27ff79` | Copyright The Android Open Source Project; Apache-2.0. See [full license](validation/native-ui-pilot/licenses/android-LICENSE). Preserve source headers when applying or distributing patches. |

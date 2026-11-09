@@ -1,0 +1,240 @@
+{
+  "id": "R11/OS-confirmed-owned-cleanup-denied",
+  "verdict": "P",
+  "scope": "real_process_and_filesystem",
+  "reason": "Real OS denial, retained original failure, then separate retry",
+  "candidate_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.2",
+  "freeze_manifest_sha256": "64f6e8d5dbf0c2e1c75053094bf976049f15ba034435f5318502791bc33e2728",
+  "observations": {
+    "original": {
+      "version": 1,
+      "root": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/cache/R11__OS-confirmed-owned-cleanup-denied/resources",
+      "owner": {
+        "format": "native-ui-owned-resources-v1",
+        "owner_key": "84a97fe332a75caf087c7d8f4c0ec67bfd044ead8eec96b47fa31ae9fd9d64ae",
+        "token": "086e8f95b7424f9c8b7a7b9ea9476938"
+      },
+      "policy": {
+        "max_bytes": 268435456,
+        "min_free_bytes": 0,
+        "max_simulators": 1
+      },
+      "sample_seconds": 0.1,
+      "observed_peak_allocated_bytes": 28672,
+      "samples": [
+        {
+          "at_unix": 1794231400.1919749,
+          "allocated_bytes": 20480,
+          "free_bytes": 756413308928
+        },
+        {
+          "at_unix": 1794231400.2531898,
+          "allocated_bytes": 28672,
+          "free_bytes": 756413276160
+        }
+      ],
+      "cleanup_errors": [
+        "[Errno 13] Permission denied: '.native-ui-owner.json'"
+      ],
+      "remaining_directories": [
+        {
+          "name": "scratch",
+          "created_at_unix": 1794231400.192221,
+          "last_used_unix": 1794231400.1922429,
+          "device": 16777232,
+          "inode": 25936995
+        }
+      ],
+      "remaining_devices": [],
+      "final": true,
+      "primary_error": null,
+      "command_exit_code": null,
+      "borrowed_build_paths": [
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/cache/R11__OS-confirmed-owned-cleanup-denied/shared-build-cache"
+      ],
+      "scope": "Sampled owned scratch plus borrowed project build paths and owned simulator data. Borrowed paths are measured and budgeted, never deleted. Not exact transient peak, APFS physical usage, shared SDK caches, or user devices."
+    },
+    "retry": {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.2/scripts/resource_manager.py",
+        "cleanup",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/raw/R11__OS-confirmed-owned-cleanup-denied/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/raw/R11__OS-confirmed-owned-cleanup-denied/permissions-restored-retry"
+      ],
+      "exit_code": 0,
+      "duration": 0.03023791699999734,
+      "receipt": {
+        "version": 1,
+        "root": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/cache/R11__OS-confirmed-owned-cleanup-denied/resources",
+        "owner": {
+          "format": "native-ui-owned-resources-v1",
+          "owner_key": "84a97fe332a75caf087c7d8f4c0ec67bfd044ead8eec96b47fa31ae9fd9d64ae",
+          "token": "086e8f95b7424f9c8b7a7b9ea9476938"
+        },
+        "policy": {
+          "max_bytes": 268435456,
+          "min_free_bytes": 0,
+          "max_simulators": 1
+        },
+        "sample_seconds": 0.1,
+        "observed_peak_allocated_bytes": 28672,
+        "samples": [
+          {
+            "at_unix": 1794231400.305761,
+            "allocated_bytes": 28672,
+            "free_bytes": 756413214720
+          },
+          {
+            "at_unix": 1794231400.305898,
+            "allocated_bytes": 28672,
+            "free_bytes": 756413214720
+          },
+          {
+            "at_unix": 1794231400.30604,
+            "allocated_bytes": 28672,
+            "free_bytes": 756413214720
+          }
+        ],
+        "cleanup_errors": [],
+        "remaining_directories": [],
+        "remaining_devices": [],
+        "final": true,
+        "primary_error": null,
+        "command_exit_code": null,
+        "borrowed_build_paths": [
+          "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/cache/R11__OS-confirmed-owned-cleanup-denied/shared-build-cache"
+        ],
+        "scope": "Sampled owned scratch plus borrowed project build paths and owned simulator data. Borrowed paths are measured and budgeted, never deleted. Not exact transient peak, APFS physical usage, shared SDK caches, or user devices."
+      },
+      "tool_identity_before": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+      "tool_identity_after": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6"
+    }
+  },
+  "protected_ok": true,
+  "duration_seconds": 0.15739133399999972,
+  "commands": [
+    {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/resource_worker.py",
+        "--scripts",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.2/scripts",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/raw/R11__OS-confirmed-owned-cleanup-denied/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/raw/R11__OS-confirmed-owned-cleanup-denied/tool-output",
+        "--fixture",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/fixture_process.py",
+        "--fixture-root",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/cache/R11__OS-confirmed-owned-cleanup-denied/fixture",
+        "--token",
+        "86443f6b65144d39bdefb8c38e69d8bf",
+        "--mode",
+        "pause",
+        "--final"
+      ],
+      "pid": 32751,
+      "started_monotonic": 19.963186125,
+      "tool_identity_before": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+      "exit_code": 1,
+      "finished_monotonic": 20.070243208,
+      "tool_identity_after": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6"
+    },
+    {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.2/scripts/resource_manager.py",
+        "cleanup",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/raw/R11__OS-confirmed-owned-cleanup-denied/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/raw/R11__OS-confirmed-owned-cleanup-denied/permissions-restored-retry"
+      ],
+      "exit_code": 0,
+      "duration": 0.03023791699999734,
+      "receipt": {
+        "version": 1,
+        "root": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/cache/R11__OS-confirmed-owned-cleanup-denied/resources",
+        "owner": {
+          "format": "native-ui-owned-resources-v1",
+          "owner_key": "84a97fe332a75caf087c7d8f4c0ec67bfd044ead8eec96b47fa31ae9fd9d64ae",
+          "token": "086e8f95b7424f9c8b7a7b9ea9476938"
+        },
+        "policy": {
+          "max_bytes": 268435456,
+          "min_free_bytes": 0,
+          "max_simulators": 1
+        },
+        "sample_seconds": 0.1,
+        "observed_peak_allocated_bytes": 28672,
+        "samples": [
+          {
+            "at_unix": 1794231400.305761,
+            "allocated_bytes": 28672,
+            "free_bytes": 756413214720
+          },
+          {
+            "at_unix": 1794231400.305898,
+            "allocated_bytes": 28672,
+            "free_bytes": 756413214720
+          },
+          {
+            "at_unix": 1794231400.30604,
+            "allocated_bytes": 28672,
+            "free_bytes": 756413214720
+          }
+        ],
+        "cleanup_errors": [],
+        "remaining_directories": [],
+        "remaining_devices": [],
+        "final": true,
+        "primary_error": null,
+        "command_exit_code": null,
+        "borrowed_build_paths": [
+          "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/cache/R11__OS-confirmed-owned-cleanup-denied/shared-build-cache"
+        ],
+        "scope": "Sampled owned scratch plus borrowed project build paths and owned simulator data. Borrowed paths are measured and budgeted, never deleted. Not exact transient peak, APFS physical usage, shared SDK caches, or user devices."
+      },
+      "tool_identity_before": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+      "tool_identity_after": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6"
+    }
+  ],
+  "trace": [
+    {
+      "kind": "borrowed_ready",
+      "trace": [
+        {
+          "elapsed": 8.541700000108676e-05,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.06015599999999921,
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "kind": "entered",
+      "trace": [
+        {
+          "elapsed": 6.845800000121471e-05,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.060117707999999936,
+          "satisfied": true
+        }
+      ]
+    }
+  ],
+  "tool_identity_before": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+  "tool_identity_after": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+  "raw_directory": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-4/raw/R11__OS-confirmed-owned-cleanup-denied",
+  "snapshot": "before-harness-teardown.json"
+}

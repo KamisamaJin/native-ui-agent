@@ -1,0 +1,73 @@
+{
+  "id": "R09/borrowed-process-shares-executable-name",
+  "verdict": "F",
+  "scope": "real_process_and_filesystem",
+  "reason": "Owned descendant remains live after supervised leader returned",
+  "observations": {
+    "exit_code": 0,
+    "live_owned": [
+      {
+        "pid": 19787,
+        "ppid": 19785,
+        "pgid": 19782,
+        "token": "6d50317591a94e25bca01ab1c9e1598b",
+        "role": "descendant",
+        "mode": "hang",
+        "at": 1794226390.858888,
+        "observed_identity": {
+          "pid": 19787,
+          "raw": "Mon Nov  9 21:13:10 2026     19782 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python -B /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-1/fixture_process.py --root /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-1/cache/R09__borrowed-process-shares-executable-name/fixture --token 6d50317591a94e25bca01ab1c9e1598b --role descendant --mode hang",
+          "stat": "S",
+          "live": true
+        }
+      }
+    ]
+  },
+  "protected_ok": true,
+  "duration_seconds": 0.17193033299999994,
+  "commands": [
+    {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-1/resource_worker.py",
+        "--scripts",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-1/raw/R09__borrowed-process-shares-executable-name/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-1/raw/R09__borrowed-process-shares-executable-name/tool-output",
+        "--fixture",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-1/fixture_process.py",
+        "--fixture-root",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-1/cache/R09__borrowed-process-shares-executable-name/fixture",
+        "--token",
+        "6d50317591a94e25bca01ab1c9e1598b",
+        "--mode",
+        "orphan-return",
+        "--final"
+      ],
+      "pid": 19779,
+      "started_monotonic": 1.44819575,
+      "exit_code": 0,
+      "finished_monotonic": 1.589147625
+    }
+  ],
+  "trace": [
+    {
+      "kind": "borrowed_ready",
+      "trace": [
+        {
+          "elapsed": 9.733299999981071e-05,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.06018887499999992,
+          "satisfied": true
+        }
+      ]
+    }
+  ],
+  "raw_directory": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-1/raw/R09__borrowed-process-shares-executable-name",
+  "snapshot": "before-harness-teardown.json"
+}

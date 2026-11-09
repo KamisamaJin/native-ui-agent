@@ -183,6 +183,11 @@ def callback_verdict(step, expected, platform, required_method=None, stimulus='a
 
 
 def state_evidence(observation,state):
+    import action_guard
+    platform = observation.get('guard_platform', 'ios' if observation.get('measurement_kind', '').startswith('XCUI') else 'android')
+    guard = action_guard.state_verdict(observation, state, platform)
+    if guard is not None and not guard['established']:
+        return [], False, 'blocked_precondition: ' + guard['reason'], {'precondition': guard}
     captures=[c for c in observation.get('state_captures',[])if c.get('state_id')==state['id']]
     if not captures and state.get('coverage')=='targets':
         index=state.get('after_action');steps=observation.get('steps',[])
@@ -412,7 +417,8 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
                             status=row['status'];used=indices;reason=row['reason']
                         else:reason='manual pass withheld: this input state lacks full-content coverage'
                     else:reason='missing scoped manual method, snapshots or rationale'
-        rows.append({'id':item['id'],'state':item['state'],'status':status,'actual':actual,'reason':reason,'snapshot_indices':sorted(set(used)),**({'geometry_evidence':geometry_proofs}if geometry_proofs is not None else{})})
+        responsibility = decisions.get(item['id'], {}).get('responsibility') if review_policy is not None and item['kind']=='manual' else None
+        rows.append({'id':item['id'],'state':item['state'],'status':status,'actual':actual,'reason':reason,'snapshot_indices':sorted(set(used)),**({'geometry_evidence':geometry_proofs}if geometry_proofs is not None else{}),**({'responsibility':responsibility}if responsibility else{})})
     counts={s:sum(row['status']==s for row in rows)for s in ['passed','failed','unassessed']}
     planned={item['id']:item for item in plan['assertions']}
     machine_findings=[{'id':row['id'],'state':row['state'],'requirement_id':planned[row['id']].get('requirement_id'),

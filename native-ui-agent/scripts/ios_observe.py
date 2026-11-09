@@ -18,6 +18,7 @@ import plistlib
 import re
 import shutil
 import subprocess
+import signal
 import sys
 import time
 import uuid
@@ -127,8 +128,14 @@ def generate_project(directory: Path, bridge: Path, package: Path | None, produc
 
 
 def command(args: list[str], env: dict, log: Path | None = None) -> subprocess.CompletedProcess:
-    result = subprocess.run(args, env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    if log: log.write_text(result.stdout)
+    if log:
+        # Stream before completion: interrupted builds must retain their actual
+        # prefix, rather than losing the contents of an in-memory PIPE.
+        with log.open('w') as stream:
+            result = subprocess.run(args, env=env, text=True, stdout=stream, stderr=subprocess.STDOUT)
+        result.stdout = log.read_text()
+    else:
+        result = subprocess.run(args, env=env, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     return result
 
 
@@ -376,6 +383,8 @@ def run(args) -> int:
 
 
 def main() -> int:
+    def interrupted(signum, frame): raise InterruptedError('Native observation interrupted by signal '+str(signum))
+    for signum in [signal.SIGINT,signal.SIGTERM]: signal.signal(signum,interrupted)
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     p = sub.add_parser("run")

@@ -77,9 +77,12 @@ def compile_execution(plan, lock, lock_sha, fixtures, bridge_sha, *, launch_ref,
     if set(selected) != set(all_states):
         last = max(s['after_action'] for s in plan['states'] if s['id'] in selected)
         enriched = enriched[:last + 1]
+    import action_guard
+    enriched = action_guard.compile_actions(enriched)
     validate_actions(enriched)
     config = copy.deepcopy(fixtures)
     config['state_capture'] = True
+    config['guard_protocol'] = 1
     config['observation_strategy'] = strategy
     config['execution_states'] = copy.deepcopy(required)
     config['execution_state_definitions'] = copy.deepcopy(plan['states'])
@@ -159,7 +162,7 @@ def verify_capture_images(receipt, root):
             raise ValueError('Original capture image missing, replaced or outside native output')
 
 
-def run_execution(value, plan, lock, lock_sha, fixtures, bridge, output, source_roots, native_options, *, policy=None, policy_sha=None, expected_environment=None, environment_sha=None):
+def run_execution(value, plan, lock, lock_sha, fixtures, bridge, output, source_roots, native_options, *, policy=None, policy_sha=None, expected_environment=None, environment_sha=None, resources=None):
     bridge = Path(bridge).resolve(); output = Path(output).resolve()
     bridge_sha = hashlib.sha256(bridge.read_bytes()).hexdigest()
     verify_execution(value, plan, lock, lock_sha, fixtures, bridge_sha)
@@ -179,6 +182,8 @@ def run_execution(value, plan, lock, lock_sha, fixtures, bridge, output, source_
     allowed = ({'package', 'simulator', 'developer-dir', 'build-cache', 'product', 'sdk'} if value['platform'] == 'ios'
                else {'project', 'java-home', 'android-sdk'})
     if set(native_options) - allowed: raise ValueError('Only explicit platform-native options are accepted')
+    native_options = resources.native_options(platform=value['platform']) if resources is not None else native_options
+    if set(native_options) - allowed: raise ValueError('Managed options differ from the approved platform')
     roots = [Path(p).resolve() for p in source_roots]
     if any(output.is_relative_to(p) for p in roots): raise ValueError('Fresh evidence must be outside production source roots')
     before = source_fingerprint(roots)
@@ -196,14 +201,22 @@ def run_execution(value, plan, lock, lock_sha, fixtures, bridge, output, source_
               'parent_plan_sha256': design.digest(plan),
               'source_sha256': design.digest(before), 'source_roots': list(map(str, roots)), 'argv': command,
               'scope': value['scope'], 'input_hashes': {name: hashlib.sha256((output / name).read_bytes()).hexdigest() for name in ['fixtures.json', 'actions.json']}}
+    tool_root = Path(__file__).resolve().parents[1]
+    tool_paths = list((tool_root/'scripts').glob('*.py')) + list((tool_root/'assets/ios-observer').glob('*.swift')) + list((tool_root/'assets/android-observer').glob('*.kt'))
+    record['tool_files'] = {str(p.relative_to(tool_root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(tool_paths)}
+    import shutil
+    for p in tool_paths:
+        target=output/'tool-runtime'/p.relative_to(tool_root);target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,target)
     save('request.json', record)
     with (output / 'native.log').open('w') as stream:
-        record['native_exit_code'] = subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT,
-             env=dict(os.environ, PYTHONDONTWRITEBYTECODE='1')).returncode
+        environment = dict(os.environ, PYTHONDONTWRITEBYTECODE='1')
+        record['native_exit_code'] = (resources.run(command, stdout=stream, env=environment) if resources else
+            subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT, env=environment).returncode)
     record['nativeFinishedAtUnix'] = time.time()
     try:
         after = source_fingerprint(roots)
-        record['source_unchanged'] = before == after and hashlib.sha256(bridge.read_bytes()).hexdigest() == bridge_sha
+        record['tool_sources_unchanged'] = all(hashlib.sha256((tool_root/rel).read_bytes()).hexdigest()==expected for rel,expected in record['tool_files'].items())
+        record['source_unchanged'] = before == after and hashlib.sha256(bridge.read_bytes()).hexdigest() == bridge_sha and record['tool_sources_unchanged']
     except (OSError, ValueError) as error:
         after = {}; record['source_unchanged'] = False; record['source_error'] = str(error)
     save('source-after.json', after)
@@ -213,6 +226,8 @@ def run_execution(value, plan, lock, lock_sha, fixtures, bridge, output, source_
         if observation_path.is_file() and record['source_unchanged'] and record['inputs_unchanged']:
             import native_checks
             observation = design.load(observation_path); obs_sha = hashlib.sha256(observation_path.read_bytes()).hexdigest()
+            import action_guard
+            record['action_prerequisites'] = action_guard.verify_observation(value['actions'], observation, value['platform'])
             record['image_hashes'] = {}
             for snapshot in observation.get('snapshots', []):
                 relative = snapshot['screenshot']; path = (observation_path.parent / relative).resolve()

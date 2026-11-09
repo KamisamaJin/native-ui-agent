@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "status": "requirements_fixed_before_interface_implementation",
+  "transport": {
+    "accepted": ["documented CLI", "documented Python API"],
+    "adapter_limit": "A verifier adapter may map argument names and normalize transport only. Ownership, cleanup, dependency evaluation, attribution and evidence admission must remain in the production tool, not in the probe adapter.",
+    "no_test_only_success": "No adapter-supplied passed result, unconditional resource cleanup, fake native route or fabricated native observation. Synthetic protocol records must be marked as such."
+  },
+  "capabilities": [
+    {
+      "id": "resource-session",
+      "required": true,
+      "operations": ["begin with fresh run root and durable ownership identity", "exclusive acquisition of owned temporary files/directories", "launch owned process tree and return its actual process identity", "declare borrowed resources and pre-state", "finish for success/error/cancel", "reconcile one explicit prior session root", "inspect resource journal and cleanup receipt"],
+      "observable_fields": ["session/run identity", "resource type and actual identity", "owned/borrowed plus authority source", "pre-state", "acquisition/release/cleanup timestamps", "owner process identity", "process start identity and group/session identity where applicable", "per-resource cleanup disposition", "conflicts/errors and unreclaimed resources"],
+      "safety": ["Durably register owned acquisitions before returning usable handles", "cleanup only positively identified owned resources", "never follow a substituted path/symlink into another root", "never infer ownership solely from PID/path prefix/name", "never reclaim a live other session's lease", "cleanup is idempotent and preserves raw evidence"]
+    },
+    {
+      "id": "action-dependency",
+      "required": true,
+      "operations": ["declare directed per-action prerequisites before dispatch", "identify the exact required dispatch/predicate result", "preflight validate unknown/self/cyclic prerequisites", "evaluate prerequisite status from bound actual outcomes", "skip/block a dependent action without dispatch when prerequisite is unmet", "collect independently scoped current-state facts", "evaluate causal state evidence without turning descriptive facts into causation"],
+      "observable_fields": ["original action id/index", "declared prerequisite and predicate", "actual attempted/dispatched/succeeded result", "actual method", "before/after input/process/event identities", "blocked reason and upstream references", "requested versus actually reached state", "per-claim dependency validity"],
+      "semantics": ["Successful dispatch and correct callback expectation are different predicates", "empty event intervals do not prove behavior without the required successful stimulus", "one failed prerequisite does not erase independently evidenced sibling facts", "later independent observations cannot retroactively satisfy a failed prerequisite", "partial/failing runs cannot be admitted as complete"]
+    },
+    {
+      "id": "evidence-and-responsibility",
+      "required": true,
+      "operations": ["bind each atomic claim to its sealed evidence method, target, scope and responsibility", "validate evidence type capability against claim type", "check per-claim state/input/action/source/artifact identity", "preserve strict fact verdict separately from cause attribution", "report component/host/system/uncertain responsibility separately", "retain missing and unsupported rows in the denominator"],
+      "observable_fields": ["claim id", "approved expected/source/unit", "actual evidence method", "declared and sealed responsibility", "supported claim scope", "state/process/input/action identity", "artifact hashes", "fact verdict", "attribution verdict", "unassessed/rejected reason"],
+      "allowed_limit": "A declared method or responsibility is not proof of its truth. Existing native provenance checks remain required; unsupported causal/root-cause claims stay unknown."
+    },
+    {
+      "id": "raw-result-retention",
+      "required": true,
+      "operations": ["save original CLI/API invocation and result", "save exception/signal and child logs", "retain partial artifacts", "write new outputs per retry", "reference original failures from later verification"],
+      "observable_fields": ["exit code or signal", "primary error", "cleanup errors", "raw artifact paths and SHA256", "all planned row ids with final disposition", "tool source identity"],
+      "safety": ["cleanup cannot delete source, immutable evidence, protected references or shared build cache", "secondary cleanup failure cannot overwrite primary error", "tool collection success is not a delivery acceptance verdict"]
+    }
+  ],
+  "native_only": "See native-requirements.md. Missing native SDK or an authorized pre-existing isolated device is U, not P. Do not create/delete global devices for these probes.",
+  "execution_approval": "No new user approval is implied by this schema. Execute only within the task's authorized roots/processes and use explicit caller-supplied native targets."
+}

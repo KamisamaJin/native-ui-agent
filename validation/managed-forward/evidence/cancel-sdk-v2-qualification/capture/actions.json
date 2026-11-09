@@ -1,0 +1,113 @@
+[
+  {
+    "type": "checkpoint",
+    "state_id": "front",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "counter.increment",
+      "role": "button"
+    },
+    "preconditions": [
+      {
+        "target": {
+          "identifier": "counter.increment",
+          "role": "button"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "state_id": "counted",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      0
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "apply_next_fixture",
+    "callback_dependencies": [
+      {
+        "action_index": 1,
+        "expected_events": [
+          "increment"
+        ]
+      }
+    ],
+    "state_id": "replaced",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      1
+    ],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "counter.continue",
+      "role": "button"
+    },
+    "preconditions": [
+      {
+        "target": {
+          "identifier": "counter.tally",
+          "role": "text"
+        },
+        "property": "label",
+        "op": "eq",
+        "expected": "Tally: 8"
+      },
+      {
+        "target": {
+          "identifier": "counter.continue",
+          "role": "button"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "callback_dependencies": [
+      {
+        "action_index": 2,
+        "expected_events": []
+      }
+    ],
+    "state_id": "continued",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      2
+    ]
+  }
+]

@@ -1,0 +1,236 @@
+[
+  {
+    "type": "checkpoint",
+    "state_id": "front",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "counter.increment",
+      "role": "button"
+    },
+    "preconditions": [
+      {
+        "target": {
+          "identifier": "counter.increment",
+          "role": "button"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "state_id": "counted",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      0
+    ]
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "counter.disabled",
+      "role": "button"
+    },
+    "allow_disabled": true,
+    "state_id": "disabled_attempt",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      1
+    ],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "counter.continue",
+      "role": "button"
+    },
+    "state_id": "dependent_disabled",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      2
+    ],
+    "preconditions": []
+  },
+  {
+    "type": "checkpoint",
+    "depends_on": [],
+    "state_id": "independent_one",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "preconditions": []
+  },
+  {
+    "type": "apply_next_fixture",
+    "state_id": "replaced",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      4
+    ],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "counter.missing",
+      "role": "button"
+    },
+    "max_steps": 1,
+    "state_id": "missing_attempt",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      5
+    ],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "counter.continue",
+      "role": "button"
+    },
+    "state_id": "dependent_missing",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      6
+    ],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "counter.pair"
+    },
+    "depends_on": [],
+    "state_id": "ambiguous_attempt",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "counter.continue",
+      "role": "button"
+    },
+    "state_id": "dependent_ambiguous",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      8
+    ],
+    "preconditions": []
+  },
+  {
+    "type": "checkpoint",
+    "depends_on": [],
+    "state_id": "independent_two",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "identifier": "counter.continue",
+      "role": "button"
+    },
+    "preconditions": [
+      {
+        "target": {
+          "identifier": "counter.tally",
+          "role": "text"
+        },
+        "property": "label",
+        "op": "eq",
+        "expected": "Tally: 8"
+      },
+      {
+        "target": {
+          "identifier": "counter.continue",
+          "role": "button"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "state_id": "continued",
+    "after_targets": [
+      {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      10
+    ]
+  }
+]

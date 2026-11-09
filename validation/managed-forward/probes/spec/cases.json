@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "execution_status": "not_run_interfaces_pending",
+  "purpose": "Independent neutral protocol probes fixed before updated implementation and before future business blind tasks.",
+  "variant_rule": "Every variants entry is an independent required row. A group cannot pass while any variant is F or U. Preserve raw tool results separately from probe verdicts.",
+  "bounds_seconds": {"action_or_file": 5, "termination_and_reconcile": 10, "live_lease_challenge": 2},
+  "generic_fixture": {
+    "workspace": "Fresh run root under validation/managed-forward/probes/runs; dedicated project cache subdirectory only.",
+    "owned_process": "A real Python helper with a random run token visible in argv and an append-only PID/PPID/process-group/start record. It launches one real descendant. Each writes an independent heartbeat. A variant ignores SIGTERM to exercise bounded escalation.",
+    "borrowed_sentinel": "A second real helper and an existing directory created by the probe before starting the managed session. Their bytes, inode/path identity, heartbeat and process identity are recorded. They are borrowed, never cleanup targets.",
+    "counter_actor": "A real temporary process accepts increment/update/noop commands, writes a monotonic sequence, count and event log to run-local files, and emits actual command receipts. Disabled/missing/ambiguous routes do not mutate count or events. Native-format records, when unavoidable, are explicitly synthetic protocol inputs and cannot establish native execution.",
+    "evidence_board": "A run-local deterministic small PNG with two opaque solid regions, a source declaration text file and clearly labeled synthetic protocol records. PNG pixel tests concern those actual bytes only. It is not a native screenshot or a product design reference."
+  },
+  "shared_raw_evidence": ["sealed case id and variant", "exact inputs and invocation", "tool source digest", "stdout/stderr and exit code/signal", "monotonic timing trace", "before/during/after process identities and heartbeats", "before/after file bytes and SHA256 plus path/inode identity where available", "original tool resource/action/evidence receipts", "independent oracle result", "separate emergency cleanup log if needed"],
+  "cases": [
+    {
+      "id": "R01", "task": "temporary-workbench", "tier": "real_process_and_filesystem", "variants": ["normal-success"],
+      "procedure": "Create borrowed sentinel resources first. Begin one managed session, allocate an owned directory, launch the owned two-level process tree, prove both heartbeats are live, then finish normally.",
+      "accept": "Within 10 seconds both owned processes are no longer live and owned temporary resources are released. Borrowed processes remain the same live identities and borrowed bytes are unchanged. Capture/log/receipt files remain. Every acquired resource has an explicit final disposition; no unknown live handle is silently omitted.",
+      "claim_limit": "Protocol lifecycle only, not native device or UI behavior."
+    },
+    {
+      "id": "R02", "task": "temporary-workbench", "tier": "real_process_and_filesystem", "variants": ["body-command-exits-7", "body-raises-exception"],
+      "procedure": "After the same real acquisitions as R01, terminate the task body by the named error through the public entry point.",
+      "accept": "R01 ownership/protection conditions still hold. Primary error and nonzero task outcome survive cleanup. Partial evidence and raw failure remain; no accepted/passed delivery result is emitted. A secondary cleanup issue cannot replace the primary failure."
+    },
+    {
+      "id": "R03", "task": "temporary-workbench", "tier": "real_process_and_filesystem", "variants": ["command-timeout", "owned-descendant-ignores-SIGTERM"],
+      "procedure": "Run a hanging task body with an owned live descendant. For the second variant the descendant deliberately ignores SIGTERM; record that fact before cancellation.",
+      "accept": "The actual timeout/cancel state remains visible. Termination is bounded and escalates only against the positively identified owned tree. No owned heartbeat continues beyond 10 seconds; borrowed sentinel is untouched. A successful parent exit alone cannot prove descendant cleanup."
+    },
+    {
+      "id": "R04", "task": "temporary-workbench", "tier": "real_process_and_filesystem", "variants": ["SIGINT", "SIGTERM"],
+      "procedure": "Signal only the real current manager process after durable acquisition and live-heartbeat evidence; do not signal a shell-wide or unrelated process group.",
+      "accept": "Cancellation is recorded and cannot be accepted as a successful task. Owned resources are reclaimed within 10 seconds by the documented termination path or explicit run-local reconciliation; borrowed resources and raw evidence survive. The two signals are separate rows."
+    },
+    {
+      "id": "R05", "task": "temporary-workbench", "tier": "real_process_and_filesystem", "variants": ["SIGKILL-after-acquire", "SIGKILL-after-first-release", "truncated-final-journal-record"],
+      "procedure": "SIGKILL only the manager after observing the named durable boundary. Inspect actual leftovers before calling the documented reconciler on exactly that run root. In the third variant truncate only the last run-local journal record, preserving the earlier bytes.",
+      "accept": "A new invocation identifies the dead owner and reconciles proven owned leftovers within 10 seconds without global scanning/deletion. Already released resources are harmless. Earlier valid ownership records remain usable; an unprovable/corrupt record is reported and cannot authorize deletion. Keep crash, pre-reconcile and post-reconcile snapshots. The killed invocation is never retroactively passed."
+    },
+    {
+      "id": "R06", "task": "temporary-workbench", "tier": "real_process_and_filesystem", "variants": ["finish-twice", "reconcile-twice"],
+      "procedure": "Repeat the same public finish/reconcile operation after a successful initial cleanup, preserving the original receipts.",
+      "accept": "The second operation is idempotent, does not acquire new resources or target new processes, leaves borrowed objects unchanged and retains original errors/history. A missing owned resource is recorded as already absent rather than causing deletion of a replacement."
+    },
+    {
+      "id": "R07", "task": "temporary-workbench", "tier": "real_process_and_filesystem", "variants": ["preexisting-directory-at-reserved-name", "preexisting-file-at-reserved-name"],
+      "procedure": "Put a recorded sentinel object at the exact requested acquisition path before the session tries to acquire it.",
+      "accept": "Exclusive acquisition refuses or chooses a separately identified fresh path. It cannot adopt, overwrite or later delete the existing object. Rejection occurs before launching dependent commands. Existing bytes and identity remain unchanged."
+    },
+    {
+      "id": "R08", "task": "temporary-workbench", "tier": "real_process_and_filesystem", "variants": ["owned-path-replaced-by-foreign-directory", "owned-path-replaced-by-symlink-to-borrowed", "recorded-path-escapes-root"],
+      "procedure": "After acquisition, replace only the run-local owned pathname with the named sentinel/symlink, or submit a malformed cleanup record containing traversal. Keep an actual borrowed target with known bytes.",
+      "accept": "Cleanup refuses mismatched ownership/identity and never follows the substituted path into the borrowed target. It reports the conflict/unreclaimed resource rather than success. Malformed traversal is rejected. Sentinel bytes and process identities are untouched. These are protocol boundary negatives, not product defects."
+    },
+    {
+      "id": "R09", "task": "temporary-workbench", "tier": "real_process_and_filesystem", "variants": ["stale-PID-points-to-real-foreign-sentinel", "owned-marker-with-wrong-start-identity", "borrowed-process-shares-executable-name"],
+      "procedure": "Use a second actual sentinel process as the live PID in an intentionally stale/mismatched protocol record, or use the same executable name for owned and borrowed processes. Do not wait for the OS to reuse a PID.",
+      "accept": "PID/name/marker alone cannot authorize termination. Only matching actual owned identity is cleaned. Foreign and borrowed helpers continue heartbeats unchanged; mismatch is explicit and cannot become successful reclamation."
+    },
+    {
+      "id": "R10", "task": "temporary-workbench", "tier": "real_process_and_filesystem", "variants": ["reconcile-while-owner-live", "two-live-sessions-different-roots", "second-session-requests-same-exclusive-root"],
+      "procedure": "Keep the first manager alive with confirmed heartbeats. Challenge its lease for 2 seconds or run a second session with its own identities and the named root selection.",
+      "accept": "No invocation reclaims another live session's resources. Different roots remain isolated. Same exclusive root is refused before conflicting acquisitions. When the first session eventually exits, it cleans only its own handles; all live-lease decisions are evidenced rather than inferred from a timeout."
+    },
+    {
+      "id": "R11", "task": "temporary-workbench", "tier": "real_process_and_filesystem", "variants": ["OS-confirmed-owned-cleanup-denied"],
+      "procedure": "Within the run root only, arrange a real filesystem permission condition that is first independently confirmed to reject the intended cleanup operation. Do not touch protected user paths. If this OS/account cannot produce such a denial, record U rather than fabricate an error.",
+      "accept": "The tool reports cleanup failure and the unreclaimed identity, retains logs, preserves any primary body failure and does not return an unqualified clean/accepted result. After restoring run-local permissions, a separate reconciler can retry. Original failure remains in the ledger."
+    },
+    {
+      "id": "R12", "task": "temporary-workbench", "tier": "real_process_and_filesystem", "variants": ["success", "cancel", "crash-reconcile"],
+      "procedure": "Before executing the named lifecycle, create protected source/reference sentinels, a build-cache sentinel outside the run's owned scratch subdirectory, and raw evidence files. Record full hashes.",
+      "accept": "Cleanup preserves all declared source/reference bytes, shared cache bytes and original evidence. It may reclaim only separately owned scratch resources. Any missing or changed protected artifact is F even if the actual child processes were reclaimed."
+    },
+    {
+      "id": "D01", "task": "dependent-counter", "tier": "real_action_when_supported_else_labeled_protocol", "variants": ["successful-dispatch-chain", "successful-predicate-chain"],
+      "procedure": "Use a fresh actor. A actually increments once. B declares the exact named prerequisite on A; successful-predicate additionally requires A's expected event comparison to pass. B actually increments once. Collect current count and both event intervals.",
+      "accept": "Both actions really execute exactly once with distinct sequence numbers, count is 2, binding is consistent, and each supported causal/action claim can pass. This positive control is mandatory; blanket blocking/rejection fails it."
+    },
+    {
+      "id": "D02", "task": "dependent-counter", "tier": "real_action_when_supported_else_labeled_protocol", "variants": ["A-disabled", "A-target-missing", "A-target-ambiguous", "A-not-attempted", "A-dispatch-exception", "A-dispatch-timeout"],
+      "procedure": "Arrange the named actual failure/unavailability of A. B explicitly requires A's successful dispatch. Offer a superficially matching expected B state and an empty A event interval.",
+      "accept": "B is not dispatched, count/event side effects remain absent for B, dependency is blocked/U with an upstream reference, and A's empty interval establishes no callback behavior. No business P or F is invented from unexecuted actions. Actual raw state/interval facts remain inspectable."
+    },
+    {
+      "id": "D03", "task": "dependent-counter", "tier": "labeled_protocol_negative_with_real_side_effect_monitor", "variants": ["wrong-method", "wrong-stimulus", "outcome-string-only", "succeeded-flag-without-attempt", "wrong-native-control-cardinality"],
+      "procedure": "Supply each malformed/inadequate A success claim to the public predicate gate, with a monitored B command ready to run only if the gate admits it. No synthetic record is labeled real native evidence.",
+      "accept": "Inadequate A cannot authorize B. The gate rejects malformed evidence or retains U, explains the unmet precondition, and no B side effect occurs. A producer's tapped/updated/passed string or succeeded flag cannot replace the required proof."
+    },
+    {
+      "id": "D04", "task": "dependent-counter", "tier": "real_action_when_supported_else_labeled_protocol", "variants": ["dispatch-dependency-with-wrong-callback", "callback-predicate-dependency-with-wrong-callback"],
+      "procedure": "A demonstrably dispatches in the correct epoch but emits a different event than its sealed event expectation. B depends specifically on successful dispatch in the first variant and on the callback assertion passing in the second.",
+      "accept": "A's event assertion is F in both variants. B runs in the dispatch-only variant and is blocked in the callback-predicate variant. The tool must distinguish stimulus establishment from expected business correctness; neither result rewrites A's original failure."
+    },
+    {
+      "id": "D05", "task": "dependent-counter", "tier": "real_update_when_supported_else_labeled_protocol", "variants": ["caller-update-advances-one-input", "caller-update-does-not-advance", "caller-update-jumps-two-inputs", "caller-update-restarts-process"],
+      "procedure": "A requests caller input replacement; B requires that exact successful update in the same live instance. Collect the real before/after input version, process identity, event range and current value.",
+      "accept": "Only the first variant can satisfy the one-step same-instance update prerequisite. Other variants keep B blocked/U even when the displayed/current value matches. A fresh process or fixture launch cannot prove an existing component responded to caller replacement."
+    },
+    {
+      "id": "D06", "task": "dependent-counter", "tier": "real_state_and_labeled_causal_protocol", "variants": ["initial-state-already-matches", "independent-observation-after-blocked-action"],
+      "procedure": "Start the actor already holding the expected label/count. Leave A undispatched or blocked. Ask separately for a literal current-state fact and a claim that A caused the state or produced zero callbacks.",
+      "accept": "A well-bound observed current-state fact can retain its own supported verdict. The causal/behavior claim remains U and cannot be marked passed or product-failed. If a declared state requires A, that requested state is not falsely certified as reached. Observation navigation may run without activating B."
+    },
+    {
+      "id": "D07", "task": "dependent-counter", "tier": "labeled_protocol_negative_with_real_side_effect_monitor", "variants": ["other-session-receipt", "old-input-hash", "different-PID-instance", "wrong-action-index", "event-revision-gap", "state-image-binding-drift"],
+      "procedure": "Keep an otherwise successful A record but replace only the named identity/range field with a separately recorded value. Monitor B's actual file/event effect.",
+      "accept": "Evidence cannot be borrowed across sessions, inputs, processes, actions or event/image epochs. B is not authorized by invalid proof, causal P is withheld, and mismatch is explicit. The untouched original receipt and attempted replacement are both retained."
+    },
+    {
+      "id": "D08", "task": "dependent-counter", "tier": "preflight_with_real_no_side_effect_sentinel", "variants": ["unknown-dependency", "self-dependency", "cycle", "unknown-predicate", "duplicate-action-id"],
+      "procedure": "Submit the named invalid graph before resource acquisition/action dispatch; command sentinels would create files if called.",
+      "accept": "Plan is rejected before launching any action or SDK and before acquiring task resources beyond immutable rejection logging. Unknown/ambiguous prerequisites cannot be silently removed or treated as true. Preserve the exact rejected plan and absence of side effects."
+    },
+    {
+      "id": "D09", "task": "dependent-counter", "tier": "real_action_when_supported_else_labeled_protocol", "variants": ["explicit-independent-branch", "later-matching-state-does-not-repair-A"],
+      "procedure": "A is blocked. B is explicitly independent and successfully executes; C depends on A. Collect the real B state and an otherwise matching later state.",
+      "accept": "B's independent established facts can pass; C remains blocked/U. A later label/count or successful B cannot satisfy A retroactively, erase its failure/unavailability or create callback evidence for it. All action/claim rows remain in the ledger."
+    },
+    {
+      "id": "E01", "task": "claim-evidence-ledger", "tier": "real_files_and_labeled_protocol_positive", "variants": ["source-declaration-to-nominal-API-claim", "PNG-to-visible-proposition", "PNG-local-pixel-region-to-rendered-RGB", "bound-AX-to-label", "bound-AX-to-selected", "bound-AX-to-AX-dimensions", "native-text-layout-to-supported-font-field", "successful-native-action-to-callback-interval"],
+      "procedure": "Provide the smallest valid evidence of each named method with correct target, state, scope, expectation source and hashes. Native records are protocol samples here and are separately rechecked by N03/N04.",
+      "accept": "The validator admits each evidence type only for the named supported claim and does not blanket-reject valid positive inputs. Actual PNG/local source bytes are independently checked. Protocol-only native sample success is labeled as such, never native/product execution success."
+    },
+    {
+      "id": "E02", "task": "claim-evidence-ledger", "tier": "real_files_and_labeled_protocol_negative", "variants": ["source-to-runtime-action", "source-to-effective-font", "screenshot-to-exact-font-size", "screenshot-to-internal-padding", "AX-frame-to-physical-hit-region", "AX-label-to-click-delivery", "local-pixels-to-whole-canvas", "rendered-RGB-to-native-computed-style", "partial-targets-to-full-page-pass"],
+      "procedure": "Reuse valid bytes from E01 but ask the named unsupported broader/different claim, retaining its atomic identity and required method.",
+      "accept": "The unsupported claim remains U or is rejected as a method/schema mismatch; it cannot become P or a confirmed product F. Supported narrower facts remain available separately. A self-declared method string cannot upgrade evidence capability."
+    },
+    {
+      "id": "E03", "task": "claim-evidence-ledger", "tier": "responsibility_protocol", "variants": ["component-owned-target", "host-owned-target", "system-owned-target", "ambiguous-owner"],
+      "procedure": "Fix a policy assigning each target's responsibility before supplying an observed mismatch. Use a valid atomic fact failure with the named approved owner.",
+      "accept": "The strict fact F remains in every supported mismatch. Component defect attribution requires actual component scope plus supported independent cause assessment. Host/system mismatch is reported in that responsibility scope and cannot automatically be counted as a component bug. Ambiguous responsibility cannot produce a confirmed component defect."
+    },
+    {
+      "id": "E04", "task": "claim-evidence-ledger", "tier": "attribution_protocol", "variants": ["two-supported-product-attributions", "missing-attribution", "product-versus-infrastructure-disagreement", "both-uncertain"],
+      "procedure": "Keep one valid component-owned numeric/pixel fact F unchanged and submit the named independent cause assessments, bound to original target frames.",
+      "accept": "Only the first variant can support confirmed component-defect attribution, within its observed scope. Missing/disputed/uncertain cause remains uncertain. No votes or cause labels erase the strict fact F; raw judgments and disagreements remain. Agreement alone cannot prove a natural-language requirement is correct."
+    },
+    {
+      "id": "E05", "task": "claim-evidence-ledger", "tier": "coverage_protocol", "variants": ["local-visible-failure-in-incomplete-state", "full-content-pass-with-missing-region", "multi-target-frames-without-full-sweep"],
+      "procedure": "Offer coherent local target evidence but explicitly incomplete interval coverage. Ask both an observed local proposition and a whole-content correctness claim.",
+      "accept": "A supported local failure can remain F. Whole-content P is withheld. Multi-target evidence may support its targets but cannot be relabeled complete. Missing regions and original assertion denominator remain explicit."
+    },
+    {
+      "id": "E06", "task": "claim-evidence-ledger", "tier": "atomic_denominator_protocol", "variants": ["visual-present-action-missing", "color-present-font-missing", "one-state-observed-second-state-missing", "unreasoned-not-applicable"],
+      "procedure": "Declare separate required atoms for the named aspects/states, then omit exactly one evidence item or submit N/A with no approved reason.",
+      "accept": "Supported atoms retain their verdicts; missing atoms remain U in the denominator. Required ids cannot disappear, be collapsed into a combined passed rule, borrow another state's frame or become accepted via unapproved N/A. Invalid N/A is rejected before collection if predeclared."
+    },
+    {
+      "id": "E07", "task": "claim-evidence-ledger", "tier": "sealed_identity_negative", "variants": ["changed-responsibility", "changed-expected-or-tolerance", "changed-target", "changed-method", "manual-status-override", "missing-policy-binding"],
+      "procedure": "After fixing the independent contract/policy and their digests, replace only the named decision/binding field in a submission. Preserve original bytes beside the attempted replacement.",
+      "accept": "The altered submission is rejected rather than rescored under a rewritten expectation or owner. Original strict/visual results and expected/source/units remain unchanged. No product alarm is counted from the schema rejection itself."
+    },
+    {
+      "id": "E08", "task": "claim-evidence-ledger", "tier": "provenance_negative", "variants": ["method-native-with-source-only", "zero-native-tests", "old-image-copied-as-new", "native-environment-mismatch", "forged-producer-complete-flag"],
+      "procedure": "Keep a superficially passing summary but supply the named deficient actual provenance. Monitor the underlying artifact bytes, actual test count/environment and geometry/epoch evidence independently.",
+      "accept": "A producer's claim cannot establish native execution, fresh capture, coherent environment or complete coverage. Missing/bad provenance blocks the corresponding P and any delivery accepted verdict. Existing truthful narrower facts may remain; failure is an observation/environment/protocol issue unless independently attributed otherwise."
+    },
+    {
+      "id": "E09", "task": "claim-evidence-ledger", "tier": "real_artifact_integrity", "variants": ["artifact-byte-tamper", "missing-image", "path-escapes-evidence-root", "same-hash-label-with-different-bytes"],
+      "procedure": "Use actual run-local files. After obtaining a valid bound record, make the named single alteration while keeping the prior record and hashes immutable.",
+      "accept": "Artifact identity verification rejects the replacement/missing/outside-root evidence. A valid-looking SHA label alone cannot pass. Original records are preserved and schema/integrity rejection is not counted as a product defect."
+    },
+    {
+      "id": "N01", "task": "native-resource-and-evidence-supplement", "tier": "native_required_not_run", "variants": ["borrowed-booted-device-success", "borrowed-booted-device-error", "borrowed-booted-device-SIGINT", "borrowed-booted-device-SIGTERM"],
+      "procedure": "See native-requirements.md N01. Use only an explicitly supplied authorized existing isolated target; never create/delete devices.",
+      "accept": "Actual borrowed device pre-state, unrelated runtime resources and evidence remain protected. Missing SDK/authorized target is U."
+    },
+    {
+      "id": "N02", "task": "native-resource-and-evidence-supplement", "tier": "native_required_not_run", "variants": ["initially-off-target-success", "initially-off-target-cancel", "dead-owner-reconcile", "live-conflicting-lease"],
+      "procedure": "See native-requirements.md N02. Requires separate explicit authorization of a caller-supplied existing dedicated target and fixed restoration policy.",
+      "accept": "Only this session's changes are restored under the predeclared policy; conflict or uncertain identity cannot authorize destructive recovery. Missing safe target is U."
+    },
+    {
+      "id": "N03", "task": "native-resource-and-evidence-supplement", "tier": "native_required_not_run", "variants": ["real-successful-dispatch", "real-disabled", "real-missing", "real-ambiguous", "real-caller-update", "real-failed-update"],
+      "procedure": "See native-requirements.md N03 and map the actual native results to the same D-series predicates without synthetic route substitution.",
+      "accept": "Real route, process, input, event and immediate/post frames establish exactly the supported predicates and causal states; unmet prerequisites withhold causal credit while preserving independent current facts."
+    },
+    {
+      "id": "N04", "task": "native-resource-and-evidence-supplement", "tier": "native_required_not_run", "variants": ["component-native-evidence", "host-layer-native-evidence", "system-layer-native-evidence", "unsupported-effective-style-property"],
+      "procedure": "See native-requirements.md N04. Do not introduce product defects; check evidence/owner admission against a neutral real component and explicit layers.",
+      "accept": "Only actual measured scope and approved responsibility receive credit. SDK execution/environment/source provenance is present; unsupported native property remains U."
+    },
+    {
+      "id": "N05", "task": "native-resource-and-evidence-supplement", "tier": "native_required_not_run", "variants": ["SDK-SIGINT", "SDK-SIGTERM", "manager-SIGKILL-and-reconcile"],
+      "procedure": "See native-requirements.md N05. Signal only this run's manager; retain actual native child identities and partial raw artifacts.",
+      "accept": "Owned native resources are reclaimed under proven leases, borrowed devices/cache/source/evidence are protected, original failure remains, and partial capture cannot become accepted delivery."
+    }
+  ]
+}

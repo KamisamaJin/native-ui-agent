@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Observe a caller Compose bridge in an existing Paparazzi/JVM test project."""
 from __future__ import annotations
-import argparse,hashlib,json,os,shutil,subprocess,time,xml.etree.ElementTree as ET,importlib.util
+import argparse,hashlib,json,os,shutil,subprocess,time,xml.etree.ElementTree as ET,importlib.util,signal
 from pathlib import Path
 TEMPLATE=Path(__file__).resolve().parents[1]/'assets/android-observer/NativeObserverTest.kt'
 CONTRACT=Path(__file__).with_name('observation_contract.py')
 _spec=importlib.util.spec_from_file_location('native_observation_contract',CONTRACT);_contract=importlib.util.module_from_spec(_spec);_spec.loader.exec_module(_contract)
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
+ def interrupted(signum, frame): raise InterruptedError('Native observation interrupted by signal '+str(signum))
+ for signum in [signal.SIGINT,signal.SIGTERM]:signal.signal(signum,interrupted)
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('command',choices=['run']);p.add_argument('--project',type=Path,required=True);p.add_argument('--bridge',type=Path,required=True);p.add_argument('--fixtures',type=Path,required=True);p.add_argument('--actions',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--java-home',type=Path,required=True);p.add_argument('--android-sdk',type=Path,required=True);p.add_argument('--gradle-task',default=':app:testDebugUnitTest');p.add_argument('--test-source',default='app/src/test/java');p.add_argument('--template',type=Path,default=TEMPLATE);a=p.parse_args()
  project=a.project.resolve();output=a.output.resolve();bridge=a.bridge.resolve();config=json.loads(a.fixtures.read_text());actions=json.loads(a.actions.read_text())if a.actions else []
  if not isinstance(config.get('initial'),dict)or not isinstance(config.get('updates',[]),list):raise ValueError('initial object and updates array required')
@@ -23,8 +25,9 @@ def main():
  try:
   target.mkdir(parents=True);created=True;shutil.copy2(a.template,target/'NativeObserverTest.kt');shutil.copy2(bridge,target/'ObserverBridge.kt')
   env=dict(os.environ,JAVA_HOME=str(a.java_home.resolve()),ANDROID_HOME=str(a.android_sdk.resolve()),NATIVE_UI_OUTPUT=str(output),BENCH_FIXTURE=str(output/'fixtures.json'))
-  argv=['./gradlew',a.gradle_task,'--tests','org.nativeobserver.NativeObserverTest.capture','--console=plain','--max-workers=2'];manifest['command']=argv
-  result=subprocess.run(argv,cwd=project,env=env,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT);(output/'test.log').write_text(result.stdout);manifest['exit_code']=result.returncode
+  argv=['./gradlew',a.gradle_task,'--tests','org.nativeobserver.NativeObserverTest.capture','--console=plain','--max-workers=2','--no-daemon'];manifest['command']=argv
+  with (output/'test.log').open('w')as stream:result=subprocess.run(argv,cwd=project,env=env,text=True,stdout=stream,stderr=subprocess.STDOUT)
+  manifest['exit_code']=result.returncode
   junit=project/'app/build/test-results'/a.gradle_task.split(':')[-1]/'TEST-org.nativeobserver.NativeObserverTest.xml'
   if junit.is_file():
    shutil.copy2(junit,output/'junit.xml');counts=ET.parse(junit).getroot().attrib;manifest['native_test_count']=int(counts.get('tests',0));manifest['native_counts']=counts

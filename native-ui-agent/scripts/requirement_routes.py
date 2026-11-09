@@ -121,7 +121,8 @@ def route_findings(coverage, plan, report, observation, *, discoveries=(), execu
                                   'status': row['status'], 'reason': why})
                     continue
             rule = planned[rid]; found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']])
-            if report.get('environment', {}).get('status', 'P') != 'P': action = 'repair_environment'
+            if row.get('reason', '').startswith('blocked_precondition:'): action = 'diagnose_action_precondition'
+            elif report.get('environment', {}).get('status', 'P') != 'P': action = 'repair_environment'
             elif row.get('panel_disagreement'): action = 'clarify_oracle'
             elif row.get('measurement_calibration', {}).get('classification') in {'boundary_overlap', 'outside_calibrated_scope'}: action = 'review_calibrated_measurement'
             elif not found or (states[rule['state']].get('coverage') == 'full_content' and not complete): action = 'acquire_evidence'

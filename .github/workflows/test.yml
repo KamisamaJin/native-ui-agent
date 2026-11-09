@@ -109,9 +109,9 @@ jobs:
         run: python3 -B validation/publications/feedback-v9-replay/verify.py
       - name: Replay immutable v10 publication in historical source view
         run: python3 -B validation/publications/default-v10-replay/verify.py
-      - name: Routed-chain independent synthetic controls
-        run: |
-          python3 -B validation/routed-forward/test_metrics.py
-          python3 -B validation/routed-forward/replay_controls.py
-      - name: Routed-chain native evidence and paired cost replay
-        run: python3 -B validation/routed-forward/verify_publication.py --tracked
+      - name: Replay immutable v11 source, evidence and original oracle differences
+        run: python3 -B validation/publications/routed-v11-replay/verify.py
+      - name: Managed execution neutral measurement controls
+        run: python3 -B -m unittest discover -s validation/managed-forward -p 'test_measure.py'
+      - name: Managed execution original neutral probes and Android SDK evidence
+        run: python3 -B validation/managed-forward/verify_probes.py --tracked

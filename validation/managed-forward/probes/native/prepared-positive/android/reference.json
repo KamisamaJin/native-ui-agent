@@ -1,0 +1,78 @@
+{
+  "labels": {
+    "zero": {
+      "value": "Tally: 0",
+      "unit": "string"
+    },
+    "one": {
+      "value": "Tally: 1",
+      "unit": "string"
+    },
+    "eight": {
+      "value": "Tally: 8",
+      "unit": "string"
+    }
+  },
+  "increments": {
+    "value": [
+      "increment"
+    ],
+    "unit": "events"
+  },
+  "continues": {
+    "value": [
+      "continue"
+    ],
+    "unit": "events"
+  },
+  "launch": {
+    "fixtures_sha256": "a3dc56ebbc054c3dfc85e635310d3ce8321b7f7bb4b14e49adfb8d64ce9a2579",
+    "bridge_sha256": "0f1cdf96714dd874cb51680c5335b0436fc7a1fcee86f2064863ff3ca99f6e93",
+    "scenario": "neutral",
+    "platform": "android"
+  },
+  "obligations": [
+    {
+      "id": "caption",
+      "clause": "The counter label matches the established caller/action path.",
+      "priority": "must",
+      "states": [
+        "front",
+        "counted",
+        "replaced",
+        "continued"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "events",
+      "clause": "Real counter actions emit their actual callbacks.",
+      "priority": "must",
+      "states": [
+        "counted",
+        "continued"
+      ],
+      "risk": "behavior"
+    }
+  ],
+  "claims": [
+    {
+      "id": "caption-source",
+      "clause": "The component renders the counter from its caller-keyed state.",
+      "priority": "must",
+      "owner": "component",
+      "method": "source",
+      "subject": "component",
+      "rule_ids": []
+    },
+    {
+      "id": "bridge-source",
+      "clause": "The bridge forwards actual caller seed and event handler.",
+      "priority": "must",
+      "owner": "bridge",
+      "method": "source",
+      "subject": "bridge",
+      "rule_ids": []
+    }
+  ]
+}

@@ -30,3 +30,6 @@ def validate_actions(actions):
                 raise ValueError('Duplicate post-action selectors')
         if 'observation_max_scrolls' in action and (type(action['observation_max_scrolls']) is not int or not 0 <= action['observation_max_scrolls'] <= 40):
             raise ValueError('observation_max_scrolls must be an integer from 0 to 40 for the whole target set')
+    if any('depends_on' in a or 'preconditions' in a or 'callback_dependencies' in a for a in actions):
+        import action_guard
+        action_guard.compile_actions(actions)

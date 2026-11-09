@@ -67,6 +67,34 @@ final class ObserverTests: XCTestCase {
     func selector(_ action: [String: Any]) -> [String: Any] {
         action["target"] as? [String: Any] ?? ["identifier": action["identifier"] as? String ?? ""]
     }
+    func preconditions(_ action: [String: Any]) -> [[String: Any]] {
+        (action["preconditions"] as? [[String: Any]] ?? []).map { condition in
+            let wanted = condition["target"] as? [String: Any] ?? [:]
+            let found = matches(wanted)
+            let prop = condition["property"] as? String ?? ""
+            var actual: Any = NSNull()
+            var relation: [String: Any] = ["match_count": found.count]
+            if prop == "present", !found.isEmpty { actual = true }
+            if found.count == 1 {
+                let semantic = found[0], leaves = controls(semantic)
+                relation["semantic"] = nativeState(semantic, path: ["selector": wanted])
+                relation["native_control_count"] = leaves.count
+                if prop == "label" { actual = semantic.label }
+                if leaves.count == 1 {
+                    let control = leaves[0].0
+                    relation["control"] = nativeState(control, path: leaves[0].1)
+                    if prop == "enabled" { actual = control.isEnabled }
+                    if prop == "selected" { actual = semantic.isSelected || control.isSelected }
+                    if prop == "value" { actual = control.value ?? NSNull() }
+                }
+            }
+            let expected = condition["expected"] ?? NSNull()
+            let passed = !(actual is NSNull) && (condition["op"] as? String == "contains"
+                ? ((actual as? String).map { $0.contains(expected as? String ?? "") } ?? false)
+                : key(["v": actual]) == key(["v": expected]))
+            return ["condition": condition, "actual": actual, "passed": passed, "native_relation": relation]
+        }
+    }
     func controls(_ semantic: XCUIElement) -> [(XCUIElement, [String: Any])] {
         var candidates: [(XCUIElement, [String: Any])] = []
         // A nested Button can have its own action. Only a Switch's native
@@ -485,6 +513,34 @@ final class ObserverTests: XCTestCase {
         _ = capture("top")
         if stateCaptureEnabled && (!coalesced || executionStates.contains(where: { $0["state_id"] as? String == "initial" && $0["coverage"] as? String == "full_content" })) { sweep("initial") }
         for (i, action) in actions.enumerated() {
+            let guarded = config["guard_protocol"] as? Int == 1
+            let dependencies = action["depends_on"] as? [Int] ?? []
+            let blocked = dependencies.filter { index in
+                index >= steps.count || (steps[index]["guard"] as? [String: Any])?["established"] as? Bool != true
+            }
+            let callbackDependencies = action["callback_dependencies"] as? [[String: Any]] ?? []
+            let callbackChecks: [[String: Any]] = callbackDependencies.map { required in
+                let index = required["action_index"] as? Int ?? -1
+                let valid = index >= 0 && index < steps.count
+                let delta = valid ? (steps[index]["callback_delta"] as? [[String: Any]] ?? []).compactMap { $0["event"] as? String } : []
+                let established = valid && (steps[index]["guard"] as? [String: Any])?["established"] as? Bool == true
+                return ["required": required, "actual_events": delta, "passed": established && delta == (required["expected_events"] as? [String] ?? [])]
+            }
+            let guardBefore = binding()
+            let conditions = blocked.isEmpty ? preconditions(action) : []
+            let ready = blocked.isEmpty && callbackChecks.allSatisfy { $0["passed"] as? Bool == true } && conditions.allSatisfy { $0["passed"] as? Bool == true } && key(guardBefore) == key(binding())
+            if guarded && !ready {
+                currentActionIndex = i
+                activeState = action["state_id"] as? String ?? "action-\(i)"
+                // One fresh root diagnostic; dependent actions do no extra AX
+                // scans, scrolling, screenshots, or native activation.
+                if blocked.isEmpty { _ = capture("action-\(i)-precondition-blocked") }
+                steps.append(["action": action, "state_id": activeState, "outcome": "blocked_precondition",
+                    "guard": ["protocol": 1, "ready": false, "established": false, "depends_on": dependencies,
+                              "blocked_on": blocked, "conditions": conditions, "callback_predicates": callbackChecks, "binding": guardBefore],
+                    "dispatch": ["attempted": false, "succeeded": false], "callback_delta": [], "binding_after": binding()])
+                continue
+            }
             if stateCaptureEnabled && !coalesced && action["type"] as? String == "apply_next_fixture" { sweep("before-update-\(i)") }
             currentActionIndex = i
             activeState = action["state_id"] as? String ?? "action-\(i)"
@@ -557,7 +613,7 @@ final class ObserverTests: XCTestCase {
                    let target = select(id), !(fullyVisible(target) && target.isHittable) { issues.append("scroll target \(id) not reached") }
             case "sweep": sweep(action["state_id"] as? String ?? "action-\(i)", maxSteps: action["max_steps"] as? Int)
             case "capture", "checkpoint": break
-            default: issues.append("unsupported action \(kind)")
+            default: outcome = "unsupported"; issues.append("unsupported action \(kind)")
             }
             Thread.sleep(forTimeInterval: 0.15)
             let immediateAfter = capture(action["name"] as? String ?? "action-\(i)-after")
@@ -566,10 +622,12 @@ final class ObserverTests: XCTestCase {
             let actionReceipts = after["callbacks"] as? [[String: Any]] ?? []
             let delta = Array(actionReceipts.dropFirst(callbacksBefore))
             dispatch["event_end"] = actionBinding["event_revision"] ?? NSNull()
+            let established = ready && ((kind == "tap" || kind == "apply_next_fixture")
+                ? dispatch["succeeded"] as? Bool == true : outcome == "completed")
             var postViewport: [String: Any] = ["status": "not_requested"]
             var observationSet: [String: Any] = [:]
             let requested = action["after_targets"] as? [[String: Any]] ?? (kind == "tap" ? [action["after_target"] as? [String: Any] ?? selector(action)] : [])
-            if coalesced && captureScope == "full_content" {
+            if coalesced && captureScope == "full_content" && (!guarded || established) {
                 if kind != "sweep" { sweep(activeState) }
                 let epoch = immediateAfter["binding"] as? [String: Any] ?? [:]
                 let indices = Array(Set((stateCaptures.last?["snapshot_indices"] as? [Int] ?? []) + [immediateAfter["index"] as! Int])).sorted()
@@ -583,7 +641,7 @@ final class ObserverTests: XCTestCase {
                     "scope": "targets_from_same_epoch_full_sweep; coverage remains independently checked"]
                 after = records.last ?? immediateAfter
                 if let first = results.first { postViewport = first }
-            } else if !requested.isEmpty, action["observe_after"] as? Bool != false {
+            } else if !requested.isEmpty, action["observe_after"] as? Bool != false, !guarded || established {
                 observationSet = observeTargets(requested, immediate: immediateAfter, action: i, maxScrolls: action["observation_max_scrolls"] as? Int ?? 24)
                 after = records.last ?? immediateAfter
                 if var first = (observationSet["targets"] as? [[String: Any]])?.first {
@@ -593,7 +651,7 @@ final class ObserverTests: XCTestCase {
                     postViewport = first
                 }
             }
-            if stateCaptureEnabled && !coalesced, let state = action["state_id"] as? String, kind != "sweep" { sweep(state) }
+            if stateCaptureEnabled && !coalesced && (!guarded || established), let state = action["state_id"] as? String, kind != "sweep" { sweep(state) }
             let now = after["runtime"] as? [String: Any] ?? [:]
             let sameProcess = (now["pid"] as? Int == originalRuntime["pid"] as? Int) && (now["instance"] as? String == originalRuntime["instance"] as? String)
             if !sameProcess { issues.append("app process identity changed") }
@@ -604,6 +662,8 @@ final class ObserverTests: XCTestCase {
             steps.append(["action": action, "outcome": outcome, "target": targetState, "semantic_target": targetState,
                           "activation_target": activationState, "reveal_diagnostics": Array(revealDiagnostics.dropFirst(diagnosticsBefore)),
                           "dispatch": dispatch,
+                          "guard": ["protocol": 1, "ready": ready, "established": established, "depends_on": dependencies,
+                                    "conditions": conditions, "callback_predicates": callbackChecks, "binding": guardBefore],
                           "post_action_viewport": postViewport, "observation_set": observationSet, "immediate_after": immediateAfter["index"]!,
                           "before": before["index"]!, "after": after["index"]!, "callback_delta": delta, "same_process": sameProcess, "state_id": activeState, "binding_after": actionBinding])
         }
@@ -620,6 +680,7 @@ final class ObserverTests: XCTestCase {
         if !bottomReached && executionScope != "targeted" { issues.append("bottom sentinel not reached; lower content coverage incomplete") }
         if !missing.isEmpty { issues.append("required identifiers never visible: \(missing.joined(separator: ", "))") }
         let result: [String: Any] = ["schema_version": 2, "state_captures": stateCaptures, "measurement_kind": "XCUIElement runtime accessibility; frames in logical screen points",
+            "guard_protocol": config["guard_protocol"] as? Int ?? 0, "guard_platform": "ios", "guard_actions": actions,
             "snapshots": records, "steps": steps, "coverage": ["bottom_reached": bottomReached, "required_identifiers": required, "missing_identifiers": missing, "observed_identifiers": seen.sorted(), "execution_scope": executionScope],
             "execution_scope": executionScope, "observation_strategy": coalesced ? "coalesced" : "legacy",
             "operations": ["counts": operationCounts, "seconds": operationSeconds, "scope": "Nested inclusive operation walls, not additive elapsed time"],

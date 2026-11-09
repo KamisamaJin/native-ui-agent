@@ -1,0 +1,288 @@
+{
+  "version": 1,
+  "contract": {
+    "version": 1,
+    "design_owner": "independent neutral resource/action/evidence spec",
+    "approval_reference": "presealed probes/spec/seal-manifest.json",
+    "sources": [
+      {
+        "id": "reference",
+        "path": "reference.json",
+        "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973"
+      }
+    ],
+    "rules": [
+      {
+        "id": "caption",
+        "kind": "control",
+        "target": "tally",
+        "property": "label"
+      },
+      {
+        "id": "event",
+        "kind": "event"
+      }
+    ],
+    "required_rule_ids": [
+      "caption",
+      "event"
+    ],
+    "scenarios": {
+      "neutral": {
+        "states": [
+          {
+            "id": "front",
+            "input_index": 0,
+            "after_action": 0,
+            "coverage": "targets"
+          },
+          {
+            "id": "counted",
+            "input_index": 0,
+            "after_action": 1,
+            "coverage": "targets"
+          },
+          {
+            "id": "replaced",
+            "input_index": 1,
+            "after_action": 2,
+            "coverage": "targets"
+          },
+          {
+            "id": "continued",
+            "input_index": 1,
+            "after_action": 3,
+            "coverage": "targets"
+          }
+        ],
+        "actions": [
+          {
+            "type": "checkpoint"
+          },
+          {
+            "type": "tap",
+            "target": {
+              "identifier": "counter.increment",
+              "role": "button"
+            },
+            "preconditions": [
+              {
+                "target": {
+                  "identifier": "counter.increment",
+                  "role": "button"
+                },
+                "property": "enabled",
+                "op": "eq",
+                "expected": true
+              }
+            ]
+          },
+          {
+            "type": "apply_next_fixture",
+            "callback_dependencies": [
+              {
+                "action_index": 1,
+                "expected_events": [
+                  "increment"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tap",
+            "target": {
+              "identifier": "counter.continue",
+              "role": "button"
+            },
+            "preconditions": [
+              {
+                "target": {
+                  "identifier": "counter.tally",
+                  "role": "text"
+                },
+                "property": "label",
+                "op": "eq",
+                "expected": "Tally: 8"
+              },
+              {
+                "target": {
+                  "identifier": "counter.continue",
+                  "role": "button"
+                },
+                "property": "enabled",
+                "op": "eq",
+                "expected": true
+              }
+            ],
+            "callback_dependencies": [
+              {
+                "action_index": 2,
+                "expected_events": []
+              }
+            ]
+          }
+        ],
+        "values": {
+          "caption": {
+            "front": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/zero"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/zero"
+              }
+            },
+            "counted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/one"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/one"
+              }
+            },
+            "replaced": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              }
+            },
+            "continued": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/labels/eight"
+              }
+            }
+          },
+          "event": {
+            "front": {
+              "not_applicable": "No event behavior assertion requested for this checkpoint/stimulus."
+            },
+            "counted": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/increments"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/increments"
+              }
+            },
+            "replaced": {
+              "not_applicable": "No event behavior assertion requested for this checkpoint/stimulus."
+            },
+            "continued": {
+              "ios": {
+                "source": "reference",
+                "pointer": "/continues"
+              },
+              "android": {
+                "source": "reference",
+                "pointer": "/continues"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "sources": {
+    "reference": {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+      "document": {
+        "labels": {
+          "zero": {
+            "value": "Tally: 0",
+            "unit": "string"
+          },
+          "one": {
+            "value": "Tally: 1",
+            "unit": "string"
+          },
+          "eight": {
+            "value": "Tally: 8",
+            "unit": "string"
+          }
+        },
+        "increments": {
+          "value": [
+            "increment"
+          ],
+          "unit": "events"
+        },
+        "continues": {
+          "value": [
+            "continue"
+          ],
+          "unit": "events"
+        },
+        "launch": {
+          "fixtures_sha256": "a3dc56ebbc054c3dfc85e635310d3ce8321b7f7bb4b14e49adfb8d64ce9a2579",
+          "bridge_sha256": "0f1cdf96714dd874cb51680c5335b0436fc7a1fcee86f2064863ff3ca99f6e93",
+          "scenario": "neutral",
+          "platform": "android"
+        },
+        "obligations": [
+          {
+            "id": "caption",
+            "clause": "The counter label matches the established caller/action path.",
+            "priority": "must",
+            "states": [
+              "front",
+              "counted",
+              "replaced",
+              "continued"
+            ],
+            "risk": "content"
+          },
+          {
+            "id": "events",
+            "clause": "Real counter actions emit their actual callbacks.",
+            "priority": "must",
+            "states": [
+              "counted",
+              "continued"
+            ],
+            "risk": "behavior"
+          }
+        ],
+        "claims": [
+          {
+            "id": "caption-source",
+            "clause": "The component renders the counter from its caller-keyed state.",
+            "priority": "must",
+            "owner": "component",
+            "method": "source",
+            "subject": "component",
+            "rule_ids": []
+          },
+          {
+            "id": "bridge-source",
+            "clause": "The bridge forwards actual caller seed and event handler.",
+            "priority": "must",
+            "owner": "bridge",
+            "method": "source",
+            "subject": "bridge",
+            "rule_ids": []
+          }
+        ]
+      },
+      "raw_utf8": "{\n  \"labels\": {\n    \"zero\": {\n      \"value\": \"Tally: 0\",\n      \"unit\": \"string\"\n    },\n    \"one\": {\n      \"value\": \"Tally: 1\",\n      \"unit\": \"string\"\n    },\n    \"eight\": {\n      \"value\": \"Tally: 8\",\n      \"unit\": \"string\"\n    }\n  },\n  \"increments\": {\n    \"value\": [\n      \"increment\"\n    ],\n    \"unit\": \"events\"\n  },\n  \"continues\": {\n    \"value\": [\n      \"continue\"\n    ],\n    \"unit\": \"events\"\n  },\n  \"launch\": {\n    \"fixtures_sha256\": \"a3dc56ebbc054c3dfc85e635310d3ce8321b7f7bb4b14e49adfb8d64ce9a2579\",\n    \"bridge_sha256\": \"0f1cdf96714dd874cb51680c5335b0436fc7a1fcee86f2064863ff3ca99f6e93\",\n    \"scenario\": \"neutral\",\n    \"platform\": \"android\"\n  },\n  \"obligations\": [\n    {\n      \"id\": \"caption\",\n      \"clause\": \"The counter label matches the established caller/action path.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"front\",\n        \"counted\",\n        \"replaced\",\n        \"continued\"\n      ],\n      \"risk\": \"content\"\n    },\n    {\n      \"id\": \"events\",\n      \"clause\": \"Real counter actions emit their actual callbacks.\",\n      \"priority\": \"must\",\n      \"states\": [\n        \"counted\",\n        \"continued\"\n      ],\n      \"risk\": \"behavior\"\n    }\n  ],\n  \"claims\": [\n    {\n      \"id\": \"caption-source\",\n      \"clause\": \"The component renders the counter from its caller-keyed state.\",\n      \"priority\": \"must\",\n      \"owner\": \"component\",\n      \"method\": \"source\",\n      \"subject\": \"component\",\n      \"rule_ids\": []\n    },\n    {\n      \"id\": \"bridge-source\",\n      \"clause\": \"The bridge forwards actual caller seed and event handler.\",\n      \"priority\": \"must\",\n      \"owner\": \"bridge\",\n      \"method\": \"source\",\n      \"subject\": \"bridge\",\n      \"rule_ids\": []\n    }\n  ]\n}\n"
+    }
+  },
+  "contract_sha256": "579afc22a46e2293861769a004b4a8bbcf6eb7b0756b920656300cefe0deea57",
+  "trust_limit": "Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record."
+}

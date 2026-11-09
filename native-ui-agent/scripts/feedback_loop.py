@@ -86,12 +86,37 @@ def calibrated(config, plan, observation, report):
 
 
 def run_cycle(config, output, *, previous=None, previous_sha=None, final=False, history=(), intake=False, review_result=None):
+    from resource_manager import Resources
+    output=Path(output).resolve()
+    if output.exists()or any(output==Path(r).resolve()or output.is_relative_to(Path(r).resolve())for r in config['source_roots']):
+        raise ValueError('Fresh default-cycle output outside production source required')
+    resources=Resources(config,output,final=final)
+    try:
+        with resources:
+            result = _run_cycle(config, output, previous=previous, previous_sha=previous_sha, final=final,
+                                history=history, intake=intake, review_result=review_result, resources=resources)
+    except BaseException as error:
+        # No accepted cycle is published before resource finalization succeeds.
+        root=Path(output);root.mkdir(parents=True,exist_ok=True)
+        path=root/'service-error.json'
+        if not path.exists():write(path,{'type':type(error).__name__,'message':str(error),'at_unix':time.time(),'status':'not_accepted'})
+        raise
+    result['controllerFinishedAtUnix']=result['finishedAtUnix'];result['finishedAtUnix']=time.time()
+    result['resources_sha256']=sha(Path(output)/'resources.json')
+    write(Path(output)/'cycle.json',result)
+    return result
+
+
+def _run_cycle(config, output, *, previous=None, previous_sha=None, final=False, history=(), intake=False, review_result=None, resources=None):
     import evidence_review
+    import evidence_responsibility as er
     output = Path(output).resolve()
     plan, lock, fixtures = (d.load(Path(config[k])) for k in ['plan', 'design_lock', 'fixtures'])
     lock_sha = config['design_sha256']; bridge = Path(config['bridge']); roots = config['source_roots']
     coverage = routes.audit(lock, lock_sha, plan, d.load(Path(config['routes'])), config['routes_sha256'])
     now = xp.source_fingerprint(roots); before = now; started = time.time(); trace = []
+    responsibility = er.compile_contract(config, plan, lock)
+    trace.append('evidence_responsibility.compile_contract')
     if bool(previous) != bool(previous_sha): raise ValueError('Previous receipt and digest required together')
     if review_result and not previous: raise ValueError('Review requires its original capture')
     policy = d.load(Path(config['policy'])) if config.get('policy') else None
@@ -119,9 +144,15 @@ def run_cycle(config, output, *, previous=None, previous_sha=None, final=False, 
     planning = retest_plan.dispatch(coverage, plan, report, routed, changed_files=sorted(k for k in set(before)|set(now) if before.get(k)!=now.get(k)),
                     source_before=d.digest(before), source_after=d.digest(now), final=final, selected_states=selected, visual_ids=visual, capture_available=available)
     trace.append('retest_plan.dispatch')
+    incompatible = [i for i in responsibility['issues'] if i['priority'] == 'must']
+    if incompatible:
+        planning = dict(planning, status='blocked_evidence_responsibility', states=[],
+                        responsibility_issues=incompatible)
     if intake and final: raise ValueError('Diagnostic intake cannot be final')
     output.mkdir(parents=True, exist_ok=False)
     for name,value in [('coverage.json',coverage),('before-evaluated.json',report),('before-routes.json',routed),('before-diagnostics.json',diagnostics),('retest-plan.json',planning)]: write(output/name,value)
+    write(output/'evidence-responsibility.json', responsibility)
+    write(output/'source-review-template.json', er.template(responsibility))
     request = evidence_review.requests(config, previous, previous_sha, report) if previous and available and d.digest(before)==d.digest(now) else None
     if request: write(output/'review-request.json',request)
     signature = d.digest({'source':now,'plan':d.digest(plan),'states':planning['states'],
@@ -141,7 +172,7 @@ def run_cycle(config, output, *, previous=None, previous_sha=None, final=False, 
         value=xp.compile_execution(plan,lock,lock_sha,fixtures,sha(bridge),launch_ref=config['launch_ref'],states=planning['states'])
         trace.append('execution_plan.compile_execution')
         result=xp.run_execution(value,plan,lock,lock_sha,fixtures,bridge,output/'capture',roots,config['native_options'],
-                 policy=policy,policy_sha=config.get('policy_sha256'),expected_environment=d.load(Path(config['environment'])),environment_sha=config['environment_sha256'])
+                 policy=policy,policy_sha=config.get('policy_sha256'),expected_environment=d.load(Path(config['environment'])),environment_sha=config['environment_sha256'],resources=resources)
         trace.append('execution_plan.run_execution')
         if result.get('automatic_sha256') and not result.get('evidence_error'):
             report=d.load(output/'capture/automatic.json');observation=d.load(output/'capture/native/observation.json')
@@ -159,24 +190,39 @@ def run_cycle(config, output, *, previous=None, previous_sha=None, final=False, 
         import acceptance
         env=acceptance.environment(observation,d.load(Path(config['environment'])),value['platform']) if observation else {'status':'U'}
         admitted=routes.admission(coverage,plan,report,execution_scope=value['scope'],capture=result,environment=env)
+        responsibilities = er.evaluate(config, responsibility, report)
+        admitted['evidence_responsibility'] = responsibilities
+        if responsibilities['blocking_claims']: admitted['status'] = 'not_accepted'
         write(output/'admission.json',admitted);trace.append('admission')
         post=retest_plan.dispatch(coverage,plan,report,after,changed_files=[],source_before=d.digest(now),source_after=d.digest(now),selected_states=value['selected_states'],visual_ids=visual,capture_available=bool(observation))
         write(output/'after-dispatch.json',post);trace.append('retest_plan.dispatch_after')
         status='accepted'if final and admitted['status']=='accepted'else post['status']
+    responsibilities = er.evaluate(config, responsibility, report)
+    write(output/'responsibility-results.json', responsibilities)
+    source_tasks = [r for r in responsibilities['rows'] if r['method'] == 'source' and r['status'] != 'passed']
+    if source_tasks and not incompatible and status in {'accepted', 'feedback_complete', 'awaiting_full_final'}:
+        status = 'review_source' if all(r['status'] == 'unassessed' for r in source_tasks) else 'repair_source'
     decision={'version':2,'parent_plan_sha256':d.digest(plan),'startedAtUnix':started,'finishedAtUnix':time.time(),
               'signature':signature,'native_executed':execute,'trace':trace,'final':final,'intake':intake,'status':status,
               'capture_result':str(output/'capture/result.json')if result else None,'capture_sha256':sha(output/'capture/result.json')if result else None,
               'review_result':review_result,'source_sha256':d.digest(now),'review_current_source':bool(review_result and d.digest(before)==d.digest(now)),
+              'evidence_responsibility':responsibilities, 'source_tasks':source_tasks,
               'scope':'Work-kind dispatch is mandatory. Historical reviews guide scope only; current acceptance requires fresh full-final native evidence plus exact bound actuals.'}
-    write(output/'cycle.json',decision);return decision
+    return decision
 
 
 def complete_review(config, cycle_path, cycle_sha, review_result, output):
-    import evidence_review,acceptance
+    import evidence_review,acceptance,evidence_responsibility as er
     cycle_path=Path(cycle_path).resolve()
     if sha(cycle_path)!=cycle_sha:raise ValueError('Pinned final cycle changed')
     cycle=d.load(cycle_path)
     if not cycle.get('final') or not cycle.get('native_executed'):raise ValueError('Only a completed fresh final native cycle can establish delivery acceptance')
+    resource_path=cycle_path.parent/'resources.json'
+    if cycle.get('resources_sha256'):
+        if sha(resource_path)!=cycle['resources_sha256']:raise ValueError('Final managed resource receipt changed')
+        resource=d.load(resource_path)
+        if resource['cleanup_errors']or resource['remaining_devices']or resource['remaining_directories']:
+            raise ValueError('Final owned resource cleanup incomplete; delivery cannot be accepted')
     capture=cycle_path.parent/'capture/result.json'
     if sha(capture)!=cycle['capture_sha256']:raise ValueError('Final capture changed')
     plan,lock,policy,packet=evidence_review.original(config,capture,cycle['capture_sha256'])
@@ -194,6 +240,9 @@ def complete_review(config, cycle_path, cycle_sha, review_result, output):
     planning=retest_plan.dispatch(cov,plan,report,routed,changed_files=[],source_before=d.digest(before),source_after=d.digest(before),selected_states=execution['selected_states'],visual_ids=review_methods(config,plan,lock))
     env=acceptance.environment(observation,d.load(Path(config['environment'])),execution['platform'])
     admitted=routes.admission(cov,plan,report,execution_scope=execution['scope'],capture=receipt,environment=env)
+    responsibility = er.compile_contract(config, plan, lock)
+    admitted['evidence_responsibility'] = er.evaluate(config, responsibility, report)
+    if admitted['evidence_responsibility']['blocking_claims']: admitted['status'] = 'not_accepted'
     output=Path(output).resolve();output.mkdir(parents=True,exist_ok=False)
     for name,value in [('evaluated.json',report),('routes.json',routed),('retest-plan.json',planning),('admission.json',admitted)]:write(output/name,value)
     result={'version':1,'status':admitted['status'],'final_cycle_sha256':cycle_sha,'review_result':review_result,'source_sha256':d.digest(before),

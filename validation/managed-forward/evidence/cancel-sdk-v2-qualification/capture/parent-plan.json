@@ -1,0 +1,413 @@
+{
+  "version": 1,
+  "states": [
+    {
+      "id": "front",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "targets"
+    },
+    {
+      "id": "counted",
+      "input_index": 0,
+      "after_action": 1,
+      "coverage": "targets"
+    },
+    {
+      "id": "replaced",
+      "input_index": 1,
+      "after_action": 2,
+      "coverage": "targets"
+    },
+    {
+      "id": "continued",
+      "input_index": 1,
+      "after_action": 3,
+      "coverage": "targets"
+    }
+  ],
+  "assertions": [
+    {
+      "kind": "control",
+      "property": "label",
+      "id": "front/caption",
+      "state": "front",
+      "requirement_id": "caption",
+      "expected": "Tally: 0",
+      "unit": "string",
+      "expectation_provenance": [
+        {
+          "source": "reference",
+          "path": "reference.json",
+          "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+          "pointer": "/labels/zero",
+          "source_datum": {
+            "value": "Tally: 0",
+            "unit": "string"
+          }
+        }
+      ],
+      "source": "design-lock:6fde18c18b0be9fa445629ad34f0df325261b5c9cd797dda5b053ea045953f4d",
+      "target": {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    },
+    {
+      "kind": "control",
+      "property": "label",
+      "id": "counted/caption",
+      "state": "counted",
+      "requirement_id": "caption",
+      "expected": "Tally: 1",
+      "unit": "string",
+      "expectation_provenance": [
+        {
+          "source": "reference",
+          "path": "reference.json",
+          "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+          "pointer": "/labels/one",
+          "source_datum": {
+            "value": "Tally: 1",
+            "unit": "string"
+          }
+        }
+      ],
+      "source": "design-lock:6fde18c18b0be9fa445629ad34f0df325261b5c9cd797dda5b053ea045953f4d",
+      "target": {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    },
+    {
+      "kind": "event",
+      "id": "counted/event",
+      "state": "counted",
+      "requirement_id": "event",
+      "expected": [
+        "increment"
+      ],
+      "unit": "events",
+      "expectation_provenance": [
+        {
+          "source": "reference",
+          "path": "reference.json",
+          "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+          "pointer": "/increments",
+          "source_datum": {
+            "value": [
+              "increment"
+            ],
+            "unit": "events"
+          }
+        }
+      ],
+      "source": "design-lock:6fde18c18b0be9fa445629ad34f0df325261b5c9cd797dda5b053ea045953f4d",
+      "action_index": 1
+    },
+    {
+      "kind": "control",
+      "property": "label",
+      "id": "replaced/caption",
+      "state": "replaced",
+      "requirement_id": "caption",
+      "expected": "Tally: 8",
+      "unit": "string",
+      "expectation_provenance": [
+        {
+          "source": "reference",
+          "path": "reference.json",
+          "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+          "pointer": "/labels/eight",
+          "source_datum": {
+            "value": "Tally: 8",
+            "unit": "string"
+          }
+        }
+      ],
+      "source": "design-lock:6fde18c18b0be9fa445629ad34f0df325261b5c9cd797dda5b053ea045953f4d",
+      "target": {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    },
+    {
+      "kind": "control",
+      "property": "label",
+      "id": "continued/caption",
+      "state": "continued",
+      "requirement_id": "caption",
+      "expected": "Tally: 8",
+      "unit": "string",
+      "expectation_provenance": [
+        {
+          "source": "reference",
+          "path": "reference.json",
+          "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+          "pointer": "/labels/eight",
+          "source_datum": {
+            "value": "Tally: 8",
+            "unit": "string"
+          }
+        }
+      ],
+      "source": "design-lock:6fde18c18b0be9fa445629ad34f0df325261b5c9cd797dda5b053ea045953f4d",
+      "target": {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    },
+    {
+      "kind": "event",
+      "id": "continued/event",
+      "state": "continued",
+      "requirement_id": "event",
+      "expected": [
+        "continue"
+      ],
+      "unit": "events",
+      "expectation_provenance": [
+        {
+          "source": "reference",
+          "path": "reference.json",
+          "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+          "pointer": "/continues",
+          "source_datum": {
+            "value": [
+              "continue"
+            ],
+            "unit": "events"
+          }
+        }
+      ],
+      "source": "design-lock:6fde18c18b0be9fa445629ad34f0df325261b5c9cd797dda5b053ea045953f4d",
+      "action_index": 3
+    }
+  ],
+  "required_assertion_ids": [
+    "front/caption",
+    "counted/caption",
+    "counted/event",
+    "replaced/caption",
+    "continued/caption",
+    "continued/event"
+  ],
+  "matrix_contract": {
+    "selected_states": [
+      "front",
+      "counted",
+      "replaced",
+      "continued"
+    ],
+    "selected_requirements": [
+      "caption",
+      "event"
+    ],
+    "cells": [
+      {
+        "id": "front/caption",
+        "state": "front",
+        "requirement_id": "caption",
+        "disposition": "required",
+        "provenance": [
+          {
+            "source": "reference",
+            "path": "reference.json",
+            "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+            "pointer": "/labels/zero",
+            "source_datum": {
+              "value": "Tally: 0",
+              "unit": "string"
+            }
+          }
+        ]
+      },
+      {
+        "id": "front/event",
+        "state": "front",
+        "requirement_id": "event",
+        "disposition": "not_applicable",
+        "reason": "No event behavior assertion requested for this checkpoint/stimulus."
+      },
+      {
+        "id": "counted/caption",
+        "state": "counted",
+        "requirement_id": "caption",
+        "disposition": "required",
+        "provenance": [
+          {
+            "source": "reference",
+            "path": "reference.json",
+            "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+            "pointer": "/labels/one",
+            "source_datum": {
+              "value": "Tally: 1",
+              "unit": "string"
+            }
+          }
+        ]
+      },
+      {
+        "id": "counted/event",
+        "state": "counted",
+        "requirement_id": "event",
+        "disposition": "required",
+        "provenance": [
+          {
+            "source": "reference",
+            "path": "reference.json",
+            "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+            "pointer": "/increments",
+            "source_datum": {
+              "value": [
+                "increment"
+              ],
+              "unit": "events"
+            }
+          }
+        ]
+      },
+      {
+        "id": "replaced/caption",
+        "state": "replaced",
+        "requirement_id": "caption",
+        "disposition": "required",
+        "provenance": [
+          {
+            "source": "reference",
+            "path": "reference.json",
+            "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+            "pointer": "/labels/eight",
+            "source_datum": {
+              "value": "Tally: 8",
+              "unit": "string"
+            }
+          }
+        ]
+      },
+      {
+        "id": "replaced/event",
+        "state": "replaced",
+        "requirement_id": "event",
+        "disposition": "not_applicable",
+        "reason": "No event behavior assertion requested for this checkpoint/stimulus."
+      },
+      {
+        "id": "continued/caption",
+        "state": "continued",
+        "requirement_id": "caption",
+        "disposition": "required",
+        "provenance": [
+          {
+            "source": "reference",
+            "path": "reference.json",
+            "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+            "pointer": "/labels/eight",
+            "source_datum": {
+              "value": "Tally: 8",
+              "unit": "string"
+            }
+          }
+        ]
+      },
+      {
+        "id": "continued/event",
+        "state": "continued",
+        "requirement_id": "event",
+        "disposition": "required",
+        "provenance": [
+          {
+            "source": "reference",
+            "path": "reference.json",
+            "sha256": "30a2ac94385cca49bb2013cebc41f937bd40d566e52b04e207ae879f75cbd973",
+            "pointer": "/continues",
+            "source_datum": {
+              "value": [
+                "continue"
+              ],
+              "unit": "events"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "design_contract": {
+    "lock_sha256": "6fde18c18b0be9fa445629ad34f0df325261b5c9cd797dda5b053ea045953f4d",
+    "scenario": "neutral",
+    "platform": "android",
+    "bindings": {
+      "tally": {
+        "identifier": "counter.tally",
+        "role": "text"
+      }
+    },
+    "base_actions": [
+      {
+        "type": "checkpoint"
+      },
+      {
+        "type": "tap",
+        "target": {
+          "identifier": "counter.increment",
+          "role": "button"
+        },
+        "preconditions": [
+          {
+            "target": {
+              "identifier": "counter.increment",
+              "role": "button"
+            },
+            "property": "enabled",
+            "op": "eq",
+            "expected": true
+          }
+        ]
+      },
+      {
+        "type": "apply_next_fixture",
+        "callback_dependencies": [
+          {
+            "action_index": 1,
+            "expected_events": [
+              "increment"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "tap",
+        "target": {
+          "identifier": "counter.continue",
+          "role": "button"
+        },
+        "preconditions": [
+          {
+            "target": {
+              "identifier": "counter.tally",
+              "role": "text"
+            },
+            "property": "label",
+            "op": "eq",
+            "expected": "Tally: 8"
+          },
+          {
+            "target": {
+              "identifier": "counter.continue",
+              "role": "button"
+            },
+            "property": "enabled",
+            "op": "eq",
+            "expected": true
+          }
+        ],
+        "callback_dependencies": [
+          {
+            "action_index": 2,
+            "expected_events": []
+          }
+        ]
+      }
+    ]
+  }
+}
