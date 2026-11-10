@@ -1,39 +1,91 @@
 {
-  "at_unix": 1794234779.46834,
-  "stage": "default_tools_and_neutral_qualification_complete_business_trial_blocked",
-  "candidate": "candidate-v12.4",
-  "candidate_freeze_sha256": "7056f1caf253284f3cd920ba6113384061abb359d2025747a0daeac0f35f2e2b",
-  "tool_unit_checks": 165,
+  "at_unix": 1794288907.2042198,
+  "stage": "paired_business_complete_revealed_cleaned",
+  "candidate": "candidate-v12.6",
+  "candidate_freeze_sha256": "8ee8858c1aa6dca038b1b40e06731200cac7039be4d2b611ab8c9093e4bd9d82",
+  "tool_unit_checks": 167,
   "measurement_checks": 2,
-  "independent_run": "attempt-6",
+  "independent_run": "attempt-7",
   "independent_counts": {
     "P": 106,
     "F": 0,
     "U": 23
   },
   "business": {
-    "status": "not_started",
-    "design_dispatched": false,
-    "initial_pr_authored": false,
-    "paired_pr_count": 0,
+    "status": "complete_revealed",
+    "design_dispatched": true,
+    "initial_pr_authored": true,
+    "paired_pr_count": 1,
     "defects_injected": false,
-    "final_miss_rate": null,
-    "regressions": null,
-    "repair_rate": null,
-    "delivery_rate": null,
-    "end_to_end_seconds": null,
-    "successful_delivery_cost": null,
-    "paired_peak_disk_bytes": null
+    "metrics": "METRICS.json",
+    "arms": {
+      "A": {
+        "tool": "baseline-v11",
+        "confirmed_initial_causes": 1,
+        "repaired": 1,
+        "residual": 0,
+        "final_miss_rate": 0.0,
+        "repair_rate": 1.0,
+        "business_miss_rate": null,
+        "business_repair_rate": null,
+        "new_confirmed_regressions": 0,
+        "product_alerts": {
+          "TP": 1,
+          "FP": 0,
+          "U": 0
+        },
+        "false_positive_rate": 0.0,
+        "required_U": 0,
+        "required_counts": {
+          "P": 1280,
+          "F": 0,
+          "U": 0,
+          "required_total": 1280
+        },
+        "complete_delivery": true,
+        "delivery_attempts": 1,
+        "author_to_public_self_closure_seconds": 3212.9695162773132,
+        "author_to_complete_acceptance_gross_seconds": 7312.1472499370575,
+        "successful_delivery_gross_seconds": 7312.1472499370575,
+        "native_command_work_seconds": 1637.1851432323456,
+        "peak_configured_allocated_bytes": 4125343744
+      },
+      "B": {
+        "tool": "candidate-v12.6",
+        "confirmed_initial_causes": 1,
+        "repaired": 1,
+        "residual": 0,
+        "final_miss_rate": 0.0,
+        "repair_rate": 1.0,
+        "business_miss_rate": null,
+        "business_repair_rate": null,
+        "new_confirmed_regressions": 0,
+        "product_alerts": {
+          "TP": 1,
+          "FP": 0,
+          "U": 0
+        },
+        "false_positive_rate": 0.0,
+        "required_U": 0,
+        "required_counts": {
+          "P": 1280,
+          "F": 0,
+          "U": 0,
+          "required_total": 1280
+        },
+        "complete_delivery": true,
+        "delivery_attempts": 1,
+        "author_to_public_self_closure_seconds": 3248.210767507553,
+        "author_to_complete_acceptance_gross_seconds": 7312.1472499370575,
+        "successful_delivery_gross_seconds": 7312.1472499370575,
+        "native_command_work_seconds": 1780.9741938114166,
+        "peak_configured_allocated_bytes": 3535093760
+      }
+    },
+    "business_defect_rate_denominator": 0,
+    "business_miss_and_repair_rates": null
   },
-  "blocker": {
-    "type": "ios_environment",
-    "command": [
-      "/Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild",
-      "-checkFirstLaunchStatus"
-    ],
-    "actual_exit_code": 69,
-    "required_action": "Complete Xcode required administrator component setup, then run real iOS neutral qualification before a new business-release seal."
-  },
+  "blocker": null,
   "android_neutral_qualification": {
     "positive_native": {
       "P": 6,
@@ -44,10 +96,21 @@
     "cancel_scope": "Complete frame and exact owned SDK process-group retirement; durable actual log prefix. No escaped daemon, device, SIGINT or iOS credit.",
     "evidence": "evidence/qualification-v12.3/SEAL.json",
     "cost": "operators/v12.3-positive-meter.command.json",
-    "disk": "operators/v12.3-positive-meter.summary.json"
+    "disk": "operators/v12.3-positive-meter.summary.json",
+    "fresh_v12.6": {
+      "native": {
+        "P": 6,
+        "F": 0,
+        "U": 0
+      },
+      "source_rows": 2,
+      "evidence": "evidence/android-qualification-v12.6/SEAL.json",
+      "cost": "operators/android-v12.6-positive-meter.command.json",
+      "disk": "operators/android-v12.6-positive-meter.summary.json"
+    }
   },
-  "cleanup": "CLEANUP.json",
-  "scope": "Incomplete user task. Independent probe counts and neutral SDK run are not product defect, paired-quality, complete-delivery, or cost-advantage results.",
+  "cleanup": "CLEANUP-2.json",
+  "scope": "One fixed embedded dual-platform component PR; both complete within configured source/native/image obligations. Not a population, whole-app or computed-style result.",
   "independent_status": "complete",
   "ci_failure": "operators/ci-42633193301.json",
   "publication_validation": {
@@ -64,7 +127,30 @@
       "v10": "operators/history-v10-alias-fix-2/result.json",
       "v11": "operators/history-v11-alias-fix-2/result.json"
     },
-    "remote_repair_status": "pending_new_run",
-    "scope": "Publication integrity and original-result replay; no new business PR or SDK credit."
+    "remote_repair_status": "success",
+    "scope": "Publication integrity and original-result replay; no new business PR or SDK credit.",
+    "green_commit": "130eb88c3bf537adf32ee59b93e9f58189e0d744",
+    "green_run": "operators/ci-42733246315-success.json",
+    "pending": "Final paired-study publication commit and its exact remote CI; older green is retained separately."
+  },
+  "ios_neutral_qualification": {
+    "status": "limited_independent_qualification_complete",
+    "positive_native": {
+      "P": 6,
+      "F": 0,
+      "U": 0
+    },
+    "source_rows": 2,
+    "negative_scope": "v12.4 intentional unavailable-target protocol control: 8P/0F/6U, XCTest one executed and failed; no business defects.",
+    "evidence": "evidence/ios-qualification-v12.6/SEAL.json",
+    "ready_check": "operators/ios-prerequisite-ready.json",
+    "cost": "operators/ios-v12.6-positive-meter.command.json",
+    "disk": "operators/ios-v12.6-positive-meter.summary.json",
+    "review": "probes/native-review/ios-v12.6-addendum/review-manifest.json",
+    "independent_native_counts": {
+      "P": 2,
+      "F": 0,
+      "U": 19
+    }
   }
 }

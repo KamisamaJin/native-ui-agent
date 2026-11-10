@@ -1,0 +1,986 @@
+{
+  "version": 1,
+  "status": "sealed-independent-anonymous-common-cause-review",
+  "identity": {
+    "role": "independent anonymous common-cause matcher and disagreement reviewer",
+    "reviewer_seals": {
+      "reviewer-1": {
+        "expected_raw_sha256": "6e18c1fdd9db3571ece8c6d1aa63601074f8512186eee54dce71257155a2fc8f",
+        "observed_raw_sha256": "6e18c1fdd9db3571ece8c6d1aa63601074f8512186eee54dce71257155a2fc8f",
+        "match": true
+      },
+      "reviewer-2": {
+        "expected_raw_sha256": "b7f14246777e2da940d08729682cd63b50199c3f45d0f97d71b6787ca82bce47",
+        "observed_raw_sha256": "b7f14246777e2da940d08729682cd63b50199c3f45d0f97d71b6787ca82bce47",
+        "match": true
+      }
+    },
+    "input_packet_seals": {
+      "packet-public": "555970cc883a34dfe5021b710c7268b0c4eddc62752ac4c34a96d9e890f38411",
+      "packet-hidden-finals": "2d3e7104853231e116dd0e96f9d35ba8fe7c2a1178115d89f7585f70ffa68497",
+      "packet-initial-hidden": "a8d3dd36b1680daa8736f80d29b9d587b4b9ec7153944d54b0b95a47af6f3c1a"
+    },
+    "permitted_roots": [
+      "reviewer-1",
+      "reviewer-2",
+      "packet-public",
+      "packet-hidden-finals",
+      "packet-initial-hidden"
+    ],
+    "version_mapping_not_read_or_inferred": true,
+    "business_administration_not_read": true,
+    "external_repairer_narratives_or_other_experiments_not_read": true,
+    "producer_source_claims_not_used_or_semantically_read": true,
+    "source_comments_not_used_as_evidence_of_runtime_success": true,
+    "SDK_observer_production_or_acceptance_code_not_run": true,
+    "all_writes_confined_to_new_cause_matching_directory": true,
+    "integrity_scope": "All 1939 files in the five permitted roots are hashed, including opaque producer-claim files solely for integrity. Content analysis uses the two sealed reviews, fixed design/API/source and original native/image evidence."
+  },
+  "initial_causes": [
+    {
+      "common_id": "CC-001",
+      "category": "visual",
+      "platform": "ios",
+      "scopes": [
+        "public",
+        "private"
+      ],
+      "reviewer_id_mapping": {
+        "reviewer-1": [
+          "initial-ios-disabled-button-attenuation"
+        ],
+        "reviewer-2": [
+          "initial-ios-disabled-label-attenuation"
+        ]
+      },
+      "description": "Initial iOS native disabled Button styling attenuates the whole already-colored label. This violates the explicit disabled send palette and the prohibition on fading complete unavailable rows. It is one composition cause across states and configurations.",
+      "matching_basis": "Both reviewers identify the same initial source hash, three button-style call sites, unavailable/sent row treatment, the same six disabled send states and the same light/dark actual pixels. The different IDs and the additional action-appearance umbrella in reviewer-1 do not change the causal claim.",
+      "requirement_refs": [
+        {
+          "path": "packet-public/design/public/reference.json",
+          "pointer": "/responsibilities/12",
+          "id": "component.palette",
+          "clause": "The source chooses each light/dark palette role and does not attenuate the complete unavailable row.",
+          "sha256": "5b2257a98d7633477e9c51eafa5dcc63af98688247af8820d479cb64ef7dd65b"
+        },
+        {
+          "path": "packet-public/design/public/reference.json",
+          "pointer": "/obligations/12",
+          "id": "action-appearance",
+          "clause": "The actual send control uses its appropriate enabled/disabled solid fill and current wording.",
+          "sha256": "5b2257a98d7633477e9c51eafa5dcc63af98688247af8820d479cb64ef7dd65b"
+        },
+        {
+          "path": "packet-public/design/public/reference.json",
+          "pointers": [
+            "/expected/draft/send-fill",
+            "/expected/replacement/send-fill",
+            "/expected/quantityChanged/send-fill",
+            "/expected/sent/send-fill",
+            "/expected/revised/send-fill",
+            "/expected/sentRevised/send-fill"
+          ],
+          "id": "send-fill",
+          "approved_disabled_argb": "#FFD9E2DC"
+        },
+        {
+          "path": "packet-public/design/private/reference.json",
+          "pointer": "/responsibilities/12",
+          "id": "component.palette",
+          "clause": "The source chooses each light/dark palette role and does not attenuate the complete unavailable row.",
+          "sha256": "fc7eb9a6969b9293a20ef06a25210de359577e1d2fdc68fdf77d449462d44a7c"
+        },
+        {
+          "path": "packet-public/design/private/reference.json",
+          "pointer": "/obligations/12",
+          "id": "action-appearance",
+          "clause": "The actual send control uses its appropriate enabled/disabled solid fill and current wording.",
+          "sha256": "fc7eb9a6969b9293a20ef06a25210de359577e1d2fdc68fdf77d449462d44a7c"
+        },
+        {
+          "path": "packet-public/design/private/reference.json",
+          "pointers": [
+            "/expected/draft/send-fill",
+            "/expected/replacement/send-fill",
+            "/expected/quantityChanged/send-fill",
+            "/expected/sent/send-fill",
+            "/expected/revised/send-fill",
+            "/expected/sentRevised/send-fill"
+          ],
+          "id": "send-fill",
+          "approved_disabled_argb": "#FF344A3C"
+        }
+      ],
+      "initial_source_refs": [
+        {
+          "path": "packet-public/source/initial/MenuChangeReviewPanel.swift",
+          "sha256": "1c2428fde2919efd8250f73b14d57740ccd88765899268d5ad8acdc482e19fff",
+          "line_start": 137,
+          "line_end": 156,
+          "fact": "Opaque exact light/dark role constants exist, including disabled fill/ink."
+        },
+        {
+          "path": "packet-public/source/initial/MenuChangeReviewPanel.swift",
+          "sha256": "1c2428fde2919efd8250f73b14d57740ccd88765899268d5ad8acdc482e19fff",
+          "line_start": 261,
+          "line_end": 290,
+          "fact": "The option label supplies explicit role colors, followed by PlainButtonStyle and native disabled state."
+        },
+        {
+          "path": "packet-public/source/initial/MenuChangeReviewPanel.swift",
+          "sha256": "1c2428fde2919efd8250f73b14d57740ccd88765899268d5ad8acdc482e19fff",
+          "line_start": 313,
+          "line_end": 328,
+          "fact": "The quantity label likewise supplies explicit disabled roles, followed by PlainButtonStyle."
+        },
+        {
+          "path": "packet-public/source/initial/MenuChangeReviewPanel.swift",
+          "sha256": "1c2428fde2919efd8250f73b14d57740ccd88765899268d5ad8acdc482e19fff",
+          "line_start": 420,
+          "line_end": 454,
+          "fact": "The send label explicitly selects the required disabled fill before PlainButtonStyle and disabled."
+        }
+      ],
+      "initial_native_and_image_refs": {
+        "complete_pixel_rows": "send-pixel-independent-recheck.json",
+        "native_property_rederivation": "native-independent-recheck.json",
+        "before_after_source_state_environment_binding": "cohort-core-checks.json",
+        "direct_original_image_inspection": "core-original-image-review.json",
+        "examples": [
+          {
+            "cohort": "A/D0/ios",
+            "id": "draft/send-fill",
+            "image": "packet-public/native/A/public/D0/ios/native/attachments/47E0DD1C-517F-4C46-AC50-8E18AD943E1A.png",
+            "image_sha256": "e7aa1316a60554d74b2d5636489a7d941cfe86183c5700d9129bb01e823eb4da",
+            "snapshot_index": 10,
+            "source_sha256": "1c2428fde2919efd8250f73b14d57740ccd88765899268d5ad8acdc482e19fff",
+            "binding": {
+              "event_revision": 0,
+              "fixture_index": 0,
+              "input_sha256": "801024422240e38ccb1a64a230e532483db7f26fa85a3844db3e5fad5e166ca3",
+              "instance": "42FACE15-AD83-40C4-809D-1803AD5D603B",
+              "pid": 79176
+            },
+            "native_image_box": [
+              114.0,
+              1693.9999999999989,
+              978.0,
+              156.0
+            ],
+            "fixed_sampling": {
+              "region": [
+                0.025,
+                0.3,
+                0.045,
+                0.7
+              ],
+              "minimum_pixels": 12,
+              "minimum_support": 0.9,
+              "channel_tolerance": 1,
+              "basis": "control",
+              "visibility": "fully_visible"
+            },
+            "fixed_expected_argb": "#FFD9E2DC",
+            "interior": {
+              "pixel_rect": [
+                139,
+                1741,
+                158,
+                1803
+              ],
+              "pixel_count": 1178,
+              "mode_argb": "#FFE7EAE3",
+              "mode_count": 1178,
+              "support": 0.0,
+              "status": "F"
+            },
+            "fractional_edge_superset": {
+              "pixel_rect": [
+                138,
+                1740,
+                159,
+                1804
+              ],
+              "pixel_count": 1344,
+              "mode_argb": "#FFE7EAE3",
+              "mode_count": 1344,
+              "support": 0.0,
+              "status": "F"
+            }
+          },
+          {
+            "cohort": "initial/private/ios",
+            "id": "draft/send-fill",
+            "image": "packet-initial-hidden/initial/ios/native/attachments/1174D858-157B-46F0-886C-DF602A050D37.png",
+            "image_sha256": "e949f8e0e188bb505495033e66c898e0924273e26f027955c2af8651a80360c3",
+            "snapshot_index": 15,
+            "source_sha256": "1c2428fde2919efd8250f73b14d57740ccd88765899268d5ad8acdc482e19fff",
+            "binding": {
+              "event_revision": 0,
+              "fixture_index": 0,
+              "input_sha256": "953991dd571f910a4b5434abc773fc296645ce9f8b0cfa42a6c4ea4e14f95ff1",
+              "instance": "A8701156-F017-45F6-8009-C9D317925346",
+              "pid": 94325
+            },
+            "native_image_box": [
+              219.0,
+              1593.999999999999,
+              768.0,
+              235.00000000000045
+            ],
+            "fixed_sampling": {
+              "region": [
+                0.025,
+                0.3,
+                0.045,
+                0.7
+              ],
+              "minimum_pixels": 12,
+              "minimum_support": 0.9,
+              "channel_tolerance": 1,
+              "basis": "control",
+              "visibility": "fully_visible"
+            },
+            "fixed_expected_argb": "#FF344A3C",
+            "interior": {
+              "pixel_rect": [
+                239,
+                1665,
+                253,
+                1758
+              ],
+              "pixel_count": 1302,
+              "mode_argb": "#FF223229",
+              "mode_count": 1302,
+              "support": 0.0,
+              "status": "F"
+            },
+            "fractional_edge_superset": {
+              "pixel_rect": [
+                238,
+                1664,
+                254,
+                1759
+              ],
+              "pixel_count": 1520,
+              "mode_argb": "#FF223229",
+              "mode_count": 1520,
+              "support": 0.0,
+              "status": "F"
+            }
+          }
+        ],
+        "public_disabled_actual": "#FFE7EAE3",
+        "private_disabled_actual": "#FF223229",
+        "approved_pixel_support": 0.0,
+        "enabled_send_control_samples": "Approved light #FF216B4A and dark #FF8DDBAF pass in initial and both final candidates."
+      },
+      "status_by_arm": {
+        "A": {
+          "status": "repaired",
+          "repaired": true,
+          "residual": false,
+          "unresolved": false,
+          "by_scope": {
+            "public": "repaired",
+            "private": "repaired"
+          },
+          "reviewer_1_original": {
+            "cause_id": "initial-ios-disabled-button-attenuation",
+            "overall": "repaired",
+            "residual": false,
+            "unresolved": false
+          },
+          "reviewer_2_original": {
+            "cause_id": "initial-ios-disabled-label-attenuation",
+            "status": "repaired"
+          },
+          "current_source_refs": [
+            {
+              "path": "packet-public/source/A/MenuChangeReviewPanel.swift",
+              "sha256": "78ed8ad67b6569549c396a47674f43d35b24ca4be1c34975e1a8c779cc3ef5d6",
+              "line_start": 161,
+              "line_end": 165,
+              "fact": "Executable custom ButtonStyle returns configuration.label without a second whole-label treatment."
+            },
+            {
+              "path": "packet-public/source/A/MenuChangeReviewPanel.swift",
+              "sha256": "78ed8ad67b6569549c396a47674f43d35b24ca4be1c34975e1a8c779cc3ef5d6",
+              "line_start": 292,
+              "line_end": 298,
+              "fact": "Option Button uses the custom style and retains native disabled/selection semantics."
+            },
+            {
+              "path": "packet-public/source/A/MenuChangeReviewPanel.swift",
+              "sha256": "78ed8ad67b6569549c396a47674f43d35b24ca4be1c34975e1a8c779cc3ef5d6",
+              "line_start": 321,
+              "line_end": 336,
+              "fact": "Quantity Button uses the same custom style and retains native disabled state."
+            },
+            {
+              "path": "packet-public/source/A/MenuChangeReviewPanel.swift",
+              "sha256": "78ed8ad67b6569549c396a47674f43d35b24ca4be1c34975e1a8c779cc3ef5d6",
+              "line_start": 448,
+              "line_end": 462,
+              "fact": "Send Button keeps explicit palette branches, custom style and native disabled state."
+            }
+          ],
+          "current_original_pixel_examples": [
+            {
+              "cohort": "A/Final/ios",
+              "id": "draft/send-fill",
+              "image": "packet-public/native/A/public/Final/ios/native/attachments/501BF190-E4D7-4216-8A40-965B8DDF09BB.png",
+              "image_sha256": "13a3ad77217c721f194c8cea8024064591b587a4175b26e6916063384f174c9c",
+              "snapshot_index": 10,
+              "source_sha256": "78ed8ad67b6569549c396a47674f43d35b24ca4be1c34975e1a8c779cc3ef5d6",
+              "binding": {
+                "event_revision": 0,
+                "fixture_index": 0,
+                "input_sha256": "801024422240e38ccb1a64a230e532483db7f26fa85a3844db3e5fad5e166ca3",
+                "instance": "227620B0-E9F0-403A-937F-B9422B89319E",
+                "pid": 86369
+              },
+              "native_image_box": [
+                114.0,
+                1693.9999999999989,
+                978.0,
+                156.0
+              ],
+              "fixed_sampling": {
+                "region": [
+                  0.025,
+                  0.3,
+                  0.045,
+                  0.7
+                ],
+                "minimum_pixels": 12,
+                "minimum_support": 0.9,
+                "channel_tolerance": 1,
+                "basis": "control",
+                "visibility": "fully_visible"
+              },
+              "fixed_expected_argb": "#FFD9E2DC",
+              "interior": {
+                "pixel_rect": [
+                  139,
+                  1741,
+                  158,
+                  1803
+                ],
+                "pixel_count": 1178,
+                "mode_argb": "#FFD9E2DC",
+                "mode_count": 1178,
+                "support": 1.0,
+                "status": "P"
+              },
+              "fractional_edge_superset": {
+                "pixel_rect": [
+                  138,
+                  1740,
+                  159,
+                  1804
+                ],
+                "pixel_count": 1344,
+                "mode_argb": "#FFD9E2DC",
+                "mode_count": 1344,
+                "support": 1.0,
+                "status": "P"
+              }
+            },
+            {
+              "cohort": "A/private/ios",
+              "id": "draft/send-fill",
+              "image": "packet-hidden-finals/A/ios/native/attachments/CB258523-584A-4169-9E5D-C39B7E0B2FEA.png",
+              "image_sha256": "8a7c3a9769cdf115110d46fdc70afc00abec21b05caeb7cf9440ba79cca51d95",
+              "snapshot_index": 15,
+              "source_sha256": "78ed8ad67b6569549c396a47674f43d35b24ca4be1c34975e1a8c779cc3ef5d6",
+              "binding": {
+                "event_revision": 0,
+                "fixture_index": 0,
+                "input_sha256": "953991dd571f910a4b5434abc773fc296645ce9f8b0cfa42a6c4ea4e14f95ff1",
+                "instance": "038DAB96-3331-46BB-9AC0-7A27A74619FB",
+                "pid": 90015
+              },
+              "native_image_box": [
+                219.0,
+                1593.999999999999,
+                768.0,
+                235.00000000000045
+              ],
+              "fixed_sampling": {
+                "region": [
+                  0.025,
+                  0.3,
+                  0.045,
+                  0.7
+                ],
+                "minimum_pixels": 12,
+                "minimum_support": 0.9,
+                "channel_tolerance": 1,
+                "basis": "control",
+                "visibility": "fully_visible"
+              },
+              "fixed_expected_argb": "#FF344A3C",
+              "interior": {
+                "pixel_rect": [
+                  239,
+                  1665,
+                  253,
+                  1758
+                ],
+                "pixel_count": 1302,
+                "mode_argb": "#FF344A3C",
+                "mode_count": 1302,
+                "support": 1.0,
+                "status": "P"
+              },
+              "fractional_edge_superset": {
+                "pixel_rect": [
+                  238,
+                  1664,
+                  254,
+                  1759
+                ],
+                "pixel_count": 1520,
+                "mode_argb": "#FF344A3C",
+                "mode_count": 1520,
+                "support": 1.0,
+                "status": "P"
+              }
+            }
+          ],
+          "all_configured_send_atoms": {
+            "public": "8 P, including all 6 disabled states",
+            "private": "8 P, including all 6 disabled states"
+          },
+          "native_control_semantics_and_callbacks": "All 247 native control/label/geometry/callback atoms independently rederived for each current platform/scope; no F/U.",
+          "core_visual_refs": [
+            "core-original-image-review.json",
+            "cross-review-visual-actuals.json"
+          ]
+        },
+        "B": {
+          "status": "repaired",
+          "repaired": true,
+          "residual": false,
+          "unresolved": false,
+          "by_scope": {
+            "public": "repaired",
+            "private": "repaired"
+          },
+          "reviewer_1_original": {
+            "cause_id": "initial-ios-disabled-button-attenuation",
+            "overall": "repaired",
+            "residual": false,
+            "unresolved": false
+          },
+          "reviewer_2_original": {
+            "cause_id": "initial-ios-disabled-label-attenuation",
+            "status": "repaired"
+          },
+          "current_source_refs": [
+            {
+              "path": "packet-public/source/B/MenuChangeReviewPanel.swift",
+              "sha256": "921c3535b03495fdcfa6ffca587c19e59b1b305e0237ba22e0dbcd989f0e572f",
+              "line_start": 161,
+              "line_end": 165,
+              "fact": "Executable custom ButtonStyle returns configuration.label without a second whole-label treatment."
+            },
+            {
+              "path": "packet-public/source/B/MenuChangeReviewPanel.swift",
+              "sha256": "921c3535b03495fdcfa6ffca587c19e59b1b305e0237ba22e0dbcd989f0e572f",
+              "line_start": 292,
+              "line_end": 298,
+              "fact": "Option Button uses the custom style and retains native disabled/selection semantics."
+            },
+            {
+              "path": "packet-public/source/B/MenuChangeReviewPanel.swift",
+              "sha256": "921c3535b03495fdcfa6ffca587c19e59b1b305e0237ba22e0dbcd989f0e572f",
+              "line_start": 321,
+              "line_end": 336,
+              "fact": "Quantity Button uses the same custom style and retains native disabled state."
+            },
+            {
+              "path": "packet-public/source/B/MenuChangeReviewPanel.swift",
+              "sha256": "921c3535b03495fdcfa6ffca587c19e59b1b305e0237ba22e0dbcd989f0e572f",
+              "line_start": 448,
+              "line_end": 462,
+              "fact": "Send Button keeps explicit palette branches, custom style and native disabled state."
+            }
+          ],
+          "current_original_pixel_examples": [
+            {
+              "cohort": "B/Final/ios",
+              "id": "draft/send-fill",
+              "image": "packet-public/native/B/public/Final/ios/native/attachments/05FDD666-FFD6-42A0-90A4-562102C1988D.png",
+              "image_sha256": "13a3ad77217c721f194c8cea8024064591b587a4175b26e6916063384f174c9c",
+              "snapshot_index": 10,
+              "source_sha256": "921c3535b03495fdcfa6ffca587c19e59b1b305e0237ba22e0dbcd989f0e572f",
+              "binding": {
+                "event_revision": 0,
+                "fixture_index": 0,
+                "input_sha256": "801024422240e38ccb1a64a230e532483db7f26fa85a3844db3e5fad5e166ca3",
+                "instance": "2D46F646-C1EC-44DE-A179-685025699F73",
+                "pid": 86807
+              },
+              "native_image_box": [
+                114.0,
+                1693.9999999999989,
+                978.0,
+                156.0
+              ],
+              "fixed_sampling": {
+                "region": [
+                  0.025,
+                  0.3,
+                  0.045,
+                  0.7
+                ],
+                "minimum_pixels": 12,
+                "minimum_support": 0.9,
+                "channel_tolerance": 1,
+                "basis": "control",
+                "visibility": "fully_visible"
+              },
+              "fixed_expected_argb": "#FFD9E2DC",
+              "interior": {
+                "pixel_rect": [
+                  139,
+                  1741,
+                  158,
+                  1803
+                ],
+                "pixel_count": 1178,
+                "mode_argb": "#FFD9E2DC",
+                "mode_count": 1178,
+                "support": 1.0,
+                "status": "P"
+              },
+              "fractional_edge_superset": {
+                "pixel_rect": [
+                  138,
+                  1740,
+                  159,
+                  1804
+                ],
+                "pixel_count": 1344,
+                "mode_argb": "#FFD9E2DC",
+                "mode_count": 1344,
+                "support": 1.0,
+                "status": "P"
+              }
+            },
+            {
+              "cohort": "B/private/ios",
+              "id": "draft/send-fill",
+              "image": "packet-hidden-finals/B/ios/native/attachments/D2B3D806-D1FE-471D-B0A0-B20EF1E3FF40.png",
+              "image_sha256": "ea414a19c96abfc3bf46ff623edebb6001af6dbe8383d408e7d205e3de2866d4",
+              "snapshot_index": 15,
+              "source_sha256": "921c3535b03495fdcfa6ffca587c19e59b1b305e0237ba22e0dbcd989f0e572f",
+              "binding": {
+                "event_revision": 0,
+                "fixture_index": 0,
+                "input_sha256": "953991dd571f910a4b5434abc773fc296645ce9f8b0cfa42a6c4ea4e14f95ff1",
+                "instance": "4FE614C9-6F75-4EAA-B321-23A5FC870600",
+                "pid": 90433
+              },
+              "native_image_box": [
+                219.0,
+                1593.999999999999,
+                768.0,
+                235.00000000000045
+              ],
+              "fixed_sampling": {
+                "region": [
+                  0.025,
+                  0.3,
+                  0.045,
+                  0.7
+                ],
+                "minimum_pixels": 12,
+                "minimum_support": 0.9,
+                "channel_tolerance": 1,
+                "basis": "control",
+                "visibility": "fully_visible"
+              },
+              "fixed_expected_argb": "#FF344A3C",
+              "interior": {
+                "pixel_rect": [
+                  239,
+                  1665,
+                  253,
+                  1758
+                ],
+                "pixel_count": 1302,
+                "mode_argb": "#FF344A3C",
+                "mode_count": 1302,
+                "support": 1.0,
+                "status": "P"
+              },
+              "fractional_edge_superset": {
+                "pixel_rect": [
+                  238,
+                  1664,
+                  254,
+                  1759
+                ],
+                "pixel_count": 1520,
+                "mode_argb": "#FF344A3C",
+                "mode_count": 1520,
+                "support": 1.0,
+                "status": "P"
+              }
+            }
+          ],
+          "all_configured_send_atoms": {
+            "public": "8 P, including all 6 disabled states",
+            "private": "8 P, including all 6 disabled states"
+          },
+          "native_control_semantics_and_callbacks": "All 247 native control/label/geometry/callback atoms independently rederived for each current platform/scope; no F/U.",
+          "core_visual_refs": [
+            "core-original-image-review.json",
+            "cross-review-visual-actuals.json"
+          ]
+        }
+      },
+      "counting": {
+        "confirmed_initial_common_causes": 1,
+        "raw_original_F_rows": 18,
+        "canonical_scope_state_send_alerts": 12,
+        "canonical_source_palette_F_rows": 2,
+        "initial_total_required_F_records_after_followup": 14,
+        "duplicate_D0_and_scroll_samples_do_not_increase_causes": true
+      },
+      "confidence": "high for the configured component evidence",
+      "classification_boundary": "No business logic, native accessibility or testability defect is inferred from palette attenuation. No contrast threshold, exact computed opacity or screen-reader behavior is claimed. The quantity style is an additional same-source call site, not a separately measured new defect."
+    }
+  ],
+  "initial_category_counts": {
+    "business": 0,
+    "visual": 1,
+    "accessibility": 0,
+    "testability": 0
+  },
+  "regressions": {
+    "A": {
+      "confirmed": [],
+      "unresolved": [],
+      "by_category": {
+        "business": [],
+        "visual": [],
+        "accessibility": [],
+        "testability": []
+      },
+      "coverage": "All final source duties, configured native assertions and both sealed reviewers' original image decisions are covered. Direct original-image core checks and source/pixel/native rederivations corroborate the no-regression judgment; final code changes only the label-preserving style.",
+      "reviewer_originals": {
+        "reviewer-1": [],
+        "reviewer-2": []
+      },
+      "evidence": [
+        "core-source-review.json",
+        "native-independent-recheck.json",
+        "cohort-core-checks.json",
+        "cross-review-visual-actuals.json"
+      ]
+    },
+    "B": {
+      "confirmed": [],
+      "unresolved": [],
+      "by_category": {
+        "business": [],
+        "visual": [],
+        "accessibility": [],
+        "testability": []
+      },
+      "coverage": "All final source duties, configured native assertions and both sealed reviewers' original image decisions are covered. Direct original-image core checks and source/pixel/native rederivations corroborate the no-regression judgment; final code changes only the label-preserving style.",
+      "reviewer_originals": {
+        "reviewer-1": [],
+        "reviewer-2": []
+      },
+      "evidence": [
+        "core-source-review.json",
+        "native-independent-recheck.json",
+        "cohort-core-checks.json",
+        "cross-review-visual-actuals.json"
+      ]
+    }
+  },
+  "unresolved": [],
+  "mandatory_U": [],
+  "disagreement_review": {
+    "semantic_conclusion_disagreements": [],
+    "recorded_method_or_accounting_differences": [
+      {
+        "id": "DIFF-01",
+        "kind": "naming_and_requirement_crosswalk",
+        "reviewer_1": "initial-ios-disabled-button-attenuation; component.palette/action-appearance/send-fill",
+        "reviewer_2": "initial-ios-disabled-label-attenuation; component.palette/send-fill",
+        "resolution": "One-to-one CC-001. action-appearance is the independent parent obligation for the same send-fill atom, not a second cause. Original requirement lists retained.",
+        "unresolved": false
+      },
+      {
+        "id": "DIFF-02",
+        "kind": "pixel_rasterization_boundary",
+        "reviewer_1": "Uses wholly interior integer pixels; public draft snapshot 10 begins x=139,y=1742.",
+        "reviewer_2": "Its public draft sample begins x=138,y=1741, including one fractional boundary row/column.",
+        "resolution": "Do not erase either recorded rectangle. Independently recomputed exact original pixels on both the wholly interior rectangle and a superset containing every fractional edge. All 60 iOS send samples keep the same result; uniform disabled actuals/support 0 in initial and approved actuals/support 1 in finals. Frozen normalized region, minimum 12, support 0.9 and channel tolerance 1 remain unchanged.",
+        "evidence": "send-pixel-independent-recheck.json",
+        "unresolved": false
+      },
+      {
+        "id": "DIFF-03",
+        "kind": "record_count_and_snapshot_scope",
+        "reviewer_1": "448 raw visual decision records include the duplicate public D0; hidden submissions usually cite the whole stable sweep.",
+        "reviewer_2": "384 canonical final visual records; hidden submissions usually cite target originals, retaining the complete sweep separately.",
+        "resolution": "Compare by candidate/platform/scope/assertion ID. All 384 canonical Boolean results and all 204 source results agree; duplicate initial public records agree internally. All original source/image/state bindings and all 12 reviewer submissions are valid. Raw counts and both evidence styles are retained.",
+        "evidence": [
+          "cross-review-source-actuals.json",
+          "cross-review-visual-actuals.json",
+          "submission-binding-independent-checks.json"
+        ],
+        "unresolved": false
+      }
+    ],
+    "unresolved": [],
+    "original_judgments_changed": false
+  },
+  "alerts_by_arm": {
+    "A": {
+      "TP": [
+        {
+          "common_id": "CC-001",
+          "category": "visual",
+          "public_initial_own_D0_F_rows": 6,
+          "common_initial_hidden_F_rows": 6,
+          "classification_basis": "The original failed send-fill alerts have correct approved expectations, source/stable-state/native-control binding and independent contradictory original pixels."
+        }
+      ],
+      "FP": [],
+      "U": [],
+      "deduplicated_common_cause_counts": {
+        "TP": 1,
+        "FP": 0,
+        "U": 0
+      },
+      "original_row_counts": {
+        "own_public_D0_F": 6,
+        "shared_initial_hidden_F": 6,
+        "initial_F_applicable_to_this_arm": 12,
+        "own_current_public_final_F": 0,
+        "own_current_hidden_final_F": 0
+      },
+      "original_current_raw_U_rows_before_image_followup": 128,
+      "required_U_remaining_after_explicit_image_actuals": 0,
+      "current_confirmed_residual_causes": [],
+      "current_confirmed_regression_causes": [],
+      "shared_hidden_counting_note": "The common initial hidden 6 rows are applicable to both arms, but exist only once in the global raw corpus. Do not add per-arm applicable totals to derive global original alert rows."
+    },
+    "B": {
+      "TP": [
+        {
+          "common_id": "CC-001",
+          "category": "visual",
+          "public_initial_own_D0_F_rows": 6,
+          "common_initial_hidden_F_rows": 6,
+          "classification_basis": "The original failed send-fill alerts have correct approved expectations, source/stable-state/native-control binding and independent contradictory original pixels."
+        }
+      ],
+      "FP": [],
+      "U": [],
+      "deduplicated_common_cause_counts": {
+        "TP": 1,
+        "FP": 0,
+        "U": 0
+      },
+      "original_row_counts": {
+        "own_public_D0_F": 6,
+        "shared_initial_hidden_F": 6,
+        "initial_F_applicable_to_this_arm": 12,
+        "own_current_public_final_F": 0,
+        "own_current_hidden_final_F": 0
+      },
+      "original_current_raw_U_rows_before_image_followup": 128,
+      "required_U_remaining_after_explicit_image_actuals": 0,
+      "current_confirmed_residual_causes": [],
+      "current_confirmed_regression_causes": [],
+      "shared_hidden_counting_note": "The common initial hidden 6 rows are applicable to both arms, but exist only once in the global raw corpus. Do not add per-arm applicable totals to derive global original alert rows."
+    }
+  },
+  "alerts_global": {
+    "original_failed_rows": 18,
+    "original_failed_row_reference": "original-alert-rows.json",
+    "raw_classification_counts": {
+      "TP": 18,
+      "FP": 0,
+      "U": 0
+    },
+    "deduplicated_common_cause_counts": {
+      "TP": 1,
+      "FP": 0,
+      "U": 0
+    },
+    "unique_scope_state_alerts": 12,
+    "duplicate_public_D0_replications": 2,
+    "common_initial_hidden_rows": 6,
+    "provider_host_oracle_integration_F_causes_confirmed": [],
+    "original_raw_U_rows_retained": 448,
+    "canonical_visual_U_followed_up": 384,
+    "final_mandatory_U_remaining": 0
+  },
+  "complete_delivery": {
+    "A": {
+      "accepted": true,
+      "judgment": "accepted_within_fixed_embedded_component_scope",
+      "conditions": [
+        {
+          "condition": "Both public/private product contracts and fixed environments have independent prior approval.",
+          "status": "P",
+          "evidence": "packet-public/design/original-independent-approval.json"
+        },
+        {
+          "condition": "Anonymous current source matches source-before/source-after in all native evidence; fixed plan and environment identity preserved.",
+          "status": "P",
+          "evidence": "cohort-core-checks.json"
+        },
+        {
+          "condition": "17 source duties per platform/scope, including direct/decode bridges, have explicit current-source actuals and no final F/U.",
+          "status": "P",
+          "evidence": [
+            "cross-review-source-actuals.json",
+            "core-source-review.json"
+          ]
+        },
+        {
+          "condition": "303 configured required native/image duties per platform/scope are accounted, with 9 independently inapplicable cells retained.",
+          "status": "P",
+          "evidence": "coverage-ledger.json"
+        },
+        {
+          "condition": "Every original required manual U is retained and closed by an explicit source/image/state-bound Boolean actual; no unknown was silently dropped.",
+          "status": "P",
+          "evidence": [
+            "cross-review-visual-actuals.json",
+            "submission-binding-independent-checks.json"
+          ]
+        },
+        {
+          "condition": "The confirmed initial cause is repaired in both configured scopes; no confirmed residual, new regression or mandatory unresolved item remains.",
+          "status": "P",
+          "evidence": [
+            "common-causes.json#/initial_causes/0/status_by_arm",
+            "send-pixel-independent-recheck.json",
+            "native-independent-recheck.json"
+          ]
+        }
+      ],
+      "required_U": [],
+      "required_U_count": 0,
+      "confirmed_residual_causes": [],
+      "confirmed_regression_causes": [],
+      "complete_required_counts": {
+        "P": 1280,
+        "F": 0,
+        "U": 0,
+        "required_total": 1280
+      },
+      "independent_quality_review_closed": true,
+      "limits": "No whole-app, physical-touch, screen-reader, unmeasured computed-style or unconfigured input/environment acceptance. The coordinator may bind the exact already-reviewed templates; this reviewer performed a read-only identity/precondition audit and did not execute an acceptance CLI."
+    },
+    "B": {
+      "accepted": true,
+      "judgment": "accepted_within_fixed_embedded_component_scope",
+      "conditions": [
+        {
+          "condition": "Both public/private product contracts and fixed environments have independent prior approval.",
+          "status": "P",
+          "evidence": "packet-public/design/original-independent-approval.json"
+        },
+        {
+          "condition": "Anonymous current source matches source-before/source-after in all native evidence; fixed plan and environment identity preserved.",
+          "status": "P",
+          "evidence": "cohort-core-checks.json"
+        },
+        {
+          "condition": "17 source duties per platform/scope, including direct/decode bridges, have explicit current-source actuals and no final F/U.",
+          "status": "P",
+          "evidence": [
+            "cross-review-source-actuals.json",
+            "core-source-review.json"
+          ]
+        },
+        {
+          "condition": "303 configured required native/image duties per platform/scope are accounted, with 9 independently inapplicable cells retained.",
+          "status": "P",
+          "evidence": "coverage-ledger.json"
+        },
+        {
+          "condition": "Every original required manual U is retained and closed by an explicit source/image/state-bound Boolean actual; no unknown was silently dropped.",
+          "status": "P",
+          "evidence": [
+            "cross-review-visual-actuals.json",
+            "submission-binding-independent-checks.json"
+          ]
+        },
+        {
+          "condition": "The confirmed initial cause is repaired in both configured scopes; no confirmed residual, new regression or mandatory unresolved item remains.",
+          "status": "P",
+          "evidence": [
+            "common-causes.json#/initial_causes/0/status_by_arm",
+            "send-pixel-independent-recheck.json",
+            "native-independent-recheck.json"
+          ]
+        }
+      ],
+      "required_U": [],
+      "required_U_count": 0,
+      "confirmed_residual_causes": [],
+      "confirmed_regression_causes": [],
+      "complete_required_counts": {
+        "P": 1280,
+        "F": 0,
+        "U": 0,
+        "required_total": 1280
+      },
+      "independent_quality_review_closed": true,
+      "limits": "No whole-app, physical-touch, screen-reader, unmeasured computed-style or unconfigured input/environment acceptance. The coordinator may bind the exact already-reviewed templates; this reviewer performed a read-only identity/precondition audit and did not execute an acceptance CLI."
+    }
+  },
+  "initial_delivery": {
+    "accepted": false,
+    "reason": "CC-001 remains in original initial source/rendering.",
+    "required_U": [],
+    "counts": {
+      "P": 1266,
+      "F": 14,
+      "U": 0,
+      "required_total": 1280
+    }
+  },
+  "verification": {
+    "all_five_input_roots_file_count": 1939,
+    "three_original_packets_file_count_including_SEAL": 1834,
+    "three_original_packets_sealed_payload_file_count": 1831,
+    "reviewer_sealed_member_counts": {
+      "reviewer-1": 66,
+      "reviewer-2": 37
+    },
+    "original_native_cohorts": 14,
+    "canonical_candidate_scope_platform_groups": 12,
+    "independently_rederived_native_rows_including_duplicate_D0": 3458,
+    "independently_rederived_native_nonpass": 0,
+    "iOS_send_original_pixel_samples": 60,
+    "pixel_samples_are_not_alert_rows_or_defect_counts": true,
+    "source_actuals_agreed": 204,
+    "canonical_visual_actuals_agreed_and_bound": 384,
+    "hidden_reviewer_submissions_identity_checked": 12,
+    "direct_core_original_PNGs_inspected": 8,
+    "not_a_third_full_384_visual_reassessment": true
+  },
+  "scope_limits": [
+    "Public: one 390-unit light LTR default-text continuous eight-state case per platform.",
+    "Private: one combined 320-unit dark RTL large-text continuous eight-state case per platform, 600-unit host viewport. It is one environment, not four independent trials.",
+    "Repeated D0 captures, scroll frames, multiple atomic F and duplicate source clauses do not create additional product causes or independent trials.",
+    "Configured native control/AX geometry is not a physical touch-region or OS screen-reader claim; source values are not measured computed style.",
+    "No version/tool mapping or named-version winner is inferred. No production, input or prior assessment was changed."
+  ]
+}

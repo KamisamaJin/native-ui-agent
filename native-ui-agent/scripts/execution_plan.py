@@ -114,20 +114,20 @@ def verify_execution(value, plan, lock, lock_sha, fixtures, bridge_sha):
     return expected
 
 
-def coverage_receipt(execution, observation):
+def _coverage_facts(required, definitions, platform, observation):
     from native_checks import bound_state_evidence, resolve
     missing, states = [], []
-    for entry in execution['required_coverage']:
+    for entry in required:
         parent = {'id': entry['state_id']}
         # Exact state definitions are carried in config by the CLI/runner caller
         # below; never infer an input epoch from an arbitrary matching label.
-        parent = next(s for s in execution['config']['execution_state_definitions'] if s['id'] == entry['state_id'])
+        parent = next(s for s in definitions if s['id'] == entry['state_id'])
         found, complete, reason, _ = bound_state_evidence(observation, parent)
         target_rows = []
         for target in entry['targets']:
             seen = []
             for index, snapshot in found:
-                result = resolve(snapshot, target, execution['platform'])
+                result = resolve(snapshot, target, platform)
                 semantic = result.get('semantic', {})
                 if result.get('facts', {}).get('unique') and semantic.get('intersects_viewport'):
                     seen.append(index)
@@ -135,8 +135,22 @@ def coverage_receipt(execution, observation):
         good = bool(found) and (complete if entry['coverage'] == 'full_content' else True) and all(v['observed'] for v in target_rows)
         if not good: missing.append(entry['state_id'])
         states.append({'state_id': entry['state_id'], 'complete': complete, 'satisfied': good, 'reason': reason, 'targets': target_rows})
-    return {'execution_sha256': execution['execution_sha256'], 'scope': execution['scope'], 'required_states': states,
-            'satisfied': not missing, 'missing_states': missing}
+    return {'required_states': states, 'satisfied': not missing, 'missing_states': missing}
+
+
+def coverage_receipt(execution, observation):
+    return {'execution_sha256': execution['execution_sha256'], 'scope': execution['scope'],
+            **_coverage_facts(execution['required_coverage'], execution['config']['execution_state_definitions'],
+                              execution['platform'], observation)}
+
+
+def request_coverage_receipt(config, observation, platform, request_sha256):
+    """A collector can bind its request bytes, not the parent's approved plan."""
+    if (not isinstance(request_sha256,str)or len(request_sha256)!=64 or
+            any(c not in '0123456789abcdef' for c in request_sha256)):
+        raise ValueError('Exact request-byte SHA256 required')
+    return {'request_sha256':request_sha256,'identity_scope':'native_request','scope':config['execution_scope'],
+            **_coverage_facts(config['execution_states'],config['execution_state_definitions'],platform,observation)}
 
 
 def source_fingerprint(roots):

@@ -226,14 +226,20 @@ def complete_review(config, cycle_path, cycle_sha, review_result, output):
     capture=cycle_path.parent/'capture/result.json'
     if sha(capture)!=cycle['capture_sha256']:raise ValueError('Final capture changed')
     plan,lock,policy,packet=evidence_review.original(config,capture,cycle['capture_sha256'])
-    before,_,observation,execution,receipt=packet
+    before,original_report,observation,execution,receipt=packet
     if d.digest(xp.source_fingerprint(config['source_roots']))!=d.digest(before):raise ValueError('Review of old source cannot accept edited source')
     registered=evidence_review.discover(config,cycle['capture_sha256'])
     if registered:
         if review_result and {v['sha256']for v in (review_result if isinstance(review_result,list)else[review_result])}!={v['sha256']for v in registered}:raise ValueError('Final review cannot bypass registry heads')
         review_result=registered
-    if not review_result:raise ValueError('Original final review actuals are still queued')
-    report=evidence_review.reconstruct(config,capture,cycle['capture_sha256'],review_result)
+    if not review_result and review_methods(config,plan,lock):
+        raise ValueError('Original final review actuals are still queued')
+    if review_result:
+        report=evidence_review.reconstruct(config,capture,cycle['capture_sha256'],review_result)
+        review_trace='reconstruct_bound_review'
+    else:
+        report=original_report
+        review_trace='reconstruct_native_source_evidence'
     report=calibrated(config,plan,observation,report)
     cov=routes.audit(lock,config['design_sha256'],plan,d.load(Path(config['routes'])),config['routes_sha256'])
     routed=routes.route_findings(cov,plan,report,observation,execution=execution)
@@ -246,8 +252,8 @@ def complete_review(config, cycle_path, cycle_sha, review_result, output):
     output=Path(output).resolve();output.mkdir(parents=True,exist_ok=False)
     for name,value in [('evaluated.json',report),('routes.json',routed),('retest-plan.json',planning),('admission.json',admitted)]:write(output/name,value)
     result={'version':1,'status':admitted['status'],'final_cycle_sha256':cycle_sha,'review_result':review_result,'source_sha256':d.digest(before),
-            'finishedAtUnix':time.time(),'native_executed':False,'trace':['reconstruct_bound_review','route_findings','retest_plan.dispatch','admission'],
-            'scope':'Original reviewed final images; no SDK execution, expected override or edited-source acceptance.'}
+            'finishedAtUnix':time.time(),'native_executed':False,'trace':[review_trace,'route_findings','retest_plan.dispatch','admission'],
+            'scope':'Original final native evidence and required current source/image reviews; no SDK execution, expected override or edited-source acceptance.'}
     write(output/'completion.json',result);return result
 
 

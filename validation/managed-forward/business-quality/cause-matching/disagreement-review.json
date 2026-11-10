@@ -1,0 +1,38 @@
+{
+  "semantic_conclusion_disagreements": [],
+  "recorded_differences": [
+    {
+      "id": "DIFF-01",
+      "kind": "naming_and_requirement_crosswalk",
+      "reviewer_1": "initial-ios-disabled-button-attenuation; component.palette/action-appearance/send-fill",
+      "reviewer_2": "initial-ios-disabled-label-attenuation; component.palette/send-fill",
+      "resolution": "One-to-one CC-001. action-appearance is the independent parent obligation for the same send-fill atom, not a second cause. Original requirement lists retained.",
+      "unresolved": false
+    },
+    {
+      "id": "DIFF-02",
+      "kind": "pixel_rasterization_boundary",
+      "reviewer_1": "Uses wholly interior integer pixels; public draft snapshot 10 begins x=139,y=1742.",
+      "reviewer_2": "Its public draft sample begins x=138,y=1741, including one fractional boundary row/column.",
+      "resolution": "Do not erase either recorded rectangle. Independently recomputed exact original pixels on both the wholly interior rectangle and a superset containing every fractional edge. All 60 iOS send samples keep the same result; uniform disabled actuals/support 0 in initial and approved actuals/support 1 in finals. Frozen normalized region, minimum 12, support 0.9 and channel tolerance 1 remain unchanged.",
+      "evidence": "send-pixel-independent-recheck.json",
+      "unresolved": false
+    },
+    {
+      "id": "DIFF-03",
+      "kind": "record_count_and_snapshot_scope",
+      "reviewer_1": "448 raw visual decision records include the duplicate public D0; hidden submissions usually cite the whole stable sweep.",
+      "reviewer_2": "384 canonical final visual records; hidden submissions usually cite target originals, retaining the complete sweep separately.",
+      "resolution": "Compare by candidate/platform/scope/assertion ID. All 384 canonical Boolean results and all 204 source results agree; duplicate initial public records agree internally. All original source/image/state bindings and all 12 reviewer submissions are valid. Raw counts and both evidence styles are retained.",
+      "evidence": [
+        "cross-review-source-actuals.json",
+        "cross-review-visual-actuals.json",
+        "submission-binding-independent-checks.json"
+      ],
+      "unresolved": false
+    }
+  ],
+  "unresolved": [],
+  "forced_consensus": false,
+  "rule": "A shared result alone is not truth; match only exact requirement/source/native/image-backed causes. Unknowns may not be converted to passes."
+}

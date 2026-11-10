@@ -1,0 +1,122 @@
+{
+  "id": "R03/owned-descendant-ignores-SIGTERM",
+  "verdict": "P",
+  "scope": "real_process_and_filesystem",
+  "reason": "Actual signal and owned-resource cleanup checked",
+  "candidate_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.6",
+  "freeze_manifest_sha256": "8ee8858c1aa6dca038b1b40e06731200cac7039be4d2b611ab8c9093e4bd9d82",
+  "observations": {
+    "exit_code": 1,
+    "owned_live": []
+  },
+  "protected_ok": true,
+  "duration_seconds": 5.329704333,
+  "commands": [
+    {
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-7/resource_worker.py",
+        "--scripts",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/candidate-v12.6/scripts",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-7/raw/R03__owned-descendant-ignores-SIGTERM/config.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-7/raw/R03__owned-descendant-ignores-SIGTERM/tool-output",
+        "--fixture",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-7/fixture_process.py",
+        "--fixture-root",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-7/cache/R03__owned-descendant-ignores-SIGTERM/fixture",
+        "--token",
+        "f35b009db0f74275841f29d195eae59b",
+        "--mode",
+        "tree-ignore-term",
+        "--final"
+      ],
+      "pid": 56287,
+      "started_monotonic": 2.276110916,
+      "tool_identity_before": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+      "exit_code": 1,
+      "finished_monotonic": 7.546594333,
+      "tool_identity_after": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6"
+    }
+  ],
+  "trace": [
+    {
+      "kind": "borrowed_ready",
+      "trace": [
+        {
+          "elapsed": 8.420800000008555e-05,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.05715745799999983,
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "kind": "owned_tree_ready",
+      "trace": [
+        {
+          "elapsed": 0.00011249999999973781,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.05333137499999996,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.1088256249999997,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.16388654199999975,
+          "satisfied": false
+        },
+        {
+          "elapsed": 0.21678016700000002,
+          "satisfied": true
+        }
+      ]
+    },
+    {
+      "kind": "sealed_10_second_cleanup_deadline",
+      "deadline_monotonic": 12.50874875,
+      "observations": [
+        {
+          "at_monotonic": 7.588976125,
+          "owned_live": [],
+          "heartbeats": {
+            "heartbeat-descendant.json": {
+              "pid": 56294,
+              "ppid": 56293,
+              "pgid": 56290,
+              "token": "f35b009db0f74275841f29d195eae59b",
+              "role": "descendant",
+              "mode": "ignore-term",
+              "at": 1794276103.1876638,
+              "heartbeat_at": 1794276108.2179441,
+              "heartbeat_monotonic": 5.046419666
+            },
+            "heartbeat-body.json": {
+              "pid": 56293,
+              "ppid": 56290,
+              "pgid": 56290,
+              "token": "f35b009db0f74275841f29d195eae59b",
+              "role": "body",
+              "mode": "tree-ignore-term",
+              "at": 1794276103.156647,
+              "heartbeat_at": 1794276103.188703,
+              "heartbeat_monotonic": 0.055937375
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "tool_identity_before": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+  "tool_identity_after": "1214ada0b439a404deaa940a520d4fd5d8cdc302e0ae1de0da44d7f43b0793f6",
+  "raw_directory": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/runs/attempt-7/raw/R03__owned-descendant-ignores-SIGTERM",
+  "snapshot": "before-harness-teardown.json"
+}

@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "round": "D0",
+  "source_hashes": {
+    "ios": "1c2428fde2919efd8250f73b14d57740ccd88765899268d5ad8acdc482e19fff",
+    "android": "e97f49bdf8eec647e876947ee634938069088505b40ece9f47e2cdfdb96e8432"
+  },
+  "reviewed_originals": "validation/managed-forward/cache/study/arms/A/work/d0-review/image-map.json",
+  "manual_actuals": {
+    "ios": "validation/managed-forward/cache/study/arms/A/work/d0-review/ios-actuals.json",
+    "android": "validation/managed-forward/cache/study/arms/A/work/d0-review/android-actuals.json"
+  },
+  "root_cause_clusters": [
+    {
+      "id": "A-ios-disabled-attenuation",
+      "platform": "ios",
+      "classification": "product",
+      "strict_failures": [
+        "draft/send-fill",
+        "replacement/send-fill",
+        "quantityChanged/send-fill",
+        "sent/send-fill",
+        "revised/send-fill",
+        "sentRevised/send-fill"
+      ],
+      "original_snapshot_indices": [
+        9,
+        10,
+        20,
+        30,
+        52,
+        62,
+        86
+      ],
+      "source": "validation/managed-forward/cache/study/arms/A/workspace/alerttoast/Sources/AlertToast/MenuChangeReviewPanel.swift",
+      "source_lines": [
+        284,
+        285,
+        325,
+        326,
+        445,
+        449,
+        452,
+        453
+      ],
+      "actual": "Original PNGs show disabled send filled substantially paler than the opaque disabledFill declaration. Unavailable option text/surface/border are attenuated as a complete row. Enabled send and summary surface remain their intended solid colors.",
+      "cause_hypothesis": "PlainButtonStyle applies inherited disabled visual attenuation to the custom-painted full label. The source already chooses disabled colors, so a second system dimming pass changes the intended result.",
+      "minimal_fix": "Use a private ButtonStyle returning the custom label without additional disabled dimming, retaining actual Button.disabled semantics and explicit palette selection."
+    }
+  ],
+  "other_results": {
+    "ios_manual": {
+      "passed": 32,
+      "failed": 0,
+      "unassessed": 0
+    },
+    "android_manual": {
+      "passed": 32,
+      "failed": 0,
+      "unassessed": 0
+    },
+    "notes": "Manual observations establish only title wrapping/hierarchy, option clipping and balance overlap in these original public states. Native pixel F remain F. No current-source runtime pass is claimed after modification."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "scope": "Publication verifier development only; no SDK, production source, expected value, native verdict or sealed input modified.",
+  "original_verifier": "historical-root/business-verifier-v1/verify_business.py",
+  "failures": [
+    {
+      "exception": "KeyError: files",
+      "cause": "Independent preimplementation design-review seal uses explicit review_files_sha256 and original_design_files_sha256, not archive files schema."
+    },
+    {
+      "exception": "FileNotFoundError: business-evidence/initial/alerttoast/Sources/...",
+      "cause": "macOS case-insensitive rglob(SEAL.json) also selected lowercase source-capsule seal.json, whose entries are below source/. Exact actual filename schemas now separately checked."
+    }
+  ],
+  "current_verifier": "verify_business.py"
+}

@@ -182,6 +182,7 @@ class ResponsibilityTests(unittest.TestCase):
         bridge = root/'Bridge.swift'; bridge.write_text('let input = "actual caller"')
         lock = copy.deepcopy(self.lock); lock['sources']['reference']['document']['claims'] = [
             {'id':'binding','clause':'The bridge reads the real caller input.','priority':'must','owner':owner,'method':method,'subject':'actual_bridge','rule_ids':[]}]
+        lock['sources']['reference']['document']['launch']['bridge_sha256']=er.sha(bridge)
         # The separately pinned lock must be resealed from its actual source.
         ref = root/'reference.json'; ref.write_text(json.dumps(lock['sources']['reference']['document']))
         contract = json.loads((root/'contract.json').read_text()); contract['sources'][0]['sha256'] = er.sha(ref)
@@ -216,6 +217,41 @@ class ResponsibilityTests(unittest.TestCase):
         with self.assertRaises(ValueError):er.bind(config,submission,root/'bad.json')
         submission['observations'][0]['expected']=False
         with self.assertRaises(ValueError):er.bind(config,submission,root/'bad2.json')
+
+    def test_source_only_final_closes_without_sdk_and_still_enforces_review_gates(self):
+        import evidence_review,acceptance
+        config,plan,lock=self.config();root=Path(self.temp.name)
+        for key,obj in [('routes',self.routes),('environment',{})]:
+            p=root/(key+'.json');p.write_text(json.dumps(obj));config[key]=str(p)
+        config['routes_sha256']=d.digest(self.routes)
+        before=loop.xp.source_fingerprint(config['source_roots'])
+        cycle_root=root/'final';capture=cycle_root/'capture/result.json';capture.parent.mkdir(parents=True)
+        capture.write_text('{}')
+        resource=cycle_root/'resources.json';resource.write_text(json.dumps({'cleanup_errors':[],'remaining_devices':[],'remaining_directories':[]}))
+        cycle=cycle_root/'cycle.json';cycle.write_text(json.dumps({'final':True,'native_executed':True,
+                'capture_sha256':er.sha(capture),'resources_sha256':er.sha(resource)}))
+        receipt=dict(self.capture,source_sha256=d.digest(before),parent_plan_sha256=d.digest(plan))
+        execution=loop.xp.compile_execution(plan,lock,config['design_sha256'],{'initial':{},'updates':[{}]},er.sha(config['bridge']),
+                                            launch_ref={'source':'reference','pointer':'/launch'})
+        packet=(before,copy.deepcopy(self.report),{},execution,receipt)
+        # This protocol test stubs only the already-reconstructed transport and
+        # environment. Real source hashes, claim binding and admission stay live.
+        with patch.object(evidence_review,'original',return_value=(plan,lock,None,packet)),patch.object(acceptance,'environment',return_value={'status':'P'}),patch.object(loop.xp,'run_execution')as sdk:
+            missing=loop.complete_review(config,cycle,er.sha(cycle),None,root/'missing-source')
+            self.assertEqual(missing['status'],'not_accepted')
+            actual={'version':1,'observations':[{'id':'binding','observed':True,'reason':'Reads real caller input.','citations':[{'path':config['bridge'],'line':1}]}]}
+            er.bind(config,actual,root/'source-observation.json')
+            closed=loop.complete_review(config,cycle,er.sha(cycle),None,root/'closed')
+            self.assertEqual(closed['status'],'accepted')
+            self.assertFalse(closed['native_executed'])
+            self.assertIn('reconstruct_native_source_evidence',closed['trace'])
+            with patch.object(loop,'review_methods',return_value={'required-visual'}):
+                with self.assertRaisesRegex(ValueError,'review actuals'):
+                    loop.complete_review(config,cycle,er.sha(cycle),None,root/'missing-image')
+            Path(config['source_roots'][0]).write_text('edited production source')
+            with self.assertRaisesRegex(ValueError,'old source'):
+                loop.complete_review(config,cycle,er.sha(cycle),None,root/'edited-source')
+            sdk.assert_not_called()
 
 
 if __name__ == '__main__': unittest.main()

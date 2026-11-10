@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "observations": [
+    {
+      "id": "caption-source",
+      "observed": true,
+      "reason": "NeutralCounter initializes its private @State count from the seed parameter, renders the Tally label from that count, increments count in the Count callback, and gates Continue with count == 0. The caller-keyed identity for a changed seed is provided by the separately reviewed bridge .id(seed); this source observation covers the component expressions and callback closures.",
+      "citations": [
+        {
+          "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/cache/neutral/alerttoast/Sources/AlertToast/NeutralCounter.swift",
+          "line": 7
+        },
+        {
+          "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/cache/neutral/alerttoast/Sources/AlertToast/NeutralCounter.swift",
+          "line": 8
+        },
+        {
+          "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/cache/neutral/alerttoast/Sources/AlertToast/NeutralCounter.swift",
+          "line": 12
+        },
+        {
+          "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/cache/neutral/alerttoast/Sources/AlertToast/NeutralCounter.swift",
+          "line": 13
+        },
+        {
+          "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/cache/neutral/alerttoast/Sources/AlertToast/NeutralCounter.swift",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "id": "bridge-source",
+      "observed": true,
+      "reason": "ObserverBridge.make reads the actual fixture seed as Int with a zero fallback and passes that seed and the received onEvent closure directly to NeutralCounter. It applies .id(seed), so a changed caller seed selects a new SwiftUI component identity inside the same running observer host; the qualified update scope is this keyed path.",
+      "citations": [
+        {
+          "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/native/Bridge.swift",
+          "line": 4
+        },
+        {
+          "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/native/Bridge.swift",
+          "line": 5
+        },
+        {
+          "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/probes/native/Bridge.swift",
+          "line": 6
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+JAVA_HOME=/Users/rex/Library/Java/JavaVirtualMachines/jbr-21.0.11/Contents/Home ANDROID_HOME=/Users/rex/Library/Android/sdk ANDROID_SDK_ROOT=/Users/rex/Library/Android/sdk ./gradlew --offline :app:compileDebugKotlin

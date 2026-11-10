@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "explicit": true,
+  "status": "passed",
+  "rows": [
+    {
+      "id": "caption-source",
+      "priority": "must",
+      "owner": "component",
+      "method": "source",
+      "status": "passed",
+      "expected": true,
+      "unit": "bool",
+      "actual": true,
+      "reason": "NeutralCounter initializes its private @State count from the seed parameter, renders the Tally label from that count, increments count in the Count callback, and gates Continue with count == 0. The caller-keyed identity for a changed seed is provided by the separately reviewed bridge .id(seed); this source observation covers the component expressions and callback closures.",
+      "assertion_ids": [],
+      "evidence": [
+        {
+          "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/cache/neutral-source-reviews/ios/7e18a2942c909c8c0b31d14a6b2be433b760008af7c7687eabc3a4f4c41ad7b7.json",
+          "sha256": "7bbbff379c16959164abae8dd43c56c7ac3b0484b58271ab98168a8dc3654f64"
+        }
+      ],
+      "attribution": "unassessed; evidence compatibility is not proof of defect responsibility"
+    },
+    {
+      "id": "bridge-source",
+      "priority": "must",
+      "owner": "bridge",
+      "method": "source",
+      "status": "passed",
+      "expected": true,
+      "unit": "bool",
+      "actual": true,
+      "reason": "ObserverBridge.make reads the actual fixture seed as Int with a zero fallback and passes that seed and the received onEvent closure directly to NeutralCounter. It applies .id(seed), so a changed caller seed selects a new SwiftUI component identity inside the same running observer host; the qualified update scope is this keyed path.",
+      "assertion_ids": [],
+      "evidence": [
+        {
+          "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/managed-forward/cache/neutral-source-reviews/ios/7e18a2942c909c8c0b31d14a6b2be433b760008af7c7687eabc3a4f4c41ad7b7.json",
+          "sha256": "7bbbff379c16959164abae8dd43c56c7ac3b0484b58271ab98168a8dc3654f64"
+        }
+      ],
+      "attribution": "unassessed; evidence compatibility is not proof of defect responsibility"
+    }
+  ],
+  "blocking_claims": [],
+  "scope": "Capability and subject-boundary checks, not source-review truth or causal attribution."
+}

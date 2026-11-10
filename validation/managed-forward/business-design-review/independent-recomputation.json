@@ -1,0 +1,360 @@
+{
+  "public": {
+    "case": "cedar-lunch",
+    "independent_state_derivation": [
+      {
+        "state": "draft",
+        "input_index": 0,
+        "after_action": 0,
+        "selected_option": null,
+        "servings": 12,
+        "credit": false,
+        "accepted": false,
+        "sent": false,
+        "balance_cents": null,
+        "balance_display": "Select a dish to calculate the balance",
+        "events_in_immediate_action_interval": []
+      },
+      {
+        "state": "replacement",
+        "input_index": 0,
+        "after_action": 1,
+        "selected_option": "roast",
+        "servings": 12,
+        "credit": false,
+        "accepted": false,
+        "sent": false,
+        "balance_cents": 1200,
+        "balance_display": "Additional payment $12.00",
+        "events_in_immediate_action_interval": []
+      },
+      {
+        "state": "quantityChanged",
+        "input_index": 0,
+        "after_action": 2,
+        "selected_option": "roast",
+        "servings": 13,
+        "credit": false,
+        "accepted": false,
+        "sent": false,
+        "balance_cents": 2300,
+        "balance_display": "Additional payment $23.00",
+        "events_in_immediate_action_interval": []
+      },
+      {
+        "state": "ready",
+        "input_index": 0,
+        "after_action": 4,
+        "selected_option": "roast",
+        "servings": 13,
+        "credit": true,
+        "accepted": true,
+        "sent": false,
+        "balance_cents": 1400,
+        "balance_display": "Additional payment $14.00",
+        "events_in_immediate_action_interval": []
+      },
+      {
+        "state": "sent",
+        "input_index": 0,
+        "after_action": 5,
+        "selected_option": "roast",
+        "servings": 13,
+        "credit": true,
+        "accepted": true,
+        "sent": true,
+        "balance_cents": 1400,
+        "balance_display": "Additional payment $14.00",
+        "events_in_immediate_action_interval": [
+          "menu.submit|request=cedar-104|revision=1|option=roast|servings=13|trayCredit=true|balanceCents=1400"
+        ]
+      },
+      {
+        "state": "revised",
+        "input_index": 1,
+        "after_action": 6,
+        "selected_option": "roast",
+        "servings": 12,
+        "credit": true,
+        "accepted": false,
+        "sent": false,
+        "balance_cents": 100,
+        "balance_display": "Additional payment $1.00",
+        "events_in_immediate_action_interval": []
+      },
+      {
+        "state": "readyRevised",
+        "input_index": 1,
+        "after_action": 9,
+        "selected_option": "lentil",
+        "servings": 11,
+        "credit": true,
+        "accepted": true,
+        "sent": false,
+        "balance_cents": -2600,
+        "balance_display": "Refund $26.00",
+        "events_in_immediate_action_interval": []
+      },
+      {
+        "state": "sentRevised",
+        "input_index": 1,
+        "after_action": 10,
+        "selected_option": "lentil",
+        "servings": 11,
+        "credit": true,
+        "accepted": true,
+        "sent": true,
+        "balance_cents": -2600,
+        "balance_display": "Refund $26.00",
+        "events_in_immediate_action_interval": [
+          "menu.submit|request=cedar-104|revision=2|option=lentil|servings=11|trayCredit=true|balanceCents=-2600"
+        ]
+      }
+    ],
+    "expected_value_comparison": "all independently derived business, theme, and proposition expectations match",
+    "source_association_claims": 17,
+    "native_responsibility_claims": 39,
+    "source_route_execution": "not performed; independent textual association completeness only",
+    "plans": {
+      "ios": {
+        "assertions": 303,
+        "cells": 312,
+        "not_applicable": [
+          "draft/action-event",
+          "draft/update-event",
+          "quantityChanged/update-event",
+          "ready/update-event",
+          "readyRevised/update-event",
+          "replacement/update-event",
+          "revised/action-event",
+          "sent/update-event",
+          "sentRevised/update-event"
+        ],
+        "environment": {
+          "width": 390,
+          "height": 600,
+          "direction": "ltr",
+          "theme": "light",
+          "dynamic_type": "large"
+        },
+        "launch": {
+          "scenario": "cedar-lunch",
+          "platform": "ios",
+          "fixtures_sha256": "aaa886dc775b016d4109310613ae13695f372e4faadf79a2bc8fcf2acaa04e37",
+          "bridge_sha256": "c4352e4676fab7a4c723dfc79b7714b715c061c4576dba6eba543cffd282a65a"
+        },
+        "plan_canonical_sha256": "0ac51f2b33c7a6d17a8e143105658ac3c34c54f2c39e210b188c1c90017d323e"
+      },
+      "android": {
+        "assertions": 303,
+        "cells": 312,
+        "not_applicable": [
+          "draft/action-event",
+          "draft/update-event",
+          "quantityChanged/update-event",
+          "ready/update-event",
+          "readyRevised/update-event",
+          "replacement/update-event",
+          "revised/action-event",
+          "sent/update-event",
+          "sentRevised/update-event"
+        ],
+        "environment": {
+          "width": 390,
+          "height": 600,
+          "direction": "ltr",
+          "theme": "light",
+          "font_scale": 1.0,
+          "dimension_encoding": "paparazzi-float32-screen-config-v1"
+        },
+        "launch": {
+          "scenario": "cedar-lunch",
+          "platform": "android",
+          "fixtures_sha256": "aaa886dc775b016d4109310613ae13695f372e4faadf79a2bc8fcf2acaa04e37",
+          "bridge_sha256": "f7fd310346f90345adfc99f521f7cdb228d957a1809928878acf0409220c4ba4"
+        },
+        "plan_canonical_sha256": "16ae34563863371a345f5e7a612e158f1bf85d424275b035baa1d57b08a89137"
+      }
+    }
+  },
+  "private": {
+    "case": "evening-service",
+    "independent_state_derivation": [
+      {
+        "state": "draft",
+        "input_index": 0,
+        "after_action": 0,
+        "selected_option": null,
+        "servings": 9,
+        "credit": false,
+        "accepted": false,
+        "sent": false,
+        "balance_cents": null,
+        "balance_display": "Select a dish to calculate the balance",
+        "events_in_immediate_action_interval": []
+      },
+      {
+        "state": "replacement",
+        "input_index": 0,
+        "after_action": 1,
+        "selected_option": "chickpea",
+        "servings": 9,
+        "credit": false,
+        "accepted": false,
+        "sent": false,
+        "balance_cents": -1225,
+        "balance_display": "Refund $12.25",
+        "events_in_immediate_action_interval": []
+      },
+      {
+        "state": "quantityChanged",
+        "input_index": 0,
+        "after_action": 2,
+        "selected_option": "chickpea",
+        "servings": 8,
+        "credit": false,
+        "accepted": false,
+        "sent": false,
+        "balance_cents": -2200,
+        "balance_display": "Refund $22.00",
+        "events_in_immediate_action_interval": []
+      },
+      {
+        "state": "ready",
+        "input_index": 0,
+        "after_action": 4,
+        "selected_option": "chickpea",
+        "servings": 8,
+        "credit": true,
+        "accepted": true,
+        "sent": false,
+        "balance_cents": -2850,
+        "balance_display": "Refund $28.50",
+        "events_in_immediate_action_interval": []
+      },
+      {
+        "state": "sent",
+        "input_index": 0,
+        "after_action": 5,
+        "selected_option": "chickpea",
+        "servings": 8,
+        "credit": true,
+        "accepted": true,
+        "sent": true,
+        "balance_cents": -2850,
+        "balance_display": "Refund $28.50",
+        "events_in_immediate_action_interval": [
+          "menu.submit|request=evening-77|revision=8|option=chickpea|servings=8|trayCredit=true|balanceCents=-2850"
+        ]
+      },
+      {
+        "state": "revised",
+        "input_index": 1,
+        "after_action": 6,
+        "selected_option": null,
+        "servings": 8,
+        "credit": false,
+        "accepted": false,
+        "sent": false,
+        "balance_cents": null,
+        "balance_display": "Select a dish to calculate the balance",
+        "events_in_immediate_action_interval": []
+      },
+      {
+        "state": "readyRevised",
+        "input_index": 1,
+        "after_action": 8,
+        "selected_option": "aubergine",
+        "servings": 7,
+        "credit": false,
+        "accepted": true,
+        "sent": false,
+        "balance_cents": -1625,
+        "balance_display": "Refund $16.25",
+        "events_in_immediate_action_interval": []
+      },
+      {
+        "state": "sentRevised",
+        "input_index": 1,
+        "after_action": 9,
+        "selected_option": "aubergine",
+        "servings": 7,
+        "credit": false,
+        "accepted": true,
+        "sent": true,
+        "balance_cents": -1625,
+        "balance_display": "Refund $16.25",
+        "events_in_immediate_action_interval": [
+          "menu.submit|request=evening-77|revision=9|option=aubergine|servings=7|trayCredit=false|balanceCents=-1625"
+        ]
+      }
+    ],
+    "expected_value_comparison": "all independently derived business, theme, and proposition expectations match",
+    "source_association_claims": 17,
+    "native_responsibility_claims": 39,
+    "source_route_execution": "not performed; independent textual association completeness only",
+    "plans": {
+      "ios": {
+        "assertions": 303,
+        "cells": 312,
+        "not_applicable": [
+          "draft/action-event",
+          "draft/update-event",
+          "quantityChanged/update-event",
+          "ready/update-event",
+          "readyRevised/update-event",
+          "replacement/update-event",
+          "revised/action-event",
+          "sent/update-event",
+          "sentRevised/update-event"
+        ],
+        "environment": {
+          "width": 320,
+          "height": 600,
+          "direction": "rtl",
+          "theme": "dark",
+          "dynamic_type": "xxxLarge"
+        },
+        "launch": {
+          "scenario": "evening-service",
+          "platform": "ios",
+          "fixtures_sha256": "cad240ac6eb2815cfe49bb5aa73b9aaceb9382f59066dcf6d24e926de13f4f37",
+          "bridge_sha256": "c4352e4676fab7a4c723dfc79b7714b715c061c4576dba6eba543cffd282a65a"
+        },
+        "plan_canonical_sha256": "e3a7407bd8dd31999bcd65ee5172b3e1e81f28d92afe034afd3c470d2f5e732c"
+      },
+      "android": {
+        "assertions": 303,
+        "cells": 312,
+        "not_applicable": [
+          "draft/action-event",
+          "draft/update-event",
+          "quantityChanged/update-event",
+          "ready/update-event",
+          "readyRevised/update-event",
+          "replacement/update-event",
+          "revised/action-event",
+          "sent/update-event",
+          "sentRevised/update-event"
+        ],
+        "environment": {
+          "width": 320,
+          "height": 600,
+          "direction": "rtl",
+          "theme": "dark",
+          "font_scale": 1.3,
+          "dimension_encoding": "paparazzi-float32-screen-config-v1"
+        },
+        "launch": {
+          "scenario": "evening-service",
+          "platform": "android",
+          "fixtures_sha256": "cad240ac6eb2815cfe49bb5aa73b9aaceb9382f59066dcf6d24e926de13f4f37",
+          "bridge_sha256": "f7fd310346f90345adfc99f521f7cdb228d957a1809928878acf0409220c4ba4"
+        },
+        "plan_canonical_sha256": "1352740f04d847fc67c1a0b590373d75e9a8d20e5954c89252138de98489cd30"
+      }
+    }
+  },
+  "shared_product_contract": "identical public/private general prose, API, rules, styles, propositions, duties, routes, bridges and structural SVG",
+  "runtime_actuals": "not collected; no native, pixel, qualitative-image or SDK pass is claimed"
+}

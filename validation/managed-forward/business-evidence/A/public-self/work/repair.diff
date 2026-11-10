@@ -1,0 +1,44 @@
+--- validation/managed-forward/cache/study/arms/A/workspace/alerttoast/Sources/AlertToast/MenuChangeReviewPanel.swift
++++ validation/managed-forward/cache/study/arms/A/workspace/alerttoast/Sources/AlertToast/MenuChangeReviewPanel.swift
+@@ -156,6 +156,14 @@
+     var disabledInk: Color { color(0x68756D, 0x93A99A) }
+ }
+ 
++// Colors and disabled treatment are chosen explicitly by each control. Preserve
++// those opaque roles instead of adding PlainButtonStyle's whole-label dimming.
++private struct MenuReviewButtonStyle: ButtonStyle {
++    func makeBody(configuration: Configuration) -> some View {
++        configuration.label
++    }
++}
++
+ private func menuMoney(_ cents: Int) -> String {
+     let magnitude = cents.magnitude
+     let fraction = magnitude % 100
+@@ -281,7 +289,7 @@
+             .overlay(RoundedRectangle(cornerRadius: 16)
+                 .stroke(selected ? palette.accent : palette.border, lineWidth: 1))
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(MenuReviewButtonStyle())
+         .disabled(!enabled)
+         .accessibilityElement(children: .ignore)
+         .accessibilityLabel(Text(option.title))
+@@ -322,7 +330,7 @@
+                 .cornerRadius(16)
+                 .overlay(RoundedRectangle(cornerRadius: 16).stroke(palette.border, lineWidth: 1))
+         }
+-        .buttonStyle(PlainButtonStyle())
++        .buttonStyle(MenuReviewButtonStyle())
+         .disabled(!enabled)
+         .accessibilityLabel(Text(label))
+         .accessibilityIdentifier(identifier)
+@@ -449,7 +457,7 @@
+                     .background(canSend ? palette.accent : palette.disabledFill)
+                     .cornerRadius(16)
+             }
+-            .buttonStyle(PlainButtonStyle())
++            .buttonStyle(MenuReviewButtonStyle())
+             .disabled(!canSend)
+             .accessibilityIdentifier("menu.submit")
+         }

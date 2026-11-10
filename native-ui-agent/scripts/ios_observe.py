@@ -368,8 +368,7 @@ def run(args) -> int:
         manifest["status"] = "passed" if test.returncode == 0 and manifest["native_test_count"] > 0 and observation["status"] == "passed" and complete else "failed"
         if strategy == 'coalesced':
             import execution_plan
-            receipt = execution_plan.coverage_receipt({'required_coverage': config['execution_states'], 'config': config,
-                'platform': 'ios', 'execution_sha256': digest(Path(args.fixtures)), 'scope': config['execution_scope']}, observation)
+            receipt = execution_plan.request_coverage_receipt(config, observation, 'ios', digest(Path(args.fixtures)))
             manifest['execution_coverage'] = receipt
             if not receipt['satisfied']: manifest['status'] = 'failed'
             elif config['execution_scope'] == 'targeted' and test.returncode == 0 and observation['status'] == 'passed':

@@ -85,6 +85,26 @@ class DeliveryPlanTests(unittest.TestCase):
         changed = copy.deepcopy(value); del changed['actions'][1]['after_targets']
         with self.assertRaises(ValueError): execution.verify_execution(changed, self.plan, self.lock, self.lock_sha, config, 'a' * 64)
 
+    def test_request_identity_cannot_impersonate_approved_execution(self):
+        fixtures={'initial':{},'updates':[{}]}
+        value=execution.compile_execution(self.plan,self.lock,self.lock_sha,fixtures,'a'*64,
+                                          launch_ref={'source':'reference','pointer':'/launch'})
+        observation={'snapshots':[],'state_captures':[]}
+        wire=json.dumps(value['config'],indent=2).encode()
+        import hashlib
+        request_sha=hashlib.sha256(wire).hexdigest()
+        self.assertNotEqual(request_sha,value['execution_sha256'])
+        parent=execution.coverage_receipt(value,observation)
+        native=execution.request_coverage_receipt(value['config'],observation,'ios',request_sha)
+        self.assertEqual(parent['execution_sha256'],value['execution_sha256'])
+        self.assertNotIn('execution_sha256',native)
+        self.assertEqual(native['request_sha256'],request_sha)
+        self.assertEqual(native['identity_scope'],'native_request')
+        self.assertEqual(parent['required_states'],native['required_states'])
+        self.assertFalse(native['satisfied'])
+        with self.assertRaises(ValueError):
+            execution.request_coverage_receipt(value['config'],observation,'ios','missing')
+
     def test_targeted_feedback_retains_business_actions_and_parent_expectations(self):
         before = d.digest(self.plan)
         value = execution.compile_execution(self.plan, self.lock, self.lock_sha, {'initial': {}, 'updates': [{}]}, 'a' * 64, launch_ref={'source': 'reference', 'pointer': '/launch'}, states=['updated'])
