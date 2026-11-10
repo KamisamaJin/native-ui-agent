@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
 """Replay v9 in its immutable source view while newer default tools evolve."""
-import hashlib,json,os,shutil,subprocess,sys,tempfile
+import hashlib,importlib.util,json,os,shutil,subprocess,sys,tempfile
 from pathlib import Path
 P=Path(__file__).resolve().parent;REPO=P.parents[2];NEW=REPO/'validation/default-forward';OLD=REPO/'validation/feedback-forward';PUB=REPO/'validation/publications/feedback-v9'
 def read(p):return json.loads(p.read_text())
 def raw(p):return os.readlink(p).encode()if p.is_symlink()else p.read_bytes()
 def sha(p):return hashlib.sha256(raw(p)).hexdigest()
 def main():
+ resolver_spec=importlib.util.spec_from_file_location('publication_historical_sources',P.parent/'historical_sources.py');resolver=importlib.util.module_from_spec(resolver_spec);resolver_spec.loader.exec_module(resolver)
  original=read(OLD/'ARTIFACTS.json');completion=read(PUB/'MANIFEST.json');meta=read(PUB/'original-publication.json')
  with tempfile.TemporaryDirectory(prefix='native-v9-original-')as folder:
   root=Path(folder);copied={}
   def put(rel,source,expected=None):
-   if expected is not None:assert sha(source)==expected,rel
+   if expected is not None:
+    actual=sha(source)if source.is_file()or source.is_symlink()else None
+    if actual!=expected and source==REPO/rel:source=resolver.archived_source(REPO,rel,expected);actual=sha(source)
+    assert actual==expected,rel
    target=root/rel;target.parent.mkdir(parents=True,exist_ok=True)
    if target.exists()or target.is_symlink():target.unlink()
    if source.is_symlink():target.symlink_to(os.readlink(source))

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Replay immutable v10 bytes in a temporary source/index view; no SDK."""
-import hashlib,json,os,shutil,subprocess,sys,tempfile
+import hashlib,importlib.util,json,os,shutil,subprocess,sys,tempfile
 from pathlib import Path
 P=Path(__file__).resolve().parent;REPO=P.parents[2];OLD='validation/default-forward/';NEW=REPO/'validation/routed-forward'
 def raw(p):return os.readlink(p).encode()if p.is_symlink()else p.read_bytes()
 def main():
+ resolver_spec=importlib.util.spec_from_file_location('publication_historical_sources',P.parent/'historical_sources.py');resolver=importlib.util.module_from_spec(resolver_spec);resolver_spec.loader.exec_module(resolver)
  inventory=json.loads((REPO/OLD/'ARTIFACTS.json').read_text())
  with tempfile.TemporaryDirectory(prefix='native-v10-original-')as folder:
   root=Path(folder);copied={}
@@ -12,7 +13,10 @@ def main():
    source=REPO/rel
    if rel.startswith('native-ui-agent/'):source=NEW/'baseline-v10'/rel.removeprefix('native-ui-agent/')
    elif (NEW/'historical-root'/rel).is_file():source=NEW/'historical-root'/rel
-   if expected:assert hashlib.sha256(raw(source)).hexdigest()==expected,rel
+   if expected:
+    actual=hashlib.sha256(raw(source)).hexdigest()if source.is_file()or source.is_symlink()else None
+    if actual!=expected and source==REPO/rel:source=resolver.archived_source(REPO,rel,expected);actual=hashlib.sha256(raw(source)).hexdigest()
+    assert actual==expected,rel
    target=root/rel;target.parent.mkdir(parents=True,exist_ok=True)
    if source.is_symlink():target.symlink_to(os.readlink(source))
    else:

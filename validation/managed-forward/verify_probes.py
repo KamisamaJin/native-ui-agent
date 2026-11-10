@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Portable closed neutral verification; no live cache, SDK or process cleanup."""
-import argparse,collections,hashlib,json,subprocess,sys,tarfile
+import argparse,collections,hashlib,json,os,subprocess,sys,tarfile
 from pathlib import Path
 from PIL import Image
 R=Path(__file__).resolve().parent;REPO=R.parents[1]
@@ -97,6 +97,14 @@ def main():
  with tarfile.open(archive,'r:gz')as stream:
   for row in partial['entries']:
    data=stream.extractfile(row['file']).read();assert len(data)==row['bytes']and hashlib.sha256(data).hexdigest()==row['sha256']
+ ci=read(R/'operators/ci-42636803387.json');assert sha(R/'operators/ci-42636803387.log')==ci['raw_log_sha256']and ci['conclusion']=='failure'
+ aliases=read(R/'operators/historical-alias-preflight.json');assert aliases['status']=='PASS'and sum(aliases['counts'].values())==len(aliases['rows'])
+ for row in aliases['rows']:
+  p=REPO/row['source'];raw=os.readlink(p).encode()if p.is_symlink()else p.read_bytes();assert hashlib.sha256(raw).hexdigest()==row['sha256']
+ for version in ['v9','v10','v11']:
+  root=R/('operators/history-'+version+'-alias-fix-2');row=read(root/'result.json');assert row['exit_code']==0 and row['source_sha256_before']==row['source_sha256_after']
+  resource=read(root/'resources/resources.json');closed=read(root/'root-cleanup.json')
+  assert not resource['cleanup_errors']and not resource['remaining_devices']and not resource['remaining_directories']and closed['removed']and closed['owner']==resource['owner']
  checkpoint=read(R/'PHASE1.json')
  assert checkpoint['business_blind_trial']=='not_started'and not checkpoint['business_design_dispatched']and not checkpoint['initial_business_source_authored']
  if a.tracked:

@@ -70,6 +70,10 @@
 
 首次[远端 CI](https://github.com/KamisamaJin/native-ui-agent/actions/runs/42633193301)的 164 项工具测试通过，但旧 `tool-forward/verify_engineering.py` 用 `importlib` 单文件加载 `native_checks` 时，因新增无条件导入 `action_guard` 而失败。组合测试的 `sys.path` 修改掩盖了这个**实际向后兼容回归**。v12.4 将该依赖延后到 protocol-1 观测包才加载；守卫协议的校验逻辑没有放宽。新增 `python -I` 隔离进程回归后，本地 165 项及原工程验证通过。见 [完整失败日志与分类](operators/ci-42633193301.json) 和新冻结候选。已有 SDK 包仍是各自 v12.1/v12.2/v12.3 执行，不给 v12.4 虚构一次新 SDK 信用；这些均在业务设计开始前发生。
 
+第二次[远端 CI](https://github.com/KamisamaJin/native-ui-agent/actions/runs/42636803387)通过当前工具和原生证据检查，以及截至 v8 的历史校验，随后在 v9 历史重放因 `THIRD_PARTY_NOTICES.md` 摘要不符失败：历史入口读取了更新后的活文档。修复保留原摘要，只有活文件别名不匹配时才从受控 `historical-root` 目录选取**完全相同 SHA256 的原字节**；显式冻结基线错误仍拒绝。原 v9/v10 入口本身也保存为旧版本快照，确保 v11 的原清单仍可重放。[完整失败日志与分类](operators/ci-42636803387.json) 保留。
+
+修复后 v9/v10/v11 均已本地完整重放通过，见 `operators/history-v*-alias-fix-2/` 下的原始日志、源指纹与资源收据；没有 SDK 执行或新业务评分。增加了 3 项历史来源控制，并将 276 个别名的摘要预检查前置到耗时评分之前；预检查不替代完整数据与评分重放。开发中发生的临时路径规范化、目录符号链接处理，以及受管临时根含 `cache` 导致旧过滤器误排除等本地失败也单独保留；未改旧过滤器、原评分或断言阈值。各次重放使用受管进程组和临时目录，结束后已清理；源指纹前后相同。
+
 本地随后按工作流顺序执行余下离线检查，前 14 项通过；旧 `dispatch-forward/verify_evaluation.py` 的全量历史图像评分在本地驱动的 300 秒上限终止，未完成部分不算通过，也不属于产品缺陷或原生采集失败。[逐命令记录与原日志](operators/local-ci-after-compatibility/commands.json)、[超时记录](operators/local-ci-after-compatibility/timeout.json) 保留；没有调整评分预期、阈值或原实验数据。
 
 主项目专用工作缓存已在闭包核验后清理：**4048 个文件、500,346,880 allocated bytes（477.17 MiB）**，主 cache 目录已不存在。[CLEANUP.json](CLEANUP.json) 保留实际前后统计与证据清单；独立探针自己的 per-run cache 归档另见各轮记录。没有创建新 iOS 模拟器，也没有清理用户设备、共享 SDK 缓存、旧证据或 Git 历史。
