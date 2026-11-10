@@ -182,7 +182,11 @@ def callback_verdict(step, expected, platform, required_method=None, stimulus='a
     return result
 
 
-def state_evidence(observation,state):
+def state_evidence(observation,state,root=None):
+    if type(state.get('input_index'))is not int or state['input_index']<0:
+        return [],False,'state input index must be an integer',None
+    if 'after_action'in state and type(state['after_action'])is not int:
+        return [],False,'state action checkpoint must be an integer',None
     # Legacy coverage packets have no guarded route. Keep this standalone reader
     # usable through a file loader without importing an unrelated protocol.
     if observation.get('guard_protocol') == 1:
@@ -200,15 +204,16 @@ def state_evidence(observation,state):
             # Legacy raw data still earns the facts actually visible in its one
             # bound action frame; it cannot borrow frames from other actions.
             legacy=dict(state,coverage='target')
-            return state_evidence(observation,legacy)
+            return state_evidence(observation,legacy,root)
         binding=step.get('binding_after',{});snapshots=observation.get('snapshots',[])
         capture=dict(bundle,after_action=index,source='native_post_action_targets',scope='targets_only')
-        if (bundle.get('state_id')!=state['id']or step.get('state_id')!=state['id']or bundle.get('after_action')!=index
+        if (bundle.get('state_id')!=state['id']or step.get('state_id')!=state['id']or type(bundle.get('after_action'))is not int or bundle['after_action']!=index
                 or not binding or bundle.get('binding')!=binding
                 or bundle.get('binding_after_observation')!=binding
                 or bundle.get('binding_stable')is not True):
             return [],False,'target observation input/process/event binding drift',capture
-        if binding.get('fixture_index',binding.get('input_index'))!=state['input_index']:
+        actual_input=binding.get('fixture_index',binding.get('input_index'))
+        if type(actual_input)is not int or actual_input!=state['input_index']:
             return [],False,'target observation has different caller input',capture
         if not binding.get('instance')or not binding.get('input_sha256')or type(binding.get('event_revision'))is not int:
             return [],False,'target observation lacks native epoch identity',capture
@@ -227,27 +232,36 @@ def state_evidence(observation,state):
         return found,False,'bound multi-target evidence; no full-content coverage claim',capture
     if not captures and state.get('coverage')=='target':
         index=state.get('after_action');steps=observation.get('steps',[])
-        if not isinstance(index,int)or not 0<=index<len(steps):return [],False,'missing native action checkpoint',None
+        if type(index)is not int or not 0<=index<len(steps):return [],False,'missing native action checkpoint',None
         step=steps[index];snap_index=step.get('after',step.get('snapshot'));snapshots=observation.get('snapshots',[])
-        if not isinstance(snap_index,int)or not 0<=snap_index<len(snapshots):return [],False,'invalid native action snapshot',None
+        if type(snap_index)is not int or not 0<=snap_index<len(snapshots):return [],False,'invalid native action snapshot',None
         snapshot=snapshots[snap_index];binding=step.get('binding_after')
         if snapshot.get('capture_consistent') is False:return [],False,'native image/hierarchy epoch changed during capture',None
         if step.get('state_id')!=state['id']or snapshot.get('state_id')!=state['id']or not binding or snapshot.get('binding')!=binding:
             return [],False,'action checkpoint state/binding mismatch',None
-        if binding.get('fixture_index',binding.get('input_index'))!=state['input_index']:return [],False,'action checkpoint has different input',None
+        actual_input=binding.get('fixture_index',binding.get('input_index'))
+        if type(actual_input)is not int or actual_input!=state['input_index']:return [],False,'action checkpoint has different input',None
         capture={'state_id':state['id'],'binding':binding,'snapshot_indices':[snap_index],'after_action':index,'source':'native_action_checkpoint','scope':'target_only'}
         return [(snap_index,snapshot)],False,'native action checkpoint; no full-content coverage claim',capture
     if len(captures)!=1:return [],False,'missing or duplicate state capture',None
     capture=captures[0];binding=capture.get('binding',{})
     actual_index=binding.get('fixture_index',binding.get('input_index'))
-    if actual_index!=state['input_index']:return [],False,'state is bound to different caller input',capture
-    if 'after_action'in state and capture.get('after_action')!=state['after_action']:
+    if type(actual_index)is not int or actual_index!=state['input_index']:return [],False,'state is bound to different caller input',capture
+    if 'after_action'in state and (type(capture.get('after_action'))is not int or capture['after_action']!=state['after_action']):
         return [],False,'state is bound to different action checkpoint',capture
     snapshots=observation.get('snapshots',[]);indices=capture.get('snapshot_indices',[])
-    if not indices or any(not isinstance(i,int)or i<0 or i>=len(snapshots)for i in indices):return [],False,'invalid state snapshot indices',capture
+    if (not isinstance(indices,list)or not indices or any(type(i)is not int or i<0 or i>=len(snapshots)for i in indices)
+            or len(indices)!=len(set(indices))):return [],False,'invalid state snapshot indices',capture
     found=[(i,snapshots[i])for i in indices]
     if any(s.get('capture_consistent') is False for _,s in found):return [],False,'native image/hierarchy epoch changed during capture',capture
     if any(s.get('binding')!=binding for _,s in found):return [],False,'snapshot binding drift',capture
+    if observation.get('coverage_protocol') == 2 and capture.get('stable_binding') is not True:
+        return found,False,'producer reports unstable state binding',capture
+    if observation.get('coverage_protocol') == 2:
+        import scroll_coverage
+        try: scroll_coverage.native_rows(found, binding)
+        except (ValueError, KeyError, TypeError, OverflowError) as error:
+            return found,False,str(error),capture
     # Recompute geometry coverage; the producer's complete:true alone is not proof.
     intervals=[];heights=[]
     for _,snapshot in found:
@@ -259,12 +273,29 @@ def state_evidence(observation,state):
     end=0;gap=0
     for a,b in sorted(intervals):gap=max(gap,a-end);end=max(end,b)
     complete=bool(intervals)and max(heights)-min(heights)<=1 and gap<=1 and end>=max(heights)-1 and capture.get('top_reached')is True and capture.get('bottom_reached')is True and capture.get('stable_binding')is True
+    if not complete and observation.get('coverage_protocol') == 2:
+        import scroll_coverage
+        proof = scroll_coverage.certify(found, binding, root)
+        if proof['complete']:
+            import coverage_domain
+            try: proof['domain_admission'] = coverage_domain.verify_packet(root,found)
+            except (ValueError,OSError,KeyError,TypeError) as error:
+                proof.update(complete=False,reason='coverage_domain: '+str(error))
+        return found,proof['complete'],proof['reason'],dict(capture, coverage_proof=proof)
+    if complete and observation.get('coverage_protocol')==2:
+        import coverage_domain
+        try:
+            if coverage_domain.requested(root):
+                domain=coverage_domain.verify_packet(root,found)
+                capture=dict(capture,coverage_domain=domain)
+        except (ValueError,OSError,KeyError,TypeError) as error:
+            return found,False,'coverage_domain: '+str(error),capture
     return found,complete,'native interval union complete'if complete else'incomplete per-state interval union',capture
 
 
-def bound_state_evidence(observation,state):
+def bound_state_evidence(observation,state,root=None):
     """Strict source/epoch/image identity for the new independently pinned review mode."""
-    found,complete,reason,capture=state_evidence(observation,state)
+    found,complete,reason,capture=state_evidence(observation,state,root)
     if not found:return found,complete,reason,capture
     binding=capture.get('binding',{})if capture else{}
     valid=(isinstance(binding.get('instance'),str)and bool(binding['instance'])and
@@ -325,6 +356,126 @@ def geometry_value(snapshot, item, platform):
     return result['value'] if result else None
 
 
+def native_tree(nodes,platform):
+    """One connected native identity graph; repeated records are not entities."""
+    key,parent=('index','parent_index')if platform=='ios'else('node_id','parent_id')
+    if not nodes or any(type(n.get(key))is not int or type(n.get(parent))is not int for n in nodes):return False
+    ids=[n[key]for n in nodes]
+    if len(set(ids))!=len(ids)or -1 in ids:return False
+    by_id={n[key]:n for n in nodes};roots=[n for n in nodes if n[parent]==-1]
+    if len(roots)!=1 or (platform=='ios'and(type(roots[0].get('role_raw'))is not int or roots[0]['role_raw']!=2)):return False
+    root=roots[0][key];closed={root}
+    for start in ids:
+        seen=set();cursor=start
+        while cursor not in closed:
+            if cursor in seen or cursor not in by_id:return False
+            seen.add(cursor);cursor=by_id[cursor][parent]
+        closed.update(seen)
+    return True
+
+
+def native_query_evidence(snapshot,target,platform):
+    """Read the emitted query schema and cross-check all redundant native facts.
+
+    A legacy explicit query can report cardinality without a full tree. A flat
+    node can witness presence, but only a recognized complete query/domain can
+    establish absence or positive uniqueness. Malformed identities or conflicting
+    group/tree counts never become a product failure.
+    """
+    import math
+    result={'valid':False,'complete':False,'count':None,'visible':False,'duplicate':False,'reason':'Malformed native query'}
+    nodes=snapshot.get('nodes',[])
+    if not isinstance(nodes,list)or any(not isinstance(n,dict)for n in nodes):return result
+    key,parent=('index','parent_index')if platform=='ios'else('node_id','parent_id')
+    structured=bool(nodes)and any(key in n or parent in n for n in nodes)
+    tree=native_tree(nodes,platform)if structured else False
+    if structured and not tree:return dict(result,reason='Native identity graph is duplicated, disconnected, cyclic or ill typed')
+    full_tree=False
+    if platform=='ios':
+        performance=snapshot.get('performance',{})
+        if not isinstance(performance,dict):return result
+        if performance.get('native_query_mode')=='single_public_snapshot':
+            if not tree:return dict(result,reason='Public snapshot lacks a connected native application tree')
+            full_tree=True
+    elif platform=='android':
+        viewport=snapshot.get('native_viewport_px',{})
+        if not isinstance(viewport,dict):return result
+        density=viewport.get('density')
+        finite=lambda v:type(v)in{int,float}and math.isfinite(v)
+        geometry_ok=(tree and all(type(viewport.get(k))is int and viewport[k]>0 for k in ['width','height'])
+                     and finite(density)and density>0)
+        for n in nodes:
+            g=n.get('native_geometry',{})
+            if not isinstance(g,dict):return result
+            pos=g.get('position_px');size=g.get('size_px')
+            geometry_ok=geometry_ok and (type(g.get('version'))is int and g['version']==1
+                and g.get('provider')=='compose_semantics_int_size'and g.get('coordinate_unit')=='px'
+                and finite(g.get('density'))and g['density']==density
+                and isinstance(pos,list)and len(pos)==2 and all(finite(v)for v in pos)
+                and isinstance(size,list)and len(size)==2 and all(type(v)is int and v>=0 for v in size))
+        if structured and not geometry_ok:return dict(result,reason='Native semantics query lacks its emitted pixel geometry schema')
+        full_tree=bool(geometry_ok)
+    else:return dict(result,reason='Unknown native query platform')
+    matches=[n for n in nodes if same_selector(n,target)]
+    groups=snapshot.get('control_groups',[])if platform=='ios'else[]
+    if not isinstance(groups,list)or any(not isinstance(g,dict)for g in groups):return result
+    groups=[g for g in groups if g.get('selector')==target]
+    if len(groups)>1:return dict(result,reason='Duplicate explicit native queries')
+    explicit=False;count=len(matches);visible=any(n.get('intersects_viewport')is True for n in matches)
+    if groups:
+        g=groups[0];count=g.get('match_count');resolution=g.get('resolution')
+        known=(type(count)is int and count>=0 and
+               ((resolution=='missing'and count==0)or(resolution=='ambiguous_semantic'and count>1)
+                or(resolution in{'unique_native_control','no_native_control','ambiguous_native_controls','offscreen_not_resolved'}and count==1)))
+        if not known:return dict(result,reason='Unsupported or inconsistent explicit native query result')
+        semantic=g.get('semantic',{})
+        if count!=1 and semantic:return dict(result,reason='Non-singleton query carries a contradictory singleton semantic')
+        if count==1 and (not isinstance(semantic,dict)or not same_selector(semantic,target)):
+            return dict(result,reason='Explicit query semantic differs from its selector')
+        if resolution=='offscreen_not_resolved'and semantic.get('intersects_viewport')is not False:
+            return dict(result,reason='Offscreen query contradicts its visibility')
+        if nodes and count!=len(matches):return dict(result,reason='Explicit query cardinality contradicts original native nodes')
+        if nodes and count==1:
+            if structured and semantic.get(key)!=matches[0].get(key):return dict(result,reason='Explicit query identity contradicts original native node')
+            if semantic.get('intersects_viewport')is not matches[0].get('intersects_viewport'):
+                return dict(result,reason='Explicit query visibility contradicts original native node')
+        visible=visible or (count==1 and semantic.get('intersects_viewport')is True)
+        explicit=True
+    return {'valid':True,'complete':explicit or full_tree,'count':count,'visible':visible,
+            'duplicate':count>1 and (explicit or structured),'reason':'Consistent emitted native query facts'}
+
+
+def native_query_complete(snapshot,target,platform):
+    query=native_query_evidence(snapshot,target,platform)
+    return query['valid']and query['complete']
+
+
+def quantified_presence(found,complete,target,platform,prop,*,full_scope=True):
+    """Lazy non-realization in one viewport is not absence from a bound state."""
+    samples=[];singletons=[];duplicates=[];present=[];queries=[]
+    for index,snapshot in found:
+        resolved=resolve(snapshot,target,platform);query=native_query_evidence(snapshot,target,platform);queries.append(query)
+        samples.append({'snapshot':index,'resolution':resolved,'query':query,'viewport_local':True})
+        if not query['valid']:continue
+        if query['count']>0:present.append(index)
+        if query['duplicate']:duplicates.append(index)
+        if query['count']==1:singletons.append(index)
+    value=None;used=[]
+    if not all(q['valid']for q in queries):reason='Malformed or contradictory native query; raw facts retained'
+    elif prop=='present' and present:
+        value=True;used=present;reason='Native presence witnessed within this bound state'
+    elif prop=='unique' and duplicates:
+        value=False;used=duplicates;reason='Multiple native matches witnessed within this bound state'
+    elif prop=='unique' and singletons and (complete or not full_scope) and all(q['complete']for q in queries):
+        value=True;used=singletons;reason='Unique native matches witnessed; no observed duplicate in this bound state'
+    elif (complete or not full_scope) and not present and all(q['complete']for q in queries):
+        value=False;used=[i for i,_ in found];reason='No native match across the complete bound state'
+    else:reason='Presence/uniqueness or complete state absence is not established'
+    return value,used,{'quantifier':'exists_in_bound_state'if prop=='present'else'unique_native_match_in_bound_state',
+                      'value':value,'complete_state':complete,'scope':'full_state_native_domain'if full_scope else'bound_target_native_query',
+                      'samples':samples},reason
+
+
 def evaluate(plan, observation, platform, manual=None, root=None, observation_sha256=None, design_lock=None, design_sha256=None, review_policy=None, review_policy_sha256=None):
     if (design_lock is None)!=(design_sha256 is None):raise ValueError('Trusted design requires both external lock and pinned digest')
     if design_lock is not None and 'design_contract'not in plan:raise ValueError('Trusted design mode rejects a stripped or legacy unverified plan')
@@ -345,21 +496,22 @@ def evaluate(plan, observation, platform, manual=None, root=None, observation_sh
         decisions[row.get('id')]=row
     unknown=set(decisions)-{a['id']for a in plan['assertions']if a['kind']=='manual'}
     if unknown:raise ValueError('Unplanned manual decisions')
-    evidence={sid:(bound_state_evidence if review_policy is not None else state_evidence)(observation,spec)for sid,spec in states.items()};rows=[]
+    evidence={sid:(bound_state_evidence if review_policy is not None else state_evidence)(observation,spec,root)for sid,spec in states.items()};rows=[]
     for item in plan['assertions']:
         found,complete,why,capture=evidence[item['state']];status='unassessed';actual=None;reason=why;used=[];geometry_proofs=None
         if found:
             kind=item['kind']
-            if kind=='control':
+            if kind=='control' and item['property'] in {'present','unique'}:
+                full_scope=states[item['state']].get('coverage','full_content')not in{'target','targets'}
+                value,used,actual,reason=quantified_presence(found,complete,item['target'],platform,item['property'],full_scope=full_scope)
+                if value is not None:
+                    status='passed' if compare(value,item['expected'],item.get('op','eq'),item.get('tolerance')) else 'failed'
+            elif kind=='control':
                 values=[]
                 for index,snapshot in found:
                     resolved=resolve(snapshot,item['target'],platform);facts=resolved['facts'];prop=item['property']
                     semantic=resolved['semantic'];visible=semantic.get('intersects_viewport',False)
-                    if prop in {'present','unique'}:
-                        if facts.get('unique') and visible:values.append((index,facts[prop],resolved))
-                        elif complete and not facts.get('present'):values.append((index,False,resolved))
-                        elif facts.get('present')and not facts.get('unique'):values.append((index,facts[prop],resolved))
-                    elif prop=='label' and visible and facts.get('unique'):values.append((index,facts.get('label'),resolved))
+                    if prop=='label' and visible and facts.get('unique'):values.append((index,facts.get('label'),resolved))
                     elif visible and resolved['resolution']=='unique_native_control'and prop in facts and facts[prop]is not None:
                         values.append((index,facts[prop],resolved))
                 if values:

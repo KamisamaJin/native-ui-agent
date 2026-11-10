@@ -87,3 +87,68 @@ Multi-target navigation costs additional work. Limit targets to the independentl
 planned aspects relevant to that state and retain the shared scroll budget,
 unavailable targets, full-state coverage and command wall time. Do not shrink
 content, bypass required states or drop U rows to improve coverage or speed.
+
+iOS lazy containers can revise their estimated total height while scrolling.
+Version 2 collection retains the original estimates and full frames. If the
+existing stable-height interval proof is insufficient, `scroll_coverage.py`
+requires a top-to-terminal strip of exact overlapping original pixels plus two
+unambiguous, vertically distinct native leaf landmarks at every link. Landmark
+traits, projected positions, viewport mapping and the process/input/event epoch
+must remain coherent. Container IDs and repeated labels cannot supply identity.
+The host-owned scroll indicator is hidden at rendering time in this deterministic
+fixture; no original pixels are masked, resampled or given a difference tolerance.
+
+Native CGRect doubles keep their exact represented rational values. The fixed
+`native-rect-pixel-cell-enclosure-v1` model constrains positive integer rectangle
+possibilities through every edge and the original width/height. Exact full-width
+raster comparison selects a unique integer translation; geometry is never
+rounded into a different style value. Whole-state repeated identities and their
+native order must remain compatible. Terminal coverage requires the executed
+native sentinel hittability guard and actual contained root-member geometry.
+
+Fallback also requires a pinned `coverage_domain_ref` and `coverage_provider_ref`.
+They independently approve the finite source revisions and actual shared host
+shape. The tool matches the installed production subject/bridge, original native
+compile action/log and actual compiled-host bytes. An unused matching source copy
+or a self-entered shape label cannot grant coverage. Unapproved source revisions
+produce a default `review_source_domain` task before additional SDK work. Separate
+source approvals under the same immutable domain/oracle policy cannot waive a
+source change, repair completion or fresh native recheck.
+
+The receiver checks the actual runtime viewport, environment and native display
+scale against that domain. It checks the original PNG header before decoding;
+16-bit or unsupported encodings cannot be silently converted into an 8-bit pass.
+One bounded global rectangle assignment must preserve every link's original
+disjoint witnesses and whole-state native order; local pair choices alone do not
+establish a full chain.
+
+Presence is existential over the coherent bound state. A lazy node missing from
+one viewport does not contradict its later observed presence. Absence needs a
+complete sweep with no match anywhere. An observed duplicate establishes native
+nonuniqueness and is not cancelled by a later viewport containing one match.
+All original per-frame observations remain attached to the quantified result.
+Positive full-state uniqueness also requires complete native matching-domain
+coverage. A fully enumerated target query can establish only local uniqueness;
+its `complete:false` and query scope remain visible. A lone reported flat node
+does not establish query completeness. Boolean/float aliases cannot substitute
+for the protocol's integer input, action or snapshot references. An explicit
+complete empty target query can decide local absence without a whole-state
+sweep; it cannot prove whole-state absence.
+
+Native query cardinality is checked against its emitted format. Explicit query
+resolutions must be recognized. Structured trees need one connected, acyclic
+native identity graph, and Android's original semantics geometry must retain its
+version, pixel unit, density, position and integer size. Repeated records with the
+same native identity are malformed evidence, not multiple controls. Conflicting
+group counts, native nodes, identities or visibility remain unassessed with the
+original query facts attached; they do not create a product failure.
+
+`present` and `unique` quantify the actual native matching set, including an
+offscreen native entity. They do not assert visibility or activation readiness.
+Those facts retain their separate original flags, geometry and action guards.
+
+Missing originals, unsupported mappings, moving content, sparse or ambiguous
+links and unapproved domains remain unassessed. The proof describes the observed vertical
+viewport strip. It does not certify hidden branches, arbitrary asynchronous data,
+computed styles or business correctness. Coverage reconstruction requires the
+actual original image root, including when diagnosing or routing failed checks.

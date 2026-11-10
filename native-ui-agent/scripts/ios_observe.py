@@ -146,7 +146,7 @@ def build_signature(sources: dict, toolchain: dict, sdk: str, product: str) -> s
     return hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
 
 
-def validate_cached_build(entry: Path, record: dict, signature: str) -> Path:
+def validate_cached_build(entry: Path, record: dict, signature: str, *, require_compile_log=False) -> Path:
     if record.get('signature') != signature or not record.get('artifacts'):
         raise ValueError('Build cache identity missing or differs')
     for relative, expected in record['artifacts'].items():
@@ -156,6 +156,10 @@ def validate_cached_build(entry: Path, record: dict, signature: str) -> Path:
     runfile = (entry / record['runfile']).resolve()
     if not runfile.is_relative_to(entry.resolve()) or not runfile.is_file():
         raise ValueError('Build cache test plan unavailable')
+    if require_compile_log:
+        relative = record.get('compiled_build_log')
+        if not isinstance(relative,str) or relative not in record['artifacts']:
+            raise ValueError('Original compiled build log missing from verified cache inventory')
     return runfile
 
 
@@ -169,6 +173,13 @@ def prepare_build(args, output, bridge, package, env, manifest):
         result = command(argv, env)
         if result.returncode: raise RuntimeError('Could not establish build toolchain identity')
         toolchain[name] = result.stdout.strip()
+    import capture_validity
+    toolchain['dependency_environment'] = capture_validity.environment_dependencies(
+        {'native_options': {'developer-dir': args.developer_dir}}, 'ios', env)
+    declared_context = getattr(args, 'build_context_sha256', None)
+    if declared_context is not None:
+        if not re.fullmatch('[0-9a-f]{64}', declared_context): raise ValueError('Valid controller build-context digest required')
+        toolchain['declared_build_context_sha256'] = declared_context
     signature = build_signature(manifest['source_hashes'], toolchain, args.sdk, args.product)
     entry = cache / signature if cache else output
     entry.mkdir(parents=True, exist_ok=True)
@@ -178,11 +189,12 @@ def prepare_build(args, output, bridge, package, env, manifest):
         ready = entry / 'ready.json'
         if cache and ready.exists():
             record = json.loads(ready.read_text())
-            runfile = validate_cached_build(entry, record, signature)
+            runfile = validate_cached_build(entry, record, signature, require_compile_log=True)
             manifest['build_cache'] = {'hit': True, 'signature': signature, 'toolchain': toolchain,
                                        'record_sha256': digest(ready), 'artifacts': record['artifacts'],
                                        'entry': str(entry), 'original_build_command': record['build_command']}
             manifest['build_exit_code'] = 0
+            shutil.copy2(entry / record['compiled_build_log'], output / 'compiled-build.log')
             shutil.copytree(entry / record['project'], output / 'compiled-project')
             (output / 'build.log').write_text('Validated content-addressed build reuse; no build command executed for this capture.\n' + json.dumps(manifest['build_cache'], indent=2))
             return runfile
@@ -201,13 +213,15 @@ def prepare_build(args, output, bridge, package, env, manifest):
         manifest['build_exit_code'] = build.returncode
         if cache: shutil.copy2(output / 'build.log', work / 'build.log')
         if build.returncode: raise RuntimeError('Native build failed; see build.log')
+        shutil.copy2(output / 'build.log', output / 'compiled-build.log')
         runs = list((derived / 'Build/Products').glob('*.xctestrun'))
         if len(runs) != 1: raise RuntimeError('Expected one compiled xctestrun')
         if cache:
             artifacts = {str(p.relative_to(entry)): digest(p) for folder in [derived / 'Build/Products', project.parent]
                          for p in folder.rglob('*') if p.is_file()}
+            artifacts[str((work/'build.log').relative_to(entry))] = digest(work/'build.log')
             record = {'signature': signature, 'runfile': str(runs[0].relative_to(entry)),
-                      'project': str(project.parent.relative_to(entry)),
+                      'project': str(project.parent.relative_to(entry)), 'compiled_build_log':str((work/'build.log').relative_to(entry)),
                       'artifacts': artifacts, 'build_command': argv, 'source_hashes': manifest['source_hashes']}
             ready.write_text(json.dumps(record, indent=2) + '\n')
             manifest['build_cache'] = {'hit': False, 'signature': signature, 'entry': str(entry),
@@ -222,6 +236,31 @@ def validate_offered_width(width):
     # offered width does not certify that it fits a particular simulator.
     if type(width) not in (int, float) or not math.isfinite(width) or not 160 <= width <= 1024:
         raise ValueError("width must be a finite number from 160 to 1024 logical points")
+
+
+def reset_owned_fixture(simulator, env, output):
+    """Remove only this generated observer's app data on a journal-owned device."""
+    owned_ids = {'org.nativeobserver.app', 'org.nativeobserver.tests.xctrunner'}
+    def inventory(label):
+        r = command(['xcrun', 'simctl', 'listapps', simulator], env, output / (label + '.log'))
+        if r.returncode:
+            raise RuntimeError('Cannot establish installed observer app identities')
+        parsed = subprocess.run(['plutil', '-convert', 'json', '-o', '-', '-'], input=r.stdout,
+                                text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if parsed.returncode:
+            raise RuntimeError('Cannot decode actual simulator application inventory')
+        value = json.loads(parsed.stdout)
+        if not isinstance(value, dict): raise ValueError('Actual application inventory must be a dictionary')
+        return sorted(owned_ids & set(value))
+    before = inventory('owned-apps-before')
+    for bundle in before:
+        command(['xcrun', 'simctl', 'terminate', simulator, bundle], env, output / (bundle + '-terminate.log'))
+        r = command(['xcrun', 'simctl', 'uninstall', simulator, bundle], env, output / (bundle + '-uninstall.log'))
+        if r.returncode: raise RuntimeError('Owned observer app data reset failed')
+    after = inventory('owned-apps-after')
+    if after: raise RuntimeError('Owned observer applications remain installed after reset')
+    return {'method': 'fresh_observer_install_and_launch', 'simulator': simulator,
+            'previously_installed': before, 'after_uninstall': after, 'app_data_absent_before_test': True}
 
 
 def run(args) -> int:
@@ -270,7 +309,8 @@ def run(args) -> int:
     env = dict(os.environ, DEVELOPER_DIR=args.developer_dir)
     manifest = {"schema_version": 1, "status": "error", "simulator": args.simulator, "started_at": time.time(),
                 "bridge": str(bridge), "package": str(package) if package else None, "source_hashes": {}, "image_hashes": {}, "native_test_count": 0}
-    files = [bridge, TEMPLATES / "ObserverApp.swift", TEMPLATES / "ObserverTests.swift", Path(__file__).resolve(), CONTRACT]
+    files = [bridge, TEMPLATES / "ObserverApp.swift", TEMPLATES / "ObserverTests.swift", Path(__file__).resolve(), CONTRACT,
+             Path(__file__).with_name('scroll_coverage.py'), Path(__file__).with_name('coverage_domain.py')]
     if package:
         files += [package / "Package.swift"] + sorted(p for p in (package / "Sources").rglob("*") if p.is_file())
         if (package / 'Package.resolved').is_file(): files.append(package / 'Package.resolved')
@@ -288,6 +328,8 @@ def run(args) -> int:
         boot = command(["xcrun", "simctl", "bootstatus", args.simulator, "-b"], env, output / "bootstatus.log")
         if boot.returncode: raise RuntimeError("Simulator did not boot; see bootstatus.log")
         manifest['timings'] = {'boot_seconds': time.monotonic() - stage_start}
+        if getattr(args, 'reset_owned_app', None) == '1':
+            manifest['fixture_reset'] = reset_owned_fixture(args.simulator, env, output)
         stage_start = time.monotonic()
         compiled_runfile = prepare_build(args, output, bridge, package, env, manifest)
         manifest['timings']['build_or_validate_seconds'] = time.monotonic() - stage_start
@@ -366,14 +408,20 @@ def run(args) -> int:
         manifest["screenshot_pixels"] = observation["snapshots"][0]["screenshot_pixels"]
         complete = coverage_status(observation["coverage"]) == "passed"
         manifest["status"] = "passed" if test.returncode == 0 and manifest["native_test_count"] > 0 and observation["status"] == "passed" and complete else "failed"
+        if manifest.get('fixture_reset') and manifest['native_test_count'] > 0 and test.returncode == 0:
+            manifest['reset_contract'] = 'fresh_native_fixture'
+        if getattr(args,'coverage_domain',None) and test.returncode == 0 and manifest['native_test_count'] > 0:
+            import coverage_domain
+            coverage_domain.complete(json.loads(Path(args.coverage_domain).read_text()),manifest,output)
         if strategy == 'coalesced':
             import execution_plan
-            receipt = execution_plan.request_coverage_receipt(config, observation, 'ios', digest(Path(args.fixtures)))
+            receipt = execution_plan.request_coverage_receipt(config, observation, 'ios', digest(Path(args.fixtures)), output)
             manifest['execution_coverage'] = receipt
             if not receipt['satisfied']: manifest['status'] = 'failed'
             elif config['execution_scope'] == 'targeted' and test.returncode == 0 and observation['status'] == 'passed':
                 manifest['status'] = 'captured_partial'
     except Exception as exc:
+        manifest['status'] = 'error'
         manifest["error"] = str(exc)
     manifest["finished_at"] = time.time()
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
@@ -397,6 +445,9 @@ def main() -> int:
     p.add_argument("--developer-dir", default="/Applications/Xcode.app/Contents/Developer")
     p.add_argument("--sdk", default="iphonesimulator")
     p.add_argument("--build-cache", help="Optional content-addressed compiled-build cache; fixtures and evidence are always fresh")
+    p.add_argument('--build-context-sha256', help='Controller-pinned declared build inputs and environment, excluding runtime fixtures')
+    p.add_argument('--coverage-domain',help='Controller-prepared independently pinned closed-domain/source admission')
+    p.add_argument('--reset-owned-app', choices=['1'], help='Controller-authorized reset of generated observer app data on its owned device')
     args = parser.parse_args()
     try: return run(args)
     except (ValueError, OSError) as exc:

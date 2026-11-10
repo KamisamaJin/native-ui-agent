@@ -142,7 +142,7 @@ def evaluate(plan, lock, lock_sha, policy, policy_sha, observation, observation_
             if rule is None:
                 raise ValueError('Cause assessment references an unplanned assertion')
             state = next(s for s in plan['states'] if s['id'] == rule['state'])
-            allowed = {i for i, _ in native_checks.bound_state_evidence(observation, state)[0]}
+            allowed = {i for i, _ in native_checks.bound_state_evidence(observation, state, root)[0]}
             indices = item['snapshot_indices']
             if not isinstance(indices, list) or not indices or any(type(i) is not int for i in indices) or len(set(indices)) != len(indices) or not set(indices) <= allowed:
                 raise ValueError('Failure cause lacks original state-scoped screenshots')

@@ -20,10 +20,8 @@ jobs:
         run: python3 -B validation/publications/check_historical_aliases.py
       - name: Managed execution neutral measurement controls
         run: python3 -B -m unittest discover -s validation/managed-forward -p 'test_measure.py'
-      - name: Managed execution original neutral probes and Android/iOS SDK evidence
-        run: python3 -B validation/managed-forward/verify_probes.py --tracked
-      - name: Managed paired business study original barriers and frozen-runtime replay
-        run: python3 -B validation/managed-forward/verify_business.py --tracked --replay
+      - name: Replay immutable v12 source, original neutral SDK evidence and paired business barriers
+        run: python3 -B validation/publications/managed-v12-replay/verify.py
       - run: python validation/feature-development/verify_evidence.py
       - run: python validation/blind-comparison/verify_evidence.py
       - run: python validation/observer-probes/verify_preflight.py

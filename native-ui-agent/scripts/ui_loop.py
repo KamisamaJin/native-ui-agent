@@ -444,6 +444,7 @@ def main():
     native.add_argument("--intake", action="store_true")
     native.add_argument("--review-result", type=Path)
     native.add_argument("--review-result-sha256")
+    native.add_argument('--fresh', action='store_true', help='Explicitly require a new native packet instead of eligible original-packet adoption')
     bind = commands.add_parser("bind-native-review", help="Bind actual review to exact original source/state/images")
     bind.add_argument("--config", type=Path, required=True)
     bind.add_argument("--capture-result", type=Path, required=True)
@@ -464,11 +465,20 @@ def main():
     source.add_argument("--config", type=Path, required=True)
     source.add_argument("--submission", type=Path, required=True)
     source.add_argument("--output", type=Path, required=True)
+    repair = commands.add_parser('complete-native-repair', help='Measure actual patch bytes and bind a repair task to mandatory native retest')
+    repair.add_argument('--config', type=Path, required=True)
+    repair.add_argument('--task', type=Path, required=True)
+    repair.add_argument('--task-sha256', required=True)
+    repair.add_argument('--output', type=Path, required=True)
     cleanup = commands.add_parser("cleanup-native-resources", help="Reconcile and remove this project's positively owned native scratch")
     cleanup.add_argument("--config", type=Path, required=True)
     cleanup.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     try:
+        if args.action == 'complete-native-repair':
+            import workflow_state
+            result = workflow_state.complete_repair(json.loads(args.config.read_text()), args.task, args.task_sha256, args.output)
+            print(json.dumps(result, indent=2)); return 0
         if args.action == "bind-source-review":
             import evidence_responsibility
             result = evidence_responsibility.bind(json.loads(args.config.read_text()), json.loads(args.submission.read_text()), args.output)
@@ -492,7 +502,8 @@ def main():
             result = feedback_loop.run_cycle(json.loads(args.config.read_text()), args.output, previous=args.previous,
                 previous_sha=args.previous_sha256, final=args.final,
                 history=json.loads(args.history.read_text()) if args.history else [], intake=args.intake,
-                review_result={"path": str(args.review_result), "sha256": args.review_result_sha256} if args.review_result else None)
+                review_result={"path": str(args.review_result), "sha256": args.review_result_sha256} if args.review_result else None,
+                force_native=args.fresh)
             print(json.dumps(result, indent=2))
             # A queued review/repair is a successful dispatch, not delivery acceptance.
             return 1 if result["status"].startswith("blocked") else 0

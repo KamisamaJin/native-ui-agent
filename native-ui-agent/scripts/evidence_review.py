@@ -19,7 +19,7 @@ def original(config, capture_path, capture_sha):
     policy = d.load(Path(config['policy'])) if config.get('policy') else None
     packet = feedback_loop.load_previous(capture_path, capture_sha, plan, lock, config['design_sha256'],
                                         d.load(Path(config['fixtures'])), config['bridge'], config['source_roots'],
-                                        policy, config.get('policy_sha256'), config.get('adoption'))
+                                        policy, config.get('policy_sha256'), config.get('adoption'), config)
     return plan, lock, policy, packet
 
 

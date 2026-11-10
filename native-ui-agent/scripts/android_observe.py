@@ -34,6 +34,9 @@ def main():
   observation=output/'observation.json'
   if observation.is_file():
    manifest['observation_sha256']=sha(observation);manifest['image_hashes']={str(x.relative_to(output)):sha(x)for x in output.glob('*.png')};manifest['status']='captured_not_graded'if result.returncode==0 and manifest['native_test_count']==1 else'failed'
+   first=json.loads(observation.read_text()).get('snapshots',[{}])[0];binding=first.get('binding',first.get('runtime',{}))
+   if manifest['status']=='captured_not_graded' and binding.get('fixture_index')==0 and binding.get('event_revision')==0 and binding.get('instance'):
+    manifest['reset_contract']='fresh_native_fixture';manifest['fixture_reset']={'method':'new_junit_fixture_and_render_session','instance':binding['instance'],'initial_fixture_index':0,'initial_event_revision':0,'scope':'Fresh JVM component fixture, not Android OS application storage or lifecycle.'}
  except Exception as e:manifest['error']=str(e)
  finally:
   # Only this invocation's newly created reserved files are removed.

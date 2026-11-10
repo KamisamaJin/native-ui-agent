@@ -6,13 +6,13 @@ from pathlib import Path
 from native_checks import bound_state_evidence, resolve, same_selector
 
 
-def diagnose(plan, report, observation, source_roots, selected_states=None):
+def diagnose(plan, report, observation, source_roots, selected_states=None, root=None):
     rows = {v['id']: v for v in report.get('rows', report.get('assertions', []))}
     states = {v['id']: v for v in plan['states']}
     selected = set(selected_states or states)
     source_files = []
-    for root in map(Path, source_roots):
-        for path in sorted(root.rglob('*')) if root.is_dir() else [root]:
+    for source_root in map(Path, source_roots):
+        for path in sorted(source_root.rglob('*')) if source_root.is_dir() else [source_root]:
             if path.is_file() and not path.is_symlink() and path.suffix in {'.swift', '.kt', '.java', '.xml', '.m', '.mm'}:
                 try: source_files.append((path, path.read_text(), hashlib.sha256(path.read_bytes()).hexdigest()))
                 except (UnicodeError, OSError): continue
@@ -20,7 +20,7 @@ def diagnose(plan, report, observation, source_roots, selected_states=None):
     for rule in plan['assertions']:
         row = rows[rule['id']]
         if row['status'] == 'passed' or rule['state'] not in selected: continue
-        found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']])
+        found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']], root)
         targets = []
         for key in ['target', 'reference_target']:
             if rule.get(key) and rule[key] not in targets: targets.append(rule[key])
