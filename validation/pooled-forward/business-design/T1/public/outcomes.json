@@ -1,0 +1,442 @@
+{
+  "version": 1,
+  "scenario": "public-main",
+  "business_rules_source": "reference.json#/business_rules",
+  "states": [
+    {
+      "id": "initial",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content",
+      "stimulus": "none",
+      "exact_business_state": {
+        "entity": "OR-481 · Museum installation freight",
+        "description": "Release only the cartons that can travel together today. The receiving dock needs the complete conservation note, handling restrictions, and the destination team name before any freight leaves the depot.",
+        "controls": {
+          "lotA": {
+            "label": "Release lot A",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+          },
+          "lotB": {
+            "label": "Release lot B",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+          },
+          "lotC": {
+            "label": "Release lot C",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Available"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "0 lots selected · 0 units",
+        "status": "Select at least one available lot.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "one-lot",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "OR-481 · Museum installation freight",
+        "description": "Release only the cartons that can travel together today. The receiving dock needs the complete conservation note, handling restrictions, and the destination team name before any freight leaves the depot.",
+        "controls": {
+          "lotA": {
+            "label": "Release lot A",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+          },
+          "lotB": {
+            "label": "Release lot B",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+          },
+          "lotC": {
+            "label": "Release lot C",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Available"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "1 lots selected · 3 units",
+        "status": "Check packing list to release.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "two-lots",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "OR-481 · Museum installation freight",
+        "description": "Release only the cartons that can travel together today. The receiving dock needs the complete conservation note, handling restrictions, and the destination team name before any freight leaves the depot.",
+        "controls": {
+          "lotA": {
+            "label": "Release lot A",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+          },
+          "lotB": {
+            "label": "Release lot B",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+          },
+          "lotC": {
+            "label": "Release lot C",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Available"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "2 lots selected · 10 units",
+        "status": "Check packing list to release.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "OR-481 · Museum installation freight",
+        "description": "Release only the cartons that can travel together today. The receiving dock needs the complete conservation note, handling restrictions, and the destination team name before any freight leaves the depot.",
+        "controls": {
+          "lotA": {
+            "label": "Release lot A",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+          },
+          "lotB": {
+            "label": "Release lot B",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+          },
+          "lotC": {
+            "label": "Release lot C",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Available"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "2 lots selected · 10 units",
+        "status": "Ready to release 2 lots.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "released",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "OR-481 · Museum installation freight",
+        "description": "Release only the cartons that can travel together today. The receiving dock needs the complete conservation note, handling restrictions, and the destination team name before any freight leaves the depot.",
+        "controls": {
+          "lotA": {
+            "label": "Release lot A",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+          },
+          "lotB": {
+            "label": "Release lot B",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+          },
+          "lotC": {
+            "label": "Release lot C",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Available"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "2 lots selected · 10 units",
+        "status": "Release recorded for 2 lots.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "release|OR-481|L-A,L-C"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "same-order-pruned",
+      "input_index": 1,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "OR-481 · Museum installation freight",
+        "description": "Receiving instructions changed: use the service entrance on Harbor Street and retain the loading record for the conservation team. Review the packing list again before releasing the remaining eligible lot.",
+        "controls": {
+          "lotA": {
+            "label": "Release lot A",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+          },
+          "lotB": {
+            "label": "Release lot B",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+          },
+          "lotC": {
+            "label": "Release lot C",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Held: Destination storage unavailable"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "1 lots selected · 7 units",
+        "status": "Check packing list to release.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready-again",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "full_content",
+      "stimulus_action": 11,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "OR-481 · Museum installation freight",
+        "description": "Receiving instructions changed: use the service entrance on Harbor Street and retain the loading record for the conservation team. Review the packing list again before releasing the remaining eligible lot.",
+        "controls": {
+          "lotA": {
+            "label": "Release lot A",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+          },
+          "lotB": {
+            "label": "Release lot B",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+          },
+          "lotC": {
+            "label": "Release lot C",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Held: Destination storage unavailable"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "1 lots selected · 7 units",
+        "status": "Ready to release 1 lots.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "released-again",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "full_content",
+      "stimulus_action": 13,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "OR-481 · Museum installation freight",
+        "description": "Receiving instructions changed: use the service entrance on Harbor Street and retain the loading record for the conservation team. Review the packing list again before releasing the remaining eligible lot.",
+        "controls": {
+          "lotA": {
+            "label": "Release lot A",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+          },
+          "lotB": {
+            "label": "Release lot B",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+          },
+          "lotC": {
+            "label": "Release lot C",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Held: Destination storage unavailable"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "1 lots selected · 7 units",
+        "status": "Release recorded for 1 lots.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "release|OR-481|L-A"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "changed-order",
+      "input_index": 2,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "OR-482 · Archive return shipment",
+        "description": "This is a different order using the same choice labels. No selection, packing approval, or recorded release from the museum freight belongs to this return shipment.",
+        "controls": {
+          "lotA": {
+            "label": "Release lot A",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+          },
+          "lotB": {
+            "label": "Release lot B",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+          },
+          "lotC": {
+            "label": "Release lot C",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Available"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "0 lots selected · 0 units",
+        "status": "Select at least one available lot.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    }
+  ]
+}

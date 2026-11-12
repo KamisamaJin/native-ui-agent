@@ -1,0 +1,68 @@
+{
+  "review": "review8-original-pinned-pre-run-operators",
+  "verdict": "Corrections required before timed gate",
+  "source_pins": {
+    "neutral_episode.py": "5eb9967d2495dd4b13c3a2fa91093b0603e3088874ca5a6141dffa148028afb9",
+    "verify_benchmark.py": "2c67b7c548d32042f1666e4968e3f182890772203a1f310f2c725ecfc043a0a3",
+    "prepare_neutral.py": "032c541f2a134fdd6f3def68949eee263fd12a343a37041c9754f4cc7926f2e8",
+    "native_envelope.py": "2bcacb1927919c4456a33505a89d051a038f0af4c1451249748537fe86175b86",
+    "measure.py": "0c4d8da597e7f1c7aad715381a4cc0c6ea6c7b98b181f38168e906b8bedc7ab0"
+  },
+  "original_source": "original-source/",
+  "raw_probe_files": [
+    "probe-results.json",
+    "envelope-error-probe.json"
+  ],
+  "raw_rows": 9,
+  "raw_counts": {
+    "P": 5,
+    "F": 4
+  },
+  "confirmed_families": [
+    {
+      "id": "OB01",
+      "title": "Source-duty denominator is not independently verified",
+      "rows": [
+        "O02-source-duty-denominator-zero"
+      ],
+      "observed": "All final responsibility rows removed, blocking_claims empty: gate passes and business_tasks_may_start true although reported source denominator is1.",
+      "limit": "No native replay was executed; stubbed replay validates only postprocessor responsibilities/accounting. Source-duty validation is absent from original replay as inspected."
+    },
+    {
+      "id": "OB02",
+      "title": "Timing summaries are trusted without valid measured accounting",
+      "rows": [
+        "O03-negative-B-wall",
+        "O04-wall-disagrees-with-stages-and-envelope"
+      ],
+      "observed": "Negative B durations or B wall1 while stage sum70/operator cost-69 pass as110%/99% reduction.",
+      "limit": "These are malformed synthetic summaries; actual driver uses perf_counter and normally emits positive durations. No real performance sample read or produced."
+    },
+    {
+      "id": "OB03",
+      "title": "Supervisor failure can return success after child zero",
+      "rows": [
+        "O09-envelope-error-after-child-zero"
+      ],
+      "observed": "Pinned native_envelope records release/cleanup RuntimeError plus recovery after successful child, but main returns0. neutral_episode.invoke checks only process exit, and original gate ignores command error fields.",
+      "limit": "Injected resource-context/recovery boundaries execute no processes or devices. Real supervisor failure behavior is exercised at the Python control-flow boundary."
+    }
+  ],
+  "positive_controls": [
+    "Coherent synthetic structural data accepted",
+    "ABBA overlap rejected",
+    "source_changed rejected",
+    "mandatory native count discrepancy rejected",
+    "final resource leftovers rejected"
+  ],
+  "source_only_findings": {
+    "driver": "Explicit baseline/candidate parameters and whole frozen-tree verification precede collection; identical declared workload C0/R0/W1/F2; cleanup/recovery stays charged; stage/episode timing and native defaults inspected.",
+    "gate": "Replays all7 steps per episode,104 native IDs/assertions, coverage/environment, final accepted/resource flags and ABBA aggregate formula; raw reason differences retained. Original source/current-source duty verification and timing proof gaps above remain.",
+    "replay_scope": "Native replayer subprocess is a trusted stub in dynamic probes. Its actual source was read; no real packet loaded. The tests do not qualify native assertions, frozen-arm correctness or a measured speedup."
+  },
+  "later_live_changes": "Parent reports new operator fixes after these original files were pinned; not inspected or reclassified here. A separate delta is needed.",
+  "actual_native_runs": 0,
+  "actual_benchmark_episodes": 0,
+  "performance_credit": 0,
+  "business_gate_unstarted": true
+}

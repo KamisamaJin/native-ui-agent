@@ -1,0 +1,275 @@
+[
+  {
+    "type": "sweep",
+    "state_id": "start",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Apply account credit"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Apply account credit"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Apply account credit"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "credit-applied",
+    "after_targets": [
+      {
+        "label": "Invoice credit-and-payment allocation"
+      },
+      {
+        "identifier": "T3.entity"
+      },
+      {
+        "identifier": "T3.description"
+      },
+      {
+        "identifier": "T3.summary"
+      },
+      {
+        "identifier": "T3.status"
+      },
+      {
+        "identifier": "T3.surface"
+      },
+      {
+        "label": "Apply account credit"
+      },
+      {
+        "label": "Pay by bank transfer"
+      },
+      {
+        "identifier": "T3.methodA.detail"
+      },
+      {
+        "label": "Pay by company card"
+      },
+      {
+        "identifier": "T3.methodB.detail"
+      },
+      {
+        "label": "I authorize this settlement"
+      },
+      {
+        "label": "Settle invoice"
+      }
+    ]
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Pay by bank transfer"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Pay by bank transfer"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Pay by bank transfer"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "bank-selected",
+    "after_targets": [
+      {
+        "label": "Invoice credit-and-payment allocation"
+      },
+      {
+        "identifier": "T3.entity"
+      },
+      {
+        "identifier": "T3.description"
+      },
+      {
+        "identifier": "T3.summary"
+      },
+      {
+        "identifier": "T3.status"
+      },
+      {
+        "identifier": "T3.surface"
+      },
+      {
+        "label": "Apply account credit"
+      },
+      {
+        "label": "Pay by bank transfer"
+      },
+      {
+        "identifier": "T3.methodA.detail"
+      },
+      {
+        "label": "Pay by company card"
+      },
+      {
+        "identifier": "T3.methodB.detail"
+      },
+      {
+        "label": "I authorize this settlement"
+      },
+      {
+        "label": "Settle invoice"
+      }
+    ]
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "I authorize this settlement"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "I authorize this settlement"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "I authorize this settlement"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Settle invoice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Settle invoice"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "settle|INV-640|4500|8000|bank"
+  },
+  {
+    "type": "sweep",
+    "state_id": "settled",
+    "max_scrolls": 18
+  },
+  {
+    "type": "apply_next_fixture"
+  },
+  {
+    "type": "sweep",
+    "state_id": "same-invoice-credit-only",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "I authorize this settlement"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "I authorize this settlement"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "I authorize this settlement"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "credit-only-ready",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Settle invoice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Settle invoice"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "settle|INV-640|4000|0|credit"
+  },
+  {
+    "type": "sweep",
+    "state_id": "credit-only-settled",
+    "max_scrolls": 18
+  },
+  {
+    "type": "apply_next_fixture"
+  },
+  {
+    "type": "sweep",
+    "state_id": "changed-invoice",
+    "max_scrolls": 18
+  }
+]

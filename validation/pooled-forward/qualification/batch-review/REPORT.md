@@ -1,0 +1,20 @@
+**Blocked against batch candidate `51c2ec1f7db2d26929f6004fa6b2d24ab4f0542478584d0d3cbb79d8aa50e4f6`.** Six focused HOST/SIM cases produced five expected passes and one confirmed failure. No real subprocess, signal, SDK, device, native test, or performance episode was forwarded. All displayed times and episode results in these fixtures are explicitly simulated.
+
+The blocker is an uncaught second termination wait failure. After the whole-episode alarm raises, `finally` sends TERM only to the active child created with `start_new_session=True`, waits 180 seconds, escalates KILL, and waits another 10 seconds. If that last wait raises `TimeoutExpired`, the exception escapes `finally` before configured resource cleanup and `RESULT.json` are written. `FAILURE.json` exists, the gate is correctly not called, but cleanup and the enclosing failure/overrun cost are lost from the final receipt. The finite non-forwarding reproduction is `cases/timeout-kill-wait-fails/RAW.json`; its exact traceback points to the final `proc.wait(timeout=10)` in the pinned source. The fixture clock advances 7200 + 180 + 10 seconds, while the wrapper supplies no final enclosing-wall field for that outcome. No live unkillable process was created to demonstrate this defect.
+
+| Primary simulated case | Result | Observation |
+| --- | --- | --- |
+| Coherent success | P | Exactly ABBA, four public episode calls, then one gate; exact declared CLI arguments; no cleanup/signals |
+| Failed episode plus cleanup subprocess timeout | P | Stops after first episode, no gate, both configured cleanup attempts, timeout error and all simulated failure/cleanup wall retained |
+| Active-child timeout, graceful TERM | P | Only the owned created group signaled; grace wait, known-profile cleanup, failed result retained |
+| Active-child timeout, successful KILL escalation | P | Only owned TERM/KILL, bounded 180/10 waits, cleanup and failed result retained |
+| Timeout after child already exited | P | No stale/exited group signal; cleanup and failed result retained |
+| Timeout with post-KILL wait failure | **F** | Exception escapes; no configured cleanup or final result/cost |
+
+The success fixture pins actual copies of the already qualified episode (`ed3884bc…`), verifier (`c4732634…`), envelope (`fba05df2…`) and preparation source for hash validation. The batch constructs the same public episode argument shape, with the predeclared A/B source/freezes and the current interpreter identity. Strict mocks reject any extra/reordered episode, retry, foreign cleanup path, unexpected process method, or foreign/exited signal target. These tests do not exercise native qualification or the gate's already reviewed acceptance algorithm.
+
+The single alarm encloses episode preparation/work. Source explicitly disarms it before failure cleanup and the read-only gate; permitted cleanup overrun is retained when the cleanup path completes. Batch `enclosing_wall_seconds` is written before gate verification and does not include gate time. This review makes no broader 7200-second bound over verification or cleanup. The primary collection metric remains the qualified episode clocks, and simulated durations here earn no speed credit.
+
+The first fixture attempt omitted the normally existing `operators` parent directory, so all six cases stopped before batch orchestration. Those unmodified raw setup failures and the original harness are retained in `fixture-setup-attempt1/` and are classified as a reviewer fixture error, not product failures. The corrected six-case matrix is in `RESULTS.json` and `cases/`.
+
+Original hashes were pinned before testing. The parent subsequently changed live `run_benchmark.py` to a new declared candidate after receiving the blocker; `AFTER.json` records that difference rather than attributing the new bytes to this old verdict. This review edited no live operator source. Prior native/admission/provider/operator seals remain untouched. The corrected candidate requires its own focused receipt.

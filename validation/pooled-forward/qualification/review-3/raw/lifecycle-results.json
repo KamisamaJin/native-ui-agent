@@ -1,0 +1,73 @@
+[
+  {
+    "id": "incompatible-runtime-retires-before-replacement",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "first_udid": "20A1E97E-B693-4BF6-AD23-3F5F35427BBB",
+      "second_udid": "D37F5ED3-C74A-460D-9FB6-C2621660F638",
+      "runtime": "SIMULATED.runtime2",
+      "resources": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-3/work/pool-incompatible/evidence/runtime-two/resources.json"
+    }
+  },
+  {
+    "id": "pool-expiry-boundaries",
+    "status": "F",
+    "evidence_class": "SIMULATED",
+    "error": "AssertionError('boundary differs before')",
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-3/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-3/checks/lifecycle_checks.py\", line 32, in expiry_boundaries\n    outcomes[name]=value;assert_that(value is expected,'boundary differs '+name)\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-3/checks/harness.py\", line 34, in assert_that\n    if not v:raise AssertionError(reason)\nAssertionError: boundary differs before\n"
+  },
+  {
+    "id": "active-lease-crosses-expiry-idle-retirement-reacquires",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "first_udid": "D0389844-54E2-4E61-9CD1-911E3E1FF495",
+      "reacquired_udid": "E0C632C1-A9BC-4463-BC88-E7E826FE8257",
+      "active_crossing_seconds": 1.26953025,
+      "idle_retired": true,
+      "lease_one_receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-3/work/pool-actual-clock-simulation/evidence/lease-one/resources.json",
+      "lease_two_receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-3/work/pool-actual-clock-simulation/evidence/lease-two/resources.json",
+      "limit": "Real host guardian/lock/clock; all inventory/create/delete replies SIMULATED"
+    }
+  },
+  {
+    "id": "failed-retirement-blocks-acceptance",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "resource_receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-3/work/retirement-failure/evidence/final-delete-fails/resources.json",
+      "error": [
+        "Owned simulator command failed: SIMULATED delete failure\n"
+      ],
+      "cycle_exists": false,
+      "exit_code": 1
+    }
+  },
+  {
+    "id": "primary-error-and-cleanup-error-preserved",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "resource_receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-3/work/primary-cleanup-failure/evidence/primary-and-cleanup-fail/resources.json",
+      "service_error": {
+        "type": "OSError",
+        "message": "SIMULATED primary collector failure",
+        "at_unix": 1794306993.226888,
+        "status": "not_accepted"
+      },
+      "cleanup_errors": [
+        "Owned simulator command failed: SIMULATED delete failure\n"
+      ]
+    }
+  },
+  {
+    "id": "reused-output-preserves-evidence",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "original_files": 73,
+      "exit_code": 2
+    }
+  }
+]

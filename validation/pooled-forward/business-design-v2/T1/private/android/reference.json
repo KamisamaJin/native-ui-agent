@@ -1,0 +1,1919 @@
+{
+  "design_owner": "Independent design/oracle author /root/v13_business_design",
+  "business_rules": "1. Every lot is displayed in caller order. An available lot toggles membership in a multi-selection. Held lots remain visible, disabled, and show their supplied hold reason; a held lot cannot be selected.\n2. Initially no lots are selected and Packing list checked is off. Any selection change clears packing approval. At least one selected available lot and packing approval are required to release.\n3. Summary is exactly '{N} lots selected · {U} units', where U sums current selected quantities. Status strings and punctuation are fixed by the public outcome ledger.\n4. A successful release emits exactly one 'release|{entityId}|{comma-separated selected IDs in ascending Unicode lexical order}'. No other user action emits an event. A recorded release locks all controls and primary submission; duplicate submission is disabled.\n5. On replacement with the same entityId, preserve only selected IDs that are still present and available, recompute quantities from replacement data, clear packing approval and recorded status, and emit no event. On a changed entityId, clear all selection, approval, and recorded status, even when labels or IDs are reused.\n6. The release callback is a local request/receipt, not proof of a network shipment. No network, timer, random, async, or full application navigation is involved.",
+  "tokens": {
+    "colors": {
+      "surface": {
+        "value": "#FFFFFFFF",
+        "unit": "argb"
+      },
+      "canvas": {
+        "value": "#FFFFF8F4",
+        "unit": "argb"
+      },
+      "ink": {
+        "value": "#FF201B13",
+        "unit": "argb"
+      },
+      "secondaryInk": {
+        "value": "#FF4F4539",
+        "unit": "argb"
+      },
+      "primary": {
+        "value": "#FF805610",
+        "unit": "argb"
+      },
+      "onPrimary": {
+        "value": "#FFFFFFFF",
+        "unit": "argb"
+      },
+      "selected": {
+        "value": "#FFFFDDB3",
+        "unit": "argb"
+      },
+      "disabled": {
+        "value": "#FFF3E6DA",
+        "unit": "argb"
+      },
+      "disabledPrimary": {
+        "value": "#FFEDE0D4",
+        "unit": "argb"
+      },
+      "outline": {
+        "value": "#FF817567",
+        "unit": "argb"
+      },
+      "summary": {
+        "value": "#FFFFF1E5",
+        "unit": "argb"
+      }
+    },
+    "ios": {
+      "titleSize": {
+        "value": 22,
+        "unit": "pt"
+      },
+      "titleWeight": {
+        "value": 600,
+        "unit": "scalar"
+      },
+      "bodySize": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "buttonHeight": {
+        "value": 48,
+        "unit": "pt"
+      },
+      "panelInset": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "rowInset": {
+        "value": 12,
+        "unit": "pt"
+      },
+      "rowGap": {
+        "value": 8,
+        "unit": "pt"
+      },
+      "paintGutter": {
+        "value": 24,
+        "unit": "pt"
+      },
+      "panelRadius": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "rowRadius": {
+        "value": 8,
+        "unit": "pt"
+      }
+    },
+    "android": {
+      "titleSize": {
+        "value": 22,
+        "unit": "sp"
+      },
+      "titleWeight": {
+        "value": 600,
+        "unit": "scalar"
+      },
+      "bodySize": {
+        "value": 16,
+        "unit": "sp"
+      },
+      "bodyWeight": {
+        "value": 400,
+        "unit": "scalar"
+      },
+      "buttonHeight": {
+        "value": 48,
+        "unit": "dp"
+      },
+      "panelInset": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "rowInset": {
+        "value": 12,
+        "unit": "dp"
+      },
+      "rowGap": {
+        "value": 8,
+        "unit": "dp"
+      },
+      "paintGutter": {
+        "value": 24,
+        "unit": "dp"
+      },
+      "panelRadius": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "rowRadius": {
+        "value": 8,
+        "unit": "dp"
+      }
+    },
+    "measurementSources": {
+      "palette": "Stock Reply ui/theme/Color.kt, light palette, lines 23–57; iOS adopts these explicit component colors because AlertToast.AlertStyle accepts arbitrary SwiftUI Color.",
+      "androidTypography": "Stock Reply ui/theme/Type.kt titleLarge (22sp,600,28sp line height) and bodyLarge (16sp,400,24sp line height).",
+      "iosTypography": "Independent design choice: system font, fixed 22pt semibold title, 16pt regular body at approved Large Dynamic Type; visual intent only, no computed SwiftUI font claim.",
+      "spacing": "Independent design choice, informed by AlertToast.banner VStack leading/spacing10/cornerRadius10 and ReplyEmailListItem Column padding20. This design explicitly fixes its own 16/12/8 rhythm and 16/8 radii, rather than claiming those are upstream defaults.",
+      "shape": "Stock Reply Shapes.kt supports 8dp small and 16dp medium; iOS adopts explicit matching pt design values."
+    }
+  },
+  "scope": {
+    "closed_shape": "One eager finite vertical production component. No internal scroll, overlays, asynchronous state, external data, or full app navigation.",
+    "fixture_domain": "Assessment covers the exact independently sealed family and action prefixes. The reusable public schema supports up to4 data rows per group; unbounded future caller inputs are not certified.",
+    "host": "390x600 logical viewport; host inset16 horizontal and24 top; Android density2.75 and explicit paparazzi-float32-screen-config-v1.",
+    "unsupported": [
+      {
+        "aspect": "generic computed SwiftUI typography/color/padding/layout_box",
+        "disposition": "not_applicable",
+        "reason": "Public iOS AX cannot expose these computed values. Sourced qualitative propositions and rendered opaque fill pixels cover the intended aspects; no mandatory unknown is added."
+      },
+      {
+        "aspect": "generic effective padding and glyph ink geometry",
+        "disposition": "not_applicable",
+        "reason": "Public AX/Compose semantic boxes do not prove generic layout padding or glyph ink; visual intent is assessed separately."
+      },
+      {
+        "aspect": "physical OS touch area",
+        "disposition": "not_applicable",
+        "reason": "Only primary control accessibility-box height and actual native dispatch are claimed."
+      },
+      {
+        "aspect": "whole-app navigation/network/lifecycle/keyboard, RTL, other themes/font settings/widths",
+        "disposition": "not_applicable",
+        "reason": "Scope is an additive reusable component in the approved finite light/LTR/Large-or1.0 observer fixture."
+      }
+    ]
+  },
+  "states": {
+    "start": {
+      "entity": {
+        "value": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "0 lots selected · 0 units",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Select at least one available lot.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Shipment release checklist",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "lotA": {
+          "label": {
+            "value": "Release northern lot",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotB": {
+          "label": {
+            "value": "Release accessible fittings",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n8 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotC": {
+          "label": {
+            "value": "Release reserve stock",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing",
+            "unit": "string"
+          }
+        },
+        "packing": {
+          "label": {
+            "value": "Packing list checked",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Release selected lots",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotA": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotB": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "first-lot": {
+      "entity": {
+        "value": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "1 lots selected · 17 units",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Check packing list to release.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Shipment release checklist",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "lotA": {
+          "label": {
+            "value": "Release northern lot",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotB": {
+          "label": {
+            "value": "Release accessible fittings",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n8 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotC": {
+          "label": {
+            "value": "Release reserve stock",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing",
+            "unit": "string"
+          }
+        },
+        "packing": {
+          "label": {
+            "value": "Packing list checked",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Release selected lots",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "lotB": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "reverse-order-selection": {
+      "entity": {
+        "value": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "2 lots selected · 25 units",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Check packing list to release.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Shipment release checklist",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "lotA": {
+          "label": {
+            "value": "Release northern lot",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotB": {
+          "label": {
+            "value": "Release accessible fittings",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n8 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotC": {
+          "label": {
+            "value": "Release reserve stock",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing",
+            "unit": "string"
+          }
+        },
+        "packing": {
+          "label": {
+            "value": "Packing list checked",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Release selected lots",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "lotB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "lotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "ready": {
+      "entity": {
+        "value": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "2 lots selected · 25 units",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Ready to release 2 lots.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Shipment release checklist",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "lotA": {
+          "label": {
+            "value": "Release northern lot",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotB": {
+          "label": {
+            "value": "Release accessible fittings",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n8 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotC": {
+          "label": {
+            "value": "Release reserve stock",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing",
+            "unit": "string"
+          }
+        },
+        "packing": {
+          "label": {
+            "value": "Packing list checked",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Release selected lots",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "lotB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "lotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FF805610",
+          "unit": "argb"
+        }
+      }
+    },
+    "released": {
+      "entity": {
+        "value": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "2 lots selected · 25 units",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Release recorded for 2 lots.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Shipment release checklist",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "lotA": {
+          "label": {
+            "value": "Release northern lot",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotB": {
+          "label": {
+            "value": "Release accessible fittings",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n8 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotC": {
+          "label": {
+            "value": "Release reserve stock",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing",
+            "unit": "string"
+          }
+        },
+        "packing": {
+          "label": {
+            "value": "Packing list checked",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Release selected lots",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [
+          "release|OR-936|A-02,Z-90"
+        ],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "lotB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "lotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "same-order-pruned": {
+      "entity": {
+        "value": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use. The available fittings now include four additional units; the release summary must use the replacement quantities.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "1 lots selected · 12 units",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Check packing list to release.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Shipment release checklist",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "lotA": {
+          "label": {
+            "value": "Release northern lot",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Held: Protective transit cover failed inspection",
+            "unit": "string"
+          }
+        },
+        "lotB": {
+          "label": {
+            "value": "Release accessible fittings",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n12 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotC": {
+          "label": {
+            "value": "Release reserve stock",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing",
+            "unit": "string"
+          }
+        },
+        "packing": {
+          "label": {
+            "value": "Packing list checked",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Release selected lots",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "lotB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "lotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "ready-again": {
+      "entity": {
+        "value": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use. The available fittings now include four additional units; the release summary must use the replacement quantities.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "1 lots selected · 12 units",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Ready to release 1 lots.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Shipment release checklist",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "lotA": {
+          "label": {
+            "value": "Release northern lot",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Held: Protective transit cover failed inspection",
+            "unit": "string"
+          }
+        },
+        "lotB": {
+          "label": {
+            "value": "Release accessible fittings",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n12 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotC": {
+          "label": {
+            "value": "Release reserve stock",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing",
+            "unit": "string"
+          }
+        },
+        "packing": {
+          "label": {
+            "value": "Packing list checked",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Release selected lots",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "lotB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "lotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FF805610",
+          "unit": "argb"
+        }
+      }
+    },
+    "released-survivor": {
+      "entity": {
+        "value": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use. The available fittings now include four additional units; the release summary must use the replacement quantities.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "1 lots selected · 12 units",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Release recorded for 1 lots.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Shipment release checklist",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "lotA": {
+          "label": {
+            "value": "Release northern lot",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Held: Protective transit cover failed inspection",
+            "unit": "string"
+          }
+        },
+        "lotB": {
+          "label": {
+            "value": "Release accessible fittings",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n12 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotC": {
+          "label": {
+            "value": "Release reserve stock",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing",
+            "unit": "string"
+          }
+        },
+        "packing": {
+          "label": {
+            "value": "Packing list checked",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Release selected lots",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [
+          "release|OR-936|A-02"
+        ],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "lotB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "lotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "changed-order": {
+      "entity": {
+        "value": "OR-937 · Separate southern depot return",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "0 lots selected · 0 units",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Select at least one available lot.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Shipment release checklist",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "lotA": {
+          "label": {
+            "value": "Release northern lot",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotB": {
+          "label": {
+            "value": "Release accessible fittings",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n8 units · Available",
+            "unit": "string"
+          }
+        },
+        "lotC": {
+          "label": {
+            "value": "Release reserve stock",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing",
+            "unit": "string"
+          }
+        },
+        "packing": {
+          "label": {
+            "value": "Packing list checked",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Release selected lots",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotA": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotB": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "lotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    }
+  },
+  "questions": {
+    "heading-visual-size": {
+      "value": "Does the iOS heading follow the annotated reference's fixed22pt system-font size intent and title-to-body scale? This is qualitative, not a computed font reading.",
+      "unit": "string"
+    },
+    "heading-visual-weight": {
+      "value": "Does the iOS heading show the annotated reference's semibold/600 weight intent?",
+      "unit": "string"
+    },
+    "body-visual-size": {
+      "value": "Does iOS body copy follow the annotated reference's fixed16pt regular system-font size intent? This is qualitative typography, not a computed point-size observation.",
+      "unit": "string"
+    },
+    "body-visual-ink": {
+      "value": "Does iOS body copy follow the reference's dark ink (#FF201B13) visual intent against the white panel? This is a qualitative ink judgment, not computed color.",
+      "unit": "string"
+    },
+    "content-wrap": {
+      "value": "Across the complete swept state, is every supplied description, choice detail, summary, status, and current preview readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "content-overlap": {
+      "value": "Across the complete swept state, do successive vertical blocks remain separate without overlapping or occluding one another?",
+      "unit": "string"
+    },
+    "horizontal-fit": {
+      "value": "Across the complete swept state, does all component content stay within the offered child width without horizontal clipping or horizontal scrolling?",
+      "unit": "string"
+    },
+    "section-rhythm": {
+      "value": "Do major vertical sections follow the annotated reference's16pt iOS /16dp Android separation intent? Judge the visual rhythm; do not infer framework padding from AX boxes.",
+      "unit": "string"
+    },
+    "row-padding": {
+      "value": "Do option rows follow the annotated reference's12pt iOS /12dp Android content inset intent and leave their trailing24pt/dp paint gutter free of text and marks?",
+      "unit": "string"
+    },
+    "panel-corners": {
+      "value": "Does the white panel follow the annotated reference's16pt iOS /16dp Android rounded-corner intent?",
+      "unit": "string"
+    },
+    "row-corners": {
+      "value": "Do option rows follow the annotated reference's8pt iOS /8dp Android rounded-corner intent?",
+      "unit": "string"
+    },
+    "primary-ink": {
+      "value": "Is the primary label visibly light against its enabled amber fill and dark against its disabled pale fill, as the reference shows?",
+      "unit": "string"
+    },
+    "lotA-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "lotA-wrap": {
+      "value": "Is all of this option's visible label and detail text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "lotB-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "lotB-wrap": {
+      "value": "Is all of this option's visible label and detail text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "lotC-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "lotC-wrap": {
+      "value": "Is all of this option's visible label and detail text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "packing-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "summary-wrap": {
+      "value": "Is all of this current text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "status-wrap": {
+      "value": "Is all of this current text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    }
+  },
+  "visual": {
+    "heading-visual-size": {
+      "value": true,
+      "unit": "bool"
+    },
+    "heading-visual-weight": {
+      "value": true,
+      "unit": "bool"
+    },
+    "body-visual-size": {
+      "value": true,
+      "unit": "bool"
+    },
+    "body-visual-ink": {
+      "value": true,
+      "unit": "bool"
+    },
+    "content-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "content-overlap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "horizontal-fit": {
+      "value": true,
+      "unit": "bool"
+    },
+    "section-rhythm": {
+      "value": true,
+      "unit": "bool"
+    },
+    "row-padding": {
+      "value": true,
+      "unit": "bool"
+    },
+    "panel-corners": {
+      "value": true,
+      "unit": "bool"
+    },
+    "row-corners": {
+      "value": true,
+      "unit": "bool"
+    },
+    "primary-ink": {
+      "value": true,
+      "unit": "bool"
+    },
+    "lotA-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "lotA-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "lotB-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "lotB-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "lotC-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "lotC-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "packing-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "summary-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "status-wrap": {
+      "value": true,
+      "unit": "bool"
+    }
+  },
+  "obligations": [
+    {
+      "id": "business-content",
+      "clause": "All supplied and computed business text is current and exact.",
+      "priority": "must",
+      "states": [
+        "start",
+        "first-lot",
+        "reverse-order-selection",
+        "ready",
+        "released",
+        "same-order-pruned",
+        "ready-again",
+        "released-survivor",
+        "changed-order"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "decision-eligibility",
+      "clause": "Native disabled/selected facts obey published business decisions.",
+      "priority": "must",
+      "states": [
+        "start",
+        "first-lot",
+        "reverse-order-selection",
+        "ready",
+        "released",
+        "same-order-pruned",
+        "ready-again",
+        "released-survivor",
+        "changed-order"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "successful-tap-receipts",
+      "clause": "Exact tap event intervals require demonstrated successful original native dispatch; blocked taps never prove quiet behavior.",
+      "priority": "must",
+      "states": [
+        "first-lot",
+        "reverse-order-selection",
+        "ready",
+        "released",
+        "ready-again",
+        "released-survivor"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "caller-replacement",
+      "clause": "Same-entity revalidation and changed-entity reset are distinct and callback-silent.",
+      "priority": "must",
+      "states": [
+        "same-order-pruned",
+        "changed-order"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "typography",
+      "clause": "Typography follows sourced native or qualitative platform intent.",
+      "priority": "must",
+      "states": [
+        "start",
+        "first-lot",
+        "reverse-order-selection",
+        "ready",
+        "released",
+        "same-order-pruned",
+        "ready-again",
+        "released-survivor",
+        "changed-order"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "content-layout",
+      "clause": "Full variable-length vertical content wraps, fits and preserves separation/insets.",
+      "priority": "must",
+      "states": [
+        "start",
+        "first-lot",
+        "reverse-order-selection",
+        "ready",
+        "released",
+        "same-order-pruned",
+        "ready-again",
+        "released-survivor",
+        "changed-order"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "opaque-paint",
+      "clause": "Component opaque fills match approved suitable pixel regions; primary ink is readable.",
+      "priority": "must",
+      "states": [
+        "start",
+        "first-lot",
+        "reverse-order-selection",
+        "ready",
+        "released",
+        "same-order-pruned",
+        "ready-again",
+        "released-survivor",
+        "changed-order"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "primary-accessibility-box",
+      "clause": "Primary control accessibility-box height is48pt/dp; no physical OS hit-area claim.",
+      "priority": "must",
+      "states": [
+        "start",
+        "first-lot",
+        "reverse-order-selection",
+        "ready",
+        "released",
+        "same-order-pruned",
+        "ready-again",
+        "released-survivor",
+        "changed-order"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "selection-affordance",
+      "clause": "Visible selection marks agree with native selected facts.",
+      "priority": "must",
+      "states": [
+        "start",
+        "first-lot",
+        "reverse-order-selection",
+        "ready",
+        "released",
+        "same-order-pruned",
+        "ready-again",
+        "released-survivor",
+        "changed-order"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "corner-shape",
+      "clause": "Panel and option corner shape follow independent annotated references.",
+      "priority": "must",
+      "states": [
+        "start",
+        "first-lot",
+        "reverse-order-selection",
+        "ready",
+        "released",
+        "same-order-pruned",
+        "ready-again",
+        "released-survivor",
+        "changed-order"
+      ],
+      "risk": "style"
+    }
+  ],
+  "responsibilities": [
+    {
+      "id": "component-control",
+      "clause": "Production owns applicable control facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "control",
+      "subject": "production-component",
+      "rule_ids": [
+        "heading-label",
+        "entity-label",
+        "description-label",
+        "summary-label",
+        "status-label",
+        "surface-present",
+        "lotA-label",
+        "lotA-enabled",
+        "lotA-selected",
+        "lotA-detail",
+        "lotB-label",
+        "lotB-enabled",
+        "lotB-selected",
+        "lotB-detail",
+        "lotC-label",
+        "lotC-enabled",
+        "lotC-selected",
+        "lotC-detail",
+        "packing-label",
+        "packing-enabled",
+        "packing-selected",
+        "primary-label",
+        "primary-enabled"
+      ]
+    },
+    {
+      "id": "component-geometry",
+      "clause": "Production owns applicable geometry facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "geometry",
+      "subject": "production-component",
+      "rule_ids": [
+        "primary-height"
+      ]
+    },
+    {
+      "id": "component-text_layout",
+      "clause": "Production owns applicable text_layout facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "text_layout",
+      "subject": "production-component",
+      "rule_ids": [
+        "heading-native-size",
+        "heading-native-weight",
+        "body-native-size",
+        "body-native-ink"
+      ]
+    },
+    {
+      "id": "component-callback",
+      "clause": "Production owns applicable callback facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "callback",
+      "subject": "production-component",
+      "rule_ids": [
+        "tap-receipt",
+        "replacement-quiet"
+      ]
+    },
+    {
+      "id": "component-visual",
+      "clause": "Production owns applicable visual facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "visual",
+      "subject": "production-component",
+      "rule_ids": [
+        "surface-fill",
+        "primary-fill",
+        "lotA-fill",
+        "lotB-fill",
+        "lotC-fill",
+        "content-wrap",
+        "content-overlap",
+        "horizontal-fit",
+        "section-rhythm",
+        "row-padding",
+        "panel-corners",
+        "row-corners",
+        "primary-ink",
+        "lotA-mark",
+        "lotA-wrap",
+        "lotB-mark",
+        "lotB-wrap",
+        "lotC-mark",
+        "lotC-wrap",
+        "packing-mark",
+        "summary-wrap",
+        "status-wrap"
+      ]
+    },
+    {
+      "id": "real-production-api",
+      "clause": "The real exported additive production component owns all decisions, local UI state and replacement behavior; no external state or internal scroll.",
+      "priority": "must",
+      "owner": "component",
+      "method": "source",
+      "subject": "production-component",
+      "rule_ids": []
+    },
+    {
+      "id": "thin-pass-through",
+      "clause": "Pinned bridge only decodes typed data, applies the real Android theme, and calls production with the same callback; no state, replacement UI, business computation, forced identity, or event echo.",
+      "priority": "must",
+      "owner": "bridge",
+      "method": "source",
+      "subject": "thin-bridge",
+      "rule_ids": []
+    },
+    {
+      "id": "production-placement",
+      "clause": "AlertToast exports the actual SwiftUI component and Reply compiles the actual component from app/src/main. Existing finite vertical host owns scrolling/insets; no full-app navigation claim.",
+      "priority": "must",
+      "owner": "integration",
+      "method": "source",
+      "subject": "host-integration",
+      "rule_ids": []
+    }
+  ],
+  "capture_validity": {
+    "scope": "deterministic_component_fixture",
+    "max_age_seconds": 1800,
+    "reset": "fresh_native_fixture",
+    "external_state": "all_dependencies_pinned"
+  }
+}

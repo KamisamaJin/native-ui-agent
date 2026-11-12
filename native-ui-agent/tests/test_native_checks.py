@@ -80,6 +80,100 @@ class NativeChecks(unittest.TestCase):
   for s in o['snapshots']:s['control_groups']=[{'selector':{'identifier':'row'},'match_count':2,'resolution':'ambiguous_semantic'}]
   self.assertEqual(m.evaluate(self.plan(True,'present'),o,'ios')['counts']['passed'],1)
   self.assertEqual(m.evaluate(self.plan(False,'unique'),o,'ios')['counts']['passed'],1)
+ def test_lazy_viewport_missing_is_not_complete_state_absence(self):
+  o=self.observation();o['snapshots'][0]['control_groups']=[{'selector':{'identifier':'row'},'match_count':0,'resolution':'missing'}]
+  for prop in ['present','unique']:
+   report=m.evaluate(self.plan(True,prop),o,'ios');self.assertEqual(report['counts']['passed'],1,prop)
+   self.assertEqual(report['assertions'][0]['actual']['value'],True)
+   self.assertEqual(len(report['assertions'][0]['actual']['samples']),2)
+ def test_absence_needs_all_missing_and_complete_single_epoch(self):
+  for complete in [True,False]:
+   o=self.observation()
+   for s in o['snapshots']:s['control_groups']=[{'selector':{'identifier':'row'},'match_count':0,'resolution':'missing'}]
+   if not complete:o['snapshots'][1]['runtime']['content_frame']['y']=-750
+   self.assertEqual(m.evaluate(self.plan(False,'present'),o,'ios')['counts']['passed'if complete else'unassessed'],1)
+  o=self.observation();o['snapshots'][1]['binding']=dict(o['snapshots'][1]['binding'],event_revision=1)
+  self.assertEqual(m.evaluate(self.plan(True,'present'),o,'ios')['counts']['unassessed'],1)
+ def test_duplicate_witness_is_not_healed_by_later_unique_viewport(self):
+  o=self.observation();o['snapshots'][0]['control_groups']=[{'selector':{'identifier':'row'},'match_count':2,'resolution':'ambiguous_semantic'}]
+  self.assertEqual(m.evaluate(self.plan(True,'unique'),o,'ios')['counts']['failed'],1)
+  self.assertEqual(m.evaluate(self.plan(False,'unique'),o,'ios')['counts']['passed'],1)
+  self.assertEqual(m.evaluate(self.plan(True,'present'),o,'ios')['counts']['passed'],1)
+ def test_state_capture_and_input_indices_reject_boolean_and_float_aliases(self):
+  state={'id':'initial','input_index':0,'after_action':0}
+  for mode in ['snapshot-bool','checkpoint-bool','checkpoint-float','input-bool']:
+   o=self.observation();o['state_captures'][0]['after_action']=0
+   if mode=='snapshot-bool':o['state_captures'][0]['snapshot_indices']=[False,1]
+   elif mode=='checkpoint-bool':o['state_captures'][0]['after_action']=False
+   elif mode=='checkpoint-float':o['state_captures'][0]['after_action']=0.0
+   else:o['state_captures'][0]['binding']['fixture_index']=False
+   self.assertFalse(m.state_evidence(o,state)[0],mode)
+ def test_legacy_target_snapshot_false_is_not_integer_zero(self):
+  o=self.observation();o['state_captures']=[];o['snapshots'][0]['state_id']='target'
+  o['steps']=[{'state_id':'target','after':0,'binding_after':o['snapshots'][0]['binding']}]
+  state={'id':'target','input_index':0,'after_action':0,'coverage':'target'}
+  self.assertTrue(m.state_evidence(o,state)[0])
+  o['steps'][0]['after']=False;self.assertFalse(m.state_evidence(o,state)[0])
+ def test_full_state_uniqueness_needs_complete_matching_scope_but_presence_does_not(self):
+  o=self.observation();o['snapshots'][0]['control_groups']=[{'selector':{'identifier':'row'},'match_count':0,'resolution':'missing'}]
+  o['snapshots'][1]['runtime']['content_frame']['y']=-750
+  self.assertEqual(m.evaluate(self.plan(True,'present'),o,'ios')['counts']['passed'],1)
+  self.assertEqual(m.evaluate(self.plan(True,'unique'),o,'ios')['counts']['unassessed'],1)
+  value,_,actual,_=m.quantified_presence([(1,o['snapshots'][1])],False,{'identifier':'row'},'ios','unique',full_scope=False)
+  self.assertTrue(value);self.assertEqual(actual['scope'],'bound_target_native_query')
+ def test_lone_flat_node_does_not_claim_a_complete_native_query(self):
+  o=self.observation()
+  for s in o['snapshots']:s['nodes']=[s['control_groups'][0]['semantic']];s.pop('control_groups')
+  self.assertEqual(m.evaluate(self.plan(True,'unique'),o,'ios')['counts']['unassessed'],1)
+ def test_query_resolution_whitelist_and_local_empty_cardinality(self):
+  s=self.snapshot();s['control_groups'][0]['resolution']='singleton_only_not_enumerated'
+  self.assertIsNone(m.quantified_presence([(0,s)],False,{'identifier':'row'},'ios','unique',full_scope=False)[0])
+  s=self.snapshot();s['control_groups']=[{'selector':{'identifier':'row'},'match_count':0,'resolution':'missing'}]
+  for prop in ['present','unique']:
+   self.assertIs(m.quantified_presence([(0,s)],False,{'identifier':'row'},'ios',prop,full_scope=False)[0],False)
+   self.assertIsNone(m.quantified_presence([(0,s)],False,{'identifier':'row'},'ios',prop,full_scope=True)[0])
+ def test_native_query_graph_requires_one_connected_acyclic_identity_tree(self):
+  for pl,key,parent in [('ios','index','parent_index'),('android','node_id','parent_id')]:
+   valid=[{key:0,parent:-1,'role_raw':2},{key:1,parent:0},{key:2,parent:1}]
+   self.assertTrue(m.native_tree(valid,pl))
+   if pl=='ios':self.assertFalse(m.native_tree([dict(valid[0],role_raw=2.0),valid[1],valid[2]],pl))
+   for bad in [[dict(valid[0]),dict(valid[1],**{parent:2}),dict(valid[2])],
+               [dict(valid[0]),dict(valid[1],**{parent:-1})],
+               [dict(valid[0]),dict(valid[1]),dict(valid[1])],
+               [dict(valid[0]),dict(valid[1],**{parent:9})]]:
+    self.assertFalse(m.native_tree(bad,pl),bad)
+ def test_duplicate_native_records_and_group_tree_conflicts_are_unknown(self):
+  import copy
+  s=self.snapshot();semantic=dict(s['control_groups'][0]['semantic'],index=1,parent_index=0)
+  s['control_groups'][0]['semantic']=semantic;s['nodes']=[{'index':0,'parent_index':-1,'role_raw':2},semantic]
+  s['performance']={'native_query_mode':'single_public_snapshot'}
+  self.assertTrue(m.native_query_complete(s,{'identifier':'row'},'ios'))
+  duplicate=copy.deepcopy(s);duplicate['nodes'].append(dict(semantic))
+  for prop in ['present','unique']:
+   self.assertIsNone(m.quantified_presence([(0,duplicate)],True,{'identifier':'row'},'ios',prop)[0])
+  s['control_groups']=[{'selector':{'identifier':'row'},'match_count':0,'resolution':'missing'}]
+  for prop in ['present','unique']:
+   self.assertIsNone(m.quantified_presence([(0,s)],True,{'identifier':'row'},'ios',prop)[0])
+ def test_android_complete_query_requires_actual_geometry_wire_schema(self):
+  import copy
+  geo={'version':1,'provider':'compose_semantics_int_size','coordinate_unit':'px','density':2.75,'position_px':[0.,0.],'size_px':[200,400]}
+  s={'native_viewport_px':{'width':200,'height':400,'density':2.75},'nodes':[{'node_id':7,'parent_id':-1,'identifier':'row','intersects_viewport':True,'native_geometry':geo}]}
+  self.assertTrue(m.native_query_complete(s,{'identifier':'row'},'android'))
+  for key,value in [('version',True),('coordinate_unit','dp'),('density',1),('position_px',[0,float('nan')]),('size_px',[True,400])]:
+   bad=copy.deepcopy(s);bad['nodes'][0]['native_geometry'][key]=value
+   self.assertFalse(m.native_query_complete(bad,{'identifier':'row'},'android'),key)
+  bad=copy.deepcopy(s);bad['nodes'][0]['native_geometry']={'provider':'compose_semantics_int_size'}
+  self.assertIsNone(m.quantified_presence([(0,bad)],True,{'identifier':'row'},'android','unique')[0])
+ def test_offscreen_native_entity_still_has_presence_and_local_cardinality(self):
+  s={'control_groups':[{'selector':{'identifier':'row'},'match_count':1,'resolution':'offscreen_not_resolved','semantic':{'identifier':'row','intersects_viewport':False}}]}
+  for complete in [True,False]:
+   self.assertIs(m.quantified_presence([(0,s)],complete,{'identifier':'row'},'ios','present')[0],True)
+   self.assertIs(m.quantified_presence([(0,s)],complete,{'identifier':'row'},'ios','unique',full_scope=False)[0],True)
+  self.assertIsNone(m.quantified_presence([(0,s)],False,{'identifier':'row'},'ios','unique',full_scope=True)[0])
+  geo={'version':1,'provider':'compose_semantics_int_size','coordinate_unit':'px','density':2.75,'position_px':[0.,-1000.],'size_px':[200,40]}
+  a={'native_viewport_px':{'width':200,'height':400,'density':2.75},'nodes':[{'node_id':7,'parent_id':-1,'identifier':'row','intersects_viewport':False,'native_geometry':geo}]}
+  for prop in ['present','unique']:
+   self.assertIs(m.quantified_presence([(0,a)],False,{'identifier':'row'},'android',prop,full_scope=False)[0],True)
  def test_duplicate_text_layout_cannot_pass_wrong_target(self):
   o=self.observation()
   for s in o['snapshots']:s['nodes']=[{'identifier':'row','font_sp':16,'intersects_viewport':True}]*2

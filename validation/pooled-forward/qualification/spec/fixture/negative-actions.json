@@ -1,0 +1,21 @@
+[
+  {"type": "sweep", "state_id": "start", "max_steps": 24, "depends_on": []},
+  {
+    "type": "tap",
+    "target": {"identifier": "probe.disabled"},
+    "reveal": true,
+    "allow_disabled": true,
+    "state_id": "disabled",
+    "depends_on": [],
+    "after_targets": [{"identifier": "probe.disabled"}]
+  },
+  {
+    "type": "tap",
+    "target": {"identifier": "probe.primary"},
+    "reveal": true,
+    "expect_callback": "probe.primary",
+    "state_id": "independent-primary",
+    "depends_on": [],
+    "after_targets": [{"identifier": "probe.primary"}, {"identifier": "probe.count"}]
+  }
+]

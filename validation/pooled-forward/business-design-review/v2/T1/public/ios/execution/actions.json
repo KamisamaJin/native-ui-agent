@@ -1,0 +1,375 @@
+[
+  {
+    "type": "sweep",
+    "state_id": "start",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Release lot C"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Release lot C"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Release lot C"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      0
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "one-lot",
+    "after_targets": [
+      {
+        "label": "Shipment release checklist"
+      },
+      {
+        "identifier": "T1.entity"
+      },
+      {
+        "identifier": "T1.description"
+      },
+      {
+        "identifier": "T1.summary"
+      },
+      {
+        "identifier": "T1.status"
+      },
+      {
+        "identifier": "T1.surface"
+      },
+      {
+        "label": "Release lot A"
+      },
+      {
+        "identifier": "T1.lotA.detail"
+      },
+      {
+        "label": "Release lot B"
+      },
+      {
+        "identifier": "T1.lotB.detail"
+      },
+      {
+        "label": "Release lot C"
+      },
+      {
+        "identifier": "T1.lotC.detail"
+      },
+      {
+        "label": "Packing list checked"
+      },
+      {
+        "label": "Release selected lots"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      1
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Release lot A"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Release lot A"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Release lot A"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      2
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "two-lots",
+    "after_targets": [
+      {
+        "label": "Shipment release checklist"
+      },
+      {
+        "identifier": "T1.entity"
+      },
+      {
+        "identifier": "T1.description"
+      },
+      {
+        "identifier": "T1.summary"
+      },
+      {
+        "identifier": "T1.status"
+      },
+      {
+        "identifier": "T1.surface"
+      },
+      {
+        "label": "Release lot A"
+      },
+      {
+        "identifier": "T1.lotA.detail"
+      },
+      {
+        "label": "Release lot B"
+      },
+      {
+        "identifier": "T1.lotB.detail"
+      },
+      {
+        "label": "Release lot C"
+      },
+      {
+        "identifier": "T1.lotC.detail"
+      },
+      {
+        "label": "Packing list checked"
+      },
+      {
+        "label": "Release selected lots"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      3
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Packing list checked"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Packing list checked"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Packing list checked"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      4
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [
+      5
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Release selected lots"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Release selected lots"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "release|OR-481|L-A,L-C",
+    "capture_scope": "targets",
+    "depends_on": [
+      6
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "sweep",
+    "state_id": "released",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [
+      7
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "apply_next_fixture",
+    "capture_scope": "none",
+    "depends_on": [
+      8
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "sweep",
+    "state_id": "same-order-pruned",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [
+      9
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Packing list checked"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Packing list checked"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Packing list checked"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      10
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready-again",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [
+      11
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Release selected lots"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Release selected lots"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "release|OR-481|L-A",
+    "capture_scope": "targets",
+    "depends_on": [
+      12
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "sweep",
+    "state_id": "released-again",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [
+      13
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "apply_next_fixture",
+    "capture_scope": "none",
+    "depends_on": [
+      14
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "sweep",
+    "state_id": "changed-order",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [
+      15
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  }
+]

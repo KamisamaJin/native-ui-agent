@@ -1,0 +1,101 @@
+{
+  "id": "PORT01-common-equivalence-and-treatment-exclusion",
+  "status": "P",
+  "evidence_class": "HOST source/AST/byte audit; no SDK behavior/timing claim",
+  "changed_paths": [
+    "assets/ios-observer/ObserverApp.swift",
+    "assets/ios-observer/ObserverTests.swift",
+    "assets/ios-observer/provider-conformance.json",
+    "references/state-evidence.md",
+    "scripts/acceptance.py",
+    "scripts/coverage_domain.py",
+    "scripts/execution_plan.py",
+    "scripts/feedback_loop.py",
+    "scripts/ios_observe.py",
+    "scripts/locator_diagnostics.py",
+    "scripts/native_checks.py",
+    "scripts/requirement_routes.py",
+    "scripts/review_contract.py",
+    "scripts/scroll_coverage.py",
+    "tests/test_coverage_domain.py",
+    "tests/test_scroll_coverage.py"
+  ],
+  "expected_paths": [
+    "assets/ios-observer/ObserverApp.swift",
+    "assets/ios-observer/ObserverTests.swift",
+    "assets/ios-observer/provider-conformance.json",
+    "references/state-evidence.md",
+    "scripts/acceptance.py",
+    "scripts/coverage_domain.py",
+    "scripts/execution_plan.py",
+    "scripts/feedback_loop.py",
+    "scripts/ios_observe.py",
+    "scripts/locator_diagnostics.py",
+    "scripts/native_checks.py",
+    "scripts/requirement_routes.py",
+    "scripts/review_contract.py",
+    "scripts/scroll_coverage.py",
+    "tests/test_coverage_domain.py",
+    "tests/test_scroll_coverage.py"
+  ],
+  "policy_files_unchanged": {
+    "scripts/resource_manager.py": true,
+    "scripts/ui_loop.py": true,
+    "scripts/retest_plan.py": true,
+    "scripts/evidence_review.py": true,
+    "scripts/evidence_responsibility.py": true
+  },
+  "policy_functions_unchanged": {
+    "scripts/ios_observe.py:build_signature": true,
+    "scripts/execution_plan.py:compile_execution": true,
+    "scripts/execution_plan.py:verify_execution": true,
+    "scripts/feedback_loop.py:load_previous": true
+  },
+  "treatment_module_presence": {
+    "workflow_state.py": {
+      "original": false,
+      "common": false
+    },
+    "capture_validity.py": {
+      "original": false,
+      "common": false
+    },
+    "source_identity.py": {
+      "original": false,
+      "common": false
+    },
+    "pool_watch.py": {
+      "original": false,
+      "common": false
+    }
+  },
+  "common_source_byte_parity": {
+    "scripts/coverage_domain.py": true,
+    "scripts/scroll_coverage.py": true,
+    "scripts/native_checks.py": true,
+    "scripts/locator_diagnostics.py": true,
+    "assets/ios-observer/ObserverApp.swift": true,
+    "assets/ios-observer/ObserverTests.swift": true,
+    "assets/ios-observer/provider-conformance.json": true
+  },
+  "host_only_indicator_constructor": true,
+  "original_commit": {
+    "argv": [
+      "git",
+      "archive",
+      "--format=tar",
+      "e75dd9227203dd06350a923cc249b79ff710687f",
+      "native-ui-agent"
+    ],
+    "exit_code": 0,
+    "stderr": "",
+    "evidence_class": "HOST read-only original baseline public source; no validation or business material",
+    "baseline_copy_matches_commit": true,
+    "file_count": 72,
+    "mismatches": []
+  },
+  "source_diff": "raw/independent-original-to-common2.diff",
+  "manual_source_diff_review_pending": false,
+  "test_contents_used_to_design_expectations": false,
+  "manual_source_diff_review": "Reviewed original-to-common2 call-site changes in execution/feedback/collector/acceptance/routing/review: only original-root plumbing, closed-domain preparation/binding, retained original compile logs/compiled host, and collector error status. No scoped source/adoption/workflow/device-pool/build-signature gain added. Existing policy-bearing files and AST functions remain original."
+}

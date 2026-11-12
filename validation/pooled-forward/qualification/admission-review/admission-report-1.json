@@ -1,0 +1,110 @@
+{
+  "review_id": "concrete-pre-native-admission-1",
+  "reviewed_at_utc": "2026-11-10T10:49:15.533072+00:00",
+  "phase": "PRE-NATIVE, before first reviewer SDK/build/native/UI/device operation and before speed/business gates",
+  "verdict": "blocked-known-build-input-boundary",
+  "ordinary_acquisition_static_ABI": "coherent; no missing required native-option or plan/route/schema field identified",
+  "blocking_findings": [
+    {
+      "id": "S1",
+      "kind": "known unpinned build input",
+      "status": "open",
+      "subject": "Android Reply/gradlew",
+      "reason": "The public baseline collector invokes ./gradlew. The actual launcher is outside declared source roots and explicit dependency_files and absent from the first supplied context build_dependencies. Pin it explicitly and regenerate/reseal concrete config/context before declaring the known dependency boundary adequate for all_dependencies_pinned reuse. This is not an observed native build failure."
+    },
+    {
+      "id": "S2",
+      "kind": "external build environment selection",
+      "status": "unresolved",
+      "subject": "COMPOSE_SNAPSHOT_ID in Reply/settings.gradle.kts",
+      "reason": "The settings script selects an additional repository using this environment variable, while the first context does not record its selection. Owner must freeze/record the selection or retain it as unknown and disallow reuse credit. This is not a claim that all process/compiler environment inputs were discovered."
+    }
+  ],
+  "passed_static_checks": {
+    "initial_integrity": 164,
+    "pure_baseline_compiler_and_ABI": 114,
+    "context_identity_and_actual_build_hashes": 67,
+    "context_checks_total": 68
+  },
+  "workload": {
+    "cases": [
+      "ios-cold",
+      "ios-warm",
+      "android"
+    ],
+    "assertions_per_case": 104,
+    "matrix_cells_per_case": 170,
+    "explicit_NA_per_case": 66,
+    "states": [
+      "start",
+      "after-primary",
+      "after-replacement",
+      "replacement-full",
+      "after-last"
+    ],
+    "full_content_states": [
+      "start",
+      "replacement-full"
+    ],
+    "rows_per_full_content_state": 18,
+    "mandatory_route_obligations": 9,
+    "mandatory_route_gaps": [],
+    "unowned_assertions": [],
+    "retained_advisory_U": [
+      "mounted-component-instance"
+    ],
+    "mandatory_native_safety_gates": 7
+  },
+  "seal_anchors": {
+    "effective_protocol": "17c2c73cd5cbbaa8ea5bb0048281f369273d51b950b3eb9034fc6fc872ece4a6",
+    "modular_additive": "fdbae86f943b13fb0289eca40db81d6d70c0bf9bacd110310b6937225b22ee5f",
+    "supported_profile": "db1666cac9264a47932b8d943dc67a5bf7a7a4ee798d8c6cf2b5010e4d2ea28d",
+    "initial_native_input_context_file": "873c4136ffea70bc1cc46ec012c66910c2c98c7fe783e5d21b5b580b1140aa5b"
+  },
+  "production_ownership": {
+    "installed_normal_sources_match_modular_seal": true,
+    "actual_production_file_hashes_verified": 85,
+    "bridges_match_modular_seal": true,
+    "thin_bridge_source_observation": "Observed true with actual current line citations; submissions prepared, default-service review stores not bound or read",
+    "repair_control": "separately sealed alternative; each differs at one production counter increment; not installed in normal profile"
+  },
+  "validity": {
+    "max_age_seconds": 3600,
+    "scope": "deterministic_component_fixture",
+    "reset": "fresh_native_fixture",
+    "external_state": "all_dependencies_pinned",
+    "claim_limit": "Scoped fixture approval only. Known/unknown dependency impact, current source/bridge/input/action/expectation/environment drift, age and all original package/native gates still control eligibility; device TTL never refreshes evidence age."
+  },
+  "pending_runtime": [
+    "Successful package/project compilation and actual module/classpath resolution",
+    "Actual selected SDK/toolchain/runtime/device and native app/test session identities",
+    "All seven required native safety gates, exact per-state process/input/event/dispatch/frame bindings",
+    "Complete state-local overlapping native content coverage and native environment",
+    "Default bound source-review receipt; no admission output substitutes for it",
+    "Actual native pool/reuse/expiry/retirement/borrowed-resource behavior",
+    "Actual original-package integrity/reconstruction/current-source/source-review/native-validation reuse gates",
+    "Compiler-dependency closure remains unproved; no arbitrary closure inferred from hashes",
+    "Exact A/B mandatory P/F/U identity, no increased mandatory U, retained advisory U and >=20% inclusive collection reduction",
+    "Any later business gates remain separate and unevaluated"
+  ],
+  "prohibited_material": "No candidate implementation/results, previous validation cases, prior review artifacts/outcomes or business material opened. REJECTION-HISTORY.json was hash-only for current seal integrity. Only candidate-v13.2/references/pooled-workflow.md was read as expressly added public integration API; candidate tools hashes in supplied context were retained as metadata, not verified by reading implementation.",
+  "operations": {
+    "reviewer_native_commands": 0,
+    "reviewer_builds": 0,
+    "reviewer_sdk_commands": 0,
+    "reviewer_device_commands": 0,
+    "reviewer_native_or_performance_samples": 0,
+    "writes": "qualification/admission-review only",
+    "pure_operations": "Documented baseline pure schema/contract/plan/route/responsibility/environment compilation only"
+  },
+  "artifacts": {
+    "initial": "INITIAL-SEAL.json",
+    "static": "static-checks.json",
+    "context": "context-checks-873c4136ffea70bc1cc46ec012c66910c2c98c7fe783e5d21b5b580b1140aa5b.json",
+    "source": "SOURCE-OBSERVATIONS.md",
+    "readsets": [
+      "INITIAL-READSET.json",
+      "supplemental-readset.json"
+    ]
+  }
+}

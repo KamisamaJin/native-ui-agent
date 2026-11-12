@@ -1,0 +1,81 @@
+{
+  "worker": "v13_neutral_repair",
+  "started_utc": "2026-11-10T15:09:20Z",
+  "recorded_utc": "2026-11-10T15:10:40.701399+00:00",
+  "task_sha256": "35d31b7bbc476a5feaa3622676bb0fcb3db35bce84f84f008b995207e6dfee39",
+  "read_set": [
+    "validation/pooled-forward/candidate-v13.9/SKILL.md",
+    "validation/pooled-forward/candidate-v13.9/references/default-feedback.md",
+    "validation/pooled-forward/candidate-v13.9/references/managed-execution.md (lines 25-65)",
+    "validation/pooled-forward/candidate-v13.9/references/pooled-workflow.md (lines 28-52)",
+    "validation/pooled-forward/candidate-v13.9/references (rg API search)",
+    "validation/pooled-forward/candidate-v13.9/scripts/ui_loop.py (rg API search and lines 450-495)",
+    "validation/pooled-forward/cache/qualification/repair/evidence-candidate-v13.9-scope2/C0-ios/repair-task.json",
+    "validation/pooled-forward/cache/qualification/repair/profiles-v3/ios-cold.json",
+    "validation/pooled-forward/qualification/neutral-design/executable-profile/prepared/ios-cold/plan.json",
+    "validation/pooled-forward/cache/qualification/repair/evidence-candidate-v13.9-scope2/C0-ios/source-review-template.json",
+    "validation/pooled-forward/cache/qualification/repair/evidence-candidate-v13.9-scope2/C0-ios/capture/native/observation.json",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/cache/qualification/repair/workspace/alerttoast/Sources/AlertToast/NativeQualificationProbe.swift",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/cache/qualification/repair/workspace/bridges/ObserverBridge.swift"
+  ],
+  "source_files_hashed": [
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/cache/qualification/repair/workspace/alerttoast/Sources/AlertToast/._ActivityIndicator.swift",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/cache/qualification/repair/workspace/alerttoast/Sources/AlertToast/._AlertToast.swift",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/cache/qualification/repair/workspace/alerttoast/Sources/AlertToast/._BlurView.swift",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/cache/qualification/repair/workspace/alerttoast/Sources/AlertToast/ActivityIndicator.swift",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/cache/qualification/repair/workspace/alerttoast/Sources/AlertToast/AlertToast.swift",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/cache/qualification/repair/workspace/alerttoast/Sources/AlertToast/BlurView.swift",
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/cache/qualification/repair/workspace/alerttoast/Sources/AlertToast/NativeQualificationProbe.swift"
+  ],
+  "images_viewed": [
+    {
+      "snapshot": 10,
+      "path": "attachments/726D30A4-2D02-431D-8BE6-74D5B875115B.png"
+    },
+    {
+      "snapshot": 20,
+      "path": "attachments/C6C247E3-5DF8-4721-B92E-83327071E1E4.png"
+    },
+    {
+      "snapshot": 21,
+      "path": "attachments/AA0DFB19-8CEF-43E0-958F-39C333EF07D1.png"
+    },
+    {
+      "snapshot": 23,
+      "path": "attachments/D6C6016A-C65D-4F64-88C1-FAE54A17CA27.png"
+    },
+    {
+      "snapshot": 34,
+      "path": "attachments/63F6936C-D3A4-4627-A23F-4545AA200394.png"
+    },
+    {
+      "snapshot": 35,
+      "path": "attachments/C4647CAC-69DB-4F7E-9876-4116FA39EBA8.png"
+    }
+  ],
+  "image_root": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/cache/qualification/repair/evidence-candidate-v13.9-scope2/C0-ios/capture/native",
+  "observation": "All six actual PNGs visibly show Tap count: 2. Snapshot 10 has marker-A0 and Observer callbacks: 1; snapshots 21, 23, 35 show marker-A1; snapshots 34 and 35 show Observer callbacks: 2. The count remains 2 through fixture replacement and last action.",
+  "cause": "Primary Button closure directly increments @State taps by 2 despite the public plan requiring Tap count: 1 after one primary callback and throughout subsequent checkpoints.",
+  "planned_patch": "Replace taps += 2 with taps += 1 only.",
+  "failed_reads": [
+    {
+      "command": "rg --files repair/workspace/alerttoast/Sources",
+      "result": "No such file or directory; exit 2"
+    },
+    {
+      "command": "cat repair/workspace/bridges/ObserverBridge.swift",
+      "result": "No such file or directory; exit 1"
+    }
+  ],
+  "limits": [
+    "No SDK invocation",
+    "No native capture",
+    "No Git commit",
+    "No claim of passing tests; parent must independently retest"
+  ],
+  "patch_utc": "2026-11-10T15:10:56.809710+00:00",
+  "changed_source_files": [
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/cache/qualification/repair/workspace/alerttoast/Sources/AlertToast/NativeQualificationProbe.swift"
+  ],
+  "after_probe_sha256": "90f68fa0652a9287d3ced24100db7aa344b68f0e12afed1b76ed0fc37064c974"
+}

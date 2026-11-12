@@ -1,0 +1,203 @@
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.9/scripts/review_contract.py
+   1 #!/usr/bin/env python3
+   2 """Bind original visual observations to approved atomic contracts without expectation entry."""
+   3 from __future__ import annotations
+   4 
+   5 import argparse
+   6 import copy
+   7 import json
+   8 from pathlib import Path
+   9 
+  10 import design_contract as design
+  11 import native_pixels
+  12 
+  13 PIXEL_ASPECTS = {'rendered_fill', 'rendered_canvas', 'rendered_border', 'rendered_ink'}
+  14 VISUAL_ASPECTS = {'wrapping', 'overlap', 'hierarchy', 'clipping', 'content_presence'}
+  15 
+  16 
+  17 def catalog(plan, lock, lock_sha, policy, policy_sha, platform):
+  18     design.verify_generated(plan, lock, lock_sha, platform)
+  19     if design.digest(policy) != policy_sha or set(policy) != {'version', 'design_lock_sha256', 'approval_reference', 'ownership', 'atoms'}:
+  20         raise ValueError('Atomic review policy must match an independently pinned digest and schema')
+  21     if policy['version'] != 1 or policy['design_lock_sha256'] != lock_sha or not policy['approval_reference']:
+  22         raise ValueError('Atomic policy must bind the approved independent design')
+  23     targets = {r['id']: r.get('target') for r in lock['contract']['rules']}
+  24     manual_rules = {r['id'] for r in lock['contract']['rules'] if r['kind'] == 'manual'}
+  25     atoms = {}
+  26     for atom in policy['atoms']:
+  27         if not isinstance(atom, dict) or set(atom) - {'rule_id', 'aspect', 'method', 'sampling', 'question'} or not {'rule_id', 'aspect', 'method'} <= set(atom):
+  28             raise ValueError('Unknown atom metadata or attempted expected/unit override')
+  29         rid = atom['rule_id']
+  30         if rid in atoms or rid not in manual_rules:
+  31             raise ValueError('Each manual design rule needs one unique atomic policy')
+  32         target = targets[rid]
+  33         if policy['ownership'].get(target) not in {'component', 'host', 'system'}:
+  34             raise ValueError('Responsibility must be fixed for each visual target before implementation')
+  35         if atom['method'] == 'native_pixels' and atom['aspect'] in PIXEL_ASPECTS:
+  36             native_pixels.validate_sampling(atom.get('sampling', {}))
+  37         elif atom['method'] == 'visual' and atom['aspect'] in VISUAL_ASPECTS and 'sampling' not in atom:
+  38             question, _ = design.expression(atom.get('question'), lock['sources'])
+  39             if question['unit'] != 'string' or not question['value'].strip():
+  40                 raise ValueError('Qualitative actual must answer one source-backed independent proposition')
+  41         else:
+  42             raise ValueError('One supported aspect and evidence method required; compound visual checks are rejected')
+  43         atoms[rid] = atom
+  44     if set(atoms) != manual_rules:
+  45         raise ValueError('Atomic policy must disposition every manual rule, without omission')
+  46     rows = []
+  47     for rule in plan['assertions']:
+  48         if rule['kind'] != 'manual':
+  49             continue
+  50         atom = atoms[rule['requirement_id']]
+  51         if atom['method'] not in rule.get('allowed_methods', ['visual']) or rule.get('op', 'eq') != 'eq':
+  52             raise ValueError('Atomic review method/operator differs from the approved contract')
+  53         if atom['method'] == 'native_pixels' and (rule['unit'] != 'argb' or type(rule['expected']) is not int or rule['expected'] >> 24 != 255):
+  54             raise ValueError('Rendered color atoms require opaque source-backed ARGB')
+  55         if atom['method'] == 'visual' and (rule['unit'] != 'bool' or type(rule['expected']) is not bool):
+  56             raise ValueError('Qualitative atoms require one source-backed Boolean proposition')
+  57         identity = {'design_lock_sha256': lock_sha, 'policy_sha256': policy_sha,
+  58                     'scenario': plan['design_contract']['scenario'], 'platform': platform, 'assertion_id': rule['id']}
+  59         proposition = {}
+  60         if atom['method'] == 'visual':
+  61             question, proof = design.expression(atom['question'], lock['sources'])
+  62             proposition = {'proposition': question['value'], 'proposition_provenance': proof}
+  63         rows.append(dict(copy.deepcopy(rule), review_id=design.digest(identity), identity=identity, **proposition,
+  64                          aspect=atom['aspect'], method=atom['method'], responsibility=policy['ownership'][targets[rule['requirement_id']]],
+  65                          **({'sampling': copy.deepcopy(atom['sampling'])} if 'sampling' in atom else {})))
+  66     return {'version': 1, 'design_lock_sha256': lock_sha, 'policy_sha256': policy_sha,
+  67             'plan_sha256': design.digest(plan), 'platform': platform, 'rows': rows}
+  68 
+  69 
+  70 def bind(plan, lock, lock_sha, policy, policy_sha, observation, observation_sha, root, submission, platform):
+  71     from native_checks import bound_state_evidence
+  72     root = root.resolve()
+  73     cat = catalog(plan, lock, lock_sha, policy, policy_sha, platform)
+  74     if set(submission) != {'version', 'catalog_sha256', 'observation_sha256', 'decisions'} or submission['version'] != 1:
+  75         raise ValueError('Review submission contains unsupported fields or expectation overrides')
+  76     if submission['catalog_sha256'] != design.digest(cat) or submission['observation_sha256'] != observation_sha:
+  77         raise ValueError('Review submission belongs to another design, plan or native observation')
+  78     # Canonical object digest is carried in addition to exact original-file SHA.
+  79     if len(observation_sha) != 64:
+  80         raise ValueError('Original observation file SHA256 required')
+  81     by_review = {r['review_id']: r for r in cat['rows']}
+  82     requests = {}
+  83     for request in submission['decisions']:
+  84         if set(request) != {'review_id', 'actual', 'reason', 'snapshot_indices'}:
+  85             raise ValueError('Submit only rule identity, actual proposition, reason and original frame indices')
+  86         rid = request['review_id']
+  87         if rid not in by_review or rid in requests or by_review[rid]['method'] != 'visual':
+  88             raise ValueError('Unknown, duplicate or inappropriate review decision')
+  89         if request['actual'] is not None and type(request['actual']) is not bool:
+  90             raise ValueError('Visual actual must be Boolean or explicitly unknown')
+  91         if not isinstance(request['reason'], str) or not request['reason'].strip():
+  92             raise ValueError('Original visual observation rationale required')
+  93         indices = request['snapshot_indices']
+  94         if not isinstance(indices, list) or any(type(i) is not int for i in indices) or len(set(indices)) != len(indices):
+  95             raise ValueError('Unique original native snapshot indices required')
+  96         requests[rid] = request
+  97     states = {s['id']: bound_state_evidence(observation, s, root) for s in plan['states']}
+  98     decisions, findings = [], []
+  99     for row in cat['rows']:
+ 100         found, complete, why, capture = states[row['state']]
+ 101         allowed = {i for i, _ in found}
+ 102         status, actual, indices, proofs = 'unassessed', None, [], []
+ 103         reason = why
+ 104         if row['method'] == 'native_pixels':
+ 105             samples = []
+ 106             for index, snapshot in found:
+ 107                 sample = native_pixels.sample(snapshot, row['target'], platform, root, row['sampling'])
+ 108                 samples.append(dict(sample, snapshot_index=index))
+ 109             measured = [s for s in samples if s['status'] == 'measured']
+ 110             actual = {'samples': samples, 'scope': 'Rendered original pixels, not computed UI properties'}
+ 111             if measured:
+ 112                 indices = [s['snapshot_index'] for s in measured]
+ 113                 verdicts = [native_pixels.matches(s['argb'], row['expected'], row['sampling']['channel_tolerance']) for s in measured]
+ 114                 # Missing/offscreen targets in other sweep frames are not conflicts.
+ 115                 # Present targets whose color cannot be measured block a pass.
+ 116                 incomplete = any(s['status'] != 'measured' and s.get('eligible') is True for s in samples)
+ 117                 if not any(verdicts):
+ 118                     status, reason = 'failed', 'Original rendered color contradicts approved atomic role'
+ 119                 elif all(verdicts) and not incomplete:
+ 120                     status, reason = 'passed', 'Original rendered color matches approved atomic role'
+ 121                 else:
+ 122                     reason = 'Conflicting or insufficient rendered-color evidence within the state'
+ 123                 proofs = [s['proof'] for s in measured]
+ 124         elif row['review_id'] in requests:
+ 125             request = requests[row['review_id']]
+ 126             indices = request['snapshot_indices']
+ 127             if not set(indices) <= allowed:
+ 128                 raise ValueError('Review cites a frame outside this exact input/action state')
+ 129             actual, reason = request['actual'], request['reason']
+ 130             if actual is not None and indices:
+ 131                 status = 'passed' if actual == row['expected'] else 'failed'
+ 132         if status == 'passed' and row.get('coverage', 'full_content') == 'full_content' and not complete:
+ 133             status, reason = 'unassessed', 'Atomic pass withheld: required full-content coverage unavailable'
+ 134         evidence = []
+ 135         for index in indices:
+ 136             path = (root / observation['snapshots'][index]['screenshot']).resolve()
+ 137             if not path.is_relative_to(root) or not path.is_file():
+ 138                 raise ValueError('Original visual screenshot is missing or outside observation root')
+ 139             proof = {'path': str(path.relative_to(root)), 'sha256': native_pixels.sha(path)}
+ 140             if proof not in evidence:
+ 141                 evidence.append(proof)
+ 142         decision = {'id': row['id'], 'status': status, 'method': row['method'], 'snapshot_indices': indices,
+ 143                     'reason': reason, 'evidence': evidence}
+ 144         decisions.append(decision)
+ 145         findings.append({'id': row['id'], 'review_id': row['review_id'], 'state': row['state'],
+ 146                          'requirement_id': row['requirement_id'], 'aspect': row['aspect'], 'target': row['target'],
+ 147                          'expected': row['expected'], 'unit': row['unit'], 'op': row.get('op', 'eq'),
+ 148                          'expectation_provenance': row['expectation_provenance'], 'status': status, 'actual': actual,
+ 149                          'responsibility': row['responsibility'], 'reason': reason, 'evidence': evidence,
+ 150                          'snapshot_indices': indices, 'pixel_proofs': proofs})
+ 151     return {'observation_sha256': observation_sha, 'decisions': decisions,
+ 152             'review_contract': {'version': 1, 'catalog_sha256': design.digest(cat), 'policy_sha256': policy_sha,
+ 153                                 'design_lock_sha256': lock_sha, 'observation_object_sha256': design.digest(observation),
+ 154                                 'submission': copy.deepcopy(submission), 'findings': findings}}
+ 155 
+ 156 
+ 157 def verify_manual(manual, plan, lock, lock_sha, policy, policy_sha, observation, observation_sha, root, platform):
+ 158     rebuilt = bind(plan, lock, lock_sha, policy, policy_sha, observation, observation_sha, root,
+ 159                    manual['review_contract']['submission'], platform)
+ 160     if design.canonical(rebuilt) != design.canonical(manual):
+ 161         raise ValueError('Bound review changed after generation: verdict, expected, evidence or provenance differs')
+ 162 
+ 163 
+ 164 def main():
+ 165     p = argparse.ArgumentParser(description=__doc__)
+ 166     p.add_argument('command', choices=['catalog', 'review'])
+ 167     for flag in ['plan', 'design-lock', 'policy', 'output']:
+ 168         p.add_argument('--' + flag, type=Path, required=True)
+ 169     p.add_argument('--design-sha256', required=True)
+ 170     p.add_argument('--policy-sha256', required=True)
+ 171     p.add_argument('--platform', choices=['ios', 'android'], required=True)
+ 172     p.add_argument('--observation', type=Path)
+ 173     p.add_argument('--submission', type=Path)
+ 174     args = p.parse_args()
+ 175     if args.output.exists():
+ 176         raise ValueError('Fresh output required; original review is never replaced')
+ 177     plan, lock, policy = [design.load(v) for v in [args.plan, args.design_lock, args.policy]]
+ 178     cat = catalog(plan, lock, args.design_sha256, policy, args.policy_sha256, args.platform)
+ 179     if args.command == 'catalog':
+ 180         value = dict(cat, catalog_sha256=design.digest(cat))
+ 181         args.output.parent.mkdir(parents=True, exist_ok=True)
+ 182         args.output.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+ 183         return
+ 184     if args.observation is None:
+ 185         raise ValueError('Original observation required')
+ 186     import native_checks
+ 187     observation, observation_sha = design.load(args.observation), native_pixels.sha(args.observation)
+ 188     submission = design.load(args.submission) if args.submission else {'version': 1, 'catalog_sha256': design.digest(cat), 'observation_sha256': observation_sha, 'decisions': []}
+ 189     manual = bind(plan, lock, args.design_sha256, policy, args.policy_sha256, observation, observation_sha,
+ 190                   args.observation.parent, submission, args.platform)
+ 191     report = native_checks.evaluate(plan, observation, args.platform, manual, args.observation.parent,
+ 192                                     observation_sha, lock, args.design_sha256, policy, args.policy_sha256)
+ 193     args.output.mkdir(parents=True)
+ 194     for name, value in [('catalog.json', dict(cat, catalog_sha256=design.digest(cat))), ('manual.json', manual), ('report.json', report),
+ 195                         ('findings.json', manual['review_contract']['findings'])]:
+ 196         (args.output / name).write_text(json.dumps(value, indent=2, ensure_ascii=False) + '\n')
+ 197     print(json.dumps({'counts': report['counts'], 'catalog_sha256': design.digest(cat)}))
+ 198 
+ 199 
+ 200 if __name__ == '__main__':
+ 201     main()

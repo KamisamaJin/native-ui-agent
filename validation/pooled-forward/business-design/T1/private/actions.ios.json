@@ -1,0 +1,193 @@
+[
+  {
+    "type": "sweep",
+    "state_id": "initial",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Release northern lot"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Release northern lot"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Release northern lot"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "first-lot"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Release accessible fittings"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Release accessible fittings"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Release accessible fittings"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "reverse-order-selection"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Packing list checked"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Packing list checked"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Packing list checked"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Release selected lots"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Release selected lots"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "release|OR-936|A-02,Z-90"
+  },
+  {
+    "type": "sweep",
+    "state_id": "released",
+    "max_scrolls": 18
+  },
+  {
+    "type": "apply_next_fixture"
+  },
+  {
+    "type": "sweep",
+    "state_id": "same-order-pruned",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Packing list checked"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Packing list checked"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Packing list checked"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready-again",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Release selected lots"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Release selected lots"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "release|OR-936|A-02"
+  },
+  {
+    "type": "sweep",
+    "state_id": "released-survivor",
+    "max_scrolls": 18
+  },
+  {
+    "type": "apply_next_fixture"
+  },
+  {
+    "type": "sweep",
+    "state_id": "changed-order",
+    "max_scrolls": 18
+  }
+]

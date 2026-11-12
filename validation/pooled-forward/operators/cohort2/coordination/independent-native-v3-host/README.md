@@ -1,0 +1,11 @@
+# Common operator continuation v3
+
+This revision changes operator transport only. Frozen SUTs, source, contracts, expected facts, thresholds and original clocks remain unchanged. The original d434 authority/registry and every original claim, outcome, failed packet, cost and supervision gap remain retained.
+
+The actual T1/B Android attempt failed in the operator admission guard before claim/command/envelope/SDK/service/capture. Its three original entry files and positive cleanup are pinned in ACTUAL-PRECLAIM-DIAGNOSIS.json. The B profile intentionally shares an own-arm workflow root across two platform namespaces. v3 permits nonempty workflow only when owner/root inode, exact sibling file set, registered sibling source/config/capture/cycle, original output inventory and exact frozen generation transition agree; current-platform state and both review stores must remain fresh. It never accepts arbitrary nonempty workflow.
+
+Only T1/B Android may re-enter a preclaim operation at its exact distinct entry-resumptions record under an externally pinned, reviewed permit. native_reference verifies that permit and failed-entry chain explicitly. Other sixteen unstarted scopes retain their original licensed record, relative order and one-shot claim. No acquired/ambiguous scope can run again. The finite v3 collector requires the supplemental monitor positively CLOSED, performs positive cleanup even after halt/error, stops on absent fresh facts, records all entry/failure walls and adds shared CLOCK_MONOTONIC timestamps. Original public v4 windows and SUT clocks are unaffected.
+
+22 final synthetic HOST controls passed, including strict own-platform freshness and sibling provenance, alternate-record permit binding, no-facts stop, HALT cleanup/no retry and incomplete initial-monitor closure. They are author controls, not independent tests or product judgments. Earlier HOST-attempt1 (19 controls) and HOST-attempt2 (21 controls) were all passing development versions and are retained; do not add their counts as independent evidence. Actual diagnosis is a separate read-only application, not native re-acquisition.
+
+Do not launch until root reviews the frozen code, actual diagnosis and proposal and a separate explicit admission file is appended. The v3 admission must refer to the exact remaining17 plan and immutable d434 authority.

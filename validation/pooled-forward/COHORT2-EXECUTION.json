@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "at_unix": 1794333102.1853921,
+  "cohort": "2-distinct-new-requirements",
+  "phase": "Before any new-cohort initial implementation or native rendering",
+  "all_ten_initials_before_any_business_render": true,
+  "cases": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5"
+  ],
+  "arm_execution": "Sequential whole-arm own-delivery episodes within each case; cases sequential. Do not enqueue inactive arm D0. This avoids contaminating isolated per-PR wall with the other arm's native queue. Same default FIFO controller, no code changes for scheduling.",
+  "order": {
+    "T1": [
+      "A",
+      "B"
+    ],
+    "T2": [
+      "B",
+      "A"
+    ],
+    "T3": [
+      "A",
+      "B"
+    ],
+    "T4": [
+      "B",
+      "A"
+    ],
+    "T5": [
+      "A",
+      "B"
+    ]
+  },
+  "source_repair_budget_seconds": 1200,
+  "diagnostic_bundles_max_including_D0": 2,
+  "d0_readiness": "First durably complete terminal diagnostic bundle; legitimate acquisition/shape/runtime failures remain F/U and still start the clock. No clock reset on retry. Inflight/incomplete/integrity-violated source or immutable inputs cannot unlock.",
+  "worker_blinding": "Only own assigned public inputs, identical initial source and frozen arm tool; no other-arm evidence/source/claims, no private inputs; no coordinator product repair.",
+  "source_lock": "Irrevocable at deadline or early seal; readonly final/review/shape admission may finish later, always exact sealed bytes.",
+  "all_final_source_and_self_claims_before_hidden": true,
+  "dual_anonymous_grading_and_common_cause_seal_before_reveal": true,
+  "no_injected_business_defects": true,
+  "timing_scope": "Own first D0 enqueue through final self/source/service/resource closure; shared design/initial/rejected-cohort research and later hidden wait separately retained. No overlapping other-arm SDK or CI during an own episode.",
+  "control": "baseline-v12.6-common-6, shared18path correctness floor not treatmentcredit",
+  "treatment": "candidate-v13.9 frozen before new designs; no SUT changes",
+  "speed_gate": "qualification/benchmark-gate/RESULT.json",
+  "rejected_prior_cohort": "business-prestudy-rejected-cohort1/FAILURE.json",
+  "scope_limit": "Five related reusable-component tasks, one host/software configuration, warm shared build caches; shared template correlation and small sample forbid broad population claims."
+}

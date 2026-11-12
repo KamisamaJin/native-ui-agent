@@ -1,0 +1,45 @@
+--- build_blind_packet_v2.py
++++ build_blind_packet_v3.py
+@@ -71,10 +71,10 @@
+     private_arm = 'I' if initial else arm
+     assert not (task_id == 'T1' and initial), 'Valid I1 already has sealed original facts and the identical complete-input supplement; do not replace its packet or judgments'
+     evidence = root / 'cache/business/independent-evaluation'
+-    episode_end = evidence / f'episodes/{task_id}/{private_arm}/continuation/END.json'
+-    assert episode_end.is_file(), 'Both private acquisition operations and retirement must terminate before packet assembly'
+-    assert load(episode_end)['status'] == 'closed'
+-    attempt = args.group + '-complete-v2'
++    episode_ends = [evidence / f'episodes/{task_id}/{private_arm}/{revision}/END.json' for revision in ['continuation', 'remaining-first-execution-v3']]
++    episode_end = next((p for p in reversed(episode_ends) if p.is_file() and load(p)['status'] == 'closed'), None)
++    assert episode_end is not None, 'Registered first executions and retirement must terminate before packet assembly'
++    attempt = args.group + '-complete-v3'
+     packet = root / 'cache/business/blind-quality/packets' / attempt
+     packet.mkdir(parents=True, exist_ok=False)
+     ledger_root = coord / 'blind-packet-ledgers' / attempt
+@@ -88,11 +88,12 @@
+         for name in ['SEAL.json', 'FAILED.json']:
+             if (folder / name).is_file():
+                 predecessors.append(ref(folder / name))
+-    ledger['operational_revision'] = {'number': 2, 'prior_attempts': predecessors,
+-        'reason': 'Original unforwarded attempts and incomplete packet versions retained. This version uses only registered explicit first-inner-UI continuation facts and the identical original source-contract supplement; no source/criteria change or resampling.'}
+-    runner_path = coord / 'independent_native_v2.py'
+-    assert sha(runner_path) == '7c8cf014299ea94db1646d22bd09be69040aaf183a10e50a7fd824126dbb02d2'
+-    spec = importlib.util.spec_from_file_location('packet_registered_effective_native_v2', runner_path)
++    ledger['operational_revision'] = {'number': 3, 'prior_attempts': predecessors,
++        'reason': 'Binding-only revision verifies the explicitly permitted preclaim entry record and unchanged licensed first-execution endpoints. Original failed versions and all source/fact projections remain unchanged; no native resampling.'}
++    ledger['native_episode_terminal'] = ref(episode_end)
++    runner_path = coord / 'independent_native_v3.py'
++    assert sha(runner_path) == '7672ec99ca986a149d303eb8e37fb81da71edf1826c6eb1273da534945ddf722'
++    spec = importlib.util.spec_from_file_location('packet_registered_effective_native_v3', runner_path)
+     runner = importlib.util.module_from_spec(spec)
+     spec.loader.exec_module(runner)
+ 
+@@ -167,6 +168,9 @@
+             outcome_path = Path(continued['record']) / 'outcome.json'
+             outcome = load(outcome_path)
+             runner.native_reference(evidence, task_id, private_arm, platform, outcome['config'], outcome['source_capsule'], outcome_path, sha(outcome_path))
++            resources_path = Path(outcome['resources']['path'])
++            resources = load(resources_path)
++            assert sha(resources_path) == outcome['resources']['sha256'] and resources.get('final') is True and all(resources.get(k) == [] for k in ['cleanup_errors', 'remaining_directories', 'remaining_devices']), 'Both original private endpoints require positive owned closure'
+             config_ref = outcome['config']
+             assert sha(config_ref['path']) == config_ref['sha256']
+             ledger.setdefault('registered_private_native_endpoints', []).append({'profile': platform, 'continuation_claim': ref(continued_path),

@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "oracle_id": "neutral-modular-original-facts-1",
+  "status": "expected facts only; no actual native observations",
+  "source": "unchanged minimum independent oracle in original fixture/INTERFACE.md, qualified by effective protocol amendment 1",
+  "original_fixture_seal_sha256": "722cb5c68c7c6709615c455f291ce5ce1c457a95dc2346aa4e209233ebe77c6d",
+  "inputs": {
+    "ios-cold.json": {
+      "path": "ios-cold.json",
+      "sha256": "6728c5ad610a760d3eedcb6226391870ba00fdb70877703f2fab7a548f79645a",
+      "bytes": 378
+    },
+    "ios-warm.json": {
+      "path": "ios-warm.json",
+      "sha256": "f05ef209532821d94aced969c61d084d25cb5e62db97a515f2af653bca29c125",
+      "bytes": 378
+    },
+    "android.json": {
+      "path": "android.json",
+      "sha256": "ff2ef95c28cd327ec10deca84762f0bee84a73f5bed3fb9bb2c5b3b587463a2c",
+      "bytes": 230
+    },
+    "actions.json": {
+      "path": "actions.json",
+      "sha256": "4cfe186cb038f837390d730979fce68e651f3ad16c67f6167da4339d90c43c4b",
+      "bytes": 1023
+    },
+    "negative-actions.json": {
+      "path": "negative-actions.json",
+      "sha256": "11b82683d3183e917d1a108c7e1f083019ba2f1203b0da7d27913fc0adc8d102",
+      "bytes": 592
+    }
+  },
+  "source_variants": {
+    "normal": {
+      "ios": {
+        "path": "ios/Sources/AlertToast/NativeQualificationProbe.swift",
+        "sha256": "90f68fa0652a9287d3ced24100db7aa344b68f0e12afed1b76ed0fc37064c974",
+        "bytes": 2464
+      },
+      "android": {
+        "path": "android/app/src/main/java/org/nativequalification/NativeQualificationProbe.kt",
+        "sha256": "9ddc9eff85d4b9d84469df37eae80b8779bca26af12ac3f504d575c3ff5be164",
+        "bytes": 2542
+      }
+    },
+    "repair_control": {
+      "ios": {
+        "path": "repair-control/ios/Sources/AlertToast/NativeQualificationProbe.swift",
+        "sha256": "2bb97282add46dd07dd6d370265e371349f3da96a5e22b2ed5dbe61ad8a6e9d8",
+        "bytes": 2464
+      },
+      "android": {
+        "path": "repair-control/android/app/src/main/java/org/nativequalification/NativeQualificationProbe.kt",
+        "sha256": "1de3f6e70eba46d51eb1132c90030ff761d92375054d130359d225342745273f",
+        "bytes": 2542
+      }
+    }
+  },
+  "state_expectations": [
+    {
+      "state": "start",
+      "after_action": 0,
+      "input_index": 0,
+      "marker": "exact selected fixture initial.marker",
+      "detail": "exact selected fixture initial.detail",
+      "count_label": "Tap count: 0",
+      "full_content": true,
+      "required_lower_targets": [
+        "probe.last",
+        "probe.detail"
+      ]
+    },
+    {
+      "state": "after-primary",
+      "after_action": 1,
+      "input_index": 0,
+      "count_label": "Tap count: 1",
+      "required_stimulus": "demonstrated unique enabled native primary activation",
+      "exact_callback_delta": [
+        "probe.primary"
+      ],
+      "retain_immediate_and_location_frames": true
+    },
+    {
+      "state": "after-replacement",
+      "after_action": 2,
+      "input_index": 1,
+      "marker": "exact selected fixture updates[0].marker",
+      "detail": "exact selected fixture updates[0].detail",
+      "count_label": "Tap count: 1",
+      "required_stimulus": "demonstrated caller update advancing native input index by exactly one",
+      "exact_callback_delta": [],
+      "same_capture_process_and_instance_token": true
+    },
+    {
+      "state": "replacement-full",
+      "after_action": 3,
+      "input_index": 1,
+      "marker": "exact selected fixture updates[0].marker",
+      "detail": "exact selected fixture updates[0].detail",
+      "count_label": "Tap count: 1",
+      "full_content": true,
+      "required_lower_targets": [
+        "probe.last",
+        "probe.detail"
+      ]
+    },
+    {
+      "state": "after-last",
+      "after_action": 4,
+      "input_index": 1,
+      "count_label": "Tap count: 1",
+      "required_stimulus": "demonstrated unique enabled native last-target activation",
+      "exact_callback_delta": [
+        "probe.last"
+      ],
+      "retain_immediate_and_location_frames": true
+    }
+  ],
+  "cross_state_requirements": {
+    "normal_route": "exact original sealed actions.json",
+    "row_count": 18,
+    "row_identifiers": "probe.row.0 through probe.row.17",
+    "visible_title": "Native capability qualification",
+    "primary_label": "Primary native action",
+    "disabled_label": "Disabled native action",
+    "last_label": "Last native action",
+    "instance_visible_text": "Instance",
+    "instance_token": "nonempty native instance value/content-description token equal within the same mounted capture across caller replacement; retain real app/session/input/event identity as well",
+    "callback_methods": {
+      "ios": "actual demonstrated xcui_tap",
+      "android": "actual demonstrated compose_onclick; no physical-touch claim"
+    },
+    "full_content": "actual same-state native overlapping intervals and bottom sentinel, not an observed-ID union"
+  },
+  "repair_control": {
+    "purpose": "H01/H02 controlled neutral protocol mismatch only; never business-defect credit",
+    "only_declared_source_change": "production tap-counter update changes from increment one to increment two; bridge/input/actions/expected facts unchanged",
+    "original_expected_first_activation_count": "Tap count: 1",
+    "source_variant_prediction_not_observation": "Tap count: 2 after one successful primary activation, persisting after caller replacement",
+    "candidate_actual_native_result": "unknown; not collected",
+    "repair_acceptance": "measured production source change plus fresh required native rechecks and all original gates; no bridge-only patch or changed oracle can substitute"
+  },
+  "verdict_limits": [
+    "unestablished dispatch/dependent state remains U",
+    "source text is not runtime evidence",
+    "48-unit outer button declarations do not prove physical hit regions",
+    "a completion receipt does not prove repaired native behavior",
+    "normal/native equivalence unverified until real builds and observations"
+  ]
+}

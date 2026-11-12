@@ -1,0 +1,56 @@
+[
+  {
+    "id": "default-feedback-retains-bounded-pool",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/default-path-v2/evidence/first/cycle.json",
+      "status": "feedback_complete",
+      "pool": {
+        "enabled": true,
+        "idle_seconds": 300,
+        "max_uses": 12,
+        "max_age_seconds": 3600,
+        "disposition": "idle_owned_pool"
+      },
+      "simulated_collection_count": 1
+    }
+  },
+  {
+    "id": "unchanged-default-routes-without-collector",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/default-path-v2/evidence/unchanged/cycle.json",
+      "status": "feedback_complete",
+      "collector_count": 0
+    }
+  },
+  {
+    "id": "ordinary-final-adopts-original-full-feedback-and-retires",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/default-path-v2/evidence/final-adopt/cycle.json",
+      "original_sha256": "0f8fc6eed295c60f1eacca5abba3d0ef8ae628517210f9229f3616b6f389d4ca",
+      "collector_count": 0,
+      "cleanup": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/default-path-v2/evidence/final-adopt/resources.json"
+    }
+  },
+  {
+    "id": "explicit-final-fresh-forces-new-packet",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/default-path-v2/evidence/explicit-final-fresh/cycle.json",
+      "collector_count": 1
+    }
+  },
+  {
+    "id": "explicit-fresh-without-final",
+    "status": "F",
+    "evidence_class": "SIMULATED",
+    "error": "AssertionError('documented --fresh request returned feedback_complete with no new packet')",
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/run_checks.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/run_checks.py\", line 68, in fresh_nonfinal\n    assert_that(value['native_executed'] and record['simulated_collection_count']==1,'documented --fresh request returned '+value['status']+' with no new packet')\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/run_checks.py\", line 34, in assert_that\n    if not v:raise AssertionError(reason)\nAssertionError: documented --fresh request returned feedback_complete with no new packet\n"
+  }
+]

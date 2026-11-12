@@ -1,0 +1,659 @@
+{
+  "version": 1,
+  "scenario": "public-main",
+  "business_rules_source": "reference.json#/business_rules",
+  "states": [
+    {
+      "id": "initial",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content",
+      "stimulus": "none",
+      "exact_business_state": {
+        "entity": "INC-214 · Workshop booking interruption",
+        "description": "Prepare a clear notice for the affected audience. A preview is a local draft, and publication requires a separate wording review after the current audience and troubleshooting choice are fixed.",
+        "controls": {
+          "audienceA": {
+            "label": "Notify affected customers",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Allowed"
+          },
+          "audienceB": {
+            "label": "Notify service staff",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The operations team needs the same factual update for its customer conversations.\n18 recipients · Allowed"
+          },
+          "audienceC": {
+            "label": "Notify partner offices",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed"
+          },
+          "workaround": {
+            "label": "Include troubleshooting steps",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "previewAction": {
+            "label": "Preview notice",
+            "enabled": false,
+            "kind": "action"
+          },
+          "approve": {
+            "label": "Customer wording reviewed",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "No audience selected · Steps omitted",
+        "status": "Choose an allowed audience.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "audience-selected",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INC-214 · Workshop booking interruption",
+        "description": "Prepare a clear notice for the affected audience. A preview is a local draft, and publication requires a separate wording review after the current audience and troubleshooting choice are fixed.",
+        "controls": {
+          "audienceA": {
+            "label": "Notify affected customers",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Allowed"
+          },
+          "audienceB": {
+            "label": "Notify service staff",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The operations team needs the same factual update for its customer conversations.\n18 recipients · Allowed"
+          },
+          "audienceC": {
+            "label": "Notify partner offices",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed"
+          },
+          "workaround": {
+            "label": "Include troubleshooting steps",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "previewAction": {
+            "label": "Preview notice",
+            "enabled": true,
+            "kind": "action"
+          },
+          "approve": {
+            "label": "Customer wording reviewed",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Notify affected customers · 124 recipients · Steps omitted",
+        "status": "Preview the current draft.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "steps-selected",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INC-214 · Workshop booking interruption",
+        "description": "Prepare a clear notice for the affected audience. A preview is a local draft, and publication requires a separate wording review after the current audience and troubleshooting choice are fixed.",
+        "controls": {
+          "audienceA": {
+            "label": "Notify affected customers",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Allowed"
+          },
+          "audienceB": {
+            "label": "Notify service staff",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The operations team needs the same factual update for its customer conversations.\n18 recipients · Allowed"
+          },
+          "audienceC": {
+            "label": "Notify partner offices",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed"
+          },
+          "workaround": {
+            "label": "Include troubleshooting steps",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "previewAction": {
+            "label": "Preview notice",
+            "enabled": true,
+            "kind": "action"
+          },
+          "approve": {
+            "label": "Customer wording reviewed",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Notify affected customers · 124 recipients · Steps included",
+        "status": "Preview the current draft.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "previewed",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INC-214 · Workshop booking interruption",
+        "description": "Prepare a clear notice for the affected audience. A preview is a local draft, and publication requires a separate wording review after the current audience and troubleshooting choice are fixed.",
+        "controls": {
+          "audienceA": {
+            "label": "Notify affected customers",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Allowed"
+          },
+          "audienceB": {
+            "label": "Notify service staff",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The operations team needs the same factual update for its customer conversations.\n18 recipients · Allowed"
+          },
+          "audienceC": {
+            "label": "Notify partner offices",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed"
+          },
+          "workaround": {
+            "label": "Include troubleshooting steps",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "previewAction": {
+            "label": "Preview notice",
+            "enabled": true,
+            "kind": "action"
+          },
+          "approve": {
+            "label": "Customer wording reviewed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Notify affected customers · 124 recipients · Steps included",
+        "status": "Review the customer wording.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": "Subject: Workshop booking service is interrupted\nAudience: Notify affected customers (124)\nSome workshop bookings cannot be confirmed. Existing confirmations remain valid. The support team is reviewing the queue and will publish another update through the agreed communication channel.\nWorkaround: Keep the booking reference and contact the support desk before submitting the form again."
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INC-214 · Workshop booking interruption",
+        "description": "Prepare a clear notice for the affected audience. A preview is a local draft, and publication requires a separate wording review after the current audience and troubleshooting choice are fixed.",
+        "controls": {
+          "audienceA": {
+            "label": "Notify affected customers",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Allowed"
+          },
+          "audienceB": {
+            "label": "Notify service staff",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The operations team needs the same factual update for its customer conversations.\n18 recipients · Allowed"
+          },
+          "audienceC": {
+            "label": "Notify partner offices",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed"
+          },
+          "workaround": {
+            "label": "Include troubleshooting steps",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "previewAction": {
+            "label": "Preview notice",
+            "enabled": true,
+            "kind": "action"
+          },
+          "approve": {
+            "label": "Customer wording reviewed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Notify affected customers · 124 recipients · Steps included",
+        "status": "Ready to publish this notice.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": "Subject: Workshop booking service is interrupted\nAudience: Notify affected customers (124)\nSome workshop bookings cannot be confirmed. Existing confirmations remain valid. The support team is reviewing the queue and will publish another update through the agreed communication channel.\nWorkaround: Keep the booking reference and contact the support desk before submitting the form again."
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "published",
+      "input_index": 0,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INC-214 · Workshop booking interruption",
+        "description": "Prepare a clear notice for the affected audience. A preview is a local draft, and publication requires a separate wording review after the current audience and troubleshooting choice are fixed.",
+        "controls": {
+          "audienceA": {
+            "label": "Notify affected customers",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Allowed"
+          },
+          "audienceB": {
+            "label": "Notify service staff",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The operations team needs the same factual update for its customer conversations.\n18 recipients · Allowed"
+          },
+          "audienceC": {
+            "label": "Notify partner offices",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed"
+          },
+          "workaround": {
+            "label": "Include troubleshooting steps",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "previewAction": {
+            "label": "Preview notice",
+            "enabled": false,
+            "kind": "action"
+          },
+          "approve": {
+            "label": "Customer wording reviewed",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Notify affected customers · 124 recipients · Steps included",
+        "status": "Notice publication recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": "Subject: Workshop booking service is interrupted\nAudience: Notify affected customers (124)\nSome workshop bookings cannot be confirmed. Existing confirmations remain valid. The support team is reviewing the queue and will publish another update through the agreed communication channel.\nWorkaround: Keep the booking reference and contact the support desk before submitting the form again."
+      },
+      "exact_callback_interval": [
+        "publish|INC-214|customers|124|steps:on"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "same-incident-draft",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "full_content",
+      "stimulus_action": 11,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "INC-214 · Workshop booking interruption",
+        "description": "The caller replaced the incident wording. Preserve valid draft choices, but discard the old preview and wording review so that revised content is previewed and approved again.",
+        "controls": {
+          "audienceA": {
+            "label": "Notify affected customers",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Allowed"
+          },
+          "audienceB": {
+            "label": "Notify service staff",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The operations team needs the same factual update for its customer conversations.\n18 recipients · Allowed"
+          },
+          "audienceC": {
+            "label": "Notify partner offices",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed"
+          },
+          "workaround": {
+            "label": "Include troubleshooting steps",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "previewAction": {
+            "label": "Preview notice",
+            "enabled": true,
+            "kind": "action"
+          },
+          "approve": {
+            "label": "Customer wording reviewed",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Notify affected customers · 124 recipients · Steps included",
+        "status": "Preview the current draft.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "repreviewed",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "full_content",
+      "stimulus_action": 13,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INC-214 · Workshop booking interruption",
+        "description": "The caller replaced the incident wording. Preserve valid draft choices, but discard the old preview and wording review so that revised content is previewed and approved again.",
+        "controls": {
+          "audienceA": {
+            "label": "Notify affected customers",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Allowed"
+          },
+          "audienceB": {
+            "label": "Notify service staff",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The operations team needs the same factual update for its customer conversations.\n18 recipients · Allowed"
+          },
+          "audienceC": {
+            "label": "Notify partner offices",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed"
+          },
+          "workaround": {
+            "label": "Include troubleshooting steps",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "previewAction": {
+            "label": "Preview notice",
+            "enabled": true,
+            "kind": "action"
+          },
+          "approve": {
+            "label": "Customer wording reviewed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Notify affected customers · 124 recipients · Steps included",
+        "status": "Review the customer wording.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": "Subject: Workshop booking service is interrupted\nAudience: Notify affected customers (124)\nBooking confirmations are being restored in batches. Customers should keep their existing reference and wait for the confirmation message before making another booking.\nWorkaround: Ask the support desk to check the original booking reference before creating a replacement request."
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready-again",
+      "input_index": 1,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INC-214 · Workshop booking interruption",
+        "description": "The caller replaced the incident wording. Preserve valid draft choices, but discard the old preview and wording review so that revised content is previewed and approved again.",
+        "controls": {
+          "audienceA": {
+            "label": "Notify affected customers",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Allowed"
+          },
+          "audienceB": {
+            "label": "Notify service staff",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The operations team needs the same factual update for its customer conversations.\n18 recipients · Allowed"
+          },
+          "audienceC": {
+            "label": "Notify partner offices",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed"
+          },
+          "workaround": {
+            "label": "Include troubleshooting steps",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "previewAction": {
+            "label": "Preview notice",
+            "enabled": true,
+            "kind": "action"
+          },
+          "approve": {
+            "label": "Customer wording reviewed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Notify affected customers · 124 recipients · Steps included",
+        "status": "Ready to publish this notice.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": "Subject: Workshop booking service is interrupted\nAudience: Notify affected customers (124)\nBooking confirmations are being restored in batches. Customers should keep their existing reference and wait for the confirmation message before making another booking.\nWorkaround: Ask the support desk to check the original booking reference before creating a replacement request."
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "republished",
+      "input_index": 1,
+      "after_action": 18,
+      "coverage": "full_content",
+      "stimulus_action": 17,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INC-214 · Workshop booking interruption",
+        "description": "The caller replaced the incident wording. Preserve valid draft choices, but discard the old preview and wording review so that revised content is previewed and approved again.",
+        "controls": {
+          "audienceA": {
+            "label": "Notify affected customers",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Allowed"
+          },
+          "audienceB": {
+            "label": "Notify service staff",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The operations team needs the same factual update for its customer conversations.\n18 recipients · Allowed"
+          },
+          "audienceC": {
+            "label": "Notify partner offices",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed"
+          },
+          "workaround": {
+            "label": "Include troubleshooting steps",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "previewAction": {
+            "label": "Preview notice",
+            "enabled": false,
+            "kind": "action"
+          },
+          "approve": {
+            "label": "Customer wording reviewed",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Notify affected customers · 124 recipients · Steps included",
+        "status": "Notice publication recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": "Subject: Workshop booking service is interrupted\nAudience: Notify affected customers (124)\nBooking confirmations are being restored in batches. Customers should keep their existing reference and wait for the confirmation message before making another booking.\nWorkaround: Ask the support desk to check the original booking reference before creating a replacement request."
+      },
+      "exact_callback_interval": [
+        "publish|INC-214|customers|124|steps:on"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "changed-incident",
+      "input_index": 2,
+      "after_action": 20,
+      "coverage": "full_content",
+      "stimulus_action": 19,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "INC-215 · Separate ticketing incident",
+        "description": "A separate incident starts with no audience, troubleshooting choice, preview, approval, or recorded publication.",
+        "controls": {
+          "audienceA": {
+            "label": "Notify affected customers",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Allowed"
+          },
+          "audienceB": {
+            "label": "Notify service staff",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The operations team needs the same factual update for its customer conversations.\n18 recipients · Allowed"
+          },
+          "audienceC": {
+            "label": "Notify partner offices",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed"
+          },
+          "workaround": {
+            "label": "Include troubleshooting steps",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "previewAction": {
+            "label": "Preview notice",
+            "enabled": false,
+            "kind": "action"
+          },
+          "approve": {
+            "label": "Customer wording reviewed",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "No audience selected · Steps omitted",
+        "status": "Choose an allowed audience.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    }
+  ]
+}

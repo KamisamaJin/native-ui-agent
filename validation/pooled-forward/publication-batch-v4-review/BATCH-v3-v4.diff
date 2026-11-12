@@ -1,0 +1,34 @@
+--- frozen-batch-v3.py
++++ candidate-batch-v4.py
+@@ -18,14 +18,14 @@
+ import types
+ 
+ MATERIAL_SHA = '4783735c450d882c7fcf62e5a1192dacafa96352fee899023a8e67a12e2e94ac'
+-EMITTER_SCHEMA_SHA = 'f28e1deb779f620102b5c097675d70c3d9a3e85f639de65fa4875d885c595617'
++EMITTER_SCHEMA_SHA = '2d8605a83df3f1a6b028e4d989f17b2bd97ec87b0016d0f5172fa5a353dc0af6'
+ _here = Path(__file__).resolve().parent
+ _material_bytes = (_here / 'material.py').read_bytes()
+ if hashlib.sha256(_material_bytes).hexdigest() != MATERIAL_SHA:
+     raise ValueError('Pinned material-v3 source differs')
+ m = types.ModuleType('batch_private_material_v3'); m.__file__ = str(_here / 'material.py')
+ exec(compile(_material_bytes, m.__file__, 'exec'), m.__dict__)
+-_schema_bytes = (_here / 'EMITTER-SCHEMA-v2.json').read_bytes()
++_schema_bytes = (_here / 'EMITTER-SCHEMA-v3.json').read_bytes()
+ if hashlib.sha256(_schema_bytes).hexdigest() != EMITTER_SCHEMA_SHA:
+     raise ValueError('Pinned emitter admission schema differs')
+ EMITTER_SCHEMA = m.projection.strict_json(_schema_bytes)
+@@ -112,8 +112,14 @@
+ 
+ def inventory_kind(relative_name):
+     """Explicit frozen emitter layout; unknown JSON is never guessed nonfactual."""
++    relative_name = relative(relative_name).as_posix()
+     if relative_name.startswith(OPAQUE_PREFIXES): return 'control'
+     normalized = relative_name[len('capture/'):] if relative_name.startswith('capture/') else relative_name
++    attachment = EMITTER_SCHEMA['factual_attachment_reports']
++    path = PurePosixPath(normalized)
++    if (path.parent.as_posix() == attachment['directory'] and path.suffix == attachment['suffix']
++            and path.name not in attachment['excluded_basenames']):
++        return 'report'
+     if PurePosixPath(relative_name).name in REPORT_NAMES: return 'report'
+     if normalized in NONREPORT_JSON: return 'control'
+     if normalized == 'native/observation.json': return 'native-observation'

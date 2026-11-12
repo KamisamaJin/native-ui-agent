@@ -1,0 +1,576 @@
+{
+  "version": 1,
+  "scenario": "hidden-edge",
+  "business_rules_source": "reference.json#/business_rules",
+  "states": [
+    {
+      "id": "start",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content",
+      "stimulus": "none",
+      "exact_business_state": {
+        "entity": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "description": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Credit USD 0.00 · Remaining USD 101.99",
+        "status": "Choose a payment method for the remaining amount.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "credit-applied",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "description": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Credit USD 33.33 · Remaining USD 68.66",
+        "status": "Choose a payment method for the remaining amount.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "card-selected",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "description": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Credit USD 33.33 · Remaining USD 68.66",
+        "status": "Authorize this settlement.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "description": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Credit USD 33.33 · Remaining USD 68.66",
+        "status": "Ready to settle this invoice.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "settled",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "description": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Credit USD 33.33 · Remaining USD 68.66",
+        "status": "Settlement recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "settle|INV-992|3333|6866|card"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "same-invoice-credit-withdrawn",
+      "input_index": 1,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "description": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list. The replacement removes available credit, while the selected card remains valid.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Credit USD 0.00 · Remaining USD 101.99",
+        "status": "Authorize this settlement.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready-again",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "full_content",
+      "stimulus_action": 11,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "description": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list. The replacement removes available credit, while the selected card remains valid.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Credit USD 0.00 · Remaining USD 101.99",
+        "status": "Ready to settle this invoice.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "settled-again",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "full_content",
+      "stimulus_action": 13,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "description": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list. The replacement removes available credit, while the selected card remains valid.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Credit USD 0.00 · Remaining USD 101.99",
+        "status": "Settlement recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "settle|INV-992|0|10199|card"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "changed-invoice",
+      "input_index": 2,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "INV-993 · New invoice covered by excess credit",
+        "description": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Credit USD 0.00 · Remaining USD 10.00",
+        "status": "Choose a payment method for the remaining amount.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "excess-credit-clamped",
+      "input_index": 2,
+      "after_action": 18,
+      "coverage": "targets",
+      "stimulus_action": 17,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-993 · New invoice covered by excess credit",
+        "description": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Credit USD 10.00 · Remaining USD 0.00",
+        "status": "Authorize this settlement.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "credit-only-ready",
+      "input_index": 2,
+      "after_action": 20,
+      "coverage": "full_content",
+      "stimulus_action": 19,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-993 · New invoice covered by excess credit",
+        "description": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Credit USD 10.00 · Remaining USD 0.00",
+        "status": "Ready to settle this invoice.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "credit-only-settled",
+      "input_index": 2,
+      "after_action": 22,
+      "coverage": "full_content",
+      "stimulus_action": 21,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-993 · New invoice covered by excess credit",
+        "description": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Credit USD 10.00 · Remaining USD 0.00",
+        "status": "Settlement recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "settle|INV-993|1000|0|credit"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    }
+  ]
+}

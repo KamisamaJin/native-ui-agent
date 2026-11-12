@@ -1,0 +1,85 @@
+{
+  "review_id": "review-9-offscreen-native-query-delta",
+  "sealed_at_utc": "2026-11-10T14:28:19.732915+00:00",
+  "verdict": "NOT_QUALIFIED",
+  "confirmed_issue_ids": [
+    "SC18"
+  ],
+  "unresolved_interpretation_ids": [],
+  "candidate_baseline_unchanged": true,
+  "candidate": "candidate-v13.8",
+  "candidate_freeze_sha256": "e96973fbdb7909ef56a3926059c6b20f651aa2464cd6bc5cd6b58879196a7e96",
+  "baseline": "baseline-v12.6-common-5",
+  "baseline_freeze_sha256": "4b47ece620f1dab419e150f6e7bbd0c6e2622a70fb96770b19aba2d6db6eda17",
+  "criterion_seal_sha256": "c7d7a3936991a88b53a65444b184ed898345b335b3a5c7f7b8d71db9d95e2772",
+  "raw_results": {
+    "rows": 174,
+    "counts": {
+      "P": 162,
+      "F": 12
+    },
+    "files": [
+      "raw/candidate-v13.8-preserved-results.json",
+      "raw/candidate-v13.8-wire-delta-results.json",
+      "raw/candidate-v13.8-typed-regression-results.json",
+      "raw/candidate-v13.8-corrected-regression-results.json",
+      "raw/baseline-v12.6-common-5-preserved-results.json",
+      "raw/baseline-v12.6-common-5-wire-delta-results.json",
+      "raw/baseline-v12.6-common-5-typed-regression-results.json",
+      "raw/baseline-v12.6-common-5-corrected-regression-results.json",
+      "raw/candidate-v13.8-default-results.json",
+      "raw/baseline-v12.6-common-5-default-common-results.json",
+      "raw/common-port-audit.json"
+    ],
+    "confirmed_failure_rows": 10,
+    "preserved_prior_positive_graph_F_rows": 2,
+    "adjudication": "raw/preserved-positive-graph-adjudication.json; old P not regraded, new U/F observations retained. Fresh valid query-only/flat/full-tree positives separately pass."
+  },
+  "confirmed_blockers": [
+    {
+      "id": "SC18",
+      "title": "Complete offscreen singleton native query is withheld as U",
+      "classification": "confirmed under the unchanged sealed native D/M predicate",
+      "repros": [
+        "ios-offscreen-count1-presence",
+        "android-offscreen-count1-presence",
+        "ios-explicit-offscreen-count1-presence",
+        "ios-offscreen-count1-local-cardinality",
+        "android-offscreen-count1-local-cardinality"
+      ],
+      "actual": "Both arms recognize a valid, complete, bound target-native query with count1, no duplicate and an offscreen entity, yet present:true and local unique:true remain U. The emitted iOS offscreen_not_resolved format and actual Compose semantics format both reproduce it. Two offscreen distinct entities correctly prove presence P.",
+      "expected": "For the complete local native matching domain M, count1 establishes present=True and unique=True regardless of viewport intersection. Retain complete:false for full state and visibility=False as a separate raw fact; no activation/hittability/visual claim is earned.",
+      "source_cause": "quantified_presence only adds singleton matches to its decisive visible list when query.visible is true. Its count1 present list cannot establish the positive predicates.",
+      "scope": "Target-only native cardinality/existence; no whole logical UI, native activation or full-coverage claim.",
+      "F_rows": 10
+    }
+  ],
+  "previous_five_families": "All SC13\u201317 malformed query/schema/graph/identity/header/local-empty controls close correctly. Read-only old raw evidence remains unchanged; unsupported enum also isolated without a malformed partial graph.",
+  "positive_controls": {
+    "actual_wire": "Complete iOS/Compose native tree, query-only and legacy flat explicit iOS query, full-tree plus explicit query pass. Unknown query resolution, root role, group identity/visibility and Compose schema version/unit/density/size negatives reject.",
+    "prior_SC07_12": "Exact old typed references and15new type controls reject correctly; PNG16, old no-joint-witness chain, runtime/domain/compiled-host reject; native raw width remains strict; relevant CSP alternatives and10000-node exhaustion pass.",
+    "default": "Candidate public default9P, baseline2P using wholly non-forwarding resource/SDK mocks. Includes automatic measured repair/retest/context boundaries and final actual compiled-host reconstruction.",
+    "port": "18 changed paths,15 whole files identical; original resource, UI entry, review/retest/build signature/plan compile-verify/load_previous exclusions retained."
+  },
+  "preserved_fixture_disposition": {
+    "old_partial_graph_positive": "Old synthetic explicit query retained index2,parent1 while no_tree removed parent1. New strict graph rejection is appropriate for that partial structured graph. Its two new F rows are retained, not claimed implementation bugs. Separate actual-wire representations pass.",
+    "wrapper_harness_error": "raw/prior-regression-first-harness-error.txt: both arms executed19P typed checks, then exec(prefix) replaced a source variable. Exact initial check script retained. Completion only ran the missing width/CSP checks and assembled original rows; no failed candidate outcome overwritten."
+  },
+  "independence": {
+    "skill_creator_independent_forward_guidance_applied": true,
+    "frozen_sources_and_sealed_criterion_read": true,
+    "business_or_new_native_results_read": false,
+    "developer_replays_or_unit_counts_used_as_proof": false,
+    "operators_reviewed": false,
+    "operator_review_owner": "Separate native_admission agent; this review performs no operator work."
+  },
+  "evidence_classes": "HOST source/PNG/Python/actual default CLI with wholly SIMULATED native metadata/query/source/build/resource/SDK facts. No NATIVE produced.",
+  "native_performance_business_gate": {
+    "native_runs": 0,
+    "benchmark_episodes": 0,
+    "speed_samples": 0,
+    "business_tasks": 0,
+    "gate": "Unstarted; no native or performance credit from simulations."
+  },
+  "preservation": "Review8 sealed originals/all150primary+9operator rows and4285entry inventory verified unchanged. All review9 first failures retained; own resources closed after archive."
+}

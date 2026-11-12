@@ -1,0 +1,672 @@
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.9/SKILL.md
+   1 ---
+   2 name: native-ui-agent
+   3 description: 在现有 iOS 或 Android 工程中新增或修改原生 UI 组件，通过真实组件渲染、看图检查、样式断言和局部修正交付视觉证据。适用于 UIKit、SwiftUI、Android Views/XML 和 Compose 的组件视觉开发与检查。
+   4 ---
+   5 
+   6 # Native UI Agent
+   7 
+   8 在用户已有的 coding agent 中运行本 Skill。由 agent 读图、推理和修改源码；随附 runner 执行已确认的渲染命令、保存证据并汇总检查。runner 本身不调用模型。可选的 [iOS observer](assets/ios-observer/CONTRACT.md) 能生成薄 App/XCUITest 宿主，调用方仍需提供连接真实生产组件的桥接文件。
+   9 
+  10 ## 接入实际工程
+  11 
+  12 先确认本次仓库、平台、UI 框架、组件入口、构建版本和已有渲染能力。只读目标平台的 [平台适配](references/platforms.md)。保留旧项目的框架和部署版本，优先复用同类组件、主题、字体、资源及现有测试。
+  13 
+  14 若与工作区的 mobile-native-delivery 一起使用，由 delivery 负责业务路径、数据和生命周期验收，本 Skill 负责视觉实现与修正；本 Skill 也可以独立使用。
+  15 
+  16 按本次改动定位组件，不要求全项目登记组件或批量添加业务 View ID。结合变更文件、调用位置、页面文案和实际渲染验证目标。访问受限或依赖复杂时，从真实父容器或实际页面创建，明确测试范围。
+  17 
+  18 先验证本次依赖的观测能力，再评价产品：实际外观、可用宽度、字体类别、方向与输出配置一致；目标测试确实执行。涉及交互或长内容时，用独立简单探针确认真实点击回调、调用方更新和滚动采样。宿主契约错误单列，不把错误环境里的截图直接归因为产品缺陷。
+  19 
+  20 涉及原生控件、长内容或调用方状态替换时，使用[原生工具](references/native-tools.md)：`ios_observe.py` / `android_observe.py`采集原生层级关系及逐状态完整滚动证据，`native_checks.py`执行绑定实际输入/动作的原子断言。先读联合控件事实再判断包装节点；拒绝多叶节点自动点击。自动断言与视觉判断分别保留，未测方面不能被整条规则的“通过”覆盖。
+  21 
+  22 回调行为必须先通过工具的成功派发与指定方法门控；`blocked_disabled`、未找到目标或仅有空事件区间都不能判为业务通过或失败。动作后按当前原生几何重新观察目标，保留即时帧、定位后帧及状态绑定；视口仍缺目标时保留未评估。可复用已验证的编译产物，不能复用旧输入、进程或截图冒充新证据。
+  23 
+  24 复杂交互涉及多个位置时，使用[逐状态证据计划](references/state-evidence.md)：把本次选定状态与检查方面编译为原子矩阵，为每个动作声明 `after_targets`。工具保留同一输入/事件版本中的多目标帧，并输出逐状态机器发现；缺失预期和没有理由的不适用项在采集前拒绝。联合目标帧不等于完整页面扫描；同根因修复不能反向填补原本未检查的状态。
+  25 
+  26 ## 固定期望与最小状态集
+  27 
+  28 从 testcase、设计、既有已批准基准和项目先例提取期望，并保留出处。新设计参考与既有界面回归分别记录。把推断标注为假设；无法确定期望时保留待确认项。
+  29 
+  30 新增 UI 要在实现前固定独立设计参考和验收标准。线框图用于结构、层级及明确标注的样式意图；不要拿实现后的截图当作其自身的设计参考，也不要把不同渲染器的线框字体差异当成像素回归。能从原生布局/文字结果获得的关键数值单独断言；图中明确的颜色或样式细节也需逐项核对。
+  31 
+  32 新增或显著改变样式时，使用[独立设计契约](references/design-contract.md)：由独立设计上下文先固定带具体出处和原生单位的值、逐状态预期与动作路径，再封存契约并在实现之外记录批准摘要。`design_contract.py` 生成样式及业务断言；实现方只绑定实际节点。`native_checks.py` 使用独立摘要重建校验生成计划，拒绝预期、容差或覆盖的静默改写。哈希证明身份，不能证明自然语言理解正确或作者独立；不清晰的设计仍需独立审查。
+  33 
+  34 需要可复算的视觉发现时，使用[原子审查与契约绑定](references/atomic-review.md)：先把配色、画布、换行、重叠分别固定为单方面规则和明确责任，`review_contract.py` 生成发现身份、预期、单位及出处。人工仅提交实际观察和原始帧，不能重写预期；原始像素按独立策略自动采样。独立验收可用 `acceptance.py` 校验真实环境并保留两份独立视觉判断的分歧；严格数值失败、确认产品缺陷与报告格式错误分开记录。
+  35 
+  36 复杂改动使用[需求决策与定向反馈](references/decision-feedback.md)：`requirement_routes.py` 将独立确认的必需需求逐项关联到验证路径。缺测、契约遗漏、环境错误和判据分歧分别触发后续行动；必需项没有可用验证路径时不能宣告交付通过。已确认索引是否完整仍需独立审查。
+  37 
+  38 使用 `execution_plan.py` 从同一独立计划生成动作、动作后观测和覆盖范围，并在实际采集前重建校验。先做本次修改相关状态的快速反馈，再做新源码的完整最终验收；定向采集保留未评估范围，不替代完整交付。iOS 可合并同一新鲜状态扫描内的目标观测，保留真实点击、即时帧和版本绑定。
+  39 
+  40 选择本次相关的普通内容、长文本、缺省内容、主题、字体或尺寸场景，不做所有维度的笛卡尔积。每份 profile 对应一个平台、组件状态和一张实际图片。两端分别渲染、分别比较参考图，共享业务规则。
+  41 
+  42 数值几何检查使用[原生精度与封存屏障](references/native-precision.md)：保留实际原生像素尺寸/density和逐帧来源，避免从舍入端点相减；不增加默认 epsilon 或放宽设计容差。多候选盲测先固定全体成员并用 `cohort_gate.py` 强制完整封存后再启动采集；单项目日常开发无需建立试验组。
+  43 
+  44 复杂需求在实现前建立“需求 × 场景 × 检查方面”的证据计划，区分布局、字体、颜色、状态、交互和无障碍。拆开一条规则中可独立缺证据的方面，例如可见标签与实际点击。按 [覆盖与运行时观测](references/coverage.md)记录依据；`scripts/coverage.py`核验缺项和证据指纹，不能替代原生判定。无需为简单改动扩展无关矩阵。
+  45 
+  46 按 [执行与证据协议](references/protocol.md)为项目生成真实 profile。随附 [Android 示例](assets/profile.example.json)和 [iOS 示例](assets/profile.ios.example.json)展示字段结构，需要替换为当前项目确认的命令、路径和期望。必需检查在实现前固定；改变检查时保留需求依据。
+  47 
+  48 ## 默认原生反馈入口
+  49 
+  50 新工作流先读[有界设备池、平台失效与原包复用](references/pooled-workflow.md)。默认入口自行传递历史收据和修复交接，按真实平台依赖决定失效；同一 PR 可复用自有模拟器，每次原生采集仍重置宿主并取得新会话。独立批准的有效性条件允许完整原包用于最终门控时，保留原始身份并另做资源收尾；明确要求新采集时使用 `--fresh`。
+  51 
+  52 复杂原生组件开发由[默认执行服务](references/default-feedback.md)接入 `ui_loop.py native`；集成端每轮自动读绑定源码/原图的审查注册表，调用路由、定位诊断与复验规划。待看图、修源码、测量争议与实际原生采集按任务类型分流；最终新图审查用原包闭环，无需再采集。禁止手选状态绕过该链路。保留服务 trace、开放任务、原始包与完整最终门控。下面旧 profile 的 capture/review 仅用于兼容既有简单项目。
+  53 
+  54 执行前读取[资源、动作守卫与证据责任](references/managed-execution.md)。默认服务登记并限制原生临时资源，自动回收自建设备，在最终采集/异常时清理自有编译缓存；借用资源只计量不删除。独立动作依赖和原生前置条件由两端执行器在派发前检查，失败路径保留 U 并阻断无效后续动作。源文件、桥接和集成要求通过独立责任契约检查证据类型/实际文件边界；源码实际值审查进入同一交付门控，不能借组件文件替桥接或运行时要求作证。
+  55 
+  56 ## 实现并取得反馈
+  57 
+  58 1. 先记录相关构建和原有视觉基线。
+  59 2. 在生产组件上做本次需要的改动，复用已有样式与布局方式。
+  60 3. 复用或生成薄的测试宿主，直接调用生产组件，注入确定性数据和主题。
+  61 4. 用 scripts/ui_loop.py capture 执行 profile，读取 capture.json、原生测试报告及实际图片。进程成功和 captured 都不是样式通过。
+  62 5. 阅读完整图片和必要的局部裁剪。结合组件调用、布局数据和测量证据定位问题。
+  63 6. 用 scripts/ui_loop.py review 执行数值、像素检查并合并 agent 的视觉 findings，输出 report.json。
+  64 
+  65 测试宿主需要调用真实实现。对网络、时间、随机数、远程图片和动画使用工程已有的可控制入口。复制一份近似 UI 会使测试失去与生产组件的联系。
+  66 
+  67 数值结论使用测试宿主产生的测量证据。截图只能支持视觉判断，不能证明所有实际字号、颜色或 padding 属性。UIKit/View 属性、几何边界、文字绘制边界分别说明。SwiftUI/Compose 无法读取的属性保留 needs_review，不由 agent 填造数值。
+  68 
+  69 “完整”要有采样记录：内容超出视口时保留带重叠的滚动图片及实际底部/目标可见证据；到不了的部分保留未评估。需要 iOS 运行时节点或操作时，切换实际 App + XCUITest，不能用单测宿主的空 AX 或源码声明替代执行。随附 iOS observer 是薄宿主模板，仍需接入真实组件并先运行能力探针。
+  70 
+  71 ## 按证据修正
+  72 
+  73 用户要求实现或修复时，记录“失败场景 → 证据 → 源码位置 → 原因假设 → 最小修正”，修正后重新 capture 和 review。纯测试请求输出发现，不自动修改生产代码。
+  74 
+  75 用 `retest_plan.py` 将原始失败与独立批准的回归依赖转换成复验状态；检查范围不明时执行完整计划。让现有修复记录驱动新采集，不只增加发现条目。每组采集就绪即检查，分别记录原生执行、检查、排队和 agent 耗时；单 PR 工作流不等待无关候选完成。
+  76 
+  77 首版达标时直接报告通过，不人为插入错误来制造修复案例。后续发现首轮视觉判断遗漏时保留其局限、追加有依据的审查，不能只展示最终通过结果。
+  78 
+  79 发现问题后回看相关要求和条件组合：同一根因可能同时影响布局、方向、可达性或状态。逐项查看实际证据后再归因，不能自动把一个发现复制成所有规则失败。交付前反向审查证据账本里的缺项；分别报告根因簇、明确违反的规则和未评估方面，避免“问题已经看见但关联验收没检查”或重复计数。
+  80 
+  81 通常先检查容器尺寸和约束，再检查字体换行、图标及颜色细节。依据实际原因选择修改位置，不为消除差异随意增加偏移量。
+  82 
+  83 一次工作默认最多进行 3 轮视觉修正；同一失败没有改善时重新检查定位、状态和期望。保留当前最好的可解释结果及未解决证据，不继续无目标重试。这个限额可由用户或项目约定调整。
+  84 
+  85 每轮使用新的输出目录。目标平台依赖改变后，该平台旧 capture 不能用于声明新代码通过；未证明的依赖范围保守失效。正式基准独立保存，capture/review 不更新它；新结果只有来自独立预期或已批准基准的支持才能成为通过依据。
+  86 
+  87 ## 在页面中复验并交付
+  88 
+  89 组件级检查通过后，用项目已有 UI/E2E 工具在实际页面检查本次相关的父容器、滚动、safe area、键盘、点击与状态切换。由截图工具验证的部分和由模拟器/设备验证的部分分别记录。
+  90 
+  91 输出修改位置、原生构建/测试执行情况、场景清单、逐项结论、实际图与参考图/差异图，以及尚未验证的内容。
+  92 
+  93 报告状态为 passed、failed、needs_reference、needs_review 或 error。视觉 findings 是模型判断；数值和像素结果是相应证据范围内的自动检查。不得把缺少测试、组件未执行、环境故障或缺少参考归入通过。
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.9/references/design-contract.md
+   1 # Independent design and generated assertions
+   2 
+   3 Use this for a new component or a material visual change. A design owner or a
+   4 separate context fixes a typed reference before implementation. Give that context
+   5 the requirement and approved design inputs; do not supply candidate code,
+   6 implementation screenshots or a suspected defect as the answer. Ambiguous prose
+   7 still needs design interpretation and review. Hashes cannot certify authorship or
+   8 prove that a number captures the designer's intent.
+   9 
+  10 Keep the approval record and canonical lock SHA256 outside the implementation's
+  11 editable check plan. In a repository this can be a reviewed design commit or a
+  12 sealed experiment record. A changed design is a new revision with a new approval,
+  13 not an adjustment to make a test pass. Existing approval remains valid; routine
+  14 implementation does not need another permission step.
+  15 
+  16 ## Typed reference and contract
+  17 
+  18 See the complete neutral files in [design-example](../assets/design-example/).
+  19 `reference.json` contains values such as `{ "value":10, "unit":"dp" }` at
+  20 specific JSON Pointers. Each source record in `contract.json` declares its exact
+  21 file SHA256. Source paths must stay within the independent design root.
+  22 
+  23 The contract fixes:
+  24 
+  25 - An owner, approval reference, complete rule IDs, logical targets and checks.
+  26 - Scenarios, selected states, input/action indices and original stimulus routes.
+  27 - Every rule × state cell, with both platforms' source expressions or a reason
+  28   for N/A. No implementation-written per-state expected overrides are accepted.
+  29 - Explicit comparison operators. `near` requires a separately sourced tolerance
+  30   in the same native unit. Do not add tolerance to conceal an unexplained error.
+  31 
+  32 Expressions address `source` + `pointer`, or derive `add`, `subtract`, `multiply`
+  33 from two source expressions. Addition/subtraction require identical units;
+  34 multiplication needs a dimensionless source factor. There are no inline expected
+  35 values, implicit pt/dp/sp conversions or executable source expressions. Colors
+  36 require `#AARRGGBB`; events are ordered arrays of event strings.
+  37 
+  38 `bindings.json` maps each logical target to one exact native selector. It cannot
+  39 contain expected values, operators or exclusions. It also includes logical action
+  40 targets. The native action route must match the independently fixed route after
+  41 selector substitution. Target resolution still requires unique actual native
+  42 nodes; a correct source citation cannot establish a correct runtime binding.
+  43 
+  44 ```sh
+  45 python3 scripts/design_contract.py seal --contract design/contract.json \
+  46   --root design --output approved-lock.json
+  47 # Record the printed canonical digest in the separate approval record.
+  48 python3 scripts/design_contract.py compile --lock approved-lock.json \
+  49   --lock-sha256 APPROVED_SHA --scenario public-normal --platform android \
+  50   --bindings bindings.json --actions actions.json --output generated-android
+  51 python3 scripts/native_checks.py --plan generated-android/plan.json \
+  52   --observation run/observation.json --platform android \
+  53   --design-lock approved-lock.json --design-sha256 APPROVED_SHA --output checks.json
+  54 ```
+  55 
+  56 The compiler emits every applicable assertion, exact value/source/unit provenance
+  57 and post-action targets. Execution reconstructs the plan from the pinned lock and
+  58 rejects altered expectations, precision, state coverage, source claims or routes.
+  59 Legacy hand-written plans still run, with `unverified_supplied_expectations` in
+  60 their report; do not claim they received the independent source check.
+  61 
+  62 ## Style measurement scope
+  63 
+  64 `text_layout` reads actual available native fields, such as Android TextLayout
+  65 `font_sp`, `font_weight`, `color_argb`, `lines`, `ellipsized`. Public iOS AX does
+  66 not expose generic computed SwiftUI typography/color; those cells remain U.
+  67 Visual review is a separate explicitly sourced `manual` assertion. Seeing pixels
+  68 does not convert it into an exact native font/color measurement.
+  69 
+  70 `geometry` supports width/height and two-box `gap_x`, `gap_y`, `inset_left`,
+  71 `inset_right`, `inset_top`, `inset_bottom`. The target is the measured box; the
+  72 reference is the preceding box for gaps or containing box for insets. Choose
+  73 `basis:semantic` or `basis:control` explicitly when the distinction matters.
+  74 Design rules must declare `measurement:accessibility_box` or `layout_box`, or an
+  75 `{ios:..., android:...}` map. Current collectors export public AX/Compose semantic
+  76 boxes; `layout_box` remains U on both platforms. A SwiftUI text's AX frame can
+  77 be much smaller than its `.frame` allocation. A Compose semantics modifier also
+  78 does not independently prove the full layout box intended by a design.
+  79 Both unique, fully visible boxes must occur in the same coherent native frame.
+  80 These are observed edge distances in iOS pt or Android dp. They are not a proof
+  81 of a framework's effective padding attribute, text glyph ink bounds or OS touch
+  82 area. No cross-viewport subtraction is allowed.
+  83 
+  84 The collector schedules nearby unseen native boxes first and reuses each original
+  85 viewport for all applicable targets. It preserves the original immediate callback
+  86 interval, the global scroll budget and unavailable targets. Navigation estimates
+  87 never become assertion facts; only subsequently captured native frames count.
+  88 
+  89 ## Report the remaining gaps
+  90 
+  91 Separate source rejection before acquisition, incorrect target binding, native
+  92 style contradiction, visual judgment and unavailable measurement. Include all
+  93 required U/N/A cells and the approved digest. An independently wrong typed design
+  94 can still generate consistently wrong code and tests; only the independent design
+  95 review and separate acceptance oracle address that remaining semantic risk.
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.9/references/atomic-review.md
+   1 # Contract-bound visual observations and shared acceptance
+   2 
+   3 Use this when visual findings must be auditable against an independent design.
+   4 The approved base contract still compiles through `design_contract.py`. Each
+   5 manual rule checks one aspect, rather than a sentence combining colors, wrapping,
+   6 hierarchy and state. See the complete [neutral example](../assets/atomic-example/).
+   7 
+   8 An independent owner pins a separate `policy.json` canonical SHA256 alongside the
+   9 design lock SHA256 before implementation. It names each manual rule exactly once,
+  10 its single aspect/method, and the component/host/system responsibility of its
+  11 logical target. Visual Boolean propositions come from exact typed source pointers
+  12 in the same sealed design, so `actual:true` answers an explicit approved question.
+  13 Rendered color atoms use opaque source-backed ARGB. A canvas rule must specify
+  14 which layer paints the sampled region; an ambiguous owner is a design issue to
+  15 resolve before scoring. Hashes do not establish design correctness or authorship.
+  16 
+  17 ## Submit actual observations, not rewritten expectations
+  18 
+  19 ```sh
+  20 python3 scripts/review_contract.py catalog --plan generated/plan.json \
+  21   --design-lock approved-lock.json --design-sha256 LOCK_SHA \
+  22   --policy policy.json --policy-sha256 POLICY_SHA --platform ios \
+  23   --output catalog.json
+  24 ```
+  25 
+  26 The catalog provides opaque stable `review_id` identities, original assertion IDs,
+  27 targets, explicit propositions, generated expected values/units/operators and
+  28 source provenance. Save the catalog digest from its `catalog_sha256` field.
+  29 
+  30 The reviewer submits only:
+  31 
+  32 ```json
+  33 {
+  34   "version": 1,
+  35   "catalog_sha256": "CANONICAL_CATALOG_SHA",
+  36   "observation_sha256": "EXACT_ORIGINAL_FILE_SHA",
+  37   "decisions": [
+  38     {"review_id": "FROM_CATALOG", "actual": true,
+  39      "reason": "What the original captured state actually shows",
+  40      "snapshot_indices": [3, 4]}
+  41   ]
+  42 }
+  43 ```
+  44 
+  45 Only qualitative atoms accept Boolean/unknown actuals. Missing decisions remain
+  46 unassessed. No `expected`, `unit`, `status`, operator or target override is accepted.
+  47 Screenshot identities, state/input/action epochs and actual artifacts are checked;
+  48 the tool generates evidence hashes, findings and the manual input for native checks.
+  49 
+  50 ```sh
+  51 python3 scripts/review_contract.py review --plan generated/plan.json \
+  52   --design-lock approved-lock.json --design-sha256 LOCK_SHA \
+  53   --policy policy.json --policy-sha256 POLICY_SHA --platform ios \
+  54   --observation run/observation.json --submission observations.json \
+  55   --output new-review
+  56 ```
+  57 
+  58 The output contains `catalog.json`, `manual.json`, `findings.json`, `report.json`.
+  59 `native_checks.py` can consume the bound manual with `--review-policy` and
+  60 `--review-policy-sha256`, together with the independent design lock arguments.
+  61 It reconstructs the bundle from its original requests and images. A changed
+  62 expected, status, artifact, rationale or stripped binding is rejected. Keep the
+  63 policy digest outside the implementation-edited output, just like the design lock.
+  64 
+  65 ## What rendered-color evidence establishes
+  66 
+  67 Pixel rules operate automatically on every eligible coherent state frame. The
+  68 independent sampling policy fixes a normalized rectangle inside a uniquely
+  69 resolved native semantic/control box, minimum support and pixel count, explicit
+  70 RGB channel tolerance, and fully-visible versus visible-fragment scope. The
+  71 tool recomputes native-to-PNG mapping, clips to the actual viewport, and records
+  72 the original PNG SHA256, native selector/box, pixel region and full histogram.
+  73 It never accepts AI-entered observed RGB values or chooses samples by closeness
+  74 to the expected color. RGB tolerance is not distance between packed ARGB integers.
+  75 
+  76 The assertion concerns the dominant rendered sRGB in that approved region. A
+  77 region meant to measure solid fill must be independently suitable for that role;
+  78 glyph ink, an overlaid child or a gradient may make it uninformative. Insufficient
+  79 support, conflicting values, missing mapping or unsupported color profiles stay
+  80 unknown. An eligible visible frame with unavailable measurement blocks a pass even
+  81 if another frame matches; an explicit new native viewport packet never falls back
+  82 to legacy geometry when its node mapping is missing. State/input identities and
+  83 after-capture epoch bindings must agree for all accepted evidence. Transparent expectations need a separate approved compositing model.
+  84 This is not a generic computed SwiftUI font/color/padding API, whole-canvas proof,
+  85 or physical hit-area measurement. Existing unsupported native-style cells remain.
+  86 
+  87 ## Reliable independent acceptance
+  88 
+  89 `acceptance.py` is a shared evaluator, not an extra treatment benefit. An external
+  90 environment contract fixes native dimensions, direction, theme and platform font
+  91 configuration; known Compose wire aliases are explicit. Unsupported/mismatched
+  92 environments gate acceptance to unknown while preserving raw facts.
+  93 
+  94 For iOS its fields are `width`, `height`, `direction`, `theme`, `dynamic_type`;
+  95 the current thin host offers an explicit width and a fixed600pt viewport height.
+  96 Android uses `font_scale` in place of `dynamic_type`. Dimensions default to exact
+  97 native units. The pinned Paparazzi host additionally supports an explicitly
+  98 approved `dimension_encoding: "paparazzi-float32-screen-config-v1"`: `width` and
+  99 `height` then mean requested dp. The evaluator verifies the host's Float32 input,
+ 100 Float32 multiplication by the pinned2.75 device density, truncation to integer
+ 101 screen pixels, actual native viewport/density, and serialized Float32 dp output.
+ 102 Requested390dp may thus produce1072px and389.81818dp, while each value remains
+ 103 visible in the proof. This is a provider-specific input conversion, not a product
+ 104 layout tolerance. Missing native metadata stays U and another encoding is rejected.
+ 105 See the platform environment files in the neutral example. Its example approval
+ 106 contains their canonical digests; a real design needs its own independent approval.
+ 107 
+ 108 For qualitative atoms give two independently scoped contexts the same original
+ 109 anonymous evidence and approved catalog, without each other's answers. Each
+ 110 returns `{ "review": <submission above>, "attributions": [...] }`. A failure
+ 111 attribution contains only `id`, `cause` (`product`, `infrastructure`, `observation`,
+ 112 `uncertain`), `reason`, and original state `snapshot_indices`. Artifact hashes are
+ 113 generated by the tool. The CLI requires both judge files and a separately pinned
+ 114 environment file/digest alongside the plan, policy, lock and observation arguments.
+ 115 
+ 116 ```sh
+ 117 python3 scripts/acceptance.py --plan generated/plan.json \
+ 118   --design-lock approved-lock.json --design-sha256 LOCK_SHA \
+ 119   --policy policy.json --policy-sha256 POLICY_SHA --platform ios \
+ 120   --observation run/observation.json --environment environment.ios.json \
+ 121   --environment-sha256 ENV_SHA --judge-one independent-one.json \
+ 122   --judge-two independent-two.json --output acceptance.json
+ 123 ```
+ 124 
+ 125 Validated native/pixel statuses cannot be voted away. Qualitative judgments must
+ 126 agree, otherwise the result stays unknown. A strict measured failure does not
+ 127 automatically establish a product bug: for component-owned targets both independent
+ 128 cause assessments must agree; missing or disputed attribution stays uncertain.
+ 129 Host/system responsibility remains explicit. Keep raw judgments, strict F,
+ 130 disagreements, supported product clusters and schema rejection as separate records.
+ 131 AI agreement is not human gold and may share systematic errors.
+ 132 
+ 133 Report true product alarms separately from report-schema/identity rejection.
+ 134 Never repair a sealed original finding after seeing acceptance answers. Same-cause
+ 135 manifestations and unrelated experiments must not be pooled as independent bugs.
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.9/references/state-evidence.md
+   1 # State evidence planning
+   2 
+   3 Use this when selected business states require several independent native facts,
+   4 especially after a caller replacement or when related targets are far apart.
+   5 The caller agent chooses relevant states and translates the independent design.
+   6 The compiler checks that declared matrix; it cannot establish that prose has
+   7 been translated completely or that a supplied expectation/source is correct.
+   8 
+   9 ## Compile before feedback
+  10 
+  11 Write a matrix with `version:1`, `states`, `requirements`, `required_state_ids`
+  12 and `required_requirement_ids`. Every selected state × requirement becomes a
+  13 cell. A requirement names its source and an atomic native check. A constant
+  14 `check.expected` applies across selected states; `by_state` can override expected,
+  15 target, action_index, stimulus, required_method or op. Without a default, every
+  16 applicable state needs its own expected value. `not_applicable` maps state IDs to
+  17 nonempty reasons; those cells remain in the ledger for independent review.
+  18 
+  19 ```json
+  20 {
+  21   "version":1,
+  22   "required_state_ids":["after-request","after-replacement"],
+  23   "required_requirement_ids":["status","action-enabled"],
+  24   "states":[
+  25     {"id":"after-request","input_index":0,"after_action":0,"coverage":"targets"},
+  26     {"id":"after-replacement","input_index":1,"after_action":1,"coverage":"targets"}
+  27   ],
+  28   "requirements":[
+  29     {"id":"status","source":"Independent public status contract",
+  30      "check":{"kind":"control","target":{"identifier":"actual.status"},
+  31               "property":"label","expected":"Ready"},
+  32      "by_state":{"after-replacement":{"expected":"Paused"}}},
+  33     {"id":"action-enabled","source":"Independent enablement contract",
+  34      "check":{"kind":"control","target":{"identifier":"actual.action"},
+  35               "property":"enabled","expected":true},
+  36      "by_state":{"after-replacement":{"expected":false}}}
+  37   ]
+  38 }
+  39 ```
+  40 
+  41 ```sh
+  42 python3 scripts/state_plan.py --matrix matrix.json --actions original-actions.json \
+  43   --output fresh-plan
+  44 ```
+  45 
+  46 `plan.json` contains every applicable atomic check and required ID, plus a
+  47 SHA-bound declared matrix/disposition ledger. `actions.json` adds exact state
+  48 names and deduplicated `after_targets` from relevant checks. It preserves action
+  49 routes and callback requests; it adds no business expectation to the observer.
+  50 The output directory must be fresh. Original action names that disagree with
+  51 the matrix are rejected. A state can use `stimulus_action` to identify an earlier
+  52 requested stimulus separately from its explicit full-sweep observation action.
+  53 
+  54 Choose actual producer state IDs and action indices. Initial and explicit sweep
+  55 states may use `coverage:"full_content"`. Other actions use `coverage:"targets"`.
+  56 Compilation does not insert full sweeps or establish missing native capabilities.
+  57 Preserve the matrix and plan before reviewing rendered feedback; changing an
+  58 expectation later needs a separate requirement reason, not a better test score.
+  59 
+  60 ## Collect and judge
+  61 
+  62 Run the native observer with the generated actions, then `native_checks.py` with
+  63 the generated plan. The observer records the immediate action result and original
+  64 callback interval, then observes each target. Native frames can jointly establish
+  65 facts for targets that cannot fit in one viewport. All frames must have the exact
+  66 same native input/process/event binding. Input drift, wrong state/action, torn
+  67 image/hierarchy captures and conflicting values remain U.
+  68 
+  69 Only actual matching native facts earn a verdict. The producer's
+  70 `all_targets_observed:true` flag alone is not evidence. Unseen targets cannot prove
+  71 absence without complete native full-content coverage. An oversized target may
+  72 have its center observed while full visibility remains false. Joint target frames
+  73 never establish complete content, effective padding/fonts or physical hit areas.
+  74 
+  75 Callbacks still require demonstrated requested dispatch. Current labels and
+  76 enabled/selected native facts are separate observations; a label after a blocked
+  77 action is not proof that its handler executed or that zero callbacks passed.
+  78 
+  79 The check report retains all failed and unassessed IDs and exports
+  80 `machine_findings` for failed typed-native checks, one record per actual state and
+  81 aspect. Preserve this report with its observation hash in the agent's review.
+  82 Keep manual visual findings separate; duplicate root causes can be grouped for
+  83 repair while their distinct state checks remain visible. A later shared repair
+  84 does not retroactively establish that another state was reviewed or detected.
+  85 
+  86 Multi-target navigation costs additional work. Limit targets to the independently
+  87 planned aspects relevant to that state and retain the shared scroll budget,
+  88 unavailable targets, full-state coverage and command wall time. Do not shrink
+  89 content, bypass required states or drop U rows to improve coverage or speed.
+  90 
+  91 iOS lazy containers can revise their estimated total height while scrolling.
+  92 Version 2 collection retains the original estimates and full frames. If the
+  93 existing stable-height interval proof is insufficient, `scroll_coverage.py`
+  94 requires a top-to-terminal strip of exact overlapping original pixels plus two
+  95 unambiguous, vertically distinct native leaf landmarks at every link. Landmark
+  96 traits, projected positions, viewport mapping and the process/input/event epoch
+  97 must remain coherent. Container IDs and repeated labels cannot supply identity.
+  98 The host-owned scroll indicator is hidden at rendering time in this deterministic
+  99 fixture; no original pixels are masked, resampled or given a difference tolerance.
+ 100 
+ 101 Native CGRect doubles keep their exact represented rational values. The fixed
+ 102 `native-rect-pixel-cell-enclosure-v1` model constrains positive integer rectangle
+ 103 possibilities through every edge and the original width/height. Exact full-width
+ 104 raster comparison selects a unique integer translation; geometry is never
+ 105 rounded into a different style value. Whole-state repeated identities and their
+ 106 native order must remain compatible. Terminal coverage requires the executed
+ 107 native sentinel hittability guard and actual contained root-member geometry.
+ 108 
+ 109 Fallback also requires a pinned `coverage_domain_ref` and `coverage_provider_ref`.
+ 110 They independently approve the finite source revisions and actual shared host
+ 111 shape. The tool matches the installed production subject/bridge, original native
+ 112 compile action/log and actual compiled-host bytes. An unused matching source copy
+ 113 or a self-entered shape label cannot grant coverage. Unapproved source revisions
+ 114 produce a default `review_source_domain` task before additional SDK work. Separate
+ 115 source approvals under the same immutable domain/oracle policy cannot waive a
+ 116 source change, repair completion or fresh native recheck.
+ 117 
+ 118 The receiver checks the actual runtime viewport, environment and native display
+ 119 scale against that domain. It checks the original PNG header before decoding;
+ 120 16-bit or unsupported encodings cannot be silently converted into an 8-bit pass.
+ 121 One bounded global rectangle assignment must preserve every link's original
+ 122 disjoint witnesses and whole-state native order; local pair choices alone do not
+ 123 establish a full chain.
+ 124 
+ 125 Presence is existential over the coherent bound state. A lazy node missing from
+ 126 one viewport does not contradict its later observed presence. Absence needs a
+ 127 complete sweep with no match anywhere. An observed duplicate establishes native
+ 128 nonuniqueness and is not cancelled by a later viewport containing one match.
+ 129 All original per-frame observations remain attached to the quantified result.
+ 130 Positive full-state uniqueness also requires complete native matching-domain
+ 131 coverage. A fully enumerated target query can establish only local uniqueness;
+ 132 its `complete:false` and query scope remain visible. A lone reported flat node
+ 133 does not establish query completeness. Boolean/float aliases cannot substitute
+ 134 for the protocol's integer input, action or snapshot references. An explicit
+ 135 complete empty target query can decide local absence without a whole-state
+ 136 sweep; it cannot prove whole-state absence.
+ 137 
+ 138 Native query cardinality is checked against its emitted format. Explicit query
+ 139 resolutions must be recognized. Structured trees need one connected, acyclic
+ 140 native identity graph, and Android's original semantics geometry must retain its
+ 141 version, pixel unit, density, position and integer size. Repeated records with the
+ 142 same native identity are malformed evidence, not multiple controls. Conflicting
+ 143 group counts, native nodes, identities or visibility remain unassessed with the
+ 144 original query facts attached; they do not create a product failure.
+ 145 
+ 146 `present` and `unique` quantify the actual native matching set, including an
+ 147 offscreen native entity. They do not assert visibility or activation readiness.
+ 148 Those facts retain their separate original flags, geometry and action guards.
+ 149 
+ 150 Missing originals, unsupported mappings, moving content, sparse or ambiguous
+ 151 links and unapproved domains remain unassessed. The proof describes the observed vertical
+ 152 viewport strip. It does not certify hidden branches, arbitrary asynchronous data,
+ 153 computed styles or business correctness. Coverage reconstruction requires the
+ 154 actual original image root, including when diagnosing or routing failed checks.
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.9/references/native-tools.md
+   1 # Native control and per-state observation tools
+   2 
+   3 Use these when a component needs native interaction, long-content location or visual
+   4 checks across caller updates. The adapters invoke the caller's production bridge;
+   5 they supply no business UI or expected answer. Run generic capability probes first.
+   6 
+   7 ## Capture
+   8 
+   9 The iOS App/XCUITest entry point remains `scripts/ios_observe.py run` (see the
+  10 [full bridge contract](../assets/ios-observer/CONTRACT.md)). `state_capture` defaults
+  11 to true. Its caller JSON has `initial`, optional `updates`, finite offered width160–1024pt (verify actual viewport), theme,
+  12 Dynamic Type category, direction, and optional `observation_targets` selectors.
+  13 
+  14 The Android entry point requires an existing Paparazzi test project, its JVM/SDK
+  15 configuration and a caller bridge in package `org.nativeobserver`:
+  16 
+  17 ```kotlin
+  18 object ObserverBridge {
+  19   @Composable fun Content(input: JsonObject, onEvent: (String) -> Unit) {
+  20     // Decode input, apply the project's real theme, call the production component.
+  21     // Echo controlled actions in the caller bridge and notify onEvent.
+  22   }
+  23 }
+  24 ```
+  25 
+  26 ```sh
+  27 python3 scripts/android_observe.py run --project /absolute/project \
+  28   --bridge /absolute/ObserverBridge.kt --fixtures /absolute/fixtures.json \
+  29   --actions /absolute/actions.json --output /absolute/fresh-output \
+  30   --java-home /absolute/jdk --android-sdk /absolute/sdk
+  31 ```
+  32 
+  33 The Android config uses width, theme, fontScale, direction, initial and updates.
+  34 The adapter adds a newly created reserved test folder, removes only its own files
+  35 in `finally`, and retains exact sources, inputs, JUnit, images and hashes in output.
+  36 It does not install Gradle plugins or claim Activity/physical-touch coverage.
+  37 
+  38 Both action formats support:
+  39 
+  40 ```json
+  41 [
+  42   {"type":"tap","target":{"identifier":"actual.choice"},"reveal":true,
+  43    "allow_disabled":true,"state_id":"selected"},
+  44   {"type":"apply_next_fixture","state_id":"replaced"},
+  45   {"type":"tap","target":{"label":"Exact visible action","role":"button"},
+  46    "reveal":true,"state_id":"after-action"},
+  47   {"type":"sweep","state_id":"expanded"}
+  48 ]
+  49 ```
+  50 
+  51 After a tap, the observer keeps the immediate result and, by default, reveals the
+  52 same target again if layout moved it outside the viewport. `after_target` can name
+  53 another exact selector; `observe_after:false` explicitly disables that extra
+  54 observation. No second activation occurs. Post-observation stores target geometry,
+  55 snapshot and input/event binding; offscreen/missing/ambiguous targets or binding
+  56 drift never become a visual pass. A fitting target is fully revealed; an oversized
+  57 target's center is measured separately from full visibility.
+  58 
+  59 For multiple locations use `after_targets:[selector,...]` on a tap, caller update
+  60 or checkpoint. Native observers reuse already valid frames and collect remaining
+  61 targets without another activation. `observation_max_scrolls` (0–40, default24)
+  62 bounds the entire target set, not each target. Missing/ambiguous targets retain
+  63 their individual unavailable result; a zero search budget still permits actual
+  64 immediate-frame facts. `observation_set` binds original snapshot indices, input,
+  65 process and event revision, plus native target results and geometry traces.
+  66 Callback receipts and event_end remain those of the immediate action frame.
+  67 Read [state evidence planning](state-evidence.md) for matrix compilation and
+  68 machine findings; `coverage:"targets"` evaluates all bound frames while retaining
+  69 `complete:false`. It also gives legacy single-frame evidence its actual credit.
+  70 
+  71 iOS exports hierarchy/attributes from one public XCUIElementSnapshot per capture.
+  72 Native hit testing is queried at actual dispatch targets; other exported nodes
+  73 have `hittable_measured:false`, not guessed hit values. A native epoch/geometry
+  74 change across hierarchy and image makes that capture unassessed. Reveal navigation
+  75 keeps native geometry traces; `trace_reveal_images:true` also keeps every search
+  76 image. Full-content sweeps still retain all required overlapping images.
+  77 
+  78 For repeated fixtures on unchanged source, iOS `run --build-cache /absolute/cache`
+  79 can reuse a content-addressed compiled host. The key covers source/bridge/templates,
+  80 toolchain, SDK and compile options; artifact hashes are checked before reuse. Each
+  81 capture gets a fresh runtime test plan, inputs, App process, callbacks and images.
+  82 Changed code/toolchain is a miss; changed/tampered artifacts fail closed. The manifest
+  83 separates cache validation/build, native test and export time. Android retains one
+  84 attached ComposeView and stops only when its native capture state machine completes;
+  85 it does not shorten content or omit planned states to meet the frame budget.
+  86 
+  87 Selectors are exact identifier or exact label with an optional native role. Natural
+  88 language target selection remains the caller agent's job. Duplicate semantic
+  89 matches or multiple native actionable descendants are unavailable, never first-match
+  90 clicks. iOS uses actual descendant queries; Android uses actual semantic parent IDs.
+  91 The semantic container retains coherent label/selected traits, while enabled state
+  92 and activation use the unique actual Button/Switch/OnClick. Independently activatable
+  93 parents and children remain separate candidates; a narrower selector is required.
+  94 Only native Switch wrapper/leaf duplication is collapsed. A container's `enabled=true`
+  95 or an ordinary Button's `selected=false` alone is not a component defect.
+  96 
+  97 Long-content location uses current native frames and bounded feedback. iOS reduces
+  98 scroll size on direction reversals and records missing/stationary/limit outcomes.
+  99 Normal-sized iOS controls are revealed completely. A scroll-to-text target does not
+ 100 require a control role. An oversized native control may be activated at its measured visible intersection;
+ 101 that is recorded separately from full-element visibility, with real callback delta.
+ 102 Android invokes the native semantic action and moves native ScrollState; this is
+ 103 not OS physical touch. Missing callbacks after an unexecuted action stay unassessed.
+ 104 
+ 105 ## State coverage
+ 106 
+ 107 Capture automatically sweeps initial, before caller replacement, and final. Give
+ 108 relevant post-action checkpoints unique `state_id` values to sweep those states too.
+ 109 `initial`/`final` are reserved. Explicit sweep `max_steps` can bound one sweep; the
+ 110 result remains incomplete if that bound cannot cover the content.
+ 111 
+ 112 Each `state_captures` item binds input index/hash, process/session identity, event
+ 113 revision, action checkpoint and exact snapshot indices. Native content geometry
+ 114 and viewport intervals establish top-to-bottom overlap for THAT state. A later
+ 115 fixture's footer cannot fill an earlier fixture's gap. No global observed-ID union
+ 116 is substituted for per-state coverage. Dynamic content/height/binding problems stay
+ 117 visible. Complete pixel coverage is not style correctness.
+ 118 
+ 119 XCUI sometimes returns non-finite geometry. JSON transport retains those coordinates
+ 120 as null and lists their native values/paths in `serialization_diagnostics`; their
+ 121 pixel projection is unavailable. It never substitutes zero coordinates or drops all
+ 122 other native observations because one frame cannot be represented in JSON.
+ 123 
+ 124 ## Typed assertions
+ 125 
+ 126 `native_checks.py` consumes a frozen atomic plan and actual observation. Keep a
+ 127 requirement's independently unmeasured aspects separate. The independent required-ID
+ 128 set can detect omitted plan cells; code cannot prove that natural-language intent
+ 129 has been completely translated into the plan.
+ 130 
+ 131 ```json
+ 132 {
+ 133  "version":1,
+ 134  "states":[{"id":"selected","input_index":0,"after_action":0}],
+ 135  "required_assertion_ids":["choice-enabled","selected-state"],
+ 136  "assertions":[
+ 137   {"id":"choice-enabled","state":"selected","kind":"control",
+ 138    "target":{"identifier":"actual.choice"},"property":"enabled","expected":true},
+ 139   {"id":"selected-state","state":"selected","kind":"control",
+ 140    "target":{"identifier":"actual.choice"},"property":"selected","expected":true}
+ 141  ]
+ 142 }
+ 143 ```
+ 144 
+ 145 ```sh
+ 146 python3 scripts/native_checks.py --plan /absolute/plan.json \
+ 147   --observation /absolute/capture/observation.json --platform ios \
+ 148   --output /absolute/fresh-checks.json
+ 149 ```
+ 150 
+ 151 For an action-only checkpoint, a state can set `coverage:"target"` and
+ 152 `after_action:N`. The checker verifies the exact native post-action snapshot and
+ 153 binding, without a full sweep. Its `complete:false` explicitly means no full-content
+ 154 claim. It can establish callback/native-control assertions, while a full-content
+ 155 visual pass remains withheld. Use this to avoid expensive unnecessary whole-body
+ 156 sweeps after every simple interaction.
+ 157 
+ 158 Control properties include present, unique, enabled, selected, value, label,
+ 159 control_role, ax_width/ax_height. `touch_width/touch_height` use Android native touch
+ 160 bounds only; iOS AX frames do not establish physical hit regions. `event` assertions
+ 161 name the action index and exact expected callback delta. They default to activation
+ 162 and the platform's real route (`xcui_tap` or `compose_onclick`). Optional
+ 163 `required_method` must match the demonstrated method. The exported
+ 164 `native_checks.callback_verdict` is also the evaluator entry point: successful
+ 165 attempt, unique enabled native control, same input/process and exact event interval
+ 166 are hard preconditions. Observer-blocked/unavailable/observed intervals remain U
+ 167 even when expected callbacks are empty. A demonstrated delivery with missing/wrong
+ 168 callbacks is F. For callback quietness after caller replacement, explicitly set
+ 169 `stimulus:"caller_update"`; the native input index must demonstrably advance by one.
+ 170 Literal interval facts are retained separately and are not behavior verdicts.
+ 171 `text_layout` uses exported
+ 172 native text-layout fields such as font_sp, color_argb, lines, ellipsized or overflow;
+ 173 unsupported fields remain unassessed, not guessed from source.
+ 174 
+ 175 A `manual` visual/pixel assertion requires a review with `observation_sha256` and
+ 176 `decisions` entries containing id, method, status, reason, snapshot_indices and
+ 177 SHA-bound evidence including the actual state screenshots. A visual pass requiring
+ 178 `coverage:full_content` is withheld if interval coverage is incomplete. A visible
+ 179 failure may be established from a smaller observed region. Manual judgment remains
+ 180 fallible; typed runtime facts cannot be replaced with manual/source assertions.
+ 181 
+ 182 Exit0 means supplied atomic assertions passed,1 confirmed assertion failures,
+ 183 3 unassessed assertions,2 invalid inputs/evidence. This is not proof of every business
+ 184 requirement absent an independently checked complete contract. Always retain the
+ 185 assertion denominator and unassessed counts.

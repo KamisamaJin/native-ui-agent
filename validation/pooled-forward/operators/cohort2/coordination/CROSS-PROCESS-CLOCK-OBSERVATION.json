@@ -1,0 +1,30 @@
+{
+  "SDK_or_SUT_forwarded": false,
+  "at_unix": 1794366910.8810902,
+  "finding": "On this Python3.9.6 macOS runtime, time.monotonic() is near process-origin; it cannot be subtracted across separate Python processes. clock_gettime(CLOCK_MONOTONIC) is shared.",
+  "kind": "common-cross-process-clock-instrumentation-observation",
+  "probe_commands": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-B",
+    "-c",
+    "import json,time,sys; print(json.dumps({\"python\":sys.version.split()[0],\"monotonic\":time.monotonic(),\"clock_gettime_monotonic\":time.clock_gettime(time.CLOCK_MONOTONIC),\"unix\":time.time(),\"implementation\":time.get_clock_info(\"monotonic\").implementation}))"
+  ],
+  "scope": "Original public controller uses clock_gettime and is unaffected. Within-process native/collector wall differences remain usable. Old separate-process grade START/END and cross-collector gap durations need an explicit derived correction from original Unix start/end (and clock-gettime wherever present), retaining all original fields. Do not reset source budgets or overwrite old records.",
+  "two_independent_process_results": [
+    {
+      "clock_gettime_monotonic": 6117492.404587,
+      "implementation": "mach_absolute_time()",
+      "monotonic": 0.019263958,
+      "python": "3.9.6",
+      "unix": 1794366910.8439932
+    },
+    {
+      "clock_gettime_monotonic": 6117492.439466,
+      "implementation": "mach_absolute_time()",
+      "monotonic": 0.020029791,
+      "python": "3.9.6",
+      "unix": 1794366910.8788722
+    }
+  ],
+  "version": 1
+}

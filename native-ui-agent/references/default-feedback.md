@@ -1,10 +1,10 @@
 # 默认执行服务
 
-新增/修改原生 UI 使用 `python scripts/ui_loop.py native --config PROJECT.json --output NEW_DIR`。集成端固定项目配置并保存 cycle、原始 capture、任务队列及摘要。每轮传上一原始 `--previous RESULT --previous-sha256 SHA`；交付传 `--final`，重复历史传 `--history PINNED_CYCLE_LIST`。模型不能覆盖预期或手选状态。
+新增/修改原生 UI 使用 `python scripts/ui_loop.py native --config PROJECT.json --output NEW_DIR`。集成端固定项目配置并保存 cycle、原始 capture、任务队列及摘要。[默认状态机](pooled-workflow.md)自行解析上一收据和历史；兼容带摘要的显式原始 receipt 或 typed cycle/handoff。交付传 `--final`，明确要求新采集传 `--fresh`。模型不能覆盖预期或手选状态。
 
 配置字段：`plan`、`design_lock`、`design_sha256`、`routes`、`routes_sha256`、`fixtures`、`bridge`、`launch_ref`、`source_roots`、`native_options`、`environment`、`environment_sha256`；可选独立批准的 `policy`/`policy_sha256`。有视觉原子项时必须配置生产源码目录以外的 `review_store`，供集成端保存追加式审查注册表；不是临时传给模型的可选开关。摘要由独立批准方保留，配置不产生新预期。
 
-固定链路：重建原始采集 → 自动读取该 capture 的审查注册表 → 重建绑定的实际观察 → 需求路由 → 定位诊断 → 按工作类型派发。`review_images`、`repair_source`、`review_measurement` 和定位/能力诊断在源码未变时不启动 SDK。缺少状态证据才进入 `acquire_native`；源码修改后依据实际差异、原始发现和批准回归依赖选择定向复验；未知影响或上一包不完整时回退全量。最终总是新鲜完整采集。
+固定链路：重建原始采集 → 自动读取该 capture 的审查注册表 → 重建绑定的实际观察 → 需求路由 → 定位诊断 → 按工作类型派发。`review_images`、`repair_source`、`review_measurement` 和定位/能力诊断在源码未变时不启动 SDK。缺少状态证据才进入 `acquire_native`；源码修改后依据实际差异、原始发现和批准回归依赖选择定向复验；未知影响或上一包不完整时回退全量。最终要求当前完整证据；缺少独立批准的有效性条件时重新采集，有效完整原包可按严格复用门控交付并完成新的资源收尾。
 
 集成端把 `before-review-request.json` / `after-review-request.json` 派给看图工作者，读取原始帧并填写 template 的 actual、reason、snapshot_indices；预期、单位、责任与出处由批准契约生成。提交：
 

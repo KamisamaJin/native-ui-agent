@@ -1,0 +1,345 @@
+[
+  {
+    "type": "sweep",
+    "state_id": "start",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Notify affected customers"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Notify affected customers"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Notify affected customers"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "audience-selected",
+    "after_targets": [
+      {
+        "label": "Service outage notice composer"
+      },
+      {
+        "identifier": "T4.entity"
+      },
+      {
+        "identifier": "T4.description"
+      },
+      {
+        "identifier": "T4.summary"
+      },
+      {
+        "identifier": "T4.status"
+      },
+      {
+        "identifier": "T4.surface"
+      },
+      {
+        "label": "Notify affected customers"
+      },
+      {
+        "identifier": "T4.audienceA.detail"
+      },
+      {
+        "label": "Notify service staff"
+      },
+      {
+        "identifier": "T4.audienceB.detail"
+      },
+      {
+        "label": "Notify partner offices"
+      },
+      {
+        "identifier": "T4.audienceC.detail"
+      },
+      {
+        "label": "Include troubleshooting steps"
+      },
+      {
+        "label": "Preview notice"
+      },
+      {
+        "label": "Customer wording reviewed"
+      },
+      {
+        "label": "Publish notice"
+      },
+      {
+        "identifier": "T4.preview"
+      }
+    ]
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Include troubleshooting steps"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Include troubleshooting steps"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Include troubleshooting steps"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "steps-selected",
+    "after_targets": [
+      {
+        "label": "Service outage notice composer"
+      },
+      {
+        "identifier": "T4.entity"
+      },
+      {
+        "identifier": "T4.description"
+      },
+      {
+        "identifier": "T4.summary"
+      },
+      {
+        "identifier": "T4.status"
+      },
+      {
+        "identifier": "T4.surface"
+      },
+      {
+        "label": "Notify affected customers"
+      },
+      {
+        "identifier": "T4.audienceA.detail"
+      },
+      {
+        "label": "Notify service staff"
+      },
+      {
+        "identifier": "T4.audienceB.detail"
+      },
+      {
+        "label": "Notify partner offices"
+      },
+      {
+        "identifier": "T4.audienceC.detail"
+      },
+      {
+        "label": "Include troubleshooting steps"
+      },
+      {
+        "label": "Preview notice"
+      },
+      {
+        "label": "Customer wording reviewed"
+      },
+      {
+        "label": "Publish notice"
+      },
+      {
+        "identifier": "T4.preview"
+      }
+    ]
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Preview notice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Preview notice"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "previewed",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Customer wording reviewed"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Customer wording reviewed"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Customer wording reviewed"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Publish notice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Publish notice"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "publish|INC-214|customers|124|steps:on"
+  },
+  {
+    "type": "sweep",
+    "state_id": "published",
+    "max_scrolls": 18
+  },
+  {
+    "type": "apply_next_fixture"
+  },
+  {
+    "type": "sweep",
+    "state_id": "same-incident-draft",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Preview notice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Preview notice"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "repreviewed",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Customer wording reviewed"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Customer wording reviewed"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Customer wording reviewed"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready-again",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Publish notice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Publish notice"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "publish|INC-214|customers|124|steps:on"
+  },
+  {
+    "type": "sweep",
+    "state_id": "republished",
+    "max_scrolls": 18
+  },
+  {
+    "type": "apply_next_fixture"
+  },
+  {
+    "type": "sweep",
+    "state_id": "changed-incident",
+    "max_scrolls": 18
+  }
+]

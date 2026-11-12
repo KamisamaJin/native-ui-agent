@@ -1,0 +1,355 @@
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.9/scripts/execution_plan.py
+   1 #!/usr/bin/env python3
+   2 """One approved business/observation route, with explicitly scoped feedback."""
+   3 from __future__ import annotations
+   4 import argparse
+   5 import copy
+   6 import hashlib
+   7 import json
+   8 import os
+   9 import subprocess
+  10 import sys
+  11 import time
+  12 from pathlib import Path
+  13 import design_contract as design
+  14 from observation_contract import validate_actions, validate_selector
+  15 
+  16 
+  17 def compile_execution(plan, lock, lock_sha, fixtures, bridge_sha, *, launch_ref, states=None, strategy='coalesced'):
+  18     platform = plan['design_contract']['platform']
+  19     actions = design.verify_generated(plan, lock, lock_sha, platform)
+  20     if set(launch_ref) != {'source', 'pointer'}:
+  21         raise ValueError('Independently sealed launch-input source required')
+  22     approval = design.pointer(lock['sources'][launch_ref['source']]['document'], launch_ref['pointer'])
+  23     expected_launch = {'fixtures_sha256': design.digest(fixtures), 'bridge_sha256': bridge_sha,
+  24                        'scenario': plan['design_contract']['scenario'], 'platform': platform}
+  25     if approval != expected_launch:
+  26         raise ValueError('Fixture, bridge, scenario or platform differs from independently sealed launch approval')
+  27     all_states = [s['id'] for s in plan['states']]
+  28     selected = all_states if states is None else list(states)
+  29     if not selected or len(selected) != len(set(selected)) or not set(selected) <= set(all_states):
+  30         raise ValueError('Explicit known unique feedback states required')
+  31     if any(s['id'] in selected and s.get('after_action', -1) < 0 for s in plan['states']):
+  32         raise ValueError('Execution manifests require explicit initial checkpoints in the approved route')
+  33     if strategy not in {'legacy', 'coalesced'} or len(bridge_sha) != 64:
+  34         raise ValueError('Known strategy and exact bridge identity required')
+  35     # Parent assertions and expectations never change. A partial capture remains
+  36     # a partial capture; the admission tool will not promote it to a full PR pass.
+  37     required = []
+  38     for state in plan['states']:
+  39         if state['id'] not in selected: continue
+  40         targets, absence_targets, presence_targets = [], [], []
+  41         for rule in plan['assertions']:
+  42             if rule['state'] == state['id']:
+  43                 for key in ['target', 'reference_target']:
+  44                     target = rule.get(key)
+  45                     if target:
+  46                         validate_selector(target)
+  47                         destination = absence_targets if key == 'target' and rule['kind'] == 'control' and rule.get('property') == 'present' and rule.get('op', 'eq') == 'eq' and rule.get('expected') is False else presence_targets
+  48                         if target not in destination: destination.append(copy.deepcopy(target))
+  49                         if target not in targets: targets.append(copy.deepcopy(target))
+  50         # An approved absence is acquired by a coherent full sweep, not by
+  51         # locating the deliberately absent node. Existence remains assertion
+  52         # truth: an unexpected node must yield a valid capture with a failure.
+  53         targets = [t for t in targets if t in presence_targets]
+  54         required.append({'state_id': state['id'], 'coverage': 'full_content' if absence_targets else state.get('coverage', 'targets'),
+  55                          'targets': targets, 'absence_targets': absence_targets})
+  56     enriched = copy.deepcopy(actions)
+  57     for action in enriched:
+  58         state_id = action.get('state_id')
+  59         entry = next((v for v in required if v['state_id'] == state_id), None)
+  60         if entry:
+  61             targets = list(action.get('after_targets', []))
+  62             if action.get('after_target') and action['after_target'] not in targets: targets.append(action['after_target'])
+  63             if entry['coverage'] == 'targets':
+  64                 for target in entry['targets']:
+  65                     if target not in targets: targets.append(copy.deepcopy(target))
+  66             if targets: action['after_targets'] = targets
+  67             action['capture_scope'] = entry['coverage']
+  68         elif set(selected) != set(all_states):
+  69             action['capture_scope'] = 'none'
+  70             action['observe_after'] = False
+  71             action.pop('after_targets', None); action.pop('after_target', None)
+  72         else:
+  73             action['capture_scope'] = 'targets' if action['type'] == 'tap' or action.get('after_targets') or action.get('after_target') else 'none'
+  74         # Observation-only sweeps can be omitted, but every business action and
+  75         # original index remains present for dispatch/callback identity.
+  76         if action['type'] == 'sweep' and not entry: action['type'] = 'checkpoint'
+  77     if set(selected) != set(all_states):
+  78         last = max(s['after_action'] for s in plan['states'] if s['id'] in selected)
+  79         enriched = enriched[:last + 1]
+  80     import action_guard
+  81     enriched = action_guard.compile_actions(enriched)
+  82     validate_actions(enriched)
+  83     config = copy.deepcopy(fixtures)
+  84     config['state_capture'] = True
+  85     config['guard_protocol'] = 1
+  86     config['observation_strategy'] = strategy
+  87     config['execution_states'] = copy.deepcopy(required)
+  88     config['execution_state_definitions'] = copy.deepcopy(plan['states'])
+  89     config['execution_scope'] = 'full' if set(selected) == set(all_states) else 'targeted'
+  90     targets = list(config.get('observation_targets', [])) if config['execution_scope'] == 'full' else []
+  91     for entry in required:
+  92         for target in entry['targets']:
+  93             if target not in targets: targets.append(copy.deepcopy(target))
+  94     config['observation_targets'] = targets
+  95     if config['execution_scope'] == 'targeted':
+  96         wanted_ids = {t.get('identifier') for t in targets}
+  97         config['required_identifiers'] = [v for v in config.get('required_identifiers', []) if v in wanted_ids]
+  98     value = {'version': 1, 'platform': platform, 'scope': config['execution_scope'],
+  99              'parent_plan_sha256': design.digest(plan), 'design_lock_sha256': lock_sha, 'launch_ref': copy.deepcopy(launch_ref),
+ 100              'fixtures_sha256': design.digest(fixtures), 'bridge_sha256': bridge_sha,
+ 101              'selected_states': selected, 'required_coverage': required, 'actions': enriched, 'config': config,
+ 102              'parent_action_count': len(actions), 'executed_action_count': len(enriched),
+ 103              'scope_limit': 'Full execution retains the business route; targeted execution keeps its original action prefix and indices. Original parent expectations stay fixed; omitted states are unverified.'}
+ 104     value['execution_sha256'] = design.digest(value)
+ 105     return value
+ 106 
+ 107 
+ 108 def verify_execution(value, plan, lock, lock_sha, fixtures, bridge_sha):
+ 109     # Reconstructs required after-target extensions from the actual approved plan;
+ 110     # a caller cannot substitute a sibling base route or drop coverage extensions.
+ 111     expected = compile_execution(plan, lock, lock_sha, fixtures, bridge_sha,
+ 112                                  launch_ref=value.get('launch_ref', {}), states=value.get('selected_states'), strategy=value.get('config', {}).get('observation_strategy'))
+ 113     if expected != value: raise ValueError('Execution manifest differs from independently rebuilt business/observation route')
+ 114     return expected
+ 115 
+ 116 
+ 117 def _coverage_facts(required, definitions, platform, observation, root=None):
+ 118     from native_checks import bound_state_evidence, resolve
+ 119     missing, states = [], []
+ 120     for entry in required:
+ 121         parent = {'id': entry['state_id']}
+ 122         # Exact state definitions are carried in config by the CLI/runner caller
+ 123         # below; never infer an input epoch from an arbitrary matching label.
+ 124         parent = next(s for s in definitions if s['id'] == entry['state_id'])
+ 125         found, complete, reason, capture = bound_state_evidence(observation, parent, root)
+ 126         target_rows = []
+ 127         for target in entry['targets']:
+ 128             seen = []
+ 129             for index, snapshot in found:
+ 130                 result = resolve(snapshot, target, platform)
+ 131                 semantic = result.get('semantic', {})
+ 132                 if result.get('facts', {}).get('unique') and semantic.get('intersects_viewport'):
+ 133                     seen.append(index)
+ 134             target_rows.append({'target': target, 'indices': seen, 'observed': bool(seen)})
+ 135         good = bool(found) and (complete if entry['coverage'] == 'full_content' else True) and all(v['observed'] for v in target_rows)
+ 136         if not good: missing.append(entry['state_id'])
+ 137         states.append({'state_id': entry['state_id'], 'complete': complete, 'satisfied': good, 'reason': reason, 'targets': target_rows,
+ 138                        **({'coverage_proof': capture['coverage_proof']} if capture and 'coverage_proof' in capture else {})})
+ 139     return {'required_states': states, 'satisfied': not missing, 'missing_states': missing}
+ 140 
+ 141 
+ 142 def coverage_receipt(execution, observation, root=None):
+ 143     return {'execution_sha256': execution['execution_sha256'], 'scope': execution['scope'],
+ 144             **_coverage_facts(execution['required_coverage'], execution['config']['execution_state_definitions'],
+ 145                               execution['platform'], observation, root)}
+ 146 
+ 147 
+ 148 def request_coverage_receipt(config, observation, platform, request_sha256, root=None):
+ 149     """A collector can bind its request bytes, not the parent's approved plan."""
+ 150     if (not isinstance(request_sha256,str)or len(request_sha256)!=64 or
+ 151             any(c not in '0123456789abcdef' for c in request_sha256)):
+ 152         raise ValueError('Exact request-byte SHA256 required')
+ 153     return {'request_sha256':request_sha256,'identity_scope':'native_request','scope':config['execution_scope'],
+ 154             **_coverage_facts(config['execution_states'],config['execution_state_definitions'],platform,observation,root)}
+ 155 
+ 156 
+ 157 def source_fingerprint(roots):
+ 158     result = {}
+ 159     for index, root in enumerate(roots):
+ 160         root = Path(root).resolve()
+ 161         if not root.exists(): raise ValueError('Production source root missing')
+ 162         paths = [root] if root.is_file() else sorted(p for p in root.rglob('*') if p.is_file())
+ 163         for path in paths:
+ 164             relative = path.name if root.is_file() else str(path.relative_to(root))
+ 165             if '__pycache__' in path.parts or path.suffix == '.pyc': continue
+ 166             result[str(index) + '/' + relative] = hashlib.sha256(path.read_bytes()).hexdigest()
+ 167     if not result: raise ValueError('Nonempty actual production source set required')
+ 168     return result
+ 169 
+ 170 
+ 171 def verify_capture_images(receipt, root):
+ 172     root = Path(root).resolve()
+ 173     if not receipt.get('image_hashes'): raise ValueError('Original capture must pin its native image bytes')
+ 174     for relative, expected in receipt['image_hashes'].items():
+ 175         path = (root / relative).resolve()
+ 176         if not path.is_relative_to(root) or not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
+ 177             raise ValueError('Original capture image missing, replaced or outside native output')
+ 178 
+ 179 
+ 180 def packet_inventory(root):
+ 181     root = Path(root).resolve()
+ 182     files = {}
+ 183     for path in sorted(root.rglob('*')):
+ 184         if path == root / 'result.json' or path.name == '.DS_Store' or path.name.startswith('._'):
+ 185             continue
+ 186         if path.is_symlink(): raise ValueError('Native packet symlink needs an explicit evidence provider')
+ 187         if path.is_file(): files[str(path.relative_to(root))] = hashlib.sha256(path.read_bytes()).hexdigest()
+ 188     return files
+ 189 
+ 190 
+ 191 def verify_packet_files(receipt, root):
+ 192     expected = receipt.get('packet_files')
+ 193     if not isinstance(expected, dict) or not expected or packet_inventory(root) != expected:
+ 194         raise ValueError('Original native packet inventory/bytes changed')
+ 195 
+ 196 
+ 197 def run_execution(value, plan, lock, lock_sha, fixtures, bridge, output, source_roots, native_options, *, policy=None, policy_sha=None, expected_environment=None, environment_sha=None, resources=None, source_model=None, capture_context=None, domain_approval=None):
+ 198     bridge = Path(bridge).resolve(); output = Path(output).resolve()
+ 199     bridge_sha = hashlib.sha256(bridge.read_bytes()).hexdigest()
+ 200     verify_execution(value, plan, lock, lock_sha, fixtures, bridge_sha)
+ 201     import review_contract
+ 202     if policy is not None:
+ 203         # Reject invalid review expectations before spending any SDK time.
+ 204         review_contract.catalog(plan, lock, lock_sha, policy, policy_sha, value['platform'])
+ 205     elif policy_sha is not None:
+ 206         raise ValueError('Policy digest requires its independently approved policy')
+ 207     if expected_environment is not None:
+ 208         import acceptance
+ 209         if design.digest(expected_environment) != environment_sha:
+ 210             raise ValueError('Independently approved native environment digest required')
+ 211         acceptance.environment({}, expected_environment, value['platform'])
+ 212     elif environment_sha is not None:
+ 213         raise ValueError('Environment digest requires its approved expectation')
+ 214     allowed = ({'package', 'simulator', 'developer-dir', 'build-cache', 'product', 'sdk'} if value['platform'] == 'ios'
+ 215                else {'project', 'java-home', 'android-sdk'})
+ 216     if set(native_options) - allowed: raise ValueError('Only explicit platform-native options are accepted')
+ 217     native_options = resources.native_options(platform=value['platform']) if resources is not None else native_options
+ 218     managed_allowed = allowed | ({'reset-owned-app'} if value['platform'] == 'ios' and resources is not None else set())
+ 219     if set(native_options) - managed_allowed: raise ValueError('Managed options differ from the approved platform')
+ 220     roots = [Path(p).resolve() for p in source_roots]
+ 221     if any(output.is_relative_to(p) for p in roots): raise ValueError('Fresh evidence must be outside production source roots')
+ 222     import source_identity
+ 223     before = source_identity.receipt_fingerprint(roots, source_model)
+ 224     output.mkdir(parents=True, exist_ok=False)
+ 225     def save(name, data): (output / name).write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n')
+ 226     save('execution.json', value); save('fixtures.json', value['config']); save('actions.json', value['actions'])
+ 227     save('parent-plan.json', plan); save('source-before.json', before)
+ 228     if source_model is not None: save('source-model.json', source_model)
+ 229     if capture_context is not None: save('capture-context.json', capture_context)
+ 230     if expected_environment is not None: save('expected-environment.json', expected_environment)
+ 231     script = Path(__file__).resolve().parent / (value['platform'] + '_observe.py')
+ 232     command = [sys.executable, '-B', str(script), 'run', '--bridge', str(bridge), '--fixtures', str(output / 'fixtures.json'),
+ 233                '--actions', str(output / 'actions.json'), '--output', str(output / 'native')]
+ 234     for key, item in native_options.items():
+ 235         if item is not None: command += ['--' + key, str(item)]
+ 236     if capture_context is not None and value['platform'] == 'ios':
+ 237         import capture_validity
+ 238         command += ['--build-context-sha256', design.digest(capture_validity.build_context(capture_context))]
+ 239     if domain_approval is not None and value['platform'] == 'ios':
+ 240         save('coverage-domain-prepared.json',domain_approval)
+ 241         command += ['--coverage-domain',str(output / 'coverage-domain-prepared.json')]
+ 242     record = {'version': 1, 'startedAtUnix': time.time(), 'execution_sha256': value['execution_sha256'],
+ 243               'parent_plan_sha256': design.digest(plan),
+ 244               'source_sha256': design.digest(before), 'source_roots': list(map(str, roots)), 'argv': command,
+ 245               'scope': value['scope'], 'input_hashes': {name: hashlib.sha256((output / name).read_bytes()).hexdigest() for name in ['fixtures.json', 'actions.json']}}
+ 246     if domain_approval is not None and value['platform']=='ios':
+ 247         record['input_hashes']['coverage-domain-prepared.json'] = hashlib.sha256((output/'coverage-domain-prepared.json').read_bytes()).hexdigest()
+ 248     if source_model is not None:
+ 249         record.update(source_model=source_model, source_model_sha256=design.digest(source_model))
+ 250     if capture_context is not None: record['capture_context_sha256'] = design.digest(capture_context)
+ 251     tool_root = Path(__file__).resolve().parents[1]
+ 252     tool_paths = list((tool_root/'scripts').glob('*.py')) + list((tool_root/'assets/ios-observer').glob('*.swift')) + list((tool_root/'assets/android-observer').glob('*.kt'))
+ 253     record['tool_files'] = {str(p.relative_to(tool_root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(tool_paths)}
+ 254     import shutil
+ 255     for p in tool_paths:
+ 256         target=output/'tool-runtime'/p.relative_to(tool_root);target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,target)
+ 257     save('request.json', record)
+ 258     with (output / 'native.log').open('w') as stream:
+ 259         environment = dict(os.environ, PYTHONDONTWRITEBYTECODE='1')
+ 260         record['native_exit_code'] = (resources.run(command, stdout=stream, env=environment) if resources else
+ 261             subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT, env=environment).returncode)
+ 262     record['nativeFinishedAtUnix'] = time.time()
+ 263     try:
+ 264         after = source_identity.receipt_fingerprint(roots, source_model)
+ 265         record['tool_sources_unchanged'] = all(hashlib.sha256((tool_root/rel).read_bytes()).hexdigest()==expected for rel,expected in record['tool_files'].items())
+ 266         record['source_unchanged'] = before == after and hashlib.sha256(bridge.read_bytes()).hexdigest() == bridge_sha and record['tool_sources_unchanged']
+ 267     except (OSError, ValueError) as error:
+ 268         after = {}; record['source_unchanged'] = False; record['source_error'] = str(error)
+ 269     save('source-after.json', after)
+ 270     record['inputs_unchanged'] = all(hashlib.sha256((output / name).read_bytes()).hexdigest() == h for name, h in record['input_hashes'].items())
+ 271     observation_path = output / 'native/observation.json'
+ 272     try:
+ 273         if observation_path.is_file() and record['source_unchanged'] and record['inputs_unchanged']:
+ 274             import native_checks
+ 275             observation = design.load(observation_path); obs_sha = hashlib.sha256(observation_path.read_bytes()).hexdigest()
+ 276             native_manifest = design.load(output / 'native/manifest.json')
+ 277             first = observation.get('snapshots', [{}])[0]
+ 278             binding = first.get('binding', first.get('runtime', {}))
+ 279             if (native_manifest.get('reset_contract') == 'fresh_native_fixture'
+ 280                     and native_manifest.get('native_test_count', 0) > 0
+ 281                     and binding.get('fixture_index') == 0 and binding.get('event_revision') == 0
+ 282                     and isinstance(binding.get('instance'), str) and binding['instance']):
+ 283                 record['reset_contract'] = native_manifest['reset_contract']
+ 284             import action_guard
+ 285             record['action_prerequisites'] = action_guard.verify_observation(value['actions'], observation, value['platform'])
+ 286             record['image_hashes'] = {}
+ 287             for snapshot in observation.get('snapshots', []):
+ 288                 relative = snapshot['screenshot']; path = (observation_path.parent / relative).resolve()
+ 289                 if not path.is_relative_to(observation_path.parent) or not path.is_file(): raise ValueError('Native image missing or outside output')
+ 290                 record['image_hashes'][relative] = hashlib.sha256(path.read_bytes()).hexdigest()
+ 291             verify_capture_images(record, observation_path.parent)
+ 292             environment = acceptance.environment(observation, expected_environment, value['platform']) if expected_environment is not None else None
+ 293             if environment is not None:
+ 294                 save('environment-check.json', environment); record['environment_status'] = environment['status']
+ 295                 record['environment_expectation_sha256'] = environment_sha
+ 296             receipt = coverage_receipt(value, observation, output / 'native'); save('execution-coverage.json', receipt)
+ 297             record['coverage_satisfied'] = receipt['satisfied']
+ 298             manual = None
+ 299             if policy is not None:
+ 300                 catalog = review_contract.catalog(plan, lock, lock_sha, policy, policy_sha, value['platform'])
+ 301                 submission = {'version': 1, 'catalog_sha256': design.digest(catalog), 'observation_sha256': obs_sha, 'decisions': []}
+ 302                 manual = review_contract.bind(plan, lock, lock_sha, policy, policy_sha, observation, obs_sha, observation_path.parent, submission, value['platform'])
+ 303             report = native_checks.evaluate(plan, observation, value['platform'], manual, observation_path.parent, obs_sha, lock, lock_sha, policy, policy_sha)
+ 304             if environment is not None: report['environment'] = environment
+ 305             save('automatic.json', report); record['automatic_counts'] = report['counts']
+ 306             record['automatic_sha256'] = hashlib.sha256((output / 'automatic.json').read_bytes()).hexdigest()
+ 307             record['observation_sha256'] = obs_sha
+ 308             record['parent_plan_sha256'] = design.digest(plan)
+ 309         else: record['coverage_satisfied'] = False
+ 310     except Exception as error:
+ 311         record['coverage_satisfied'] = False
+ 312         record['evidence_error'] = {'type': type(error).__name__, 'message': str(error)}
+ 313         if observation_path.is_file(): record['observation_sha256'] = hashlib.sha256(observation_path.read_bytes()).hexdigest()
+ 314     from resource_manager import lease_clock, boot_identity
+ 315     record['finishedAtUnix'] = time.time(); record['finishedLeaseClock'] = lease_clock(); record['host_boot_id'] = boot_identity()
+ 316     record['status'] = ('verified_capture' if record['native_exit_code'] == 0 and record['source_unchanged'] and record['inputs_unchanged'] and record['coverage_satisfied'] and record.get('environment_status', 'P') == 'P' else 'invalid_or_incomplete_capture')
+ 317     record['scope_limit'] = 'A source-bound capture/automatic-check result, not full PR acceptance or independent visual truth.'
+ 318     record['packet_files'] = packet_inventory(output)
+ 319     save('result.json', record)
+ 320     return record
+ 321 
+ 322 
+ 323 def main():
+ 324     p = argparse.ArgumentParser()
+ 325     p.add_argument('--run', action='store_true'); p.add_argument('--execution', type=Path)
+ 326     for name in ['plan', 'design-lock', 'fixtures', 'output']: p.add_argument('--' + name, type=Path, required=True)
+ 327     p.add_argument('--design-sha256', required=True); p.add_argument('--bridge', type=Path, required=True)
+ 328     p.add_argument('--launch-source', required=True); p.add_argument('--launch-pointer', required=True)
+ 329     p.add_argument('--state', action='append'); p.add_argument('--strategy', choices=['legacy', 'coalesced'], default='coalesced')
+ 330     p.add_argument('--source-root', type=Path, action='append')
+ 331     p.add_argument('--policy', type=Path); p.add_argument('--policy-sha256')
+ 332     p.add_argument('--environment', type=Path); p.add_argument('--environment-sha256')
+ 333     for name in ['package', 'project', 'simulator', 'developer-dir', 'build-cache', 'product', 'sdk', 'java-home', 'android-sdk']:
+ 334         p.add_argument('--' + name)
+ 335     a = p.parse_args()
+ 336     plan = design.load(a.plan)
+ 337     lock = design.load(a.design_lock); fixtures = design.load(a.fixtures)
+ 338     value = compile_execution(plan, lock, a.design_sha256, fixtures, hashlib.sha256(a.bridge.read_bytes()).hexdigest(), launch_ref={'source': a.launch_source, 'pointer': a.launch_pointer}, states=a.state, strategy=a.strategy)
+ 339     if a.execution:
+ 340         supplied = design.load(a.execution)
+ 341         if supplied != value: raise ValueError('CLI request differs from exact execution manifest')
+ 342     if a.run:
+ 343         if not a.source_root: raise ValueError('Actual production source roots required for a native run')
+ 344         names = ['package', 'simulator', 'developer-dir', 'build-cache', 'product', 'sdk'] if value['platform'] == 'ios' else ['project', 'java-home', 'android-sdk']
+ 345         result = run_execution(value, plan, lock, a.design_sha256, fixtures, a.bridge, a.output, a.source_root,
+ 346                                {name: getattr(a, name.replace('-', '_')) for name in names if getattr(a, name.replace('-', '_')) is not None},
+ 347                                policy=design.load(a.policy) if a.policy else None, policy_sha=a.policy_sha256,
+ 348                                expected_environment=design.load(a.environment) if a.environment else None, environment_sha=a.environment_sha256)
+ 349         print(json.dumps(result, indent=2)); sys.exit(0 if result['status'] == 'verified_capture' else 1)
+ 350     a.output.mkdir(exist_ok=False, parents=True)
+ 351     for name, data in [('execution.json', value), ('actions.json', value['actions']), ('fixtures.json', value['config'])]:
+ 352         (a.output / name).write_text(json.dumps(data, indent=2, ensure_ascii=False) + '\n')
+ 353 if __name__ == '__main__': main()

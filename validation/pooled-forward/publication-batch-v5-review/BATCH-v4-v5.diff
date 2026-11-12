@@ -1,0 +1,120 @@
+--- frozen/batch.py
++++ candidate/batch.py
+@@ -18,14 +18,14 @@
+ import types
+ 
+ MATERIAL_SHA = '4783735c450d882c7fcf62e5a1192dacafa96352fee899023a8e67a12e2e94ac'
+-EMITTER_SCHEMA_SHA = '2d8605a83df3f1a6b028e4d989f17b2bd97ec87b0016d0f5172fa5a353dc0af6'
++EMITTER_SCHEMA_SHA = '3b010c3aeb9562160233aabde8f1be1fc9c352c406c9690c82373664670e23c6'
+ _here = Path(__file__).resolve().parent
+ _material_bytes = (_here / 'material.py').read_bytes()
+ if hashlib.sha256(_material_bytes).hexdigest() != MATERIAL_SHA:
+     raise ValueError('Pinned material-v3 source differs')
+ m = types.ModuleType('batch_private_material_v3'); m.__file__ = str(_here / 'material.py')
+ exec(compile(_material_bytes, m.__file__, 'exec'), m.__dict__)
+-_schema_bytes = (_here / 'EMITTER-SCHEMA-v3.json').read_bytes()
++_schema_bytes = (_here / 'EMITTER-SCHEMA-v4.json').read_bytes()
+ if hashlib.sha256(_schema_bytes).hexdigest() != EMITTER_SCHEMA_SHA:
+     raise ValueError('Pinned emitter admission schema differs')
+ EMITTER_SCHEMA = m.projection.strict_json(_schema_bytes)
+@@ -151,6 +151,81 @@
+     return (type(value) is int if integer else type(value) in (int, float, m.projection.Decimal)) and value >= 0
+ 
+ 
++def metadata_file_key(original_path):
++    """Opaque path identity only: never an assertion that a file is supplied."""
++    if not m._path(original_path) or original_path == '/':
++        raise ValueError('Canonical original absolute metadata file path required')
++    return 'record-ref-' + digest(original_path.encode('utf-8'))
++
++
++def admit_metadata_keys(original):
++    """Source-typed key composition before the unchanged factual projector.
++
++    No caller alias selects a key. Raw paths and exact before/after map hashes
++    are operator-only proof; every SHA value and other recorded field remains.
++    """
++    m.projection._validate_json(original)
++    if type(original) is not dict: raise ValueError('Recorded report object required')
++    value = copy.deepcopy(original); proof = []
++    schema = EMITTER_SCHEMA['metadata_key_admission']
++    def sha(value):
++        return type(value) is str and len(value) == 64 and all(c in '0123456789abcdef' for c in value)
++    def file_map(row, parts, kind):
++        if any(m.projection._protected(part) for part in parts):
++            raise ValueError('Protected factual metadata map cannot be rewritten')
++        files = row['files']
++        if type(files) is not dict: raise ValueError('Exact source-declared file SHA map required')
++        admitted, entries = {}, []
++        for key, expected in files.items():
++            if not sha(expected): raise ValueError('Exact source-declared file SHA value required')
++            anonymous = metadata_file_key(key)
++            if anonymous in admitted: raise ValueError('Metadata key alias collision; no file-map merge')
++            admitted[anonymous] = expected
++            entries.append({'original_key': key, 'anonymous_key': anonymous, 'file_sha256': expected})
++        row['files'] = admitted
++        proof.append({'pointer': m.projection.pointer(parts), 'source_schema': kind,
++            'original_map_sha256': m.projection.digest(files), 'admitted_map_sha256': m.projection.digest(admitted),
++            'entries': entries, 'availability': schema['availability']})
++    compiled = schema['compiled']; bound = schema['bound_source']
++    if set(value) == set(compiled['fields']) and type(value['version']) is int and value['version'] == 1 and value['explicit'] is True:
++        if (not sha(value['design_lock_sha256']) or not sha(value['plan_sha256'])
++                or type(value['source_ref']) is not dict or set(value['source_ref']) != {'source', 'pointer'}
++                or type(value['claims']) is not list or type(value['issues']) is not list or type(value['scope']) is not str):
++            raise ValueError('Unreviewed compiled evidence responsibility schema')
++        for index, row in enumerate(value['claims']):
++            if (type(row) is not dict or set(row) != set(compiled['row_fields'])
++                    or row['expected'] is not True or row['unit'] != 'bool' or type(row['supported']) is not bool
++                    or type(row['rule_ids']) is not list or type(row['assertion_ids']) is not list
++                    or type(row['provenance']) is not dict or set(row['provenance']) != {'source', 'pointer', 'design_lock_sha256'}
++                    or row['provenance']['design_lock_sha256'] != value['design_lock_sha256']
++                    or any(row['provenance'][k] != value['source_ref'][k] for k in ['source', 'pointer'])):
++                raise ValueError('Unreviewed compiled evidence claim metadata schema')
++            file_map(row, ['claims', index, 'files'], compiled['kind'])
++    elif value.get('format') == bound['kind']:
++        if (set(value) != set(bound['fields']) or not sha(value['design_lock_sha256'])
++                or type(value['observations']) is not list or type(value['scope']) is not str):
++            raise ValueError('Unreviewed bound source review schema')
++        for index, row in enumerate(value['observations']):
++            if (type(row) is not dict or set(row) != set(bound['row_fields'])
++                    or type(row['observed']) not in {bool, type(None)} or not sha(row['claim_sha256'])
++                    or type(row['reason']) is not str or not row['reason'].strip() or type(row['citations']) is not list
++                    or row['observed'] is not None and not row['citations']
++                    or any(type(ref) is not dict or set(ref) != {'path', 'line'} or type(ref['path']) is not str
++                        or type(ref['line']) is not int or ref['line'] < 1 for ref in row['citations'])):
++                raise ValueError('Unreviewed bound source observation metadata schema')
++            file_map(row, ['observations', index, 'files'], bound['kind'])
++    def reject_unknown(item):
++        if type(item) is dict:
++            for key, sub in item.items():
++                if key.startswith('/') or m.projection.LEAK.search(key):
++                    raise ValueError('Unreviewed path-keyed or identity-bearing object map; no factual key rewrite')
++                reject_unknown(sub)
++        elif type(item) is list:
++            for sub in item: reject_unknown(sub)
++    reject_unknown(value)
++    return value, proof
++
++
+ def present_value(original, *, outcome=False):
+     """Compose explicit source-schema metadata admission with frozen material-v3.
+ 
+@@ -160,7 +235,7 @@
+     m.projection._validate_json(original)
+     if not isinstance(original, dict):
+         raise ValueError('Recorded report object required')
+-    admitted = copy.deepcopy(original); omitted = {}
++    admitted, key_maps = admit_metadata_keys(original); omitted = {}
+     def omit(key, schema):
+         omitted[key] = {'original_value_sha256': m.projection.digest(admitted[key]), 'schema': schema}
+         del admitted[key]
+@@ -201,7 +276,8 @@
+     admission = {'schema_sha256': EMITTER_SCHEMA_SHA,
+                  'original_value_sha256': m.projection.digest(original),
+                  'admitted_value_sha256': m.projection.digest(admitted),
+-                 'selected_value_sha256': m.projection.digest(value), 'omitted_top_level': omitted}
++                 'selected_value_sha256': m.projection.digest(value), 'omitted_top_level': omitted,
++                 'metadata_key_maps': key_maps}
+     return value, admission
+ 
+ 

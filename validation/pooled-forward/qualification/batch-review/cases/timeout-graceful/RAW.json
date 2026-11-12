@@ -1,0 +1,150 @@
+{
+  "scenario": "timeout-graceful",
+  "evidence_class": "HOST/SIM non-forwarding mock",
+  "all_times_are_simulated": true,
+  "exit_code": 1,
+  "raised": null,
+  "stdout": "",
+  "fake_calls": [
+    {
+      "operation": "Popen",
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/cases/timeout-graceful/root/neutral_episode.py",
+        "--block",
+        "block-1",
+        "--arm",
+        "A",
+        "--candidate",
+        "candidate-v13.9",
+        "--freeze",
+        "CANDIDATE-FREEZE-10.json",
+        "--baseline",
+        "baseline-v12.6",
+        "--baseline-freeze",
+        "BASELINE-FREEZE.json"
+      ],
+      "start_new_session": true,
+      "SIMULATED": true
+    },
+    {
+      "operation": "wait",
+      "pid": 710000,
+      "timeout": null
+    },
+    {
+      "operation": "poll",
+      "pid": 710000,
+      "returncode": null
+    },
+    {
+      "operation": "killpg",
+      "pid": 710000,
+      "signal": 15,
+      "SIMULATED": true
+    },
+    {
+      "operation": "wait",
+      "pid": 710000,
+      "timeout": 180
+    },
+    {
+      "operation": "cleanup",
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/cases/timeout-graceful/root/baseline-v12.6/scripts/ui_loop.py",
+        "cleanup-native-resources",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/cases/timeout-graceful/root/cache/benchmark/block-1/A/profiles/ios-warm.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/cases/timeout-graceful/root/operators/benchmark-run/failure-cleanup-block-1-A-ios-warm"
+      ],
+      "timeout": 180,
+      "SIMULATED": true
+    },
+    {
+      "operation": "cleanup",
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/cases/timeout-graceful/root/baseline-v12.6/scripts/ui_loop.py",
+        "cleanup-native-resources",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/cases/timeout-graceful/root/cache/benchmark/block-1/A/profiles/android.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/cases/timeout-graceful/root/operators/benchmark-run/failure-cleanup-block-1-A-android"
+      ],
+      "timeout": 180,
+      "SIMULATED": true
+    }
+  ],
+  "signal_controls": [
+    {
+      "operation": "signal-handler",
+      "signal": 14,
+      "handler": "expired"
+    },
+    {
+      "operation": "setitimer",
+      "duration": 7200
+    },
+    {
+      "operation": "setitimer",
+      "duration": 0
+    },
+    {
+      "operation": "signal-handler",
+      "signal": 14,
+      "handler": "SIMULATED-prior-handler"
+    }
+  ],
+  "result": {
+    "admission_sha256": "c7d4b01c2bbd7d8639d691f9ab7cc610daa5037f000a6edd53f2bf0bc1551dc6",
+    "failed": {
+      "type": "TimeoutError",
+      "message": "Whole benchmark deadline reached; no new episode is allowed",
+      "at_unix": 2000008200.0
+    },
+    "episodes": [],
+    "enclosing_wall_seconds": 7210.0,
+    "scope": "All failed/cleanup wall retained. Deadline includes preparation as a conservative bound; primary collection is each enclosing episode clock. No retries."
+  },
+  "failure": {
+    "type": "TimeoutError",
+    "message": "Whole benchmark deadline reached; no new episode is allowed",
+    "at_unix": 2000008200.0
+  },
+  "checks": [
+    {
+      "id": "alarm-armed-once-and-restored",
+      "status": "P"
+    },
+    {
+      "id": "no-stale-or-foreign-group-selected",
+      "status": "P"
+    },
+    {
+      "id": "failure-stops-order-and-blocks-gate",
+      "status": "P"
+    },
+    {
+      "id": "final-failure-result-retained",
+      "status": "P"
+    },
+    {
+      "id": "known-configured-cleanup-attempted",
+      "status": "P"
+    },
+    {
+      "id": "cleanup-and-failure-wall-retained",
+      "status": "P"
+    },
+    {
+      "id": "only-own-TERM-and-grace-wait",
+      "status": "P"
+    }
+  ],
+  "status": "P"
+}

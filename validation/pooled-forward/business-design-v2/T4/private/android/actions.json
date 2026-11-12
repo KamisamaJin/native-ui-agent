@@ -1,0 +1,269 @@
+[
+  {
+    "type": "sweep",
+    "state_id": "start",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Notify service staff"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Notify service staff"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Notify service staff"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "staff-selected"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Preview notice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Preview notice"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "previewed",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Customer wording reviewed"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Customer wording reviewed"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Customer wording reviewed"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Publish notice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Publish notice"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "publish|INC-880|staff|47|steps:off"
+  },
+  {
+    "type": "sweep",
+    "state_id": "published",
+    "max_scrolls": 18
+  },
+  {
+    "type": "apply_next_fixture"
+  },
+  {
+    "type": "sweep",
+    "state_id": "same-incident-blocked-audience",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Notify affected customers"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Notify affected customers"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Notify affected customers"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "customers-selected"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Include troubleshooting steps"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Include troubleshooting steps"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Include troubleshooting steps"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "steps-selected"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Preview notice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Preview notice"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "repreviewed",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Customer wording reviewed"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Customer wording reviewed"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Customer wording reviewed"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready-again",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Publish notice"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Publish notice"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "publish|INC-880|customers|203|steps:on"
+  },
+  {
+    "type": "sweep",
+    "state_id": "republished",
+    "max_scrolls": 18
+  },
+  {
+    "type": "apply_next_fixture"
+  },
+  {
+    "type": "sweep",
+    "state_id": "changed-incident",
+    "max_scrolls": 18
+  }
+]

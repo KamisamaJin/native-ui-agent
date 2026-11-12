@@ -1,0 +1,20 @@
+--- frozen-v1/cold.py
++++ revision-v2/cold.py
+@@ -87,6 +87,8 @@
+ 
+ 
+ def pack(archive, index_sha256, output):
++    need(isinstance(index_sha256, str) and re.fullmatch('[0-9a-f]{64}', index_sha256),
++         'Exact external original index SHA256 required')
+     source, output = physical(archive), physical(output, fresh=True)
+     disjoint(source, output)
+     module = archive_module(); verified = module.verify(source, index_sha256)
+@@ -133,6 +135,8 @@
+     need(type(seal.get('version')) is int and seal['version'] == 1 and
+          seal.get('kind') == 'lossless-frozen-archive-transport' and seal['archive_code_sha256'] == ARCHIVE_SHA,
+          'Wrong transport schema/code pin')
++    need(isinstance(seal.get('index_sha256'), str) and re.fullmatch('[0-9a-f]{64}', seal['index_sha256']),
++         'Exact external original index SHA256 required')
+     rows = seal['files']; need(isinstance(rows, dict), 'Explicit transport inventory required')
+     need({'INDEX.json', 'SPEC.json', 'SEAL.json'} <= set(rows), 'Missing transported inner metadata')
+     stored_names = {'TRANSPORT.json'}

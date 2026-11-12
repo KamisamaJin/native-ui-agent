@@ -1,0 +1,223 @@
+[
+  {
+    "type": "sweep",
+    "state_id": "initial",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Visit by video"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Visit by video"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Visit by video"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "video-mode"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Choose Thursday video"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Choose Thursday video"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Choose Thursday video"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "time-selected"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Notify the attendee"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Notify the attendee"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Notify the attendee"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Move appointment"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Move appointment"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "reschedule|BK-320|video|S-3"
+  },
+  {
+    "type": "sweep",
+    "state_id": "moved",
+    "max_scrolls": 18
+  },
+  {
+    "type": "apply_next_fixture"
+  },
+  {
+    "type": "sweep",
+    "state_id": "same-booking-full-slot",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Choose Tuesday morning"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Choose Tuesday morning"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Choose Tuesday morning"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "new-time"
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Notify the attendee"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Notify the attendee"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Notify the attendee"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ]
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready-again",
+    "max_scrolls": 18
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Move appointment"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Move appointment"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "reschedule|BK-320|video|S-1"
+  },
+  {
+    "type": "sweep",
+    "state_id": "moved-again",
+    "max_scrolls": 18
+  },
+  {
+    "type": "apply_next_fixture"
+  },
+  {
+    "type": "sweep",
+    "state_id": "changed-booking",
+    "max_scrolls": 18
+  }
+]

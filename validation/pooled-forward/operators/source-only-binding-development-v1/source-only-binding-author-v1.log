@@ -1,0 +1,74 @@
+test_conflicting_original_store_is_preserved_and_does_not_override_independent_actual (test_source_only_binding.SourceOnlyControls) ... ERROR
+test_expectation_override_wrong_subject_and_reused_output_are_rejected (test_source_only_binding.SourceOnlyControls) ... ok
+test_false_and_unknown_actuals_remain_false_and_unknown (test_source_only_binding.SourceOnlyControls) ... ERROR
+test_source_store_is_only_config_change_and_cannot_enter_old_store_or_production (test_source_only_binding.SourceOnlyControls) ... ERROR
+test_subject_drift_after_bind_aborts_before_evaluation (test_source_only_binding.SourceOnlyControls) ... FAIL
+
+======================================================================
+ERROR: test_conflicting_original_store_is_preserved_and_does_not_override_independent_actual (test_source_only_binding.SourceOnlyControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/test_source_only_binding.py", line 32, in test_conflicting_original_store_is_preserved_and_does_not_override_independent_actual
+    result = subject.bind_source(config, actual, root/'independent', backend)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 57, in bind_source
+    derived = isolated_config(config, output)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 45, in isolated_config
+    roots = [safe(raw) for raw in config['source_roots']]
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 45, in <listcomp>
+    roots = [safe(raw) for raw in config['source_roots']]
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 28, in safe
+    for part in [path, *path.parents]: need(not part.is_symlink(), 'Symlink is not a source authority')
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 22, in need
+    if not ok: raise ValueError(why)
+ValueError: Symlink is not a source authority
+
+======================================================================
+ERROR: test_false_and_unknown_actuals_remain_false_and_unknown (test_source_only_binding.SourceOnlyControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/test_source_only_binding.py", line 43, in test_false_and_unknown_actuals_remain_false_and_unknown
+    result = subject.bind_source(config, actual, root/('separate-' + str(index)), backend)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 57, in bind_source
+    derived = isolated_config(config, output)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 45, in isolated_config
+    roots = [safe(raw) for raw in config['source_roots']]
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 45, in <listcomp>
+    roots = [safe(raw) for raw in config['source_roots']]
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 28, in safe
+    for part in [path, *path.parents]: need(not part.is_symlink(), 'Symlink is not a source authority')
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 22, in need
+    if not ok: raise ValueError(why)
+ValueError: Symlink is not a source authority
+
+======================================================================
+ERROR: test_source_store_is_only_config_change_and_cannot_enter_old_store_or_production (test_source_only_binding.SourceOnlyControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/test_source_only_binding.py", line 50, in test_source_store_is_only_config_change_and_cannot_enter_old_store_or_production
+    derived = subject.isolated_config(config, root/'view')
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 45, in isolated_config
+    roots = [safe(raw) for raw in config['source_roots']]
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 45, in <listcomp>
+    roots = [safe(raw) for raw in config['source_roots']]
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 28, in safe
+    for part in [path, *path.parents]: need(not part.is_symlink(), 'Symlink is not a source authority')
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/source_only_binding.py", line 22, in need
+    if not ok: raise ValueError(why)
+ValueError: Symlink is not a source authority
+
+======================================================================
+FAIL: test_subject_drift_after_bind_aborts_before_evaluation (test_source_only_binding.SourceOnlyControls)
+----------------------------------------------------------------------
+ValueError: Symlink is not a source authority
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/test_source_only_binding.py", line 75, in test_subject_drift_after_bind_aborts_before_evaluation
+    subject.bind_source(config, actual, root/'drift', DriftingBackend)
+AssertionError: "subject bytes changed" does not match "Symlink is not a source authority"
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.025s
+
+FAILED (failures=1, errors=3)

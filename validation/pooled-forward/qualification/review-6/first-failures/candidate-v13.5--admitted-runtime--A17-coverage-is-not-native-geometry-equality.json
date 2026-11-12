@@ -1,0 +1,141 @@
+{
+  "id": "A17-coverage-is-not-native-geometry-equality",
+  "status": "F",
+  "arm": "candidate-v13.5",
+  "evidence_class": "HOST original PNG/validator with SIMULATED390x600 native and compile metadata; zero SDK",
+  "detail": {
+    "report": {
+      "schema_version": 1,
+      "status": "failed",
+      "coverage_contract": "required_id_set",
+      "complete_requirements_claim": false,
+      "assertions": [
+        {
+          "id": "raw-width",
+          "state": "start",
+          "status": "failed",
+          "actual": [
+            30.000000000000007,
+            30.000000000000007
+          ],
+          "reason": "same-frame native-bound geometry contradicts design",
+          "snapshot_indices": [
+            0,
+            1
+          ],
+          "geometry_evidence": [
+            {
+              "value": 30.000000000000007,
+              "ratio": [
+                4222124650659841,
+                140737488355328
+              ],
+              "method": "exact_operations_on_recorded_native_samples",
+              "sources": [
+                {
+                  "provider": "xcui_cgrect",
+                  "sample": {
+                    "x": 20,
+                    "y": 300,
+                    "width": 30.000000000000007,
+                    "height": 60
+                  },
+                  "unit": "pt",
+                  "scope": "Public AX rectangle; not full layout allocation or OS hit region.",
+                  "selector": {
+                    "identifier": "anchor-a"
+                  },
+                  "node_id": null
+                }
+              ],
+              "policy": "No implicit epsilon, pixel snapping or design tolerance. Missing native samples do not certify legacy rounded bounds.",
+              "snapshot": 0
+            },
+            {
+              "value": 30.000000000000007,
+              "ratio": [
+                4222124650659841,
+                140737488355328
+              ],
+              "method": "exact_operations_on_recorded_native_samples",
+              "sources": [
+                {
+                  "provider": "xcui_cgrect",
+                  "sample": {
+                    "x": 20,
+                    "y": 50,
+                    "width": 30.000000000000007,
+                    "height": 60
+                  },
+                  "unit": "pt",
+                  "scope": "Public AX rectangle; not full layout allocation or OS hit region.",
+                  "selector": {
+                    "identifier": "anchor-a"
+                  },
+                  "node_id": null
+                }
+              ],
+              "policy": "No implicit epsilon, pixel snapping or design tolerance. Missing native samples do not certify legacy rounded bounds.",
+              "snapshot": 1
+            }
+          ]
+        }
+      ],
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "unassessed": 0
+      },
+      "states": {
+        "start": {
+          "complete": false,
+          "reason": "Two globally unique native typed leaves required",
+          "binding": {
+            "pid": 884621,
+            "instance": "SIMULATED-admitted-runtime",
+            "fixture_index": 0,
+            "event_revision": 0,
+            "input_sha256": "9538575d3596d6b0bf692ab2f87146a08f3aca70dffe7bbdfac42e7a682d0c35"
+          }
+        }
+      },
+      "machine_findings": [
+        {
+          "id": "raw-width",
+          "state": "start",
+          "requirement_id": null,
+          "origin": "typed_native_check",
+          "kind": "geometry",
+          "target": {
+            "identifier": "anchor-a"
+          },
+          "property": "width",
+          "expected": 30,
+          "actual": [
+            30.000000000000007,
+            30.000000000000007
+          ],
+          "unit": null,
+          "measurement": null,
+          "expectation_provenance": null,
+          "reason": "same-frame native-bound geometry contradicts design",
+          "snapshot_indices": [
+            0,
+            1
+          ],
+          "action_index": null
+        }
+      ],
+      "failed_assertion_ids": [
+        "raw-width"
+      ],
+      "matrix_contract": null,
+      "expectation_provenance": {
+        "status": "unverified_supplied_expectations"
+      },
+      "limits": "Native facts are typed and state-bound. Manual visual meaning remains reviewer judgment. AX dimensions do not establish internal padding/fonts/colors or complete physical hit regions."
+    },
+    "raw_width": 30.000000000000007,
+    "strict_expected": 30
+  }
+}

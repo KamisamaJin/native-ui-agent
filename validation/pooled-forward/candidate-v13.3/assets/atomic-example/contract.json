@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "design_owner": "Neutral atomic observation probe",
+  "approval_reference": "Neutral example; independently approve a lock for real use",
+  "sources": [
+    {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "03487e523f74ffe5078cb84574c272b5e597ad74e3ab46efcc3cdba69b190098"
+    }
+  ],
+  "required_rule_ids": [
+    "tile-fill",
+    "canvas-fill",
+    "title-overlap"
+  ],
+  "rules": [
+    {
+      "id": "tile-fill",
+      "kind": "manual",
+      "target": "tile",
+      "property": "rendered_fill_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "canvas-fill",
+      "kind": "manual",
+      "target": "canvas",
+      "property": "rendered_canvas_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "title-overlap",
+      "kind": "manual",
+      "target": "title",
+      "property": "overlap",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    }
+  ],
+  "scenarios": {
+    "neutral": {
+      "states": [
+        {
+          "id": "observed",
+          "input_index": 0,
+          "after_action": 0
+        },
+        {
+          "id": "changed",
+          "input_index": 1,
+          "after_action": 2
+        }
+      ],
+      "actions": [
+        {
+          "type": "sweep",
+          "state_id": "observed",
+          "max_scrolls": 8
+        },
+        {
+          "type": "apply_next_fixture"
+        },
+        {
+          "type": "sweep",
+          "state_id": "changed",
+          "max_scrolls": 8
+        }
+      ],
+      "values": {
+        "tile-fill": {
+          "observed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/colors/A"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/colors/A"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/colors/B"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/colors/B"
+            }
+          }
+        },
+        "canvas-fill": {
+          "observed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/colors/canvasA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/colors/canvasA"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/colors/canvasB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/colors/canvasB"
+            }
+          }
+        },
+        "title-overlap": {
+          "observed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/noOverlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/noOverlap"
+            }
+          },
+          "changed": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/noOverlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/noOverlap"
+            }
+          }
+        }
+      }
+    }
+  }
+}

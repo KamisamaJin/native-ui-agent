@@ -1,0 +1,2265 @@
+{
+  "design_owner": "Independent design/oracle author /root/v13_business_design",
+  "business_rules": "1. Start with credit off, no payment method selected, no authorization. Apply account credit is disabled when creditCents is zero. If on, applied credit = min(creditCents,dueCents); otherwise zero. Remaining = dueCents minus applied credit. Use integer cents and fixed USD formatting with two decimals and comma thousands separators.\n2. Payment methods are single selection, enabled only when available and remaining is positive. When remaining becomes zero, clear any method selection and disable every method. A credit or method change clears authorization.\n3. Settle invoice requires authorization and either remaining zero or an enabled selected method. Summary is 'Credit USD {applied} · Remaining USD {remaining}', as shown by exact public outcomes.\n4. Submit emits exactly one 'settle|{entityId}|{applied integer cents}|{remaining integer cents}|{methodId}', using literal 'credit' when remaining is zero. Then lock all controls. Decision taps emit no events.\n5. Same-entity replacement keeps credit on only if positive credit remains, keeps a chosen method only if still available and remaining stays positive, recomputes both amounts, and clears authorization/recorded state. A changed entityId resets credit, method, authorization, and recorded state. Replacement is silent.\n6. This is an allocation request UI; payment processing, banking, taxation, and external accounting persistence are outside scope.",
+  "tokens": {
+    "colors": {
+      "surface": {
+        "value": "#FFFFFFFF",
+        "unit": "argb"
+      },
+      "canvas": {
+        "value": "#FFFFF8F4",
+        "unit": "argb"
+      },
+      "ink": {
+        "value": "#FF201B13",
+        "unit": "argb"
+      },
+      "secondaryInk": {
+        "value": "#FF4F4539",
+        "unit": "argb"
+      },
+      "primary": {
+        "value": "#FF805610",
+        "unit": "argb"
+      },
+      "onPrimary": {
+        "value": "#FFFFFFFF",
+        "unit": "argb"
+      },
+      "selected": {
+        "value": "#FFFFDDB3",
+        "unit": "argb"
+      },
+      "disabled": {
+        "value": "#FFF3E6DA",
+        "unit": "argb"
+      },
+      "disabledPrimary": {
+        "value": "#FFEDE0D4",
+        "unit": "argb"
+      },
+      "outline": {
+        "value": "#FF817567",
+        "unit": "argb"
+      },
+      "summary": {
+        "value": "#FFFFF1E5",
+        "unit": "argb"
+      }
+    },
+    "ios": {
+      "titleSize": {
+        "value": 22,
+        "unit": "pt"
+      },
+      "titleWeight": {
+        "value": 600,
+        "unit": "scalar"
+      },
+      "bodySize": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "buttonHeight": {
+        "value": 48,
+        "unit": "pt"
+      },
+      "panelInset": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "rowInset": {
+        "value": 12,
+        "unit": "pt"
+      },
+      "rowGap": {
+        "value": 8,
+        "unit": "pt"
+      },
+      "paintGutter": {
+        "value": 24,
+        "unit": "pt"
+      },
+      "panelRadius": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "rowRadius": {
+        "value": 8,
+        "unit": "pt"
+      }
+    },
+    "android": {
+      "titleSize": {
+        "value": 22,
+        "unit": "sp"
+      },
+      "titleWeight": {
+        "value": 600,
+        "unit": "scalar"
+      },
+      "bodySize": {
+        "value": 16,
+        "unit": "sp"
+      },
+      "bodyWeight": {
+        "value": 400,
+        "unit": "scalar"
+      },
+      "buttonHeight": {
+        "value": 48,
+        "unit": "dp"
+      },
+      "panelInset": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "rowInset": {
+        "value": 12,
+        "unit": "dp"
+      },
+      "rowGap": {
+        "value": 8,
+        "unit": "dp"
+      },
+      "paintGutter": {
+        "value": 24,
+        "unit": "dp"
+      },
+      "panelRadius": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "rowRadius": {
+        "value": 8,
+        "unit": "dp"
+      }
+    },
+    "measurementSources": {
+      "palette": "Stock Reply ui/theme/Color.kt, light palette, lines 23–57; iOS adopts these explicit component colors because AlertToast.AlertStyle accepts arbitrary SwiftUI Color.",
+      "androidTypography": "Stock Reply ui/theme/Type.kt titleLarge (22sp,600,28sp line height) and bodyLarge (16sp,400,24sp line height).",
+      "iosTypography": "Independent design choice: system font, fixed 22pt semibold title, 16pt regular body at approved Large Dynamic Type; visual intent only, no computed SwiftUI font claim.",
+      "spacing": "Independent design choice, informed by AlertToast.banner VStack leading/spacing10/cornerRadius10 and ReplyEmailListItem Column padding20. This design explicitly fixes its own 16/12/8 rhythm and 16/8 radii, rather than claiming those are upstream defaults.",
+      "shape": "Stock Reply Shapes.kt supports 8dp small and 16dp medium; iOS adopts explicit matching pt design values."
+    }
+  },
+  "scope": {
+    "closed_shape": "One eager finite vertical production component. No internal scroll, overlays, asynchronous state, external data, or full app navigation.",
+    "fixture_domain": "Assessment covers the exact independently sealed family and action prefixes. The reusable public schema supports up to4 data rows per group; unbounded future caller inputs are not certified.",
+    "host": "390x600 logical viewport; host inset16 horizontal and24 top; Android density2.75 and explicit paparazzi-float32-screen-config-v1.",
+    "unsupported": [
+      {
+        "aspect": "generic computed SwiftUI typography/color/padding/layout_box",
+        "disposition": "not_applicable",
+        "reason": "Public iOS AX cannot expose these computed values. Sourced qualitative propositions and rendered opaque fill pixels cover the intended aspects; no mandatory unknown is added."
+      },
+      {
+        "aspect": "generic effective padding and glyph ink geometry",
+        "disposition": "not_applicable",
+        "reason": "Public AX/Compose semantic boxes do not prove generic layout padding or glyph ink; visual intent is assessed separately."
+      },
+      {
+        "aspect": "physical OS touch area",
+        "disposition": "not_applicable",
+        "reason": "Only primary control accessibility-box height and actual native dispatch are claimed."
+      },
+      {
+        "aspect": "whole-app navigation/network/lifecycle/keyboard, RTL, other themes/font settings/widths",
+        "disposition": "not_applicable",
+        "reason": "Scope is an additive reusable component in the approved finite light/LTR/Large-or1.0 observer fixture."
+      }
+    ]
+  },
+  "states": {
+    "start": {
+      "entity": {
+        "value": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Credit USD 0.00 · Remaining USD 101.99",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Choose a payment method for the remaining amount.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Invoice credit-and-payment allocation",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "credit": {
+          "label": {
+            "value": "Apply account credit",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "methodA": {
+          "label": {
+            "value": "Pay by bank transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending",
+            "unit": "string"
+          }
+        },
+        "methodB": {
+          "label": {
+            "value": "Pay by company card",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "authorize": {
+          "label": {
+            "value": "I authorize this settlement",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Settle invoice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "methodB": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "credit-applied": {
+      "entity": {
+        "value": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Credit USD 33.33 · Remaining USD 68.66",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Choose a payment method for the remaining amount.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Invoice credit-and-payment allocation",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "credit": {
+          "label": {
+            "value": "Apply account credit",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "methodA": {
+          "label": {
+            "value": "Pay by bank transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending",
+            "unit": "string"
+          }
+        },
+        "methodB": {
+          "label": {
+            "value": "Pay by company card",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "authorize": {
+          "label": {
+            "value": "I authorize this settlement",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Settle invoice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "methodB": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "card-selected": {
+      "entity": {
+        "value": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Credit USD 33.33 · Remaining USD 68.66",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Authorize this settlement.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Invoice credit-and-payment allocation",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "credit": {
+          "label": {
+            "value": "Apply account credit",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "methodA": {
+          "label": {
+            "value": "Pay by bank transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending",
+            "unit": "string"
+          }
+        },
+        "methodB": {
+          "label": {
+            "value": "Pay by company card",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "authorize": {
+          "label": {
+            "value": "I authorize this settlement",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Settle invoice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "methodB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "ready": {
+      "entity": {
+        "value": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Credit USD 33.33 · Remaining USD 68.66",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Ready to settle this invoice.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Invoice credit-and-payment allocation",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "credit": {
+          "label": {
+            "value": "Apply account credit",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "methodA": {
+          "label": {
+            "value": "Pay by bank transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending",
+            "unit": "string"
+          }
+        },
+        "methodB": {
+          "label": {
+            "value": "Pay by company card",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "authorize": {
+          "label": {
+            "value": "I authorize this settlement",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Settle invoice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "methodB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FF805610",
+          "unit": "argb"
+        }
+      }
+    },
+    "settled": {
+      "entity": {
+        "value": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Credit USD 33.33 · Remaining USD 68.66",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Settlement recorded.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Invoice credit-and-payment allocation",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "credit": {
+          "label": {
+            "value": "Apply account credit",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "methodA": {
+          "label": {
+            "value": "Pay by bank transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending",
+            "unit": "string"
+          }
+        },
+        "methodB": {
+          "label": {
+            "value": "Pay by company card",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "authorize": {
+          "label": {
+            "value": "I authorize this settlement",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Settle invoice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [
+          "settle|INV-992|3333|6866|card"
+        ],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "methodB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "same-invoice-credit-withdrawn": {
+      "entity": {
+        "value": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list. The replacement removes available credit, while the selected card remains valid.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Credit USD 0.00 · Remaining USD 101.99",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Authorize this settlement.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Invoice credit-and-payment allocation",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "credit": {
+          "label": {
+            "value": "Apply account credit",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "methodA": {
+          "label": {
+            "value": "Pay by bank transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "methodB": {
+          "label": {
+            "value": "Pay by company card",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "authorize": {
+          "label": {
+            "value": "I authorize this settlement",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Settle invoice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodA": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "ready-again": {
+      "entity": {
+        "value": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list. The replacement removes available credit, while the selected card remains valid.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Credit USD 0.00 · Remaining USD 101.99",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Ready to settle this invoice.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Invoice credit-and-payment allocation",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "credit": {
+          "label": {
+            "value": "Apply account credit",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "methodA": {
+          "label": {
+            "value": "Pay by bank transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "methodB": {
+          "label": {
+            "value": "Pay by company card",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "authorize": {
+          "label": {
+            "value": "I authorize this settlement",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Settle invoice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodA": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FF805610",
+          "unit": "argb"
+        }
+      }
+    },
+    "settled-again": {
+      "entity": {
+        "value": "INV-992 · Specialist accessible exhibition equipment and consolidated delivery",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list. The replacement removes available credit, while the selected card remains valid.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Credit USD 0.00 · Remaining USD 101.99",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Settlement recorded.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Invoice credit-and-payment allocation",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "credit": {
+          "label": {
+            "value": "Apply account credit",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "methodA": {
+          "label": {
+            "value": "Pay by bank transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "methodB": {
+          "label": {
+            "value": "Pay by company card",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "authorize": {
+          "label": {
+            "value": "I authorize this settlement",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Settle invoice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [
+          "settle|INV-992|0|10199|card"
+        ],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "methodB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "changed-invoice": {
+      "entity": {
+        "value": "INV-993 · New invoice covered by excess credit",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Credit USD 0.00 · Remaining USD 10.00",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Choose a payment method for the remaining amount.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Invoice credit-and-payment allocation",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "credit": {
+          "label": {
+            "value": "Apply account credit",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "methodA": {
+          "label": {
+            "value": "Pay by bank transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending",
+            "unit": "string"
+          }
+        },
+        "methodB": {
+          "label": {
+            "value": "Pay by company card",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "authorize": {
+          "label": {
+            "value": "I authorize this settlement",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Settle invoice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "methodB": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "excess-credit-clamped": {
+      "entity": {
+        "value": "INV-993 · New invoice covered by excess credit",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Credit USD 10.00 · Remaining USD 0.00",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Authorize this settlement.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Invoice credit-and-payment allocation",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "credit": {
+          "label": {
+            "value": "Apply account credit",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "methodA": {
+          "label": {
+            "value": "Pay by bank transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending",
+            "unit": "string"
+          }
+        },
+        "methodB": {
+          "label": {
+            "value": "Pay by company card",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "authorize": {
+          "label": {
+            "value": "I authorize this settlement",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Settle invoice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "methodB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "credit-only-ready": {
+      "entity": {
+        "value": "INV-993 · New invoice covered by excess credit",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Credit USD 10.00 · Remaining USD 0.00",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Ready to settle this invoice.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Invoice credit-and-payment allocation",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "credit": {
+          "label": {
+            "value": "Apply account credit",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "methodA": {
+          "label": {
+            "value": "Pay by bank transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending",
+            "unit": "string"
+          }
+        },
+        "methodB": {
+          "label": {
+            "value": "Pay by company card",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "authorize": {
+          "label": {
+            "value": "I authorize this settlement",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Settle invoice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "methodB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FF805610",
+          "unit": "argb"
+        }
+      }
+    },
+    "credit-only-settled": {
+      "entity": {
+        "value": "INV-993 · New invoice covered by excess credit",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The supplier consolidated several small equipment lines into one invoice. Preserve the complete remittance instructions and the statement that account credit must be capped at the amount actually due. A one-cent difference matters to the balance, and the authorized method must be the currently available one rather than the first method in the supplied list.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Credit USD 10.00 · Remaining USD 0.00",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Settlement recorded.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Invoice credit-and-payment allocation",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "credit": {
+          "label": {
+            "value": "Apply account credit",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "methodA": {
+          "label": {
+            "value": "Pay by bank transfer",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nUnavailable: Bank verification pending",
+            "unit": "string"
+          }
+        },
+        "methodB": {
+          "label": {
+            "value": "Pay by company card",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Use the purchasing card with the documented spending approval, and retain the unusually long supplier reference supplied with the invoice.\nAvailable",
+            "unit": "string"
+          }
+        },
+        "authorize": {
+          "label": {
+            "value": "I authorize this settlement",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Settle invoice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [
+          "settle|INV-993|1000|0|credit"
+        ],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "methodA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "methodB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    }
+  },
+  "questions": {
+    "heading-visual-size": {
+      "value": "Does the iOS heading follow the annotated reference's fixed22pt system-font size intent and title-to-body scale? This is qualitative, not a computed font reading.",
+      "unit": "string"
+    },
+    "heading-visual-weight": {
+      "value": "Does the iOS heading show the annotated reference's semibold/600 weight intent?",
+      "unit": "string"
+    },
+    "body-visual-size": {
+      "value": "Does iOS body copy follow the annotated reference's fixed16pt regular system-font size intent? This is qualitative typography, not a computed point-size observation.",
+      "unit": "string"
+    },
+    "body-visual-ink": {
+      "value": "Does iOS body copy follow the reference's dark ink (#FF201B13) visual intent against the white panel? This is a qualitative ink judgment, not computed color.",
+      "unit": "string"
+    },
+    "content-wrap": {
+      "value": "Across the complete swept state, is every supplied description, choice detail, summary, status, and current preview readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "content-overlap": {
+      "value": "Across the complete swept state, do successive vertical blocks remain separate without overlapping or occluding one another?",
+      "unit": "string"
+    },
+    "horizontal-fit": {
+      "value": "Across the complete swept state, does all component content stay within the offered child width without horizontal clipping or horizontal scrolling?",
+      "unit": "string"
+    },
+    "section-rhythm": {
+      "value": "Do major vertical sections follow the annotated reference's16pt iOS /16dp Android separation intent? Judge the visual rhythm; do not infer framework padding from AX boxes.",
+      "unit": "string"
+    },
+    "row-padding": {
+      "value": "Do option rows follow the annotated reference's12pt iOS /12dp Android content inset intent and leave their trailing24pt/dp paint gutter free of text and marks?",
+      "unit": "string"
+    },
+    "panel-corners": {
+      "value": "Does the white panel follow the annotated reference's16pt iOS /16dp Android rounded-corner intent?",
+      "unit": "string"
+    },
+    "row-corners": {
+      "value": "Do option rows follow the annotated reference's8pt iOS /8dp Android rounded-corner intent?",
+      "unit": "string"
+    },
+    "primary-ink": {
+      "value": "Is the primary label visibly light against its enabled amber fill and dark against its disabled pale fill, as the reference shows?",
+      "unit": "string"
+    },
+    "credit-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "methodA-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "methodA-wrap": {
+      "value": "Is all of this option's visible label and detail text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "methodB-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "methodB-wrap": {
+      "value": "Is all of this option's visible label and detail text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "authorize-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "summary-wrap": {
+      "value": "Is all of this current text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "status-wrap": {
+      "value": "Is all of this current text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    }
+  },
+  "visual": {
+    "heading-visual-size": {
+      "value": true,
+      "unit": "bool"
+    },
+    "heading-visual-weight": {
+      "value": true,
+      "unit": "bool"
+    },
+    "body-visual-size": {
+      "value": true,
+      "unit": "bool"
+    },
+    "body-visual-ink": {
+      "value": true,
+      "unit": "bool"
+    },
+    "content-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "content-overlap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "horizontal-fit": {
+      "value": true,
+      "unit": "bool"
+    },
+    "section-rhythm": {
+      "value": true,
+      "unit": "bool"
+    },
+    "row-padding": {
+      "value": true,
+      "unit": "bool"
+    },
+    "panel-corners": {
+      "value": true,
+      "unit": "bool"
+    },
+    "row-corners": {
+      "value": true,
+      "unit": "bool"
+    },
+    "primary-ink": {
+      "value": true,
+      "unit": "bool"
+    },
+    "credit-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "methodA-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "methodA-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "methodB-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "methodB-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "authorize-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "summary-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "status-wrap": {
+      "value": true,
+      "unit": "bool"
+    }
+  },
+  "obligations": [
+    {
+      "id": "business-content",
+      "clause": "All supplied and computed business text is current and exact.",
+      "priority": "must",
+      "states": [
+        "start",
+        "credit-applied",
+        "card-selected",
+        "ready",
+        "settled",
+        "same-invoice-credit-withdrawn",
+        "ready-again",
+        "settled-again",
+        "changed-invoice",
+        "excess-credit-clamped",
+        "credit-only-ready",
+        "credit-only-settled"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "decision-eligibility",
+      "clause": "Native disabled/selected facts obey published business decisions.",
+      "priority": "must",
+      "states": [
+        "start",
+        "credit-applied",
+        "card-selected",
+        "ready",
+        "settled",
+        "same-invoice-credit-withdrawn",
+        "ready-again",
+        "settled-again",
+        "changed-invoice",
+        "excess-credit-clamped",
+        "credit-only-ready",
+        "credit-only-settled"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "successful-tap-receipts",
+      "clause": "Exact tap event intervals require demonstrated successful original native dispatch; blocked taps never prove quiet behavior.",
+      "priority": "must",
+      "states": [
+        "credit-applied",
+        "card-selected",
+        "ready",
+        "settled",
+        "ready-again",
+        "settled-again",
+        "excess-credit-clamped",
+        "credit-only-ready",
+        "credit-only-settled"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "caller-replacement",
+      "clause": "Same-entity revalidation and changed-entity reset are distinct and callback-silent.",
+      "priority": "must",
+      "states": [
+        "same-invoice-credit-withdrawn",
+        "changed-invoice"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "typography",
+      "clause": "Typography follows sourced native or qualitative platform intent.",
+      "priority": "must",
+      "states": [
+        "start",
+        "credit-applied",
+        "card-selected",
+        "ready",
+        "settled",
+        "same-invoice-credit-withdrawn",
+        "ready-again",
+        "settled-again",
+        "changed-invoice",
+        "excess-credit-clamped",
+        "credit-only-ready",
+        "credit-only-settled"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "content-layout",
+      "clause": "Full variable-length vertical content wraps, fits and preserves separation/insets.",
+      "priority": "must",
+      "states": [
+        "start",
+        "credit-applied",
+        "card-selected",
+        "ready",
+        "settled",
+        "same-invoice-credit-withdrawn",
+        "ready-again",
+        "settled-again",
+        "changed-invoice",
+        "excess-credit-clamped",
+        "credit-only-ready",
+        "credit-only-settled"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "opaque-paint",
+      "clause": "Component opaque fills match approved suitable pixel regions; primary ink is readable.",
+      "priority": "must",
+      "states": [
+        "start",
+        "credit-applied",
+        "card-selected",
+        "ready",
+        "settled",
+        "same-invoice-credit-withdrawn",
+        "ready-again",
+        "settled-again",
+        "changed-invoice",
+        "excess-credit-clamped",
+        "credit-only-ready",
+        "credit-only-settled"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "primary-accessibility-box",
+      "clause": "Primary control accessibility-box height is48pt/dp; no physical OS hit-area claim.",
+      "priority": "must",
+      "states": [
+        "start",
+        "credit-applied",
+        "card-selected",
+        "ready",
+        "settled",
+        "same-invoice-credit-withdrawn",
+        "ready-again",
+        "settled-again",
+        "changed-invoice",
+        "excess-credit-clamped",
+        "credit-only-ready",
+        "credit-only-settled"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "selection-affordance",
+      "clause": "Visible selection marks agree with native selected facts.",
+      "priority": "must",
+      "states": [
+        "start",
+        "credit-applied",
+        "card-selected",
+        "ready",
+        "settled",
+        "same-invoice-credit-withdrawn",
+        "ready-again",
+        "settled-again",
+        "changed-invoice",
+        "excess-credit-clamped",
+        "credit-only-ready",
+        "credit-only-settled"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "corner-shape",
+      "clause": "Panel and option corner shape follow independent annotated references.",
+      "priority": "must",
+      "states": [
+        "start",
+        "credit-applied",
+        "card-selected",
+        "ready",
+        "settled",
+        "same-invoice-credit-withdrawn",
+        "ready-again",
+        "settled-again",
+        "changed-invoice",
+        "excess-credit-clamped",
+        "credit-only-ready",
+        "credit-only-settled"
+      ],
+      "risk": "style"
+    }
+  ],
+  "responsibilities": [
+    {
+      "id": "component-control",
+      "clause": "Production owns applicable control facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "control",
+      "subject": "production-component",
+      "rule_ids": [
+        "heading-label",
+        "entity-label",
+        "description-label",
+        "summary-label",
+        "status-label",
+        "surface-present",
+        "credit-label",
+        "credit-enabled",
+        "credit-selected",
+        "methodA-label",
+        "methodA-enabled",
+        "methodA-selected",
+        "methodA-detail",
+        "methodB-label",
+        "methodB-enabled",
+        "methodB-selected",
+        "methodB-detail",
+        "authorize-label",
+        "authorize-enabled",
+        "authorize-selected",
+        "primary-label",
+        "primary-enabled"
+      ]
+    },
+    {
+      "id": "component-geometry",
+      "clause": "Production owns applicable geometry facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "geometry",
+      "subject": "production-component",
+      "rule_ids": [
+        "primary-height"
+      ]
+    },
+    {
+      "id": "component-text_layout",
+      "clause": "Production owns applicable text_layout facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "text_layout",
+      "subject": "production-component",
+      "rule_ids": [
+        "heading-native-size",
+        "heading-native-weight",
+        "body-native-size",
+        "body-native-ink"
+      ]
+    },
+    {
+      "id": "component-callback",
+      "clause": "Production owns applicable callback facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "callback",
+      "subject": "production-component",
+      "rule_ids": [
+        "tap-receipt",
+        "replacement-quiet"
+      ]
+    },
+    {
+      "id": "component-visual",
+      "clause": "Production owns applicable visual facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "visual",
+      "subject": "production-component",
+      "rule_ids": [
+        "surface-fill",
+        "primary-fill",
+        "methodA-fill",
+        "methodB-fill",
+        "heading-visual-size",
+        "heading-visual-weight",
+        "body-visual-size",
+        "body-visual-ink",
+        "content-wrap",
+        "content-overlap",
+        "horizontal-fit",
+        "section-rhythm",
+        "row-padding",
+        "panel-corners",
+        "row-corners",
+        "primary-ink",
+        "credit-mark",
+        "methodA-mark",
+        "methodA-wrap",
+        "methodB-mark",
+        "methodB-wrap",
+        "authorize-mark",
+        "summary-wrap",
+        "status-wrap"
+      ]
+    },
+    {
+      "id": "real-production-api",
+      "clause": "The real exported additive production component owns all decisions, local UI state and replacement behavior; no external state or internal scroll.",
+      "priority": "must",
+      "owner": "component",
+      "method": "source",
+      "subject": "production-component",
+      "rule_ids": []
+    },
+    {
+      "id": "thin-pass-through",
+      "clause": "Pinned bridge only decodes typed data, applies the real Android theme, and calls production with the same callback; no state, replacement UI, business computation, forced identity, or event echo.",
+      "priority": "must",
+      "owner": "bridge",
+      "method": "source",
+      "subject": "thin-bridge",
+      "rule_ids": []
+    },
+    {
+      "id": "production-placement",
+      "clause": "AlertToast exports the actual SwiftUI component and Reply compiles the actual component from app/src/main. Existing finite vertical host owns scrolling/insets; no full-app navigation claim.",
+      "priority": "must",
+      "owner": "integration",
+      "method": "source",
+      "subject": "host-integration",
+      "rule_ids": []
+    }
+  ],
+  "capture_validity": {
+    "scope": "deterministic_component_fixture",
+    "max_age_seconds": 1800,
+    "reset": "fresh_native_fixture",
+    "external_state": "all_dependencies_pinned"
+  }
+}

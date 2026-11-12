@@ -1,0 +1,10 @@
+import sys,argparse,ast,copy,shutil,itertools
+sys.dont_write_bytecode=True
+from domain_support import *
+p=argparse.ArgumentParser();p.add_argument('--arm',required=True);p.add_argument('--path',required=True);a=p.parse_args();arm=Path(a.path).resolve();sys.path.insert(0,str(arm/'scripts'))
+import native_checks,coverage_domain,scroll_coverage
+base=ROOT/'work'/a.arm/'typed-regressions';config=load(base/'admission/config.json');domainplan=load(config['plan']);lock=load(config['design_lock']);value=coverage_domain.prepare(config,domainplan,lock);prior=ROOT.parent/'review-7';oldarm='candidate-v13.6'if a.arm.startswith('candidate')else'baseline-v12.6-common-3';old=prior/'work'/oldarm/'delta/ABI-A01-approved-runtime-shape-positive'
+names=['raw-old-capture-index-bool','raw-old-M01-full-after-action-bool','raw-old-M02-full-after-action-float','raw-old-M03-legacy-action-snapshot-bool','full-snapshot-bool','full-snapshot-float','full-snapshot-negative','full-snapshot-duplicate','full-action-bool','full-action-float','state-action-bool','full-input-bool','bundle-action-bool','bundle-snapshot-bool','bundle-immediate-float','bundle-last-bool','legacy-last-bool','legacy-last-float','target-input-bool'];rows=[load(base/(name+'-result.json'))for name in names];assert len(rows)==19 and all(row['status']=='P'for row in rows)
+query_file=Path(__file__).with_name('run_query_scope.py');tree=ast.parse(query_file.read_text());functions=ast.Module(body=[n for n in tree.body if isinstance(n,ast.FunctionDef)],type_ignores=[]);exec(compile(functions,str(query_file),'exec'))
+typed_file=Path(__file__).with_name('run_typed_and_regressions.py');typed_text=typed_file.read_text();tree=ast.parse(typed_text);function=next(n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=='regression');exec(compile(ast.Module(body=[function],type_ignores=[]),str(typed_file),'exec'))
+tail="folder=base/'native-width-stays-strict'"+typed_text.split("folder=base/'native-width-stays-strict'",1)[1];exec(compile(tail,str(typed_file),'exec'))

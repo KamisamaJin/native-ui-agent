@@ -1,0 +1,245 @@
+--- frozen-material-v1.py
++++ candidate-material-v3.py
+@@ -4,9 +4,11 @@
+ Whole selected report arrays remain; this module does not select failed rows.
+ """
+ import hashlib
++import copy
+ from pathlib import Path, PurePosixPath
+ import re
+-import sys
++import types
++import unicodedata
+ 
+ 
+ HERE = Path(__file__).resolve().parent
+@@ -14,14 +16,17 @@
+ PINS = {'anonymous_projection.py': '5bc14d37d11bd755dad38cf1f13b5bbc133eccedceb13ebb1e037dbd07361f2b',
+         'phase_barriers.py': 'd940081fc9589df43589a1967442da5e78f6b45cb9c15c97ae7f5dca56407d9d',
+         'alarm_packet.py': '0ac4a6ce93b2c1b0e7b9380891215d796ca82b1ca1cb0092419bed095cb0e0da'}
++_library_bytes = {}
+ for filename, expected in PINS.items():
+-    if hashlib.sha256((REVISION / filename).read_bytes()).hexdigest() != expected:
++    raw = (REVISION / filename).read_bytes()
++    if hashlib.sha256(raw).hexdigest() != expected:
+         raise ValueError('Reviewed presentation library differs')
+-    name = filename[:-3]
+-    if name in sys.modules and Path(sys.modules[name].__file__).parent != REVISION:
+-        raise ValueError('Do not mix presentation revisions in one process')
+-sys.path.insert(0, str(REVISION))
+-import anonymous_projection as projection
++    _library_bytes[filename] = raw
++# Execute exactly the verified bytes into a private fresh module. A cached
++# module's __file__ is not evidence of the functions currently in that module.
++projection = types.ModuleType('material_private_reviewed_projection')
++projection.__file__ = str(REVISION / 'anonymous_projection.py')
++exec(compile(_library_bytes['anonymous_projection.py'], projection.__file__, 'exec'), projection.__dict__)
+ 
+ 
+ REPORT_NAMES = {
+@@ -35,12 +40,12 @@
+ 
+ OUTCOME_FIELDS = {'profile', 'action', 'exit_code', 'service_status', 'accepted', 'error',
+                   'interrupted', 'observed_integrity_violation', 'native_collection_success',
+-                  'source_unchanged', 'integrity'}
++                  'source_unchanged', 'integrity', 'acquisition_evidence'}
+ OUTCOME_METADATA = {'task', 'arm', 'started_at_unix', 'finished_at_unix', 'wall_seconds',
+     'started_at_monotonic', 'finished_at_monotonic', 'started_at_clock_gettime_monotonic',
+     'finished_at_clock_gettime_monotonic', 'envelope_record', 'service_output', 'capture',
+     'cycle', 'completion', 'bound_review', 'new_ui_acquisition', 'capture_reused',
+-    'acquisition_evidence', 'native_observer_command_wall_seconds', 'submission', 'inventory',
++    'native_observer_command_wall_seconds', 'submission', 'inventory',
+     'config', 'source_capsule', 'resources', 'native_claim',
+     'native_continuation_claim', 'continuation_authority', 'entry_resume_permit',
+     'failed_preclaim_entry', 'licensed_original_record', 'version', 'kind', 'final'}
+@@ -49,7 +54,96 @@
+                 'config', 'source_capsule', 'resources', 'native_claim', 'native_continuation_claim',
+                 'continuation_authority', 'entry_resume_permit', 'failed_preclaim_entry'}
+ MACHINE_PREFIXES = ('/Users/rex/', '/Library/Developer/')
+-EMBEDDED_PATH = re.compile(r'/(?:Users/rex|Library/Developer)/[^\s\"\'<>\[\]{}(),;:]+')
++_IDENTIFIER = re.compile(r'[A-Za-z0-9][A-Za-z0-9._/-]*')
++_OUTCOME_TIME = {key for key in OUTCOME_METADATA if key.endswith('_seconds') or
++                 key.startswith(('started_at_', 'finished_at_'))}
++_OUTCOME_FLAGS = {'new_ui_acquisition', 'capture_reused', 'final'}
++_OUTCOME_PATHS = {'envelope_record', 'service_output', 'licensed_original_record'}
++_OUTCOME_IDENTITIES = {'task', 'arm', 'kind'}
++_EXEC_NUMERIC = projection._EXECUTION_SCALAR_KEYS | {
++    'seconds', 'milliseconds', 'nanoseconds', 'duration_seconds', 'duration_ms',
++    'count', 'calls', 'bytes', 'tokens', 'input_tokens', 'output_tokens',
++    'cached_tokens', 'total_tokens', 'total', 'amount', 'usd', 'rate', 'price'}
++_EXEC_IDENTITIES = {'name', 'id', 'type', 'operation', 'operation_id', 'request_id',
++                    'call_id', 'version', 'api', 'endpoint', 'method', 'currency', 'unit', 'units',
++                    'arm', 'tool', 'tool_version', 'skill_version', 'execution_api'}
++_EXEC_PATHS = {'cwd', 'path', 'root', 'tool_root'}
++
++
++def _number(value):
++    return value is None or type(value) in (int, float, projection.Decimal)
++
++
++def _path(value):
++    if not isinstance(value, str) or not value.startswith('/') or '\\' in value or any(
++            unicodedata.category(c).startswith('C') for c in value):
++        return False
++    p = PurePosixPath(value)
++    return str(p) == value and '..' not in p.parts and not any(p.casefold() == '.git' for p in p.parts)
++
++
++def _identity(value):
++    return value is None or isinstance(value, str) and _IDENTIFIER.fullmatch(value) is not None
++
++
++def _reference(item, extra=()):
++    if item is None:
++        return True
++    return (isinstance(item, dict) and set(item) == {'path', 'sha256'} | set(extra)
++            and isinstance(item['sha256'], str) and re.fullmatch('[0-9a-f]{64}', item['sha256']) is not None
++            and all(_path(item[key]) for key in {'path'} | set(extra)))
++
++
++def _factual(item):
++    if isinstance(item, dict):
++        return any(projection._protected(key) or key in {'assertions', 'issues', 'findings', 'claims', 'diagnostics'}
++                   or _factual(value) for key, value in item.items())
++    return isinstance(item, list) and any(_factual(value) for value in item)
++
++
++def _execution_tree(item):
++    if isinstance(item, list):
++        return all(isinstance(row, dict) and _execution_tree(row) for row in item)
++    if not isinstance(item, dict):
++        return _number(item)
++    for key, value in item.items():
++        if key in _EXEC_NUMERIC:
++            valid = _number(value)
++        elif key in _EXEC_IDENTITIES:
++            valid = _identity(value)
++        elif key in _EXEC_PATHS:
++            valid = value is None or _path(value)
++        elif key in {'operations', 'cost', 'costs', 'timing'}:
++            valid = _execution_tree(value)
++        else:
++            valid = False
++        if not valid:
++            return False
++    return True
++
++
++def _omissions(value):
++    omitted = []
++    for key in OMIT_CANDIDATES:
++        if key not in value:
++            continue
++        item = value[key]
++        if key == 'operations' and _factual(item):
++            continue  # Preserve the complete original factual operation array.
++        if key in projection._EXECUTION_SCALAR_KEYS:
++            valid = _number(item)
++        elif key in {'arm', 'tool', 'tool_version', 'skill_version', 'execution_api'}:
++            valid = _identity(item)
++        elif key == 'tool_root':
++            valid = item is None or _path(item)
++        elif key == 'argv':
++            valid = isinstance(item, list) and all(isinstance(arg, str) for arg in item)
++        else:
++            valid = _execution_tree(item)
++        if not valid or not projection._safe_omission(key, item):
++            raise ValueError('Unreviewed outer execution metadata schema: ' + key)
++        omitted.append(key)
++    return omitted
+ 
+ 
+ def outcome_view(value):
+@@ -58,37 +152,54 @@
+     Full raw outcomes/receipts remain externally pinned in the derivation ledger.
+     Every selected field is copied by value, with exact JSON Decimal numbers.
+     """
++    projection._validate_json(value)
+     if not isinstance(value, dict) or set(value) - OUTCOME_FIELDS - OUTCOME_METADATA:
+         raise ValueError('Unreviewed operation outcome fields; retain failed preparation')
+-    if any(isinstance(value.get(key), (list, dict)) for key in OUTCOME_FIELDS - {'error', 'integrity'}):
++    if any(isinstance(value.get(key), (list, dict)) for key in OUTCOME_FIELDS - {'error', 'integrity', 'acquisition_evidence'}):
+         raise ValueError('Unexpected structured outcome fact field')
++    if value.get('acquisition_evidence') is not None and not isinstance(value['acquisition_evidence'], dict):
++        raise ValueError('Original acquisition evidence object required')
+     if 'error' in value and value['error'] is not None:
+         if not isinstance(value['error'], dict) or set(value['error']) != {'type', 'message'}:
+             raise ValueError('Unreviewed original error schema')
+-    def reference(item, extra=()):
+-        return item is None or (isinstance(item, dict) and set(item) == {'path', 'sha256'} | set(extra)
+-                                and all(isinstance(v, str) for v in item.values())
+-                                and re.fullmatch('[0-9a-f]{64}', item['sha256']))
+     for key in set(value) & OUTCOME_METADATA:
+         item = value[key]
+         if key in REF_METADATA:
+-            if not reference(item, ('original_path',) if key == 'submission' else ()):
++            if not _reference(item, ('original_path',) if key == 'submission' else ()):
+                 raise ValueError('Unexpected data in omitted outcome reference')
+-        elif key == 'acquisition_evidence':
+-            if item is not None and (not isinstance(item, dict) or set(item) != {'capture_receipt', 'execution', 'native_log', 'observation', 'scope'}
+-                    or not isinstance(item['scope'], str)
+-                    or not all(reference(item[k]) for k in ['capture_receipt', 'execution', 'native_log', 'observation'])):
+-                raise ValueError('Unexpected data in acquisition provenance metadata')
+-        elif isinstance(item, (dict, list)):
+-            raise ValueError('Structured data cannot be silently omitted as execution metadata')
+-    return {key: value[key] for key in value if key in OUTCOME_FIELDS}
++        elif key in _OUTCOME_TIME:
++            if not _number(item):
++                raise ValueError('Numeric outcome timing metadata required')
++        elif key in _OUTCOME_FLAGS:
++            if item is not None and type(item) is not bool:
++                raise ValueError('Boolean outcome provenance flag required')
++        elif key in _OUTCOME_PATHS:
++            if item is not None and not _path(item):
++                raise ValueError('Canonical outcome provenance path required')
++        elif key in _OUTCOME_IDENTITIES:
++            if not _identity(item):
++                raise ValueError('Bounded outcome metadata identifier required')
++        elif key == 'version':
++            if type(item) is not int or item != 1:
++                raise ValueError('Reviewed outcome metadata version required')
++        else:
++            raise ValueError('Unreviewed outcome metadata value schema: ' + key)
++    return {key: copy.deepcopy(value[key]) for key in value if key in OUTCOME_FIELDS}
+ 
+ 
+ def neutralize(value, aliases=None):
+     """Use reviewed exact metadata substitutions; never alter a fact subtree."""
++    projection._validate_json(value)
++    if not isinstance(value, dict) or aliases is not None and not isinstance(aliases, dict):
++        raise ValueError('Recorded report object and explicit path alias mapping required')
+     aliases = {} if aliases is None else dict(aliases)
+-    omitted = [key for key in OMIT_CANDIDATES if key in value and
+-               projection._safe_omission(key, value[key])]
++    alias_rules = []
++    for before, after in aliases.items():
++        if not isinstance(before, str) or not before.startswith(MACHINE_PREFIXES):
++            raise ValueError('Only explicit recorded machine-path aliases are supported')
++        alias_rules.append(projection._rule(before, after))
++    alias_rules.sort(key=lambda row: -len(row[0]))
++    omitted = _omissions(value)
+     rules, pointers, seen = {}, [], set()
+ 
+     def add(before):
+@@ -108,12 +219,17 @@
+             if any(projection._protected(p) for p in parts) or key not in projection.PATH_KEYS | projection.NARRATIVE_KEYS:
+                 raise ValueError('Identity-bearing fact or unfamiliar metadata pointer: ' + projection.pointer(parts))
+             if key in projection.PATH_KEYS and item.startswith(MACHINE_PREFIXES):
+-                path = PurePosixPath(item)
+-                if str(path) != item or '..' in path.parts or any(ord(c) < 32 for c in item):
++                if not _path(item):
+                     raise ValueError('Unreviewed recorded machine path')
+-                add(item)
++                matched = [before for before, _after, pattern in alias_rules if pattern.match(item)]
++                add(matched[0] if matched else item)
+             else:
+-                for match in EMBEDDED_PATH.finditer(item): add(match.group(0).rstrip('.'))
++                # Narrative path boundaries are ambiguous (especially spaces).
++                # Use complete declared aliases; any uncovered identity fails
++                # in the reviewed projector rather than guessing a prefix.
++                for before, _after, pattern in alias_rules:
++                    if pattern.search(item):
++                        add(before)
+             for token in projection.IDENTITY_TOKENS:
+                 if token in item: rules[token] = {'original': token, 'anonymous': 'recorded-engine'}
+             here = projection.pointer(parts)

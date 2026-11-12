@@ -1,0 +1,5 @@
+import sys,argparse,json
+from pathlib import Path
+sys.dont_write_bytecode=True
+p=argparse.ArgumentParser();p.add_argument('--arm',choices=['candidate-v13.8','baseline-v12.6-common-5'],required=True);p.add_argument('--case',choices=['ios-offscreen-count1-presence','android-offscreen-count1-presence','ios-explicit-offscreen-count1-presence','ios-offscreen-count1-local-cardinality','android-offscreen-count1-local-cardinality'],required=True);a=p.parse_args();root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root.parents[1]/a.arm/'scripts'));import native_checks
+base=root/'work'/a.arm/'wire-delta'/a.case;load=lambda p:json.loads(p.read_text());o=load(base/'observation.json');plan=load(base/'plan.json');platform='android'if a.case.startswith('android')else'ios';native=base/('native'if platform=='android'else'packet/native');report=native_checks.evaluate(plan,o,platform,root=native);print(json.dumps({'evidence_class':'Read-only HOST evaluation of preserved SIMULATED packet; no SDK','state':report['states'],'assertion':report['assertions'][0]},indent=2))

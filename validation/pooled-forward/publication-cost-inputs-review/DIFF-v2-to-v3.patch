@@ -1,0 +1,41 @@
+--- frozen_metric_rules_v2.py
++++ author_metric_rules_v3.py
+@@ -1,4 +1,4 @@
+-"""Independent publication revision of frozen metric arithmetic, synthetic-tested.
++"""Publication cost-input revision: unknown shared cost remains unknown.
+ 
+ No truth judgment, reveal, barrier verification or product dataset access.
+ Call only after independent sealed correspondence, alarm adjudication and reveal.
+@@ -100,7 +100,10 @@
+     by=unique(cases,'case_id');need(set(by)==set(assignment)==CASES and arm in {'A','B'},'Exactly five paired PRs required')
+     need(isinstance(shared_costs,dict) and set(shared_costs)=={'initial_oracle_seconds','design_preparation_seconds','common_infrastructure_seconds','independent_grading_matcher_seconds'},
+          'Explicit separately reported shared cost categories required')
+-    shared={k:seconds(v) for k,v in shared_costs.items()};shared_total=total(shared.values())
++    shared={k:None if v is None else seconds(v) for k,v in shared_costs.items()}
++    unknown_shared=sorted(k for k,v in shared.items() if v is None)
++    known_shared_total=total(v for v in shared.values() if v is not None)
++    shared_total=None if unknown_shared else known_shared_total
+     need(isinstance(coverage_denominators,dict) and set(coverage_denominators)==CASES,'Five separately frozen coverage denominator registries required')
+     names=['initial','present','removed','unknown_relation','detected_initial','attempted_initial','attempted_removed','regression','unresolved_regression',
+            'true_alarm','false_alarm','unresolved_alarm','false_positive_validation','unresolved_positive_validation','delivered']
+@@ -151,7 +154,7 @@
+         known=v['true']+v['false'];all_count=known+v['unresolved']
+         return {'counts':dict(v),'adjudicated_denominator':known,'unadjudicated_denominator':v['unresolved'],
+                 'false_discovery_fraction':fraction(v['false'],known),'unadjudicated_fraction':fraction(v['unresolved'],all_count)}
+-    return {'version':2,'arm':arm,'attempts':5,'counts':counts,
++    return {'version':3,'arm':arm,'attempts':5,'counts':counts,
+         'final_residual_miss_fraction':fraction(counts['present'],denom),'unresolved_initial_relation_fraction':fraction(counts['unknown_relation'],denom),
+         'initial_detection_fraction':fraction(counts['detected_initial'],denom),'repair_fraction':fraction(counts['removed'],denom),
+         'attempted_repair_fraction':fraction(counts['attempted_removed'],counts['attempted_initial']),
+@@ -164,6 +167,9 @@
+         'cost':{'all_attempt_public_seconds':p,'public_median_seconds':statistics.median(public),'public_range_seconds':[min(public),max(public)],
+                 'hidden_validation_seconds':h,'combined_seconds':combined,'successful_delivery_seconds':p/d if d else None,
+                 'combined_successful_delivery_seconds':combined/d if d else None,'shared_costs_reported_separately':shared,
+-                'shared_cost_total_seconds':shared_total,'model_billing':None,'tokens':None,'human_monetary_cost':None},
++                'shared_cost_total_seconds':shared_total,
++                'known_shared_cost_subtotal_seconds':known_shared_total,
++                'unknown_shared_cost_categories':unknown_shared,
++                'model_billing':None,'tokens':None,'human_monetary_cost':None},
+         'attempt_records':records,
+-        'scope':'Arithmetic only over separately authenticated independent adjudication/reveal and frozen applicability evidence. Hidden post-seal alarms never establish worker detection or repair. U and N/A remain separate; no current-source or product truth certification.'}
++        'scope':'Arithmetic only over separately authenticated independent adjudication/reveal and frozen applicability evidence. Shared categories may be explicitly unknown; their full total remains unknown and known subtotal is not total study cost. Own and hidden per-arm cost remain strictly measured finite values. Hidden post-seal alarms never establish worker detection or repair. U and N/A remain separate; no current-source or product truth certification.'}

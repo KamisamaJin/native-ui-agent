@@ -1,0 +1,29 @@
+{
+  "AST_after_removing_exact_declared_failure_catch_matches_original": true,
+  "declared_failure_handler": "except BaseException as error:\n    save(out / 'CHILD-STOP-ERROR.json', {'type': type(error).__name__, 'message': str(error), 'pid': proc.pid, 'at_unix': time.time(), 'scope': 'Owned child termination not confirmed; never delivery or performance success.'})\n    failed = failed or {'type': type(error).__name__, 'message': str(error), 'at_unix': time.time()}",
+  "post_KILL_failure": {
+    "child_stop_record": {
+      "type": "TimeoutExpired",
+      "message": "Command '['/Library/Developer/CommandLineTools/usr/bin/python3', '-B', '/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review-2/cases/timeout-kill-wait-fails/root/neutral_episode.py', '--block', 'block-1', '--arm', 'A', '--candidate', 'candidate-v13.9', '--freeze', 'CANDIDATE-FREEZE-10.json', '--baseline', 'baseline-v12.6', '--baseline-freeze', 'BASELINE-FREEZE.json']' timed out after 10 seconds",
+      "pid": 710000,
+      "at_unix": 2000008390.0,
+      "scope": "Owned child termination not confirmed; never delivery or performance success."
+    },
+    "failed_result": {
+      "admission_sha256": "1314ee92d6422f85872bca005e5b083195f631aaeac0863da6c164ad7693b54a",
+      "failed": {
+        "type": "TimeoutError",
+        "message": "Whole benchmark deadline reached; no new episode is allowed",
+        "at_unix": 2000008200.0
+      },
+      "episodes": [],
+      "enclosing_wall_seconds": 7396.0,
+      "scope": "All failed/cleanup wall retained. Deadline includes preparation as a conservative bound; primary collection is each enclosing episode clock. No retries."
+    },
+    "known_configured_cleanup_count": 2,
+    "gate_count": 0,
+    "exit_code": 1,
+    "all_times_simulated": true
+  },
+  "scope": "Source AST delta and exact retained simulated failure evidence; no new runtime/native claim"
+}

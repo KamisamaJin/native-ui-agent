@@ -1,0 +1,433 @@
+{
+  "version": 1,
+  "scenario": "public-main",
+  "business_rules_source": "reference.json#/business_rules",
+  "states": [
+    {
+      "id": "initial",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content",
+      "stimulus": "none",
+      "exact_business_state": {
+        "entity": "INV-640 · Workshop materials invoice",
+        "description": "Allocate the available account credit before choosing how to settle the remaining amount. This invoice includes reusable workshop supplies, documented delivery charges, and a separate reference for the accounts team. Amounts are integer US cents; never calculate using binary floating-point money.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The company card is temporarily unavailable for this supplier.\nUnavailable: Supplier card payments paused"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Credit USD 0.00 · Remaining USD 125.00",
+        "status": "Choose a payment method for the remaining amount.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "credit-applied",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-640 · Workshop materials invoice",
+        "description": "Allocate the available account credit before choosing how to settle the remaining amount. This invoice includes reusable workshop supplies, documented delivery charges, and a separate reference for the accounts team. Amounts are integer US cents; never calculate using binary floating-point money.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The company card is temporarily unavailable for this supplier.\nUnavailable: Supplier card payments paused"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Credit USD 45.00 · Remaining USD 80.00",
+        "status": "Choose a payment method for the remaining amount.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "bank-selected",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-640 · Workshop materials invoice",
+        "description": "Allocate the available account credit before choosing how to settle the remaining amount. This invoice includes reusable workshop supplies, documented delivery charges, and a separate reference for the accounts team. Amounts are integer US cents; never calculate using binary floating-point money.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The company card is temporarily unavailable for this supplier.\nUnavailable: Supplier card payments paused"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Credit USD 45.00 · Remaining USD 80.00",
+        "status": "Authorize this settlement.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-640 · Workshop materials invoice",
+        "description": "Allocate the available account credit before choosing how to settle the remaining amount. This invoice includes reusable workshop supplies, documented delivery charges, and a separate reference for the accounts team. Amounts are integer US cents; never calculate using binary floating-point money.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The company card is temporarily unavailable for this supplier.\nUnavailable: Supplier card payments paused"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Credit USD 45.00 · Remaining USD 80.00",
+        "status": "Ready to settle this invoice.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "settled",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-640 · Workshop materials invoice",
+        "description": "Allocate the available account credit before choosing how to settle the remaining amount. This invoice includes reusable workshop supplies, documented delivery charges, and a separate reference for the accounts team. Amounts are integer US cents; never calculate using binary floating-point money.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The company card is temporarily unavailable for this supplier.\nUnavailable: Supplier card payments paused"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Credit USD 45.00 · Remaining USD 80.00",
+        "status": "Settlement recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "settle|INV-640|4500|8000|bank"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "same-invoice-credit-only",
+      "input_index": 1,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "INV-640 · Workshop materials invoice",
+        "description": "A corrected invoice reduced the amount due below the available credit. Keep the choice to apply credit, clamp applied credit to the new amount due, and clear a now-unnecessary payment method. Authorization must be renewed.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The company card is temporarily unavailable for this supplier.\nUnavailable: Supplier card payments paused"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Credit USD 40.00 · Remaining USD 0.00",
+        "status": "Authorize this settlement.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "credit-only-ready",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "full_content",
+      "stimulus_action": 11,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-640 · Workshop materials invoice",
+        "description": "A corrected invoice reduced the amount due below the available credit. Keep the choice to apply credit, clamp applied credit to the new amount due, and clear a now-unnecessary payment method. Authorization must be renewed.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The company card is temporarily unavailable for this supplier.\nUnavailable: Supplier card payments paused"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Credit USD 40.00 · Remaining USD 0.00",
+        "status": "Ready to settle this invoice.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "credit-only-settled",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "full_content",
+      "stimulus_action": 13,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "INV-640 · Workshop materials invoice",
+        "description": "A corrected invoice reduced the amount due below the available credit. Keep the choice to apply credit, clamp applied credit to the new amount due, and clear a now-unnecessary payment method. Authorization must be renewed.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The company card is temporarily unavailable for this supplier.\nUnavailable: Supplier card payments paused"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Credit USD 40.00 · Remaining USD 0.00",
+        "status": "Settlement recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "settle|INV-640|4000|0|credit"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "changed-invoice",
+      "input_index": 2,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "INV-641 · Separate studio invoice",
+        "description": "A different invoice uses the same saved payment methods. Start without applying credit, selecting a method, or carrying authorization from the previous invoice.",
+        "controls": {
+          "credit": {
+            "label": "Apply account credit",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "methodA": {
+            "label": "Pay by bank transfer",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.\nAvailable"
+          },
+          "methodB": {
+            "label": "Pay by company card",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The company card is temporarily unavailable for this supplier.\nUnavailable: Supplier card payments paused"
+          },
+          "authorize": {
+            "label": "I authorize this settlement",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Credit USD 0.00 · Remaining USD 90.00",
+        "status": "Choose a payment method for the remaining amount.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    }
+  ]
+}

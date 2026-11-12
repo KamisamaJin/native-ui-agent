@@ -1,0 +1,517 @@
+{
+  "version": 1,
+  "study_id": "REPLACE_STUDY_ID",
+  "run_root": "/ABS/R/cache/business/run",
+  "protocol": {
+    "path": "/ABS/R/PROTOCOL.json",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "speed_gate": {
+    "path": "/ABS/R/qualification/benchmark-gate/RESULT.json",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "design_approval": {
+    "path": "/ABS/independent-design/APPROVAL-SEAL.json",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "envelope": {
+    "path": "/ABS/R/native_envelope.py",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "meter_path": "/ABS/R/measure.py",
+    "meter_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "meter_spec_path": "/ABS/R/operators/whole-study-meter-spec-v2.json",
+    "meter_spec_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "tools": {
+    "frozen_A": {
+      "skill_root": "/ABS/frozen/control",
+      "api": "baseline-explicit-prior",
+      "files": {
+        "SKILL.md": "0000000000000000000000000000000000000000000000000000000000000000",
+        "scripts/ui_loop.py": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    },
+    "frozen_B": {
+      "skill_root": "/ABS/frozen/treatment",
+      "api": "stateful-default",
+      "files": {
+        "SKILL.md": "0000000000000000000000000000000000000000000000000000000000000000",
+        "scripts/ui_loop.py": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    }
+  },
+  "tasks": [
+    {
+      "id": "T1",
+      "arms": {
+        "A": {
+          "tool": "frozen_A",
+          "workspace": "/ABS/R/cache/business/T1/A/workspace",
+          "source_roots": [
+            "/ABS/R/cache/business/T1/A/workspace/ios/Sources",
+            "/ABS/R/cache/business/T1/A/workspace/android/app/src/main"
+          ],
+          "public_configs": {
+            "ios": "/ABS/R/cache/business/T1/A/public-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T1/A/public-profiles/android.json"
+          },
+          "profile_order": [
+            "ios",
+            "android"
+          ],
+          "public_readset": [
+            "/ABS/independent-design/T1/REPLACE_ALL_PUBLIC_INPUT_PATHS.json",
+            "/ABS/R/cache/business/T1/A/bridges/REPLACE_BRIDGE_PATH"
+          ],
+          "hidden_configs": {
+            "ios": "/ABS/R/cache/business/T1/A/hidden-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T1/A/hidden-profiles/android.json"
+          },
+          "resource_roots": [
+            "/ABS/R/cache/business/T1/A/resources/ios",
+            "/ABS/R/cache/business/T1/A/resources/android"
+          ],
+          "profile_admissions": {
+            "ios": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            },
+            "android": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            }
+          }
+        },
+        "B": {
+          "tool": "frozen_B",
+          "workspace": "/ABS/R/cache/business/T1/B/workspace",
+          "source_roots": [
+            "/ABS/R/cache/business/T1/B/workspace/ios/Sources",
+            "/ABS/R/cache/business/T1/B/workspace/android/app/src/main"
+          ],
+          "public_configs": {
+            "ios": "/ABS/R/cache/business/T1/B/public-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T1/B/public-profiles/android.json"
+          },
+          "profile_order": [
+            "ios",
+            "android"
+          ],
+          "public_readset": [
+            "/ABS/independent-design/T1/REPLACE_ALL_PUBLIC_INPUT_PATHS.json",
+            "/ABS/R/cache/business/T1/B/bridges/REPLACE_BRIDGE_PATH"
+          ],
+          "hidden_configs": {
+            "ios": "/ABS/R/cache/business/T1/B/hidden-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T1/B/hidden-profiles/android.json"
+          },
+          "resource_roots": [
+            "/ABS/R/cache/business/T1/B/resources/ios",
+            "/ABS/R/cache/business/T1/B/resources/android"
+          ],
+          "profile_admissions": {
+            "ios": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            },
+            "android": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "T2",
+      "arms": {
+        "A": {
+          "tool": "frozen_A",
+          "workspace": "/ABS/R/cache/business/T2/A/workspace",
+          "source_roots": [
+            "/ABS/R/cache/business/T2/A/workspace/ios/Sources",
+            "/ABS/R/cache/business/T2/A/workspace/android/app/src/main"
+          ],
+          "public_configs": {
+            "ios": "/ABS/R/cache/business/T2/A/public-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T2/A/public-profiles/android.json"
+          },
+          "profile_order": [
+            "ios",
+            "android"
+          ],
+          "public_readset": [
+            "/ABS/independent-design/T2/REPLACE_ALL_PUBLIC_INPUT_PATHS.json",
+            "/ABS/R/cache/business/T2/A/bridges/REPLACE_BRIDGE_PATH"
+          ],
+          "hidden_configs": {
+            "ios": "/ABS/R/cache/business/T2/A/hidden-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T2/A/hidden-profiles/android.json"
+          },
+          "resource_roots": [
+            "/ABS/R/cache/business/T2/A/resources/ios",
+            "/ABS/R/cache/business/T2/A/resources/android"
+          ],
+          "profile_admissions": {
+            "ios": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            },
+            "android": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            }
+          }
+        },
+        "B": {
+          "tool": "frozen_B",
+          "workspace": "/ABS/R/cache/business/T2/B/workspace",
+          "source_roots": [
+            "/ABS/R/cache/business/T2/B/workspace/ios/Sources",
+            "/ABS/R/cache/business/T2/B/workspace/android/app/src/main"
+          ],
+          "public_configs": {
+            "ios": "/ABS/R/cache/business/T2/B/public-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T2/B/public-profiles/android.json"
+          },
+          "profile_order": [
+            "ios",
+            "android"
+          ],
+          "public_readset": [
+            "/ABS/independent-design/T2/REPLACE_ALL_PUBLIC_INPUT_PATHS.json",
+            "/ABS/R/cache/business/T2/B/bridges/REPLACE_BRIDGE_PATH"
+          ],
+          "hidden_configs": {
+            "ios": "/ABS/R/cache/business/T2/B/hidden-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T2/B/hidden-profiles/android.json"
+          },
+          "resource_roots": [
+            "/ABS/R/cache/business/T2/B/resources/ios",
+            "/ABS/R/cache/business/T2/B/resources/android"
+          ],
+          "profile_admissions": {
+            "ios": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            },
+            "android": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "T3",
+      "arms": {
+        "A": {
+          "tool": "frozen_A",
+          "workspace": "/ABS/R/cache/business/T3/A/workspace",
+          "source_roots": [
+            "/ABS/R/cache/business/T3/A/workspace/ios/Sources",
+            "/ABS/R/cache/business/T3/A/workspace/android/app/src/main"
+          ],
+          "public_configs": {
+            "ios": "/ABS/R/cache/business/T3/A/public-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T3/A/public-profiles/android.json"
+          },
+          "profile_order": [
+            "ios",
+            "android"
+          ],
+          "public_readset": [
+            "/ABS/independent-design/T3/REPLACE_ALL_PUBLIC_INPUT_PATHS.json",
+            "/ABS/R/cache/business/T3/A/bridges/REPLACE_BRIDGE_PATH"
+          ],
+          "hidden_configs": {
+            "ios": "/ABS/R/cache/business/T3/A/hidden-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T3/A/hidden-profiles/android.json"
+          },
+          "resource_roots": [
+            "/ABS/R/cache/business/T3/A/resources/ios",
+            "/ABS/R/cache/business/T3/A/resources/android"
+          ],
+          "profile_admissions": {
+            "ios": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            },
+            "android": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            }
+          }
+        },
+        "B": {
+          "tool": "frozen_B",
+          "workspace": "/ABS/R/cache/business/T3/B/workspace",
+          "source_roots": [
+            "/ABS/R/cache/business/T3/B/workspace/ios/Sources",
+            "/ABS/R/cache/business/T3/B/workspace/android/app/src/main"
+          ],
+          "public_configs": {
+            "ios": "/ABS/R/cache/business/T3/B/public-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T3/B/public-profiles/android.json"
+          },
+          "profile_order": [
+            "ios",
+            "android"
+          ],
+          "public_readset": [
+            "/ABS/independent-design/T3/REPLACE_ALL_PUBLIC_INPUT_PATHS.json",
+            "/ABS/R/cache/business/T3/B/bridges/REPLACE_BRIDGE_PATH"
+          ],
+          "hidden_configs": {
+            "ios": "/ABS/R/cache/business/T3/B/hidden-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T3/B/hidden-profiles/android.json"
+          },
+          "resource_roots": [
+            "/ABS/R/cache/business/T3/B/resources/ios",
+            "/ABS/R/cache/business/T3/B/resources/android"
+          ],
+          "profile_admissions": {
+            "ios": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            },
+            "android": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "T4",
+      "arms": {
+        "A": {
+          "tool": "frozen_A",
+          "workspace": "/ABS/R/cache/business/T4/A/workspace",
+          "source_roots": [
+            "/ABS/R/cache/business/T4/A/workspace/ios/Sources",
+            "/ABS/R/cache/business/T4/A/workspace/android/app/src/main"
+          ],
+          "public_configs": {
+            "ios": "/ABS/R/cache/business/T4/A/public-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T4/A/public-profiles/android.json"
+          },
+          "profile_order": [
+            "ios",
+            "android"
+          ],
+          "public_readset": [
+            "/ABS/independent-design/T4/REPLACE_ALL_PUBLIC_INPUT_PATHS.json",
+            "/ABS/R/cache/business/T4/A/bridges/REPLACE_BRIDGE_PATH"
+          ],
+          "hidden_configs": {
+            "ios": "/ABS/R/cache/business/T4/A/hidden-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T4/A/hidden-profiles/android.json"
+          },
+          "resource_roots": [
+            "/ABS/R/cache/business/T4/A/resources/ios",
+            "/ABS/R/cache/business/T4/A/resources/android"
+          ],
+          "profile_admissions": {
+            "ios": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            },
+            "android": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            }
+          }
+        },
+        "B": {
+          "tool": "frozen_B",
+          "workspace": "/ABS/R/cache/business/T4/B/workspace",
+          "source_roots": [
+            "/ABS/R/cache/business/T4/B/workspace/ios/Sources",
+            "/ABS/R/cache/business/T4/B/workspace/android/app/src/main"
+          ],
+          "public_configs": {
+            "ios": "/ABS/R/cache/business/T4/B/public-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T4/B/public-profiles/android.json"
+          },
+          "profile_order": [
+            "ios",
+            "android"
+          ],
+          "public_readset": [
+            "/ABS/independent-design/T4/REPLACE_ALL_PUBLIC_INPUT_PATHS.json",
+            "/ABS/R/cache/business/T4/B/bridges/REPLACE_BRIDGE_PATH"
+          ],
+          "hidden_configs": {
+            "ios": "/ABS/R/cache/business/T4/B/hidden-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T4/B/hidden-profiles/android.json"
+          },
+          "resource_roots": [
+            "/ABS/R/cache/business/T4/B/resources/ios",
+            "/ABS/R/cache/business/T4/B/resources/android"
+          ],
+          "profile_admissions": {
+            "ios": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            },
+            "android": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "T5",
+      "arms": {
+        "A": {
+          "tool": "frozen_A",
+          "workspace": "/ABS/R/cache/business/T5/A/workspace",
+          "source_roots": [
+            "/ABS/R/cache/business/T5/A/workspace/ios/Sources",
+            "/ABS/R/cache/business/T5/A/workspace/android/app/src/main"
+          ],
+          "public_configs": {
+            "ios": "/ABS/R/cache/business/T5/A/public-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T5/A/public-profiles/android.json"
+          },
+          "profile_order": [
+            "ios",
+            "android"
+          ],
+          "public_readset": [
+            "/ABS/independent-design/T5/REPLACE_ALL_PUBLIC_INPUT_PATHS.json",
+            "/ABS/R/cache/business/T5/A/bridges/REPLACE_BRIDGE_PATH"
+          ],
+          "hidden_configs": {
+            "ios": "/ABS/R/cache/business/T5/A/hidden-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T5/A/hidden-profiles/android.json"
+          },
+          "resource_roots": [
+            "/ABS/R/cache/business/T5/A/resources/ios",
+            "/ABS/R/cache/business/T5/A/resources/android"
+          ],
+          "profile_admissions": {
+            "ios": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            },
+            "android": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            }
+          }
+        },
+        "B": {
+          "tool": "frozen_B",
+          "workspace": "/ABS/R/cache/business/T5/B/workspace",
+          "source_roots": [
+            "/ABS/R/cache/business/T5/B/workspace/ios/Sources",
+            "/ABS/R/cache/business/T5/B/workspace/android/app/src/main"
+          ],
+          "public_configs": {
+            "ios": "/ABS/R/cache/business/T5/B/public-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T5/B/public-profiles/android.json"
+          },
+          "profile_order": [
+            "ios",
+            "android"
+          ],
+          "public_readset": [
+            "/ABS/independent-design/T5/REPLACE_ALL_PUBLIC_INPUT_PATHS.json",
+            "/ABS/R/cache/business/T5/B/bridges/REPLACE_BRIDGE_PATH"
+          ],
+          "hidden_configs": {
+            "ios": "/ABS/R/cache/business/T5/B/hidden-profiles/ios.json",
+            "android": "/ABS/R/cache/business/T5/B/hidden-profiles/android.json"
+          },
+          "resource_roots": [
+            "/ABS/R/cache/business/T5/B/resources/ios",
+            "/ABS/R/cache/business/T5/B/resources/android"
+          ],
+          "profile_admissions": {
+            "ios": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            },
+            "android": {
+              "script": "/ABS/public/admit_profile.py",
+              "root": "/ABS/public",
+              "approval": "/ABS/public/PROFILE-APPROVAL.json",
+              "approval_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "dependencies": []
+            }
+          }
+        }
+      }
+    }
+  ],
+  "source_domain_reviews": {
+    "registry": {
+      "path": "/ABS/R/independent-review/REGISTRY.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "max_requests_per_arm": 4
+  }
+}

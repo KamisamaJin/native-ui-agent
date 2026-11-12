@@ -86,7 +86,7 @@ def admission(coverage, plan, report, *, execution_scope='full', capture=None, e
             'scope': 'Consumes evaluated evidence; does not certify a caller-entered report or subjective observation. Targeted feedback never establishes complete PR acceptance.'}
 
 
-def route_findings(coverage, plan, report, observation, *, discoveries=(), execution=None):
+def route_findings(coverage, plan, report, observation, *, discoveries=(), execution=None, root=None):
     from native_checks import bound_state_evidence
     if design.digest(plan) != coverage['plan_sha256']:
         raise ValueError('Coverage belongs to another parent plan')
@@ -120,7 +120,7 @@ def route_findings(coverage, plan, report, observation, *, discoveries=(), execu
                                   'assertion_ids': [rid], 'state': row['state'], 'risk': obligation['risk'],
                                   'status': row['status'], 'reason': why})
                     continue
-            rule = planned[rid]; found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']])
+            rule = planned[rid]; found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']], root)
             if row.get('reason', '').startswith('blocked_precondition:'): action = 'diagnose_action_precondition'
             elif report.get('environment', {}).get('status', 'P') != 'P': action = 'repair_environment'
             elif row.get('panel_disagreement'): action = 'clarify_oracle'
@@ -186,6 +186,6 @@ def main():
             execution = design.load(a.execution)
             execution_plan.verify_execution(execution, plan, design.load(a.design_lock), a.design_sha256,
                                             design.load(a.fixtures), hashlib.sha256(a.bridge.read_bytes()).hexdigest())
-        result = route_findings(cov, plan, design.load(a.report), design.load(a.observation), discoveries=design.load(a.discoveries) if a.discoveries else [], execution=execution)
+        result = route_findings(cov, plan, design.load(a.report), design.load(a.observation), discoveries=design.load(a.discoveries) if a.discoveries else [], execution=execution, root=a.observation.parent)
     with a.output.open('x') as stream: stream.write(__import__('json').dumps(result, indent=2, ensure_ascii=False) + '\n')
 if __name__ == '__main__': main()

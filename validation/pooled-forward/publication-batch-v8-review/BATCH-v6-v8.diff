@@ -1,0 +1,325 @@
+--- frozen/batch.py
++++ candidate/batch.py
+@@ -19,7 +19,13 @@
+ 
+ MATERIAL_SHA = '4783735c450d882c7fcf62e5a1192dacafa96352fee899023a8e67a12e2e94ac'
+ EMITTER_SCHEMA_SHA = '7149cb0873e30cfe3690e0b64c1f7d711c916c927a313f0a82e19d1841acbda9'
++LENS_SHA = '407831f12e7c1ece422d8145458735284cda4d8310c941552d83f79e95ec70ef'
++LENS_AUTHOR_SHA = '91c59ca7c925c09a2e4fef326ab4f88672715317d3f23f7c1b1f4908e5c90f0a'
+ _here = Path(__file__).resolve().parent
++_lens_bytes = (_here / 'claim_metadata_lens.py').read_bytes()
++if hashlib.sha256(_lens_bytes).hexdigest() != LENS_SHA: raise ValueError('Pinned metadata lens source differs')
++lens = types.ModuleType('batch_private_worker_metadata_lens'); lens.__file__ = str(_here / 'claim_metadata_lens.py')
++exec(compile(_lens_bytes, lens.__file__, 'exec'), lens.__dict__)
+ _material_bytes = (_here / 'material.py').read_bytes()
+ if hashlib.sha256(_material_bytes).hexdigest() != MATERIAL_SHA:
+     raise ValueError('Pinned material-v3 source differs')
+@@ -130,7 +136,7 @@
+ 
+ def code_pins():
+     return {'batch_sha256': digest(Path(__file__).read_bytes()), 'material_sha256': MATERIAL_SHA,
+-            'emitter_schema_sha256': EMITTER_SCHEMA_SHA}
++            'emitter_schema_sha256': EMITTER_SCHEMA_SHA, 'metadata_lens_sha256': LENS_SHA}
+ 
+ 
+ def namespace(reader, original):
+@@ -281,8 +287,145 @@
+     return value, admission
+ 
+ 
++_METADATA_CONTEXT_TOKEN = object()
++class _MetadataContext:
++    def __init__(self, token, authority_ref, documents):
++        if token is not _METADATA_CONTEXT_TOKEN: raise ValueError('Validated external metadata context required')
++        self.authority_ref, self.documents = copy.deepcopy(authority_ref), documents
++
++
++def _reference_key(value):
++    if type(value) is not dict or not m._reference(value): raise ValueError('Exact canonical external metadata reference required')
++    return json_text(value, sort_keys=True)
++
++
++def _metadata_manifest(reader, seal_ref, required_ref):
++    seal = pinned(reader, seal_ref); manifest = seal.get('artifact_manifest')
++    if type(seal.get('version')) is not int or seal['version'] != 1 or type(manifest) is not list or not manifest:
++        raise ValueError('Complete pinned metadata artifact manifest required')
++    base = Path(seal_ref['path']).parent; physical = reader.directory(str(base)); names = set(); found = False
++    if (physical / Path(seal_ref['path']).name).stat().st_mode & 0o777 != 0o444:
++        raise ValueError('Metadata approval/catalog seal must be readonly')
++    for row in manifest:
++        if type(row) is not dict or set(row) != {'path','sha256','size_bytes','sealed_mode'}:
++            raise ValueError('Exact metadata artifact manifest member required')
++        path = Path(row['path'])
++        if not m._path(str(path)) or not path.is_relative_to(base): raise ValueError('Metadata manifest escapes sealed namespace')
++        name = relative(path.relative_to(base).as_posix()).as_posix()
++        if name in names or path == Path(seal_ref['path']): raise ValueError('Duplicate/self metadata manifest member')
++        names.add(name); raw = reader.read_bytes(str(path))
++        if (type(row['size_bytes']) is not int or row['size_bytes'] < 0 or len(raw) != row['size_bytes']
++                or digest(raw) != row['sha256'] or row['sealed_mode'] != '0444'
++                or (physical / name).stat().st_mode & 0o777 != 0o444):
++            raise ValueError('Sealed metadata artifact bytes/mode differ')
++        if {'path':str(path),'sha256':row['sha256']} == required_ref: found = True
++    expected = names | {Path(seal_ref['path']).name}
++    if not found or namespace(reader, base) != expected: raise ValueError('Complete metadata manifest membership/required artifact differs')
++    return seal
++
++
++def load_metadata_context(reader, root, authority_ref, cause_ref):
++    """Verify all ten independent authorizations after the full cause barrier."""
++    verify_index(reader, cause_ref, 'cause')
++    _reference_key(authority_ref); authority = pinned(reader, authority_ref)
++    fields = {'version','kind','original_root','catalog_seal','catalog_ref','approval_seal','approval_ref',
++        'original_document_refs','lens_ref','lens_author_freeze','reference_validated','evidence_credit','quality_credit','scope'}
++    if (set(authority) != fields or type(authority['version']) is not int or authority['version'] != 1
++            or authority['kind'] != 'externally-pinned-worker-metadata-disclosure-authority'
++            or authority['original_root'] != str(root)
++            or any(authority[key] is not False for key in ['reference_validated','evidence_credit','quality_credit'])
++            or authority['scope'] != 'Disclosure metadata only; no fact edits, target validation or product/treatment credit.'):
++        raise ValueError('Exact external worker metadata disclosure authority required')
++    for key in ['catalog_seal','catalog_ref','approval_seal','approval_ref','lens_ref','lens_author_freeze']:
++        _reference_key(authority[key])
++    if (authority['lens_ref']['sha256'] != LENS_SHA or digest(reader.read_bytes(authority['lens_ref']['path'])) != LENS_SHA
++            or authority['lens_author_freeze']['sha256'] != LENS_AUTHOR_SHA):
++        raise ValueError('Independently tested metadata lens pin differs')
++    author = pinned(reader, authority['lens_author_freeze'])
++    if author.get('files',{}).get('lens.py') != LENS_SHA: raise ValueError('Lens author freeze source differs')
++    catalog_seal = _metadata_manifest(reader, authority['catalog_seal'], authority['catalog_ref'])
++    approval_seal = _metadata_manifest(reader, authority['approval_seal'], authority['approval_ref'])
++    if any(approval_seal.get(key) != authority[key] for key in ['catalog_ref','catalog_seal','approval_ref']):
++        raise ValueError('Independent approval seal bindings differ')
++    catalog = pinned(reader, authority['catalog_ref']); approval = pinned(reader, authority['approval_ref'])
++    approval_fields = {'version','kind','catalog_seal','catalog_ref','original_document_refs','approved_locations',
++        'unapproved_locations','all_originals_reverified_unchanged','scope_limits'}
++    if (set(approval) != approval_fields or type(approval['version']) is not int or approval['version'] != 1
++            or approval['kind'] != 'independent-worker-claim-metadata-responsibility-approval'
++            or any(approval[key] != authority[key] for key in ['catalog_ref','catalog_seal'])
++            or approval['unapproved_locations'] != [] or approval['all_originals_reverified_unchanged'] is not True
++            or type(approval['scope_limits']) is not list or not all(type(s) is str for s in approval['scope_limits'])
++            or type(approval['approved_locations']) is not list):
++        raise ValueError('Complete independent metadata responsibility approval required')
++    originals = authority['original_document_refs']; docs = catalog.get('documents')
++    if (type(originals) is not list or len(originals) != 10 or len({_reference_key(r) for r in originals}) != 10
++            or type(docs) is not list or len(docs) != 10 or catalog.get('version') != 1
++            or type(catalog.get('version')) is not int or catalog.get('uncertain_locations') != []):
++        raise ValueError('Exactly ten fully classified original worker documents required')
++    wanted = {_reference_key(r) for r in originals}
++    if (approval['original_document_refs'] != originals or [d['original_ref'] for d in docs] != originals):
++        raise ValueError('Authority/catalog/approval original document sets differ')
++    approved = {}; all_hashes = set()
++    for row in approval['approved_locations']:
++        if type(row) is not dict or set(row) != {'original_ref','pointer','member_kind','location_sha256'}:
++            raise ValueError('Exact independent approved-location binding required')
++        key = (_reference_key(row['original_ref']),row['pointer'],row['member_kind'])
++        if key[0] not in wanted or key in approved: raise ValueError('Duplicate/foreign independent location approval')
++        approved[key] = row['location_sha256']
++    documents = {}; consumed = set()
++    for doc in docs:
++        key = _reference_key(doc['original_ref']); locations = doc.get('locations')
++        if type(locations) is not list: raise ValueError('Whole original metadata location array required')
++        hashes = set()
++        for location in locations:
++            location_key = (_reference_key(location['original_ref']),location['pointer'],location['member_kind'])
++            expected = lens.canonical_sha(location, m.projection)
++            if location_key[0] != key or approved.get(location_key) != expected or location_key in consumed or expected in hashes:
++                raise ValueError('Exact whole catalogue location lacks independent approval')
++            consumed.add(location_key); hashes.add(expected)
++        documents[key] = {'original_ref':doc['original_ref'],'locations':locations,'approved':hashes}
++    if consumed != set(approved): raise ValueError('Dropped/foreign independent metadata approvals')
++    # Only after every document/location is approved, authenticate all raw bytes.
++    raw_values = [(doc, pinned(reader, doc['original_ref'])) for doc in documents.values()]
++    for doc,value in raw_values:
++        lens.project(value,doc['original_ref'],doc['locations'],doc['approved'],m.projection)
++    return _MetadataContext(_METADATA_CONTEXT_TOKEN, authority_ref, documents)
++
++
++def _worker_lens(original, original_ref, metadata_context):
++    if type(metadata_context) is not _MetadataContext: raise ValueError('External validated metadata context required; proof cannot authorize itself')
++    doc = metadata_context.documents.get(_reference_key(original_ref))
++    if doc is None: raise ValueError('Original worker claim is absent from exact external authorization')
++    value, proof = lens.project(original,original_ref,doc['locations'],doc['approved'],m.projection)
++    return value, {'authority':metadata_context.authority_ref,'lens_sha256':LENS_SHA,'proof':proof}
++
++
++def verify_metadata_spec(spec, derivations, metadata_context, authority_ref):
++    if spec.get('metadata_authority') != authority_ref: raise ValueError('Selection/spec external metadata authority differs')
++    if metadata_context is None:
++        if any(row.get('metadata_lens') is not None for row in derivations):
++            raise ValueError('Nonempty metadata lens proof requires external selected authority')
++        return set()
++    if type(metadata_context) is not _MetadataContext or metadata_context.authority_ref != authority_ref:
++        raise ValueError('Validated selected metadata context differs')
++    claims = {row['path'] for row in spec['anonymous_description']['documents'] if row.get('kind') == 'original-worker-self-claim'}
++    expected = 0 if spec['anonymous_group'].endswith('-I') else 1
++    if len(claims) != expected: raise ValueError('Exact own worker selfclaim document membership required')
++    used = set(); names = set()
++    for row in derivations:
++        if row['anonymous_relative'] not in claims:
++            if row.get('metadata_lens') is not None: raise ValueError('Worker metadata lens cannot rewrite another report genre')
++            continue
++        key = _reference_key(row['original'])
++        if row.get('metadata_lens') is None or key not in metadata_context.documents or key in used:
++            raise ValueError('Authorized worker selfclaim cannot fall back without exact metadata lens proof')
++        used.add(key); names.add(row['anonymous_relative'])
++    if names != claims: raise ValueError('Missing authorized worker selfclaim derivation')
++    return used
++
++
+ class Group:
+-    def __init__(self, root, reader, group, task, arm, manifest, events, snapshot, native_read_pins, work):
++    def __init__(self, root, reader, group, task, arm, manifest, events, snapshot, native_read_pins, work, metadata_context=None):
+         self.root, self.reader, self.group, self.task, self.arm = root, reader, group, task, arm
+         self.manifest, self.events, self.snapshot, self.native_read_pins = manifest, events, snapshot, native_read_pins
+         self.work = work / group; _presentation['alarm_packet']._fresh_directory(self.work)
+@@ -293,6 +436,9 @@
+         self.versions, self.aliases, self.captures, self.document_paths, self.metadata_aliases = {}, {}, {}, {}, {}
+         self.run = root / 'cache/business/run-cohort2'
+         self.initial = group.endswith('-I')
++        self.metadata_context = metadata_context
++        if metadata_context is not None:
++            self.description['metadata_reference_scope'] = 'record-ref-* are opaque ordinal handles scoped to one original document. The same display token in different documents establishes no identity or evidence relationship. Handles do not imply supplied or validated artifacts, reference validity, evidence or quality credit. The separate operator raw lens proof retains the mapping.'
+ 
+     def original(self, path): return self.reader.read_json(str(path))
+ 
+@@ -308,7 +454,10 @@
+     def json_document(self, original_ref, destination, info, *, outcome=False, aliases=None):
+         raw = self.reader.read_bytes(original_ref['path'])
+         if digest(raw) != original_ref['sha256']: raise ValueError('Original report pin differs')
+-        original = strict_json(raw); value, admission = present_value(original, outcome=outcome)
++        original = strict_json(raw); lens_proof = None; presented_original = original
++        if info.get('kind') == 'original-worker-self-claim' and self.metadata_context is not None:
++            presented_original, lens_proof = _worker_lens(original,original_ref,self.metadata_context)
++        value, admission = present_value(presented_original, outcome=outcome)
+         if not isinstance(value, dict): raise ValueError('Recorded report object required')
+         neutral, proof = m.neutralize(value, aliases)
+         path = self.work / ('derived-%05d.json' % len(self.derivations))
+@@ -317,6 +466,7 @@
+             'anonymous_relative': destination, 'projection': proof, 'emitter_admission': admission,
+             'outer_fact_selection': {'kind': 'fixed-operation-outcome-fields',
+                 'retained': list(value), 'omitted': [k for k in original if k not in value]} if outcome else None})
++        if lens_proof is not None: self.derivations[-1]['metadata_lens'] = lens_proof
+         self.exact(ref(self.reader, path), destination, dict(info, raw_original_sha256=original_ref['sha256']))
+         self.document_paths[original_ref['path']] = relative(destination).as_posix()
+ 
+@@ -572,9 +722,11 @@
+                 'source_version': sources[-1]['content_sha256']}, aliases={**self.metadata_aliases, **self.document_paths, **self.aliases[sources[-1]['content_sha256']]})
+ 
+ 
+-def prepare(root, reader, cause_ref, snapshot_ref, native_result_ref, output, work):
++def prepare(root, reader, cause_ref, snapshot_ref, native_result_ref, output, work, *, metadata_authority_ref=None):
+     # This precedes mapping, manifest, event, report, source and image reads.
+     verified = verify_index(reader, cause_ref, 'cause')
++    if metadata_authority_ref is None: raise ValueError('All ten external worker metadata authorizations required before preparation')
++    metadata_context = load_metadata_context(reader,root,metadata_authority_ref,cause_ref)
+     snapshot = pinned(reader, snapshot_ref); result = pinned(reader, native_result_ref)
+     if (result.get('snapshot') != snapshot_ref or result.get('result', {}).get('status') != 'verified'
+             or result['result'].get('acquired_scopes') != 30 or snapshot.get('original_root') != str(root)):
+@@ -614,6 +766,11 @@
+                 or not isinstance(event.get('profiles'), list) or not event['profiles']
+                 or len(event['profiles']) != len(set(event['profiles'])) or not set(event['profiles']) <= {'ios', 'android'}):
+             raise ValueError('Unreviewed original public request schema')
++    sealed_claims = [e for e in events if e['kind'] == 'self_sealed']
++    if (len(sealed_claims) != 10 or len({(e['task'],e['arm']) for e in sealed_claims}) != 10
++            or {(e['task'],e['arm']) for e in sealed_claims} != {(row['task'],arm) for row in mapping.values() for arm in ['A','B']}
++            or {_reference_key({'path':e['claim_path'],'sha256':e['claim_sha256']}) for e in sealed_claims} != set(metadata_context.documents)):
++        raise ValueError('All ten approved raw claims must match the complete original self-seal registry before selection')
+     output, work = _presentation['alarm_packet']._destination(output), _presentation['alarm_packet']._destination(work)
+     if output == work or output in work.parents or work in output.parents:
+         raise ValueError('Fresh disjoint selection and intermediate namespaces required')
+@@ -622,10 +779,11 @@
+     for version in ['I', 'X', 'Y']:
+         for case in sorted(mapping):
+             group = case + '-' + version; row = mapping[case]
+-            collector = Group(root, reader, group, row['task'], row[version], manifest, events, snapshot, result['files_read'], work)
++            collector = Group(root, reader, group, row['task'], row[version], manifest, events, snapshot, result['files_read'], work, metadata_context)
+             collector.prepare()
+             spec = {'version': 1, 'kind': 'explicit-anonymous-alarm-material-spec', 'anonymous_group': group,
+                     'first_cause_barrier': cause_ref, 'documents': collector.documents,
++                    'metadata_authority': metadata_authority_ref,
+                     'anonymous_description': collector.description,
+                     'instructions': ref(reader, root / 'business-quality-tools/ALARM-INSTRUCTIONS-v1.md'),
+                     'grade_template': ref(reader, root / 'business-quality-tools/ALARM-GRADE-TEMPLATE-v1.json')}
+@@ -635,6 +793,7 @@
+                               'derivations': ref(reader, folder / 'DERIVATIONS.json')})
+     value = {'version': 1, 'kind': 'all15-uniform-original-alarm-selection-seal', 'at_unix': time.time(),
+              'original_root': str(root),
++             'metadata_authority': metadata_authority_ref,
+              'first_cause_barrier': cause_ref, 'groups': all_specs, 'closed_cause_contexts': verified['distinct_contexts'],
+              'code_pins': code_pins(),
+              'mapping_revealed_to_judges_or_model': False, 'quality_adjudicated': False}
+@@ -642,10 +801,17 @@
+     return ref(reader, output / 'ALL-SPECS-SEAL.json')
+ 
+ 
+-def verify_derivation(reader, row):
+-    if not isinstance(row, dict) or set(row) != {'original', 'derived', 'anonymous_relative', 'projection', 'emitter_admission', 'outer_fact_selection'}:
++def verify_derivation(reader, row, *, metadata_context=None):
++    fields = {'original', 'derived', 'anonymous_relative', 'projection', 'emitter_admission', 'outer_fact_selection'}
++    if not isinstance(row, dict) or set(row) not in (fields,fields|{'metadata_lens'}):
+         raise ValueError('Exact original/derived composition proof required')
+     original = pinned(reader, row['original'])
++    if type(metadata_context) is _MetadataContext and _reference_key(row['original']) in metadata_context.documents and row.get('metadata_lens') is None:
++        raise ValueError('Authorized worker claim cannot fall back without metadata lens proof')
++    if row.get('metadata_lens') is not None:
++        if row['outer_fact_selection'] is not None: raise ValueError('Worker metadata lens cannot rewrite outcome reports')
++        original, lens_proof = _worker_lens(original,row['original'],metadata_context)
++        if lens_proof != row['metadata_lens']: raise ValueError('Exact external raw-to-metadata-lens proof differs')
+     value, admission = present_value(original, outcome=row['outer_fact_selection'] is not None)
+     if admission != row['emitter_admission']:
+         raise ValueError('Source-schema admission proof differs')
+@@ -687,7 +853,9 @@
+     verified = verify_index(reader, selected['first_cause_barrier'], 'cause')
+     if selected.get('closed_cause_contexts') != verified['distinct_contexts']:
+         raise ValueError('Selection cause barrier count differs')
+-    ready = []
++    metadata_authority_ref = selected.get('metadata_authority')
++    metadata_context = load_metadata_context(reader,root,metadata_authority_ref,selected['first_cause_barrier']) if metadata_authority_ref is not None else None
++    ready = []; metadata_claims = set()
+     for row in selected['groups']:
+         spec = pinned(reader, row['spec']); derivations = pinned_value(reader, row['derivations'])
+         if (spec.get('version') != 1 or spec.get('kind') != 'explicit-anonymous-alarm-material-spec'
+@@ -695,6 +863,9 @@
+                 or spec.get('anonymous_description', {}).get('anonymous_group') != row['group']
+                 or not isinstance(derivations, list)):
+             raise ValueError('Selection row/spec/group/cause binding differs')
++        used_metadata = verify_metadata_spec(spec,derivations,metadata_context,metadata_authority_ref)
++        if metadata_claims & used_metadata: raise ValueError('Worker metadata original reused across groups')
++        metadata_claims.update(used_metadata)
+         descriptions = spec['anonymous_description'].get('documents', [])
+         if len(descriptions) != len(spec['documents']) or {d['path'] for d in descriptions} != {d['anonymous_relative'] for d in spec['documents']}:
+             raise ValueError('Selected material manifest omits or duplicates a document')
+@@ -702,7 +873,7 @@
+         if len(by_name) != len(spec['documents']): raise ValueError('Duplicate selected packet document')
+         descriptions = {d['path']: d for d in descriptions}; derived_names = set()
+         for derivation in derivations:
+-            verify_derivation(reader, derivation)
++            verify_derivation(reader, derivation, metadata_context=metadata_context)
+             name = derivation['anonymous_relative']
+             if (name in derived_names or name not in by_name or by_name[name]['original'] != derivation['derived']
+                     or descriptions[name].get('raw_original_sha256') != derivation['original']['sha256']):
+@@ -719,6 +890,8 @@
+             if spec[key] != ref(reader, root / 'business-quality-tools' / name):
+                 raise ValueError('Uniform original instruction/template binding differs')
+         ready.append((row, spec))
++    if metadata_context is not None and metadata_claims != set(metadata_context.documents):
++        raise ValueError('All ten authorized worker claims must be consumed exactly once before packets')
+     packet_root, operator_root = _presentation['alarm_packet']._destination(packet_root), _presentation['alarm_packet']._destination(operator_root)
+     if packet_root == operator_root or packet_root in operator_root.parents or operator_root in packet_root.parents:
+         raise ValueError('Fresh disjoint packet and operator namespaces required')
+@@ -751,6 +924,7 @@
+     p.add_argument('--root', type=Path, required=True); p.add_argument('--id', required=True)
+     for name in ['cause-index', 'native-snapshot', 'native-result', 'selection-seal']:
+         p.add_argument('--' + name); p.add_argument('--' + name + '-sha256')
++    p.add_argument('--metadata-authority'); p.add_argument('--metadata-authority-sha256')
+     a = p.parse_args(); root = a.root.resolve()
+     if not a.id.isascii() or not a.id.replace('-', '').isalnum(): raise ValueError('Simple unique preparation ID required')
+     reader = LiveReader(root); output = root / 'operators/cohort2/coordination/alarm-material-selections' / a.id
+@@ -759,7 +933,8 @@
+             refs = [{ 'path': getattr(a, name), 'sha256': getattr(a, name + '_sha256')}
+                     for name in ['cause_index', 'native_snapshot', 'native_result']]
+             answer = prepare(root, reader, *refs, output,
+-                root / 'cache/business/blind-quality/alarm-intermediates' / a.id)
++                root / 'cache/business/blind-quality/alarm-intermediates' / a.id,
++                metadata_authority_ref={'path':a.metadata_authority,'sha256':a.metadata_authority_sha256})
+             print(json.dumps({'selection_seal': answer, 'groups': 15, 'quality_adjudicated': False}))
+         else:
+             answer = package_selected(root, reader, {'path': a.selection_seal, 'sha256': a.selection_seal_sha256},

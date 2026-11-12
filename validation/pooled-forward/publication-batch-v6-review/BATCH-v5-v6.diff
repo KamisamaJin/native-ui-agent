@@ -1,0 +1,19 @@
+--- frozen/batch.py
++++ candidate/batch.py
+@@ -18,14 +18,14 @@
+ import types
+ 
+ MATERIAL_SHA = '4783735c450d882c7fcf62e5a1192dacafa96352fee899023a8e67a12e2e94ac'
+-EMITTER_SCHEMA_SHA = '3b010c3aeb9562160233aabde8f1be1fc9c352c406c9690c82373664670e23c6'
++EMITTER_SCHEMA_SHA = '7149cb0873e30cfe3690e0b64c1f7d711c916c927a313f0a82e19d1841acbda9'
+ _here = Path(__file__).resolve().parent
+ _material_bytes = (_here / 'material.py').read_bytes()
+ if hashlib.sha256(_material_bytes).hexdigest() != MATERIAL_SHA:
+     raise ValueError('Pinned material-v3 source differs')
+ m = types.ModuleType('batch_private_material_v3'); m.__file__ = str(_here / 'material.py')
+ exec(compile(_material_bytes, m.__file__, 'exec'), m.__dict__)
+-_schema_bytes = (_here / 'EMITTER-SCHEMA-v4.json').read_bytes()
++_schema_bytes = (_here / 'EMITTER-SCHEMA-v5.json').read_bytes()
+ if hashlib.sha256(_schema_bytes).hexdigest() != EMITTER_SCHEMA_SHA:
+     raise ValueError('Pinned emitter admission schema differs')
+ EMITTER_SCHEMA = m.projection.strict_json(_schema_bytes)

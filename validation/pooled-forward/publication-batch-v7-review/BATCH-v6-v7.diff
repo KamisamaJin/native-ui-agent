@@ -1,0 +1,263 @@
+--- frozen/batch.py
++++ candidate/batch.py
+@@ -18,14 +18,14 @@
+ import types
+ 
+ MATERIAL_SHA = '4783735c450d882c7fcf62e5a1192dacafa96352fee899023a8e67a12e2e94ac'
+-EMITTER_SCHEMA_SHA = '7149cb0873e30cfe3690e0b64c1f7d711c916c927a313f0a82e19d1841acbda9'
++EMITTER_SCHEMA_SHA = 'b210ff09fac5b2164664f269faa1b0633ce416f939a9cbd14f71ad23806bb63c'
+ _here = Path(__file__).resolve().parent
+ _material_bytes = (_here / 'material.py').read_bytes()
+ if hashlib.sha256(_material_bytes).hexdigest() != MATERIAL_SHA:
+     raise ValueError('Pinned material-v3 source differs')
+ m = types.ModuleType('batch_private_material_v3'); m.__file__ = str(_here / 'material.py')
+ exec(compile(_material_bytes, m.__file__, 'exec'), m.__dict__)
+-_schema_bytes = (_here / 'EMITTER-SCHEMA-v5.json').read_bytes()
++_schema_bytes = (_here / 'EMITTER-SCHEMA-v6.json').read_bytes()
+ if hashlib.sha256(_schema_bytes).hexdigest() != EMITTER_SCHEMA_SHA:
+     raise ValueError('Pinned emitter admission schema differs')
+ EMITTER_SCHEMA = m.projection.strict_json(_schema_bytes)
+@@ -226,7 +226,107 @@
+     return value, proof
+ 
+ 
+-def present_value(original, *, outcome=False):
++def authority_key(value):
++    return json_text(value, sort_keys=True)
++
++
++def provenance_registry(reader, authorities):
++    """Reconstruct metadata targets from caller-authorized pinned originals."""
++    entries = []; seen = set()
++    def add(kind, target, authority):
++        if not m._reference(target): raise ValueError('Exact original provenance reference required')
++        raw = reader.read_bytes(target['path'])
++        if digest(raw) != target['sha256']: raise ValueError('Registered original provenance bytes differ')
++        entry = {'kind': kind, 'target': target, 'authority': authority}
++        key = authority_key(entry)
++        if key not in seen: seen.add(key); entries.append(entry)
++    for authority in authorities:
++        if type(authority) is not dict or authority.get('kind') not in {'operation', 'public-result'}:
++            raise ValueError('Known selected provenance authority required')
++        if authority['kind'] == 'public-result':
++            if set(authority) != {'kind', 'ref', 'event'}: raise ValueError('Exact public-result authority required')
++            event = pinned(reader, authority['event']); result = pinned(reader, authority['ref'])
++            if (event.get('kind') != 'request_finished' or event.get('result_path') != authority['ref']['path']
++                    or event.get('result_sha256') != authority['ref']['sha256']
++                    or any(result.get(k) != event.get(k) for k in ['task', 'arm', 'request_id'])):
++                raise ValueError('Public result authority event binding differs')
++            add('public-result', authority['ref'], authority)
++            continue
++        if set(authority) != {'kind', 'ref'}: raise ValueError('Exact operation authority required')
++        operation = pinned(reader, authority['ref'])
++        # Validate the fixed outcome schema independently of any claim/ref proof.
++        present_value(operation, outcome=True)
++        for role in ['capture', 'cycle', 'completion', 'bound_review']:
++            if operation.get(role) is not None: add(role, operation[role], authority)
++        inventory_ref = operation.get('inventory')
++        if inventory_ref:
++            inventory = pinned(reader, inventory_ref); service = Path(operation['service_output'])
++            if type(inventory) is not dict: raise ValueError('Original provenance inventory object required')
++            for path, row in inventory.items():
++                if not m._path(path) or not Path(path).is_relative_to(service):
++                    raise ValueError('Provenance inventory escapes original service')
++                if type(row) is dict:
++                    if set(row) != {'sha256', 'bytes'} or type(row['bytes']) is not int or row['bytes'] < 0:
++                        raise ValueError('Exact provenance inventory row required')
++                    expected = row['sha256']
++                    if len(reader.read_bytes(path)) != row['bytes']: raise ValueError('Provenance inventory byte count differs')
++                else: expected = row
++                add('resource-receipt' if Path(path).name == 'resources.json' else 'inventory-member',
++                    {'path': path, 'sha256': expected}, authority)
++    return sorted(entries, key=authority_key)
++
++
++def admit_verified_refs(original, reader=None, authorities=()):
++    """Normalize only proven metadata under compound protected-prefix names.
++
++    Exact raw fact ancestors and every protected leaf remain untouched. A
++    caller's scalar aliases or a claim's own path/SHA cannot grant authority.
++    """
++    value = copy.deepcopy(original); changes = []; used = {}; registry = None
++    policy = EMITTER_SCHEMA['verified_provenance_refs']
++    raw_names = m.projection._PROTECTED_NORMALIZED | {p + suffix for p in ['actual','expected','observed','rendered','measured'] for suffix in ['value','values']}
++    def entries():
++        nonlocal registry
++        if registry is None:
++            if reader is None or not authorities: raise ValueError('Positive selected provenance authority required')
++            registry = provenance_registry(reader, authorities)
++        return registry
++    def replace(path, parts, role, claimed=None):
++        candidates = [entry for entry in entries() if entry['target']['path'] == path
++            and (claimed is None or entry['target'] == claimed)
++            and (role is None or entry['kind'] in policy['object_roles'].get(role, []))]
++        if not candidates: raise ValueError('Unregistered, foreign or unknown-role provenance reference')
++        if len({entry['target']['sha256'] for entry in candidates}) != 1:
++            raise ValueError('Ambiguous original provenance version')
++        selected = candidates[0]; anonymous = 'record-ref-' + digest(encoded(selected['target']))
++        used[authority_key(selected['authority'])] = selected['authority']
++        changes.append({'pointer': m.projection.pointer(parts), 'role': role or 'registered-scalar-path',
++            'original_path': path, 'anonymous_path': anonymous, 'registered': selected,
++            'scope': 'Opaque original provenance only; no supplied-file or factual-truth assertion'})
++        return anonymous
++    def walk(item, parts, blocked=False):
++        if parts and isinstance(parts[-1], str) and m.projection._normalized(parts[-1]) in raw_names:
++            blocked = True
++        protected = any(m.projection._protected(part) for part in parts)
++        if type(item) is dict:
++            if protected and not blocked and set(item) == {'path', 'sha256'}:
++                role = parts[-1] if parts and type(parts[-1]) is str else None
++                if role not in policy['object_roles'] or not m._reference(item):
++                    raise ValueError('Unknown or malformed provenance metadata role')
++                return {'path': replace(item['path'], parts + ['path'], role, item), 'sha256': item['sha256']}
++            return {key: walk(sub, parts + [key], blocked) for key, sub in item.items()}
++        if type(item) is list: return [walk(sub, parts + [index], blocked) for index, sub in enumerate(item)]
++        if (type(item) is str and protected and not blocked and m._path(item)):
++            leaf = parts[-1] if parts and type(parts[-1]) is str else None
++            if leaf is None or m.projection._protected(leaf) or not leaf.endswith(policy['scalar_suffix']):
++                raise ValueError('Protected factual leaf or unknown provenance scalar role')
++            return replace(item, parts, None)
++        return item
++    value = walk(value, [])
++    return value, changes, [used[key] for key in sorted(used)]
++
++
++def present_value(original, *, outcome=False, reader=None, provenance_authorities=()):
+     """Compose explicit source-schema metadata admission with frozen material-v3.
+ 
+     Only exact known execution shapes are omitted here. All raw refs and hashes
+@@ -235,7 +335,8 @@
+     m.projection._validate_json(original)
+     if not isinstance(original, dict):
+         raise ValueError('Recorded report object required')
+-    admitted, key_maps = admit_metadata_keys(original); omitted = {}
++    admitted, reference_changes, reference_authorities = admit_verified_refs(original, reader, provenance_authorities)
++    admitted, key_maps = admit_metadata_keys(admitted); omitted = {}
+     def omit(key, schema):
+         omitted[key] = {'original_value_sha256': m.projection.digest(admitted[key]), 'schema': schema}
+         del admitted[key]
+@@ -277,7 +378,8 @@
+                  'original_value_sha256': m.projection.digest(original),
+                  'admitted_value_sha256': m.projection.digest(admitted),
+                  'selected_value_sha256': m.projection.digest(value), 'omitted_top_level': omitted,
+-                 'metadata_key_maps': key_maps}
++                 'metadata_key_maps': key_maps, 'provenance_reference_changes': reference_changes,
++                 'provenance_authorities': reference_authorities}
+     return value, admission
+ 
+ 
+@@ -291,6 +393,7 @@
+             'scope': 'Original all-status reports and claims; status is not independent truth. Source capsules, native epochs and original image layout remain explicit.',
+             'metadata_reference_scope': 'record-ref-* values are opaque original provenance identifiers, not supplied packet members.'}
+         self.versions, self.aliases, self.captures, self.document_paths, self.metadata_aliases = {}, {}, {}, {}, {}
++        self.provenance_authorities = []
+         self.run = root / 'cache/business/run-cohort2'
+         self.initial = group.endswith('-I')
+ 
+@@ -308,7 +411,8 @@
+     def json_document(self, original_ref, destination, info, *, outcome=False, aliases=None):
+         raw = self.reader.read_bytes(original_ref['path'])
+         if digest(raw) != original_ref['sha256']: raise ValueError('Original report pin differs')
+-        original = strict_json(raw); value, admission = present_value(original, outcome=outcome)
++        original = strict_json(raw); value, admission = present_value(original, outcome=outcome,
++            reader=self.reader, provenance_authorities=self.provenance_authorities)
+         if not isinstance(value, dict): raise ValueError('Recorded report object required')
+         neutral, proof = m.neutralize(value, aliases)
+         path = self.work / ('derived-%05d.json' % len(self.derivations))
+@@ -384,6 +488,8 @@
+ 
+     def operation(self, outcome_ref, episode, source, config_ref, candidates, visibility, attempt_origins=None):
+         outcome = pinned(self.reader, outcome_ref); config = pinned(self.reader, config_ref)
++        authority = {'kind': 'operation', 'ref': outcome_ref}
++        if authority not in self.provenance_authorities: self.provenance_authorities.append(authority)
+         version = self.sources(source, config['source_roots'], candidates)
+         profile = outcome['profile']; base = 'episodes/' + episode + '/' + profile
+         if profile not in {'ios', 'android'}:
+@@ -511,6 +617,9 @@
+             terminal = next(e for e in self.events if e['kind'] == 'request_finished'
+                             and e.get('request_id') == event['request_id'])
+             result = pinned(self.reader, {'path': terminal['result_path'], 'sha256': terminal['result_sha256']})
++            self.provenance_authorities.append({'kind': 'public-result',
++                'ref': {'path': terminal['result_path'], 'sha256': terminal['result_sha256']},
++                'event': chain_ref(self.reader, self.run / 'events' / ('%06d.json' % terminal['sequence']), self.native_read_pins)})
+             if (any(result.get(k) != event[k] for k in ['task', 'arm', 'request_id'])
+                     or terminal.get('task') != event['task'] or terminal.get('arm') != event['arm']
+                     or not isinstance(result.get('outcomes'), list)
+@@ -626,6 +735,7 @@
+             collector.prepare()
+             spec = {'version': 1, 'kind': 'explicit-anonymous-alarm-material-spec', 'anonymous_group': group,
+                     'first_cause_barrier': cause_ref, 'documents': collector.documents,
++                    'provenance_authorities': collector.provenance_authorities,
+                     'anonymous_description': collector.description,
+                     'instructions': ref(reader, root / 'business-quality-tools/ALARM-INSTRUCTIONS-v1.md'),
+                     'grade_template': ref(reader, root / 'business-quality-tools/ALARM-GRADE-TEMPLATE-v1.json')}
+@@ -642,11 +752,17 @@
+     return ref(reader, output / 'ALL-SPECS-SEAL.json')
+ 
+ 
+-def verify_derivation(reader, row):
++def verify_derivation(reader, row, *, provenance_authorities=None):
+     if not isinstance(row, dict) or set(row) != {'original', 'derived', 'anonymous_relative', 'projection', 'emitter_admission', 'outer_fact_selection'}:
+         raise ValueError('Exact original/derived composition proof required')
+     original = pinned(reader, row['original'])
+-    value, admission = present_value(original, outcome=row['outer_fact_selection'] is not None)
++    claimed = row['emitter_admission'].get('provenance_authorities', [])
++    if type(claimed) is not list or len({authority_key(v) for v in claimed}) != len(claimed):
++        raise ValueError('Exact distinct provenance authority proof required')
++    if claimed and (provenance_authorities is None or any(v not in provenance_authorities for v in claimed)):
++        raise ValueError('Provenance proof requires caller-bound selected authorities')
++    value, admission = present_value(original, outcome=row['outer_fact_selection'] is not None,
++        reader=reader, provenance_authorities=claimed)
+     if admission != row['emitter_admission']:
+         raise ValueError('Source-schema admission proof differs')
+     if row['outer_fact_selection'] is not None:
+@@ -668,6 +784,38 @@
+     raw = reader.read_bytes(row['derived']['path'])
+     if digest(raw) != row['derived']['sha256']:
+         raise ValueError('Original derived bytes changed')
++
++
++def selected_provenance_authorities(reader, spec, derivations):
++    """Bind replay authority to this externally pinned selection, never a row."""
++    info = {row['path']: row for row in spec['anonymous_description']['documents']}
++    documents = {row['anonymous_relative']: row for row in spec['documents']}
++    operations = []
++    for row in derivations:
++        if row['outer_fact_selection'] is None: continue
++        name = row['anonymous_relative']
++        if (name not in info or name not in documents or info[name].get('kind') != 'operation-result'
++                or info[name].get('raw_original_sha256') != row['original']['sha256']
++                or documents[name]['original'] != row['derived']):
++            raise ValueError('Provenance operation is not bound to selected group material')
++        operations.append({'kind': 'operation', 'ref': row['original']})
++    authorities = spec.get('provenance_authorities', operations)
++    if type(authorities) is not list or len({authority_key(v) for v in authorities}) != len(authorities):
++        raise ValueError('Distinct selected provenance authorities required')
++    if sorted([v for v in authorities if v.get('kind') == 'operation'], key=authority_key) != sorted(operations, key=authority_key):
++        raise ValueError('Selected provenance operation authority membership differs')
++    raw_operations = {json_text(pinned(reader, v['ref']), sort_keys=True) for v in operations}
++    for authority in authorities:
++        if authority.get('kind') == 'operation': continue
++        if authority.get('kind') != 'public-result': raise ValueError('Unknown selected provenance authority kind')
++        provenance_registry(reader, [authority])
++        result = pinned(reader, authority['ref'])
++        outcomes = result.get('outcomes')
++        if (type(outcomes) is not list or not outcomes
++                or len({json_text(v, sort_keys=True) for v in outcomes}) != len(outcomes)
++                or any(json_text(outcome, sort_keys=True) not in raw_operations for outcome in outcomes)):
++            raise ValueError('Public provenance result includes an unselected foreign operation')
++    return authorities
+ 
+ 
+ def package_selected(root, reader, selection_ref, packet_root, operator_root, summary_path=None):
+@@ -701,8 +849,9 @@
+         by_name = {d['anonymous_relative']: d for d in spec['documents']}
+         if len(by_name) != len(spec['documents']): raise ValueError('Duplicate selected packet document')
+         descriptions = {d['path']: d for d in descriptions}; derived_names = set()
++        provenance_authorities = selected_provenance_authorities(reader, spec, derivations)
+         for derivation in derivations:
+-            verify_derivation(reader, derivation)
++            verify_derivation(reader, derivation, provenance_authorities=provenance_authorities)
+             name = derivation['anonymous_relative']
+             if (name in derived_names or name not in by_name or by_name[name]['original'] != derivation['derived']
+                     or descriptions[name].get('raw_original_sha256') != derivation['original']['sha256']):

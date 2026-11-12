@@ -1,0 +1,569 @@
+[
+  {
+    "type": "sweep",
+    "state_id": "start",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Visit in person"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Visit in person"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Visit in person"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      0
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "in-person",
+    "after_targets": [
+      {
+        "label": "Appointment rescheduling offer"
+      },
+      {
+        "identifier": "T2.entity"
+      },
+      {
+        "identifier": "T2.description"
+      },
+      {
+        "identifier": "T2.summary"
+      },
+      {
+        "identifier": "T2.status"
+      },
+      {
+        "identifier": "T2.surface"
+      },
+      {
+        "label": "Visit in person"
+      },
+      {
+        "label": "Visit by video"
+      },
+      {
+        "label": "Choose assisted morning"
+      },
+      {
+        "identifier": "T2.slotA.detail"
+      },
+      {
+        "label": "Choose assisted afternoon"
+      },
+      {
+        "identifier": "T2.slotB.detail"
+      },
+      {
+        "label": "Choose remote review"
+      },
+      {
+        "identifier": "T2.slotC.detail"
+      },
+      {
+        "label": "Notify the attendee"
+      },
+      {
+        "label": "Move appointment"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      1
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Choose assisted morning"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Choose assisted morning"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Choose assisted morning"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      2
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "time-selected",
+    "after_targets": [
+      {
+        "label": "Appointment rescheduling offer"
+      },
+      {
+        "identifier": "T2.entity"
+      },
+      {
+        "identifier": "T2.description"
+      },
+      {
+        "identifier": "T2.summary"
+      },
+      {
+        "identifier": "T2.status"
+      },
+      {
+        "identifier": "T2.surface"
+      },
+      {
+        "label": "Visit in person"
+      },
+      {
+        "label": "Visit by video"
+      },
+      {
+        "label": "Choose assisted morning"
+      },
+      {
+        "identifier": "T2.slotA.detail"
+      },
+      {
+        "label": "Choose assisted afternoon"
+      },
+      {
+        "identifier": "T2.slotB.detail"
+      },
+      {
+        "label": "Choose remote review"
+      },
+      {
+        "identifier": "T2.slotC.detail"
+      },
+      {
+        "label": "Notify the attendee"
+      },
+      {
+        "label": "Move appointment"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      3
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Notify the attendee"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Notify the attendee"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Notify the attendee"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      4
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [
+      5
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Move appointment"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Move appointment"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "reschedule|BK-908|in_person|Q-7",
+    "capture_scope": "targets",
+    "depends_on": [
+      6
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "sweep",
+    "state_id": "moved",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [
+      7
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "apply_next_fixture",
+    "capture_scope": "none",
+    "depends_on": [
+      8
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "sweep",
+    "state_id": "same-booking-preserved",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [
+      9
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Visit by video"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Visit by video"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Visit by video"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      10
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "mode-invalidates-time",
+    "after_targets": [
+      {
+        "label": "Appointment rescheduling offer"
+      },
+      {
+        "identifier": "T2.entity"
+      },
+      {
+        "identifier": "T2.description"
+      },
+      {
+        "identifier": "T2.summary"
+      },
+      {
+        "identifier": "T2.status"
+      },
+      {
+        "identifier": "T2.surface"
+      },
+      {
+        "label": "Visit in person"
+      },
+      {
+        "label": "Visit by video"
+      },
+      {
+        "label": "Choose assisted morning"
+      },
+      {
+        "identifier": "T2.slotA.detail"
+      },
+      {
+        "label": "Choose assisted afternoon"
+      },
+      {
+        "identifier": "T2.slotB.detail"
+      },
+      {
+        "label": "Choose remote review"
+      },
+      {
+        "identifier": "T2.slotC.detail"
+      },
+      {
+        "label": "Notify the attendee"
+      },
+      {
+        "label": "Move appointment"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      11
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Choose remote review"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Choose remote review"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Choose remote review"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      12
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "checkpoint",
+    "state_id": "remote-time",
+    "after_targets": [
+      {
+        "label": "Appointment rescheduling offer"
+      },
+      {
+        "identifier": "T2.entity"
+      },
+      {
+        "identifier": "T2.description"
+      },
+      {
+        "identifier": "T2.summary"
+      },
+      {
+        "identifier": "T2.status"
+      },
+      {
+        "identifier": "T2.surface"
+      },
+      {
+        "label": "Visit in person"
+      },
+      {
+        "label": "Visit by video"
+      },
+      {
+        "label": "Choose assisted morning"
+      },
+      {
+        "identifier": "T2.slotA.detail"
+      },
+      {
+        "label": "Choose assisted afternoon"
+      },
+      {
+        "identifier": "T2.slotB.detail"
+      },
+      {
+        "label": "Choose remote review"
+      },
+      {
+        "identifier": "T2.slotC.detail"
+      },
+      {
+        "label": "Notify the attendee"
+      },
+      {
+        "label": "Move appointment"
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      13
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Notify the attendee"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Notify the attendee"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      },
+      {
+        "target": {
+          "label": "Notify the attendee"
+        },
+        "property": "selected",
+        "op": "eq",
+        "expected": false
+      }
+    ],
+    "capture_scope": "targets",
+    "depends_on": [
+      14
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "sweep",
+    "state_id": "ready-again",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [
+      15
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "tap",
+    "target": {
+      "label": "Move appointment"
+    },
+    "reveal": true,
+    "max_steps": 18,
+    "preconditions": [
+      {
+        "target": {
+          "label": "Move appointment"
+        },
+        "property": "enabled",
+        "op": "eq",
+        "expected": true
+      }
+    ],
+    "expect_callback": "reschedule|BK-908|video|Q-9",
+    "capture_scope": "targets",
+    "depends_on": [
+      16
+    ],
+    "callback_dependencies": []
+  },
+  {
+    "type": "sweep",
+    "state_id": "moved-again",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [
+      17
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "apply_next_fixture",
+    "capture_scope": "none",
+    "depends_on": [
+      18
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  },
+  {
+    "type": "sweep",
+    "state_id": "changed-booking",
+    "max_scrolls": 18,
+    "capture_scope": "full_content",
+    "depends_on": [
+      19
+    ],
+    "callback_dependencies": [],
+    "preconditions": []
+  }
+]

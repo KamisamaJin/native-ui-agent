@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "platform": "ios",
+  "backend": "snapshot-testing",
+  "target": {
+    "description": "订单卡片：长标题、待付款状态。示例工程、测试和输出需按实际适配。",
+    "sources": ["App/Orders/OrderCard.swift", "App/Resources/Assets.xcassets"]
+  },
+  "environment": {
+    "device": "从当前模拟器列表选择并填入",
+    "theme": "测试宿主实际设置的 light 模式",
+    "content_size_category": "测试宿主实际设置的文字配置",
+    "tool_versions": "从实际 Xcode、iOS SDK、SnapshotTesting 版本填入",
+    "native_output_transport": "需由测试计划或适配脚本显式传递 NATIVE_UI_OUTPUT，并在宿主验证"
+  },
+  "commands": [
+    {
+      "argv": [
+        "xcodebuild", "test",
+        "-workspace", "App.xcworkspace",
+        "-scheme", "App",
+        "-destination", "platform=iOS Simulator,id=SELECT-ACTUAL-DEVICE-ID",
+        "-only-testing:AppTests/OrderCardVisualTests/testLongTitle"
+      ],
+      "timeout_seconds": 900
+    }
+  ],
+  "artifacts": [
+    {"base": "output", "glob": "native/order-card.png", "role": "actual"}
+  ],
+  "protected_paths": ["AppTests/__Snapshots__"],
+  "checks": [
+    {
+      "id": "badge-visible",
+      "kind": "visual",
+      "description": "待付款标签可见，长标题不遮挡标签",
+      "source": "本次业务需求"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "candidate_source_sha256": "b31332d4e845b969c2a076e88721d293c8dd20b580046d38cf70d8d4e5272ced",
+  "control_sha256": "f6c7c9d8eb19a2dc8bc58fc822ecf1ed072965ddf06537efec00deb08deb1d86",
+  "declarations": {
+    "SDK_Git_network_or_agents": false,
+    "SUT_backend_or_expected_values_changed": false,
+    "actual_cache_grades_source_cohorts_cost_or_mapping_read": false,
+    "native_image_finish_or_device_actions": false,
+    "original_author_source_modified": false,
+    "writes_outside_exclusive_review_root": false
+  },
+  "findings": [
+    {
+      "id": "P1-late-subject-drift",
+      "reproduction": "results/v1/RESULT.json test07 and retained synthetic fixture",
+      "scope": "v1 publishes after actual subject bytes change during real evaluation; after-bind check alone misses final window",
+      "v2": "Recompile original and derived using final plan/lock immediately before publication; equality required"
+    },
+    {
+      "id": "P1-late-reference-integrity",
+      "reproductions": [
+        "results/v1/RESULT.json test08",
+        "results/v1-ref/RESULT.json test10"
+      ],
+      "scope": "v1 publishes when bound record bytes or reference JSON bytes change after real evaluation",
+      "v2": "Require exact canonical new-store bound path/SHA, original bound-target bytes and unchanged captured reference JSON bytes matching returned ref"
+    }
+  ],
+  "inputs": {
+    "author_freeze_sha256": "8875b7c65b28dfeea0a262e575921f4f6cb1fce2014726b60610cd403e3b847c",
+    "policy_sha256": "8d631ad511f7f097403e954651cbeacb0d1bd9e628e9cda22e133f229598070b",
+    "skill": "skill-creator source preserved in snapshots",
+    "source_index": "SOURCES.json"
+  },
+  "kind": "bounded-independent-source-only-binding-helper-review",
+  "limits": [
+    "Caller separately owns complete barrier/config/full source capsule/independent consensus authority",
+    "Actual CLI still runs under original envelope and meter; direct synthetic CLI control is not operational admission",
+    "Helper verifies compiled subjects through last check; it is not full-capsule authorization or a new oracle",
+    "Concurrent changes after final check remain caller source-freeze/envelope pre/post responsibility"
+  ],
+  "original_source_sha256": "06947385887dbd94d4c18cb3fa5b6357392e98733fa84407e562665439570d4c",
+  "unchanged_invariants": [
+    "Only source_review_store differs in derived config; original review stores and public gates remain untouched",
+    "Original compiled expectation True/unit bool/subject file map remain identical",
+    "Observed False remains failed False; null remains unassessed null",
+    "CLI has config/submission/tool-manifest/output only; no native/image/finish entry",
+    "Mid-operation failed outputs remain retained, no successful evaluation publication on demonstrated failures"
+  ],
+  "validation": {
+    "additional_original_reference_bytes_negative": {
+      "demonstrated_failures": 1,
+      "result": "results/v1-ref/RESULT.json",
+      "sha256": "b6eb3048aa202db8923072ebed1b0db9a9520c2a0fcc5f96bb683058d1dfd396",
+      "tests": 1
+    },
+    "all_fixtures_retained": true,
+    "author_controls": 5,
+    "candidate_and_control_backends": "Exact identical evidence_responsibility and design_contract source bytes; real frozen backend used, no cohort generated",
+    "corrected_suite": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 10,
+      "result": "results/v2/RESULT.json",
+      "sha256": "b1e2e7a431eabc76887119b0d5a7c254726bb023a55b990b38c7e14c19f24c0f",
+      "tests": 10
+    },
+    "original_suite": {
+      "demonstrated_failures": 2,
+      "errors": 0,
+      "passed": 7,
+      "result": "results/v1/RESULT.json",
+      "sha256": "b3ed9136e06f9d37ecf4570692fe4fd35ddb987ff499c502d289fc7166b24257",
+      "tests": 9
+    },
+    "real_frozen_cli_positive": {
+      "operation_sha256": "00b1ad0a2a9cd26489684efbe2424738a5f77dea1455a6d5471938f196ef1089",
+      "result": "cli/RESULT.json",
+      "sha256": "1dcfdb2d651c72af1adf1984befa0e738cc85fa568ddbf788c50e08688ac0638"
+    }
+  },
+  "version": 1
+}

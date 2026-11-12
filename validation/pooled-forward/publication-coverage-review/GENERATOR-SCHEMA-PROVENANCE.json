@@ -1,0 +1,43 @@
+{
+  "kind": "source-only-applicability-schema-review-provenance",
+  "no_generated_design_json_read": true,
+  "scope": "Only denominator construction, PUBLIC-PACKETS task-order shape and byte-seal construction. Hashing whole source bytes does not read or approve generated product inputs.",
+  "sources": [
+    {
+      "fragments": [
+        {
+          "exact_source_excerpt": "                denominator=[]\n                for st in flow['states']:\n                    sid=st['id'];reference['states'][sid]={}\n                    for r in rules:\n                        value=value_for(t,flow,st,r,platform)\n                        if value is None:\n                            reason='Different successful stimulus class or observation-only checkpoint.' if r['kind']=='event' else 'Full-component visual proposition reserved for declared full-content states; intermediate local facts remain required.'\n                            values[r['id']][sid]={'not_applicable':reason}\n                            denominator.append(dict(state=sid,rule_id=r['id'],platform=platform,disposition='N/A',reason=reason,kind=r['kind'],owner='component'))\n                            continue\n                        reference['states'][sid][r['id']]=value\n                        if r['kind']=='geometry':\n                            reference['states'][sid][r['id']+'-schema-opposite']=TOKENS['android' if platform=='ios' else 'ios']['minControlHeight']\n                        own=expr('/states/'+sid+'/'+r['id']);other=expr('/states/'+sid+'/'+r['id']+'-schema-opposite') if r['kind']=='geometry' else own\n                        values[r['id']][sid]={platform:own,('android' if platform=='ios' else 'ios'):other}\n                        denominator.append(dict(state=sid,rule_id=r['id'],platform=platform,disposition='required',kind=r['kind'],owner='component',assertion_id=sid+'/'+r['id']))\n                for r in rules:\n                    selected=[st['id'] for st in flow['states'] if 'not_applicable' not in values[r['id']][st['id']]]\n                    if selected:reference['obligations'].append(dict(id=r['id'],clause='Apply the independently published '+r['id']+' atom in each listed state.',priority='must',states=selected,risk='behavior' if r['kind']=='event' or r['id'].endswith(('-enabled','-selected')) else 'layout' if r['kind']=='geometry' else 'style' if r['kind'] in ['manual','text_layout'] else 'content'))\n                for method,kind in er.NATIVE.items():\n                    ids=[r['id'] for r in rules if r['kind']==kind and any('not_applicable' not in v for v in values[r['id']].values())]\n                    if ids:reference['responsibilities'].append(dict(id='native-'+method,clause='Establish actual '+method+' facts for the real production component through the applicable compiled assertion IDs.',priority='must',owner='component',method=method,subject='production_component',rule_ids=ids))\n                for cid,owner,subject,clause in [\n                    ('production-api','component','production_api','The real production file exports the exact public immutable input and component API in API.md.'),\n                    ('thin-bridge','bridge','thin_bridge','The actual bridge only decodes the typed fixture, applies the stock Android theme when applicable, and passes the same onEvent to the real production component; it owns no UI, decisions, state, identity reset, or callback rewriting.'),\n                    ('production-placement','integration','production_placement','The additive component is placed in the documented production product/package and the actual bridge calls that production API, preserving stock host deployment and global theme.')]:\n                    reference['responsibilities'].append(dict(id=cid,clause=clause,priority='must',owner=owner,method='source',subject=subject,rule_ids=[]))\n                    denominator.append(dict(state='source-boundary',rule_id=cid,platform=platform,disposition='required-source-review',kind='source',owner=owner,actual='unassessed',placeholder_capability_only=True))\n                if platform=='ios':\n                    for st in flow['states']:\n                        for target in ['title','context']:\n                            for prop in ['font_sp','font_weight','color_argb','overflow','ellipsized','lines']:\n                                denominator.append(dict(state=st['id'],rule_id=target+'-'+prop,platform=platform,disposition='N/A',kind='text_layout',owner='component',reason='Preimplementation iOS platform scope: generic SwiftUI computed TextLayout values are not exposed by public AX. Typography and wrapping have separately required Boolean visual atoms; this is not an evaluated pass.'))\n",
+          "excerpt_sha256": "6cafc93fd3cc8292f808f73b134116981bca7c8e81ac93b5788d885b6ea37bdd",
+          "first_line": 423,
+          "last_line": 455
+        },
+        {
+          "exact_source_excerpt": "                den=load(p/'denominator.json');master.extend(dict(task=t['id'],family=family,**row) for row in den)\n                summary.append(dict(profile=label,states=len(plan['states']),actions=execution['parent_action_count'],assertions=len(plan['assertions']),native_claims=sum(c['method'] in er.NATIVE for c in compiled['claims']),source_claims=3,responsibility_issues=[],must_route_gaps=[],scope='pure only; no observed actuals/source approvals/native run'))\n    write(ROOT/'APPROVAL-MAPPING.json',dict(version=1,authored_intent_only=True,scope='Only each intended-platform projection is approved as authored intent; opposite typed slots are compiler schema-only. Independent design review remains outstanding.',profiles=profiles))\n    write(ROOT/'MASTER-DENOMINATOR.json',dict(version=1,source_review_actuals='unassessed',native_actuals='not_run',cells=master,counts={key:sum(row['disposition']==key for row in master) for key in ['required','N/A','required-source-review']}))\n",
+          "excerpt_sha256": "d27600c1f634a4a08f9ed4fd5a8bc6952837bd7a64884bbdec583a2fa347efed",
+          "first_line": 518,
+          "last_line": 521
+        }
+      ],
+      "original_source_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design-cohort2-v2/private/_authoring/materialize.py",
+      "source_sha256": "75b3f3129f7fbcd8882fc8c281c17062858bf789ad13a313111fe35bfbef538a"
+    },
+    {
+      "fragments": [
+        {
+          "exact_source_excerpt": "    write(ROOT/'PUBLIC-PACKETS.json',dict(version=1,worker_read_scope='Only public/tasks/<assigned-task>/**',tasks=[dict(task=t['id'],public_packet='public/tasks/'+t['id'],private_packet='withheld',swift_api=t['api'],kotlin_api=t['api']) for t in TASKS],private_source_must_not_be_in_worker_context=True))\n",
+          "excerpt_sha256": "b50b8292cd92e97e25f6c1a4aee595d86e2db508c7dc25741f2ca684561277c2",
+          "first_line": 172,
+          "last_line": 172
+        },
+        {
+          "exact_source_excerpt": "    inventory=[]\n    for p in sorted(ROOT.rglob('*')):\n        if p.is_file() and p.name not in ['SEAL.sha256','SEAL-IDENTITY.json']:\n            assert p.suffix!='.pyc' and '__pycache__' not in p.parts\n            inventory.append(sha(p)+'  '+p.relative_to(ROOT).as_posix())\n    write(ROOT/'SEAL.sha256','\\n'.join(inventory)+'\\n')\n",
+          "excerpt_sha256": "7e5ae7fb95dcbcebc7dd60a83b8ad11bfc3a863376e272f143d6222dc1ff7059",
+          "first_line": 175,
+          "last_line": 180
+        }
+      ],
+      "original_source_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design-cohort2-v2/private/_authoring/finish.py",
+      "source_sha256": "8acf9d9f8511c959e502d367b05674984f7b8b1ce4075096a8adbe02efaf3c45"
+    }
+  ]
+}

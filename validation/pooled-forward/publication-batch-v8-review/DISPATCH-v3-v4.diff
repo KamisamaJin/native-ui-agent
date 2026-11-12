@@ -1,0 +1,100 @@
+--- frozen/prepare_alarm_dispatch_v3.py
++++ candidate/prepare_alarm_dispatch_v4.py
+@@ -19,7 +19,7 @@
+     'ALARM-GRADE-TEMPLATE-v1.json': 'd86534a2554c10e00cb92a7a281555c2715e1e3574679818c0731dadc0bbe58f',
+     'ALARM-POLICY-v1.json': 'a1cef456bf95f25c4a048138f335fec1cc6a513c84ae3abd3b951f9699b85d00',
+ }
+-DISPATCH_DIRECTORY = 'alarm-dispatches-v3'
++DISPATCH_DIRECTORY = 'alarm-dispatches-v4'
+ 
+ 
+ def need(value, message):
+@@ -73,6 +73,9 @@
+          and selected.get('code_pins') == batch.code_pins()
+          and selected.get('mapping_revealed_to_judges_or_model') is False
+          and selected.get('quality_adjudicated') is False, 'Original all15 selection provenance differs')
++    metadata_authority = selected.get('metadata_authority')
++    metadata_context = batch.load_metadata_context(reader,root,metadata_authority,cause_ref) if metadata_authority is not None else None
++    metadata_claims = set()
+     for rows in [selected.get('groups'), packets.get('groups')]:
+         need(isinstance(rows, list) and len(rows) == 15 and {r.get('group') for r in rows} == groups,
+              'All fifteen selection and packet scopes required')
+@@ -96,9 +99,12 @@
+         by_name = {d['anonymous_relative']: d for d in documents}
+         description = {d['path']: d for d in spec['anonymous_description']['documents']}
+         need(len(description) == len(documents) and set(description) == set(by_name), 'Material description membership differs')
++        used_metadata = batch.verify_metadata_spec(spec,derivations,metadata_context,metadata_authority)
++        need(not metadata_claims & used_metadata, 'Original worker metadata claim reused across groups')
++        metadata_claims.update(used_metadata)
+         derived = set()
+         for item in derivations:
+-            batch.verify_derivation(reader, item); name = item['anonymous_relative']
++            batch.verify_derivation(reader, item, metadata_context=metadata_context); name = item['anonymous_relative']
+             need(name not in derived and name in by_name and by_name[name]['original'] == item['derived']
+                  and description[name].get('raw_original_sha256') == item['original']['sha256'],
+                  'Original derivation is not bound to selected material')
+@@ -150,13 +156,14 @@
+                 inputs.append(original)
+         need(len(inputs) == 1, 'Unique original cause input required')
+         bases[group] = verify_base(phase, reader, inputs[0], group)
+-    return {'cause_rows': cause_rows, 'packet_rows': packet_rows, 'base_refs': bases,
++    need(metadata_context is None or metadata_claims == set(metadata_context.documents), 'All ten authorized metadata originals required')
++    return {'metadata_authority':metadata_authority,'cause_rows': cause_rows, 'packet_rows': packet_rows, 'base_refs': bases,
+             'bindings': {'cause_index': cause_ref, 'packets_index': packets_ref,
+-                         'selection_seal': selection_ref, 'actor_registry': actors_ref}}
++                         'selection_seal': selection_ref, 'actor_registry': actors_ref,'metadata_authority':metadata_authority}}
+ 
+ 
+ def verify_previous(phase, reader, root, group, previous_ref, cause_ref, packet_rows, *, cause_rows, base_refs, bindings):
+-    need(set(bindings) == {'cause_index', 'packets_index', 'selection_seal', 'actor_registry', 'batch', 'dispatcher'}
++    need(set(bindings) == {'cause_index', 'packets_index', 'selection_seal', 'actor_registry', 'batch', 'dispatcher','metadata_authority'}
+          and bindings['cause_index'] == cause_ref, 'Complete current dispatch input/code bindings required')
+     prior = ORDER[:ORDER.index(group)]
+     need((previous_ref is None) == (not prior), 'Immediate preceding pair closure required')
+@@ -170,10 +177,11 @@
+              and end.get('anonymous_group') == before and end.get('judges') == ['J1', 'J2'], 'Previous alarm pair not closed')
+         start = phase.original(reader, end['start'])
+         need(end['start']['path'] == str(expected.with_name('START.json'))
+-             and start.get('version') == 3 and type(start.get('version')) is int
++             and start.get('version') == 4 and type(start.get('version')) is int
+              and start.get('kind') == 'parallel-independent-alarm-episode-start'
+              and start.get('anonymous_group') == before and start.get('judges') == ['J1', 'J2']
+              and start.get('first_cause_barrier') == cause_ref
++             and start.get('metadata_authority') == bindings['metadata_authority']
+              and start.get('packet_seal') == packet_rows[before]['packet_seal']
+              and start.get('base_packet') == base_refs[before]
+              and start.get('original_cause_episode') == cause_rows[before]['episode_end'], 'Previous pair input binding differs')
+@@ -181,7 +189,7 @@
+         prepared_ref = start.get('dispatch_prepared')
+         need(isinstance(prepared_ref, dict) and prepared_ref.get('path') == str(destination / 'PREPARED.json'), 'Previous dispatch reference differs')
+         prepared = phase.original(reader, prepared_ref)
+-        need(type(prepared.get('version')) is int and prepared['version'] == 3
++        need(type(prepared.get('version')) is int and prepared['version'] == 4
+              and prepared.get('kind') == 'verified-original-context-alarm-dispatch'
+              and prepared.get('group') == before and prepared.get('mapping_revealed') is False
+              and prepared.get('previous_pair') == start.get('previous_pair')
+@@ -229,6 +237,7 @@
+     def arg_ref(name): return {'path': str(getattr(a, name)), 'sha256': getattr(a, name + '_sha256')}
+     cause_ref, packets_ref = arg_ref('cause_index'), arg_ref('packets_index')
+     checked = verify_prepared(batch, reader, root, cause_ref, packets_ref, arg_ref('selection_seal'), arg_ref('actors'))
++    need(checked['metadata_authority'] is not None, 'Default dispatch requires externally pinned worker metadata authority')
+     dispatcher_ref = ref(reader, Path(__file__).resolve())
+     checked['bindings'].update(batch=arg_ref('batch'), dispatcher=dispatcher_ref)
+     previous = {'path': str(a.previous_end), 'sha256': a.previous_end_sha256} if a.previous_end else None
+@@ -267,12 +276,14 @@
+ Complete grade.json and actual inspection/claim ledgers, seal all regular output members readonly. Return only exact SEAL path/SHA and coverage; omit product findings from coordinator completion. Remain available. This phase establishes records, not delivery or assignment.
+ '''
+         batch.write(prompt, text.encode()); entries.append({'judge': judge, 'actor': row['actors'][judge], 'prompt': ref(reader, prompt), 'output': str(output)})
+-    prepared = {'version': 3, 'kind': 'verified-original-context-alarm-dispatch', 'group': a.group, 'entries': entries, 'cause_index': cause_ref,
++    prepared = {'version': 4, 'kind': 'verified-original-context-alarm-dispatch', 'group': a.group, 'entries': entries, 'cause_index': cause_ref,
+         'packets_index': packets_ref, 'selection_seal': arg_ref('selection_seal'), 'actor_registry': arg_ref('actors'),
++        'metadata_authority':checked['metadata_authority'],
+         'batch': arg_ref('batch'), 'dispatcher': dispatcher_ref, 'base_packet': base_ref, 'packet_seal': packet_ref,
+         'original_cause_episode': row['episode_end'], 'previous_pair': previous, 'mapping_revealed': False}
+     batch.write(destination / 'PREPARED.json', batch.encoded(prepared))
+-    start = {'version': 3, 'kind': 'parallel-independent-alarm-episode-start', 'anonymous_group': a.group,
++    start = {'version': 4, 'kind': 'parallel-independent-alarm-episode-start', 'anonymous_group': a.group,
++        'metadata_authority':checked['metadata_authority'],
+         **clock.point('started'), 'judges': ['J1', 'J2'], 'packet_seal': packet_ref,
+         'first_cause_barrier': cause_ref, 'original_cause_episode': row['episode_end'],
+         'base_packet': base_ref, 'previous_pair': previous, 'dispatch_prepared': ref(reader, destination / 'PREPARED.json'),

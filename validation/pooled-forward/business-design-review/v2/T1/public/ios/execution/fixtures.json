@@ -1,0 +1,668 @@
+{
+  "initial": {
+    "entityId": "OR-481",
+    "entityTitle": "Museum installation freight",
+    "description": "Release only the cartons that can travel together today. The receiving dock needs the complete conservation note, handling restrictions, and the destination team name before any freight leaves the depot.",
+    "lots": [
+      {
+        "id": "L-A",
+        "label": "Release lot A",
+        "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.",
+        "units": 7,
+        "available": true,
+        "holdReason": ""
+      },
+      {
+        "id": "L-B",
+        "label": "Release lot B",
+        "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.",
+        "units": 4,
+        "available": false,
+        "holdReason": "Cold-chain seal not approved"
+      },
+      {
+        "id": "L-C",
+        "label": "Release lot C",
+        "detail": "Reusable mounting brackets and the full printed installation schedule.",
+        "units": 3,
+        "available": true,
+        "holdReason": ""
+      }
+    ]
+  },
+  "updates": [
+    {
+      "entityId": "OR-481",
+      "entityTitle": "Museum installation freight",
+      "description": "Receiving instructions changed: use the service entrance on Harbor Street and retain the loading record for the conservation team. Review the packing list again before releasing the remaining eligible lot.",
+      "lots": [
+        {
+          "id": "L-A",
+          "label": "Release lot A",
+          "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.",
+          "units": 7,
+          "available": true,
+          "holdReason": ""
+        },
+        {
+          "id": "L-B",
+          "label": "Release lot B",
+          "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.",
+          "units": 4,
+          "available": false,
+          "holdReason": "Cold-chain seal not approved"
+        },
+        {
+          "id": "L-C",
+          "label": "Release lot C",
+          "detail": "Reusable mounting brackets and the full printed installation schedule.",
+          "units": 3,
+          "available": false,
+          "holdReason": "Destination storage unavailable"
+        }
+      ]
+    },
+    {
+      "entityId": "OR-482",
+      "entityTitle": "Archive return shipment",
+      "description": "This is a different order using the same choice labels. No selection, packing approval, or recorded release from the museum freight belongs to this return shipment.",
+      "lots": [
+        {
+          "id": "L-A",
+          "label": "Release lot A",
+          "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.",
+          "units": 7,
+          "available": true,
+          "holdReason": ""
+        },
+        {
+          "id": "L-B",
+          "label": "Release lot B",
+          "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.",
+          "units": 4,
+          "available": false,
+          "holdReason": "Cold-chain seal not approved"
+        },
+        {
+          "id": "L-C",
+          "label": "Release lot C",
+          "detail": "Reusable mounting brackets and the full printed installation schedule.",
+          "units": 3,
+          "available": true,
+          "holdReason": ""
+        }
+      ]
+    }
+  ],
+  "width": 390,
+  "theme": "light",
+  "direction": "ltr",
+  "canvas_color": "#FFF8F4",
+  "max_scrolls": 18,
+  "required_identifiers": [
+    "T1.surface",
+    "T1.entity",
+    "T1.description",
+    "T1.summary",
+    "T1.status",
+    "T1.lotA.detail",
+    "T1.lotB.detail",
+    "T1.lotC.detail"
+  ],
+  "dynamic_type": "large",
+  "state_capture": true,
+  "guard_protocol": 1,
+  "observation_strategy": "coalesced",
+  "execution_states": [
+    {
+      "state_id": "start",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Shipment release checklist"
+        },
+        {
+          "identifier": "T1.entity"
+        },
+        {
+          "identifier": "T1.description"
+        },
+        {
+          "identifier": "T1.summary"
+        },
+        {
+          "identifier": "T1.status"
+        },
+        {
+          "identifier": "T1.surface"
+        },
+        {
+          "label": "Release lot A"
+        },
+        {
+          "identifier": "T1.lotA.detail"
+        },
+        {
+          "label": "Release lot B"
+        },
+        {
+          "identifier": "T1.lotB.detail"
+        },
+        {
+          "label": "Release lot C"
+        },
+        {
+          "identifier": "T1.lotC.detail"
+        },
+        {
+          "label": "Packing list checked"
+        },
+        {
+          "label": "Release selected lots"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "one-lot",
+      "coverage": "targets",
+      "targets": [
+        {
+          "label": "Shipment release checklist"
+        },
+        {
+          "identifier": "T1.entity"
+        },
+        {
+          "identifier": "T1.description"
+        },
+        {
+          "identifier": "T1.summary"
+        },
+        {
+          "identifier": "T1.status"
+        },
+        {
+          "identifier": "T1.surface"
+        },
+        {
+          "label": "Release lot A"
+        },
+        {
+          "identifier": "T1.lotA.detail"
+        },
+        {
+          "label": "Release lot B"
+        },
+        {
+          "identifier": "T1.lotB.detail"
+        },
+        {
+          "label": "Release lot C"
+        },
+        {
+          "identifier": "T1.lotC.detail"
+        },
+        {
+          "label": "Packing list checked"
+        },
+        {
+          "label": "Release selected lots"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "two-lots",
+      "coverage": "targets",
+      "targets": [
+        {
+          "label": "Shipment release checklist"
+        },
+        {
+          "identifier": "T1.entity"
+        },
+        {
+          "identifier": "T1.description"
+        },
+        {
+          "identifier": "T1.summary"
+        },
+        {
+          "identifier": "T1.status"
+        },
+        {
+          "identifier": "T1.surface"
+        },
+        {
+          "label": "Release lot A"
+        },
+        {
+          "identifier": "T1.lotA.detail"
+        },
+        {
+          "label": "Release lot B"
+        },
+        {
+          "identifier": "T1.lotB.detail"
+        },
+        {
+          "label": "Release lot C"
+        },
+        {
+          "identifier": "T1.lotC.detail"
+        },
+        {
+          "label": "Packing list checked"
+        },
+        {
+          "label": "Release selected lots"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "ready",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Shipment release checklist"
+        },
+        {
+          "identifier": "T1.entity"
+        },
+        {
+          "identifier": "T1.description"
+        },
+        {
+          "identifier": "T1.summary"
+        },
+        {
+          "identifier": "T1.status"
+        },
+        {
+          "identifier": "T1.surface"
+        },
+        {
+          "label": "Release lot A"
+        },
+        {
+          "identifier": "T1.lotA.detail"
+        },
+        {
+          "label": "Release lot B"
+        },
+        {
+          "identifier": "T1.lotB.detail"
+        },
+        {
+          "label": "Release lot C"
+        },
+        {
+          "identifier": "T1.lotC.detail"
+        },
+        {
+          "label": "Packing list checked"
+        },
+        {
+          "label": "Release selected lots"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "released",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Shipment release checklist"
+        },
+        {
+          "identifier": "T1.entity"
+        },
+        {
+          "identifier": "T1.description"
+        },
+        {
+          "identifier": "T1.summary"
+        },
+        {
+          "identifier": "T1.status"
+        },
+        {
+          "identifier": "T1.surface"
+        },
+        {
+          "label": "Release lot A"
+        },
+        {
+          "identifier": "T1.lotA.detail"
+        },
+        {
+          "label": "Release lot B"
+        },
+        {
+          "identifier": "T1.lotB.detail"
+        },
+        {
+          "label": "Release lot C"
+        },
+        {
+          "identifier": "T1.lotC.detail"
+        },
+        {
+          "label": "Packing list checked"
+        },
+        {
+          "label": "Release selected lots"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "same-order-pruned",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Shipment release checklist"
+        },
+        {
+          "identifier": "T1.entity"
+        },
+        {
+          "identifier": "T1.description"
+        },
+        {
+          "identifier": "T1.summary"
+        },
+        {
+          "identifier": "T1.status"
+        },
+        {
+          "identifier": "T1.surface"
+        },
+        {
+          "label": "Release lot A"
+        },
+        {
+          "identifier": "T1.lotA.detail"
+        },
+        {
+          "label": "Release lot B"
+        },
+        {
+          "identifier": "T1.lotB.detail"
+        },
+        {
+          "label": "Release lot C"
+        },
+        {
+          "identifier": "T1.lotC.detail"
+        },
+        {
+          "label": "Packing list checked"
+        },
+        {
+          "label": "Release selected lots"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "ready-again",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Shipment release checklist"
+        },
+        {
+          "identifier": "T1.entity"
+        },
+        {
+          "identifier": "T1.description"
+        },
+        {
+          "identifier": "T1.summary"
+        },
+        {
+          "identifier": "T1.status"
+        },
+        {
+          "identifier": "T1.surface"
+        },
+        {
+          "label": "Release lot A"
+        },
+        {
+          "identifier": "T1.lotA.detail"
+        },
+        {
+          "label": "Release lot B"
+        },
+        {
+          "identifier": "T1.lotB.detail"
+        },
+        {
+          "label": "Release lot C"
+        },
+        {
+          "identifier": "T1.lotC.detail"
+        },
+        {
+          "label": "Packing list checked"
+        },
+        {
+          "label": "Release selected lots"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "released-again",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Shipment release checklist"
+        },
+        {
+          "identifier": "T1.entity"
+        },
+        {
+          "identifier": "T1.description"
+        },
+        {
+          "identifier": "T1.summary"
+        },
+        {
+          "identifier": "T1.status"
+        },
+        {
+          "identifier": "T1.surface"
+        },
+        {
+          "label": "Release lot A"
+        },
+        {
+          "identifier": "T1.lotA.detail"
+        },
+        {
+          "label": "Release lot B"
+        },
+        {
+          "identifier": "T1.lotB.detail"
+        },
+        {
+          "label": "Release lot C"
+        },
+        {
+          "identifier": "T1.lotC.detail"
+        },
+        {
+          "label": "Packing list checked"
+        },
+        {
+          "label": "Release selected lots"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "changed-order",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Shipment release checklist"
+        },
+        {
+          "identifier": "T1.entity"
+        },
+        {
+          "identifier": "T1.description"
+        },
+        {
+          "identifier": "T1.summary"
+        },
+        {
+          "identifier": "T1.status"
+        },
+        {
+          "identifier": "T1.surface"
+        },
+        {
+          "label": "Release lot A"
+        },
+        {
+          "identifier": "T1.lotA.detail"
+        },
+        {
+          "label": "Release lot B"
+        },
+        {
+          "identifier": "T1.lotB.detail"
+        },
+        {
+          "label": "Release lot C"
+        },
+        {
+          "identifier": "T1.lotC.detail"
+        },
+        {
+          "label": "Packing list checked"
+        },
+        {
+          "label": "Release selected lots"
+        }
+      ],
+      "absence_targets": []
+    }
+  ],
+  "execution_state_definitions": [
+    {
+      "id": "start",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "one-lot",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1
+    },
+    {
+      "id": "two-lots",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5
+    },
+    {
+      "id": "released",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7
+    },
+    {
+      "id": "same-order-pruned",
+      "input_index": 1,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9
+    },
+    {
+      "id": "ready-again",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "full_content",
+      "stimulus_action": 11
+    },
+    {
+      "id": "released-again",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "full_content",
+      "stimulus_action": 13
+    },
+    {
+      "id": "changed-order",
+      "input_index": 2,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15
+    }
+  ],
+  "execution_scope": "full",
+  "observation_targets": [
+    {
+      "label": "Shipment release checklist"
+    },
+    {
+      "identifier": "T1.entity"
+    },
+    {
+      "identifier": "T1.description"
+    },
+    {
+      "identifier": "T1.summary"
+    },
+    {
+      "identifier": "T1.status"
+    },
+    {
+      "identifier": "T1.surface"
+    },
+    {
+      "label": "Release lot A"
+    },
+    {
+      "identifier": "T1.lotA.detail"
+    },
+    {
+      "label": "Release lot B"
+    },
+    {
+      "identifier": "T1.lotB.detail"
+    },
+    {
+      "label": "Release lot C"
+    },
+    {
+      "identifier": "T1.lotC.detail"
+    },
+    {
+      "label": "Packing list checked"
+    },
+    {
+      "label": "Release selected lots"
+    }
+  ]
+}

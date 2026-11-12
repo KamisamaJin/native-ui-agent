@@ -1,0 +1,66 @@
+[
+  {
+    "id": "incompatible-runtime-retires-before-replacement",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "first_udid": "45A79730-C4CD-4644-8905-A482576B2B1A",
+      "second_udid": "0C325EAA-A4A0-4FBC-A061-A9ED57F82B2D",
+      "runtime": "SIMULATED.runtime2",
+      "resources": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-2/work/pool-incompatible/evidence/runtime-two/resources.json"
+    }
+  },
+  {
+    "id": "pool-expiry-boundaries",
+    "status": "F",
+    "evidence_class": "SIMULATED",
+    "error": "AssertionError('boundary differs before')",
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-2/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-2/checks/lifecycle_checks.py\", line 32, in expiry_boundaries\n    outcomes[name]=value;assert_that(value is expected,'boundary differs '+name)\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-2/checks/harness.py\", line 34, in assert_that\n    if not v:raise AssertionError(reason)\nAssertionError: boundary differs before\n"
+  },
+  {
+    "id": "active-lease-crosses-expiry-idle-retirement-reacquires",
+    "status": "F",
+    "evidence_class": "SIMULATED",
+    "error": "RuntimeError('Resource lease is active; concurrent acquisition refused')",
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.1/scripts/resource_manager.py\", line 202, in __enter__\n    try: fcntl.flock(self.stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)\nBlockingIOError: [Errno 35] Resource temporarily unavailable\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-2/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-2/checks/lifecycle_checks.py\", line 48, in active_and_idle_expiry\n    with rm.Resources(config,two,final=True) as manager:new=manager.native_options('ios')['simulator']\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.1/scripts/resource_manager.py\", line 205, in __enter__\n    raise RuntimeError('Resource lease is active; concurrent acquisition refused')\nRuntimeError: Resource lease is active; concurrent acquisition refused\n"
+  },
+  {
+    "id": "failed-retirement-blocks-acceptance",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "resource_receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-2/work/retirement-failure/evidence/final-delete-fails/resources.json",
+      "error": [
+        "Owned simulator command failed: SIMULATED delete failure\n"
+      ],
+      "cycle_exists": false,
+      "exit_code": 1
+    }
+  },
+  {
+    "id": "primary-error-and-cleanup-error-preserved",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "resource_receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-2/work/primary-cleanup-failure/evidence/primary-and-cleanup-fail/resources.json",
+      "service_error": {
+        "type": "OSError",
+        "message": "SIMULATED primary collector failure",
+        "at_unix": 1794305085.028762,
+        "status": "not_accepted"
+      },
+      "cleanup_errors": [
+        "Owned simulator command failed: SIMULATED delete failure\n"
+      ]
+    }
+  },
+  {
+    "id": "reused-output-preserves-evidence",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "original_files": 72,
+      "exit_code": 2
+    }
+  }
+]

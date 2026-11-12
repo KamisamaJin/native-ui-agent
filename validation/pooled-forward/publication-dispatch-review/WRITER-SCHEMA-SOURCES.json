@@ -1,0 +1,36 @@
+{
+  "actual_study_bodies_read": false,
+  "kind": "generic-writer-source-only-provenance",
+  "sources": [
+    {
+      "excerpts": [
+        {
+          "first_line": 248,
+          "last_line": 277,
+          "sha256": "3ca3140983bd24edf1b07e4d2db9a9107e81e870bac2656092c235eaf522078b",
+          "source_excerpt": "        copied(coord / 'BLIND-JUDGE-INSTRUCTIONS-v1.md', 'INSTRUCTIONS.md')\n        description = {'version': 1, 'anonymous_group': args.group, 'fixed_source_file_count': len(source['files']),\n                       'source_files': source['files'], 'production_placement': placements, 'contracts': contracts,\n                       'observations': observations, 'scope': 'One fixed source version. Exact source/PNG bytes and bounded unchanged native actuals/approved contracts; no tool identity, cost, worker claim, other grade or arm mapping.'}\n        save(packet / 'PACKET.json', description)\n        template = {'version': 1, 'kind': 'independent-blind-cause-grade', 'anonymous_group': args.group, 'judge_id': None,\n                    'product_causes': [], 'uncertain_product_suspicions': [], 'measurement_and_infrastructure_limits': [],\n                    'source_observations': [{'family': family, 'platform': platform, 'observations': [\n                        {'id': claim, 'observed': None, 'reason': '', 'citations': []}\n                        for claim in ['production-api', 'thin-bridge', 'production-placement']]}\n                        for family in ['public', 'private'] for platform in ['ios', 'android']],\n                    'private_image_observations': private_templates, 'coverage_assessment': [],\n                    'images_inspected': [], 'source_files_inspected': [], 'native_facts_inspected': [], 'contract_files_inspected': [],\n                    'independent_quality_complete': None, 'scope_notes': []}\n        save(packet / 'GRADE-TEMPLATE.json', template)\n        inventory = {}\n        for path in sorted(packet.rglob('*')):\n            assert not path.is_symlink()\n            if path.is_file():\n                assert not LEAK_BYTES.search(path.read_bytes()), 'Identity leak in anonymous member: ' + str(path.relative_to(packet))\n                inventory[str(path.relative_to(packet))] = {'sha256': sha(path), 'bytes': path.stat().st_size}\n        ledger.update(original_source_manifest=ref(source_folder / 'source.json'), private_episode=ref(episode_end),\n                      anonymous_inventory=inventory, textual_identity_scan_passed=True, no_quality_judgment=True)\n        save(ledger_root / 'LEDGER.json', ledger)\n        save(packet / 'SEAL.json', {'version': 1, 'kind': 'anonymous-fixed-version-input-seal', 'anonymous_group': args.group,\n                                    'files': {name: row['sha256'] for name, row in inventory.items()}})\n        save(ledger_root / 'SEAL.json', {'version': 1, 'packet_seal': ref(packet / 'SEAL.json'), 'ledger': ref(ledger_root / 'LEDGER.json'),\n                                        'projection_policy': ref(coord / 'ANONYMOUS-PROJECTION-v1.json'), 'mapping_revealed': False})\n        print(json.dumps({'group': args.group, 'packet': str(packet), 'packet_seal_sha256': sha(packet / 'SEAL.json'),\n                          'observations': len(observations), 'original_png_copies': sum(p.suffix.lower() == '.png' for p in packet.rglob('*')), 'mapping_revealed': False}))\n"
+        }
+      ],
+      "source_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/operators/cohort2/coordination/build_blind_packet.py",
+      "source_sha256": "451da90dd2b4c1721247145ccb7b2c4c6605faa08feff2ade884c2f0abe826de"
+    },
+    {
+      "excerpts": [
+        {
+          "first_line": 65,
+          "last_line": 68,
+          "sha256": "21933a3688c45808ca6e56facf866b81cc96e370144ae35930956eb787cbbbc1",
+          "source_excerpt": "            raise ValueError('Submitted grade output is not readonly')\n    grade = load(members['grade.json'])\n    if grade.get('anonymous_group') != group or grade.get('judge_id') != judge:\n        raise ValueError('Grade body belongs to another context')\n"
+        },
+        {
+          "first_line": 142,
+          "last_line": 155,
+          "sha256": "e099d546e5ed008df86d2acf8d175530513484376fb7f66af3551d2b5943b567",
+          "source_excerpt": "\ndef main():\n    parser = argparse.ArgumentParser(description=__doc__)\n    commands = parser.add_subparsers(dest='command', required=True)\n    correction = commands.add_parser('correct-clock')\n    correction.add_argument('--episode', required=True, type=Path)\n    correction.add_argument('--output', type=Path)\n    correction.add_argument('--original-end', type=Path)\n    split = commands.add_parser('correct-split-cause-clock')\n    split.add_argument('--episode', required=True, type=Path)\n    pair = commands.add_parser('close-pair')\n    pair.add_argument('--episode', required=True, type=Path)\n    pair.add_argument('--group', required=True)\n    pair.add_argument('--phase', choices=['cause', 'alarm'], default='cause')\n"
+        }
+      ],
+      "source_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-quality-tools/grade_records.py",
+      "source_sha256": "691ab8b1ca698fdcac235b6c79041684f90434abe47d5a235e838c8d4052f8e4"
+    }
+  ]
+}

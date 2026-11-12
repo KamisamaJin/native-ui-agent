@@ -1,0 +1,5 @@
+Candidate revision 2 adds exactly two required-input checks to cold.py: pack's original index SHA must be a lowercase 64-character SHA256 string, and the externally pinned decoded transport must contain that same non-null string field. Both checks happen before an output namespace is created. No compression, copy, format, verification, restore, selection or deletion behavior changes for valid inputs.
+
+The public Python call shapes, CLI, transport schema version 1 and frozen ARCHIVE_SHA remain unchanged. `publication-tools/archive.py` is a byte-exact copy of the pinned parent, included only to preserve the helper's existing relative import layout. The exact two-guard patch is retained as DIFF.txt.
+
+This candidate addresses the missing required external-index-pin validation. It does not authenticate the caller's chosen pin, infer dataset ownership, lock a changing same-user namespace, authorize original data access or perform cleanup. A correct original index pin remains the operator's responsibility, alongside the external TRANSPORT.json pin. No actual study data has been transported by this review.

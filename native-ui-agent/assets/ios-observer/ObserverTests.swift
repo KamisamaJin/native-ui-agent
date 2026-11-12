@@ -160,7 +160,7 @@ final class ObserverTests: XCTestCase {
         var sawTop = false, sawBottom = false
         var seenTargets = Set<String>()
         for n in 0...limit {
-            let snap = capture("state-\(state)-scroll-\(n)")
+            let snap = capture("state-\(state)-scroll-\(n)", boundaryRequired: true)
             let content = frame((snap["runtime"] as? [String: Any])?["content_frame"])
             let offset = Double(viewportFrame.minY - content.minY), h = Double(content.height)
             heights.append(h); intervals.append([max(0, offset), min(h, offset + Double(viewportFrame.height))])
@@ -197,7 +197,13 @@ final class ObserverTests: XCTestCase {
             "max_gap": maxGap, "stable_binding": !drift, "stable_height": stableHeight, "complete": complete,
             "observed_targets": observationTargets.filter { seenTargets.contains(key($0)) }, "return_trace": trace,
             "scope": "Actual overlapping pixels for this input/event epoch; not a style or business pass."])
-        if !complete { issues.append("state \(state) incomplete overlapping full-content coverage") }
+        // Estimated lazy tail height is not a terminal extent. Raw capture
+        // exports every original frame even when geometry cannot certify it.
+        // The host independently verifies the original-pixel/AX overlap chain;
+        // missing/moving/ambiguous links still block native execution coverage.
+        if !sawTop || !sawBottom || drift || maxGap > 1 {
+            issues.append("state \(state) incomplete overlapping full-content coverage")
+        }
     }
 
     func decode(_ value: String) -> Any? { guard let data = value.data(using: .utf8) else { return nil }; return try? JSONSerialization.jsonObject(with: data) }
@@ -219,7 +225,7 @@ final class ObserverTests: XCTestCase {
     func fullyVisible(_ e: XCUIElement) -> Bool {
         e.exists && e.frame.width > 0 && e.frame.height > 0 && viewportFrame.insetBy(dx: -0.5, dy: -0.5).contains(e.frame)
     }
-    func capture(_ name: String) -> [String: Any] {
+    func capture(_ name: String, boundaryRequired: Bool = false) -> [String: Any] {
         let started = ProcessInfo.processInfo.systemUptime
         defer { recordOperation("capture", started) }
         // One public native snapshot carries real AX ancestry and attributes.
@@ -252,6 +258,19 @@ final class ObserverTests: XCTestCase {
         let callbacks = nodes.first { $0["identifier"] as? String == "__observer.receipt" }.flatMap { decode($0["label"] as? String ?? "") as? [[String: Any]] } ?? []
         let b: [String: Any] = ["pid": r["pid"] ?? NSNull(), "instance": r["instance"] ?? NSNull(), "fixture_index": r["fixture_index"] ?? NSNull(), "input_sha256": r["input_sha256"] ?? NSNull(), "event_revision": r["event_revision"] ?? NSNull()]
         let reached = nodes.contains { $0["identifier"] as? String == "__observer.bottom" && $0["fully_within_viewport"] as? Bool == true }
+        var boundary: [String: Any] = ["queried": false, "identifier": "__observer.bottom", "binding": b]
+        if boundaryRequired && reached {
+            let query = app.staticTexts.matching(identifier: "__observer.bottom")
+            let count = query.count
+            boundary["match_count"] = count
+            if count == 1 {
+                let target = query.element(boundBy: 0)
+                boundary["frame"] = rect(target.frame)
+                boundary["hittable"] = target.isHittable
+                boundary["queried"] = true
+                boundary["method"] = "XCUIElement.isHittable"
+            }
+        }
         bottomReached = bottomReached || reached
         let cg = UIImage(data: shot.pngRepresentation)?.cgImage
         // Keep the image tied to the snapshot's native epoch. A fast tree must
@@ -292,13 +311,15 @@ final class ObserverTests: XCTestCase {
             return value
         }
         let record: [String: Any] = ["index": counter, "name": name, "screenshot_attachment": attachment.name!, "nodes": nodes,
+            "geometry_encoding": ["version": 1, "representation": "ieee754-binary64", "coordinate_space": "logical_screen_points",
+                                  "provider": "XCUIElementSnapshot.frame_and_native_CGRect", "mapping": "app_frame_to_original_screenshot_pixels"] as [String: Any],
             "runtime": r, "callbacks": callbacks, "viewport": rect(viewport), "app_frame": rect(tree?.frame ?? app.frame),
             "native_scroll_ax_frame": nodes.first { $0["identifier"] as? String == "__observer.scroll" }?["frame"] ?? NSNull(),
             "screenshot_pixels": ["width": cg?.width ?? 0, "height": cg?.height ?? 0],
             "state_id": activeState, "binding": b, "control_groups": observationTargets.map { snapshotGroup($0) },
             "binding_after_capture": afterImageBinding, "capture_consistent": consistent,
-            "performance": ["ax_snapshot_seconds": treeFinished - started, "capture_seconds": ProcessInfo.processInfo.systemUptime - started, "native_query_mode": "single_public_snapshot", "hittable_scope": "actual_dispatch_target_only"] as [String: Any],
-            "bottom_sentinel_visible": reached]
+            "performance": ["ax_snapshot_seconds": treeFinished - started, "capture_seconds": ProcessInfo.processInfo.systemUptime - started, "native_query_mode": "single_public_snapshot", "hittable_scope": "actual_dispatch_target_and_full_sweep_terminal_boundary"] as [String: Any],
+            "bottom_sentinel_visible": reached, "bottom_boundary": boundary]
         records.append(record); counter += 1; return record
     }
     func scroll(_ direction: String, fraction: Double = 0.5) {
@@ -679,7 +700,7 @@ final class ObserverTests: XCTestCase {
         let missing = required.filter { !seen.contains($0) }
         if !bottomReached && executionScope != "targeted" { issues.append("bottom sentinel not reached; lower content coverage incomplete") }
         if !missing.isEmpty { issues.append("required identifiers never visible: \(missing.joined(separator: ", "))") }
-        let result: [String: Any] = ["schema_version": 2, "state_captures": stateCaptures, "measurement_kind": "XCUIElement runtime accessibility; frames in logical screen points",
+        let result: [String: Any] = ["schema_version": 2, "coverage_protocol": 2, "state_captures": stateCaptures, "measurement_kind": "XCUIElement runtime accessibility; frames in logical screen points",
             "guard_protocol": config["guard_protocol"] as? Int ?? 0, "guard_platform": "ios", "guard_actions": actions,
             "snapshots": records, "steps": steps, "coverage": ["bottom_reached": bottomReached, "required_identifiers": required, "missing_identifiers": missing, "observed_identifiers": seen.sorted(), "execution_scope": executionScope],
             "execution_scope": executionScope, "observation_strategy": coalesced ? "coalesced" : "legacy",

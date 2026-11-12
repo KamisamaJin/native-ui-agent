@@ -1,0 +1,5660 @@
+{
+  "version": 1,
+  "design_owner": "Independent design/oracle author /root/v13_business_design",
+  "approval_reference": "Root INDEPENDENCE.md and SEAL.sha256; author seal pending independent preimplementation review",
+  "sources": [
+    {
+      "id": "reference",
+      "path": "reference.json",
+      "sha256": "ebda2707b45423d3ea3f831e29eba45e49d02657f169b45221f3ee373dd7a35e"
+    },
+    {
+      "id": "launch",
+      "path": "launch.json",
+      "sha256": "f9045e22a62301ea8bfe3b10a0737087a94a57d5a67ed904d36e4e7e7728e77f"
+    }
+  ],
+  "required_rule_ids": [
+    "heading-label",
+    "entity-label",
+    "description-label",
+    "summary-label",
+    "status-label",
+    "surface-present",
+    "lotA-label",
+    "lotA-enabled",
+    "lotA-selected",
+    "lotA-detail",
+    "lotB-label",
+    "lotB-enabled",
+    "lotB-selected",
+    "lotB-detail",
+    "lotC-label",
+    "lotC-enabled",
+    "lotC-selected",
+    "lotC-detail",
+    "packing-label",
+    "packing-enabled",
+    "packing-selected",
+    "primary-label",
+    "primary-enabled",
+    "primary-height",
+    "heading-native-size",
+    "heading-native-weight",
+    "body-native-size",
+    "body-native-ink",
+    "tap-receipt",
+    "replacement-quiet",
+    "surface-fill",
+    "primary-fill",
+    "lotA-fill",
+    "lotB-fill",
+    "lotC-fill",
+    "heading-visual-size",
+    "heading-visual-weight",
+    "body-visual-size",
+    "body-visual-ink",
+    "content-wrap",
+    "content-overlap",
+    "horizontal-fit",
+    "section-rhythm",
+    "row-padding",
+    "panel-corners",
+    "row-corners",
+    "primary-ink",
+    "lotA-mark",
+    "lotA-wrap",
+    "lotB-mark",
+    "lotB-wrap",
+    "lotC-mark",
+    "lotC-wrap",
+    "packing-mark",
+    "summary-wrap",
+    "status-wrap"
+  ],
+  "rules": [
+    {
+      "id": "heading-label",
+      "kind": "control",
+      "target": "heading",
+      "property": "label"
+    },
+    {
+      "id": "entity-label",
+      "kind": "control",
+      "target": "entity",
+      "property": "label"
+    },
+    {
+      "id": "description-label",
+      "kind": "control",
+      "target": "description",
+      "property": "label"
+    },
+    {
+      "id": "summary-label",
+      "kind": "control",
+      "target": "summary",
+      "property": "label"
+    },
+    {
+      "id": "status-label",
+      "kind": "control",
+      "target": "status",
+      "property": "label"
+    },
+    {
+      "id": "surface-present",
+      "kind": "control",
+      "target": "surface",
+      "property": "present"
+    },
+    {
+      "id": "lotA-label",
+      "kind": "control",
+      "target": "lotA",
+      "property": "label"
+    },
+    {
+      "id": "lotA-enabled",
+      "kind": "control",
+      "target": "lotA",
+      "property": "enabled"
+    },
+    {
+      "id": "lotA-selected",
+      "kind": "control",
+      "target": "lotA",
+      "property": "selected"
+    },
+    {
+      "id": "lotA-detail",
+      "kind": "control",
+      "target": "lotADetail",
+      "property": "label"
+    },
+    {
+      "id": "lotB-label",
+      "kind": "control",
+      "target": "lotB",
+      "property": "label"
+    },
+    {
+      "id": "lotB-enabled",
+      "kind": "control",
+      "target": "lotB",
+      "property": "enabled"
+    },
+    {
+      "id": "lotB-selected",
+      "kind": "control",
+      "target": "lotB",
+      "property": "selected"
+    },
+    {
+      "id": "lotB-detail",
+      "kind": "control",
+      "target": "lotBDetail",
+      "property": "label"
+    },
+    {
+      "id": "lotC-label",
+      "kind": "control",
+      "target": "lotC",
+      "property": "label"
+    },
+    {
+      "id": "lotC-enabled",
+      "kind": "control",
+      "target": "lotC",
+      "property": "enabled"
+    },
+    {
+      "id": "lotC-selected",
+      "kind": "control",
+      "target": "lotC",
+      "property": "selected"
+    },
+    {
+      "id": "lotC-detail",
+      "kind": "control",
+      "target": "lotCDetail",
+      "property": "label"
+    },
+    {
+      "id": "packing-label",
+      "kind": "control",
+      "target": "packing",
+      "property": "label"
+    },
+    {
+      "id": "packing-enabled",
+      "kind": "control",
+      "target": "packing",
+      "property": "enabled"
+    },
+    {
+      "id": "packing-selected",
+      "kind": "control",
+      "target": "packing",
+      "property": "selected"
+    },
+    {
+      "id": "primary-label",
+      "kind": "control",
+      "target": "primary",
+      "property": "label"
+    },
+    {
+      "id": "primary-enabled",
+      "kind": "control",
+      "target": "primary",
+      "property": "enabled"
+    },
+    {
+      "id": "primary-height",
+      "kind": "geometry",
+      "target": "primary",
+      "property": "height",
+      "op": "eq",
+      "measurement": "accessibility_box",
+      "basis": "control"
+    },
+    {
+      "id": "heading-native-size",
+      "kind": "text_layout",
+      "target": "heading",
+      "property": "font_sp"
+    },
+    {
+      "id": "heading-native-weight",
+      "kind": "text_layout",
+      "target": "heading",
+      "property": "font_weight"
+    },
+    {
+      "id": "body-native-size",
+      "kind": "text_layout",
+      "target": "description",
+      "property": "font_sp"
+    },
+    {
+      "id": "body-native-ink",
+      "kind": "text_layout",
+      "target": "description",
+      "property": "color_argb"
+    },
+    {
+      "id": "tap-receipt",
+      "kind": "event"
+    },
+    {
+      "id": "replacement-quiet",
+      "kind": "event",
+      "stimulus": "caller_update"
+    },
+    {
+      "id": "surface-fill",
+      "kind": "manual",
+      "target": "surface",
+      "property": "rendered_fill_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "primary-fill",
+      "kind": "manual",
+      "target": "primary",
+      "property": "rendered_fill_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "lotA-fill",
+      "kind": "manual",
+      "target": "lotA",
+      "property": "rendered_fill_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "lotB-fill",
+      "kind": "manual",
+      "target": "lotB",
+      "property": "rendered_fill_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "lotC-fill",
+      "kind": "manual",
+      "target": "lotC",
+      "property": "rendered_fill_argb",
+      "coverage": "target",
+      "allowed_methods": [
+        "native_pixels"
+      ]
+    },
+    {
+      "id": "heading-visual-size",
+      "kind": "manual",
+      "target": "heading",
+      "property": "heading-visual-size",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "heading-visual-weight",
+      "kind": "manual",
+      "target": "heading",
+      "property": "heading-visual-weight",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "body-visual-size",
+      "kind": "manual",
+      "target": "description",
+      "property": "body-visual-size",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "body-visual-ink",
+      "kind": "manual",
+      "target": "description",
+      "property": "body-visual-ink",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "content-wrap",
+      "kind": "manual",
+      "target": "surface",
+      "property": "content-wrap",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "content-overlap",
+      "kind": "manual",
+      "target": "surface",
+      "property": "content-overlap",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "horizontal-fit",
+      "kind": "manual",
+      "target": "surface",
+      "property": "horizontal-fit",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "section-rhythm",
+      "kind": "manual",
+      "target": "surface",
+      "property": "section-rhythm",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "row-padding",
+      "kind": "manual",
+      "target": "surface",
+      "property": "row-padding",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "panel-corners",
+      "kind": "manual",
+      "target": "surface",
+      "property": "panel-corners",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "row-corners",
+      "kind": "manual",
+      "target": "surface",
+      "property": "row-corners",
+      "coverage": "full_content",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "primary-ink",
+      "kind": "manual",
+      "target": "primary",
+      "property": "primary-ink",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "lotA-mark",
+      "kind": "manual",
+      "target": "lotA",
+      "property": "lotA-mark",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "lotA-wrap",
+      "kind": "manual",
+      "target": "lotA",
+      "property": "lotA-wrap",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "lotB-mark",
+      "kind": "manual",
+      "target": "lotB",
+      "property": "lotB-mark",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "lotB-wrap",
+      "kind": "manual",
+      "target": "lotB",
+      "property": "lotB-wrap",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "lotC-mark",
+      "kind": "manual",
+      "target": "lotC",
+      "property": "lotC-mark",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "lotC-wrap",
+      "kind": "manual",
+      "target": "lotC",
+      "property": "lotC-wrap",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "packing-mark",
+      "kind": "manual",
+      "target": "packing",
+      "property": "packing-mark",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "summary-wrap",
+      "kind": "manual",
+      "target": "summary",
+      "property": "summary-wrap",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    },
+    {
+      "id": "status-wrap",
+      "kind": "manual",
+      "target": "status",
+      "property": "status-wrap",
+      "coverage": "target",
+      "allowed_methods": [
+        "visual"
+      ]
+    }
+  ],
+  "scenarios": {
+    "hidden-edge": {
+      "states": [
+        {
+          "id": "start",
+          "input_index": 0,
+          "after_action": 0,
+          "coverage": "full_content"
+        },
+        {
+          "id": "first-lot",
+          "input_index": 0,
+          "after_action": 2,
+          "coverage": "targets",
+          "stimulus_action": 1
+        },
+        {
+          "id": "reverse-order-selection",
+          "input_index": 0,
+          "after_action": 4,
+          "coverage": "targets",
+          "stimulus_action": 3
+        },
+        {
+          "id": "ready",
+          "input_index": 0,
+          "after_action": 6,
+          "coverage": "full_content",
+          "stimulus_action": 5
+        },
+        {
+          "id": "released",
+          "input_index": 0,
+          "after_action": 8,
+          "coverage": "full_content",
+          "stimulus_action": 7
+        },
+        {
+          "id": "same-order-pruned",
+          "input_index": 1,
+          "after_action": 10,
+          "coverage": "full_content",
+          "stimulus_action": 9
+        },
+        {
+          "id": "ready-again",
+          "input_index": 1,
+          "after_action": 12,
+          "coverage": "full_content",
+          "stimulus_action": 11
+        },
+        {
+          "id": "released-survivor",
+          "input_index": 1,
+          "after_action": 14,
+          "coverage": "full_content",
+          "stimulus_action": 13
+        },
+        {
+          "id": "changed-order",
+          "input_index": 2,
+          "after_action": 16,
+          "coverage": "full_content",
+          "stimulus_action": 15
+        }
+      ],
+      "actions": [
+        {
+          "type": "sweep",
+          "state_id": "start",
+          "max_scrolls": 18
+        },
+        {
+          "type": "tap",
+          "target": "lotA",
+          "reveal": true,
+          "max_steps": 18,
+          "preconditions": [
+            {
+              "target": "lotA",
+              "property": "enabled",
+              "op": "eq",
+              "expected": true
+            },
+            {
+              "target": "lotA",
+              "property": "selected",
+              "op": "eq",
+              "expected": false
+            }
+          ]
+        },
+        {
+          "type": "checkpoint",
+          "state_id": "first-lot"
+        },
+        {
+          "type": "tap",
+          "target": "lotB",
+          "reveal": true,
+          "max_steps": 18,
+          "preconditions": [
+            {
+              "target": "lotB",
+              "property": "enabled",
+              "op": "eq",
+              "expected": true
+            },
+            {
+              "target": "lotB",
+              "property": "selected",
+              "op": "eq",
+              "expected": false
+            }
+          ]
+        },
+        {
+          "type": "checkpoint",
+          "state_id": "reverse-order-selection"
+        },
+        {
+          "type": "tap",
+          "target": "packing",
+          "reveal": true,
+          "max_steps": 18,
+          "preconditions": [
+            {
+              "target": "packing",
+              "property": "enabled",
+              "op": "eq",
+              "expected": true
+            },
+            {
+              "target": "packing",
+              "property": "selected",
+              "op": "eq",
+              "expected": false
+            }
+          ]
+        },
+        {
+          "type": "sweep",
+          "state_id": "ready",
+          "max_scrolls": 18
+        },
+        {
+          "type": "tap",
+          "target": "primary",
+          "reveal": true,
+          "max_steps": 18,
+          "preconditions": [
+            {
+              "target": "primary",
+              "property": "enabled",
+              "op": "eq",
+              "expected": true
+            }
+          ],
+          "expect_callback": "release|OR-936|A-02,Z-90"
+        },
+        {
+          "type": "sweep",
+          "state_id": "released",
+          "max_scrolls": 18
+        },
+        {
+          "type": "apply_next_fixture"
+        },
+        {
+          "type": "sweep",
+          "state_id": "same-order-pruned",
+          "max_scrolls": 18
+        },
+        {
+          "type": "tap",
+          "target": "packing",
+          "reveal": true,
+          "max_steps": 18,
+          "preconditions": [
+            {
+              "target": "packing",
+              "property": "enabled",
+              "op": "eq",
+              "expected": true
+            },
+            {
+              "target": "packing",
+              "property": "selected",
+              "op": "eq",
+              "expected": false
+            }
+          ]
+        },
+        {
+          "type": "sweep",
+          "state_id": "ready-again",
+          "max_scrolls": 18
+        },
+        {
+          "type": "tap",
+          "target": "primary",
+          "reveal": true,
+          "max_steps": 18,
+          "preconditions": [
+            {
+              "target": "primary",
+              "property": "enabled",
+              "op": "eq",
+              "expected": true
+            }
+          ],
+          "expect_callback": "release|OR-936|A-02"
+        },
+        {
+          "type": "sweep",
+          "state_id": "released-survivor",
+          "max_scrolls": 18
+        },
+        {
+          "type": "apply_next_fixture"
+        },
+        {
+          "type": "sweep",
+          "state_id": "changed-order",
+          "max_scrolls": 18
+        }
+      ],
+      "values": {
+        "heading-label": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/heading"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/heading"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/heading"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/heading"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/heading"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/heading"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/heading"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/heading"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/heading"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/heading"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/heading"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/heading"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/heading"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/heading"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/heading"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/heading"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/heading"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/heading"
+            }
+          }
+        },
+        "entity-label": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/entity"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/entity"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/entity"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/entity"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/entity"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/entity"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/entity"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/entity"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/entity"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/entity"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/entity"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/entity"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/entity"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/entity"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/entity"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/entity"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/entity"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/entity"
+            }
+          }
+        },
+        "description-label": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/description"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/description"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/description"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/description"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/description"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/description"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/description"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/description"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/description"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/description"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/description"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/description"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/description"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/description"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/description"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/description"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/description"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/description"
+            }
+          }
+        },
+        "summary-label": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/summary"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/summary"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/summary"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/summary"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/summary"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/summary"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/summary"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/summary"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/summary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/summary"
+            }
+          }
+        },
+        "status-label": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/status"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/status"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/status"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/status"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/status"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/status"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/status"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/status"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/status"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/status"
+            }
+          }
+        },
+        "surface-present": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/surface"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/surface"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/surface"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/surface"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/surface"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/surface"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/surface"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/surface"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/surface"
+            }
+          }
+        },
+        "lotA-label": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotA/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotA/label"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotA/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotA/label"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotA/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotA/label"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotA/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotA/label"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotA/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotA/label"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotA/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotA/label"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotA/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotA/label"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotA/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotA/label"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotA/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotA/label"
+            }
+          }
+        },
+        "lotA-enabled": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotA/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotA/enabled"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotA/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotA/enabled"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotA/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotA/enabled"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotA/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotA/enabled"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotA/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotA/enabled"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotA/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotA/enabled"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotA/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotA/enabled"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotA/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotA/enabled"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotA/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotA/enabled"
+            }
+          }
+        },
+        "lotA-selected": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotA/selected"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotA/selected"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotA/selected"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotA/selected"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotA/selected"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotA/selected"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotA/selected"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotA/selected"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotA/selected"
+            }
+          }
+        },
+        "lotA-detail": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotA/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotA/detail"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotA/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotA/detail"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotA/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotA/detail"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotA/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotA/detail"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotA/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotA/detail"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotA/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotA/detail"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotA/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotA/detail"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotA/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotA/detail"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotA/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotA/detail"
+            }
+          }
+        },
+        "lotB-label": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotB/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotB/label"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotB/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotB/label"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotB/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotB/label"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotB/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotB/label"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotB/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotB/label"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotB/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotB/label"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotB/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotB/label"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotB/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotB/label"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotB/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotB/label"
+            }
+          }
+        },
+        "lotB-enabled": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotB/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotB/enabled"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotB/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotB/enabled"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotB/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotB/enabled"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotB/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotB/enabled"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotB/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotB/enabled"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotB/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotB/enabled"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotB/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotB/enabled"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotB/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotB/enabled"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotB/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotB/enabled"
+            }
+          }
+        },
+        "lotB-selected": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotB/selected"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotB/selected"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotB/selected"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotB/selected"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotB/selected"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotB/selected"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotB/selected"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotB/selected"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotB/selected"
+            }
+          }
+        },
+        "lotB-detail": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotB/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotB/detail"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotB/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotB/detail"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotB/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotB/detail"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotB/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotB/detail"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotB/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotB/detail"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotB/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotB/detail"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotB/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotB/detail"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotB/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotB/detail"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotB/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotB/detail"
+            }
+          }
+        },
+        "lotC-label": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotC/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotC/label"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotC/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotC/label"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotC/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotC/label"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotC/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotC/label"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotC/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotC/label"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotC/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotC/label"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotC/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotC/label"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotC/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotC/label"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotC/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotC/label"
+            }
+          }
+        },
+        "lotC-enabled": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotC/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotC/enabled"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotC/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotC/enabled"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotC/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotC/enabled"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotC/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotC/enabled"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotC/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotC/enabled"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotC/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotC/enabled"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotC/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotC/enabled"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotC/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotC/enabled"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotC/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotC/enabled"
+            }
+          }
+        },
+        "lotC-selected": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotC/selected"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotC/selected"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotC/selected"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotC/selected"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotC/selected"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotC/selected"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotC/selected"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotC/selected"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotC/selected"
+            }
+          }
+        },
+        "lotC-detail": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotC/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotC/detail"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotC/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotC/detail"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotC/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotC/detail"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotC/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotC/detail"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotC/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotC/detail"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotC/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotC/detail"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotC/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotC/detail"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotC/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotC/detail"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotC/detail"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotC/detail"
+            }
+          }
+        },
+        "packing-label": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/packing/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/packing/label"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/packing/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/packing/label"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/packing/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/packing/label"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/packing/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/packing/label"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/packing/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/packing/label"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/packing/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/packing/label"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/packing/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/packing/label"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/packing/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/packing/label"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/packing/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/packing/label"
+            }
+          }
+        },
+        "packing-enabled": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/packing/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/packing/enabled"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/packing/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/packing/enabled"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/packing/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/packing/enabled"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/packing/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/packing/enabled"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/packing/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/packing/enabled"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/packing/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/packing/enabled"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/packing/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/packing/enabled"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/packing/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/packing/enabled"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/packing/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/packing/enabled"
+            }
+          }
+        },
+        "packing-selected": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/packing/selected"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/packing/selected"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/packing/selected"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/packing/selected"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/packing/selected"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/packing/selected"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/packing/selected"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/packing/selected"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/packing/selected"
+            }
+          }
+        },
+        "primary-label": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/primary/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/primary/label"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/primary/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/primary/label"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/primary/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/primary/label"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/primary/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/primary/label"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/primary/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/primary/label"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/primary/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/primary/label"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/primary/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/primary/label"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/primary/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/primary/label"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/primary/label"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/primary/label"
+            }
+          }
+        },
+        "primary-enabled": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/primary/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/primary/enabled"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/primary/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/primary/enabled"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/primary/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/primary/enabled"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/primary/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/primary/enabled"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/primary/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/primary/enabled"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/primary/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/primary/enabled"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/primary/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/primary/enabled"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/primary/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/primary/enabled"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/primary/enabled"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/primary/enabled"
+            }
+          }
+        },
+        "primary-height": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/tokens/ios/buttonHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/buttonHeight"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/tokens/ios/buttonHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/buttonHeight"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/tokens/ios/buttonHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/buttonHeight"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/tokens/ios/buttonHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/buttonHeight"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/tokens/ios/buttonHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/buttonHeight"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/tokens/ios/buttonHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/buttonHeight"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/tokens/ios/buttonHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/buttonHeight"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/tokens/ios/buttonHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/buttonHeight"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/tokens/ios/buttonHeight"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/buttonHeight"
+            }
+          }
+        },
+        "heading-native-size": {
+          "start": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleSize"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleSize"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleSize"
+            }
+          },
+          "ready": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleSize"
+            }
+          },
+          "released": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleSize"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleSize"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleSize"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleSize"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleSize"
+            }
+          }
+        },
+        "heading-native-weight": {
+          "start": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleWeight"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleWeight"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleWeight"
+            }
+          },
+          "ready": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleWeight"
+            }
+          },
+          "released": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleWeight"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleWeight"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleWeight"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleWeight"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/titleWeight"
+            }
+          }
+        },
+        "body-native-size": {
+          "start": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/bodySize"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/bodySize"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/bodySize"
+            }
+          },
+          "ready": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/bodySize"
+            }
+          },
+          "released": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/bodySize"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/bodySize"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/bodySize"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/bodySize"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/android/bodySize"
+            }
+          }
+        },
+        "body-native-ink": {
+          "start": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/colors/ink"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/colors/ink"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/colors/ink"
+            }
+          },
+          "ready": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/colors/ink"
+            }
+          },
+          "released": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/colors/ink"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/colors/ink"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/colors/ink"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/colors/ink"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "not_applicable": "Public iOS AX has no generic computed SwiftUI typography/color; the sourced iOS visual atom covers this intent."
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/tokens/colors/ink"
+            }
+          }
+        },
+        "tap-receipt": {
+          "start": {
+            "not_applicable": "No original requested tap stimulus belongs to this state; a sweep or caller update cannot establish a tap callback interval."
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/tap_events"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/tap_events"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/tap_events"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/tap_events"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/tap_events"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/tap_events"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/tap_events"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/tap_events"
+            }
+          },
+          "same-order-pruned": {
+            "not_applicable": "No original requested tap stimulus belongs to this state; a sweep or caller update cannot establish a tap callback interval."
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/tap_events"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/tap_events"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/tap_events"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/tap_events"
+            }
+          },
+          "changed-order": {
+            "not_applicable": "No original requested tap stimulus belongs to this state; a sweep or caller update cannot establish a tap callback interval."
+          }
+        },
+        "replacement-quiet": {
+          "start": {
+            "not_applicable": "No original caller-replacement stimulus belongs to this state."
+          },
+          "first-lot": {
+            "not_applicable": "No original caller-replacement stimulus belongs to this state."
+          },
+          "reverse-order-selection": {
+            "not_applicable": "No original caller-replacement stimulus belongs to this state."
+          },
+          "ready": {
+            "not_applicable": "No original caller-replacement stimulus belongs to this state."
+          },
+          "released": {
+            "not_applicable": "No original caller-replacement stimulus belongs to this state."
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/replacement_events"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/replacement_events"
+            }
+          },
+          "ready-again": {
+            "not_applicable": "No original caller-replacement stimulus belongs to this state."
+          },
+          "released-survivor": {
+            "not_applicable": "No original caller-replacement stimulus belongs to this state."
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/replacement_events"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/replacement_events"
+            }
+          }
+        },
+        "surface-fill": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/fills/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/fills/surface"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/fills/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/fills/surface"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/fills/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/fills/surface"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/fills/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/fills/surface"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/fills/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/fills/surface"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/fills/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/fills/surface"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/fills/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/fills/surface"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/fills/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/fills/surface"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/fills/surface"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/fills/surface"
+            }
+          }
+        },
+        "primary-fill": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/fills/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/fills/primary"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/fills/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/fills/primary"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/fills/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/fills/primary"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/fills/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/fills/primary"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/fills/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/fills/primary"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/fills/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/fills/primary"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/fills/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/fills/primary"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/fills/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/fills/primary"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/fills/primary"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/fills/primary"
+            }
+          }
+        },
+        "lotA-fill": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/fills/lotA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/fills/lotA"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/fills/lotA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/fills/lotA"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/fills/lotA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/fills/lotA"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/fills/lotA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/fills/lotA"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/fills/lotA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/fills/lotA"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/fills/lotA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/fills/lotA"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/fills/lotA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/fills/lotA"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/fills/lotA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/fills/lotA"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/fills/lotA"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/fills/lotA"
+            }
+          }
+        },
+        "lotB-fill": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/fills/lotB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/fills/lotB"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/fills/lotB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/fills/lotB"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/fills/lotB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/fills/lotB"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/fills/lotB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/fills/lotB"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/fills/lotB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/fills/lotB"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/fills/lotB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/fills/lotB"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/fills/lotB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/fills/lotB"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/fills/lotB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/fills/lotB"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/fills/lotB"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/fills/lotB"
+            }
+          }
+        },
+        "lotC-fill": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/fills/lotC"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/fills/lotC"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/fills/lotC"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/fills/lotC"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/fills/lotC"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/fills/lotC"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/fills/lotC"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/fills/lotC"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/fills/lotC"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/fills/lotC"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/fills/lotC"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/fills/lotC"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/fills/lotC"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/fills/lotC"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/fills/lotC"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/fills/lotC"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/fills/lotC"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/fills/lotC"
+            }
+          }
+        },
+        "heading-visual-size": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          }
+        },
+        "heading-visual-weight": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-weight"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-weight"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-weight"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-weight"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-weight"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-weight"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-weight"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-weight"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/heading-visual-weight"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          }
+        },
+        "body-visual-size": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-size"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          }
+        },
+        "body-visual-ink": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-ink"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-ink"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-ink"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-ink"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-ink"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-ink"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-ink"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-ink"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/body-visual-ink"
+            },
+            "android": {
+              "not_applicable": "Intentionally iOS-only qualitative font/ink atom; Android uses the exact available native TextLayout assertion."
+            }
+          }
+        },
+        "content-wrap": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            }
+          },
+          "first-lot": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "reverse-order-selection": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-wrap"
+            }
+          }
+        },
+        "content-overlap": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            }
+          },
+          "first-lot": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "reverse-order-selection": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/content-overlap"
+            }
+          }
+        },
+        "horizontal-fit": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            }
+          },
+          "first-lot": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "reverse-order-selection": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/horizontal-fit"
+            }
+          }
+        },
+        "section-rhythm": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            }
+          },
+          "first-lot": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "reverse-order-selection": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/section-rhythm"
+            }
+          }
+        },
+        "row-padding": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            }
+          },
+          "first-lot": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "reverse-order-selection": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-padding"
+            }
+          }
+        },
+        "panel-corners": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            }
+          },
+          "first-lot": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "reverse-order-selection": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/panel-corners"
+            }
+          }
+        },
+        "row-corners": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            }
+          },
+          "first-lot": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "reverse-order-selection": {
+            "not_applicable": "This intermediate state is independently target-scoped. Whole-component flow is not claimed here; local wrapping, selection marks, semantic decisions, paint and callbacks are actively assessed. Full-flow atoms are assessed at initial, ready/recorded, preview and replacement sweeps; no earlier pass is carried forward."
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/row-corners"
+            }
+          }
+        },
+        "primary-ink": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/primary-ink"
+            }
+          }
+        },
+        "lotA-mark": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotA/selected"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotA/selected"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotA/selected"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotA/selected"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotA/selected"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotA/selected"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotA/selected"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotA/selected"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotA/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotA/selected"
+            }
+          }
+        },
+        "lotA-wrap": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotA-wrap"
+            }
+          }
+        },
+        "lotB-mark": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotB/selected"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotB/selected"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotB/selected"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotB/selected"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotB/selected"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotB/selected"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotB/selected"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotB/selected"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotB/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotB/selected"
+            }
+          }
+        },
+        "lotB-wrap": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotB-wrap"
+            }
+          }
+        },
+        "lotC-mark": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/lotC/selected"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/lotC/selected"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/lotC/selected"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/lotC/selected"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/lotC/selected"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/lotC/selected"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/lotC/selected"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/lotC/selected"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotC/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/lotC/selected"
+            }
+          }
+        },
+        "lotC-wrap": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/lotC-wrap"
+            }
+          }
+        },
+        "packing-mark": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/start/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/start/controls/packing/selected"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/first-lot/controls/packing/selected"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/reverse-order-selection/controls/packing/selected"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready/controls/packing/selected"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released/controls/packing/selected"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/same-order-pruned/controls/packing/selected"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/ready-again/controls/packing/selected"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/released-survivor/controls/packing/selected"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/packing/selected"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/states/changed-order/controls/packing/selected"
+            }
+          }
+        },
+        "summary-wrap": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/summary-wrap"
+            }
+          }
+        },
+        "status-wrap": {
+          "start": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            }
+          },
+          "first-lot": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            }
+          },
+          "reverse-order-selection": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            }
+          },
+          "ready": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            }
+          },
+          "released": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            }
+          },
+          "same-order-pruned": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            }
+          },
+          "ready-again": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            }
+          },
+          "released-survivor": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            }
+          },
+          "changed-order": {
+            "ios": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            },
+            "android": {
+              "source": "reference",
+              "pointer": "/visual/status-wrap"
+            }
+          }
+        }
+      }
+    }
+  }
+}

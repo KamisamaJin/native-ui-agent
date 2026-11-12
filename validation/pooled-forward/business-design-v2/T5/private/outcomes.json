@@ -1,0 +1,868 @@
+{
+  "version": 1,
+  "scenario": "hidden-edge",
+  "business_rules_source": "reference.json#/business_rules",
+  "states": [
+    {
+      "id": "start",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content",
+      "stimulus": "none",
+      "exact_business_state": {
+        "entity": "RET-903 · Loaned accessible reading device and specialist charging accessories",
+        "description": "The loaned reading device was returned with an intermittent power complaint and a bag of specialist charging accessories. The receiving team must retain the full intake note, including the requirement to erase locally stored reading material, count the separately packaged cable adaptors, and document the next custodian before any onward routing occurs.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories unchecked · Data pending · Power unchecked · Route none",
+        "status": "Complete accessories and data checks.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "accessories",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-903 · Loaned accessible reading device and specialist charging accessories",
+        "description": "The loaned reading device was returned with an intermittent power complaint and a bag of specialist charging accessories. The receiving team must retain the full intake note, including the requirement to erase locally stored reading material, count the separately packaged cable adaptors, and document the next custodian before any onward routing occurs.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data pending · Power unchecked · Route none",
+        "status": "Complete accessories and data checks.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "data-erased",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-903 · Loaned accessible reading device and specialist charging accessories",
+        "description": "The loaned reading device was returned with an intermittent power complaint and a bag of specialist charging accessories. The receiving team must retain the full intake note, including the requirement to erase locally stored reading material, count the separately packaged cable adaptors, and document the next custodian before any onward routing occurs.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power unchecked · Route none",
+        "status": "Choose an eligible disposition.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "power-passed",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "targets",
+      "stimulus_action": 5,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-903 · Loaned accessible reading device and specialist charging accessories",
+        "description": "The loaned reading device was returned with an intermittent power complaint and a bag of specialist charging accessories. The receiving team must retain the full intake note, including the requirement to erase locally stored reading material, count the separately packaged cable adaptors, and document the next custodian before any onward routing occurs.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power passed · Route none",
+        "status": "Choose an eligible disposition.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "restock-selected",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "targets",
+      "stimulus_action": 7,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-903 · Loaned accessible reading device and specialist charging accessories",
+        "description": "The loaned reading device was returned with an intermittent power complaint and a bag of specialist charging accessories. The receiving team must retain the full intake note, including the requirement to erase locally stored reading material, count the separately packaged cable adaptors, and document the next custodian before any onward routing occurs.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power passed · Route restock",
+        "status": "Confirm the chain of custody.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "power-revoked-clears-route",
+      "input_index": 0,
+      "after_action": 10,
+      "coverage": "targets",
+      "stimulus_action": 9,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-903 · Loaned accessible reading device and specialist charging accessories",
+        "description": "The loaned reading device was returned with an intermittent power complaint and a bag of specialist charging accessories. The receiving team must retain the full intake note, including the requirement to erase locally stored reading material, count the separately packaged cable adaptors, and document the next custodian before any onward routing occurs.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power unchecked · Route none",
+        "status": "Choose an eligible disposition.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "repair-selected",
+      "input_index": 0,
+      "after_action": 12,
+      "coverage": "targets",
+      "stimulus_action": 11,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-903 · Loaned accessible reading device and specialist charging accessories",
+        "description": "The loaned reading device was returned with an intermittent power complaint and a bag of specialist charging accessories. The receiving team must retain the full intake note, including the requirement to erase locally stored reading material, count the separately packaged cable adaptors, and document the next custodian before any onward routing occurs.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power unchecked · Route repair",
+        "status": "Confirm the chain of custody.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 14,
+      "coverage": "full_content",
+      "stimulus_action": 13,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-903 · Loaned accessible reading device and specialist charging accessories",
+        "description": "The loaned reading device was returned with an intermittent power complaint and a bag of specialist charging accessories. The receiving team must retain the full intake note, including the requirement to erase locally stored reading material, count the separately packaged cable adaptors, and document the next custodian before any onward routing occurs.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power unchecked · Route repair",
+        "status": "Ready to route this return.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "routed",
+      "input_index": 0,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-903 · Loaned accessible reading device and specialist charging accessories",
+        "description": "The loaned reading device was returned with an intermittent power complaint and a bag of specialist charging accessories. The receiving team must retain the full intake note, including the requirement to erase locally stored reading material, count the separately packaged cable adaptors, and document the next custodian before any onward routing occurs.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power unchecked · Route repair",
+        "status": "Return routing recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "route-return|RET-903|repair|power:unchecked|data:erased|accessories:counted"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "same-return-no-data",
+      "input_index": 1,
+      "after_action": 18,
+      "coverage": "full_content",
+      "stimulus_action": 17,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "RET-903 · Loaned accessible reading device and specialist charging accessories",
+        "description": "The caller corrected the record: this same asset uses a removable storage module that has already been retained separately, so the returned assembly is not data-bearing. Preserve other valid checks and a valid repair route, force the data checkbox off, and clear custody approval.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data not required · Power unchecked · Route repair",
+        "status": "Confirm the chain of custody.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready-again",
+      "input_index": 1,
+      "after_action": 20,
+      "coverage": "full_content",
+      "stimulus_action": 19,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-903 · Loaned accessible reading device and specialist charging accessories",
+        "description": "The caller corrected the record: this same asset uses a removable storage module that has already been retained separately, so the returned assembly is not data-bearing. Preserve other valid checks and a valid repair route, force the data checkbox off, and clear custody approval.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Accessories counted · Data not required · Power unchecked · Route repair",
+        "status": "Ready to route this return.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "routed-again",
+      "input_index": 1,
+      "after_action": 22,
+      "coverage": "full_content",
+      "stimulus_action": 21,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-903 · Loaned accessible reading device and specialist charging accessories",
+        "description": "The caller corrected the record: this same asset uses a removable storage module that has already been retained separately, so the returned assembly is not data-bearing. Preserve other valid checks and a valid repair route, force the data checkbox off, and clear custody approval.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Accessories counted · Data not required · Power unchecked · Route repair",
+        "status": "Return routing recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "route-return|RET-903|repair|power:unchecked|data:not-required|accessories:counted"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "changed-return",
+      "input_index": 2,
+      "after_action": 24,
+      "coverage": "full_content",
+      "stimulus_action": 23,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "RET-904 · Different return with reused route choices",
+        "description": "The loaned reading device was returned with an intermittent power complaint and a bag of specialist charging accessories. The receiving team must retain the full intake note, including the requirement to erase locally stored reading material, count the separately packaged cable adaptors, and document the next custodian before any onward routing occurs.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Return to stock is conditional on a successful power test as well as the completed intake checks. A later change to the power result must invalidate this route immediately."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "The specialist repair team can accept a device without a passed power test once the accessories and data checks are complete."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Approved material recovery is available after the same safe intake checks, with the complete chain-of-custody record attached."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories unchecked · Data pending · Power unchecked · Route none",
+        "status": "Complete accessories and data checks.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    }
+  ]
+}

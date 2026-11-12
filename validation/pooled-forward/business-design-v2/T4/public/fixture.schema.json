@@ -1,0 +1,91 @@
+{
+  "type": "object",
+  "properties": {
+    "entityId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9-]{1,32}$"
+    },
+    "entityTitle": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "workaround": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "audiences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{1,32}$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "detail": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "recipients": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100000000
+          },
+          "allowed": {
+            "type": "boolean"
+          },
+          "blockedReason": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "detail",
+          "recipients",
+          "allowed",
+          "blockedReason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 4
+    }
+  },
+  "required": [
+    "entityId",
+    "entityTitle",
+    "description",
+    "subject",
+    "message",
+    "workaround",
+    "audiences"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OutageNoticeFixture",
+  "$comment": "Unique group IDs and action labels; all UI/business decisions component-owned. No hidden-only requirement."
+}

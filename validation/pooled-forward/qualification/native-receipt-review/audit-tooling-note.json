@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "initial_audit_script_execution": {
+    "outcome": "KeyError: build_command at audit_artifacts.py line 187 while summarizing C07-ios",
+    "explanation": "The cached compilation receipt intentionally omits a new build command. The reviewer changed its summary access to optional get(). This was a reviewer-script parsing error, not an original native result or product failure.",
+    "SDK_calls": 0,
+    "writes_to_original_artifacts": 0
+  },
+  "second_audit_script_execution": {
+    "outcome": "TypeError: string indices must be integers in callback summary",
+    "explanation": "Android callback_delta entries are event strings, whereas iOS entries are event objects. The reviewer normalized both documented original forms before checking the single callback. No native artifact was altered.",
+    "SDK_calls": 0,
+    "writes_to_original_artifacts": 0
+  }
+}

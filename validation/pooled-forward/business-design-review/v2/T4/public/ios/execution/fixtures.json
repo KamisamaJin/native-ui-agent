@@ -1,0 +1,902 @@
+{
+  "initial": {
+    "entityId": "INC-214",
+    "entityTitle": "Workshop booking interruption",
+    "description": "Prepare a clear notice for the affected audience. A preview is a local draft, and publication requires a separate wording review after the current audience and troubleshooting choice are fixed.",
+    "subject": "Workshop booking service is interrupted",
+    "message": "Some workshop bookings cannot be confirmed. Existing confirmations remain valid. The support team is reviewing the queue and will publish another update through the agreed communication channel.",
+    "workaround": "Keep the booking reference and contact the support desk before submitting the form again.",
+    "audiences": [
+      {
+        "id": "customers",
+        "label": "Notify affected customers",
+        "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.",
+        "recipients": 124,
+        "allowed": true,
+        "blockedReason": ""
+      },
+      {
+        "id": "staff",
+        "label": "Notify service staff",
+        "detail": "The operations team needs the same factual update for its customer conversations.",
+        "recipients": 18,
+        "allowed": true,
+        "blockedReason": ""
+      },
+      {
+        "id": "partners",
+        "label": "Notify partner offices",
+        "detail": "Partner offices have no affected bookings in this incident.",
+        "recipients": 0,
+        "allowed": true,
+        "blockedReason": ""
+      }
+    ]
+  },
+  "updates": [
+    {
+      "entityId": "INC-214",
+      "entityTitle": "Workshop booking interruption",
+      "description": "The caller replaced the incident wording. Preserve valid draft choices, but discard the old preview and wording review so that revised content is previewed and approved again.",
+      "subject": "Workshop booking service is interrupted",
+      "message": "Booking confirmations are being restored in batches. Customers should keep their existing reference and wait for the confirmation message before making another booking.",
+      "workaround": "Ask the support desk to check the original booking reference before creating a replacement request.",
+      "audiences": [
+        {
+          "id": "customers",
+          "label": "Notify affected customers",
+          "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.",
+          "recipients": 124,
+          "allowed": true,
+          "blockedReason": ""
+        },
+        {
+          "id": "staff",
+          "label": "Notify service staff",
+          "detail": "The operations team needs the same factual update for its customer conversations.",
+          "recipients": 18,
+          "allowed": true,
+          "blockedReason": ""
+        },
+        {
+          "id": "partners",
+          "label": "Notify partner offices",
+          "detail": "Partner offices have no affected bookings in this incident.",
+          "recipients": 0,
+          "allowed": true,
+          "blockedReason": ""
+        }
+      ]
+    },
+    {
+      "entityId": "INC-215",
+      "entityTitle": "Separate ticketing incident",
+      "description": "A separate incident starts with no audience, troubleshooting choice, preview, approval, or recorded publication.",
+      "subject": "Workshop booking service is interrupted",
+      "message": "Some workshop bookings cannot be confirmed. Existing confirmations remain valid. The support team is reviewing the queue and will publish another update through the agreed communication channel.",
+      "workaround": "Keep the booking reference and contact the support desk before submitting the form again.",
+      "audiences": [
+        {
+          "id": "customers",
+          "label": "Notify affected customers",
+          "detail": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.",
+          "recipients": 124,
+          "allowed": true,
+          "blockedReason": ""
+        },
+        {
+          "id": "staff",
+          "label": "Notify service staff",
+          "detail": "The operations team needs the same factual update for its customer conversations.",
+          "recipients": 18,
+          "allowed": true,
+          "blockedReason": ""
+        },
+        {
+          "id": "partners",
+          "label": "Notify partner offices",
+          "detail": "Partner offices have no affected bookings in this incident.",
+          "recipients": 0,
+          "allowed": true,
+          "blockedReason": ""
+        }
+      ]
+    }
+  ],
+  "width": 390,
+  "theme": "light",
+  "direction": "ltr",
+  "canvas_color": "#FFF8F4",
+  "max_scrolls": 18,
+  "required_identifiers": [
+    "T4.surface",
+    "T4.entity",
+    "T4.description",
+    "T4.summary",
+    "T4.status",
+    "T4.audienceA.detail",
+    "T4.audienceB.detail",
+    "T4.audienceC.detail"
+  ],
+  "dynamic_type": "large",
+  "state_capture": true,
+  "guard_protocol": 1,
+  "observation_strategy": "coalesced",
+  "execution_states": [
+    {
+      "state_id": "start",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Service outage notice composer"
+        },
+        {
+          "identifier": "T4.entity"
+        },
+        {
+          "identifier": "T4.description"
+        },
+        {
+          "identifier": "T4.summary"
+        },
+        {
+          "identifier": "T4.status"
+        },
+        {
+          "identifier": "T4.surface"
+        },
+        {
+          "label": "Notify affected customers"
+        },
+        {
+          "identifier": "T4.audienceA.detail"
+        },
+        {
+          "label": "Notify service staff"
+        },
+        {
+          "identifier": "T4.audienceB.detail"
+        },
+        {
+          "label": "Notify partner offices"
+        },
+        {
+          "identifier": "T4.audienceC.detail"
+        },
+        {
+          "label": "Include troubleshooting steps"
+        },
+        {
+          "label": "Preview notice"
+        },
+        {
+          "label": "Customer wording reviewed"
+        },
+        {
+          "label": "Publish notice"
+        }
+      ],
+      "absence_targets": [
+        {
+          "identifier": "T4.preview"
+        }
+      ]
+    },
+    {
+      "state_id": "audience-selected",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Service outage notice composer"
+        },
+        {
+          "identifier": "T4.entity"
+        },
+        {
+          "identifier": "T4.description"
+        },
+        {
+          "identifier": "T4.summary"
+        },
+        {
+          "identifier": "T4.status"
+        },
+        {
+          "identifier": "T4.surface"
+        },
+        {
+          "label": "Notify affected customers"
+        },
+        {
+          "identifier": "T4.audienceA.detail"
+        },
+        {
+          "label": "Notify service staff"
+        },
+        {
+          "identifier": "T4.audienceB.detail"
+        },
+        {
+          "label": "Notify partner offices"
+        },
+        {
+          "identifier": "T4.audienceC.detail"
+        },
+        {
+          "label": "Include troubleshooting steps"
+        },
+        {
+          "label": "Preview notice"
+        },
+        {
+          "label": "Customer wording reviewed"
+        },
+        {
+          "label": "Publish notice"
+        }
+      ],
+      "absence_targets": [
+        {
+          "identifier": "T4.preview"
+        }
+      ]
+    },
+    {
+      "state_id": "steps-selected",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Service outage notice composer"
+        },
+        {
+          "identifier": "T4.entity"
+        },
+        {
+          "identifier": "T4.description"
+        },
+        {
+          "identifier": "T4.summary"
+        },
+        {
+          "identifier": "T4.status"
+        },
+        {
+          "identifier": "T4.surface"
+        },
+        {
+          "label": "Notify affected customers"
+        },
+        {
+          "identifier": "T4.audienceA.detail"
+        },
+        {
+          "label": "Notify service staff"
+        },
+        {
+          "identifier": "T4.audienceB.detail"
+        },
+        {
+          "label": "Notify partner offices"
+        },
+        {
+          "identifier": "T4.audienceC.detail"
+        },
+        {
+          "label": "Include troubleshooting steps"
+        },
+        {
+          "label": "Preview notice"
+        },
+        {
+          "label": "Customer wording reviewed"
+        },
+        {
+          "label": "Publish notice"
+        }
+      ],
+      "absence_targets": [
+        {
+          "identifier": "T4.preview"
+        }
+      ]
+    },
+    {
+      "state_id": "previewed",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Service outage notice composer"
+        },
+        {
+          "identifier": "T4.entity"
+        },
+        {
+          "identifier": "T4.description"
+        },
+        {
+          "identifier": "T4.summary"
+        },
+        {
+          "identifier": "T4.status"
+        },
+        {
+          "identifier": "T4.surface"
+        },
+        {
+          "label": "Notify affected customers"
+        },
+        {
+          "identifier": "T4.audienceA.detail"
+        },
+        {
+          "label": "Notify service staff"
+        },
+        {
+          "identifier": "T4.audienceB.detail"
+        },
+        {
+          "label": "Notify partner offices"
+        },
+        {
+          "identifier": "T4.audienceC.detail"
+        },
+        {
+          "label": "Include troubleshooting steps"
+        },
+        {
+          "label": "Preview notice"
+        },
+        {
+          "label": "Customer wording reviewed"
+        },
+        {
+          "label": "Publish notice"
+        },
+        {
+          "identifier": "T4.preview"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "ready",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Service outage notice composer"
+        },
+        {
+          "identifier": "T4.entity"
+        },
+        {
+          "identifier": "T4.description"
+        },
+        {
+          "identifier": "T4.summary"
+        },
+        {
+          "identifier": "T4.status"
+        },
+        {
+          "identifier": "T4.surface"
+        },
+        {
+          "label": "Notify affected customers"
+        },
+        {
+          "identifier": "T4.audienceA.detail"
+        },
+        {
+          "label": "Notify service staff"
+        },
+        {
+          "identifier": "T4.audienceB.detail"
+        },
+        {
+          "label": "Notify partner offices"
+        },
+        {
+          "identifier": "T4.audienceC.detail"
+        },
+        {
+          "label": "Include troubleshooting steps"
+        },
+        {
+          "label": "Preview notice"
+        },
+        {
+          "label": "Customer wording reviewed"
+        },
+        {
+          "label": "Publish notice"
+        },
+        {
+          "identifier": "T4.preview"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "published",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Service outage notice composer"
+        },
+        {
+          "identifier": "T4.entity"
+        },
+        {
+          "identifier": "T4.description"
+        },
+        {
+          "identifier": "T4.summary"
+        },
+        {
+          "identifier": "T4.status"
+        },
+        {
+          "identifier": "T4.surface"
+        },
+        {
+          "label": "Notify affected customers"
+        },
+        {
+          "identifier": "T4.audienceA.detail"
+        },
+        {
+          "label": "Notify service staff"
+        },
+        {
+          "identifier": "T4.audienceB.detail"
+        },
+        {
+          "label": "Notify partner offices"
+        },
+        {
+          "identifier": "T4.audienceC.detail"
+        },
+        {
+          "label": "Include troubleshooting steps"
+        },
+        {
+          "label": "Preview notice"
+        },
+        {
+          "label": "Customer wording reviewed"
+        },
+        {
+          "label": "Publish notice"
+        },
+        {
+          "identifier": "T4.preview"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "same-incident-draft",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Service outage notice composer"
+        },
+        {
+          "identifier": "T4.entity"
+        },
+        {
+          "identifier": "T4.description"
+        },
+        {
+          "identifier": "T4.summary"
+        },
+        {
+          "identifier": "T4.status"
+        },
+        {
+          "identifier": "T4.surface"
+        },
+        {
+          "label": "Notify affected customers"
+        },
+        {
+          "identifier": "T4.audienceA.detail"
+        },
+        {
+          "label": "Notify service staff"
+        },
+        {
+          "identifier": "T4.audienceB.detail"
+        },
+        {
+          "label": "Notify partner offices"
+        },
+        {
+          "identifier": "T4.audienceC.detail"
+        },
+        {
+          "label": "Include troubleshooting steps"
+        },
+        {
+          "label": "Preview notice"
+        },
+        {
+          "label": "Customer wording reviewed"
+        },
+        {
+          "label": "Publish notice"
+        }
+      ],
+      "absence_targets": [
+        {
+          "identifier": "T4.preview"
+        }
+      ]
+    },
+    {
+      "state_id": "repreviewed",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Service outage notice composer"
+        },
+        {
+          "identifier": "T4.entity"
+        },
+        {
+          "identifier": "T4.description"
+        },
+        {
+          "identifier": "T4.summary"
+        },
+        {
+          "identifier": "T4.status"
+        },
+        {
+          "identifier": "T4.surface"
+        },
+        {
+          "label": "Notify affected customers"
+        },
+        {
+          "identifier": "T4.audienceA.detail"
+        },
+        {
+          "label": "Notify service staff"
+        },
+        {
+          "identifier": "T4.audienceB.detail"
+        },
+        {
+          "label": "Notify partner offices"
+        },
+        {
+          "identifier": "T4.audienceC.detail"
+        },
+        {
+          "label": "Include troubleshooting steps"
+        },
+        {
+          "label": "Preview notice"
+        },
+        {
+          "label": "Customer wording reviewed"
+        },
+        {
+          "label": "Publish notice"
+        },
+        {
+          "identifier": "T4.preview"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "ready-again",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Service outage notice composer"
+        },
+        {
+          "identifier": "T4.entity"
+        },
+        {
+          "identifier": "T4.description"
+        },
+        {
+          "identifier": "T4.summary"
+        },
+        {
+          "identifier": "T4.status"
+        },
+        {
+          "identifier": "T4.surface"
+        },
+        {
+          "label": "Notify affected customers"
+        },
+        {
+          "identifier": "T4.audienceA.detail"
+        },
+        {
+          "label": "Notify service staff"
+        },
+        {
+          "identifier": "T4.audienceB.detail"
+        },
+        {
+          "label": "Notify partner offices"
+        },
+        {
+          "identifier": "T4.audienceC.detail"
+        },
+        {
+          "label": "Include troubleshooting steps"
+        },
+        {
+          "label": "Preview notice"
+        },
+        {
+          "label": "Customer wording reviewed"
+        },
+        {
+          "label": "Publish notice"
+        },
+        {
+          "identifier": "T4.preview"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "republished",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Service outage notice composer"
+        },
+        {
+          "identifier": "T4.entity"
+        },
+        {
+          "identifier": "T4.description"
+        },
+        {
+          "identifier": "T4.summary"
+        },
+        {
+          "identifier": "T4.status"
+        },
+        {
+          "identifier": "T4.surface"
+        },
+        {
+          "label": "Notify affected customers"
+        },
+        {
+          "identifier": "T4.audienceA.detail"
+        },
+        {
+          "label": "Notify service staff"
+        },
+        {
+          "identifier": "T4.audienceB.detail"
+        },
+        {
+          "label": "Notify partner offices"
+        },
+        {
+          "identifier": "T4.audienceC.detail"
+        },
+        {
+          "label": "Include troubleshooting steps"
+        },
+        {
+          "label": "Preview notice"
+        },
+        {
+          "label": "Customer wording reviewed"
+        },
+        {
+          "label": "Publish notice"
+        },
+        {
+          "identifier": "T4.preview"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "changed-incident",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Service outage notice composer"
+        },
+        {
+          "identifier": "T4.entity"
+        },
+        {
+          "identifier": "T4.description"
+        },
+        {
+          "identifier": "T4.summary"
+        },
+        {
+          "identifier": "T4.status"
+        },
+        {
+          "identifier": "T4.surface"
+        },
+        {
+          "label": "Notify affected customers"
+        },
+        {
+          "identifier": "T4.audienceA.detail"
+        },
+        {
+          "label": "Notify service staff"
+        },
+        {
+          "identifier": "T4.audienceB.detail"
+        },
+        {
+          "label": "Notify partner offices"
+        },
+        {
+          "identifier": "T4.audienceC.detail"
+        },
+        {
+          "label": "Include troubleshooting steps"
+        },
+        {
+          "label": "Preview notice"
+        },
+        {
+          "label": "Customer wording reviewed"
+        },
+        {
+          "label": "Publish notice"
+        }
+      ],
+      "absence_targets": [
+        {
+          "identifier": "T4.preview"
+        }
+      ]
+    }
+  ],
+  "execution_state_definitions": [
+    {
+      "id": "start",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "audience-selected",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1
+    },
+    {
+      "id": "steps-selected",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3
+    },
+    {
+      "id": "previewed",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7
+    },
+    {
+      "id": "published",
+      "input_index": 0,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9
+    },
+    {
+      "id": "same-incident-draft",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "full_content",
+      "stimulus_action": 11
+    },
+    {
+      "id": "repreviewed",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "full_content",
+      "stimulus_action": 13
+    },
+    {
+      "id": "ready-again",
+      "input_index": 1,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15
+    },
+    {
+      "id": "republished",
+      "input_index": 1,
+      "after_action": 18,
+      "coverage": "full_content",
+      "stimulus_action": 17
+    },
+    {
+      "id": "changed-incident",
+      "input_index": 2,
+      "after_action": 20,
+      "coverage": "full_content",
+      "stimulus_action": 19
+    }
+  ],
+  "execution_scope": "full",
+  "observation_targets": [
+    {
+      "label": "Service outage notice composer"
+    },
+    {
+      "identifier": "T4.entity"
+    },
+    {
+      "identifier": "T4.description"
+    },
+    {
+      "identifier": "T4.summary"
+    },
+    {
+      "identifier": "T4.status"
+    },
+    {
+      "identifier": "T4.surface"
+    },
+    {
+      "label": "Notify affected customers"
+    },
+    {
+      "identifier": "T4.audienceA.detail"
+    },
+    {
+      "label": "Notify service staff"
+    },
+    {
+      "identifier": "T4.audienceB.detail"
+    },
+    {
+      "label": "Notify partner offices"
+    },
+    {
+      "identifier": "T4.audienceC.detail"
+    },
+    {
+      "label": "Include troubleshooting steps"
+    },
+    {
+      "label": "Preview notice"
+    },
+    {
+      "label": "Customer wording reviewed"
+    },
+    {
+      "label": "Publish notice"
+    },
+    {
+      "identifier": "T4.preview"
+    }
+  ]
+}

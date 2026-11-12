@@ -1,0 +1,73 @@
+[
+  {
+    "id": "incompatible-runtime-retires-before-replacement",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "first_udid": "A1D9BCFE-7A15-45B8-B060-6858991FEA3B",
+      "second_udid": "A4360FA7-90A7-4BFD-88C0-6D4F197ED450",
+      "runtime": "SIMULATED.runtime2",
+      "resources": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/pool-incompatible/evidence/runtime-two/resources.json"
+    }
+  },
+  {
+    "id": "pool-expiry-boundaries",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "policy": {
+        "idle_seconds": 1,
+        "max_uses": 2,
+        "max_age_seconds": 5
+      },
+      "outcomes": {
+        "before": true,
+        "at-idle": false,
+        "wall-backwards": false,
+        "monotonic-backwards": false,
+        "at-use-limit": false,
+        "at-age": false
+      }
+    }
+  },
+  {
+    "id": "active-lease-crosses-expiry-idle-retirement-reacquires",
+    "status": "F",
+    "evidence_class": "SIMULATED",
+    "error": "RuntimeError('Resource lease is active; concurrent acquisition refused')",
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.0/scripts/resource_manager.py\", line 191, in __enter__\n    try: fcntl.flock(self.stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)\nBlockingIOError: [Errno 35] Resource temporarily unavailable\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/lifecycle_checks.py\", line 48, in active_and_idle_expiry\n    with rm.Resources(config,two,final=True) as manager:new=manager.native_options('ios')['simulator']\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.0/scripts/resource_manager.py\", line 194, in __enter__\n    raise RuntimeError('Resource lease is active; concurrent acquisition refused')\nRuntimeError: Resource lease is active; concurrent acquisition refused\n"
+  },
+  {
+    "id": "failed-retirement-blocks-acceptance",
+    "status": "F",
+    "evidence_class": "SIMULATED",
+    "error": "FileNotFoundError(2, 'No such file or directory')",
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/lifecycle_checks.py\", line 57, in retire_failure\n    receipt=d.load(o/'resources.json')\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.0/scripts/design_contract.py\", line 45, in load\n    return strict_json(path.read_text())\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1256, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1242, in open\n    return io.open(self, mode, buffering, encoding, errors, newline,\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1110, in _opener\n    return self._accessor.open(self, flags, mode)\nFileNotFoundError: [Errno 2] No such file or directory: '/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/retirement-failure/evidence/final-delete-fails/resources.json'\n"
+  },
+  {
+    "id": "primary-error-and-cleanup-error-preserved",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "resource_receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/primary-cleanup-failure/evidence/primary-and-cleanup-fail/resources.json",
+      "service_error": {
+        "type": "OSError",
+        "message": "SIMULATED primary collector failure",
+        "at_unix": 1794303772.240614,
+        "status": "not_accepted"
+      },
+      "cleanup_errors": [
+        "Owned simulator command failed: SIMULATED delete failure\n"
+      ]
+    }
+  },
+  {
+    "id": "reused-output-preserves-evidence",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "original_files": 72,
+      "exit_code": 2
+    }
+  }
+]

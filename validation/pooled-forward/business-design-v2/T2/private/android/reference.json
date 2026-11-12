@@ -1,0 +1,2639 @@
+{
+  "design_owner": "Independent design/oracle author /root/v13_business_design",
+  "business_rules": "1. Begin with no visit mode, time, or attendee-notification approval. In person is available; Video is available only when allowVideo is true. Modes are single selection.\n2. Times are displayed in caller order. A time is enabled only when it is available and supports the selected mode. Choosing another mode preserves the selected time only if that time remains available and compatible; otherwise it clears the time. Choosing a time selects exactly one. Any actual mode/time change clears notification approval.\n3. Move appointment requires a selected available compatible time and Notify the attendee selected. The summary uses 'Video'/'In person'/'No visit mode', then ' · ', then the selected time label or 'No time selected'.\n4. Successful submission emits exactly one 'reschedule|{entityId}|{in_person or video}|{slotId}', then locks the offer. All other decision taps emit zero events.\n5. Same-entity replacement preserves an allowed chosen mode and a still available compatible chosen time; invalid choices clear. Notification approval and recorded status always clear. A changed entityId clears mode, time, approval, and recorded status, including reused slot IDs. Replacement emits no callback.\n6. The component requests an appointment move locally; actual calendar mutation and app navigation are outside scope.",
+  "tokens": {
+    "colors": {
+      "surface": {
+        "value": "#FFFFFFFF",
+        "unit": "argb"
+      },
+      "canvas": {
+        "value": "#FFFFF8F4",
+        "unit": "argb"
+      },
+      "ink": {
+        "value": "#FF201B13",
+        "unit": "argb"
+      },
+      "secondaryInk": {
+        "value": "#FF4F4539",
+        "unit": "argb"
+      },
+      "primary": {
+        "value": "#FF805610",
+        "unit": "argb"
+      },
+      "onPrimary": {
+        "value": "#FFFFFFFF",
+        "unit": "argb"
+      },
+      "selected": {
+        "value": "#FFFFDDB3",
+        "unit": "argb"
+      },
+      "disabled": {
+        "value": "#FFF3E6DA",
+        "unit": "argb"
+      },
+      "disabledPrimary": {
+        "value": "#FFEDE0D4",
+        "unit": "argb"
+      },
+      "outline": {
+        "value": "#FF817567",
+        "unit": "argb"
+      },
+      "summary": {
+        "value": "#FFFFF1E5",
+        "unit": "argb"
+      }
+    },
+    "ios": {
+      "titleSize": {
+        "value": 22,
+        "unit": "pt"
+      },
+      "titleWeight": {
+        "value": 600,
+        "unit": "scalar"
+      },
+      "bodySize": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "buttonHeight": {
+        "value": 48,
+        "unit": "pt"
+      },
+      "panelInset": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "rowInset": {
+        "value": 12,
+        "unit": "pt"
+      },
+      "rowGap": {
+        "value": 8,
+        "unit": "pt"
+      },
+      "paintGutter": {
+        "value": 24,
+        "unit": "pt"
+      },
+      "panelRadius": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "rowRadius": {
+        "value": 8,
+        "unit": "pt"
+      }
+    },
+    "android": {
+      "titleSize": {
+        "value": 22,
+        "unit": "sp"
+      },
+      "titleWeight": {
+        "value": 600,
+        "unit": "scalar"
+      },
+      "bodySize": {
+        "value": 16,
+        "unit": "sp"
+      },
+      "bodyWeight": {
+        "value": 400,
+        "unit": "scalar"
+      },
+      "buttonHeight": {
+        "value": 48,
+        "unit": "dp"
+      },
+      "panelInset": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "rowInset": {
+        "value": 12,
+        "unit": "dp"
+      },
+      "rowGap": {
+        "value": 8,
+        "unit": "dp"
+      },
+      "paintGutter": {
+        "value": 24,
+        "unit": "dp"
+      },
+      "panelRadius": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "rowRadius": {
+        "value": 8,
+        "unit": "dp"
+      }
+    },
+    "measurementSources": {
+      "palette": "Stock Reply ui/theme/Color.kt, light palette, lines 23–57; iOS adopts these explicit component colors because AlertToast.AlertStyle accepts arbitrary SwiftUI Color.",
+      "androidTypography": "Stock Reply ui/theme/Type.kt titleLarge (22sp,600,28sp line height) and bodyLarge (16sp,400,24sp line height).",
+      "iosTypography": "Independent design choice: system font, fixed 22pt semibold title, 16pt regular body at approved Large Dynamic Type; visual intent only, no computed SwiftUI font claim.",
+      "spacing": "Independent design choice, informed by AlertToast.banner VStack leading/spacing10/cornerRadius10 and ReplyEmailListItem Column padding20. This design explicitly fixes its own 16/12/8 rhythm and 16/8 radii, rather than claiming those are upstream defaults.",
+      "shape": "Stock Reply Shapes.kt supports 8dp small and 16dp medium; iOS adopts explicit matching pt design values."
+    }
+  },
+  "scope": {
+    "closed_shape": "One eager finite vertical production component. No internal scroll, overlays, asynchronous state, external data, or full app navigation.",
+    "fixture_domain": "Assessment covers the exact independently sealed family and action prefixes. The reusable public schema supports up to4 data rows per group; unbounded future caller inputs are not certified.",
+    "host": "390x600 logical viewport; host inset16 horizontal and24 top; Android density2.75 and explicit paparazzi-float32-screen-config-v1.",
+    "unsupported": [
+      {
+        "aspect": "generic computed SwiftUI typography/color/padding/layout_box",
+        "disposition": "not_applicable",
+        "reason": "Public iOS AX cannot expose these computed values. Sourced qualitative propositions and rendered opaque fill pixels cover the intended aspects; no mandatory unknown is added."
+      },
+      {
+        "aspect": "generic effective padding and glyph ink geometry",
+        "disposition": "not_applicable",
+        "reason": "Public AX/Compose semantic boxes do not prove generic layout padding or glyph ink; visual intent is assessed separately."
+      },
+      {
+        "aspect": "physical OS touch area",
+        "disposition": "not_applicable",
+        "reason": "Only primary control accessibility-box height and actual native dispatch are claimed."
+      },
+      {
+        "aspect": "whole-app navigation/network/lifecycle/keyboard, RTL, other themes/font settings/widths",
+        "disposition": "not_applicable",
+        "reason": "Scope is an additive reusable component in the approved finite light/LTR/Large-or1.0 observer fixture."
+      }
+    ]
+  },
+  "states": {
+    "start": {
+      "entity": {
+        "value": "BK-908 · Extended assisted planning consultation with a support worker",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "No visit mode · No time selected",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Choose a visit mode.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Appointment rescheduling offer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "inPerson": {
+          "label": {
+            "value": "Visit in person",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "video": {
+          "label": {
+            "value": "Visit by video",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "slotA": {
+          "label": {
+            "value": "Choose assisted morning",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person",
+            "unit": "string"
+          }
+        },
+        "slotB": {
+          "label": {
+            "value": "Choose assisted afternoon",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person",
+            "unit": "string"
+          }
+        },
+        "slotC": {
+          "label": {
+            "value": "Choose remote review",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video",
+            "unit": "string"
+          }
+        },
+        "notify": {
+          "label": {
+            "value": "Notify the attendee",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Move appointment",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "inPerson": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "video": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "in-person": {
+      "entity": {
+        "value": "BK-908 · Extended assisted planning consultation with a support worker",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "In person · No time selected",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Choose an available time for this mode.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Appointment rescheduling offer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "inPerson": {
+          "label": {
+            "value": "Visit in person",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "video": {
+          "label": {
+            "value": "Visit by video",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "slotA": {
+          "label": {
+            "value": "Choose assisted morning",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person",
+            "unit": "string"
+          }
+        },
+        "slotB": {
+          "label": {
+            "value": "Choose assisted afternoon",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person",
+            "unit": "string"
+          }
+        },
+        "slotC": {
+          "label": {
+            "value": "Choose remote review",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video",
+            "unit": "string"
+          }
+        },
+        "notify": {
+          "label": {
+            "value": "Notify the attendee",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Move appointment",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "inPerson": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "video": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotA": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "slotB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "time-selected": {
+      "entity": {
+        "value": "BK-908 · Extended assisted planning consultation with a support worker",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "In person · Choose assisted morning",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Confirm attendee notification.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Appointment rescheduling offer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "inPerson": {
+          "label": {
+            "value": "Visit in person",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "video": {
+          "label": {
+            "value": "Visit by video",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "slotA": {
+          "label": {
+            "value": "Choose assisted morning",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person",
+            "unit": "string"
+          }
+        },
+        "slotB": {
+          "label": {
+            "value": "Choose assisted afternoon",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person",
+            "unit": "string"
+          }
+        },
+        "slotC": {
+          "label": {
+            "value": "Choose remote review",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video",
+            "unit": "string"
+          }
+        },
+        "notify": {
+          "label": {
+            "value": "Notify the attendee",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Move appointment",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "inPerson": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "video": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "slotB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "ready": {
+      "entity": {
+        "value": "BK-908 · Extended assisted planning consultation with a support worker",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "In person · Choose assisted morning",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Ready to move this appointment.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Appointment rescheduling offer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "inPerson": {
+          "label": {
+            "value": "Visit in person",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "video": {
+          "label": {
+            "value": "Visit by video",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "slotA": {
+          "label": {
+            "value": "Choose assisted morning",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person",
+            "unit": "string"
+          }
+        },
+        "slotB": {
+          "label": {
+            "value": "Choose assisted afternoon",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person",
+            "unit": "string"
+          }
+        },
+        "slotC": {
+          "label": {
+            "value": "Choose remote review",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video",
+            "unit": "string"
+          }
+        },
+        "notify": {
+          "label": {
+            "value": "Notify the attendee",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Move appointment",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "inPerson": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "video": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "slotB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FF805610",
+          "unit": "argb"
+        }
+      }
+    },
+    "moved": {
+      "entity": {
+        "value": "BK-908 · Extended assisted planning consultation with a support worker",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "In person · Choose assisted morning",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Appointment move recorded.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Appointment rescheduling offer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "inPerson": {
+          "label": {
+            "value": "Visit in person",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "video": {
+          "label": {
+            "value": "Visit by video",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "slotA": {
+          "label": {
+            "value": "Choose assisted morning",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person",
+            "unit": "string"
+          }
+        },
+        "slotB": {
+          "label": {
+            "value": "Choose assisted afternoon",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person",
+            "unit": "string"
+          }
+        },
+        "slotC": {
+          "label": {
+            "value": "Choose remote review",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video",
+            "unit": "string"
+          }
+        },
+        "notify": {
+          "label": {
+            "value": "Notify the attendee",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Move appointment",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [
+          "reschedule|BK-908|in_person|Q-7"
+        ],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "inPerson": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "video": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "slotB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "same-booking-preserved": {
+      "entity": {
+        "value": "BK-908 · Extended assisted planning consultation with a support worker",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen. The replacement now permits a video visit, but the Monday assisted morning remains in-person only.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "In person · Choose assisted morning",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Confirm attendee notification.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Appointment rescheduling offer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "inPerson": {
+          "label": {
+            "value": "Visit in person",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "video": {
+          "label": {
+            "value": "Visit by video",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "slotA": {
+          "label": {
+            "value": "Choose assisted morning",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person",
+            "unit": "string"
+          }
+        },
+        "slotB": {
+          "label": {
+            "value": "Choose assisted afternoon",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person",
+            "unit": "string"
+          }
+        },
+        "slotC": {
+          "label": {
+            "value": "Choose remote review",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video",
+            "unit": "string"
+          }
+        },
+        "notify": {
+          "label": {
+            "value": "Notify the attendee",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Move appointment",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "inPerson": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "video": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "slotA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "slotB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "mode-invalidates-time": {
+      "entity": {
+        "value": "BK-908 · Extended assisted planning consultation with a support worker",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen. The replacement now permits a video visit, but the Monday assisted morning remains in-person only.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Video · No time selected",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Choose an available time for this mode.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Appointment rescheduling offer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "inPerson": {
+          "label": {
+            "value": "Visit in person",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "video": {
+          "label": {
+            "value": "Visit by video",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "slotA": {
+          "label": {
+            "value": "Choose assisted morning",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person",
+            "unit": "string"
+          }
+        },
+        "slotB": {
+          "label": {
+            "value": "Choose assisted afternoon",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person",
+            "unit": "string"
+          }
+        },
+        "slotC": {
+          "label": {
+            "value": "Choose remote review",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video",
+            "unit": "string"
+          }
+        },
+        "notify": {
+          "label": {
+            "value": "Notify the attendee",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Move appointment",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "inPerson": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "video": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "slotA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotC": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "remote-time": {
+      "entity": {
+        "value": "BK-908 · Extended assisted planning consultation with a support worker",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen. The replacement now permits a video visit, but the Monday assisted morning remains in-person only.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Video · Choose remote review",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Confirm attendee notification.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Appointment rescheduling offer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "inPerson": {
+          "label": {
+            "value": "Visit in person",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "video": {
+          "label": {
+            "value": "Visit by video",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "slotA": {
+          "label": {
+            "value": "Choose assisted morning",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person",
+            "unit": "string"
+          }
+        },
+        "slotB": {
+          "label": {
+            "value": "Choose assisted afternoon",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person",
+            "unit": "string"
+          }
+        },
+        "slotC": {
+          "label": {
+            "value": "Choose remote review",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video",
+            "unit": "string"
+          }
+        },
+        "notify": {
+          "label": {
+            "value": "Notify the attendee",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Move appointment",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "inPerson": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "video": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "slotA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotC": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "ready-again": {
+      "entity": {
+        "value": "BK-908 · Extended assisted planning consultation with a support worker",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen. The replacement now permits a video visit, but the Monday assisted morning remains in-person only.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Video · Choose remote review",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Ready to move this appointment.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Appointment rescheduling offer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "inPerson": {
+          "label": {
+            "value": "Visit in person",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "video": {
+          "label": {
+            "value": "Visit by video",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "slotA": {
+          "label": {
+            "value": "Choose assisted morning",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person",
+            "unit": "string"
+          }
+        },
+        "slotB": {
+          "label": {
+            "value": "Choose assisted afternoon",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person",
+            "unit": "string"
+          }
+        },
+        "slotC": {
+          "label": {
+            "value": "Choose remote review",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video",
+            "unit": "string"
+          }
+        },
+        "notify": {
+          "label": {
+            "value": "Notify the attendee",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Move appointment",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "inPerson": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "video": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "slotA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotC": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FF805610",
+          "unit": "argb"
+        }
+      }
+    },
+    "moved-again": {
+      "entity": {
+        "value": "BK-908 · Extended assisted planning consultation with a support worker",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen. The replacement now permits a video visit, but the Monday assisted morning remains in-person only.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Video · Choose remote review",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Appointment move recorded.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Appointment rescheduling offer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "inPerson": {
+          "label": {
+            "value": "Visit in person",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "video": {
+          "label": {
+            "value": "Visit by video",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "slotA": {
+          "label": {
+            "value": "Choose assisted morning",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person",
+            "unit": "string"
+          }
+        },
+        "slotB": {
+          "label": {
+            "value": "Choose assisted afternoon",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person",
+            "unit": "string"
+          }
+        },
+        "slotC": {
+          "label": {
+            "value": "Choose remote review",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video",
+            "unit": "string"
+          }
+        },
+        "notify": {
+          "label": {
+            "value": "Notify the attendee",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Move appointment",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [
+          "reschedule|BK-908|video|Q-9"
+        ],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "inPerson": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "video": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "slotA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotC": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "changed-booking": {
+      "entity": {
+        "value": "BK-909 · New booking with reused offer IDs",
+        "unit": "string"
+      },
+      "description": {
+        "value": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "No visit mode · No time selected",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Choose a visit mode.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Appointment rescheduling offer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "inPerson": {
+          "label": {
+            "value": "Visit in person",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "video": {
+          "label": {
+            "value": "Visit by video",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "slotA": {
+          "label": {
+            "value": "Choose assisted morning",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person",
+            "unit": "string"
+          }
+        },
+        "slotB": {
+          "label": {
+            "value": "Choose assisted afternoon",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person",
+            "unit": "string"
+          }
+        },
+        "slotC": {
+          "label": {
+            "value": "Choose remote review",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video",
+            "unit": "string"
+          }
+        },
+        "notify": {
+          "label": {
+            "value": "Notify the attendee",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Move appointment",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "inPerson": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "video": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "slotC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    }
+  },
+  "questions": {
+    "heading-visual-size": {
+      "value": "Does the iOS heading follow the annotated reference's fixed22pt system-font size intent and title-to-body scale? This is qualitative, not a computed font reading.",
+      "unit": "string"
+    },
+    "heading-visual-weight": {
+      "value": "Does the iOS heading show the annotated reference's semibold/600 weight intent?",
+      "unit": "string"
+    },
+    "body-visual-size": {
+      "value": "Does iOS body copy follow the annotated reference's fixed16pt regular system-font size intent? This is qualitative typography, not a computed point-size observation.",
+      "unit": "string"
+    },
+    "body-visual-ink": {
+      "value": "Does iOS body copy follow the reference's dark ink (#FF201B13) visual intent against the white panel? This is a qualitative ink judgment, not computed color.",
+      "unit": "string"
+    },
+    "content-wrap": {
+      "value": "Across the complete swept state, is every supplied description, choice detail, summary, status, and current preview readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "content-overlap": {
+      "value": "Across the complete swept state, do successive vertical blocks remain separate without overlapping or occluding one another?",
+      "unit": "string"
+    },
+    "horizontal-fit": {
+      "value": "Across the complete swept state, does all component content stay within the offered child width without horizontal clipping or horizontal scrolling?",
+      "unit": "string"
+    },
+    "section-rhythm": {
+      "value": "Do major vertical sections follow the annotated reference's16pt iOS /16dp Android separation intent? Judge the visual rhythm; do not infer framework padding from AX boxes.",
+      "unit": "string"
+    },
+    "row-padding": {
+      "value": "Do option rows follow the annotated reference's12pt iOS /12dp Android content inset intent and leave their trailing24pt/dp paint gutter free of text and marks?",
+      "unit": "string"
+    },
+    "panel-corners": {
+      "value": "Does the white panel follow the annotated reference's16pt iOS /16dp Android rounded-corner intent?",
+      "unit": "string"
+    },
+    "row-corners": {
+      "value": "Do option rows follow the annotated reference's8pt iOS /8dp Android rounded-corner intent?",
+      "unit": "string"
+    },
+    "primary-ink": {
+      "value": "Is the primary label visibly light against its enabled amber fill and dark against its disabled pale fill, as the reference shows?",
+      "unit": "string"
+    },
+    "inPerson-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "video-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "slotA-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "slotA-wrap": {
+      "value": "Is all of this option's visible label and detail text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "slotB-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "slotB-wrap": {
+      "value": "Is all of this option's visible label and detail text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "slotC-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "slotC-wrap": {
+      "value": "Is all of this option's visible label and detail text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "notify-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "summary-wrap": {
+      "value": "Is all of this current text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "status-wrap": {
+      "value": "Is all of this current text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    }
+  },
+  "visual": {
+    "heading-visual-size": {
+      "value": true,
+      "unit": "bool"
+    },
+    "heading-visual-weight": {
+      "value": true,
+      "unit": "bool"
+    },
+    "body-visual-size": {
+      "value": true,
+      "unit": "bool"
+    },
+    "body-visual-ink": {
+      "value": true,
+      "unit": "bool"
+    },
+    "content-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "content-overlap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "horizontal-fit": {
+      "value": true,
+      "unit": "bool"
+    },
+    "section-rhythm": {
+      "value": true,
+      "unit": "bool"
+    },
+    "row-padding": {
+      "value": true,
+      "unit": "bool"
+    },
+    "panel-corners": {
+      "value": true,
+      "unit": "bool"
+    },
+    "row-corners": {
+      "value": true,
+      "unit": "bool"
+    },
+    "primary-ink": {
+      "value": true,
+      "unit": "bool"
+    },
+    "inPerson-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "video-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "slotA-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "slotA-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "slotB-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "slotB-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "slotC-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "slotC-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "notify-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "summary-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "status-wrap": {
+      "value": true,
+      "unit": "bool"
+    }
+  },
+  "obligations": [
+    {
+      "id": "business-content",
+      "clause": "All supplied and computed business text is current and exact.",
+      "priority": "must",
+      "states": [
+        "start",
+        "in-person",
+        "time-selected",
+        "ready",
+        "moved",
+        "same-booking-preserved",
+        "mode-invalidates-time",
+        "remote-time",
+        "ready-again",
+        "moved-again",
+        "changed-booking"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "decision-eligibility",
+      "clause": "Native disabled/selected facts obey published business decisions.",
+      "priority": "must",
+      "states": [
+        "start",
+        "in-person",
+        "time-selected",
+        "ready",
+        "moved",
+        "same-booking-preserved",
+        "mode-invalidates-time",
+        "remote-time",
+        "ready-again",
+        "moved-again",
+        "changed-booking"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "successful-tap-receipts",
+      "clause": "Exact tap event intervals require demonstrated successful original native dispatch; blocked taps never prove quiet behavior.",
+      "priority": "must",
+      "states": [
+        "in-person",
+        "time-selected",
+        "ready",
+        "moved",
+        "mode-invalidates-time",
+        "remote-time",
+        "ready-again",
+        "moved-again"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "caller-replacement",
+      "clause": "Same-entity revalidation and changed-entity reset are distinct and callback-silent.",
+      "priority": "must",
+      "states": [
+        "same-booking-preserved",
+        "changed-booking"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "typography",
+      "clause": "Typography follows sourced native or qualitative platform intent.",
+      "priority": "must",
+      "states": [
+        "start",
+        "in-person",
+        "time-selected",
+        "ready",
+        "moved",
+        "same-booking-preserved",
+        "mode-invalidates-time",
+        "remote-time",
+        "ready-again",
+        "moved-again",
+        "changed-booking"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "content-layout",
+      "clause": "Full variable-length vertical content wraps, fits and preserves separation/insets.",
+      "priority": "must",
+      "states": [
+        "start",
+        "in-person",
+        "time-selected",
+        "ready",
+        "moved",
+        "same-booking-preserved",
+        "mode-invalidates-time",
+        "remote-time",
+        "ready-again",
+        "moved-again",
+        "changed-booking"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "opaque-paint",
+      "clause": "Component opaque fills match approved suitable pixel regions; primary ink is readable.",
+      "priority": "must",
+      "states": [
+        "start",
+        "in-person",
+        "time-selected",
+        "ready",
+        "moved",
+        "same-booking-preserved",
+        "mode-invalidates-time",
+        "remote-time",
+        "ready-again",
+        "moved-again",
+        "changed-booking"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "primary-accessibility-box",
+      "clause": "Primary control accessibility-box height is48pt/dp; no physical OS hit-area claim.",
+      "priority": "must",
+      "states": [
+        "start",
+        "in-person",
+        "time-selected",
+        "ready",
+        "moved",
+        "same-booking-preserved",
+        "mode-invalidates-time",
+        "remote-time",
+        "ready-again",
+        "moved-again",
+        "changed-booking"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "selection-affordance",
+      "clause": "Visible selection marks agree with native selected facts.",
+      "priority": "must",
+      "states": [
+        "start",
+        "in-person",
+        "time-selected",
+        "ready",
+        "moved",
+        "same-booking-preserved",
+        "mode-invalidates-time",
+        "remote-time",
+        "ready-again",
+        "moved-again",
+        "changed-booking"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "corner-shape",
+      "clause": "Panel and option corner shape follow independent annotated references.",
+      "priority": "must",
+      "states": [
+        "start",
+        "in-person",
+        "time-selected",
+        "ready",
+        "moved",
+        "same-booking-preserved",
+        "mode-invalidates-time",
+        "remote-time",
+        "ready-again",
+        "moved-again",
+        "changed-booking"
+      ],
+      "risk": "style"
+    }
+  ],
+  "responsibilities": [
+    {
+      "id": "component-control",
+      "clause": "Production owns applicable control facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "control",
+      "subject": "production-component",
+      "rule_ids": [
+        "heading-label",
+        "entity-label",
+        "description-label",
+        "summary-label",
+        "status-label",
+        "surface-present",
+        "inPerson-label",
+        "inPerson-enabled",
+        "inPerson-selected",
+        "video-label",
+        "video-enabled",
+        "video-selected",
+        "slotA-label",
+        "slotA-enabled",
+        "slotA-selected",
+        "slotA-detail",
+        "slotB-label",
+        "slotB-enabled",
+        "slotB-selected",
+        "slotB-detail",
+        "slotC-label",
+        "slotC-enabled",
+        "slotC-selected",
+        "slotC-detail",
+        "notify-label",
+        "notify-enabled",
+        "notify-selected",
+        "primary-label",
+        "primary-enabled"
+      ]
+    },
+    {
+      "id": "component-geometry",
+      "clause": "Production owns applicable geometry facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "geometry",
+      "subject": "production-component",
+      "rule_ids": [
+        "primary-height"
+      ]
+    },
+    {
+      "id": "component-text_layout",
+      "clause": "Production owns applicable text_layout facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "text_layout",
+      "subject": "production-component",
+      "rule_ids": [
+        "heading-native-size",
+        "heading-native-weight",
+        "body-native-size",
+        "body-native-ink"
+      ]
+    },
+    {
+      "id": "component-callback",
+      "clause": "Production owns applicable callback facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "callback",
+      "subject": "production-component",
+      "rule_ids": [
+        "tap-receipt",
+        "replacement-quiet"
+      ]
+    },
+    {
+      "id": "component-visual",
+      "clause": "Production owns applicable visual facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "visual",
+      "subject": "production-component",
+      "rule_ids": [
+        "surface-fill",
+        "primary-fill",
+        "inPerson-fill",
+        "video-fill",
+        "slotA-fill",
+        "slotB-fill",
+        "slotC-fill",
+        "content-wrap",
+        "content-overlap",
+        "horizontal-fit",
+        "section-rhythm",
+        "row-padding",
+        "panel-corners",
+        "row-corners",
+        "primary-ink",
+        "inPerson-mark",
+        "video-mark",
+        "slotA-mark",
+        "slotA-wrap",
+        "slotB-mark",
+        "slotB-wrap",
+        "slotC-mark",
+        "slotC-wrap",
+        "notify-mark",
+        "summary-wrap",
+        "status-wrap"
+      ]
+    },
+    {
+      "id": "real-production-api",
+      "clause": "The real exported additive production component owns all decisions, local UI state and replacement behavior; no external state or internal scroll.",
+      "priority": "must",
+      "owner": "component",
+      "method": "source",
+      "subject": "production-component",
+      "rule_ids": []
+    },
+    {
+      "id": "thin-pass-through",
+      "clause": "Pinned bridge only decodes typed data, applies the real Android theme, and calls production with the same callback; no state, replacement UI, business computation, forced identity, or event echo.",
+      "priority": "must",
+      "owner": "bridge",
+      "method": "source",
+      "subject": "thin-bridge",
+      "rule_ids": []
+    },
+    {
+      "id": "production-placement",
+      "clause": "AlertToast exports the actual SwiftUI component and Reply compiles the actual component from app/src/main. Existing finite vertical host owns scrolling/insets; no full-app navigation claim.",
+      "priority": "must",
+      "owner": "integration",
+      "method": "source",
+      "subject": "host-integration",
+      "rule_ids": []
+    }
+  ],
+  "capture_validity": {
+    "scope": "deterministic_component_fixture",
+    "max_age_seconds": 1800,
+    "reset": "fresh_native_fixture",
+    "external_state": "all_dependencies_pinned"
+  }
+}

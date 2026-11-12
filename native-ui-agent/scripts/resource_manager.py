@@ -8,6 +8,7 @@ intent can be reclaimed. A PID alone is never sufficient evidence of ownership.
 from __future__ import annotations
 import argparse
 import contextlib
+import ctypes
 import fcntl
 import hashlib
 import json
@@ -23,6 +24,26 @@ import uuid
 
 
 FORMAT = 'native-ui-owned-resources-v1'
+
+
+def lease_clock():
+    # CPython 3.9 on macOS exposes a process-relative time.monotonic(). Kernel
+    # CLOCK_MONOTONIC is shared by independent CLI and guardian processes.
+    return time.clock_gettime(time.CLOCK_MONOTONIC)
+
+
+def boot_identity():
+    p = Path('/proc/sys/kernel/random/boot_id')
+    if p.is_file(): return p.read_text().strip()
+    class Timeval(ctypes.Structure):
+        _fields_ = [('seconds', ctypes.c_long), ('microseconds', ctypes.c_int)]
+    value = Timeval(); size = ctypes.c_size_t(ctypes.sizeof(value))
+    query = ctypes.CDLL(None, use_errno=True).sysctlbyname
+    query.argtypes = [ctypes.c_char_p, ctypes.c_void_p, ctypes.POINTER(ctypes.c_size_t), ctypes.c_void_p, ctypes.c_size_t]
+    query.restype = ctypes.c_int
+    if query(b'kern.boottime', ctypes.byref(value), ctypes.byref(size), None, 0) != 0:
+        raise OSError(ctypes.get_errno(), 'Native pool host boot identity is unavailable')
+    return str(value.seconds) + ':' + str(value.microseconds)
 
 
 def allocated(path):
@@ -48,11 +69,12 @@ def no_symlinks(path):
 
 
 class Resources:
-    def __init__(self, config, output, *, final=False):
+    def __init__(self, config, output, *, final=False, _watch_token=None):
         self.config = config; self.output = Path(output).resolve(); self.final = final
+        self._watch_token = _watch_token
         if self.output.exists(): raise ValueError('Fresh resource receipt output required')
         self.options = dict(config.get('resources', {}))
-        allowed = {'root', 'max_bytes', 'min_free_bytes', 'max_simulators', 'sample_seconds', 'ttl_seconds', 'command_timeout_seconds', 'ios'}
+        allowed = {'root', 'max_bytes', 'min_free_bytes', 'max_simulators', 'sample_seconds', 'ttl_seconds', 'command_timeout_seconds', 'ios', 'pool'}
         if set(self.options) - allowed: raise ValueError('Unknown resource policy field')
         self.root = no_symlinks(self.options.get('root', self.output.parent / 'cache/native-ui-resources'))
         self.protected = [Path(p).resolve() for p in config['source_roots']] + [self.output]
@@ -65,6 +87,17 @@ class Resources:
         self.sample_seconds = self.options.get('sample_seconds', 2)
         self.ttl = self.options.get('ttl_seconds', 86400)
         self.command_timeout = self.options.get('command_timeout_seconds', 900)
+        pool = self.options.get('pool', {})
+        if pool is not False and (not isinstance(pool, dict) or set(pool) - {'idle_seconds', 'max_uses', 'max_age_seconds'}):
+            raise ValueError('Bounded device pool policy required')
+        self.pool_enabled = pool is not False
+        self.pool_idle = pool.get('idle_seconds', 300) if pool is not False else 1
+        self.pool_uses = pool.get('max_uses', 12) if pool is not False else 1
+        self.pool_age = pool.get('max_age_seconds', 3600) if pool is not False else 1
+        if (type(self.pool_idle) is not int or not 1 <= self.pool_idle <= 1800
+                or type(self.pool_uses) is not int or not 1 <= self.pool_uses <= 100
+                or type(self.pool_age) is not int or not 1 <= self.pool_age <= 7200):
+            raise ValueError('Pool idle lifetime and acquisition count must be bounded')
         if any(type(v) is not int or v <= 0 for v in [self.max_bytes, self.max_simulators, self.ttl]):
             raise ValueError('Positive integral resource limits required')
         if type(self.min_free) is not int or self.min_free < 0 or type(self.sample_seconds) not in {int, float} or not .1 <= self.sample_seconds <= 60:
@@ -188,10 +221,12 @@ class Resources:
             actual_root = {'device': self.root.stat().st_dev, 'inode': self.root.stat().st_ino}
             if self.state.get('root_identity', actual_root) != actual_root: raise ValueError('Owned root was replaced')
             self.state['root_identity'] = actual_root
+            interrupted = bool(self.state.get('lease') or self.state.get('process'))
             self.reconcile_process()
             # Lock acquisition proves no other managed session can be active.
             # Journaled devices from an interrupted process are recovered first.
-            self.cleanup_devices()
+            if interrupted or not self.pool_enabled or any(not self.reusable_device(r) for r in self.state.get('devices', [])):
+                self.cleanup_devices()
             for row in list(self.state['directories']):
                 if time.time() - row['last_used_unix'] > self.ttl: self.remove_directory(row)
             self.state['lease'] = {'pid': os.getpid(), 'started_at_unix': time.time()}; self.save()
@@ -199,6 +234,8 @@ class Resources:
             for row in sorted(list(self.state['directories']), key=lambda r: r['last_used_unix']):
                 if self.samples[-1]['allocated_bytes'] <= self.max_bytes and self.samples[-1]['free_bytes'] >= self.min_free: break
                 self.remove_directory(row); self.sample()
+            if self.samples[-1]['allocated_bytes'] > self.max_bytes or self.samples[-1]['free_bytes'] < self.min_free:
+                self.cleanup_devices(); self.sample()
             # Existing evidence can still be routed/reviewed on a low-disk
             # machine. Resource admission is enforced before acquiring native
             # handles or starting a command, not by forcing a redundant SDK run.
@@ -275,22 +312,63 @@ class Resources:
                 self.simctl('delete', d['udid']); self.event('simulator_removed', udid=d['udid'])
             self.state['devices'].remove(row); self.save()
 
+    def reusable_device(self, row):
+        at = row.get('last_used_unix', 0)
+        return bool(self.pool_enabled and row.get('pool_idle') is True and row.get('pool_key')
+                    and row.get('boot_id') == boot_identity()
+                    and type(at) in {int, float} and 0 <= time.time() - at < self.pool_idle
+                    and 0 <= lease_clock() - row.get('last_used_monotonic', -1e30) < self.pool_idle
+                    and type(row.get('uses')) is int and row['uses'] < self.pool_uses
+                    and 0 <= time.time() - row['created_at_unix'] < min(self.ttl, self.pool_age)
+                    and 0 <= lease_clock() - row.get('created_monotonic', -1e30) < self.pool_age)
+
+    def pool_key(self, ios):
+        import capture_validity
+        return hashlib.sha256(json.dumps({'ios': ios, 'host': capture_validity.host_identity(self.config, 'ios')}, sort_keys=True).encode()).hexdigest()
+
     def native_options(self,platform=None):
         self.require_lease()
         self.sample();self.check_budget()
         if platform not in {None,'ios','android'}:raise ValueError('Known native platform required')
         options = dict(self.config['native_options'])
+        if self.state.get('process'): raise RuntimeError('Cannot acquire native handles during an active managed command')
         if platform=='ios' or (platform is None and (self.config.get('platform') == 'ios' or 'package' in options or 'simulator' in options)):
             # Supplied user devices and user build caches are borrowed. Only an
             # explicit managed simulator causes a create and an eventual delete.
             if options.get('simulator') in {None, 'managed'}:
                 ios = self.options.get('ios')
                 if not ios or set(ios) != {'device_type', 'runtime'}: raise ValueError('Managed simulator requires explicit installed device type/runtime')
-                if len(self.state['devices']) >= self.max_simulators: raise RuntimeError('Owned simulator limit reached')
-                row = {'name': 'NativeUI-' + self.identity['token'][:12] + '-' + uuid.uuid4().hex[:8], 'created_at_unix': time.time()}
-                self.state['devices'].append(row); self.save(); self.event('simulator_create_intent', name=row['name'])
-                row['udid'] = self.simctl('create', row['name'], ios['device_type'], ios['runtime']); self.save()
+                if getattr(self, '_checked_out', None):
+                    if self._checked_out['spec'] != ios: raise RuntimeError('Cannot replace an active native device lease')
+                    row = self._checked_out['row']
+                else:
+                    import pool_watch
+                    pool_watch.ensure(self)
+                    key = self.pool_key(ios) if self.pool_enabled and (not self.final or self.state['devices']) else None
+                    row = next((r for r in self.state['devices'] if self.reusable_device(r) and r['pool_key'] == key), None)
+                if getattr(self, '_checked_out', None):
+                    pass
+                elif row:
+                    devices = json.loads(self.simctl('list', 'devices', '--json'))['devices']
+                    found = [v for v in devices.get(ios['runtime'], []) if v['udid'] == row['udid'] and v['name'] == row['name'] and v.get('isAvailable', True)]
+                    if len(found) != 1:
+                        raise ValueError('Owned pooled device identity/runtime changed')
+                    row.update(pool_idle=False, uses=row['uses'] + 1, last_used_unix=time.time(), last_used_monotonic=lease_clock())
+                    self.save(); self.event('simulator_pool_checkout', udid=row['udid'], uses=row['uses'])
+                else:
+                    # There is one exclusive native command per root. Retire
+                    # mismatched idle slots before creating a replacement.
+                    self.cleanup_devices()
+                    if len(self.state['devices']) >= self.max_simulators: raise RuntimeError('Owned simulator limit reached')
+                    row = {'name': 'NativeUI-' + self.identity['token'][:12] + '-' + uuid.uuid4().hex[:8],
+                           'created_at_unix': time.time(), 'last_used_unix': time.time(), 'uses': 1,
+                           'created_monotonic': lease_clock(), 'last_used_monotonic': lease_clock(),
+                           'boot_id': boot_identity(), 'pool_idle': False, 'pool_key': key}
+                    self.state['devices'].append(row); self.save(); self.event('simulator_create_intent', name=row['name'])
+                    row['udid'] = self.simctl('create', row['name'], ios['device_type'], ios['runtime']); self.save()
+                self._checked_out = {'spec': dict(ios), 'row': row}
                 options['simulator'] = row['udid']
+                options['reset-owned-app'] = '1'
             if not options.get('build-cache'): options['build-cache'] = str(self.directory('compiled-ios'))
             if options.get('simulator') != 'managed' and not any(v.get('udid') == options['simulator'] for v in self.state['devices']):
                 devices = json.loads(self.simctl('list', 'devices', '--json'))['devices']
@@ -365,8 +443,23 @@ class Resources:
         if self.finished: return False
         try:
             self.sample()
+            retain = (self.pool_enabled and not self.final and not exc_type and self.command_exit_code in {None, 0}
+                      and self.peak <= self.max_bytes and self.samples[-1]['free_bytes'] >= self.min_free)
             if not self.cleanup_errors:
-                try: self.cleanup_devices()
+                try:
+                    if not retain or not self.state.get('devices'):
+                        import pool_watch
+                        pool_watch.stop(self)
+                    if retain:
+                        if self.state.get('devices'):
+                            import pool_watch
+                            pool_watch.ensure(self)
+                        for row in self.state.get('devices', []):
+                            if not row.get('pool_idle'):
+                                row.update(pool_idle=True, last_used_unix=time.time(), last_used_monotonic=lease_clock())
+                                self.event('simulator_pool_return', udid=row.get('udid'), uses=row.get('uses'))
+                        self.save()
+                    else: self.cleanup_devices()
                 except Exception as error: self.cleanup_errors.append(str(error))
             if not self.cleanup_errors and (self.final or exc_type or self.command_exit_code not in {None, 0} or self.peak > self.max_bytes):
                 for row in list(self.state['directories']):
@@ -384,6 +477,8 @@ class Resources:
                 'remaining_devices': self.state['devices'], 'final': self.final,
                 'primary_error': {'type': exc_type.__name__, 'message': str(exc)} if exc_type else None,
                 'command_exit_code': self.command_exit_code,
+                'pool': {'enabled': self.pool_enabled, 'idle_seconds': self.pool_idle, 'max_uses': self.pool_uses, 'max_age_seconds': self.pool_age,
+                         'disposition': 'idle_owned_pool' if retain and self.state['devices'] else 'retired'},
                 'borrowed_build_paths': list(map(str, self.borrowed_paths)),
                 'scope': 'Sampled owned scratch plus borrowed project build paths and owned simulator data. Borrowed paths are measured and budgeted, never deleted. Not exact transient peak, APFS physical usage, shared SDK caches, or user devices.'}, indent=2) + '\n')
         finally:

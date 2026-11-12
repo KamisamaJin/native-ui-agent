@@ -1,0 +1,610 @@
+{
+  "version": 1,
+  "scenario": "public-main",
+  "business_rules_source": "reference.json#/business_rules",
+  "states": [
+    {
+      "id": "initial",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content",
+      "stimulus": "none",
+      "exact_business_state": {
+        "entity": "BK-320 · Community design review",
+        "description": "Move this appointment only after checking both the visit mode and the offered time. The attendee needs enough notice to rearrange accessible transport or prepare a quiet place for the video review.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "slotA": {
+            "label": "Choose Tuesday morning",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.\nAvailable · in_person, video"
+          },
+          "slotB": {
+            "label": "Choose Wednesday afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Wednesday 14:00–14:45 at the town hall annex.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose Thursday video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Thursday 16:00–16:45 with the remote design team.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "No visit mode · No time selected",
+        "status": "Choose a visit mode.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "video-mode",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-320 · Community design review",
+        "description": "Move this appointment only after checking both the visit mode and the offered time. The attendee needs enough notice to rearrange accessible transport or prepare a quiet place for the video review.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "slotA": {
+            "label": "Choose Tuesday morning",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.\nAvailable · in_person, video"
+          },
+          "slotB": {
+            "label": "Choose Wednesday afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Wednesday 14:00–14:45 at the town hall annex.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose Thursday video",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Thursday 16:00–16:45 with the remote design team.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Video · No time selected",
+        "status": "Choose an available time for this mode.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "time-selected",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-320 · Community design review",
+        "description": "Move this appointment only after checking both the visit mode and the offered time. The attendee needs enough notice to rearrange accessible transport or prepare a quiet place for the video review.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "slotA": {
+            "label": "Choose Tuesday morning",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.\nAvailable · in_person, video"
+          },
+          "slotB": {
+            "label": "Choose Wednesday afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Wednesday 14:00–14:45 at the town hall annex.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose Thursday video",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Thursday 16:00–16:45 with the remote design team.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Video · Choose Thursday video",
+        "status": "Confirm attendee notification.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-320 · Community design review",
+        "description": "Move this appointment only after checking both the visit mode and the offered time. The attendee needs enough notice to rearrange accessible transport or prepare a quiet place for the video review.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "slotA": {
+            "label": "Choose Tuesday morning",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.\nAvailable · in_person, video"
+          },
+          "slotB": {
+            "label": "Choose Wednesday afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Wednesday 14:00–14:45 at the town hall annex.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose Thursday video",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Thursday 16:00–16:45 with the remote design team.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Video · Choose Thursday video",
+        "status": "Ready to move this appointment.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "moved",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-320 · Community design review",
+        "description": "Move this appointment only after checking both the visit mode and the offered time. The attendee needs enough notice to rearrange accessible transport or prepare a quiet place for the video review.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": false,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": false,
+            "kind": "option",
+            "selected": true
+          },
+          "slotA": {
+            "label": "Choose Tuesday morning",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.\nAvailable · in_person, video"
+          },
+          "slotB": {
+            "label": "Choose Wednesday afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Wednesday 14:00–14:45 at the town hall annex.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose Thursday video",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Thursday 16:00–16:45 with the remote design team.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Video · Choose Thursday video",
+        "status": "Appointment move recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "reschedule|BK-320|video|S-3"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "same-booking-full-slot",
+      "input_index": 1,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "BK-320 · Community design review",
+        "description": "The Thursday remote slot filled while this offer was open. Keep a valid visit mode, clear an unavailable chosen time, and request a fresh attendee-notification approval for the replacement offer.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "slotA": {
+            "label": "Choose Tuesday morning",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.\nAvailable · in_person, video"
+          },
+          "slotB": {
+            "label": "Choose Wednesday afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Wednesday 14:00–14:45 at the town hall annex.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose Thursday video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Thursday 16:00–16:45 with the remote design team.\nFull · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Video · No time selected",
+        "status": "Choose an available time for this mode.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "new-time",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "targets",
+      "stimulus_action": 11,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-320 · Community design review",
+        "description": "The Thursday remote slot filled while this offer was open. Keep a valid visit mode, clear an unavailable chosen time, and request a fresh attendee-notification approval for the replacement offer.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "slotA": {
+            "label": "Choose Tuesday morning",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.\nAvailable · in_person, video"
+          },
+          "slotB": {
+            "label": "Choose Wednesday afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Wednesday 14:00–14:45 at the town hall annex.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose Thursday video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Thursday 16:00–16:45 with the remote design team.\nFull · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Video · Choose Tuesday morning",
+        "status": "Confirm attendee notification.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready-again",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "full_content",
+      "stimulus_action": 13,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-320 · Community design review",
+        "description": "The Thursday remote slot filled while this offer was open. Keep a valid visit mode, clear an unavailable chosen time, and request a fresh attendee-notification approval for the replacement offer.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "slotA": {
+            "label": "Choose Tuesday morning",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.\nAvailable · in_person, video"
+          },
+          "slotB": {
+            "label": "Choose Wednesday afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Wednesday 14:00–14:45 at the town hall annex.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose Thursday video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Thursday 16:00–16:45 with the remote design team.\nFull · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Video · Choose Tuesday morning",
+        "status": "Ready to move this appointment.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "moved-again",
+      "input_index": 1,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-320 · Community design review",
+        "description": "The Thursday remote slot filled while this offer was open. Keep a valid visit mode, clear an unavailable chosen time, and request a fresh attendee-notification approval for the replacement offer.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": false,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": false,
+            "kind": "option",
+            "selected": true
+          },
+          "slotA": {
+            "label": "Choose Tuesday morning",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.\nAvailable · in_person, video"
+          },
+          "slotB": {
+            "label": "Choose Wednesday afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Wednesday 14:00–14:45 at the town hall annex.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose Thursday video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Thursday 16:00–16:45 with the remote design team.\nFull · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Video · Choose Tuesday morning",
+        "status": "Appointment move recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "reschedule|BK-320|video|S-1"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "changed-booking",
+      "input_index": 2,
+      "after_action": 18,
+      "coverage": "full_content",
+      "stimulus_action": 17,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "BK-321 · Different attendee consultation",
+        "description": "A separate booking uses the same time labels. Video visits are unavailable for this attendee. Start with no visit mode, no selected time, and no notification approval.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false
+          },
+          "slotA": {
+            "label": "Choose Tuesday morning",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.\nAvailable · in_person, video"
+          },
+          "slotB": {
+            "label": "Choose Wednesday afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Wednesday 14:00–14:45 at the town hall annex.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose Thursday video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Thursday 16:00–16:45 with the remote design team.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "No visit mode · No time selected",
+        "status": "Choose a visit mode.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    }
+  ]
+}

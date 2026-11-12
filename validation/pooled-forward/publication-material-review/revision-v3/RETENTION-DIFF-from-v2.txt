@@ -1,0 +1,41 @@
+--- development-material-v2.py
++++ candidate-material-v3.py
+@@ -40,12 +40,12 @@
+ 
+ OUTCOME_FIELDS = {'profile', 'action', 'exit_code', 'service_status', 'accepted', 'error',
+                   'interrupted', 'observed_integrity_violation', 'native_collection_success',
+-                  'source_unchanged', 'integrity'}
++                  'source_unchanged', 'integrity', 'acquisition_evidence'}
+ OUTCOME_METADATA = {'task', 'arm', 'started_at_unix', 'finished_at_unix', 'wall_seconds',
+     'started_at_monotonic', 'finished_at_monotonic', 'started_at_clock_gettime_monotonic',
+     'finished_at_clock_gettime_monotonic', 'envelope_record', 'service_output', 'capture',
+     'cycle', 'completion', 'bound_review', 'new_ui_acquisition', 'capture_reused',
+-    'acquisition_evidence', 'native_observer_command_wall_seconds', 'submission', 'inventory',
++    'native_observer_command_wall_seconds', 'submission', 'inventory',
+     'config', 'source_capsule', 'resources', 'native_claim',
+     'native_continuation_claim', 'continuation_authority', 'entry_resume_permit',
+     'failed_preclaim_entry', 'licensed_original_record', 'version', 'kind', 'final'}
+@@ -155,8 +155,10 @@
+     projection._validate_json(value)
+     if not isinstance(value, dict) or set(value) - OUTCOME_FIELDS - OUTCOME_METADATA:
+         raise ValueError('Unreviewed operation outcome fields; retain failed preparation')
+-    if any(isinstance(value.get(key), (list, dict)) for key in OUTCOME_FIELDS - {'error', 'integrity'}):
++    if any(isinstance(value.get(key), (list, dict)) for key in OUTCOME_FIELDS - {'error', 'integrity', 'acquisition_evidence'}):
+         raise ValueError('Unexpected structured outcome fact field')
++    if value.get('acquisition_evidence') is not None and not isinstance(value['acquisition_evidence'], dict):
++        raise ValueError('Original acquisition evidence object required')
+     if 'error' in value and value['error'] is not None:
+         if not isinstance(value['error'], dict) or set(value['error']) != {'type', 'message'}:
+             raise ValueError('Unreviewed original error schema')
+@@ -165,11 +167,6 @@
+         if key in REF_METADATA:
+             if not _reference(item, ('original_path',) if key == 'submission' else ()):
+                 raise ValueError('Unexpected data in omitted outcome reference')
+-        elif key == 'acquisition_evidence':
+-            if item is not None and (not isinstance(item, dict) or set(item) != {'capture_receipt', 'execution', 'native_log', 'observation', 'scope'}
+-                    or item['scope'] != ''
+-                    or not all(_reference(item[k]) for k in ['capture_receipt', 'execution', 'native_log', 'observation'])):
+-                raise ValueError('Unexpected data in acquisition provenance metadata')
+         elif key in _OUTCOME_TIME:
+             if not _number(item):
+                 raise ValueError('Numeric outcome timing metadata required')

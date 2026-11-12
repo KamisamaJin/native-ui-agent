@@ -1,0 +1,136 @@
+--- revision-v2/alarm-material-tools-v2/batch.py
++++ final-batch-v3.py
+@@ -18,14 +18,14 @@
+ import types
+ 
+ MATERIAL_SHA = '4783735c450d882c7fcf62e5a1192dacafa96352fee899023a8e67a12e2e94ac'
+-EMITTER_SCHEMA_SHA = '53920e0dcf256d88653f6bf67718edc3753104f26edec84ce8fb49bfda5bd2e6'
++EMITTER_SCHEMA_SHA = 'f28e1deb779f620102b5c097675d70c3d9a3e85f639de65fa4875d885c595617'
+ _here = Path(__file__).resolve().parent
+ _material_bytes = (_here / 'material.py').read_bytes()
+ if hashlib.sha256(_material_bytes).hexdigest() != MATERIAL_SHA:
+     raise ValueError('Pinned material-v3 source differs')
+ m = types.ModuleType('batch_private_material_v3'); m.__file__ = str(_here / 'material.py')
+ exec(compile(_material_bytes, m.__file__, 'exec'), m.__dict__)
+-_schema_bytes = (_here / 'EMITTER-SCHEMA-v1.json').read_bytes()
++_schema_bytes = (_here / 'EMITTER-SCHEMA-v2.json').read_bytes()
+ if hashlib.sha256(_schema_bytes).hexdigest() != EMITTER_SCHEMA_SHA:
+     raise ValueError('Pinned emitter admission schema differs')
+ EMITTER_SCHEMA = m.projection.strict_json(_schema_bytes)
+@@ -103,14 +103,23 @@
+ 
+ 
+ REPORT_NAMES = m.REPORT_NAMES | set(EMITTER_SCHEMA['additional_reports'])
+-NONREPORT_JSON = {'resources.json', 'resource-journal.json', 'resource-events.jsonl',
+-    'execution.json', 'parent-plan.json', 'fixtures.json', 'actions.json', 'policy.json',
+-    'environment.json', 'config.json', 'source-before.json', 'source-after.json',
+-    'source-model.json', 'capture-context.json', 'result.json', 'native-result.json',
+-    'attachment-manifest.json', 'manifest.json', 'junit.xml'}
++NONREPORT_JSON = set(EMITTER_SCHEMA['nonreport_control_paths'])
+ OPAQUE_PREFIXES = ('tool-runtime/', 'capture/tool-runtime/', 'native/sources/',
+     'native/tool-sources/', 'native/compiled-project/', 'capture/native/sources/',
+-    'capture/native/tool-sources/', 'capture/native/compiled-project/')
++    'capture/native/tool-sources/', 'capture/native/compiled-project/',
++    'native/test.xcresult/', 'capture/native/test.xcresult/')
++
++
++def inventory_kind(relative_name):
++    """Explicit frozen emitter layout; unknown JSON is never guessed nonfactual."""
++    if relative_name.startswith(OPAQUE_PREFIXES): return 'control'
++    normalized = relative_name[len('capture/'):] if relative_name.startswith('capture/') else relative_name
++    if PurePosixPath(relative_name).name in REPORT_NAMES: return 'report'
++    if normalized in NONREPORT_JSON: return 'control'
++    if normalized == 'native/observation.json': return 'native-observation'
++    if PurePosixPath(relative_name).suffix.lower() in {'.json', '.jsonl'}:
++        raise ValueError('Unreviewed service JSON member; no silent report filtering: ' + relative_name)
++    return 'other-original-member'
+ 
+ 
+ def code_pins():
+@@ -199,7 +208,7 @@
+             'anonymous_group': group, 'versions': [], 'episodes': [], 'documents': [],
+             'scope': 'Original all-status reports and claims; status is not independent truth. Source capsules, native epochs and original image layout remain explicit.',
+             'metadata_reference_scope': 'record-ref-* values are opaque original provenance identifiers, not supplied packet members.'}
+-        self.versions, self.aliases, self.captures, self.document_paths = {}, {}, {}, {}
++        self.versions, self.aliases, self.captures, self.document_paths, self.metadata_aliases = {}, {}, {}, {}, {}
+         self.run = root / 'cache/business/run-cohort2'
+         self.initial = group.endswith('-I')
+ 
+@@ -279,7 +288,7 @@
+         return content
+ 
+     def operation_aliases(self, outcome, config_ref, source_version):
+-        aliases = dict(self.aliases[source_version])
++        aliases = dict(self.metadata_aliases); aliases.update(self.aliases[source_version])
+         def references(item):
+             if isinstance(item, dict):
+                 if ('path' in item and 'sha256' in item and m._path(item['path'])
+@@ -300,6 +309,16 @@
+         info = {'episode': episode, 'platform': profile, 'source_version': version, 'visibility': visibility}
+         if attempt_origins is not None: info['attempt_origins'] = list(attempt_origins)
+         aliases = self.operation_aliases(outcome, config_ref, version)
++        inventory_ref = outcome.get('inventory')
++        if inventory_ref:
++            inventory = pinned(self.reader, inventory_ref); service = Path(outcome['service_output'])
++            if not isinstance(inventory, dict): raise ValueError('Explicit original service inventory required')
++            for original in inventory:
++                p = Path(original)
++                if not m._path(original) or not p.is_relative_to(service):
++                    raise ValueError('Original service inventory escapes its namespace')
++                rel = p.relative_to(service).as_posix()
++                if inventory_kind(rel) == 'report': aliases[original] = base + '/reports/' + rel
+         capture_ref = outcome.get('capture')
+         if capture_ref:
+             receipt = pinned(self.reader, capture_ref); key = capture_ref['sha256']
+@@ -308,9 +327,9 @@
+             aliases[str(obs)] = prefix + '/observation.json'
+             for rel in receipt.get('image_hashes', {}):
+                 aliases[str(native / relative(rel))] = prefix + '/' + rel
++        self.metadata_aliases.update(aliases)
+         self.json_document(outcome_ref, base + '/outcome.json', dict(info, kind='operation-result'), outcome=True, aliases=aliases)
+         entry = dict(info, outcome=base + '/outcome.json', action=outcome.get('action'), capture=None)
+-        inventory_ref = outcome.get('inventory')
+         if inventory_ref:
+             inventory = pinned(self.reader, inventory_ref); service = Path(outcome['service_output'])
+             if not isinstance(inventory, dict): raise ValueError('Explicit original service inventory required')
+@@ -328,17 +347,17 @@
+                 if isinstance(row, dict) and (set(row) != {'sha256', 'bytes'} or type(row['bytes']) is not int or row['bytes'] < 0):
+                     raise ValueError('Unreviewed original inventory row')
+                 expected = row if isinstance(row, str) else row['sha256']
++                if not isinstance(expected, str) or len(expected) != 64 or any(c not in '0123456789abcdef' for c in expected):
++                    raise ValueError('Exact original inventory SHA required')
+                 rel = p.relative_to(service).as_posix()
+-                if rel.startswith(OPAQUE_PREFIXES): continue
+-                if p.name in REPORT_NAMES:
++                kind = inventory_kind(rel)
++                if kind == 'report':
+                     if isinstance(row, dict) and len(self.reader.read_bytes(original)) != row['bytes']:
+                         raise ValueError('Original report byte count differs')
+                     destination = base + '/reports/' + p.relative_to(service).as_posix()
+                     self.json_document({'path': original, 'sha256': expected}, destination,
+                                        dict(info, kind='original-service-report'), aliases=aliases)
+-                elif p.suffix.lower() in {'.json', '.jsonl'} and p.name not in NONREPORT_JSON and p.name != 'observation.json':
+-                    raise ValueError('Unreviewed service JSON member; no silent report filtering: ' + rel)
+-                elif p.name == 'observation.json' and not capture_ref:
++                elif kind == 'native-observation' and not capture_ref:
+                     raise ValueError('Unbound partial native observation requires prospective presentation review')
+         if capture_ref:
+             if key not in self.captures:
+@@ -429,7 +448,7 @@
+                 self.json_document({'path': request['submission']['path'], 'sha256': request['submission']['sha256']},
+                     'episodes/' + label + '/original-submission.json',
+                     {'kind': 'original-worker-submission', 'episode': label, 'source_version': version,
+-                     'visibility': 'common-initial-public' if self.initial else 'worker_public'}, aliases=self.aliases[version])
++                    'visibility': 'common-initial-public' if self.initial else 'worker_public'}, aliases={**self.metadata_aliases, **self.document_paths, **self.aliases[version]})
+         scope = 'I' if self.initial else own; independent = self.root / 'cache/business/independent-evaluation'
+         for platform in ['ios', 'android']:
+             key = self.task + '/' + scope + '/' + platform
+@@ -468,7 +487,7 @@
+         if not self.initial:
+             self.json_document({'path': sealed['claim_path'], 'sha256': sealed['claim_sha256']},
+                 'worker/self-claim.json', {'kind': 'original-worker-self-claim', 'visibility': 'worker_public',
+-                'source_version': sources[-1]['content_sha256']}, aliases=self.aliases[sources[-1]['content_sha256']])
++                'source_version': sources[-1]['content_sha256']}, aliases={**self.metadata_aliases, **self.document_paths, **self.aliases[sources[-1]['content_sha256']]})
+ 
+ 
+ def prepare(root, reader, cause_ref, snapshot_ref, native_result_ref, output, work):

@@ -1,0 +1,399 @@
+{
+  "version": 1,
+  "design_lock_sha256": "344b5d88120d33f21922b07b161f79359e4836dbe5562d92f9342dc7c1ba8ea4",
+  "plan_sha256": "e9e75a5dbfb4c44123a9ccec7aa0a35e017ef0f8a227ac7efb8a9460773423c1",
+  "routes_sha256": "6106ede10d9bd11cd46111daf67fa56bb9da2d2c201515d47ad10f99918c0207",
+  "obligations": [
+    {
+      "id": "marker",
+      "clause": "Each selected state exposes the exact marker from its current fixed fixture input.",
+      "priority": "must",
+      "states": [
+        "start",
+        "after-primary",
+        "after-replacement",
+        "replacement-full",
+        "after-last"
+      ],
+      "risk": "content",
+      "assertion_ids": [
+        "start/marker-label",
+        "after-primary/marker-label",
+        "after-replacement/marker-label",
+        "replacement-full/marker-label",
+        "after-last/marker-label"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "marker-label"
+        ],
+        "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+        "regression_obligations": [
+          "detail"
+        ]
+      }
+    },
+    {
+      "id": "detail",
+      "clause": "Each selected state exposes the exact lower detail from its current fixed fixture input.",
+      "priority": "must",
+      "states": [
+        "start",
+        "after-primary",
+        "after-replacement",
+        "replacement-full",
+        "after-last"
+      ],
+      "risk": "content",
+      "assertion_ids": [
+        "start/detail-label",
+        "after-primary/detail-label",
+        "after-replacement/detail-label",
+        "replacement-full/detail-label",
+        "after-last/detail-label"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "detail-label"
+        ],
+        "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+        "regression_obligations": [
+          "marker"
+        ]
+      }
+    },
+    {
+      "id": "counter",
+      "clause": "The counter starts at zero, becomes one after one successful primary activation, and stays one across caller replacement and last activation.",
+      "priority": "must",
+      "states": [
+        "start",
+        "after-primary",
+        "after-replacement",
+        "replacement-full",
+        "after-last"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "start/count-label",
+        "after-primary/count-label",
+        "after-replacement/count-label",
+        "replacement-full/count-label",
+        "after-last/count-label"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "count-label"
+        ],
+        "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+        "regression_obligations": [
+          "caller-update",
+          "primary-callback"
+        ]
+      }
+    },
+    {
+      "id": "controls",
+      "clause": "Primary and last controls are uniquely present and enabled with their fixed native labels.",
+      "priority": "must",
+      "states": [
+        "start",
+        "after-primary",
+        "after-replacement",
+        "replacement-full",
+        "after-last"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "start/primary-label",
+        "start/primary-present",
+        "start/primary-unique",
+        "start/primary-enabled",
+        "start/last-label",
+        "start/last-present",
+        "start/last-unique",
+        "start/last-enabled",
+        "after-primary/primary-label",
+        "after-primary/primary-present",
+        "after-primary/primary-unique",
+        "after-primary/primary-enabled",
+        "after-primary/last-label",
+        "after-primary/last-present",
+        "after-primary/last-unique",
+        "after-primary/last-enabled",
+        "after-replacement/primary-label",
+        "after-replacement/primary-present",
+        "after-replacement/primary-unique",
+        "after-replacement/primary-enabled",
+        "after-replacement/last-label",
+        "after-replacement/last-present",
+        "after-replacement/last-unique",
+        "after-replacement/last-enabled",
+        "replacement-full/primary-label",
+        "replacement-full/primary-present",
+        "replacement-full/primary-unique",
+        "replacement-full/primary-enabled",
+        "replacement-full/last-label",
+        "replacement-full/last-present",
+        "replacement-full/last-unique",
+        "replacement-full/last-enabled",
+        "after-last/primary-label",
+        "after-last/primary-present",
+        "after-last/primary-unique",
+        "after-last/primary-enabled",
+        "after-last/last-label",
+        "after-last/last-present",
+        "after-last/last-unique",
+        "after-last/last-enabled"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "primary-label",
+          "primary-present",
+          "primary-unique",
+          "primary-enabled",
+          "last-label",
+          "last-present",
+          "last-unique",
+          "last-enabled"
+        ],
+        "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+        "regression_obligations": [
+          "primary-callback",
+          "last-callback"
+        ]
+      }
+    },
+    {
+      "id": "primary-callback",
+      "clause": "The demonstrated primary native activation produces exactly one probe.primary callback in its original interval.",
+      "priority": "must",
+      "states": [
+        "after-primary"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "after-primary/primary-callback"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "primary-callback"
+        ],
+        "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+        "regression_obligations": [
+          "counter",
+          "caller-update"
+        ]
+      }
+    },
+    {
+      "id": "caller-update",
+      "clause": "The demonstrated caller update advances input exactly once in the same app/process and produces no callback in its original interval.",
+      "priority": "must",
+      "states": [
+        "after-replacement"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "after-replacement/caller-update-quiet"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "caller-update-quiet"
+        ],
+        "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+        "regression_obligations": [
+          "counter",
+          "marker",
+          "detail",
+          "complete-content"
+        ]
+      }
+    },
+    {
+      "id": "last-callback",
+      "clause": "The demonstrated lower last native activation produces exactly one probe.last callback in its original interval.",
+      "priority": "must",
+      "states": [
+        "after-last"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [
+        "after-last/last-callback"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "last-callback"
+        ],
+        "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+        "regression_obligations": [
+          "complete-content"
+        ]
+      }
+    },
+    {
+      "id": "complete-content",
+      "clause": "Start and replacement-full have native state-local overlapping top-to-bottom coverage, bottom sentinel, all eighteen fixed row labels, and lower detail/last targets.",
+      "priority": "must",
+      "states": [
+        "start",
+        "replacement-full"
+      ],
+      "risk": "layout",
+      "assertion_ids": [
+        "start/detail-label",
+        "start/last-present",
+        "start/row-0-label",
+        "start/row-1-label",
+        "start/row-2-label",
+        "start/row-3-label",
+        "start/row-4-label",
+        "start/row-5-label",
+        "start/row-6-label",
+        "start/row-7-label",
+        "start/row-8-label",
+        "start/row-9-label",
+        "start/row-10-label",
+        "start/row-11-label",
+        "start/row-12-label",
+        "start/row-13-label",
+        "start/row-14-label",
+        "start/row-15-label",
+        "start/row-16-label",
+        "start/row-17-label",
+        "replacement-full/detail-label",
+        "replacement-full/last-present",
+        "replacement-full/row-0-label",
+        "replacement-full/row-1-label",
+        "replacement-full/row-2-label",
+        "replacement-full/row-3-label",
+        "replacement-full/row-4-label",
+        "replacement-full/row-5-label",
+        "replacement-full/row-6-label",
+        "replacement-full/row-7-label",
+        "replacement-full/row-8-label",
+        "replacement-full/row-9-label",
+        "replacement-full/row-10-label",
+        "replacement-full/row-11-label",
+        "replacement-full/row-12-label",
+        "replacement-full/row-13-label",
+        "replacement-full/row-14-label",
+        "replacement-full/row-15-label",
+        "replacement-full/row-16-label",
+        "replacement-full/row-17-label"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "detail-label",
+          "last-present",
+          "row-0-label",
+          "row-1-label",
+          "row-2-label",
+          "row-3-label",
+          "row-4-label",
+          "row-5-label",
+          "row-6-label",
+          "row-7-label",
+          "row-8-label",
+          "row-9-label",
+          "row-10-label",
+          "row-11-label",
+          "row-12-label",
+          "row-13-label",
+          "row-14-label",
+          "row-15-label",
+          "row-16-label",
+          "row-17-label"
+        ],
+        "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+        "regression_obligations": [
+          "last-callback",
+          "detail"
+        ]
+      }
+    },
+    {
+      "id": "instance-node-observable",
+      "clause": "The instance native node is uniquely present in each selected state; this does not establish token value or cross-state token equality.",
+      "priority": "must",
+      "states": [
+        "start",
+        "after-primary",
+        "after-replacement",
+        "replacement-full",
+        "after-last"
+      ],
+      "risk": "content",
+      "assertion_ids": [
+        "start/instance-present",
+        "start/instance-unique",
+        "after-primary/instance-present",
+        "after-primary/instance-unique",
+        "after-replacement/instance-present",
+        "after-replacement/instance-unique",
+        "replacement-full/instance-present",
+        "replacement-full/instance-unique",
+        "after-last/instance-present",
+        "after-last/instance-unique"
+      ],
+      "route_available": true,
+      "missing_states": [],
+      "route": {
+        "rule_ids": [
+          "instance-present",
+          "instance-unique"
+        ],
+        "reason": "Atomic native presence/uniqueness facts only; a separate mounted-component-instance MUST remains U without a cross-state token relation provider.",
+        "regression_obligations": []
+      }
+    },
+    {
+      "id": "mounted-component-instance",
+      "clause": "The nonempty mounted-component token remains equal across the five states and caller replacement, separately from observer app/process/input/event identity. No documented comparison provider exists yet.",
+      "priority": "must",
+      "states": [
+        "start",
+        "after-primary",
+        "after-replacement",
+        "replacement-full",
+        "after-last"
+      ],
+      "risk": "behavior",
+      "assertion_ids": [],
+      "route_available": false,
+      "missing_states": [
+        "after-last",
+        "after-primary",
+        "after-replacement",
+        "replacement-full",
+        "start"
+      ],
+      "route": {
+        "rule_ids": [],
+        "reason": "No documented native assertion can compare the unpredictable mounted-component token across states; retain this mandatory obligation as U. Instance present/unique checks do not prove token equality. Observer app/process/input/event checks remain separately mandatory.",
+        "regression_obligations": []
+      }
+    }
+  ],
+  "must_route_gaps": [
+    "mounted-component-instance"
+  ],
+  "unowned_assertions": [],
+  "scope": "Completeness against the independently approved index, not proof that prose was completely translated or that any check passed."
+}

@@ -1,0 +1,168 @@
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.9/assets/ios-observer/CONTRACT.md
+   1 # Native iOS observation adapter
+   2 
+   3 `scripts/ios_observe.py run` generates a thin app and XCUITest target. The caller's
+   4 bridge instantiates the actual production component. The adapter supplies no
+   5 business component, labels, action behavior, or design expectations.
+   6 
+   7 ## Caller bridge
+   8 
+   9 Supply a Swift file with this signature, importing the production package:
+  10 
+  11 ```swift
+  12 import SwiftUI
+  13 import AlertToast
+  14 
+  15 enum ObserverBridge {
+  16     static func make(fixture: [String: Any],
+  17                      onEvent: @escaping (String) -> Void) -> AnyView {
+  18         // Return the real production component, mapping its real callbacks to onEvent.
+  19         // UIKit components can be wrapped in UIViewRepresentable here.
+  20     }
+  21 }
+  22 ```
+  23 
+  24 The factory receives the current fixture each time SwiftUI evaluates it. An explicit
+  25 host button applies the next fixture without relaunching the app. The host does not
+  26 force a new view identity; bridge state/update semantics remain the caller's concern.
+  27 The bridge must expose stable unique accessibility identifiers on the actual targets
+  28 that the test should operate. Callback names and callback routing are caller-owned.
+  29 Use `__observer.*` only for the observer's host controls.
+  30 
+  31 The frontend accepts a finite offered width from 160 to 1024 points. The host uses
+  32 a 600-point native vertical ScrollView; actual native viewport/content frames must
+  33 establish whether a requested width fits the chosen simulator,
+  34 with horizontal padding 16 and top padding 24 inside that parent. Thus actual child
+  35 content width is offered width minus 32. A bottom sentinel follows the component.
+  36 Fixture update, runtime metadata and callback receipt controls sit outside that region.
+  37 The app supplies preferred light/dark scheme, SwiftUI Dynamic Type, and layout direction.
+  38 Package font registration/resources and app-specific environment objects belong in the
+  39 bridge when needed. This shell is component integration evidence; use the real app's
+  40 E2E route for navigation, safe-area, keyboard, or lifecycle claims about that app.
+  41 
+  42 ## Inputs and execution
+  43 
+  44 ```json
+  45 {
+  46   "initial": {"arbitrary": "caller values"},
+  47   "updates": [{"arbitrary": "new caller values"}],
+  48   "width": 390,
+  49   "theme": "dark",
+  50   "dynamic_type": "large",
+  51   "direction": "ltr",
+  52   "canvas_color": "#FFFFFF",
+  53   "required_identifiers": ["actual.primary", "actual.last"],
+  54   "max_scrolls": 18
+  55 }
+  56 ```
+  57 
+  58 Dynamic Type accepts `xSmall`, `small`, `medium`, `large`, `xLarge`, `xxLarge`,
+  59 `xxxLarge`, `accessibility1` through `accessibility5`. Direction accepts `ltr` or `rtl`.
+  60 Actions are a JSON array, at most 40 actions:
+  61 
+  62 ```json
+  63 [
+  64   {"type": "tap", "identifier": "actual.primary", "reveal": true, "expect_callback": "primary"},
+  65   {"type": "apply_next_fixture"},
+  66   {"type": "capture", "name": "updated"},
+  67   {"type": "scroll", "direction": "down", "until_identifier": "actual.last", "max_steps": 12},
+  68   {"type": "tap", "identifier": "actual.last"}
+  69 ]
+  70 ```
+  71 
+  72 `scroll` without `until_identifier` takes one step by default. Each step drags within
+  73 the native parent by roughly half its viewport, preserving overlap. The runner
+  74 captures top, before/after every action, each scroll step, and bottom. It then attempts
+  75 bounded bottom coverage even if actions did not request scrolling. The required
+  76 identifier list should include relevant lower content. Absent required identifiers
+  77 or an unreached sentinel fail coverage; they cannot become a pass. Identifiers must
+  78 select exactly one existing XCUI node before a tap. The actual uniquely resolved native control must be enabled and
+  79 hittable. For Button/Switch semantic containers, the runner resolves a unique native control leaf and
+  80 records both `semantic_target` and `activation_target`, including roles, frames and
+  81 selection paths, before activating the leaf. Ambiguous, disabled or inaccessible
+  82 activation targets stop the action. Multiple native leaves are unavailable. Selection/context traits remain on the semantic container when that is the actual native representation.
+  83 An event is recorded only when the bridge's real callback invokes onEvent.
+  84 An optional `expect_callback` requires the named callback in that action's real delta.
+  85 Without it, an empty callback delta does not itself fail a tap; the caller must check
+  86 expected callback semantics from `steps[*].callback_delta`.
+  87 
+  88 An optional `canvas_color` (`#RRGGBB`) paints the parent ScrollView and outer canvas,
+  89 leaving the production component's own surfaces intact. When omitted, the host uses
+  90 native system background. `runtime.actual_environment` and manifest
+  91 `actual_environment` record the native child SwiftUI environment's scheme, Dynamic
+  92 Type category, layout direction and display scale, separately from requested fields.
+  93 
+  94 `tap` supports `reveal: true` and bounded `max_steps` (default 18, maximum 24). It
+  95 uses the unique target's measured frame to choose up/down native parent scrolling,
+  96 retaining every overlapping scroll screenshot. If a lazy target is absent, it searches
+  97 downward by default; `direction: "up"` is an explicit search hint for an absent upper
+  98 target. It records `reveal_diagnostics` when the bound expires or a missing target search
+  99 reaches the fully visible native bottom sentinel. This is bounded observer evidence,
+ 100 not proof that the production target is absent. An unexecuted action cannot pass a
+ 101 business assertion. `scroll` with `direction: "auto"`
+ 102 and `until_identifier` uses the same helper. An element larger than the viewport cannot be fully contained at once. Its actual native control can be activated at a measured visible intersection; the action records partial visibility, screen coordinate and real callback. Full visual content coverage uses overlapping state sweeps separately.
+ 103 
+ 104 `tap` with `allow_disabled: true` can observe a fully visible, unique native disabled
+ 105 target without issuing a tap. Its step has `outcome: "blocked_disabled"`, native
+ 106 `target.enabled: false`, and zero callback delta. Any unexpected callback fails.
+ 107 An enabled target is still actually tapped. The adapter never writes selection or
+ 108 enabled state; those are caller fixture/production component responsibilities.
+ 109 
+ 110 ```sh
+ 111 python3 native-ui-agent/scripts/ios_observe.py run \
+ 112   --bridge /absolute/Bridge.swift \
+ 113   --package /absolute/production-package --product AlertToast \
+ 114   --fixtures /absolute/fixtures.json --actions /absolute/actions.json \
+ 115   --simulator SIMULATOR_UDID --output /absolute/fresh-evidence
+ 116 ```
+ 117 
+ 118 Omit `--package` for a self-contained bridge/probe. For an app outside a Swift package,
+ 119 use the project's existing test host instead, or expose its production component as a
+ 120 local package; this adapter does not copy app source into a substitute implementation.
+ 121 The current build command targets an Apple Silicon simulator (`ARCHS=arm64`,
+ 122 `ONLY_ACTIVE_ARCH=YES`), including the real imported package. Intel simulator builds
+ 123 are outside this tested adapter configuration. Xcode is selected only per
+ 124 child-process `DEVELOPER_DIR`; no global settings change.
+ 125 `--developer-dir` and explicit `--sdk iphonesimulator` are supported.
+ 126 
+ 127 ## Evidence and limits
+ 128 
+ 129 Each run requires a fresh directory. `manifest.json` records build/test commands and
+ 130 exit codes, actual native test count from xcresult, SHA-256 source and image hashes,
+ 131 coverage, native summary and final observer status. `observation.json` contains native
+ 132 AX snapshots, actual screen-point frames, screenshot pixel dimensions, mapped image
+ 133 frames, host process PID/instance identity, fixture index, callback deltas, screenshots,
+ 134 and issues. Original xcresult bundles, logs and exported XCTest attachments are retained.
+ 135 Fixture transport is base64 JSON injected into test-runner environment in `.xctestrun`,
+ 136 then into app launchEnvironment. No generated test silently substitutes a missing fixture.
+ 137 
+ 138 AX role, identifier, label, value, enabled, selected and hittable are read from
+ 139 XCUIElement. Value is a string representation of XCUI's returned value or null.
+ 140 `intersects_viewport` means a nonempty native frame intersects the measured ScrollView;
+ 141 it is geometric evidence, not proof of lack of occlusion. The viewport is measured by
+ 142 a native GeometryReader in global points; the raw AX ScrollView frame is retained
+ 143 separately because SwiftUI can extend it into safe areas. The complete node list also
+ 144 contains offscreen nodes. `coverage.observed_identifiers` records nonempty native
+ 145 frames intersecting the viewport, including oversized content. It does not claim
+ 146 whole-element visibility, hittability or complete content coverage.
+ 147 The bottom sentinel must be fully contained and hittable.
+ 148 `fully_within_viewport` records that geometric check, with 0.5-point tolerance.
+ 149 A tap requires a usable native control point. Full-element visibility and actual activation are separate facts; partial activation does not prove internal styles or full physical hit geometry.
+ 150 Before/after snapshots permit
+ 151 independent checks of text changes and the same process identity for fixture updates.
+ 152 
+ 153 The adapter does **not** extract generic SwiftUI font, padding, foreground/background
+ 154 color, or style-tree attributes. A 48-point frame proves that measured AX boundary,
+ 155 not its font or internal padding. Native geometry and screen density may support image
+ 156 crops; they do not establish design correctness. Observer status `passed` means this
+ 157 observation session completed with coverage, not that business/visual requirements pass.
+ 158 
+ 159 `ProbeBridge.swift` is a separate generic capability preflight with native text, a
+ 160 48-point button, tall content and a last action. It is never used as a production UI
+ 161 substitute. Forward-test it with actual native builds, taps, callback receipt, scroll
+ 162 coverage and explicit caller update before relying on new adapter capabilities.
+ 163 
+ 164 ## State and typed control protocol
+ 165 
+ 166 See [native-tools.md](../../references/native-tools.md) for exact label/role selectors, native semantic/control groups, automatic input-boundary sweeps, post-action state IDs and `native_checks.py` atomic assertions. Per-state content geometry is measured by the actual app; missing geometry stops coverage. Legacy `state_capture:false` retains limited session observation and cannot pass absent state evidence.

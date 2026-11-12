@@ -1,0 +1,802 @@
+{
+  "version": 1,
+  "scenario": "public-main",
+  "business_rules_source": "reference.json#/business_rules",
+  "states": [
+    {
+      "id": "initial",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content",
+      "stimulus": "none",
+      "exact_business_state": {
+        "entity": "RET-517 · Portable interpretation tablet return",
+        "description": "Record the physical checks before routing this returned tablet. A return can be offered for stock only after its power test, accessories count, and required data erasure are complete. Keep the original complaint and the next handling instruction visible for the receiving team.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Restock only after the tablet passes the power test and its data and accessories checks are complete."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "A technician can inspect the intermittent charging fault after safe intake checks."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Recycling is unavailable while this model remains in the repair program."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories unchecked · Data pending · Power unchecked · Route none",
+        "status": "Complete accessories and data checks.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "accessories",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-517 · Portable interpretation tablet return",
+        "description": "Record the physical checks before routing this returned tablet. A return can be offered for stock only after its power test, accessories count, and required data erasure are complete. Keep the original complaint and the next handling instruction visible for the receiving team.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Restock only after the tablet passes the power test and its data and accessories checks are complete."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "A technician can inspect the intermittent charging fault after safe intake checks."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Recycling is unavailable while this model remains in the repair program."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data pending · Power unchecked · Route none",
+        "status": "Complete accessories and data checks.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "data-erased",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-517 · Portable interpretation tablet return",
+        "description": "Record the physical checks before routing this returned tablet. A return can be offered for stock only after its power test, accessories count, and required data erasure are complete. Keep the original complaint and the next handling instruction visible for the receiving team.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Restock only after the tablet passes the power test and its data and accessories checks are complete."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "A technician can inspect the intermittent charging fault after safe intake checks."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Recycling is unavailable while this model remains in the repair program."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power unchecked · Route none",
+        "status": "Choose an eligible disposition.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "power-passed",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "targets",
+      "stimulus_action": 5,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-517 · Portable interpretation tablet return",
+        "description": "Record the physical checks before routing this returned tablet. A return can be offered for stock only after its power test, accessories count, and required data erasure are complete. Keep the original complaint and the next handling instruction visible for the receiving team.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Restock only after the tablet passes the power test and its data and accessories checks are complete."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "A technician can inspect the intermittent charging fault after safe intake checks."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Recycling is unavailable while this model remains in the repair program."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power passed · Route none",
+        "status": "Choose an eligible disposition.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "restock-selected",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "targets",
+      "stimulus_action": 7,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-517 · Portable interpretation tablet return",
+        "description": "Record the physical checks before routing this returned tablet. A return can be offered for stock only after its power test, accessories count, and required data erasure are complete. Keep the original complaint and the next handling instruction visible for the receiving team.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Restock only after the tablet passes the power test and its data and accessories checks are complete."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "A technician can inspect the intermittent charging fault after safe intake checks."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Recycling is unavailable while this model remains in the repair program."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power passed · Route restock",
+        "status": "Confirm the chain of custody.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-517 · Portable interpretation tablet return",
+        "description": "Record the physical checks before routing this returned tablet. A return can be offered for stock only after its power test, accessories count, and required data erasure are complete. Keep the original complaint and the next handling instruction visible for the receiving team.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Restock only after the tablet passes the power test and its data and accessories checks are complete."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "A technician can inspect the intermittent charging fault after safe intake checks."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Recycling is unavailable while this model remains in the repair program."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power passed · Route restock",
+        "status": "Ready to route this return.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "routed",
+      "input_index": 0,
+      "after_action": 12,
+      "coverage": "full_content",
+      "stimulus_action": 11,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-517 · Portable interpretation tablet return",
+        "description": "Record the physical checks before routing this returned tablet. A return can be offered for stock only after its power test, accessories count, and required data erasure are complete. Keep the original complaint and the next handling instruction visible for the receiving team.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Restock only after the tablet passes the power test and its data and accessories checks are complete."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "A technician can inspect the intermittent charging fault after safe intake checks."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Recycling is unavailable while this model remains in the repair program."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power passed · Route restock",
+        "status": "Return routing recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "route-return|RET-517|restock|power:pass|data:erased|accessories:counted"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "same-return-ineligible",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "full_content",
+      "stimulus_action": 13,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "RET-517 · Portable interpretation tablet return",
+        "description": "The model has been removed from the restock program. Keep completed intake checks for this same return, clear a now-ineligible disposition, and request a fresh chain-of-custody approval.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Restock only after the tablet passes the power test and its data and accessories checks are complete."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "A technician can inspect the intermittent charging fault after safe intake checks."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Recycling is unavailable while this model remains in the repair program."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power passed · Route none",
+        "status": "Choose an eligible disposition.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "repair-selected",
+      "input_index": 1,
+      "after_action": 16,
+      "coverage": "targets",
+      "stimulus_action": 15,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-517 · Portable interpretation tablet return",
+        "description": "The model has been removed from the restock program. Keep completed intake checks for this same return, clear a now-ineligible disposition, and request a fresh chain-of-custody approval.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Restock only after the tablet passes the power test and its data and accessories checks are complete."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "A technician can inspect the intermittent charging fault after safe intake checks."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Recycling is unavailable while this model remains in the repair program."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power passed · Route repair",
+        "status": "Confirm the chain of custody.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready-again",
+      "input_index": 1,
+      "after_action": 18,
+      "coverage": "full_content",
+      "stimulus_action": 17,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-517 · Portable interpretation tablet return",
+        "description": "The model has been removed from the restock program. Keep completed intake checks for this same return, clear a now-ineligible disposition, and request a fresh chain-of-custody approval.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Restock only after the tablet passes the power test and its data and accessories checks are complete."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "A technician can inspect the intermittent charging fault after safe intake checks."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Recycling is unavailable while this model remains in the repair program."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power passed · Route repair",
+        "status": "Ready to route this return.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "routed-again",
+      "input_index": 1,
+      "after_action": 20,
+      "coverage": "full_content",
+      "stimulus_action": 19,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "RET-517 · Portable interpretation tablet return",
+        "description": "The model has been removed from the restock program. Keep completed intake checks for this same return, clear a now-ineligible disposition, and request a fresh chain-of-custody approval.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Restock only after the tablet passes the power test and its data and accessories checks are complete."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "A technician can inspect the intermittent charging fault after safe intake checks."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Recycling is unavailable while this model remains in the repair program."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Accessories counted · Data erased · Power passed · Route repair",
+        "status": "Return routing recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "route-return|RET-517|repair|power:pass|data:erased|accessories:counted"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "changed-return",
+      "input_index": 2,
+      "after_action": 22,
+      "coverage": "full_content",
+      "stimulus_action": 21,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "RET-518 · Non-data-bearing audio stand return",
+        "description": "A separate non-data-bearing item uses the same disposition labels. Begin with every intake check and disposition unset. Stored data erased is disabled and off because this item has no stored data.",
+        "controls": {
+          "accessories": {
+            "label": "Accessories counted",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "data": {
+            "label": "Stored data erased",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          },
+          "power": {
+            "label": "Power test passed",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          },
+          "restock": {
+            "label": "Return to stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Restock only after the tablet passes the power test and its data and accessories checks are complete."
+          },
+          "repair": {
+            "label": "Send for repair",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "A technician can inspect the intermittent charging fault after safe intake checks."
+          },
+          "recycle": {
+            "label": "Send for recycling",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Recycling is unavailable while this model remains in the repair program."
+          },
+          "custody": {
+            "label": "Chain of custody checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Accessories unchecked · Data not required · Power unchecked · Route none",
+        "status": "Complete accessories and data checks.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+--- frozen/replay.py
++++ current-host/replay.py
+@@ -114,6 +114,21 @@
+     for rel,row in runtime['files'].items():
+         need(row['path']==str(absolute(runtime['root'])/relative(rel)),'Foreign runtime code pin')
+         access.pinned(row,parse=False);code_files.append({'physical_path':str(runtime_root/PurePosixPath(rel).relative_to('PIL')),'sha256':row['sha256'],'bytes':row['bytes']})
++    # Current-host extension: manylinux wheels may use sibling *.libs paths.
++    # Every support file and its complete layout is separately pinned; the
++    # unchanged child worker verifies the appended files under runtime_root.
++    support=runtime.get('support_files',{})
++    support_tops={PurePosixPath(k).parts[0] for k in support}
++    for top in sorted(support_tops):
++        need(re.fullmatch('[A-Za-z0-9_.-]+[.]libs',top),'Unregistered runtime support namespace')
++        support_root,support_names=access.directory(absolute(runtime['root'])/top)
++        selected={k:v for k,v in support.items() if PurePosixPath(k).parts[0]==top}
++        need(support_root.parent==runtime_root.parent and support_names=={str(PurePosixPath(k).relative_to(top)) for k in selected},
++             'Runtime support layout differs or contains uninventoried files')
++        for rel,row in selected.items():
++            need(row['path']==str(absolute(runtime['root'])/relative(rel)),'Foreign runtime support pin')
++            access.pinned(row,parse=False)
++            code_files.append({'physical_path':str(support_root/PurePosixPath(rel).relative_to(top)),'sha256':row['sha256'],'bytes':row['bytes']})
+     # Host runtime is explicit, separate from historical source/data validity.
+     need(sha(Path(sys.executable).read_bytes())==runtime['interpreter']['sha256'] and sys.version==runtime['version'],
+          'Replay interpreter differs from separately pinned compatible runtime')

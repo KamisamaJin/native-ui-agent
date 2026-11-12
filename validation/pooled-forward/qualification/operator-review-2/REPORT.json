@@ -1,0 +1,169 @@
+{
+  "version": 1,
+  "review_id": "disjoint-operator-review-2",
+  "reviewed_at_utc": "2026-11-10T14:19:58.803617+00:00",
+  "verdict": "blocked-pinned-original-operator-revision",
+  "scope": "DISJOINT HOST/SIM operator-only review; no source changes; no real subprocess, device, SDK, native collection or performance command was executed. All replay and resource behaviors were strict non-forwarding fakes.",
+  "reviewed_tools": {
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/neutral_episode.py": {
+      "sha256": "ed3884bc57e6c4b7eaba9d3022ba632bd5285f0dc32999ed25d3ad39dcbae088",
+      "bytes": 9861
+    },
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/verify_benchmark.py": {
+      "sha256": "3d1dc21c76f5165f8a764a830d454256097777f22253ef38e307589c48ca6576",
+      "bytes": 14270
+    },
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/native_envelope.py": {
+      "sha256": "3e07da59c71a5f3ee3fdd9881190343e345e42527bcdc7212019cffb09031e2b",
+      "bytes": 6166
+    }
+  },
+  "after_snapshot": {
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/neutral_episode.py": {
+      "sha256": "ed3884bc57e6c4b7eaba9d3022ba632bd5285f0dc32999ed25d3ad39dcbae088",
+      "bytes": 9861,
+      "same_as_review_start": true
+    },
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/verify_benchmark.py": {
+      "sha256": "3c0086d2f6bffe992720979eb04de591e9ec855a53c0586b6c2a9e7e89a399bd",
+      "bytes": 18281,
+      "same_as_review_start": false
+    },
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/native_envelope.py": {
+      "sha256": "eabe3724a0297c15252feb250d35c09def22dc4c405b9c3c2996c7528e5fef4b",
+      "bytes": 6361,
+      "same_as_review_start": false
+    }
+  },
+  "after_snapshot_limit": "Verifier and envelope changed externally during this review. after-live copies preserve that intermediate snapshot. Newer operator candidate3 hashes were subsequently supplied by the owner; none of those revisions is assessed by this report.",
+  "current_owner_candidate_metadata_unassessed": {
+    "episode": "ed3884bc57e6c4b7eaba9d3022ba632bd5285f0dc32999ed25d3ad39dcbae088",
+    "verifier": "6aed7f49aa8a538d6788ca8e729824cbd0ce924b405766bed425cf5eaa9000c1",
+    "envelope": "fba05df25e527e77baa60036c352f5b142508ee37d0e4c6b97a5fad5940b41b7"
+  },
+  "protocol": {
+    "mandatory_native_atoms": 104,
+    "threshold": 0.2,
+    "order": [
+      "block-1/A",
+      "block-1/B",
+      "block-2/B",
+      "block-2/A"
+    ],
+    "same_source_input_oracle_and_PFU_required": true,
+    "no_increased_mandatory_U": true,
+    "ordinary_F2_and_retirement_inclusive": true,
+    "synthetic_reduction_is_not_native_speed": true
+  },
+  "results": {
+    "cases": 30,
+    "expected_outcomes": 24,
+    "erroneous_accepts": [
+      "MISSING-command-receipts",
+      "COMMAND-outside-episode",
+      "COMMAND-negative-clock",
+      "COMMAND-wall-clock-disagreement",
+      "COMMAND-overlap",
+      "COMMAND-wrong-stage-label"
+    ],
+    "real_subprocesses_launched": 0
+  },
+  "confirmed_blockers": [
+    {
+      "id": "O1",
+      "priority": "P1",
+      "problem": "Missing command receipt denominator is accepted",
+      "evidence_class": "HOST/SIMULATED",
+      "case": "MISSING-command-receipts",
+      "actual": "Pinned evaluate() returned0/passed:true/errors:[] with block-1/B actual_command_count0 while all9 driver records, stage new_commands2/4/1/2 and7 cycles remained. Other episodes had9 receipts each.",
+      "source_citations": [
+        {
+          "path": "verify_benchmark.py",
+          "line": 121
+        },
+        {
+          "path": "verify_benchmark.py",
+          "line": 126
+        }
+      ],
+      "reason": "The gate iterates whichever commands/result.json files happen to exist; empty inventory vacuously satisfies the command checks and sum bound. It does not bind a required command/driver/result set or stage counts.",
+      "required_resolution": "Require the exact9 request/driver/result identities and one-to-one expected stage membership/counts, with no omissions, duplicates or foreign extras."
+    },
+    {
+      "id": "O2",
+      "priority": "P1",
+      "problem": "Command time/placement is not bound to stage/episode intervals",
+      "evidence_class": "HOST/SIMULATED",
+      "cases": [
+        "COMMAND-outside-episode",
+        "COMMAND-negative-clock",
+        "COMMAND-wall-clock-disagreement",
+        "COMMAND-overlap",
+        "COMMAND-wrong-stage-label"
+      ],
+      "actual": "Each case independently returned0/passed:true/errors:[] against otherwise coherent synthetic104-row/3-duty replay and ABBA episode/stage records.",
+      "source_citations": [
+        {
+          "path": "native_envelope.py",
+          "line": 63
+        },
+        {
+          "path": "native_envelope.py",
+          "line": 102
+        },
+        {
+          "path": "verify_benchmark.py",
+          "line": 123
+        },
+        {
+          "path": "verify_benchmark.py",
+          "line": 126
+        }
+      ],
+      "reason": "Original envelope only exports perf_counter wall. Gate validates finite positive command wall and total<=stage sum, but ignores command start/end/basis and stage labels. Stage correctness alone cannot attest the placement/completeness of original command work.",
+      "required_resolution": "Export shared CLOCK_MONOTONIC command start/end with exact positive difference; bind every request to its declared stage and validate containment, ordered nonoverlap, count and raw record parity."
+    }
+  ],
+  "fixes_confirmed_by_tests": [
+    "Empty final-cycle responsibility rows are rejected against replayed3-row duty result",
+    "Empty replayed source denominator or missing single must source claim is rejected",
+    "Negative/nonfinite/boolean collection wall is rejected",
+    "Enclosing wall1 with56 stage seconds is rejected",
+    "Negative operator overhead and raw-stage disagreement are rejected",
+    "Command wall sums exceeding measured stages are rejected",
+    "Wrapper error/nonzero wrapper exit after child0 is rejected by gate",
+    "Strict fake supervisor release failure after child0 returns1 with error/recovery recorded",
+    "Strict fake child7 returns7; strict fake production mutation after child0 returns1",
+    "ABBA overlap, retirement leftover, mandatoryU in both arms, and per-rowPFU drift even with unchanged counts are rejected",
+    "Coherent structural positive passes; raw reason differences remain visible in14 comparisons",
+    "Driver frozen-tree guard passes an unchanged synthetic inventory and rejects an actual synthetic byte change"
+  ],
+  "measurement_inspection": {
+    "collection_includes": "Episode clock starts before Meter entry, enclosesC0/R0/W1/F2 calls and failure-cleanup stage, then Meter exit and final production fingerprint before its end clock. Envelope wall encloses supervisor exit/release and synchronous error recovery before its result. These are source/control-flow facts, not measured native cost.",
+    "outside_collection": "Initial frozen-tree verification, workspace/profile preparation and admission serialization occur before collection_clock. Their separate accounting/allowed setup classification must remain explicit; this review makes no native speed judgment from that source placement.",
+    "remaining_original_gap": "No complete required command inventory or command time placement is independently reconstructed by the pinned original gate; O1/O2 block operator qualification."
+  },
+  "frozen_source_independence": {
+    "tested": "The actual driver verify_tree function checks an exact pre-episode inventory (excluding __pycache__) and rejects synthetic source drift. The verifier checks its own pinned source hash and stored episode arm/operator/application identities.",
+    "source_note": "Original replay imports helpers from the requested skill/scripts path. Original gate itself does not rehash that arm tree before replay, and the driver after-map is production inputs rather than the tool tree. A separate immutable/frozen-source attestation must protect the replay boundary.",
+    "limitation": "No real original packet/frozen-er replay was performed here. Injected fake replay payloads intentionally exercise only the operator gate contract; they do not demonstrate native reconstruction, actual er correctness or authentic SDK truth."
+  },
+  "denominators_and_disagreements": {
+    "native": "104 synthetic unique rows; actual source replayer enforces exact generated IDs/matrix and a positive native-test count before emitting its result, inspected from source only.",
+    "source": "Separate3-row responsibility result with exactly1 must source claim is required atF2; synthetic empty-row counterexamples reject.",
+    "unknowns": "MandatoryU remains rejected in the supported profile; noU was dropped or renamedP in this review.",
+    "raw_reason_disagreement": "The reason-only controlled disagreement passes structural gate while retaining14 raw reason difference records; no last-wins rewriting was applied.",
+    "native_envelope_scope": "Fake Resources never forwards sample/run/release/recovery to a real resource manager or process. Supervisor control results areHOST/SIM, not native retirement proof."
+  },
+  "preservation": {
+    "prior_admission_and_provider_receipts_untouched": true,
+    "reviewer_tool_edits": false,
+    "raw_inputs_outputs_and_unexpected_passes_retained": true,
+    "frozen_original_copies": [
+      "pinned-neutral_episode.py",
+      "pinned-verify_benchmark.py",
+      "pinned-native_envelope.py"
+    ]
+  },
+  "next_gate": "A separately pinned focused review of the new operator candidate must demonstrate rejection of O1/O2 plus preservation of the coherent positive and original fixes before benchmark collection starts."
+}

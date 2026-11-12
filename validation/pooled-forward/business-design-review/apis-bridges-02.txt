@@ -1,0 +1,217 @@
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T2/public/API.md
+   1 # Fixed production API
+   2 
+   3 These are API declarations, not a production implementation or substitute UI.
+   4 
+   5 ```swift
+   6 import SwiftUI
+   7 // Export from the AlertToast module. All fields are public; supply public field initializers.
+   8 public struct RescheduleSlot: Codable, Equatable {
+   9     public var id: String
+  10     public var label: String
+  11     public var detail: String
+  12     public var available: Bool
+  13     public var modes: [String]
+  14 }
+  15 public struct AppointmentRescheduleFixture: Codable, Equatable {
+  16     public var entityId: String
+  17     public var entityTitle: String
+  18     public var description: String
+  19     public var allowVideo: Bool
+  20     public var slots: [RescheduleSlot]
+  21 }
+  22 public struct AppointmentReschedulePanel: View {
+  23     public init(fixture: AppointmentRescheduleFixture, onEvent: @escaping (String) -> Void)
+  24     public var body: some View { get }
+  25 }
+  26 ```
+  27 
+  28 ```kotlin
+  29 package com.example.reply.ui.components.business
+  30 data class RescheduleSlot(
+  31     val id: String,
+  32     val label: String,
+  33     val detail: String,
+  34     val available: Boolean,
+  35     val modes: List<String>,
+  36 )
+  37 data class AppointmentRescheduleFixture(
+  38     val entityId: String,
+  39     val entityTitle: String,
+  40     val description: String,
+  41     val allowVideo: Boolean,
+  42     val slots: List<RescheduleSlot>,
+  43 )
+  44 @Composable
+  45 fun AppointmentReschedulePanel(fixture: AppointmentRescheduleFixture, onEvent: (String) -> Unit)
+  46 ```
+  47 
+  48 fixture.schema.json is the transport contract. All fields are nonoptional. IDs/labels are unique within each group and IDs use the delimiter-safe grammar. Allowed empty strings are explicit. Fixtures supply no local selection, approval, summary, eligibility override, or expected callback.
+  49 
+  50 Production owns real business state, decision gating, and same-versus-changed entity replacement. The component is additive, exported by AlertToast on iOS and located in production app/src/main on Android. No internal ScrollView/LazyColumn, modal, popup, overlay, navigation route, timer, network, randomness, async state, or animation is needed. A single eager vertical flow fills the offered child width; the host owns scrolling.
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T2/public/ObserverBridge.kt
+   1 package org.nativeobserver
+   2 
+   3 import androidx.compose.runtime.Composable
+   4 import kotlinx.serialization.json.JsonObject
+   5 import kotlinx.serialization.json.jsonObject
+   6 import kotlinx.serialization.json.jsonArray
+   7 import kotlinx.serialization.json.jsonPrimitive
+   8 import kotlinx.serialization.json.boolean
+   9 import kotlinx.serialization.json.int
+  10 import com.example.reply.ui.theme.ContrastAwareReplyTheme
+  11 import com.example.reply.ui.components.business.*
+  12 
+  13 private fun JsonObject.s(k: String) = getValue(k).jsonPrimitive.content
+  14 private fun JsonObject.i(k: String) = getValue(k).jsonPrimitive.int
+  15 private fun JsonObject.b(k: String) = getValue(k).jsonPrimitive.boolean
+  16 
+  17 object ObserverBridge {
+  18     @Composable
+  19     fun Content(input: JsonObject, onEvent: (String) -> Unit) {
+  20         val decoded = AppointmentRescheduleFixture(
+  21             entityId = input.s("entityId"),
+  22             entityTitle = input.s("entityTitle"),
+  23             description = input.s("description"),
+  24             allowVideo = input.b("allowVideo"),
+  25             slots = input.getValue("slots").jsonArray.map { value ->
+  26                 val item = value.jsonObject
+  27                 RescheduleSlot(
+  28                     id = item.s("id"),
+  29                     label = item.s("label"),
+  30                     detail = item.s("detail"),
+  31                     available = item.b("available"),
+  32                     modes = item.getValue("modes").jsonArray.map { it.jsonPrimitive.content },
+  33                 )
+  34             },
+  35         )
+  36         ContrastAwareReplyTheme(darkTheme = false, dynamicColor = false) {
+  37             AppointmentReschedulePanel(fixture = decoded, onEvent = onEvent)
+  38         }
+  39     }
+  40 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T2/public/ObserverBridge.swift
+   1 import Foundation
+   2 import SwiftUI
+   3 import AlertToast
+   4 
+   5 enum ObserverBridge {
+   6     static func make(fixture: [String: Any], onEvent: @escaping (String) -> Void) -> AnyView {
+   7         let bytes = try! JSONSerialization.data(withJSONObject: fixture)
+   8         let decoded = try! JSONDecoder().decode(AppointmentRescheduleFixture.self, from: bytes)
+   9         return AnyView(AppointmentReschedulePanel(fixture: decoded, onEvent: onEvent))
+  10     }
+  11 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T3/public/API.md
+   1 # Fixed production API
+   2 
+   3 These are API declarations, not a production implementation or substitute UI.
+   4 
+   5 ```swift
+   6 import SwiftUI
+   7 // Export from the AlertToast module. All fields are public; supply public field initializers.
+   8 public struct SettlementMethod: Codable, Equatable {
+   9     public var id: String
+  10     public var label: String
+  11     public var detail: String
+  12     public var available: Bool
+  13     public var unavailableReason: String
+  14 }
+  15 public struct InvoiceSettlementFixture: Codable, Equatable {
+  16     public var entityId: String
+  17     public var entityTitle: String
+  18     public var description: String
+  19     public var dueCents: Int
+  20     public var creditCents: Int
+  21     public var methods: [SettlementMethod]
+  22 }
+  23 public struct InvoiceSettlementPanel: View {
+  24     public init(fixture: InvoiceSettlementFixture, onEvent: @escaping (String) -> Void)
+  25     public var body: some View { get }
+  26 }
+  27 ```
+  28 
+  29 ```kotlin
+  30 package com.example.reply.ui.components.business
+  31 data class SettlementMethod(
+  32     val id: String,
+  33     val label: String,
+  34     val detail: String,
+  35     val available: Boolean,
+  36     val unavailableReason: String,
+  37 )
+  38 data class InvoiceSettlementFixture(
+  39     val entityId: String,
+  40     val entityTitle: String,
+  41     val description: String,
+  42     val dueCents: Int,
+  43     val creditCents: Int,
+  44     val methods: List<SettlementMethod>,
+  45 )
+  46 @Composable
+  47 fun InvoiceSettlementPanel(fixture: InvoiceSettlementFixture, onEvent: (String) -> Unit)
+  48 ```
+  49 
+  50 fixture.schema.json is the transport contract. All fields are nonoptional. IDs/labels are unique within each group and IDs use the delimiter-safe grammar. Allowed empty strings are explicit. Fixtures supply no local selection, approval, summary, eligibility override, or expected callback.
+  51 
+  52 Production owns real business state, decision gating, and same-versus-changed entity replacement. The component is additive, exported by AlertToast on iOS and located in production app/src/main on Android. No internal ScrollView/LazyColumn, modal, popup, overlay, navigation route, timer, network, randomness, async state, or animation is needed. A single eager vertical flow fills the offered child width; the host owns scrolling.
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T3/public/ObserverBridge.kt
+   1 package org.nativeobserver
+   2 
+   3 import androidx.compose.runtime.Composable
+   4 import kotlinx.serialization.json.JsonObject
+   5 import kotlinx.serialization.json.jsonObject
+   6 import kotlinx.serialization.json.jsonArray
+   7 import kotlinx.serialization.json.jsonPrimitive
+   8 import kotlinx.serialization.json.boolean
+   9 import kotlinx.serialization.json.int
+  10 import com.example.reply.ui.theme.ContrastAwareReplyTheme
+  11 import com.example.reply.ui.components.business.*
+  12 
+  13 private fun JsonObject.s(k: String) = getValue(k).jsonPrimitive.content
+  14 private fun JsonObject.i(k: String) = getValue(k).jsonPrimitive.int
+  15 private fun JsonObject.b(k: String) = getValue(k).jsonPrimitive.boolean
+  16 
+  17 object ObserverBridge {
+  18     @Composable
+  19     fun Content(input: JsonObject, onEvent: (String) -> Unit) {
+  20         val decoded = InvoiceSettlementFixture(
+  21             entityId = input.s("entityId"),
+  22             entityTitle = input.s("entityTitle"),
+  23             description = input.s("description"),
+  24             dueCents = input.i("dueCents"),
+  25             creditCents = input.i("creditCents"),
+  26             methods = input.getValue("methods").jsonArray.map { value ->
+  27                 val item = value.jsonObject
+  28                 SettlementMethod(
+  29                     id = item.s("id"),
+  30                     label = item.s("label"),
+  31                     detail = item.s("detail"),
+  32                     available = item.b("available"),
+  33                     unavailableReason = item.s("unavailableReason"),
+  34                 )
+  35             },
+  36         )
+  37         ContrastAwareReplyTheme(darkTheme = false, dynamicColor = false) {
+  38             InvoiceSettlementPanel(fixture = decoded, onEvent = onEvent)
+  39         }
+  40     }
+  41 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T3/public/ObserverBridge.swift
+   1 import Foundation
+   2 import SwiftUI
+   3 import AlertToast
+   4 
+   5 enum ObserverBridge {
+   6     static func make(fixture: [String: Any], onEvent: @escaping (String) -> Void) -> AnyView {
+   7         let bytes = try! JSONSerialization.data(withJSONObject: fixture)
+   8         let decoded = try! JSONDecoder().decode(InvoiceSettlementFixture.self, from: bytes)
+   9         return AnyView(InvoiceSettlementPanel(fixture: decoded, onEvent: onEvent))
+  10     }
+  11 }

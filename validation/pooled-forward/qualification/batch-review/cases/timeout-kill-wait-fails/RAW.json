@@ -1,0 +1,125 @@
+{
+  "scenario": "timeout-kill-wait-fails",
+  "evidence_class": "HOST/SIM non-forwarding mock",
+  "all_times_are_simulated": true,
+  "exit_code": null,
+  "raised": {
+    "type": "TimeoutExpired",
+    "message": "Command '['/Library/Developer/CommandLineTools/usr/bin/python3', '-B', '/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/cases/timeout-kill-wait-fails/root/neutral_episode.py', '--block', 'block-1', '--arm', 'A', '--candidate', 'candidate-v13.9', '--freeze', 'CANDIDATE-FREEZE-10.json', '--baseline', 'baseline-v12.6', '--baseline-freeze', 'BASELINE-FREEZE.json']' timed out after 10 seconds",
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/pinned-run_benchmark.py\", line 68, in main\n    try:proc.wait(timeout=180)\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/test_batch_simulated.py\", line 97, in wait\n    raise subprocess.TimeoutExpired(self.command, timeout)\nsubprocess.TimeoutExpired: Command '['/Library/Developer/CommandLineTools/usr/bin/python3', '-B', '/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/cases/timeout-kill-wait-fails/root/neutral_episode.py', '--block', 'block-1', '--arm', 'A', '--candidate', 'candidate-v13.9', '--freeze', 'CANDIDATE-FREEZE-10.json', '--baseline', 'baseline-v12.6', '--baseline-freeze', 'BASELINE-FREEZE.json']' timed out after 180 seconds\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/test_batch_simulated.py\", line 184, in <module>\n    with contextlib.redirect_stdout(output): code = module.main()\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/pinned-run_benchmark.py\", line 72, in main\n    proc.wait(timeout=10)\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/test_batch_simulated.py\", line 103, in wait\n    raise subprocess.TimeoutExpired(self.command, timeout)\nsubprocess.TimeoutExpired: Command '['/Library/Developer/CommandLineTools/usr/bin/python3', '-B', '/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/cases/timeout-kill-wait-fails/root/neutral_episode.py', '--block', 'block-1', '--arm', 'A', '--candidate', 'candidate-v13.9', '--freeze', 'CANDIDATE-FREEZE-10.json', '--baseline', 'baseline-v12.6', '--baseline-freeze', 'BASELINE-FREEZE.json']' timed out after 10 seconds\n"
+  },
+  "stdout": "",
+  "fake_calls": [
+    {
+      "operation": "Popen",
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review/cases/timeout-kill-wait-fails/root/neutral_episode.py",
+        "--block",
+        "block-1",
+        "--arm",
+        "A",
+        "--candidate",
+        "candidate-v13.9",
+        "--freeze",
+        "CANDIDATE-FREEZE-10.json",
+        "--baseline",
+        "baseline-v12.6",
+        "--baseline-freeze",
+        "BASELINE-FREEZE.json"
+      ],
+      "start_new_session": true,
+      "SIMULATED": true
+    },
+    {
+      "operation": "wait",
+      "pid": 710000,
+      "timeout": null
+    },
+    {
+      "operation": "poll",
+      "pid": 710000,
+      "returncode": null
+    },
+    {
+      "operation": "killpg",
+      "pid": 710000,
+      "signal": 15,
+      "SIMULATED": true
+    },
+    {
+      "operation": "wait",
+      "pid": 710000,
+      "timeout": 180
+    },
+    {
+      "operation": "killpg",
+      "pid": 710000,
+      "signal": 9,
+      "SIMULATED": true
+    },
+    {
+      "operation": "wait",
+      "pid": 710000,
+      "timeout": 10
+    }
+  ],
+  "signal_controls": [
+    {
+      "operation": "signal-handler",
+      "signal": 14,
+      "handler": "expired"
+    },
+    {
+      "operation": "setitimer",
+      "duration": 7200
+    },
+    {
+      "operation": "setitimer",
+      "duration": 0
+    },
+    {
+      "operation": "signal-handler",
+      "signal": 14,
+      "handler": "SIMULATED-prior-handler"
+    }
+  ],
+  "result": null,
+  "failure": {
+    "type": "TimeoutError",
+    "message": "Whole benchmark deadline reached; no new episode is allowed",
+    "at_unix": 2000008200.0
+  },
+  "checks": [
+    {
+      "id": "alarm-armed-once-and-restored",
+      "status": "P"
+    },
+    {
+      "id": "no-stale-or-foreign-group-selected",
+      "status": "P"
+    },
+    {
+      "id": "failure-stops-order-and-blocks-gate",
+      "status": "P"
+    },
+    {
+      "id": "final-failure-result-retained",
+      "status": "F"
+    },
+    {
+      "id": "known-configured-cleanup-attempted",
+      "status": "F"
+    },
+    {
+      "id": "cleanup-and-failure-wall-retained",
+      "status": "F"
+    },
+    {
+      "id": "only-own-TERM-KILL-and-bounded-waits",
+      "status": "P"
+    }
+  ],
+  "status": "F"
+}

@@ -1,0 +1,188 @@
+{
+  "passed": false,
+  "issues": [
+    {
+      "id": "INPUT-DOMAIN-catering-package",
+      "priority": "blocking-design",
+      "task": "catering-package",
+      "summary": "The schema claims valid native Int inputs outside the exact published Kotlin Int API/bridge range.",
+      "evidence": {
+        "schema": "public/tasks/catering-package/fixture.schema.json",
+        "brief": "public/tasks/catering-package/BRIEF.md",
+        "api": "public/tasks/catering-package/API.md",
+        "bridge": "public/tasks/catering-package/android/ObserverBridge.kt",
+        "fields": [
+          "revision",
+          "guestCount",
+          "vegetarianGuests",
+          "vegetarianMeals",
+          "buffetCapacity",
+          "boxedCapacity",
+          "reusableSets",
+          "compostableSets"
+        ],
+        "schema_accepted_value": 2147483648,
+        "maximum_Kotlin_Int": 2147483647
+      }
+    },
+    {
+      "id": "INPUT-DOMAIN-training-pathway",
+      "priority": "blocking-design",
+      "task": "training-pathway",
+      "summary": "The schema claims valid native Int inputs outside the exact published Kotlin Int API/bridge range.",
+      "evidence": {
+        "schema": "public/tasks/training-pathway/fixture.schema.json",
+        "brief": "public/tasks/training-pathway/BRIEF.md",
+        "api": "public/tasks/training-pathway/API.md",
+        "bridge": "public/tasks/training-pathway/android/ObserverBridge.kt",
+        "fields": [
+          "revision",
+          "completedHours",
+          "cohortSeats",
+          "deviceCredits",
+          "assessmentSlots",
+          "practiceSeats"
+        ],
+        "schema_accepted_value": 2147483648,
+        "maximum_Kotlin_Int": 2147483647
+      }
+    },
+    {
+      "id": "INPUT-DOMAIN-subscription-capacity",
+      "priority": "blocking-design",
+      "task": "subscription-capacity",
+      "summary": "The schema claims valid native Int inputs outside the exact published Kotlin Int API/bridge range.",
+      "evidence": {
+        "schema": "public/tasks/subscription-capacity/fixture.schema.json",
+        "brief": "public/tasks/subscription-capacity/BRIEF.md",
+        "api": "public/tasks/subscription-capacity/API.md",
+        "bridge": "public/tasks/subscription-capacity/android/ObserverBridge.kt",
+        "fields": [
+          "revision",
+          "seatCount",
+          "teamQuota",
+          "scaleQuota",
+          "prepaidMonths",
+          "accountBalanceCents"
+        ],
+        "schema_accepted_value": 2147483648,
+        "maximum_Kotlin_Int": 2147483647
+      }
+    },
+    {
+      "id": "INPUT-DOMAIN-visitor-preclearance",
+      "priority": "blocking-design",
+      "task": "visitor-preclearance",
+      "summary": "The schema claims valid native Int inputs outside the exact published Kotlin Int API/bridge range.",
+      "evidence": {
+        "schema": "public/tasks/visitor-preclearance/fixture.schema.json",
+        "brief": "public/tasks/visitor-preclearance/BRIEF.md",
+        "api": "public/tasks/visitor-preclearance/API.md",
+        "bridge": "public/tasks/visitor-preclearance/android/ObserverBridge.kt",
+        "fields": [
+          "revision",
+          "guestCount",
+          "researchCapacity",
+          "officeCapacity",
+          "verifiedIDs",
+          "labInductions",
+          "escortCount"
+        ],
+        "schema_accepted_value": 2147483648,
+        "maximum_Kotlin_Int": 2147483647
+      }
+    },
+    {
+      "id": "INPUT-DOMAIN-candidate-disposition",
+      "priority": "blocking-design",
+      "task": "candidate-disposition",
+      "summary": "The schema claims valid native Int inputs outside the exact published Kotlin Int API/bridge range.",
+      "evidence": {
+        "schema": "public/tasks/candidate-disposition/fixture.schema.json",
+        "brief": "public/tasks/candidate-disposition/BRIEF.md",
+        "api": "public/tasks/candidate-disposition/API.md",
+        "bridge": "public/tasks/candidate-disposition/android/ObserverBridge.kt",
+        "fields": [
+          "revision",
+          "reviewerCapacity",
+          "technicalSlots",
+          "recruiterSlots",
+          "assessmentCount",
+          "openRoleCount"
+        ],
+        "schema_accepted_value": 2147483648,
+        "maximum_Kotlin_Int": 2147483647
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "task": "catering-package",
+      "integer_fields_accepting_2147483648_beyond_Kotlin_Int": [
+        "revision",
+        "guestCount",
+        "vegetarianGuests",
+        "vegetarianMeals",
+        "buffetCapacity",
+        "boxedCapacity",
+        "reusableSets",
+        "compostableSets"
+      ],
+      "schema_boundaries_match_exact_native_API": false,
+      "scope": "Pure schema/type-contract contradiction, no native observation or new sealed test case."
+    },
+    {
+      "task": "training-pathway",
+      "integer_fields_accepting_2147483648_beyond_Kotlin_Int": [
+        "revision",
+        "completedHours",
+        "cohortSeats",
+        "deviceCredits",
+        "assessmentSlots",
+        "practiceSeats"
+      ],
+      "schema_boundaries_match_exact_native_API": false,
+      "scope": "Pure schema/type-contract contradiction, no native observation or new sealed test case."
+    },
+    {
+      "task": "subscription-capacity",
+      "integer_fields_accepting_2147483648_beyond_Kotlin_Int": [
+        "revision",
+        "seatCount",
+        "teamQuota",
+        "scaleQuota",
+        "prepaidMonths",
+        "accountBalanceCents"
+      ],
+      "schema_boundaries_match_exact_native_API": false,
+      "scope": "Pure schema/type-contract contradiction, no native observation or new sealed test case."
+    },
+    {
+      "task": "visitor-preclearance",
+      "integer_fields_accepting_2147483648_beyond_Kotlin_Int": [
+        "revision",
+        "guestCount",
+        "researchCapacity",
+        "officeCapacity",
+        "verifiedIDs",
+        "labInductions",
+        "escortCount"
+      ],
+      "schema_boundaries_match_exact_native_API": false,
+      "scope": "Pure schema/type-contract contradiction, no native observation or new sealed test case."
+    },
+    {
+      "task": "candidate-disposition",
+      "integer_fields_accepting_2147483648_beyond_Kotlin_Int": [
+        "revision",
+        "reviewerCapacity",
+        "technicalSlots",
+        "recruiterSlots",
+        "assessmentCount",
+        "openRoleCount"
+      ],
+      "schema_boundaries_match_exact_native_API": false,
+      "scope": "Pure schema/type-contract contradiction, no native observation or new sealed test case."
+    }
+  ]
+}

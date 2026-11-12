@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "index": {
+    "source": "reference",
+    "pointer": "/obligations"
+  },
+  "routes": {
+    "business-content": {
+      "rule_ids": [
+        "heading-label",
+        "entity-label",
+        "description-label",
+        "summary-label",
+        "status-label",
+        "surface-present",
+        "inPerson-label",
+        "video-label",
+        "slotA-label",
+        "slotA-detail",
+        "slotB-label",
+        "slotB-detail",
+        "slotC-label",
+        "slotC-detail",
+        "notify-label",
+        "primary-label"
+      ],
+      "reason": "All supplied and computed business text is current and exact.",
+      "regression_obligations": [
+        "content-layout"
+      ]
+    },
+    "decision-eligibility": {
+      "rule_ids": [
+        "inPerson-enabled",
+        "inPerson-selected",
+        "video-enabled",
+        "video-selected",
+        "slotA-enabled",
+        "slotA-selected",
+        "slotB-enabled",
+        "slotB-selected",
+        "slotC-enabled",
+        "slotC-selected",
+        "notify-enabled",
+        "notify-selected",
+        "primary-enabled"
+      ],
+      "reason": "Native disabled/selected facts obey published business decisions.",
+      "regression_obligations": [
+        "caller-replacement",
+        "successful-tap-receipts",
+        "opaque-paint",
+        "selection-affordance"
+      ]
+    },
+    "successful-tap-receipts": {
+      "rule_ids": [
+        "tap-receipt"
+      ],
+      "reason": "Exact tap event intervals require demonstrated successful original native dispatch; blocked taps never prove quiet behavior.",
+      "regression_obligations": []
+    },
+    "caller-replacement": {
+      "rule_ids": [
+        "replacement-quiet",
+        "inPerson-enabled",
+        "inPerson-selected",
+        "video-enabled",
+        "video-selected",
+        "slotA-enabled",
+        "slotA-selected",
+        "slotB-enabled",
+        "slotB-selected",
+        "slotC-enabled",
+        "slotC-selected",
+        "notify-enabled",
+        "notify-selected",
+        "primary-enabled",
+        "heading-label",
+        "entity-label",
+        "description-label",
+        "summary-label",
+        "status-label",
+        "surface-present",
+        "inPerson-label",
+        "video-label",
+        "slotA-label",
+        "slotA-detail",
+        "slotB-label",
+        "slotB-detail",
+        "slotC-label",
+        "slotC-detail",
+        "notify-label",
+        "primary-label"
+      ],
+      "reason": "Same-entity revalidation and changed-entity reset are distinct and callback-silent.",
+      "regression_obligations": [
+        "decision-eligibility",
+        "business-content",
+        "successful-tap-receipts",
+        "opaque-paint",
+        "selection-affordance"
+      ]
+    },
+    "typography": {
+      "rule_ids": [
+        "heading-visual-size",
+        "heading-visual-weight",
+        "body-visual-size",
+        "body-visual-ink"
+      ],
+      "reason": "Typography follows sourced native or qualitative platform intent.",
+      "regression_obligations": [
+        "content-layout"
+      ]
+    },
+    "content-layout": {
+      "rule_ids": [
+        "content-wrap",
+        "content-overlap",
+        "horizontal-fit",
+        "section-rhythm",
+        "row-padding",
+        "slotA-wrap",
+        "slotB-wrap",
+        "slotC-wrap",
+        "summary-wrap",
+        "status-wrap"
+      ],
+      "reason": "Full variable-length vertical content wraps, fits and preserves separation/insets.",
+      "regression_obligations": [
+        "primary-accessibility-box"
+      ]
+    },
+    "opaque-paint": {
+      "rule_ids": [
+        "surface-fill",
+        "primary-fill",
+        "inPerson-fill",
+        "video-fill",
+        "slotA-fill",
+        "slotB-fill",
+        "slotC-fill",
+        "primary-ink"
+      ],
+      "reason": "Component opaque fills match approved suitable pixel regions; primary ink is readable.",
+      "regression_obligations": []
+    },
+    "primary-accessibility-box": {
+      "rule_ids": [
+        "primary-height"
+      ],
+      "reason": "Primary control accessibility-box height is48pt/dp; no physical OS hit-area claim.",
+      "regression_obligations": []
+    },
+    "selection-affordance": {
+      "rule_ids": [
+        "inPerson-mark",
+        "video-mark",
+        "slotA-mark",
+        "slotB-mark",
+        "slotC-mark",
+        "notify-mark"
+      ],
+      "reason": "Visible selection marks agree with native selected facts.",
+      "regression_obligations": []
+    },
+    "corner-shape": {
+      "rule_ids": [
+        "panel-corners",
+        "row-corners"
+      ],
+      "reason": "Panel and option corner shape follow independent annotated references.",
+      "regression_obligations": []
+    }
+  }
+}

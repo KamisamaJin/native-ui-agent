@@ -1,0 +1,1248 @@
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/fixtures.ios.json
+   1 {
+   2   "initial": {
+   3     "entityId": "OR-481",
+   4     "entityTitle": "Museum installation freight",
+   5     "description": "Release only the cartons that can travel together today. The receiving dock needs the complete conservation note, handling restrictions, and the destination team name before any freight leaves the depot.",
+   6     "lots": [
+   7       {
+   8         "id": "L-A",
+   9         "label": "Release lot A",
+  10         "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.",
+  11         "units": 7,
+  12         "available": true,
+  13         "holdReason": ""
+  14       },
+  15       {
+  16         "id": "L-B",
+  17         "label": "Release lot B",
+  18         "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.",
+  19         "units": 4,
+  20         "available": false,
+  21         "holdReason": "Cold-chain seal not approved"
+  22       },
+  23       {
+  24         "id": "L-C",
+  25         "label": "Release lot C",
+  26         "detail": "Reusable mounting brackets and the full printed installation schedule.",
+  27         "units": 3,
+  28         "available": true,
+  29         "holdReason": ""
+  30       }
+  31     ]
+  32   },
+  33   "updates": [
+  34     {
+  35       "entityId": "OR-481",
+  36       "entityTitle": "Museum installation freight",
+  37       "description": "Receiving instructions changed: use the service entrance on Harbor Street and retain the loading record for the conservation team. Review the packing list again before releasing the remaining eligible lot.",
+  38       "lots": [
+  39         {
+  40           "id": "L-A",
+  41           "label": "Release lot A",
+  42           "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.",
+  43           "units": 7,
+  44           "available": true,
+  45           "holdReason": ""
+  46         },
+  47         {
+  48           "id": "L-B",
+  49           "label": "Release lot B",
+  50           "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.",
+  51           "units": 4,
+  52           "available": false,
+  53           "holdReason": "Cold-chain seal not approved"
+  54         },
+  55         {
+  56           "id": "L-C",
+  57           "label": "Release lot C",
+  58           "detail": "Reusable mounting brackets and the full printed installation schedule.",
+  59           "units": 3,
+  60           "available": false,
+  61           "holdReason": "Destination storage unavailable"
+  62         }
+  63       ]
+  64     },
+  65     {
+  66       "entityId": "OR-482",
+  67       "entityTitle": "Archive return shipment",
+  68       "description": "This is a different order using the same choice labels. No selection, packing approval, or recorded release from the museum freight belongs to this return shipment.",
+  69       "lots": [
+  70         {
+  71           "id": "L-A",
+  72           "label": "Release lot A",
+  73           "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.",
+  74           "units": 7,
+  75           "available": true,
+  76           "holdReason": ""
+  77         },
+  78         {
+  79           "id": "L-B",
+  80           "label": "Release lot B",
+  81           "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.",
+  82           "units": 4,
+  83           "available": false,
+  84           "holdReason": "Cold-chain seal not approved"
+  85         },
+  86         {
+  87           "id": "L-C",
+  88           "label": "Release lot C",
+  89           "detail": "Reusable mounting brackets and the full printed installation schedule.",
+  90           "units": 3,
+  91           "available": true,
+  92           "holdReason": ""
+  93         }
+  94       ]
+  95     }
+  96   ],
+  97   "width": 390,
+  98   "theme": "light",
+  99   "direction": "ltr",
+ 100   "canvas_color": "#FFF8F4",
+ 101   "max_scrolls": 18,
+ 102   "required_identifiers": [
+ 103     "T1.surface",
+ 104     "T1.entity",
+ 105     "T1.description",
+ 106     "T1.summary",
+ 107     "T1.status",
+ 108     "T1.lotA.detail",
+ 109     "T1.lotB.detail",
+ 110     "T1.lotC.detail"
+ 111   ],
+ 112   "dynamic_type": "large"
+ 113 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/actions.ios.json
+   1 [
+   2   {
+   3     "type": "sweep",
+   4     "state_id": "initial",
+   5     "max_scrolls": 18
+   6   },
+   7   {
+   8     "type": "tap",
+   9     "target": {
+  10       "label": "Release lot C"
+  11     },
+  12     "reveal": true,
+  13     "max_steps": 18,
+  14     "preconditions": [
+  15       {
+  16         "target": {
+  17           "label": "Release lot C"
+  18         },
+  19         "property": "enabled",
+  20         "op": "eq",
+  21         "expected": true
+  22       },
+  23       {
+  24         "target": {
+  25           "label": "Release lot C"
+  26         },
+  27         "property": "selected",
+  28         "op": "eq",
+  29         "expected": false
+  30       }
+  31     ]
+  32   },
+  33   {
+  34     "type": "checkpoint",
+  35     "state_id": "one-lot"
+  36   },
+  37   {
+  38     "type": "tap",
+  39     "target": {
+  40       "label": "Release lot A"
+  41     },
+  42     "reveal": true,
+  43     "max_steps": 18,
+  44     "preconditions": [
+  45       {
+  46         "target": {
+  47           "label": "Release lot A"
+  48         },
+  49         "property": "enabled",
+  50         "op": "eq",
+  51         "expected": true
+  52       },
+  53       {
+  54         "target": {
+  55           "label": "Release lot A"
+  56         },
+  57         "property": "selected",
+  58         "op": "eq",
+  59         "expected": false
+  60       }
+  61     ]
+  62   },
+  63   {
+  64     "type": "checkpoint",
+  65     "state_id": "two-lots"
+  66   },
+  67   {
+  68     "type": "tap",
+  69     "target": {
+  70       "label": "Packing list checked"
+  71     },
+  72     "reveal": true,
+  73     "max_steps": 18,
+  74     "preconditions": [
+  75       {
+  76         "target": {
+  77           "label": "Packing list checked"
+  78         },
+  79         "property": "enabled",
+  80         "op": "eq",
+  81         "expected": true
+  82       },
+  83       {
+  84         "target": {
+  85           "label": "Packing list checked"
+  86         },
+  87         "property": "selected",
+  88         "op": "eq",
+  89         "expected": false
+  90       }
+  91     ]
+  92   },
+  93   {
+  94     "type": "sweep",
+  95     "state_id": "ready",
+  96     "max_scrolls": 18
+  97   },
+  98   {
+  99     "type": "tap",
+ 100     "target": {
+ 101       "label": "Release selected lots"
+ 102     },
+ 103     "reveal": true,
+ 104     "max_steps": 18,
+ 105     "preconditions": [
+ 106       {
+ 107         "target": {
+ 108           "label": "Release selected lots"
+ 109         },
+ 110         "property": "enabled",
+ 111         "op": "eq",
+ 112         "expected": true
+ 113       }
+ 114     ],
+ 115     "expect_callback": "release|OR-481|L-A,L-C"
+ 116   },
+ 117   {
+ 118     "type": "sweep",
+ 119     "state_id": "released",
+ 120     "max_scrolls": 18
+ 121   },
+ 122   {
+ 123     "type": "apply_next_fixture"
+ 124   },
+ 125   {
+ 126     "type": "sweep",
+ 127     "state_id": "same-order-pruned",
+ 128     "max_scrolls": 18
+ 129   },
+ 130   {
+ 131     "type": "tap",
+ 132     "target": {
+ 133       "label": "Packing list checked"
+ 134     },
+ 135     "reveal": true,
+ 136     "max_steps": 18,
+ 137     "preconditions": [
+ 138       {
+ 139         "target": {
+ 140           "label": "Packing list checked"
+ 141         },
+ 142         "property": "enabled",
+ 143         "op": "eq",
+ 144         "expected": true
+ 145       },
+ 146       {
+ 147         "target": {
+ 148           "label": "Packing list checked"
+ 149         },
+ 150         "property": "selected",
+ 151         "op": "eq",
+ 152         "expected": false
+ 153       }
+ 154     ]
+ 155   },
+ 156   {
+ 157     "type": "sweep",
+ 158     "state_id": "ready-again",
+ 159     "max_scrolls": 18
+ 160   },
+ 161   {
+ 162     "type": "tap",
+ 163     "target": {
+ 164       "label": "Release selected lots"
+ 165     },
+ 166     "reveal": true,
+ 167     "max_steps": 18,
+ 168     "preconditions": [
+ 169       {
+ 170         "target": {
+ 171           "label": "Release selected lots"
+ 172         },
+ 173         "property": "enabled",
+ 174         "op": "eq",
+ 175         "expected": true
+ 176       }
+ 177     ],
+ 178     "expect_callback": "release|OR-481|L-A"
+ 179   },
+ 180   {
+ 181     "type": "sweep",
+ 182     "state_id": "released-again",
+ 183     "max_scrolls": 18
+ 184   },
+ 185   {
+ 186     "type": "apply_next_fixture"
+ 187   },
+ 188   {
+ 189     "type": "sweep",
+ 190     "state_id": "changed-order",
+ 191     "max_scrolls": 18
+ 192   }
+ 193 ]
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/outcomes.json
+   1 {
+   2   "version": 1,
+   3   "scenario": "public-main",
+   4   "business_rules_source": "reference.json#/business_rules",
+   5   "states": [
+   6     {
+   7       "id": "initial",
+   8       "input_index": 0,
+   9       "after_action": 0,
+  10       "coverage": "full_content",
+  11       "stimulus": "none",
+  12       "exact_business_state": {
+  13         "entity": "OR-481 · Museum installation freight",
+  14         "description": "Release only the cartons that can travel together today. The receiving dock needs the complete conservation note, handling restrictions, and the destination team name before any freight leaves the depot.",
+  15         "controls": {
+  16           "lotA": {
+  17             "label": "Release lot A",
+  18             "enabled": true,
+  19             "kind": "option",
+  20             "selected": false,
+  21             "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+  22           },
+  23           "lotB": {
+  24             "label": "Release lot B",
+  25             "enabled": false,
+  26             "kind": "option",
+  27             "selected": false,
+  28             "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+  29           },
+  30           "lotC": {
+  31             "label": "Release lot C",
+  32             "enabled": true,
+  33             "kind": "option",
+  34             "selected": false,
+  35             "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Available"
+  36           },
+  37           "packing": {
+  38             "label": "Packing list checked",
+  39             "enabled": true,
+  40             "kind": "toggle",
+  41             "selected": false
+  42           }
+  43         },
+  44         "summary": "0 lots selected · 0 units",
+  45         "status": "Select at least one available lot.",
+  46         "primary_enabled": false,
+  47         "submitted": false,
+  48         "preview": null
+  49       },
+  50       "exact_callback_interval": [],
+  51       "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+  52     },
+  53     {
+  54       "id": "one-lot",
+  55       "input_index": 0,
+  56       "after_action": 2,
+  57       "coverage": "targets",
+  58       "stimulus_action": 1,
+  59       "stimulus": "tap",
+  60       "exact_business_state": {
+  61         "entity": "OR-481 · Museum installation freight",
+  62         "description": "Release only the cartons that can travel together today. The receiving dock needs the complete conservation note, handling restrictions, and the destination team name before any freight leaves the depot.",
+  63         "controls": {
+  64           "lotA": {
+  65             "label": "Release lot A",
+  66             "enabled": true,
+  67             "kind": "option",
+  68             "selected": false,
+  69             "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+  70           },
+  71           "lotB": {
+  72             "label": "Release lot B",
+  73             "enabled": false,
+  74             "kind": "option",
+  75             "selected": false,
+  76             "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+  77           },
+  78           "lotC": {
+  79             "label": "Release lot C",
+  80             "enabled": true,
+  81             "kind": "option",
+  82             "selected": true,
+  83             "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Available"
+  84           },
+  85           "packing": {
+  86             "label": "Packing list checked",
+  87             "enabled": true,
+  88             "kind": "toggle",
+  89             "selected": false
+  90           }
+  91         },
+  92         "summary": "1 lots selected · 3 units",
+  93         "status": "Check packing list to release.",
+  94         "primary_enabled": false,
+  95         "submitted": false,
+  96         "preview": null
+  97       },
+  98       "exact_callback_interval": [],
+  99       "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+ 100     },
+ 101     {
+ 102       "id": "two-lots",
+ 103       "input_index": 0,
+ 104       "after_action": 4,
+ 105       "coverage": "targets",
+ 106       "stimulus_action": 3,
+ 107       "stimulus": "tap",
+ 108       "exact_business_state": {
+ 109         "entity": "OR-481 · Museum installation freight",
+ 110         "description": "Release only the cartons that can travel together today. The receiving dock needs the complete conservation note, handling restrictions, and the destination team name before any freight leaves the depot.",
+ 111         "controls": {
+ 112           "lotA": {
+ 113             "label": "Release lot A",
+ 114             "enabled": true,
+ 115             "kind": "option",
+ 116             "selected": true,
+ 117             "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+ 118           },
+ 119           "lotB": {
+ 120             "label": "Release lot B",
+ 121             "enabled": false,
+ 122             "kind": "option",
+ 123             "selected": false,
+ 124             "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+ 125           },
+ 126           "lotC": {
+ 127             "label": "Release lot C",
+ 128             "enabled": true,
+ 129             "kind": "option",
+ 130             "selected": true,
+ 131             "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Available"
+ 132           },
+ 133           "packing": {
+ 134             "label": "Packing list checked",
+ 135             "enabled": true,
+ 136             "kind": "toggle",
+ 137             "selected": false
+ 138           }
+ 139         },
+ 140         "summary": "2 lots selected · 10 units",
+ 141         "status": "Check packing list to release.",
+ 142         "primary_enabled": false,
+ 143         "submitted": false,
+ 144         "preview": null
+ 145       },
+ 146       "exact_callback_interval": [],
+ 147       "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+ 148     },
+ 149     {
+ 150       "id": "ready",
+ 151       "input_index": 0,
+ 152       "after_action": 6,
+ 153       "coverage": "full_content",
+ 154       "stimulus_action": 5,
+ 155       "stimulus": "tap",
+ 156       "exact_business_state": {
+ 157         "entity": "OR-481 · Museum installation freight",
+ 158         "description": "Release only the cartons that can travel together today. The receiving dock needs the complete conservation note, handling restrictions, and the destination team name before any freight leaves the depot.",
+ 159         "controls": {
+ 160           "lotA": {
+ 161             "label": "Release lot A",
+ 162             "enabled": true,
+ 163             "kind": "option",
+ 164             "selected": true,
+ 165             "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+ 166           },
+ 167           "lotB": {
+ 168             "label": "Release lot B",
+ 169             "enabled": false,
+ 170             "kind": "option",
+ 171             "selected": false,
+ 172             "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+ 173           },
+ 174           "lotC": {
+ 175             "label": "Release lot C",
+ 176             "enabled": true,
+ 177             "kind": "option",
+ 178             "selected": true,
+ 179             "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Available"
+ 180           },
+ 181           "packing": {
+ 182             "label": "Packing list checked",
+ 183             "enabled": true,
+ 184             "kind": "toggle",
+ 185             "selected": true
+ 186           }
+ 187         },
+ 188         "summary": "2 lots selected · 10 units",
+ 189         "status": "Ready to release 2 lots.",
+ 190         "primary_enabled": true,
+ 191         "submitted": false,
+ 192         "preview": null
+ 193       },
+ 194       "exact_callback_interval": [],
+ 195       "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+ 196     },
+ 197     {
+ 198       "id": "released",
+ 199       "input_index": 0,
+ 200       "after_action": 8,
+ 201       "coverage": "full_content",
+ 202       "stimulus_action": 7,
+ 203       "stimulus": "tap",
+ 204       "exact_business_state": {
+ 205         "entity": "OR-481 · Museum installation freight",
+ 206         "description": "Release only the cartons that can travel together today. The receiving dock needs the complete conservation note, handling restrictions, and the destination team name before any freight leaves the depot.",
+ 207         "controls": {
+ 208           "lotA": {
+ 209             "label": "Release lot A",
+ 210             "enabled": false,
+ 211             "kind": "option",
+ 212             "selected": true,
+ 213             "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+ 214           },
+ 215           "lotB": {
+ 216             "label": "Release lot B",
+ 217             "enabled": false,
+ 218             "kind": "option",
+ 219             "selected": false,
+ 220             "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+ 221           },
+ 222           "lotC": {
+ 223             "label": "Release lot C",
+ 224             "enabled": false,
+ 225             "kind": "option",
+ 226             "selected": true,
+ 227             "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Available"
+ 228           },
+ 229           "packing": {
+ 230             "label": "Packing list checked",
+ 231             "enabled": false,
+ 232             "kind": "toggle",
+ 233             "selected": true
+ 234           }
+ 235         },
+ 236         "summary": "2 lots selected · 10 units",
+ 237         "status": "Release recorded for 2 lots.",
+ 238         "primary_enabled": false,
+ 239         "submitted": true,
+ 240         "preview": null
+ 241       },
+ 242       "exact_callback_interval": [
+ 243         "release|OR-481|L-A,L-C"
+ 244       ],
+ 245       "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+ 246     },
+ 247     {
+ 248       "id": "same-order-pruned",
+ 249       "input_index": 1,
+ 250       "after_action": 10,
+ 251       "coverage": "full_content",
+ 252       "stimulus_action": 9,
+ 253       "stimulus": "caller_update",
+ 254       "exact_business_state": {
+ 255         "entity": "OR-481 · Museum installation freight",
+ 256         "description": "Receiving instructions changed: use the service entrance on Harbor Street and retain the loading record for the conservation team. Review the packing list again before releasing the remaining eligible lot.",
+ 257         "controls": {
+ 258           "lotA": {
+ 259             "label": "Release lot A",
+ 260             "enabled": true,
+ 261             "kind": "option",
+ 262             "selected": true,
+ 263             "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+ 264           },
+ 265           "lotB": {
+ 266             "label": "Release lot B",
+ 267             "enabled": false,
+ 268             "kind": "option",
+ 269             "selected": false,
+ 270             "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+ 271           },
+ 272           "lotC": {
+ 273             "label": "Release lot C",
+ 274             "enabled": false,
+ 275             "kind": "option",
+ 276             "selected": false,
+ 277             "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Held: Destination storage unavailable"
+ 278           },
+ 279           "packing": {
+ 280             "label": "Packing list checked",
+ 281             "enabled": true,
+ 282             "kind": "toggle",
+ 283             "selected": false
+ 284           }
+ 285         },
+ 286         "summary": "1 lots selected · 7 units",
+ 287         "status": "Check packing list to release.",
+ 288         "primary_enabled": false,
+ 289         "submitted": false,
+ 290         "preview": null
+ 291       },
+ 292       "exact_callback_interval": [],
+ 293       "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+ 294     },
+ 295     {
+ 296       "id": "ready-again",
+ 297       "input_index": 1,
+ 298       "after_action": 12,
+ 299       "coverage": "full_content",
+ 300       "stimulus_action": 11,
+ 301       "stimulus": "tap",
+ 302       "exact_business_state": {
+ 303         "entity": "OR-481 · Museum installation freight",
+ 304         "description": "Receiving instructions changed: use the service entrance on Harbor Street and retain the loading record for the conservation team. Review the packing list again before releasing the remaining eligible lot.",
+ 305         "controls": {
+ 306           "lotA": {
+ 307             "label": "Release lot A",
+ 308             "enabled": true,
+ 309             "kind": "option",
+ 310             "selected": true,
+ 311             "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+ 312           },
+ 313           "lotB": {
+ 314             "label": "Release lot B",
+ 315             "enabled": false,
+ 316             "kind": "option",
+ 317             "selected": false,
+ 318             "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+ 319           },
+ 320           "lotC": {
+ 321             "label": "Release lot C",
+ 322             "enabled": false,
+ 323             "kind": "option",
+ 324             "selected": false,
+ 325             "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Held: Destination storage unavailable"
+ 326           },
+ 327           "packing": {
+ 328             "label": "Packing list checked",
+ 329             "enabled": true,
+ 330             "kind": "toggle",
+ 331             "selected": true
+ 332           }
+ 333         },
+ 334         "summary": "1 lots selected · 7 units",
+ 335         "status": "Ready to release 1 lots.",
+ 336         "primary_enabled": true,
+ 337         "submitted": false,
+ 338         "preview": null
+ 339       },
+ 340       "exact_callback_interval": [],
+ 341       "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+ 342     },
+ 343     {
+ 344       "id": "released-again",
+ 345       "input_index": 1,
+ 346       "after_action": 14,
+ 347       "coverage": "full_content",
+ 348       "stimulus_action": 13,
+ 349       "stimulus": "tap",
+ 350       "exact_business_state": {
+ 351         "entity": "OR-481 · Museum installation freight",
+ 352         "description": "Receiving instructions changed: use the service entrance on Harbor Street and retain the loading record for the conservation team. Review the packing list again before releasing the remaining eligible lot.",
+ 353         "controls": {
+ 354           "lotA": {
+ 355             "label": "Release lot A",
+ 356             "enabled": false,
+ 357             "kind": "option",
+ 358             "selected": true,
+ 359             "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+ 360           },
+ 361           "lotB": {
+ 362             "label": "Release lot B",
+ 363             "enabled": false,
+ 364             "kind": "option",
+ 365             "selected": false,
+ 366             "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+ 367           },
+ 368           "lotC": {
+ 369             "label": "Release lot C",
+ 370             "enabled": false,
+ 371             "kind": "option",
+ 372             "selected": false,
+ 373             "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Held: Destination storage unavailable"
+ 374           },
+ 375           "packing": {
+ 376             "label": "Packing list checked",
+ 377             "enabled": false,
+ 378             "kind": "toggle",
+ 379             "selected": true
+ 380           }
+ 381         },
+ 382         "summary": "1 lots selected · 7 units",
+ 383         "status": "Release recorded for 1 lots.",
+ 384         "primary_enabled": false,
+ 385         "submitted": true,
+ 386         "preview": null
+ 387       },
+ 388       "exact_callback_interval": [
+ 389         "release|OR-481|L-A"
+ 390       ],
+ 391       "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+ 392     },
+ 393     {
+ 394       "id": "changed-order",
+ 395       "input_index": 2,
+ 396       "after_action": 16,
+ 397       "coverage": "full_content",
+ 398       "stimulus_action": 15,
+ 399       "stimulus": "caller_update",
+ 400       "exact_business_state": {
+ 401         "entity": "OR-482 · Archive return shipment",
+ 402         "description": "This is a different order using the same choice labels. No selection, packing approval, or recorded release from the museum freight belongs to this return shipment.",
+ 403         "controls": {
+ 404           "lotA": {
+ 405             "label": "Release lot A",
+ 406             "enabled": true,
+ 407             "kind": "option",
+ 408             "selected": false,
+ 409             "detail": "Framed exhibition panels for the east gallery. Keep the protective corner blocks fitted during loading.\n7 units · Available"
+ 410           },
+ 411           "lotB": {
+ 412             "label": "Release lot B",
+ 413             "enabled": false,
+ 414             "kind": "option",
+ 415             "selected": false,
+ 416             "detail": "Temperature-sensitive samples travel only after the cold-chain seal is approved.\n4 units · Held: Cold-chain seal not approved"
+ 417           },
+ 418           "lotC": {
+ 419             "label": "Release lot C",
+ 420             "enabled": true,
+ 421             "kind": "option",
+ 422             "selected": false,
+ 423             "detail": "Reusable mounting brackets and the full printed installation schedule.\n3 units · Available"
+ 424           },
+ 425           "packing": {
+ 426             "label": "Packing list checked",
+ 427             "enabled": true,
+ 428             "kind": "toggle",
+ 429             "selected": false
+ 430           }
+ 431         },
+ 432         "summary": "0 lots selected · 0 units",
+ 433         "status": "Select at least one available lot.",
+ 434         "primary_enabled": false,
+ 435         "submitted": false,
+ 436         "preview": null
+ 437       },
+ 438       "exact_callback_interval": [],
+ 439       "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+ 440     }
+ 441   ]
+ 442 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/bindings.ios.json
+   1 {
+   2   "surface": {
+   3     "identifier": "T1.surface"
+   4   },
+   5   "entity": {
+   6     "identifier": "T1.entity"
+   7   },
+   8   "description": {
+   9     "identifier": "T1.description"
+  10   },
+  11   "summary": {
+  12     "identifier": "T1.summary"
+  13   },
+  14   "status": {
+  15     "identifier": "T1.status"
+  16   },
+  17   "heading": {
+  18     "label": "Shipment release checklist"
+  19   },
+  20   "lotA": {
+  21     "label": "Release lot A"
+  22   },
+  23   "lotADetail": {
+  24     "identifier": "T1.lotA.detail"
+  25   },
+  26   "lotB": {
+  27     "label": "Release lot B"
+  28   },
+  29   "lotBDetail": {
+  30     "identifier": "T1.lotB.detail"
+  31   },
+  32   "lotC": {
+  33     "label": "Release lot C"
+  34   },
+  35   "lotCDetail": {
+  36     "identifier": "T1.lotC.detail"
+  37   },
+  38   "packing": {
+  39     "label": "Packing list checked"
+  40   },
+  41   "primary": {
+  42     "label": "Release selected lots"
+  43   }
+  44 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/launch.json
+   1 {
+   2   "ios": {
+   3     "scenario": "public-main",
+   4     "platform": "ios",
+   5     "fixtures_sha256": "8473edf6aa2e252c4ea30aa6c300953b83445a01424589ef0e4cb4ef559a8bd3",
+   6     "bridge_sha256": "787f399d905514f3f03a72bde2e9769e7c574579339f3166aa030ab915a057e8"
+   7   },
+   8   "android": {
+   9     "scenario": "public-main",
+  10     "platform": "android",
+  11     "fixtures_sha256": "25d2553f800d420de8c39d038aec05b67fe1ccb9fc119c64d5f11033458883e4",
+  12     "bridge_sha256": "8c6e11e47d93c7babbdfae8a0984117ec3691da8214bfff4cbed7b3c51b08ca7"
+  13   }
+  14 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/seal.json
+   1 {
+   2   "version": 1,
+   3   "design_owner": "Independent design/oracle author /root/v13_business_design",
+   4   "phase": "all-five independent preimplementation author seal; review pending",
+   5   "scenario": "public-main",
+   6   "design_lock_sha256": "c978c7aef25ffdf06964d5f7ef3b4503598e36ca15c4e37218ccd11499b05065",
+   7   "policy_sha256": "280064459b589481515e0adb5417a1c27e07cdbad9fd510bb0babd30de5f3003",
+   8   "routes_sha256": "7340428c509ccb03ecae1bfdf7a3261d15c490ee77af34f88572dbb346c682f7",
+   9   "environment_sha256": {
+  10     "ios": "344262ee514b7149f7440880dfb7d8e32d65a06e341f9902ee7c5730ab9a9504",
+  11     "android": "741b05290697ff484727fa1c13c2b0f5336f7a976483743d1079d6efdf7a1bf0"
+  12   },
+  13   "launch_ref": {
+  14     "ios": {
+  15       "source": "launch",
+  16       "pointer": "/ios"
+  17     },
+  18     "android": {
+  19       "source": "launch",
+  20       "pointer": "/android"
+  21     }
+  22   },
+  23   "responsibility_ref": {
+  24     "source": "reference",
+  25     "pointer": "/responsibilities"
+  26   },
+  27   "capture_validity_ref": {
+  28     "source": "reference",
+  29     "pointer": "/capture_validity"
+  30   }
+  31 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/target-observations.json
+   1 {
+   2   "version": 1,
+   3   "scenario": "public-main",
+   4   "states": [
+   5     {
+   6       "id": "initial",
+   7       "input_index": 0,
+   8       "after_action": 0,
+   9       "coverage": "full_content",
+  10       "after_targets": [
+  11         "description",
+  12         "entity",
+  13         "heading",
+  14         "lotA",
+  15         "lotADetail",
+  16         "lotB",
+  17         "lotBDetail",
+  18         "lotC",
+  19         "lotCDetail",
+  20         "packing",
+  21         "primary",
+  22         "status",
+  23         "summary",
+  24         "surface"
+  25       ],
+  26       "observation_action": 0,
+  27       "callback_gate": "Original stimulus_action must have actual successful native dispatch by the requested method. Missing, disabled or blocked stimulus is U, not a quiet pass."
+  28     },
+  29     {
+  30       "id": "one-lot",
+  31       "input_index": 0,
+  32       "after_action": 2,
+  33       "coverage": "targets",
+  34       "stimulus_action": 1,
+  35       "after_targets": [
+  36         "description",
+  37         "entity",
+  38         "heading",
+  39         "lotA",
+  40         "lotADetail",
+  41         "lotB",
+  42         "lotBDetail",
+  43         "lotC",
+  44         "lotCDetail",
+  45         "packing",
+  46         "primary",
+  47         "status",
+  48         "summary",
+  49         "surface"
+  50       ],
+  51       "observation_action": 2,
+  52       "callback_gate": "Original stimulus_action must have actual successful native dispatch by the requested method. Missing, disabled or blocked stimulus is U, not a quiet pass."
+  53     },
+  54     {
+  55       "id": "two-lots",
+  56       "input_index": 0,
+  57       "after_action": 4,
+  58       "coverage": "targets",
+  59       "stimulus_action": 3,
+  60       "after_targets": [
+  61         "description",
+  62         "entity",
+  63         "heading",
+  64         "lotA",
+  65         "lotADetail",
+  66         "lotB",
+  67         "lotBDetail",
+  68         "lotC",
+  69         "lotCDetail",
+  70         "packing",
+  71         "primary",
+  72         "status",
+  73         "summary",
+  74         "surface"
+  75       ],
+  76       "observation_action": 4,
+  77       "callback_gate": "Original stimulus_action must have actual successful native dispatch by the requested method. Missing, disabled or blocked stimulus is U, not a quiet pass."
+  78     },
+  79     {
+  80       "id": "ready",
+  81       "input_index": 0,
+  82       "after_action": 6,
+  83       "coverage": "full_content",
+  84       "stimulus_action": 5,
+  85       "after_targets": [
+  86         "description",
+  87         "entity",
+  88         "heading",
+  89         "lotA",
+  90         "lotADetail",
+  91         "lotB",
+  92         "lotBDetail",
+  93         "lotC",
+  94         "lotCDetail",
+  95         "packing",
+  96         "primary",
+  97         "status",
+  98         "summary",
+  99         "surface"
+ 100       ],
+ 101       "observation_action": 6,
+ 102       "callback_gate": "Original stimulus_action must have actual successful native dispatch by the requested method. Missing, disabled or blocked stimulus is U, not a quiet pass."
+ 103     },
+ 104     {
+ 105       "id": "released",
+ 106       "input_index": 0,
+ 107       "after_action": 8,
+ 108       "coverage": "full_content",
+ 109       "stimulus_action": 7,
+ 110       "after_targets": [
+ 111         "description",
+ 112         "entity",
+ 113         "heading",
+ 114         "lotA",
+ 115         "lotADetail",
+ 116         "lotB",
+ 117         "lotBDetail",
+ 118         "lotC",
+ 119         "lotCDetail",
+ 120         "packing",
+ 121         "primary",
+ 122         "status",
+ 123         "summary",
+ 124         "surface"
+ 125       ],
+ 126       "observation_action": 8,
+ 127       "callback_gate": "Original stimulus_action must have actual successful native dispatch by the requested method. Missing, disabled or blocked stimulus is U, not a quiet pass."
+ 128     },
+ 129     {
+ 130       "id": "same-order-pruned",
+ 131       "input_index": 1,
+ 132       "after_action": 10,
+ 133       "coverage": "full_content",
+ 134       "stimulus_action": 9,
+ 135       "after_targets": [
+ 136         "description",
+ 137         "entity",
+ 138         "heading",
+ 139         "lotA",
+ 140         "lotADetail",
+ 141         "lotB",
+ 142         "lotBDetail",
+ 143         "lotC",
+ 144         "lotCDetail",
+ 145         "packing",
+ 146         "primary",
+ 147         "status",
+ 148         "summary",
+ 149         "surface"
+ 150       ],
+ 151       "observation_action": 10,
+ 152       "callback_gate": "Original stimulus_action must have actual successful native dispatch by the requested method. Missing, disabled or blocked stimulus is U, not a quiet pass."
+ 153     },
+ 154     {
+ 155       "id": "ready-again",
+ 156       "input_index": 1,
+ 157       "after_action": 12,
+ 158       "coverage": "full_content",
+ 159       "stimulus_action": 11,
+ 160       "after_targets": [
+ 161         "description",
+ 162         "entity",
+ 163         "heading",
+ 164         "lotA",
+ 165         "lotADetail",
+ 166         "lotB",
+ 167         "lotBDetail",
+ 168         "lotC",
+ 169         "lotCDetail",
+ 170         "packing",
+ 171         "primary",
+ 172         "status",
+ 173         "summary",
+ 174         "surface"
+ 175       ],
+ 176       "observation_action": 12,
+ 177       "callback_gate": "Original stimulus_action must have actual successful native dispatch by the requested method. Missing, disabled or blocked stimulus is U, not a quiet pass."
+ 178     },
+ 179     {
+ 180       "id": "released-again",
+ 181       "input_index": 1,
+ 182       "after_action": 14,
+ 183       "coverage": "full_content",
+ 184       "stimulus_action": 13,
+ 185       "after_targets": [
+ 186         "description",
+ 187         "entity",
+ 188         "heading",
+ 189         "lotA",
+ 190         "lotADetail",
+ 191         "lotB",
+ 192         "lotBDetail",
+ 193         "lotC",
+ 194         "lotCDetail",
+ 195         "packing",
+ 196         "primary",
+ 197         "status",
+ 198         "summary",
+ 199         "surface"
+ 200       ],
+ 201       "observation_action": 14,
+ 202       "callback_gate": "Original stimulus_action must have actual successful native dispatch by the requested method. Missing, disabled or blocked stimulus is U, not a quiet pass."
+ 203     },
+ 204     {
+ 205       "id": "changed-order",
+ 206       "input_index": 2,
+ 207       "after_action": 16,
+ 208       "coverage": "full_content",
+ 209       "stimulus_action": 15,
+ 210       "after_targets": [
+ 211         "description",
+ 212         "entity",
+ 213         "heading",
+ 214         "lotA",
+ 215         "lotADetail",
+ 216         "lotB",
+ 217         "lotBDetail",
+ 218         "lotC",
+ 219         "lotCDetail",
+ 220         "packing",
+ 221         "primary",
+ 222         "status",
+ 223         "summary",
+ 224         "surface"
+ 225       ],
+ 226       "observation_action": 16,
+ 227       "callback_gate": "Original stimulus_action must have actual successful native dispatch by the requested method. Missing, disabled or blocked stimulus is U, not a quiet pass."
+ 228     }
+ 229   ]
+ 230 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/routes.json
+   1 {
+   2   "version": 1,
+   3   "index": {
+   4     "source": "reference",
+   5     "pointer": "/obligations"
+   6   },
+   7   "routes": {
+   8     "business-content": {
+   9       "rule_ids": [
+  10         "heading-label",
+  11         "entity-label",
+  12         "description-label",
+  13         "summary-label",
+  14         "status-label",
+  15         "surface-present",
+  16         "lotA-label",
+  17         "lotA-detail",
+  18         "lotB-label",
+  19         "lotB-detail",
+  20         "lotC-label",
+  21         "lotC-detail",
+  22         "packing-label",
+  23         "primary-label"
+  24       ],
+  25       "reason": "All supplied and computed business text is current and exact.",
+  26       "regression_obligations": [
+  27         "content-layout"
+  28       ]
+  29     },
+  30     "decision-eligibility": {
+  31       "rule_ids": [
+  32         "lotA-enabled",
+  33         "lotA-selected",
+  34         "lotB-enabled",
+  35         "lotB-selected",
+  36         "lotC-enabled",
+  37         "lotC-selected",
+  38         "packing-enabled",
+  39         "packing-selected",
+  40         "primary-enabled"
+  41       ],
+  42       "reason": "Native disabled/selected facts obey published business decisions.",
+  43       "regression_obligations": [
+  44         "caller-replacement",
+  45         "successful-tap-receipts",
+  46         "opaque-paint",
+  47         "selection-affordance"
+  48       ]
+  49     },
+  50     "successful-tap-receipts": {
+  51       "rule_ids": [
+  52         "tap-receipt"
+  53       ],
+  54       "reason": "Exact tap event intervals require demonstrated successful original native dispatch; blocked taps never prove quiet behavior.",
+  55       "regression_obligations": []
+  56     },
+  57     "caller-replacement": {
+  58       "rule_ids": [
+  59         "replacement-quiet",
+  60         "lotA-enabled",
+  61         "lotA-selected",
+  62         "lotB-enabled",
+  63         "lotB-selected",
+  64         "lotC-enabled",
+  65         "lotC-selected",
+  66         "packing-enabled",
+  67         "packing-selected",
+  68         "primary-enabled",
+  69         "heading-label",
+  70         "entity-label",
+  71         "description-label",
+  72         "summary-label",
+  73         "status-label",
+  74         "surface-present",
+  75         "lotA-label",
+  76         "lotA-detail",
+  77         "lotB-label",
+  78         "lotB-detail",
+  79         "lotC-label",
+  80         "lotC-detail",
+  81         "packing-label",
+  82         "primary-label"
+  83       ],
+  84       "reason": "Same-entity revalidation and changed-entity reset are distinct and callback-silent.",
+  85       "regression_obligations": [
+  86         "decision-eligibility",
+  87         "business-content",
+  88         "successful-tap-receipts",
+  89         "opaque-paint",
+  90         "selection-affordance"
+  91       ]
+  92     },
+  93     "typography": {
+  94       "rule_ids": [
+  95         "heading-native-size",
+  96         "heading-native-weight",
+  97         "body-native-size",
+  98         "body-native-ink",
+  99         "heading-visual-size",
+ 100         "heading-visual-weight",
+ 101         "body-visual-size",
+ 102         "body-visual-ink"
+ 103       ],
+ 104       "reason": "Typography follows sourced native or qualitative platform intent.",
+ 105       "regression_obligations": [
+ 106         "content-layout"
+ 107       ]
+ 108     },
+ 109     "content-layout": {
+ 110       "rule_ids": [
+ 111         "content-wrap",
+ 112         "content-overlap",
+ 113         "horizontal-fit",
+ 114         "section-rhythm",
+ 115         "row-padding",
+ 116         "lotA-wrap",
+ 117         "lotB-wrap",
+ 118         "lotC-wrap",
+ 119         "summary-wrap",
+ 120         "status-wrap"
+ 121       ],
+ 122       "reason": "Full variable-length vertical content wraps, fits and preserves separation/insets.",
+ 123       "regression_obligations": [
+ 124         "primary-accessibility-box"
+ 125       ]
+ 126     },
+ 127     "opaque-paint": {
+ 128       "rule_ids": [
+ 129         "surface-fill",
+ 130         "primary-fill",
+ 131         "lotA-fill",
+ 132         "lotB-fill",
+ 133         "lotC-fill",
+ 134         "primary-ink"
+ 135       ],
+ 136       "reason": "Component opaque fills match approved suitable pixel regions; primary ink is readable.",
+ 137       "regression_obligations": []
+ 138     },
+ 139     "primary-accessibility-box": {
+ 140       "rule_ids": [
+ 141         "primary-height"
+ 142       ],
+ 143       "reason": "Primary control accessibility-box height is48pt/dp; no physical OS hit-area claim.",
+ 144       "regression_obligations": []
+ 145     },
+ 146     "selection-affordance": {
+ 147       "rule_ids": [
+ 148         "lotA-mark",
+ 149         "lotB-mark",
+ 150         "lotC-mark",
+ 151         "packing-mark"
+ 152       ],
+ 153       "reason": "Visible selection marks agree with native selected facts.",
+ 154       "regression_obligations": []
+ 155     },
+ 156     "corner-shape": {
+ 157       "rule_ids": [
+ 158         "panel-corners",
+ 159         "row-corners"
+ 160       ],
+ 161       "reason": "Panel and option corner shape follow independent annotated references.",
+ 162       "regression_obligations": []
+ 163     }
+ 164   }
+ 165 }

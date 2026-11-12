@@ -1,0 +1,116 @@
+ 180                   reason='callback behavior after demonstrated requested native stimulus',
+ 181                   stimulus_established=True)
+ 182     return result
+ 183 
+ 184 
+ 185 def state_evidence(observation,state,root=None):
+ 186     if type(state.get('input_index'))is not int or state['input_index']<0:
+ 187         return [],False,'state input index must be an integer',None
+ 188     if 'after_action'in state and type(state['after_action'])is not int:
+ 189         return [],False,'state action checkpoint must be an integer',None
+ 190     # Legacy coverage packets have no guarded route. Keep this standalone reader
+ 191     # usable through a file loader without importing an unrelated protocol.
+ 192     if observation.get('guard_protocol') == 1:
+ 193         import action_guard
+ 194         platform = observation.get('guard_platform', 'ios' if observation.get('measurement_kind', '').startswith('XCUI') else 'android')
+ 195         guard = action_guard.state_verdict(observation, state, platform)
+ 196         if guard is not None and not guard['established']:
+ 197             return [], False, 'blocked_precondition: ' + guard['reason'], {'precondition': guard}
+ 198     captures=[c for c in observation.get('state_captures',[])if c.get('state_id')==state['id']]
+ 199     if not captures and state.get('coverage')=='targets':
+ 200         index=state.get('after_action');steps=observation.get('steps',[])
+ 201         if type(index)is not int or not 0<=index<len(steps):return [],False,'missing native action checkpoint',None
+ 202         step=steps[index];bundle=step.get('observation_set')
+ 203         if not bundle:
+ 204             # Legacy raw data still earns the facts actually visible in its one
+ 205             # bound action frame; it cannot borrow frames from other actions.
+ 206             legacy=dict(state,coverage='target')
+ 207             return state_evidence(observation,legacy,root)
+ 208         binding=step.get('binding_after',{});snapshots=observation.get('snapshots',[])
+ 209         capture=dict(bundle,after_action=index,source='native_post_action_targets',scope='targets_only')
+ 210         if (bundle.get('state_id')!=state['id']or step.get('state_id')!=state['id']or type(bundle.get('after_action'))is not int or bundle['after_action']!=index
+ 211                 or not binding or bundle.get('binding')!=binding
+ 212                 or bundle.get('binding_after_observation')!=binding
+ 213                 or bundle.get('binding_stable')is not True):
+ 214             return [],False,'target observation input/process/event binding drift',capture
+ 215         actual_input=binding.get('fixture_index',binding.get('input_index'))
+ 216         if type(actual_input)is not int or actual_input!=state['input_index']:
+ 217             return [],False,'target observation has different caller input',capture
+ 218         if not binding.get('instance')or not binding.get('input_sha256')or type(binding.get('event_revision'))is not int:
+ 219             return [],False,'target observation lacks native epoch identity',capture
+ 220         indices=bundle.get('snapshot_indices',[]);immediate=step.get('immediate_after')
+ 221         last=step.get('after',step.get('snapshot'))
+ 222         if (not isinstance(indices,list)or not indices or any(type(i)is not int for i in indices)
+ 223                 or len(indices)!=len(set(indices))or type(immediate)is not int
+ 224                 or type(last)is not int or immediate not in indices
+ 225                 or any(type(i)is not int or not 0<=i<len(snapshots)or not immediate<=i<=last for i in indices)):
+ 226             return [],False,'invalid target observation snapshot interval',capture
+ 227         found=[(i,snapshots[i])for i in indices]
+ 228         if any(s.get('state_id')!=state['id']or s.get('binding')!=binding
+ 229                or s.get('capture_consistent')is False
+ 230                or s.get('binding_after_capture',binding)!=binding for _,s in found):
+ 231             return [],False,'target snapshot state/epoch/image mismatch',capture
+ 232         return found,False,'bound multi-target evidence; no full-content coverage claim',capture
+ 233     if not captures and state.get('coverage')=='target':
+ 234         index=state.get('after_action');steps=observation.get('steps',[])
+ 235         if type(index)is not int or not 0<=index<len(steps):return [],False,'missing native action checkpoint',None
+ 236         step=steps[index];snap_index=step.get('after',step.get('snapshot'));snapshots=observation.get('snapshots',[])
+ 237         if type(snap_index)is not int or not 0<=snap_index<len(snapshots):return [],False,'invalid native action snapshot',None
+ 238         snapshot=snapshots[snap_index];binding=step.get('binding_after')
+ 239         if snapshot.get('capture_consistent') is False:return [],False,'native image/hierarchy epoch changed during capture',None
+ 240         if step.get('state_id')!=state['id']or snapshot.get('state_id')!=state['id']or not binding or snapshot.get('binding')!=binding:
+ 241             return [],False,'action checkpoint state/binding mismatch',None
+ 242         actual_input=binding.get('fixture_index',binding.get('input_index'))
+ 243         if type(actual_input)is not int or actual_input!=state['input_index']:return [],False,'action checkpoint has different input',None
+ 244         capture={'state_id':state['id'],'binding':binding,'snapshot_indices':[snap_index],'after_action':index,'source':'native_action_checkpoint','scope':'target_only'}
+ 245         return [(snap_index,snapshot)],False,'native action checkpoint; no full-content coverage claim',capture
+ 246     if len(captures)!=1:return [],False,'missing or duplicate state capture',None
+ 247     capture=captures[0];binding=capture.get('binding',{})
+ 248     actual_index=binding.get('fixture_index',binding.get('input_index'))
+ 249     if type(actual_index)is not int or actual_index!=state['input_index']:return [],False,'state is bound to different caller input',capture
+ 250     if 'after_action'in state and (type(capture.get('after_action'))is not int or capture['after_action']!=state['after_action']):
+ 251         return [],False,'state is bound to different action checkpoint',capture
+ 252     snapshots=observation.get('snapshots',[]);indices=capture.get('snapshot_indices',[])
+ 253     if (not isinstance(indices,list)or not indices or any(type(i)is not int or i<0 or i>=len(snapshots)for i in indices)
+ 254             or len(indices)!=len(set(indices))):return [],False,'invalid state snapshot indices',capture
+ 255     found=[(i,snapshots[i])for i in indices]
+ 256     if any(s.get('capture_consistent') is False for _,s in found):return [],False,'native image/hierarchy epoch changed during capture',capture
+ 257     if any(s.get('binding')!=binding for _,s in found):return [],False,'snapshot binding drift',capture
+ 258     if observation.get('coverage_protocol') == 2 and capture.get('stable_binding') is not True:
+ 259         return found,False,'producer reports unstable state binding',capture
+ 260     if observation.get('coverage_protocol') == 2:
+ 261         import scroll_coverage
+ 262         try: scroll_coverage.native_rows(found, binding)
+ 263         except (ValueError, KeyError, TypeError, OverflowError) as error:
+ 264             return found,False,str(error),capture
+ 265     # Recompute geometry coverage; the producer's complete:true alone is not proof.
+ 266     intervals=[];heights=[]
+ 267     for _,snapshot in found:
+ 268         runtime=snapshot.get('runtime',{});content=runtime.get('content_frame');vp=snapshot.get('viewport')
+ 269         if content and vp:
+ 270             h=content['height'];offset=vp['y']-content['y'];heights.append(h);intervals.append((max(0,offset),min(h,offset+vp['height'])))
+ 271         elif 'scroll_offset_dp'in snapshot:
+ 272             offset=snapshot['scroll_offset_dp'];h=snapshot['scroll_max_dp']+snapshot['viewport_height_dp'];heights.append(h);intervals.append((offset,min(h,offset+snapshot['viewport_height_dp'])))
+ 273     end=0;gap=0
+ 274     for a,b in sorted(intervals):gap=max(gap,a-end);end=max(end,b)
+ 275     complete=bool(intervals)and max(heights)-min(heights)<=1 and gap<=1 and end>=max(heights)-1 and capture.get('top_reached')is True and capture.get('bottom_reached')is True and capture.get('stable_binding')is True
+ 276     if not complete and observation.get('coverage_protocol') == 2:
+ 277         import scroll_coverage
+ 278         proof = scroll_coverage.certify(found, binding, root)
+ 279         if proof['complete']:
+ 280             import coverage_domain
+ 281             try: proof['domain_admission'] = coverage_domain.verify_packet(root,found)
+ 282             except (ValueError,OSError,KeyError,TypeError) as error:
+ 283                 proof.update(complete=False,reason='coverage_domain: '+str(error))
+ 284         return found,proof['complete'],proof['reason'],dict(capture, coverage_proof=proof)
+ 285     if complete and observation.get('coverage_protocol')==2:
+ 286         import coverage_domain
+ 287         try:
+ 288             if coverage_domain.requested(root):
+ 289                 domain=coverage_domain.verify_packet(root,found)
+ 290                 capture=dict(capture,coverage_domain=domain)
+ 291         except (ValueError,OSError,KeyError,TypeError) as error:
+ 292             return found,False,'coverage_domain: '+str(error),capture
+ 293     return found,complete,'native interval union complete'if complete else'incomplete per-state interval union',capture
+ 294 
+ 295 

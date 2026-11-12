@@ -1,0 +1,351 @@
+
+FILE candidate-v13.9/scripts/ios_observe.py
+ 270     bridge = Path(args.bridge).resolve()
+ 271     package = Path(args.package).resolve() if args.package else None
+ 272     config = json.loads(Path(args.fixtures).read_text())
+ 273     config.setdefault("state_capture", True)
+ 274     actions = json.loads(Path(args.actions).read_text()) if args.actions else []
+ 275     validate_offered_width(config.get("width", 390))
+ 276     if not isinstance(config.get("initial"), dict) or not isinstance(config.get("updates", []), list): raise ValueError("initial object and updates array required")
+ 277     if not all(isinstance(f, dict) for f in config.get("updates", [])): raise ValueError("every update must be an object")
+ 278     if config.get("theme", "light") not in ("light", "dark"): raise ValueError("theme must be light or dark")
+ 279     if config.get("direction", "ltr") not in ("ltr", "rtl"): raise ValueError("direction must be ltr or rtl")
+ 280     if "canvas_color" in config and not re.fullmatch(r"#[0-9a-fA-F]{6}", str(config["canvas_color"])): raise ValueError("canvas_color must be #RRGGBB")
+ 281     allowed_types = ["xSmall", "small", "medium", "large", "xLarge", "xxLarge", "xxxLarge"] + [f"accessibility{i}" for i in range(1, 6)]
+ 282     if config.get("dynamic_type", "large") not in allowed_types: raise ValueError("unknown dynamic_type")
+ 283     if not isinstance(actions, list) or len(actions) > 40: raise ValueError("actions must be an array of at most 40 bounded actions")
+ 284     _contract.validate_actions(actions)
+ 285     strategy = config.get('observation_strategy', 'legacy')
+ 286     if strategy not in {'legacy', 'coalesced'}:
+ 287         raise ValueError('Unknown observation strategy')
+ 288     if strategy == 'coalesced':
+ 289         selected = config.get('execution_states', [])
+ 290         definitions = config.get('execution_state_definitions', [])
+ 291         if not selected or not definitions or config.get('execution_scope') not in {'full', 'targeted'}:
+ 292             raise ValueError('Coalesced execution requires explicit coverage and parent state definitions')
+ 293         names = [s['state_id'] for s in selected]
+ 294         if len(names) != len(set(names)) or not set(names) <= {s['id'] for s in definitions}:
+ 295             raise ValueError('Unknown or duplicate execution state')
+ 296         for state in selected:
+ 297             if state['coverage'] not in {'full_content', 'targets'}:
+ 298                 raise ValueError('Explicit state coverage required')
+ 299             for target in state['targets']: _contract.validate_selector(target)
+ 300         for action in actions:
+ 301             scope = action.get('capture_scope')
+ 302             entry = next((s for s in selected if s['state_id'] == action.get('state_id')), None)
+ 303             if scope not in {'none', 'targets', 'full_content'} or (entry and scope != entry['coverage']):
+ 304                 raise ValueError('Action sampling differs from its compiled required coverage')
+ 305     for target in config.get("observation_targets", []): _contract.validate_selector(target)
+ 306     state_ids = [action["state_id"] for action in actions if "state_id" in action]
+ 307     if len(state_ids) != len(set(state_ids)) or any(not isinstance(s, str) or not s or s in {"initial", "final"} for s in state_ids):
+ 308         raise ValueError("Explicit state IDs must be unique nonempty strings; initial/final are reserved")
+ 309     env = dict(os.environ, DEVELOPER_DIR=args.developer_dir)
+ 310     manifest = {"schema_version": 1, "status": "error", "simulator": args.simulator, "started_at": time.time(),
+ 311                 "bridge": str(bridge), "package": str(package) if package else None, "source_hashes": {}, "image_hashes": {}, "native_test_count": 0}
+ 312     files = [bridge, TEMPLATES / "ObserverApp.swift", TEMPLATES / "ObserverTests.swift", Path(__file__).resolve(), CONTRACT,
+ 313              Path(__file__).with_name('scroll_coverage.py'), Path(__file__).with_name('coverage_domain.py')]
+ 314     if package:
+ 315         files += [package / "Package.swift"] + sorted(p for p in (package / "Sources").rglob("*") if p.is_file())
+ 316         if (package / 'Package.resolved').is_file(): files.append(package / 'Package.resolved')
+ 317     manifest["source_hashes"] = {str(p): digest(p) for p in files}
+ 318     (output / 'tool-sources').mkdir()
+
+FILE candidate-v13.9/assets/ios-observer/ObserverTests.swift
+ 500     }
+ 501     func testObserve() throws {
+ 502         continueAfterFailure = false
+ 503         let env = ProcessInfo.processInfo.environment
+ 504         guard let raw = env["OBSERVER_CONFIG_BASE64"], let data = Data(base64Encoded: raw),
+ 505               let config = try JSONSerialization.jsonObject(with: data) as? [String: Any] else { XCTFail("Missing fixture transport"); return }
+ 506         let actionData = Data(base64Encoded: env["OBSERVER_ACTIONS_BASE64"] ?? "") ?? Data("[]".utf8)
+ 507         let actions = try JSONSerialization.jsonObject(with: actionData) as? [[String: Any]] ?? []
+ 508         stateCaptureEnabled = config["state_capture"] as? Bool ?? false
+ 509         coalesced = config["observation_strategy"] as? String == "coalesced"
+ 510         executionScope = config["execution_scope"] as? String ?? "full"
+ 511         executionStates = config["execution_states"] as? [[String: Any]] ?? []
+ 512         traceRevealImages = config["trace_reveal_images"] as? Bool ?? false
+ 513         sweepLimit = min(max(config["max_scrolls"] as? Int ?? 40, 1), 80)
+ 514         observationTargets = config["observation_targets"] as? [[String: Any]] ?? []
+ 515         for action in actions where action["type"] as? String == "tap" {
+ 516             let target = selector(action)
+ 517             if !observationTargets.contains(where: { key($0) == key(target) }) { observationTargets.append(target) }
+ 518         }
+ 519         for action in actions {
+ 520             let extra = action["after_targets"] as? [[String: Any]] ?? (action["after_target"] as? [String: Any]).map { [$0] } ?? []
+ 521             for target in extra where !observationTargets.contains(where: { key($0) == key(target) }) { observationTargets.append(target) }
+ 522         }
+ 523         app = XCUIApplication(); app.launchEnvironment["OBSERVER_CONFIG_BASE64"] = raw
+ 524         let launchStarted = ProcessInfo.processInfo.systemUptime
+ 525         app.launch()
+ 526         XCTAssertTrue(app.scrollViews["__observer.scroll"].waitForExistence(timeout: 15))
+ 527         recordOperation("app_launch_and_ready", launchStarted)
+ 528         let originalRuntime = runtime()
+ 529         guard let viewport = originalRuntime["viewport"] as? [String: Double],
+ 530               let x = viewport["x"], let y = viewport["y"], let width = viewport["width"], let height = viewport["height"],
+
+FILE candidate-v13.9/assets/ios-observer/ObserverTests.swift
+ 560                     "guard": ["protocol": 1, "ready": false, "established": false, "depends_on": dependencies,
+ 561                               "blocked_on": blocked, "conditions": conditions, "callback_predicates": callbackChecks, "binding": guardBefore],
+ 562                     "dispatch": ["attempted": false, "succeeded": false], "callback_delta": [], "binding_after": binding()])
+ 563                 continue
+ 564             }
+ 565             if stateCaptureEnabled && !coalesced && action["type"] as? String == "apply_next_fixture" { sweep("before-update-\(i)") }
+ 566             currentActionIndex = i
+ 567             activeState = action["state_id"] as? String ?? "action-\(i)"
+ 568             let before = capture("action-\(i)-before")
+ 569             var callbacksBefore = receipt().count
+ 570             let oldIndex = runtime()["fixture_index"] as? Int ?? -1
+ 571             let diagnosticsBefore = revealDiagnostics.count
+ 572             let kind = action["type"] as? String ?? ""
+ 573             let captureScope = action["capture_scope"] as? String ?? "full_content"
+ 574             var outcome = "completed"
+ 575             var targetState: [String: Any] = [:]
+ 576             var activationState: [String: Any] = [:]
+ 577             var dispatch: [String: Any] = ["attempted": false, "succeeded": false, "binding_before": binding(),
+ 578                 "event_start": callbacksBefore, "method": kind == "tap" ? "xcui_tap" : kind == "apply_next_fixture" ? "caller_fixture_update" : "observation_only",
+ 579                 "stimulus": kind == "apply_next_fixture" ? "caller_update" : "activation"]
+ 580             switch kind {
+ 581             case "tap":
+ 582                 let wanted = selector(action)
+ 583                 let target = action["reveal"] as? Bool == true
+ 584                     ? revealTarget(wanted, maxSteps: action["max_steps"] as? Int ?? 24, initialDirection: action["direction"] as? String ?? "down", prefix: "action-\(i)")
+ 585                     : selectTarget(wanted)
+ 586                 if let target {
+ 587                     targetState = nativeState(target, path: ["selector": wanted])
+ 588                     if let (actual, path) = activation(target) {
+ 589                         activationState = nativeState(actual, path: path)
+ 590                         dispatch["matches"] = 1; dispatch["native_controls"] = 1; dispatch["enabled"] = actual.isEnabled
+ 591                         if !actual.isEnabled && action["allow_disabled"] as? Bool == true && visible(actual) {
+ 592                             outcome = "blocked_disabled"
+ 593                         } else if actual.isEnabled, let point = usablePoint(actual) {
+ 594                             let startBinding = binding()
+ 595                             callbacksBefore = receipt().count
+ 596                             dispatch = ["attempted": true, "succeeded": false, "method": "xcui_tap", "stimulus": "activation",
+ 597                                         "binding_before": startBinding, "event_start": callbacksBefore,
+ 598                                         "matches": 1, "native_controls": 1, "enabled": actual.isEnabled]
+ 599                             if fullyVisible(actual) { actual.tap() }
+ 600                             else {
+ 601                                 let origin = app.coordinate(withNormalizedOffset: .zero)
+ 602                                 origin.withOffset(CGVector(dx: point.x - app.frame.minX, dy: point.y - app.frame.minY)).tap()
+ 603                             }
+ 604                             activationState["activation_point"] = ["x": point.x, "y": point.y]
+ 605                             activationState["activation_method"] = fullyVisible(actual) ? "native_control_tap" : "visible_intersection_coordinate"
+ 606                             outcome = "tapped"
+ 607                             dispatch["succeeded"] = true
+ 608                         } else { outcome = "unavailable"; issues.append("native control not enabled or no usable visible point") }
+ 609                     } else { outcome = "unavailable" }
+ 610                 } else { outcome = "unavailable" }
+ 611             case "apply_next_fixture":
+ 612                 let button = app.buttons["__observer.next"]
+ 613                 if button.isEnabled && button.isHittable {
+ 614                     dispatch = ["attempted": true, "succeeded": false, "method": "caller_fixture_update", "stimulus": "caller_update",
+ 615                                 "binding_before": binding(), "event_start": receipt().count]
+ 616                     callbacksBefore = receipt().count
+ 617                     button.tap()
+ 618                     dispatch["succeeded"] = runtime()["fixture_index"] as? Int == oldIndex + 1
+ 619                     outcome = dispatch["succeeded"] as? Bool == true ? "updated" : "unavailable"
+ 620                 } else { outcome = "unavailable"; issues.append("next fixture control unavailable") }
+ 621             case "scroll":
+ 622                 if action["direction"] as? String == "auto", let id = action["until_identifier"] as? String {
+ 623                     _ = reveal(id, maxSteps: action["max_steps"] as? Int ?? 18, initialDirection: "down", prefix: "action-\(i)")
+ 624                     break
+ 625                 }
+ 626                 let maxSteps = min(max(action["max_steps"] as? Int ?? 1, 1), 24)
+ 627                 for n in 0..<maxSteps {
+ 628                     if let id = action["until_identifier"] as? String,
+ 629                        let target = select(id, allowMissing: true), fullyVisible(target) && target.isHittable { break }
+ 630                     scroll(action["direction"] as? String ?? "down")
+ 631                     _ = capture("action-\(i)-scroll-\(n)")
+ 632                 }
+ 633                 if let id = action["until_identifier"] as? String,
+ 634                    let target = select(id), !(fullyVisible(target) && target.isHittable) { issues.append("scroll target \(id) not reached") }
+ 635             case "sweep": sweep(action["state_id"] as? String ?? "action-\(i)", maxSteps: action["max_steps"] as? Int)
+ 636             case "capture", "checkpoint": break
+ 637             default: outcome = "unsupported"; issues.append("unsupported action \(kind)")
+ 638             }
+ 639             Thread.sleep(forTimeInterval: 0.15)
+ 640             let immediateAfter = capture(action["name"] as? String ?? "action-\(i)-after")
+ 641             var after = immediateAfter
+ 642             let actionBinding = after["binding"] as? [String: Any] ?? [:]
+ 643             let actionReceipts = after["callbacks"] as? [[String: Any]] ?? []
+ 644             let delta = Array(actionReceipts.dropFirst(callbacksBefore))
+ 645             dispatch["event_end"] = actionBinding["event_revision"] ?? NSNull()
+ 646             let established = ready && ((kind == "tap" || kind == "apply_next_fixture")
+ 647                 ? dispatch["succeeded"] as? Bool == true : outcome == "completed")
+ 648             var postViewport: [String: Any] = ["status": "not_requested"]
+ 649             var observationSet: [String: Any] = [:]
+ 650             let requested = action["after_targets"] as? [[String: Any]] ?? (kind == "tap" ? [action["after_target"] as? [String: Any] ?? selector(action)] : [])
+ 651             if coalesced && captureScope == "full_content" && (!guarded || established) {
+ 652                 if kind != "sweep" { sweep(activeState) }
+ 653                 let epoch = immediateAfter["binding"] as? [String: Any] ?? [:]
+ 654                 let indices = Array(Set((stateCaptures.last?["snapshot_indices"] as? [Int] ?? []) + [immediateAfter["index"] as! Int])).sorted()
+ 655                 let ending = records.last?["binding_after_capture"] as? [String: Any] ?? [:]
+ 656                 let stable = key(ending) == key(epoch) && indices.allSatisfy { key(records[$0]["binding"] as? [String: Any] ?? [:]) == key(epoch) && records[$0]["capture_consistent"] as? Bool == true }
+ 657                 let results = requested.map { targetEvidence($0, indices: indices, epoch: epoch) }
+ 658                 observationSet = ["state_id": activeState, "after_action": i, "binding": epoch,
+ 659                     "binding_after_observation": ending, "binding_stable": stable, "snapshot_indices": indices,
+ 660                     "requested_targets": requested, "targets": results,
+ 661                     "all_targets_observed": stable && results.allSatisfy { $0["status"] as? String == "observed" },
+ 662                     "scope": "targets_from_same_epoch_full_sweep; coverage remains independently checked"]
+ 663                 after = records.last ?? immediateAfter
+ 664                 if let first = results.first { postViewport = first }
+ 665             } else if !requested.isEmpty, action["observe_after"] as? Bool != false, !guarded || established {
+ 666                 observationSet = observeTargets(requested, immediate: immediateAfter, action: i, maxScrolls: action["observation_max_scrolls"] as? Int ?? 24)
+ 667                 after = records.last ?? immediateAfter
+ 668                 if var first = (observationSet["targets"] as? [[String: Any]])?.first {
+ 669                     if let sample = (first["snapshot_indices"] as? [Int])?.first { first["snapshot"] = sample }
+ 670                     else { first["snapshot"] = after["index"] ?? NSNull() }
+ 671                     first["binding_stable"] = observationSet["binding_stable"]
+ 672                     postViewport = first
+ 673                 }
+ 674             }
+ 675             if stateCaptureEnabled && !coalesced && (!guarded || established), let state = action["state_id"] as? String, kind != "sweep" { sweep(state) }
+ 676             let now = after["runtime"] as? [String: Any] ?? [:]
+ 677             let sameProcess = (now["pid"] as? Int == originalRuntime["pid"] as? Int) && (now["instance"] as? String == originalRuntime["instance"] as? String)
+ 678             if !sameProcess { issues.append("app process identity changed") }
+ 679             if kind == "apply_next_fixture" && now["fixture_index"] as? Int != oldIndex + 1 { issues.append("fixture index did not advance explicitly") }
+ 680             if dispatch["succeeded"] as? Bool == true, let expected = action["expect_callback"] as? String, !delta.contains(where: { $0["event"] as? String == expected }) {
+ 681                 issues.append("expected real callback \(expected) was not received")
+ 682             }
+ 683             steps.append(["action": action, "outcome": outcome, "target": targetState, "semantic_target": targetState,
+ 684                           "activation_target": activationState, "reveal_diagnostics": Array(revealDiagnostics.dropFirst(diagnosticsBefore)),
+ 685                           "dispatch": dispatch,
+ 686                           "guard": ["protocol": 1, "ready": ready, "established": established, "depends_on": dependencies,
+ 687                                     "conditions": conditions, "callback_predicates": callbackChecks, "binding": guardBefore],
+ 688                           "post_action_viewport": postViewport, "observation_set": observationSet, "immediate_after": immediateAfter["index"]!,
+ 689                           "before": before["index"]!, "after": after["index"]!, "callback_delta": delta, "same_process": sameProcess, "state_id": activeState, "binding_after": actionBinding])
+ 690         }
+ 691         if stateCaptureEnabled && !coalesced { sweep("final") }
+ 692         let maxScrolls = coalesced ? 0 : min(max(config["max_scrolls"] as? Int ?? 18, 1), 40)
+ 693         for n in 0..<maxScrolls {
+ 694             let sentinel = app.staticTexts["__observer.bottom"]
+ 695             if sentinel.exists && sentinel.isHittable && fullyVisible(sentinel) { bottomReached = true; break }
+
+FILE candidate-v13.9/assets/android-observer/NativeObserverTest.kt
+ 170    if(s["binding"]!=afterBinding || s["capture_consistent"]?.jsonPrimitive?.booleanOrNull==false)continue
+ 171    val found=s["nodes"]!!.jsonArray.map{it.jsonObject}.filter{n->
+ 172     val id=optional(spec,"identifier");val text=optional(spec,"label");val role=optional(spec,"role")
+ 173     (if(id!=null)optional(n,"identifier")==id else text!=null && optional(n,"label")==text) && (role==null || optional(n,"role")?.equals(role,true)==true || (role.equals("text",true) || role.equals("statictext",true)) && !optional(n,"native_text").isNullOrEmpty())
+ 174    }
+ 175    if(found.size!=1){ambiguous=ambiguous || found.size>1;continue}
+ 176    val n=found.single();val bounds=n["unclipped_bounds_dp"]!!.jsonArray.map{it.jsonPrimitive.float};val w=s["logical_viewport_dp"]!!.jsonObject["width"]!!.jsonPrimitive.float;val h=s["logical_viewport_dp"]!!.jsonObject["height"]!!.jsonPrimitive.float
+ 177    if(n["fully_visible"]?.jsonPrimitive?.booleanOrNull==true){observed.add(index);full.add(index)}
+ 178    else if(n["intersects_viewport"]?.jsonPrimitive?.booleanOrNull==true && (bounds[2]-bounds[0]>w || bounds[3]-bounds[1]>h) && (bounds[0]+bounds[2])/2 in 0f..w && (bounds[1]+bounds[3])/2 in 0f..h)observed.add(index)
+ 179   }
+ 180   return buildJsonObject{put("selector",spec);put("status",if(observed.isEmpty())"unavailable"else"observed");put("snapshot_indices",buildJsonArray{observed.forEach{add(it)}});put("fully_visible",full.isNotEmpty());put("fully_visible_snapshot_indices",buildJsonArray{full.forEach{add(it)}});put("reason",if(observed.isNotEmpty())"original_native_target_frames"else if(ambiguous)"ambiguous_native_target"else"no_unique_visible_target_frame")}
+ 181  }
+ 182  private fun startSweep(id:String,after:Int,purpose:String,limit:Int=80){activeState=id;activeAfterAction=after;sweepPurpose=purpose;sweepLimit=limit.coerceIn(1,80);sweepCount=0;phase="sweep_top"}
+ 183  private fun finishSweep(){
+ 184   val samples=records.drop(stateFirst);val heights=samples.map{it["scroll_max_dp"]!!.jsonPrimitive.float+it["viewport_height_dp"]!!.jsonPrimitive.float}
+ 185   val intervals=samples.map{val a=it["scroll_offset_dp"]!!.jsonPrimitive.float;a to a+it["viewport_height_dp"]!!.jsonPrimitive.float}.sortedBy{it.first}
+ 186   var end=0f;var gap=0f;for((a,b)in intervals){gap=maxOf(gap,a-end);end=maxOf(end,b)}
+ 187   val stable=samples.all{it["binding"]==stateOriginal};val top=samples.any{it["scroll_offset_dp"]!!.jsonPrimitive.float<=0.5f};val bottom=samples.any{it["scroll_offset_dp"]!!.jsonPrimitive.float>=it["scroll_max_dp"]!!.jsonPrimitive.float-0.5f}
+ 188   stateCaptures.add(buildJsonObject{put("state_id",activeState);put("after_action",activeAfterAction);put("binding",stateOriginal);put("snapshot_indices",buildJsonArray{(stateFirst until records.size).forEach{add(it)}});put("top_reached",top);put("bottom_reached",bottom);put("stable_binding",stable);put("max_gap",gap);put("complete",top && bottom && stable && gap<=1 && (heights.maxOrNull() ?: 0f)-(heights.minOrNull() ?: 0f)<=1)})
+ 189   if(sweepPurpose=="final"){phase="complete"}else{phase="actions"}
+ 190  }
+ 191  private fun advance(image:BufferedImage){
+ 192   if(frame++ % 2!=0 || phase=="complete")return
+ 193   if(phase=="sweep_top"){scrollBy(-scroll.value.toFloat());stateFirst=records.size;stateOriginal=binding();phase="sweeping";return}
+ 194   if(phase=="sweeping"){
+ 195    capture("state_${activeState}_${sweepCount}",image)
+ 196    if(scroll.value>=scroll.maxValue || sweepCount++>=sweepLimit){finishSweep();return}
+ 197    scrollBy(viewportHeight*0.45f);return
+ 198   }
+ 199   if(phase=="after_action"){
+ 200    val action=actions[actionIndex]
+ 201    if(afterBinding==null){
+ 202     capture(pendingName,image);immediateSnapshot=records.lastIndex;afterBinding=binding();afterDelta=events.drop(eventStart).toList();postIndices.add(immediateSnapshot)
+ 203     postTargets=if(action["observe_after"]?.jsonPrimitive?.booleanOrNull==false)emptyList()else action["after_targets"]?.jsonArray?.map{it.jsonObject} ?: if(optional(action,"type")=="tap")listOf(action["after_target"]?.jsonObject ?: action["target"]?.jsonObject ?: buildJsonObject{put("identifier",optional(action,"identifier") ?: "")})else emptyList()
+ 204     if(guarded && optional(action,"type") in listOf("tap","apply_next_fixture") && dispatch["succeeded"]?.jsonPrimitive?.booleanOrNull!=true)postTargets=emptyList()
+ 205    }
+ 206    if(postOrder.isEmpty())postOrder=postTargets.indices.toMutableList()
+ 207    val needsImage=postTrace.isNotEmpty() && postTargets.any{spec->targetEvidence(spec)["status"]!!.jsonPrimitive.content!="observed" && select(spec).singleOrNull()?.let{targetReady(it)}==true}
+ 208    if(needsImage){capture(pendingName+"-post-target-"+postTargetIndex,image);postIndices.add(records.lastIndex)}
+ 209    val limit=(action["observation_max_scrolls"]?.jsonPrimitive?.intOrNull ?: 24).coerceIn(0,40)
+ 210    while(postTargetIndex<postTargets.size && binding()==afterBinding){
+ 211     // Reuse each coherent frame for all targets and visit the nearest unseen
+ 212     // native box. Keep requested_targets in original order for audit/replay.
+ 213     val next=(postTargetIndex until postOrder.size).minByOrNull{position->
+ 214      val spec=postTargets[postOrder[position]]
+ 215      if(targetEvidence(spec)["status"]!!.jsonPrimitive.content=="observed")-1f
+ 216      else select(spec).singleOrNull()?.let{kotlin.math.abs(rawBounds(it).center.y-viewportHeight/2)} ?: Float.MAX_VALUE
+ 217     } ?: postTargetIndex
+ 218     val selectedOrder=postOrder[next];postOrder[next]=postOrder[postTargetIndex];postOrder[postTargetIndex]=selectedOrder
+ 219     val wanted=postTargets[selectedOrder];val found=select(wanted);val target=found.singleOrNull()
+ 220     if(targetEvidence(wanted)["status"]!!.jsonPrimitive.content=="observed" || found.size>1 || postAttempts>=limit){postTargetIndex++;postDirection=0;postReversed=false;continue}
+ 221     if(target?.let{targetReady(it)}==true){capture(pendingName+"-post-target-"+postTargetIndex,image);postIndices.add(records.lastIndex);postTargetIndex++;postDirection=0;postReversed=false;continue}
+ 222     if(postDirection==0)postDirection=if(scroll.value>0)-1 else 1
+ 223     val b=target?.let{rawBounds(it)};val previous=scroll.value
+ 224     val delta=if(b!=null)(b.center.y-viewportHeight/2).coerceIn(-viewportHeight*0.65f,viewportHeight*0.65f)else viewportHeight*0.45f*postDirection
+ 225     scrollBy(delta);postAttempts++
+ 226     postTrace.add(buildJsonObject{put("selector",wanted);put("step",postAttempts);put("offset_before",previous/density);put("offset_after",scroll.value/density);put("target_observed",target!=null)})
+ 227     if(scroll.value!=previous)return
+ 228     if(target==null && !postReversed){postDirection = -postDirection;postReversed=true}else{postTargetIndex++;postDirection=0;postReversed=false}
+ 229    }
+ 230    val item=pendingStep!!;val finished=actionIndex
+ 231    val results=postTargets.map{targetEvidence(it)};val stable=binding()==afterBinding && postIndices.all{records[it]["binding"]==afterBinding && records[it]["capture_consistent"]?.jsonPrimitive?.booleanOrNull!=false}
+ 232    val observationSet=if(postTargets.isEmpty())JsonObject(emptyMap())else buildJsonObject{put("state_id",activeState);put("after_action",actionIndex);put("binding",afterBinding!!);put("binding_after_observation",binding());put("binding_stable",stable);put("snapshot_indices",buildJsonArray{postIndices.forEach{add(it)}});put("requested_targets",JsonArray(postTargets));put("targets",JsonArray(results));put("all_targets_observed",stable && results.all{it["status"]!!.jsonPrimitive.content=="observed"});put("scroll_budget",limit);put("scrolls_used",postAttempts);put("trace",JsonArray(postTrace));put("scope","targets_only; never full-content or absence proof")}
+ 233    val established=currentGuard["ready"]?.jsonPrimitive?.booleanOrNull==true && if(string(action,"type") in listOf("tap","apply_next_fixture"))dispatch["succeeded"]?.jsonPrimitive?.booleanOrNull==true else item["outcome"]?.jsonPrimitive?.content in listOf("observed","completed")
+ 234    steps.add(buildJsonObject{item.forEach{(k,v)->put(k,v)};put("action",action);put("guard",buildJsonObject{currentGuard.forEach{(k,v)->put(k,v)};put("established",established)});put("dispatch",buildJsonObject{dispatch.forEach{(k,v)->put(k,v)};put("event_end",afterBinding!!["event_revision"]!!)});put("callback_delta",buildJsonArray{afterDelta.forEach{add(it)}});put("snapshot",records.lastIndex);put("immediate_after",immediateSnapshot);put("binding_after",afterBinding!!);put("state_id",activeState)
+ 235     put("observation_set",observationSet);put("post_action_viewport",buildJsonObject{val first=results.firstOrNull();if(first!=null)first.forEach{(k,v)->put(k,v)}else put("status","not_requested");put("snapshot",first?.get("snapshot_indices")?.jsonArray?.firstOrNull() ?: JsonPrimitive(records.lastIndex));put("binding_stable",stable)})})
+ 236    afterBinding=null;postAttempts=0;postTrace.clear();postIndices.clear();postTargets=emptyList();postOrder.clear();postTargetIndex=0;postDirection=0;postReversed=false
+ 237    val state=optional(actions[finished],"state_id");actionIndex++;attempts=0
+ 238    if(stateCapture && state!=null && (!guarded || established))startSweep(state,finished,"after")else phase="actions"
+ 239    return
+ 240   }
+
+FILE candidate-v13.9/assets/android-observer/NativeObserverTest.kt
+ 260   eventStart=events.size;pendingName=optional(action,"name") ?: "action-$actionIndex";activeState=optional(action,"state_id") ?: "action-$actionIndex"
+ 261   dispatch=buildJsonObject{put("attempted",false);put("succeeded",false)}
+ 262   if(type=="sweep"){val state=optional(action,"state_id") ?: "action-$actionIndex";val n=action["max_steps"]?.jsonPrimitive?.intOrNull ?: 80;steps.add(buildJsonObject{put("action",action);put("guard",buildJsonObject{currentGuard.forEach{(k,v)->put(k,v)};put("established",ready)});put("type",type);put("outcome","observed");put("callback_delta",JsonArray(emptyList()));put("binding_after",binding())});actionIndex++;startSweep(state,actionIndex-1,"explicit",n);return}
+ 263   if(type=="capture" || type=="checkpoint"){pendingStep=buildJsonObject{put("type",type);put("outcome","observed")};phase="after_action";return}
+ 264   if(type=="scroll"){scrollBy(viewportHeight*(if(optional(action,"direction")=="up")-0.45f else 0.45f));pendingStep=buildJsonObject{put("type",type);put("outcome","observed")};phase="after_action";return}
+ 265   if(type=="apply_next_fixture"){
+ 266    val before=binding();inputIndex++;current=fixture["updates"]!!.jsonArray[inputIndex-1].jsonObject;dispatch=buildJsonObject{put("attempted",true);put("succeeded",true);put("method","caller_fixture_update");put("stimulus","caller_update");put("binding_before",before);put("event_start",eventStart)};pendingStep=buildJsonObject{put("type",type);put("outcome","updated");put("model_update",true)};phase="after_action";return
+ 267   }
+ 268   if(type=="tap" || type=="scroll_until"){
+ 269    val wanted=action["target"]?.jsonObject ?: buildJsonObject{put("identifier",optional(action,"identifier") ?: "")}
+ 270    val matches=select(wanted);val node=matches.singleOrNull();val controls=node?.let{leaves(it)} ?: emptyList();val target=controls.singleOrNull()
+ 271    if(node==null && matches.isEmpty() && scroll.value<scroll.maxValue && attempts++<40){scrollBy(viewportHeight*0.45f);return}
+ 272    val revealNode=if(type=="scroll_until")node else target
+ 273    if(revealNode!=null && !visible(revealNode) && attempts++<40){val b=rawBounds(revealNode);scrollBy((b.center.y-viewportHeight/2).coerceIn(-viewportHeight*0.65f,viewportHeight*0.65f));return}
+ 274    val enabled=target?.let{!it.config.contains(SemanticsProperties.Disabled)} ?: false
+ 275    val before=binding();val attempted=type=="tap" && enabled && target!=null && visible(target)
+ 276    val executed=if(attempted)target!!.config.getOrNull(SemanticsActions.OnClick)?.action?.invoke() ?: false else false
+ 277    dispatch=buildJsonObject{put("attempted",attempted);put("succeeded",executed);put("method","compose_onclick");put("stimulus","activation");put("binding_before",before);put("event_start",eventStart);put("matches",matches.size);put("native_controls",controls.size);put("enabled",enabled)}
+ 278    pendingStep=buildJsonObject{put("type",type);put("selector",wanted);put("matches",matches.size);put("native_controls",controls.size);put("enabled",enabled);put("outcome",if(executed)"tapped"else if(type=="scroll_until" && node!=null && visible(node))"observed"else if(target!=null && !enabled && visible(target) && action["allow_disabled"]?.jsonPrimitive?.booleanOrNull==true)"blocked_disabled"else"unavailable");put("semantic_node",node?.id ?: -1);put("activation_node",target?.id ?: -1)}
+ 279    phase="after_action";return
+ 280   }
+ 281   pendingStep=buildJsonObject{put("type",type);put("outcome","unsupported")};phase="after_action"
+ 282  }
+ 283  @get:Rule val paparazzi=Paparazzi(deviceConfig=DeviceConfig.PIXEL_5.copy(screenWidth=(number("width",390f)*2.75f).toInt(),screenHeight=(number("viewportHeight",600f)*2.75f).toInt(),nightMode=if(dark)NightMode.NIGHT else NightMode.NOTNIGHT,fontScale=number("fontScale",1f),softButtons=false),showSystemUi=false,
+ 284   snapshotHandler=object:SnapshotHandler{override fun close(){};override fun newFrameHandler(snapshot:Snapshot,frameCount:Int,fps:Int)=object:SnapshotHandler.FrameHandler{override fun close(){};override fun handle(image:BufferedImage){advance(image);if(phase=="complete")throw ObservationComplete()}}})
+ 285  @Test fun capture(){
+ 286   output.mkdirs();view=ComposeView(paparazzi.context)
+ 287   val preview=object:View(paparazzi.context){override fun isInEditMode()=true}
+ 288   view.setContent{
+ 289    density=LocalDensity.current.density;actualScale=LocalDensity.current.fontScale
+ 290    actualNight=LocalConfiguration.current.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
+ 291    scroll=rememberScrollState();viewportHeight=number("viewportHeight",600f)*density
+ 292    val direction=if(optional(environment,"direction")=="rtl")LayoutDirection.Rtl else LayoutDirection.Ltr
+ 293    actualDirection=direction.toString()
+ 294    CompositionLocalProvider(LocalInspectionMode provides true,LocalView provides preview,LocalLayoutDirection provides direction){
+ 295     MaterialTheme(colorScheme=if(dark)darkColorScheme()else lightColorScheme()){
+ 296      Column(Modifier.fillMaxSize().background(if(dark)Color(0xFF0D1420)else Color(0xFFEDF1F6)).verticalScroll(scroll).padding(horizontal=16.dp).padding(top=24.dp,bottom=24.dp)){
+ 297       ObserverBridge.Content(current){event->events.add(event)}
+ 298       Text("End of observed component",Modifier.semantics{testTag="__observer.bottom"})
+ 299      }
+ 300     }
+ 301    }
+ 302   }
+ 303   try{paparazzi.gif(view,"session",0L,600_000L,4)}catch(done:ObservationComplete){check(phase=="complete")}
+ 304   File(output,"observation.json").writeText(buildJsonObject{
+ 305    put("guard_protocol",if(guarded)1 else 0);put("guard_platform","android");put("guard_actions",JsonArray(actions))
+ 306    put("schema_version",3);put("state_captures",JsonArray(stateCaptures));put("native_test","NativeObserverTest.capture");put("phase",phase);put("rendered_frames",frame);put("completion_stop","native_state_machine_complete");put("snapshots",JsonArray(records));put("steps",JsonArray(steps));put("events",buildJsonArray{events.forEach{add(it)}})
+ 307    put("coverage",buildJsonObject{put("bottom_reached",bottomReached);put("observed_identifiers",buildJsonArray{observed.sorted().forEach{add(it)}})})
+ 308    put("configuration",buildJsonObject{put("dimension_encoding","paparazzi-float32-screen-config-v1");put("requested_width_dp",number("width",390f).toDouble());put("requested_height_dp",number("viewportHeight",600f).toDouble());put("night_mode_mask",actualNight);put("font_scale",actualScale);put("density",density);put("direction",actualDirection)})
+ 309    put("scope","One attached native ComposeView in continuous Paparazzi frame session. Semantic OnClick invocation, not physical touch; native parent ScrollState displacement, not OS gestures. No Activity/navigation/lifecycle claims.")
+ 310   }.toString())
+ 311   check(phase=="complete"){"Observation frame budget exhausted"}
+ 312  }
+ 313 }

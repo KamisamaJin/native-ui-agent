@@ -1,0 +1,31 @@
+#!/Library/Developer/CommandLineTools/usr/bin/python3
+# SIMULATED inventory. Never forwards to xcrun, simctl, or an SDK.
+import fcntl,json,os,sys,time,uuid
+from pathlib import Path
+p=Path(os.environ['REVIEW_SIM_INVENTORY']);p.parent.mkdir(parents=True,exist_ok=True)
+args=sys.argv[1:]
+with p.with_suffix('.lock').open('a') as lock:
+ fcntl.flock(lock.fileno(),fcntl.LOCK_EX)
+ state=json.loads(p.read_text()) if p.exists() else {'devices':[],'calls':[]}
+ state['calls'].append({'evidence_class':'SIMULATED','argv':['xcrun',*args],'at_unix':time.time()})
+ fail=os.environ.get('REVIEW_SIM_FAIL','')
+ if len(args)>1 and args[1]==fail:
+  p.write_text(json.dumps(state,indent=2)+'\n');print('SIMULATED '+fail+' failure',file=sys.stderr);sys.exit(70)
+ if args==['simctl','list','runtimes','--json']:
+  result=json.dumps({'runtimes':[{'identifier':'SIMULATED.runtime','version':'0','buildversion':'SIMULATED','bundlePath':'/SIMULATED/runtime','isAvailable':True},{'identifier':'SIMULATED.runtime2','version':'0','buildversion':'SIMULATED2','bundlePath':'/SIMULATED/runtime2','isAvailable':True}]})
+ elif args==['simctl','list','devices','--json']:
+  groups={}
+  for d in state['devices']:groups.setdefault(d['runtime'],[]).append(d)
+  result=json.dumps({'devices':groups})
+ elif len(args)==5 and args[:2]==['simctl','create']:
+  udid=str(uuid.uuid4()).upper();state['devices'].append({'name':args[2],'deviceTypeIdentifier':args[3],'runtime':args[4],'udid':udid,'state':'Shutdown','isAvailable':True});result=udid
+ elif len(args)==3 and args[:2]==['simctl','delete']:
+  state['devices']=[d for d in state['devices'] if d['udid']!=args[2]];result=''
+ elif len(args)==3 and args[:2]==['simctl','shutdown']:
+  for d in state['devices']:
+   if d['udid']==args[2]:d['state']='Shutdown'
+  result=''
+ else:
+  p.write_text(json.dumps(state,indent=2)+'\n');print('Blocked unsupported simulated SDK call: '+repr(args),file=sys.stderr);sys.exit(99)
+ p.write_text(json.dumps(state,indent=2)+'\n')
+ print(result)

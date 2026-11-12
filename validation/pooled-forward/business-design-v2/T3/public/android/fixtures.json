@@ -1,0 +1,88 @@
+{
+  "initial": {
+    "entityId": "INV-640",
+    "entityTitle": "Workshop materials invoice",
+    "description": "Allocate the available account credit before choosing how to settle the remaining amount. This invoice includes reusable workshop supplies, documented delivery charges, and a separate reference for the accounts team. Amounts are integer US cents; never calculate using binary floating-point money.",
+    "dueCents": 12500,
+    "creditCents": 4500,
+    "methods": [
+      {
+        "id": "bank",
+        "label": "Pay by bank transfer",
+        "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.",
+        "available": true,
+        "unavailableReason": ""
+      },
+      {
+        "id": "card",
+        "label": "Pay by company card",
+        "detail": "The company card is temporarily unavailable for this supplier.",
+        "available": false,
+        "unavailableReason": "Supplier card payments paused"
+      }
+    ]
+  },
+  "updates": [
+    {
+      "entityId": "INV-640",
+      "entityTitle": "Workshop materials invoice",
+      "description": "A corrected invoice reduced the amount due below the available credit. Keep the choice to apply credit, clamp applied credit to the new amount due, and clear a now-unnecessary payment method. Authorization must be renewed.",
+      "dueCents": 4000,
+      "creditCents": 4500,
+      "methods": [
+        {
+          "id": "bank",
+          "label": "Pay by bank transfer",
+          "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.",
+          "available": true,
+          "unavailableReason": ""
+        },
+        {
+          "id": "card",
+          "label": "Pay by company card",
+          "detail": "The company card is temporarily unavailable for this supplier.",
+          "available": false,
+          "unavailableReason": "Supplier card payments paused"
+        }
+      ]
+    },
+    {
+      "entityId": "INV-641",
+      "entityTitle": "Separate studio invoice",
+      "description": "A different invoice uses the same saved payment methods. Start without applying credit, selecting a method, or carrying authorization from the previous invoice.",
+      "dueCents": 9000,
+      "creditCents": 4500,
+      "methods": [
+        {
+          "id": "bank",
+          "label": "Pay by bank transfer",
+          "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.",
+          "available": true,
+          "unavailableReason": ""
+        },
+        {
+          "id": "card",
+          "label": "Pay by company card",
+          "detail": "The company card is temporarily unavailable for this supplier.",
+          "available": false,
+          "unavailableReason": "Supplier card payments paused"
+        }
+      ]
+    }
+  ],
+  "width": 390,
+  "theme": "light",
+  "direction": "ltr",
+  "canvas_color": "#FFF8F4",
+  "max_scrolls": 18,
+  "required_identifiers": [
+    "T3.surface",
+    "T3.entity",
+    "T3.description",
+    "T3.summary",
+    "T3.status",
+    "T3.methodA.detail",
+    "T3.methodB.detail"
+  ],
+  "font_scale": 1.0
+}

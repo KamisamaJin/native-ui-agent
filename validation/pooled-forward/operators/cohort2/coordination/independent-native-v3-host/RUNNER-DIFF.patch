@@ -1,0 +1,180 @@
+--- independent_native_v2.py
++++ independent_native_v3.py
+@@ -1,6 +1,7 @@
+ #!/usr/bin/env python3
+ """Registered post-barrier facts, never repair/retry/grade or alter expectations."""
+ import argparse
++import copy
+ import fcntl
+ import hashlib
+ import importlib.util
+@@ -18,6 +19,7 @@
+ V1_SHA='3c305880a818ab87c21c0c1043064b02af5991633efc7d3ab8d31405c4990a5d'
+ ZERO_INDEX_SHA='c38a94abf1b1d362989af64aaedefc6337f8fe630d23a4883ed1062d2fac5dea'
+ ZERO_REVIEW_SHA='5bf91da2480980262447e3c6b0701fcb121e5e4032ed501a98687ddd4411acb4'
++V2_SHA='7c8cf014299ea94db1646d22bd09be69040aaf183a10e50a7fd824126dbb02d2'
+ 
+ 
+ def need(value,message):
+@@ -147,6 +149,66 @@
+ 
+ def continuation_scope(task,arm,profile): return task+'/'+arm+'/'+profile
+ def continuation_claim_path(evidence,task,arm,profile): return evidence/'native-continuation-claims'/task/arm/(profile+'.json')
++
++
++def entry_resume(root,row,record,permit_path,permit_sha,registered_claim=None):
++    expected=root/'operators/cohort2/coordination/UNCLAIMED-ENTRY-v3-ADMISSION.json'
++    need(permit_path is not None and permit_sha and safe(permit_path)==expected and sha(permit_path)==permit_sha,'Exact reviewed preclaim-entry permit required')
++    permit=load(permit_path)
++    need(permit.get('kind')=='explicit-unclaimed-pre-forward-entry-admission' and permit.get('operator_review_completed') is True,'Preclaim-entry admission is not reviewed')
++    need(permit['base_authority']==load(root/'cache/business/independent-evaluation/NATIVE-CONTINUATION-AUTHORITY.json'),'Original d434 authority registry must remain unchanged')
++    key=continuation_scope(*[load(row['original']['original_outcome']['path'])[k] for k in ['task','arm','profile']])
++    need(key=='T1/B/android','Only the exact proven preclaim Android entry is eligible')
++    entry=permit['entry_resume'];need(entry['scope']==key and entry['licensed_record']==row['record'] and entry['resumed_record']==str(record),'Preclaim entry/record scope differs')
++    need(record==root/'cache/business/independent-evaluation/entry-resumptions/T1/B/android/native','Exact distinct preclaim-resume namespace required')
++    failed=safe(row['record']);need(set(p.name for p in failed.iterdir())=={'ENTRY.json','outcome.json','failure.json'},'Any extra execution evidence forbids entry resume')
++    for name,pin in entry['failed_record_files'].items():
++        need(pin['path']==str(failed/name),'Foreign failed-entry file');check_blob_ref(pin)
++    need(set(entry['failed_record_files'])=={'ENTRY.json','outcome.json','failure.json'},'Exact preclaim file inventory required')
++    outcome=check_ref(entry['failed_record_files']['outcome.json'])
++    need(outcome.get('error')=={'type':'ValueError','message':'Original fresh independent context is no longer empty before first native UI'} and outcome.get('source_unchanged') is True,'Not the exact source-unchanged preclaim admission failure')
++    need(outcome['config']==row['original']['original_config'] and outcome['source_capsule']==row['original']['original_source_capsule'],'Preclaim source/config differs')
++    need(not any(outcome.get(k) for k in ['native_claim','native_continuation_claim','envelope_record','service_output','capture','cycle']),'Existing or ambiguous UI evidence forbids entry resume')
++    evidence=root/'cache/business/independent-evaluation';claim_path=continuation_claim_path(evidence,*key.split('/'))
++    if registered_claim is None:need(not claim_path.exists(),'Preclaim already has a native continuation claim')
++    else:
++        claim=load(claim_path)
++        need(ref(claim_path)==registered_claim and claim['record']==str(record),'Registered resumed entry claim differs')
++        need(claim.get('entry_resume_permit')==ref(permit_path) and claim.get('failed_preclaim_entry')==entry['failed_record_files']['outcome.json'] and claim.get('licensed_original_record')==row['record'],'Registered entry-resume permit/failure chain differs')
++    return ref(permit_path),entry['failed_record_files']['outcome.json']
++
++
++def fresh_platform_context(root,evidence,task,arm,profile,config,capsule,helper):
++    for key in ['review_store','source_review_store']:
++        p=safe(config[key]);need(not p.exists() or not any(p.iterdir()),'Current platform review context is not fresh')
++    raw=config.get('workflow',{}).get('root')
++    if not raw:return {'current_platform_fresh':True,'workflow':'not_configured'}
++    workflow=safe(raw)
++    if not workflow.exists() or not any(workflow.iterdir()):return {'current_platform_fresh':True,'workflow':'fresh_empty'}
++    need(arm=='B','Only the declared stateful own-arm workflow may share platform namespaces')
++    sibling='android' if profile=='ios' else 'ios'
++    allowed={'owner.json',sibling+'.lock',sibling+'.json',sibling+'-backup.json'}
++    need(set(p.name for p in workflow.iterdir())==allowed,'Only registered sibling-platform workflow members are allowed before first current-platform UI')
++    sibling_files={p.name:ref(p) for p in workflow.iterdir()}
++    owner=helper.digest([str(Path(p).resolve()) for p in config['source_roots']])
++    expected_owner={'format':'native-ui-workflow-v1','owner':owner,'root_identity':{'device':workflow.stat().st_dev,'inode':workflow.stat().st_ino}}
++    need(load(workflow/'owner.json')==expected_owner,'Shared workflow owner/root identity differs')
++    claim_path=continuation_claim_path(evidence,task,arm,sibling);claim=load(claim_path);native_path=safe(claim['record'])/'outcome.json';native=load(native_path)
++    native_reference(evidence,task,arm,sibling,native['config'],capsule,native_path,sha(native_path))
++    sibling_config=check_ref(native['config'])
++    need(sibling_config.get('workflow',{}).get('root')==str(workflow) and sibling_config['source_roots']==config['source_roots'],'Sibling platform does not own this same declared workflow/source')
++    need(helper.domain.platform(sibling_config)==sibling,'Registered sibling actual platform differs')
++    inventory=check_ref(native['inventory']);service=safe(native['service_output'])
++    for name in ['workflow-state.json','workflow-context.json']:
++        p=service/name;need(inventory[str(p)]['sha256']==sha(p) and inventory[str(p)]['bytes']==p.stat().st_size,'Original sibling workflow output changed')
++    snapshot=load(service/'workflow-state.json');context=load(service/'workflow-context.json');context_sha=helper.digest(context)
++    need(snapshot.get('owner')==owner and snapshot.get('platform')==sibling and snapshot.get('cycles')==[{'cycle':native['cycle'],'context_sha256':context_sha}],'Sibling checkpoint is not its one registered first native cycle')
++    need(snapshot.get('capture')=={'cycle':native['cycle'],'context_sha256':context_sha,'capture':native['capture'],'context':ref(service/'workflow-context.json')},'Sibling checkpoint capture/context binding differs')
++    expected=copy.deepcopy(snapshot);expected['generation']+=2
++    need(load(workflow/(sibling+'.json'))==expected and load(workflow/(sibling+'-backup.json'))==expected,'Shared checkpoint differs from frozen publish/checkpoint result')
++    lock=safe(workflow/(sibling+'.lock'));need(lock.stat().st_size==0,'Sibling lock has unexpected payload')
++    with lock.open('rb') as stream:fcntl.flock(stream,fcntl.LOCK_SH|fcntl.LOCK_NB)
++    return {'current_platform_fresh':True,'workflow':'registered_same_arm_sibling_only','owner':ref(workflow/'owner.json'),'sibling_native':ref(native_path),'sibling_files':sibling_files}
+ 
+ 
+ def continuation_authority(root,path,pinned):
+@@ -206,12 +268,13 @@
+     return old_claim,old
+ 
+ 
+-def reserve_continuation(root,evidence,task,arm,profile,record,config,capsule,source_before,authority_path,authority_sha):
++def reserve_continuation(root,evidence,task,arm,profile,record,config,capsule,source_before,authority_path,authority_sha,entry_permit=None,entry_permit_sha=None):
+     authority,pin=continuation_authority(root,authority_path,authority_sha)
+     key=continuation_scope(task,arm,profile)
+     need(key in authority['scopes'],'Already acquired or unregistered scope cannot continue')
+     row=authority['scopes'][key]
+-    need(str(record)==row['record'],'Fresh continuation record differs from its license')
++    entry_pin=entry_failure=None
++    if str(record)!=row['record']:entry_pin,entry_failure=entry_resume(root,row,record,entry_permit,entry_permit_sha)
+     old_claim,old=verify_unforwarded(row,config,capsule)
+     need(source_before==old['source_before'],'Source differs from original never-forwarded operation')
+     need(ref(scope_path(evidence,task,arm,profile))==row['original']['original_claim'],'Original unique claim changed')
+@@ -220,10 +283,12 @@
+     if registry.exists():need(load(registry)==pin,'Continuation authority changed after first registration')
+     else:save(registry,pin)
+     p=continuation_claim_path(evidence,task,arm,profile)
+-    save(p,{'version':1,'task':task,'arm':arm,'profile':profile,'action':'native','record':str(record),
++    value={'version':1,'task':task,'arm':arm,'profile':profile,'action':'native','record':str(record),
+             'config':config,'source_capsule':capsule,'original_claim':row['original']['original_claim'],
+             'original_outcome':row['original']['original_outcome'],'authority':pin,'reserved_at_unix':time.time(),
+-            'scope':'Single explicit continuation before first inner native UI; original failed claim/outcome/cost retained. Never a replacement sample.'})
++            'scope':'Single explicit continuation before first inner native UI; original failed claim/outcome/cost retained. Never a replacement sample.'}
++    if entry_pin:value.update(entry_resume_permit=entry_pin,failed_preclaim_entry=entry_failure,licensed_original_record=row['record'])
++    save(p,value)
+     return ref(p),row['original'],pin
+ 
+ 
+@@ -234,6 +299,11 @@
+         authority,pin=continuation_authority(root,Path(claim['authority']['path']),claim['authority']['sha256'])
+         need(load(evidence/'NATIVE-CONTINUATION-AUTHORITY.json')==pin,'Registered continuation authority differs')
+         row=authority['scopes'][continuation_scope(task,arm,profile)]
++        need(all(claim.get(k)==v for k,v in {'task':task,'arm':arm,'profile':profile,'action':'native','config':config,'source_capsule':capsule,'original_claim':row['original']['original_claim'],'original_outcome':row['original']['original_outcome'],'authority':pin}.items()),'Registered continuation claim scope/source/authority differs')
++        if claim['record']!=row['record']:
++            pin=claim.get('entry_resume_permit');need(pin,'Alternate native record has no explicit entry permit')
++            entry_resume(root,row,safe(claim['record']),Path(pin['path']),pin['sha256'],registered_claim=ref(continued))
++        else:need(not claim.get('entry_resume_permit'),'Unexpected entry permit on ordinary licensed record')
+         verify_unforwarded(row,config,capsule)
+         p=safe(outcome_path);need(p==safe(claim['record'])/'outcome.json' and sha(p)==outcome_sha,'Exact original continuation outcome required')
+         value=load(p)
+@@ -311,17 +381,17 @@
+ 
+ 
+ def main():
+-    entry_clock=time.monotonic();entry_unix=time.time()
++    entry_clock=time.monotonic();entry_unix=time.time();entry_shared_clock=time.clock_gettime(time.CLOCK_MONOTONIC)
+     p=argparse.ArgumentParser(description=__doc__)
+     for key in ['root','config','record']:p.add_argument('--'+key,type=Path,required=True)
+     p.add_argument('--task',choices=['T'+str(i) for i in range(1,6)],required=True);p.add_argument('--arm',choices=['A','B','I'],required=True);p.add_argument('--profile',choices=['ios','android'],required=True)
+     p.add_argument('--action',choices=['native','bind-source-review','bind-native-review','finish-native-review','cleanup-native-resources'],required=True)
+-    for key in ['submission','capture','cycle','initial-monitor','initial-seal','native-outcome','continuation-authority']:p.add_argument('--'+key,type=Path)
+-    p.add_argument('--initial-seal-sha256');p.add_argument('--native-outcome-sha256');p.add_argument('--continuation-authority-sha256');a=p.parse_args()
++    for key in ['submission','capture','cycle','initial-monitor','initial-seal','native-outcome','continuation-authority','entry-permit']:p.add_argument('--'+key,type=Path)
++    p.add_argument('--initial-seal-sha256');p.add_argument('--native-outcome-sha256');p.add_argument('--continuation-authority-sha256');p.add_argument('--entry-permit-sha256');a=p.parse_args()
+     root=safe(a.root);record=safe(a.record);evidence=root/'cache/business/independent-evaluation'
+     need(record.is_relative_to(evidence) and record!=evidence,'Fresh independent-evaluation record required')
+     record.mkdir(parents=True,exist_ok=False)
+-    outcome={'version':3,'kind':'independent-original-fact-operation','operator_revision':'unique-supervisor-explicit-zero-forward-continuation-v2','task':a.task,'arm':a.arm,'profile':a.profile,'action':a.action,'started_at_unix':entry_unix,'started_at_monotonic':entry_clock,'scope':'Full entry/barrier/admission/queue/SDK/review/cleanup wall; original failed work retained, no repair/expected override/UI resampling. Process exit is not delivery acceptance.'}
++    outcome={'version':4,'kind':'independent-original-fact-operation','operator_revision':'strict-own-platform-shared-workflow-preclaim-entry-v3','task':a.task,'arm':a.arm,'profile':a.profile,'action':a.action,'started_at_unix':entry_unix,'started_at_monotonic':entry_clock,'started_at_clock_gettime_monotonic':entry_shared_clock,'scope':'Full entry/barrier/admission/queue/SDK/review/cleanup wall; original failed work retained, no repair/expected override/UI resampling. Process exit is not delivery acceptance.'}
+     save(record/'ENTRY.json',{**outcome,'argv':sys.argv,'runner':ref(Path(__file__).resolve())})
+     code=None;service=None;source_before=None;config=None;helper=None
+     try:
+@@ -329,6 +399,7 @@
+             fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
+             helper_path=root/'business-tools-v4/blind_study.py'
+             need(sha(Path(__file__).with_name('independent_native.py'))==V1_SHA,'Original v1 operator runner changed')
++            need(sha(Path(__file__).with_name('independent_native_v2.py'))==V2_SHA,'Original v2 operator runner changed')
+             need(sha(helper_path)==HELPER_SHA and sha(helper_path.with_name('source_domain.py'))==DOMAIN_SHA,'Frozen controller/domain changed')
+             helper=module(helper_path,'independent_frozen_helpers');run,manifest,authorization=barrier(root,helper,a.action=='cleanup-native-resources')
+             task=next(t for t in manifest['tasks'] if t['id']==a.task);alias='A' if a.arm=='I' else a.arm;arm=task['arms'][alias];tool=manifest['tools'][arm['tool']]
+@@ -365,9 +436,10 @@
+                         need(all(not (v.stat().st_mode&0o222) for v in [rr,*rr.rglob('*')]),'Canonical initial production roots must remain readonly')
+             outcome.update(config=ref(config_path),source_capsule=capsule,source_before=source_before,tool_root=tool['skill_root'])
+             if a.action=='native':
+-                for raw in [config.get('review_store'),config.get('source_review_store'),config.get('workflow',{}).get('root')]:
+-                    if raw:need(not safe(raw).exists() or not any(safe(raw).iterdir()),'Original fresh independent context is no longer empty before first native UI')
+-                continued,original,pin=reserve_continuation(root,evidence,a.task,a.arm,a.profile,record,ref(config_path),capsule,source_before,a.continuation_authority,a.continuation_authority_sha256)
++                context_proof=fresh_platform_context(root,evidence,a.task,a.arm,a.profile,config,capsule,helper)
++                save(record/'fresh-platform-context.json',context_proof)
++                outcome['fresh_platform_context']=ref(record/'fresh-platform-context.json')
++                continued,original,pin=reserve_continuation(root,evidence,a.task,a.arm,a.profile,record,ref(config_path),capsule,source_before,a.continuation_authority,a.continuation_authority_sha256,a.entry_permit,a.entry_permit_sha256)
+                 outcome.update(native_claim=original['original_claim'],native_continuation_claim=continued,original_zero_forwarding_outcome=original['original_outcome'],continuation_authority=pin)
+             if a.action in {'bind-native-review','finish-native-review'}:
+                 need(a.native_outcome is not None and a.native_outcome_sha256,'Original registered native operation pin required')
+@@ -430,6 +502,7 @@
+             try:after=helper.source(config['source_roots'])
+             except BaseException as exc:outcome['source_after_error']={'type':type(exc).__name__,'message':str(exc)}
+         outcome.update(finished_at_unix=time.time(),finished_at_monotonic=time.monotonic(),wall_seconds=time.monotonic()-entry_clock,source_after=after,source_unchanged=source_before is not None and after==source_before)
++        outcome['finished_at_clock_gettime_monotonic']=time.clock_gettime(time.CLOCK_MONOTONIC)
+         outcome['accepted']=code==0 and not outcome.get('error') and not outcome.get('preservation_errors') and outcome.get('service_status')=='accepted' and outcome['source_unchanged']
+         save(record/'outcome.json',outcome)
+     print(json.dumps({'outcome':str(record/'outcome.json'),'sha256':sha(record/'outcome.json'),'exit_code':code,'accepted':outcome['accepted'],'error':outcome.get('error')}))

@@ -1,0 +1,2694 @@
+{
+  "design_owner": "Independent design/oracle author /root/v13_business_design",
+  "business_rules": "1. Begin with no audience, troubleshooting off, no preview, no wording review. Audiences are single selection and enabled only when allowed and recipients > 0. Show zero-recipient and blocked audiences; keep their descriptive reasons readable.\n2. Include troubleshooting steps is enabled only for a nonempty workaround. An actual audience or troubleshooting change invalidates the preview and wording review. Preview notice is enabled when an allowed audience is selected and creates the exact deterministic preview: 'Subject: {subject}\\nAudience: {audience label} ({recipients})\\n{message}', appending '\\nWorkaround: {workaround}' only when troubleshooting is on. Previewing again clears wording review.\n3. Before a preview exists, its content is absent and Customer wording reviewed is disabled/off. Publish notice requires a current preview and wording review. The preview remains visible after publication.\n4. Publish emits exactly one 'publish|{entityId}|{audienceId}|{current recipient integer}|steps:{on or off}', then locks all controls. Preview and decision actions emit zero events. This is a local publication request, not an actual outbound message.\n5. Same-entity replacement preserves the audience only if still allowed with positive recipients, preserves troubleshooting only if a nonempty workaround remains, and always clears preview, review, and recorded state. Changed entityId clears every decision. Replacement emits nothing.\n6. Summary is '{selected audience label} · {count} recipients' or 'No audience selected', followed by ' · Steps included'/' · Steps omitted'. Exact status/preview content is part of the public outcomes; no recovery time, delivery channel, or other text is invented.",
+  "tokens": {
+    "colors": {
+      "surface": {
+        "value": "#FFFFFFFF",
+        "unit": "argb"
+      },
+      "canvas": {
+        "value": "#FFFFF8F4",
+        "unit": "argb"
+      },
+      "ink": {
+        "value": "#FF201B13",
+        "unit": "argb"
+      },
+      "secondaryInk": {
+        "value": "#FF4F4539",
+        "unit": "argb"
+      },
+      "primary": {
+        "value": "#FF805610",
+        "unit": "argb"
+      },
+      "onPrimary": {
+        "value": "#FFFFFFFF",
+        "unit": "argb"
+      },
+      "selected": {
+        "value": "#FFFFDDB3",
+        "unit": "argb"
+      },
+      "disabled": {
+        "value": "#FFF3E6DA",
+        "unit": "argb"
+      },
+      "disabledPrimary": {
+        "value": "#FFEDE0D4",
+        "unit": "argb"
+      },
+      "outline": {
+        "value": "#FF817567",
+        "unit": "argb"
+      },
+      "summary": {
+        "value": "#FFFFF1E5",
+        "unit": "argb"
+      }
+    },
+    "ios": {
+      "titleSize": {
+        "value": 22,
+        "unit": "pt"
+      },
+      "titleWeight": {
+        "value": 600,
+        "unit": "scalar"
+      },
+      "bodySize": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "buttonHeight": {
+        "value": 48,
+        "unit": "pt"
+      },
+      "panelInset": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "rowInset": {
+        "value": 12,
+        "unit": "pt"
+      },
+      "rowGap": {
+        "value": 8,
+        "unit": "pt"
+      },
+      "paintGutter": {
+        "value": 24,
+        "unit": "pt"
+      },
+      "panelRadius": {
+        "value": 16,
+        "unit": "pt"
+      },
+      "rowRadius": {
+        "value": 8,
+        "unit": "pt"
+      }
+    },
+    "android": {
+      "titleSize": {
+        "value": 22,
+        "unit": "sp"
+      },
+      "titleWeight": {
+        "value": 600,
+        "unit": "scalar"
+      },
+      "bodySize": {
+        "value": 16,
+        "unit": "sp"
+      },
+      "bodyWeight": {
+        "value": 400,
+        "unit": "scalar"
+      },
+      "buttonHeight": {
+        "value": 48,
+        "unit": "dp"
+      },
+      "panelInset": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "sectionGap": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "rowInset": {
+        "value": 12,
+        "unit": "dp"
+      },
+      "rowGap": {
+        "value": 8,
+        "unit": "dp"
+      },
+      "paintGutter": {
+        "value": 24,
+        "unit": "dp"
+      },
+      "panelRadius": {
+        "value": 16,
+        "unit": "dp"
+      },
+      "rowRadius": {
+        "value": 8,
+        "unit": "dp"
+      }
+    },
+    "measurementSources": {
+      "palette": "Stock Reply ui/theme/Color.kt, light palette, lines 23–57; iOS adopts these explicit component colors because AlertToast.AlertStyle accepts arbitrary SwiftUI Color.",
+      "androidTypography": "Stock Reply ui/theme/Type.kt titleLarge (22sp,600,28sp line height) and bodyLarge (16sp,400,24sp line height).",
+      "iosTypography": "Independent design choice: system font, fixed 22pt semibold title, 16pt regular body at approved Large Dynamic Type; visual intent only, no computed SwiftUI font claim.",
+      "spacing": "Independent design choice, informed by AlertToast.banner VStack leading/spacing10/cornerRadius10 and ReplyEmailListItem Column padding20. This design explicitly fixes its own 16/12/8 rhythm and 16/8 radii, rather than claiming those are upstream defaults.",
+      "shape": "Stock Reply Shapes.kt supports 8dp small and 16dp medium; iOS adopts explicit matching pt design values."
+    }
+  },
+  "scope": {
+    "closed_shape": "One eager finite vertical production component. No internal scroll, overlays, asynchronous state, external data, or full app navigation.",
+    "fixture_domain": "Assessment covers the exact independently sealed family and action prefixes. The reusable public schema supports up to4 data rows per group; unbounded future caller inputs are not certified.",
+    "host": "390x600 logical viewport; host inset16 horizontal and24 top; Android density2.75 and explicit paparazzi-float32-screen-config-v1.",
+    "unsupported": [
+      {
+        "aspect": "generic computed SwiftUI typography/color/padding/layout_box",
+        "disposition": "not_applicable",
+        "reason": "Public iOS AX cannot expose these computed values. Sourced qualitative propositions and rendered opaque fill pixels cover the intended aspects; no mandatory unknown is added."
+      },
+      {
+        "aspect": "generic effective padding and glyph ink geometry",
+        "disposition": "not_applicable",
+        "reason": "Public AX/Compose semantic boxes do not prove generic layout padding or glyph ink; visual intent is assessed separately."
+      },
+      {
+        "aspect": "physical OS touch area",
+        "disposition": "not_applicable",
+        "reason": "Only primary control accessibility-box height and actual native dispatch are claimed."
+      },
+      {
+        "aspect": "whole-app navigation/network/lifecycle/keyboard, RTL, other themes/font settings/widths",
+        "disposition": "not_applicable",
+        "reason": "Scope is an additive reusable component in the approved finite light/LTR/Large-or1.0 observer fixture."
+      }
+    ]
+  },
+  "states": {
+    "start": {
+      "entity": {
+        "value": "INC-880 · Regional membership and assisted-registration service interruption",
+        "unit": "string"
+      },
+      "description": {
+        "value": "Staff are supporting members who cannot complete assisted registration. The notice must retain the full explanation for people who saved a partially completed form, including the distinction between an unconfirmed request and a confirmed membership, and must not promise a recovery time that has not been provided by the incident owner.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "No audience selected · Steps omitted",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Choose an allowed audience.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Service outage notice composer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "audienceA": {
+          "label": {
+            "value": "Notify affected customers",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Blocked: Direct customer wording has not been approved",
+            "unit": "string"
+          }
+        },
+        "audienceB": {
+          "label": {
+            "value": "Notify service staff",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Regional service staff, assisted-registration volunteers, and the named support coordinator need the full operational explanation for their next member conversation.\n47 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "audienceC": {
+          "label": {
+            "value": "Notify partner offices",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "workaround": {
+          "label": {
+            "value": "Include troubleshooting steps",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "previewAction": {
+          "label": {
+            "value": "Preview notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "approve": {
+          "label": {
+            "value": "Customer wording reviewed",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Publish notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "audienceB": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "staff-selected": {
+      "entity": {
+        "value": "INC-880 · Regional membership and assisted-registration service interruption",
+        "unit": "string"
+      },
+      "description": {
+        "value": "Staff are supporting members who cannot complete assisted registration. The notice must retain the full explanation for people who saved a partially completed form, including the distinction between an unconfirmed request and a confirmed membership, and must not promise a recovery time that has not been provided by the incident owner.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Notify service staff · 47 recipients · Steps omitted",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Preview the current draft.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Service outage notice composer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "audienceA": {
+          "label": {
+            "value": "Notify affected customers",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Blocked: Direct customer wording has not been approved",
+            "unit": "string"
+          }
+        },
+        "audienceB": {
+          "label": {
+            "value": "Notify service staff",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Regional service staff, assisted-registration volunteers, and the named support coordinator need the full operational explanation for their next member conversation.\n47 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "audienceC": {
+          "label": {
+            "value": "Notify partner offices",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "workaround": {
+          "label": {
+            "value": "Include troubleshooting steps",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "previewAction": {
+          "label": {
+            "value": "Preview notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "approve": {
+          "label": {
+            "value": "Customer wording reviewed",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Publish notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "audienceB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "audienceC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "previewed": {
+      "entity": {
+        "value": "INC-880 · Regional membership and assisted-registration service interruption",
+        "unit": "string"
+      },
+      "description": {
+        "value": "Staff are supporting members who cannot complete assisted registration. The notice must retain the full explanation for people who saved a partially completed form, including the distinction between an unconfirmed request and a confirmed membership, and must not promise a recovery time that has not been provided by the incident owner.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Notify service staff · 47 recipients · Steps omitted",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Review the customer wording.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Service outage notice composer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "audienceA": {
+          "label": {
+            "value": "Notify affected customers",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Blocked: Direct customer wording has not been approved",
+            "unit": "string"
+          }
+        },
+        "audienceB": {
+          "label": {
+            "value": "Notify service staff",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Regional service staff, assisted-registration volunteers, and the named support coordinator need the full operational explanation for their next member conversation.\n47 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "audienceC": {
+          "label": {
+            "value": "Notify partner offices",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "workaround": {
+          "label": {
+            "value": "Include troubleshooting steps",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "previewAction": {
+          "label": {
+            "value": "Preview notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "approve": {
+          "label": {
+            "value": "Customer wording reviewed",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Publish notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": true,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "audienceB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "audienceC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      },
+      "preview": {
+        "value": "Subject: Assisted registration requests may need a staff review before confirmation\nAudience: Notify service staff (47)\nRequests saved during the interruption remain in the review queue. A saved request does not yet establish a confirmed membership. Staff should locate the original reference, explain the current status in plain language, and avoid asking a member to enter the same details repeatedly while the regional team checks the queue.",
+        "unit": "string"
+      }
+    },
+    "ready": {
+      "entity": {
+        "value": "INC-880 · Regional membership and assisted-registration service interruption",
+        "unit": "string"
+      },
+      "description": {
+        "value": "Staff are supporting members who cannot complete assisted registration. The notice must retain the full explanation for people who saved a partially completed form, including the distinction between an unconfirmed request and a confirmed membership, and must not promise a recovery time that has not been provided by the incident owner.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Notify service staff · 47 recipients · Steps omitted",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Ready to publish this notice.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Service outage notice composer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "audienceA": {
+          "label": {
+            "value": "Notify affected customers",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Blocked: Direct customer wording has not been approved",
+            "unit": "string"
+          }
+        },
+        "audienceB": {
+          "label": {
+            "value": "Notify service staff",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Regional service staff, assisted-registration volunteers, and the named support coordinator need the full operational explanation for their next member conversation.\n47 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "audienceC": {
+          "label": {
+            "value": "Notify partner offices",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "workaround": {
+          "label": {
+            "value": "Include troubleshooting steps",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "previewAction": {
+          "label": {
+            "value": "Preview notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "approve": {
+          "label": {
+            "value": "Customer wording reviewed",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Publish notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": true,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "audienceB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "audienceC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FF805610",
+          "unit": "argb"
+        }
+      },
+      "preview": {
+        "value": "Subject: Assisted registration requests may need a staff review before confirmation\nAudience: Notify service staff (47)\nRequests saved during the interruption remain in the review queue. A saved request does not yet establish a confirmed membership. Staff should locate the original reference, explain the current status in plain language, and avoid asking a member to enter the same details repeatedly while the regional team checks the queue.",
+        "unit": "string"
+      }
+    },
+    "published": {
+      "entity": {
+        "value": "INC-880 · Regional membership and assisted-registration service interruption",
+        "unit": "string"
+      },
+      "description": {
+        "value": "Staff are supporting members who cannot complete assisted registration. The notice must retain the full explanation for people who saved a partially completed form, including the distinction between an unconfirmed request and a confirmed membership, and must not promise a recovery time that has not been provided by the incident owner.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Notify service staff · 47 recipients · Steps omitted",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Notice publication recorded.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Service outage notice composer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "audienceA": {
+          "label": {
+            "value": "Notify affected customers",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Blocked: Direct customer wording has not been approved",
+            "unit": "string"
+          }
+        },
+        "audienceB": {
+          "label": {
+            "value": "Notify service staff",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Regional service staff, assisted-registration volunteers, and the named support coordinator need the full operational explanation for their next member conversation.\n47 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "audienceC": {
+          "label": {
+            "value": "Notify partner offices",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "workaround": {
+          "label": {
+            "value": "Include troubleshooting steps",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "previewAction": {
+          "label": {
+            "value": "Preview notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "approve": {
+          "label": {
+            "value": "Customer wording reviewed",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Publish notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [
+          "publish|INC-880|staff|47|steps:off"
+        ],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": true,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "audienceB": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "audienceC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      },
+      "preview": {
+        "value": "Subject: Assisted registration requests may need a staff review before confirmation\nAudience: Notify service staff (47)\nRequests saved during the interruption remain in the review queue. A saved request does not yet establish a confirmed membership. Staff should locate the original reference, explain the current status in plain language, and avoid asking a member to enter the same details repeatedly while the regional team checks the queue.",
+        "unit": "string"
+      }
+    },
+    "same-incident-blocked-audience": {
+      "entity": {
+        "value": "INC-880 · Regional membership and assisted-registration service interruption",
+        "unit": "string"
+      },
+      "description": {
+        "value": "Staff are supporting members who cannot complete assisted registration. The notice must retain the full explanation for people who saved a partially completed form, including the distinction between an unconfirmed request and a confirmed membership, and must not promise a recovery time that has not been provided by the incident owner.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "No audience selected · Steps omitted",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Choose an allowed audience.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Service outage notice composer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "audienceA": {
+          "label": {
+            "value": "Notify affected customers",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n203 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "audienceB": {
+          "label": {
+            "value": "Notify service staff",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Regional service staff, assisted-registration volunteers, and the named support coordinator need the full operational explanation for their next member conversation.\n47 recipients · Blocked: Staff escalation moved to a separate internal bulletin",
+            "unit": "string"
+          }
+        },
+        "audienceC": {
+          "label": {
+            "value": "Notify partner offices",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "workaround": {
+          "label": {
+            "value": "Include troubleshooting steps",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "previewAction": {
+          "label": {
+            "value": "Preview notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "approve": {
+          "label": {
+            "value": "Customer wording reviewed",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Publish notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceA": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "audienceC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "customers-selected": {
+      "entity": {
+        "value": "INC-880 · Regional membership and assisted-registration service interruption",
+        "unit": "string"
+      },
+      "description": {
+        "value": "Staff are supporting members who cannot complete assisted registration. The notice must retain the full explanation for people who saved a partially completed form, including the distinction between an unconfirmed request and a confirmed membership, and must not promise a recovery time that has not been provided by the incident owner.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Notify affected customers · 203 recipients · Steps omitted",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Preview the current draft.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Service outage notice composer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "audienceA": {
+          "label": {
+            "value": "Notify affected customers",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n203 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "audienceB": {
+          "label": {
+            "value": "Notify service staff",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Regional service staff, assisted-registration volunteers, and the named support coordinator need the full operational explanation for their next member conversation.\n47 recipients · Blocked: Staff escalation moved to a separate internal bulletin",
+            "unit": "string"
+          }
+        },
+        "audienceC": {
+          "label": {
+            "value": "Notify partner offices",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "workaround": {
+          "label": {
+            "value": "Include troubleshooting steps",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "previewAction": {
+          "label": {
+            "value": "Preview notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "approve": {
+          "label": {
+            "value": "Customer wording reviewed",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Publish notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "audienceB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "audienceC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "steps-selected": {
+      "entity": {
+        "value": "INC-880 · Regional membership and assisted-registration service interruption",
+        "unit": "string"
+      },
+      "description": {
+        "value": "Staff are supporting members who cannot complete assisted registration. The notice must retain the full explanation for people who saved a partially completed form, including the distinction between an unconfirmed request and a confirmed membership, and must not promise a recovery time that has not been provided by the incident owner.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Notify affected customers · 203 recipients · Steps included",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Preview the current draft.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Service outage notice composer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "audienceA": {
+          "label": {
+            "value": "Notify affected customers",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n203 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "audienceB": {
+          "label": {
+            "value": "Notify service staff",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Regional service staff, assisted-registration volunteers, and the named support coordinator need the full operational explanation for their next member conversation.\n47 recipients · Blocked: Staff escalation moved to a separate internal bulletin",
+            "unit": "string"
+          }
+        },
+        "audienceC": {
+          "label": {
+            "value": "Notify partner offices",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "workaround": {
+          "label": {
+            "value": "Include troubleshooting steps",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "previewAction": {
+          "label": {
+            "value": "Preview notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "approve": {
+          "label": {
+            "value": "Customer wording reviewed",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Publish notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "audienceB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "audienceC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    },
+    "repreviewed": {
+      "entity": {
+        "value": "INC-880 · Regional membership and assisted-registration service interruption",
+        "unit": "string"
+      },
+      "description": {
+        "value": "Staff are supporting members who cannot complete assisted registration. The notice must retain the full explanation for people who saved a partially completed form, including the distinction between an unconfirmed request and a confirmed membership, and must not promise a recovery time that has not been provided by the incident owner.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Notify affected customers · 203 recipients · Steps included",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Review the customer wording.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Service outage notice composer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "audienceA": {
+          "label": {
+            "value": "Notify affected customers",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n203 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "audienceB": {
+          "label": {
+            "value": "Notify service staff",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Regional service staff, assisted-registration volunteers, and the named support coordinator need the full operational explanation for their next member conversation.\n47 recipients · Blocked: Staff escalation moved to a separate internal bulletin",
+            "unit": "string"
+          }
+        },
+        "audienceC": {
+          "label": {
+            "value": "Notify partner offices",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "workaround": {
+          "label": {
+            "value": "Include troubleshooting steps",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "previewAction": {
+          "label": {
+            "value": "Preview notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "approve": {
+          "label": {
+            "value": "Customer wording reviewed",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Publish notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": true,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "audienceB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "audienceC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      },
+      "preview": {
+        "value": "Subject: Assisted registration requests may need a staff review before confirmation\nAudience: Notify affected customers (203)\nRequests saved during the interruption remain in the review queue. A saved request does not yet establish a confirmed membership. Staff should locate the original reference, explain the current status in plain language, and avoid asking a member to enter the same details repeatedly while the regional team checks the queue.\nWorkaround: Ask the member for the saved request reference, read back the contact details already on that request, and send any correction to the support coordinator. Do not create a duplicate membership request.",
+        "unit": "string"
+      }
+    },
+    "ready-again": {
+      "entity": {
+        "value": "INC-880 · Regional membership and assisted-registration service interruption",
+        "unit": "string"
+      },
+      "description": {
+        "value": "Staff are supporting members who cannot complete assisted registration. The notice must retain the full explanation for people who saved a partially completed form, including the distinction between an unconfirmed request and a confirmed membership, and must not promise a recovery time that has not been provided by the incident owner.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Notify affected customers · 203 recipients · Steps included",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Ready to publish this notice.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Service outage notice composer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "audienceA": {
+          "label": {
+            "value": "Notify affected customers",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n203 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "audienceB": {
+          "label": {
+            "value": "Notify service staff",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Regional service staff, assisted-registration volunteers, and the named support coordinator need the full operational explanation for their next member conversation.\n47 recipients · Blocked: Staff escalation moved to a separate internal bulletin",
+            "unit": "string"
+          }
+        },
+        "audienceC": {
+          "label": {
+            "value": "Notify partner offices",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "workaround": {
+          "label": {
+            "value": "Include troubleshooting steps",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "previewAction": {
+          "label": {
+            "value": "Preview notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "approve": {
+          "label": {
+            "value": "Customer wording reviewed",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Publish notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": true,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "audienceB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "audienceC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FF805610",
+          "unit": "argb"
+        }
+      },
+      "preview": {
+        "value": "Subject: Assisted registration requests may need a staff review before confirmation\nAudience: Notify affected customers (203)\nRequests saved during the interruption remain in the review queue. A saved request does not yet establish a confirmed membership. Staff should locate the original reference, explain the current status in plain language, and avoid asking a member to enter the same details repeatedly while the regional team checks the queue.\nWorkaround: Ask the member for the saved request reference, read back the contact details already on that request, and send any correction to the support coordinator. Do not create a duplicate membership request.",
+        "unit": "string"
+      }
+    },
+    "republished": {
+      "entity": {
+        "value": "INC-880 · Regional membership and assisted-registration service interruption",
+        "unit": "string"
+      },
+      "description": {
+        "value": "Staff are supporting members who cannot complete assisted registration. The notice must retain the full explanation for people who saved a partially completed form, including the distinction between an unconfirmed request and a confirmed membership, and must not promise a recovery time that has not been provided by the incident owner.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "Notify affected customers · 203 recipients · Steps included",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Notice publication recorded.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Service outage notice composer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "audienceA": {
+          "label": {
+            "value": "Notify affected customers",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n203 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "audienceB": {
+          "label": {
+            "value": "Notify service staff",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Regional service staff, assisted-registration volunteers, and the named support coordinator need the full operational explanation for their next member conversation.\n47 recipients · Blocked: Staff escalation moved to a separate internal bulletin",
+            "unit": "string"
+          }
+        },
+        "audienceC": {
+          "label": {
+            "value": "Notify partner offices",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "workaround": {
+          "label": {
+            "value": "Include troubleshooting steps",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "previewAction": {
+          "label": {
+            "value": "Preview notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "approve": {
+          "label": {
+            "value": "Customer wording reviewed",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": true,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Publish notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [
+          "publish|INC-880|customers|203|steps:on"
+        ],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": true,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceA": {
+          "value": "#FFFFDDB3",
+          "unit": "argb"
+        },
+        "audienceB": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "audienceC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      },
+      "preview": {
+        "value": "Subject: Assisted registration requests may need a staff review before confirmation\nAudience: Notify affected customers (203)\nRequests saved during the interruption remain in the review queue. A saved request does not yet establish a confirmed membership. Staff should locate the original reference, explain the current status in plain language, and avoid asking a member to enter the same details repeatedly while the regional team checks the queue.\nWorkaround: Ask the member for the saved request reference, read back the contact details already on that request, and send any correction to the support coordinator. Do not create a duplicate membership request.",
+        "unit": "string"
+      }
+    },
+    "changed-incident": {
+      "entity": {
+        "value": "INC-881 · Different service incident with reused audience IDs",
+        "unit": "string"
+      },
+      "description": {
+        "value": "Staff are supporting members who cannot complete assisted registration. The notice must retain the full explanation for people who saved a partially completed form, including the distinction between an unconfirmed request and a confirmed membership, and must not promise a recovery time that has not been provided by the incident owner.",
+        "unit": "string"
+      },
+      "summary": {
+        "value": "No audience selected · Steps omitted",
+        "unit": "string"
+      },
+      "status": {
+        "value": "Choose an allowed audience.",
+        "unit": "string"
+      },
+      "heading": {
+        "value": "Service outage notice composer",
+        "unit": "string"
+      },
+      "surface": {
+        "value": true,
+        "unit": "bool"
+      },
+      "controls": {
+        "audienceA": {
+          "label": {
+            "value": "Notify affected customers",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Customers with bookings awaiting confirmation need a direct explanation and a usable next step.\n124 recipients · Blocked: Direct customer wording has not been approved",
+            "unit": "string"
+          }
+        },
+        "audienceB": {
+          "label": {
+            "value": "Notify service staff",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": true,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Regional service staff, assisted-registration volunteers, and the named support coordinator need the full operational explanation for their next member conversation.\n47 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "audienceC": {
+          "label": {
+            "value": "Notify partner offices",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          },
+          "detail": {
+            "value": "Partner offices have no affected bookings in this incident.\n0 recipients · Allowed",
+            "unit": "string"
+          }
+        },
+        "workaround": {
+          "label": {
+            "value": "Include troubleshooting steps",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "previewAction": {
+          "label": {
+            "value": "Preview notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "approve": {
+          "label": {
+            "value": "Customer wording reviewed",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          },
+          "selected": {
+            "value": false,
+            "unit": "bool"
+          }
+        },
+        "primary": {
+          "label": {
+            "value": "Publish notice",
+            "unit": "string"
+          },
+          "enabled": {
+            "value": false,
+            "unit": "bool"
+          }
+        }
+      },
+      "tap_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "replacement_events": {
+        "value": [],
+        "unit": "events"
+      },
+      "preview_present": {
+        "value": false,
+        "unit": "bool"
+      },
+      "fills": {
+        "surface": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceA": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "audienceB": {
+          "value": "#FFFFFFFF",
+          "unit": "argb"
+        },
+        "audienceC": {
+          "value": "#FFF3E6DA",
+          "unit": "argb"
+        },
+        "primary": {
+          "value": "#FFEDE0D4",
+          "unit": "argb"
+        }
+      }
+    }
+  },
+  "questions": {
+    "heading-visual-size": {
+      "value": "Does the iOS heading follow the annotated reference's fixed22pt system-font size intent and title-to-body scale? This is qualitative, not a computed font reading.",
+      "unit": "string"
+    },
+    "heading-visual-weight": {
+      "value": "Does the iOS heading show the annotated reference's semibold/600 weight intent?",
+      "unit": "string"
+    },
+    "body-visual-size": {
+      "value": "Does iOS body copy follow the annotated reference's fixed16pt regular system-font size intent? This is qualitative typography, not a computed point-size observation.",
+      "unit": "string"
+    },
+    "body-visual-ink": {
+      "value": "Does iOS body copy follow the reference's dark ink (#FF201B13) visual intent against the white panel? This is a qualitative ink judgment, not computed color.",
+      "unit": "string"
+    },
+    "content-wrap": {
+      "value": "Across the complete swept state, is every supplied description, choice detail, summary, status, and current preview readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "content-overlap": {
+      "value": "Across the complete swept state, do successive vertical blocks remain separate without overlapping or occluding one another?",
+      "unit": "string"
+    },
+    "horizontal-fit": {
+      "value": "Across the complete swept state, does all component content stay within the offered child width without horizontal clipping or horizontal scrolling?",
+      "unit": "string"
+    },
+    "section-rhythm": {
+      "value": "Do major vertical sections follow the annotated reference's16pt iOS /16dp Android separation intent? Judge the visual rhythm; do not infer framework padding from AX boxes.",
+      "unit": "string"
+    },
+    "row-padding": {
+      "value": "Do option rows follow the annotated reference's12pt iOS /12dp Android content inset intent and leave their trailing24pt/dp paint gutter free of text and marks?",
+      "unit": "string"
+    },
+    "panel-corners": {
+      "value": "Does the white panel follow the annotated reference's16pt iOS /16dp Android rounded-corner intent?",
+      "unit": "string"
+    },
+    "row-corners": {
+      "value": "Do option rows follow the annotated reference's8pt iOS /8dp Android rounded-corner intent?",
+      "unit": "string"
+    },
+    "primary-ink": {
+      "value": "Is the primary label visibly light against its enabled amber fill and dark against its disabled pale fill, as the reference shows?",
+      "unit": "string"
+    },
+    "audienceA-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "audienceA-wrap": {
+      "value": "Is all of this option's visible label and detail text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "audienceB-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "audienceB-wrap": {
+      "value": "Is all of this option's visible label and detail text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "audienceC-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "audienceC-wrap": {
+      "value": "Is all of this option's visible label and detail text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "workaround-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "approve-mark": {
+      "value": "Is a selected/checked mark visibly present on this control?",
+      "unit": "string"
+    },
+    "summary-wrap": {
+      "value": "Is all of this current text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    },
+    "status-wrap": {
+      "value": "Is all of this current text readable through natural wrapping, without ellipsis or a clipped final line?",
+      "unit": "string"
+    }
+  },
+  "visual": {
+    "heading-visual-size": {
+      "value": true,
+      "unit": "bool"
+    },
+    "heading-visual-weight": {
+      "value": true,
+      "unit": "bool"
+    },
+    "body-visual-size": {
+      "value": true,
+      "unit": "bool"
+    },
+    "body-visual-ink": {
+      "value": true,
+      "unit": "bool"
+    },
+    "content-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "content-overlap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "horizontal-fit": {
+      "value": true,
+      "unit": "bool"
+    },
+    "section-rhythm": {
+      "value": true,
+      "unit": "bool"
+    },
+    "row-padding": {
+      "value": true,
+      "unit": "bool"
+    },
+    "panel-corners": {
+      "value": true,
+      "unit": "bool"
+    },
+    "row-corners": {
+      "value": true,
+      "unit": "bool"
+    },
+    "primary-ink": {
+      "value": true,
+      "unit": "bool"
+    },
+    "audienceA-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "audienceA-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "audienceB-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "audienceB-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "audienceC-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "audienceC-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "workaround-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "approve-mark": {
+      "value": true,
+      "unit": "bool"
+    },
+    "summary-wrap": {
+      "value": true,
+      "unit": "bool"
+    },
+    "status-wrap": {
+      "value": true,
+      "unit": "bool"
+    }
+  },
+  "obligations": [
+    {
+      "id": "business-content",
+      "clause": "All supplied and computed business text is current and exact.",
+      "priority": "must",
+      "states": [
+        "start",
+        "staff-selected",
+        "previewed",
+        "ready",
+        "published",
+        "same-incident-blocked-audience",
+        "customers-selected",
+        "steps-selected",
+        "repreviewed",
+        "ready-again",
+        "republished",
+        "changed-incident"
+      ],
+      "risk": "content"
+    },
+    {
+      "id": "decision-eligibility",
+      "clause": "Native disabled/selected facts obey published business decisions.",
+      "priority": "must",
+      "states": [
+        "start",
+        "staff-selected",
+        "previewed",
+        "ready",
+        "published",
+        "same-incident-blocked-audience",
+        "customers-selected",
+        "steps-selected",
+        "repreviewed",
+        "ready-again",
+        "republished",
+        "changed-incident"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "successful-tap-receipts",
+      "clause": "Exact tap event intervals require demonstrated successful original native dispatch; blocked taps never prove quiet behavior.",
+      "priority": "must",
+      "states": [
+        "staff-selected",
+        "previewed",
+        "ready",
+        "published",
+        "customers-selected",
+        "steps-selected",
+        "repreviewed",
+        "ready-again",
+        "republished"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "caller-replacement",
+      "clause": "Same-entity revalidation and changed-entity reset are distinct and callback-silent.",
+      "priority": "must",
+      "states": [
+        "same-incident-blocked-audience",
+        "changed-incident"
+      ],
+      "risk": "behavior"
+    },
+    {
+      "id": "typography",
+      "clause": "Typography follows sourced native or qualitative platform intent.",
+      "priority": "must",
+      "states": [
+        "start",
+        "staff-selected",
+        "previewed",
+        "ready",
+        "published",
+        "same-incident-blocked-audience",
+        "customers-selected",
+        "steps-selected",
+        "repreviewed",
+        "ready-again",
+        "republished",
+        "changed-incident"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "content-layout",
+      "clause": "Full variable-length vertical content wraps, fits and preserves separation/insets.",
+      "priority": "must",
+      "states": [
+        "start",
+        "staff-selected",
+        "previewed",
+        "ready",
+        "published",
+        "same-incident-blocked-audience",
+        "customers-selected",
+        "steps-selected",
+        "repreviewed",
+        "ready-again",
+        "republished",
+        "changed-incident"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "opaque-paint",
+      "clause": "Component opaque fills match approved suitable pixel regions; primary ink is readable.",
+      "priority": "must",
+      "states": [
+        "start",
+        "staff-selected",
+        "previewed",
+        "ready",
+        "published",
+        "same-incident-blocked-audience",
+        "customers-selected",
+        "steps-selected",
+        "repreviewed",
+        "ready-again",
+        "republished",
+        "changed-incident"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "primary-accessibility-box",
+      "clause": "Primary control accessibility-box height is48pt/dp; no physical OS hit-area claim.",
+      "priority": "must",
+      "states": [
+        "start",
+        "staff-selected",
+        "previewed",
+        "ready",
+        "published",
+        "same-incident-blocked-audience",
+        "customers-selected",
+        "steps-selected",
+        "repreviewed",
+        "ready-again",
+        "republished",
+        "changed-incident"
+      ],
+      "risk": "layout"
+    },
+    {
+      "id": "selection-affordance",
+      "clause": "Visible selection marks agree with native selected facts.",
+      "priority": "must",
+      "states": [
+        "start",
+        "staff-selected",
+        "previewed",
+        "ready",
+        "published",
+        "same-incident-blocked-audience",
+        "customers-selected",
+        "steps-selected",
+        "repreviewed",
+        "ready-again",
+        "republished",
+        "changed-incident"
+      ],
+      "risk": "style"
+    },
+    {
+      "id": "corner-shape",
+      "clause": "Panel and option corner shape follow independent annotated references.",
+      "priority": "must",
+      "states": [
+        "start",
+        "staff-selected",
+        "previewed",
+        "ready",
+        "published",
+        "same-incident-blocked-audience",
+        "customers-selected",
+        "steps-selected",
+        "repreviewed",
+        "ready-again",
+        "republished",
+        "changed-incident"
+      ],
+      "risk": "style"
+    }
+  ],
+  "responsibilities": [
+    {
+      "id": "component-control",
+      "clause": "Production owns applicable control facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "control",
+      "subject": "production-component",
+      "rule_ids": [
+        "heading-label",
+        "entity-label",
+        "description-label",
+        "summary-label",
+        "status-label",
+        "surface-present",
+        "audienceA-label",
+        "audienceA-enabled",
+        "audienceA-selected",
+        "audienceA-detail",
+        "audienceB-label",
+        "audienceB-enabled",
+        "audienceB-selected",
+        "audienceB-detail",
+        "audienceC-label",
+        "audienceC-enabled",
+        "audienceC-selected",
+        "audienceC-detail",
+        "workaround-label",
+        "workaround-enabled",
+        "workaround-selected",
+        "previewAction-label",
+        "previewAction-enabled",
+        "approve-label",
+        "approve-enabled",
+        "approve-selected",
+        "primary-label",
+        "primary-enabled",
+        "preview-present",
+        "preview-label"
+      ]
+    },
+    {
+      "id": "component-geometry",
+      "clause": "Production owns applicable geometry facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "geometry",
+      "subject": "production-component",
+      "rule_ids": [
+        "primary-height"
+      ]
+    },
+    {
+      "id": "component-text_layout",
+      "clause": "Production owns applicable text_layout facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "text_layout",
+      "subject": "production-component",
+      "rule_ids": [
+        "heading-native-size",
+        "heading-native-weight",
+        "body-native-size",
+        "body-native-ink"
+      ]
+    },
+    {
+      "id": "component-callback",
+      "clause": "Production owns applicable callback facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "callback",
+      "subject": "production-component",
+      "rule_ids": [
+        "tap-receipt",
+        "replacement-quiet"
+      ]
+    },
+    {
+      "id": "component-visual",
+      "clause": "Production owns applicable visual facts in this fixture scope.",
+      "priority": "must",
+      "owner": "component",
+      "method": "visual",
+      "subject": "production-component",
+      "rule_ids": [
+        "surface-fill",
+        "primary-fill",
+        "audienceA-fill",
+        "audienceB-fill",
+        "audienceC-fill",
+        "content-wrap",
+        "content-overlap",
+        "horizontal-fit",
+        "section-rhythm",
+        "row-padding",
+        "panel-corners",
+        "row-corners",
+        "primary-ink",
+        "audienceA-mark",
+        "audienceA-wrap",
+        "audienceB-mark",
+        "audienceB-wrap",
+        "audienceC-mark",
+        "audienceC-wrap",
+        "workaround-mark",
+        "approve-mark",
+        "summary-wrap",
+        "status-wrap"
+      ]
+    },
+    {
+      "id": "real-production-api",
+      "clause": "The real exported additive production component owns all decisions, local UI state and replacement behavior; no external state or internal scroll.",
+      "priority": "must",
+      "owner": "component",
+      "method": "source",
+      "subject": "production-component",
+      "rule_ids": []
+    },
+    {
+      "id": "thin-pass-through",
+      "clause": "Pinned bridge only decodes typed data, applies the real Android theme, and calls production with the same callback; no state, replacement UI, business computation, forced identity, or event echo.",
+      "priority": "must",
+      "owner": "bridge",
+      "method": "source",
+      "subject": "thin-bridge",
+      "rule_ids": []
+    },
+    {
+      "id": "production-placement",
+      "clause": "AlertToast exports the actual SwiftUI component and Reply compiles the actual component from app/src/main. Existing finite vertical host owns scrolling/insets; no full-app navigation claim.",
+      "priority": "must",
+      "owner": "integration",
+      "method": "source",
+      "subject": "host-integration",
+      "rule_ids": []
+    }
+  ],
+  "capture_validity": {
+    "scope": "deterministic_component_fixture",
+    "max_age_seconds": 1800,
+    "reset": "fresh_native_fixture",
+    "external_state": "all_dependencies_pinned"
+  }
+}

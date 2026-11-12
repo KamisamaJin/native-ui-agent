@@ -1,0 +1,442 @@
+{
+  "version": 1,
+  "scenario": "hidden-edge",
+  "business_rules_source": "reference.json#/business_rules",
+  "states": [
+    {
+      "id": "initial",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content",
+      "stimulus": "none",
+      "exact_business_state": {
+        "entity": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "description": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use.",
+        "controls": {
+          "lotA": {
+            "label": "Release northern lot",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Available"
+          },
+          "lotB": {
+            "label": "Release accessible fittings",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n8 units · Available"
+          },
+          "lotC": {
+            "label": "Release reserve stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "0 lots selected · 0 units",
+        "status": "Select at least one available lot.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "first-lot",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "description": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use.",
+        "controls": {
+          "lotA": {
+            "label": "Release northern lot",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Available"
+          },
+          "lotB": {
+            "label": "Release accessible fittings",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n8 units · Available"
+          },
+          "lotC": {
+            "label": "Release reserve stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "1 lots selected · 17 units",
+        "status": "Check packing list to release.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "reverse-order-selection",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "description": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use.",
+        "controls": {
+          "lotA": {
+            "label": "Release northern lot",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Available"
+          },
+          "lotB": {
+            "label": "Release accessible fittings",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n8 units · Available"
+          },
+          "lotC": {
+            "label": "Release reserve stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "2 lots selected · 25 units",
+        "status": "Check packing list to release.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "description": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use.",
+        "controls": {
+          "lotA": {
+            "label": "Release northern lot",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Available"
+          },
+          "lotB": {
+            "label": "Release accessible fittings",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n8 units · Available"
+          },
+          "lotC": {
+            "label": "Release reserve stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "2 lots selected · 25 units",
+        "status": "Ready to release 2 lots.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "released",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "description": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use.",
+        "controls": {
+          "lotA": {
+            "label": "Release northern lot",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Available"
+          },
+          "lotB": {
+            "label": "Release accessible fittings",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n8 units · Available"
+          },
+          "lotC": {
+            "label": "Release reserve stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "2 lots selected · 25 units",
+        "status": "Release recorded for 2 lots.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "release|OR-936|A-02,Z-90"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "same-order-pruned",
+      "input_index": 1,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "description": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use. The available fittings now include four additional units; the release summary must use the replacement quantities.",
+        "controls": {
+          "lotA": {
+            "label": "Release northern lot",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Held: Protective transit cover failed inspection"
+          },
+          "lotB": {
+            "label": "Release accessible fittings",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n12 units · Available"
+          },
+          "lotC": {
+            "label": "Release reserve stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "1 lots selected · 12 units",
+        "status": "Check packing list to release.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready-again",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "full_content",
+      "stimulus_action": 11,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "description": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use. The available fittings now include four additional units; the release summary must use the replacement quantities.",
+        "controls": {
+          "lotA": {
+            "label": "Release northern lot",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Held: Protective transit cover failed inspection"
+          },
+          "lotB": {
+            "label": "Release accessible fittings",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n12 units · Available"
+          },
+          "lotC": {
+            "label": "Release reserve stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "1 lots selected · 12 units",
+        "status": "Ready to release 1 lots.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "released-survivor",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "full_content",
+      "stimulus_action": 13,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "OR-936 · Northern depot accessibility refit and replacement display materials",
+        "description": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use. The available fittings now include four additional units; the release summary must use the replacement quantities.",
+        "controls": {
+          "lotA": {
+            "label": "Release northern lot",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Held: Protective transit cover failed inspection"
+          },
+          "lotB": {
+            "label": "Release accessible fittings",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n12 units · Available"
+          },
+          "lotC": {
+            "label": "Release reserve stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "1 lots selected · 12 units",
+        "status": "Release recorded for 1 lots.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "release|OR-936|A-02"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "changed-order",
+      "input_index": 2,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "OR-937 · Separate southern depot return",
+        "description": "The northern depot is coordinating a multi-room accessibility refit with a receiving team that shares its loading bay with another institution. Preserve the full delivery note, including the instruction to call the facilities desk after arrival, leave the archival labels attached, and keep the last pallet upright while the rear lift is in use.",
+        "controls": {
+          "lotA": {
+            "label": "Release northern lot",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Very long conservation packaging instruction: this lot contains folded interpretive panels, replacement tactile labels, and a rigid display support that must remain flat until the destination crew has signed the receiving sheet.\n17 units · Available"
+          },
+          "lotB": {
+            "label": "Release accessible fittings",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "A mixed lot of access rails and small fittings, each in a labeled reusable pouch. Do not separate the pouch list from its returnable crate.\n8 units · Available"
+          },
+          "lotC": {
+            "label": "Release reserve stock",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Reserve labels and mounting plates remain held while the receiving institution confirms whether its storage area is ready.\n5 units · Held: Written receiving approval missing"
+          },
+          "packing": {
+            "label": "Packing list checked",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "0 lots selected · 0 units",
+        "status": "Select at least one available lot.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    }
+  ]
+}

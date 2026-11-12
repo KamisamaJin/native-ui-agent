@@ -1,0 +1,149 @@
+{
+  "review_id": "review-6-common-pixel-encoding-domain",
+  "sealed_at_utc": "2026-11-10T12:38:17.231830+00:00",
+  "verdict": "NOT_QUALIFIED: four demonstrated common failure families",
+  "candidate": "candidate-v13.5",
+  "candidate_freeze_sha256": "b65d88a6c03a0bc9cff36c40df5bf54e6f54ad0ee1b96616b7f71e277a342982",
+  "baseline": "baseline-v12.6-common-2",
+  "baseline_freeze_sha256": "c0d4b7b78974372343b5035f9d97052f123e27daeb3dfc2d472990c40f502f59",
+  "scope": "Independent HOST/SIMULATED additive common-foundation forward pass; no SDK/device/performance/business work.",
+  "independence": {
+    "skill_creator_independent_forward_instructions_read": true,
+    "frozen_sources_and_independent_specs_only": true,
+    "parent_fix_or_unit_counts_not_used_as_proof": true,
+    "new_native_results_not_read_or_regraded": true,
+    "previous_reviews_unchanged": true,
+    "old85_outcomes_and6bugs_preserved": "legacy-review5/review.json"
+  },
+  "raw_results": {
+    "primary_rows": 213,
+    "primary_raw_assertion_counts": {
+      "P": 169,
+      "F": 44
+    },
+    "primary_files": [
+      "raw/candidate-v13.5-geometry-results.json",
+      "raw/candidate-v13.5-domain-results.json",
+      "raw/candidate-v13.5-semantics-results.json",
+      "raw/candidate-v13.5-admitted-runtime-retry-1-results.json",
+      "raw/baseline-v12.6-common-2-geometry-results.json",
+      "raw/baseline-v12.6-common-2-domain-results.json",
+      "raw/baseline-v12.6-common-2-semantics-results.json",
+      "raw/baseline-v12.6-common-2-admitted-runtime-results.json",
+      "raw/candidate-v13.5-default-retry-1-results.json",
+      "raw/baseline-v12.6-common-2-default-common-results.json",
+      "raw/common-port-audit.json"
+    ],
+    "confirmed_failure_rows": 38,
+    "initial_expectation_error_F_rows": 4,
+    "unresolved_root_frame_interpretation_F_rows": 2,
+    "separate_initial_attempt_rows": 19,
+    "separate_initial_attempt_counts": {
+      "P": 12,
+      "F": 7
+    },
+    "initial_files": [
+      "raw/candidate-v13.5-default-results.json",
+      "raw/candidate-v13.5-admitted-runtime-results.json"
+    ],
+    "all_recorded_assertions": 232,
+    "all_raw_counts": {
+      "P": 181,
+      "F": 51
+    },
+    "count_warning": "Raw P/F are preserved executable expectations, not qualification/native acceptance or independent defect counts. D14 is API-binding behavior only; admitted-runtime A01 is the valid390x600 positive. Four initial geometry expectation errors and two interpretation rows are not claimed bugs."
+  },
+  "confirmed_blockers": [
+    {
+      "id": "SC07",
+      "title": "PNG16 low-bit differences disappear during decoding",
+      "evidence": [
+        "raw/oracle-16bit-lossless-mismatch.json",
+        "raw/admitted-original16-and-global-joint-oracles.json"
+      ],
+      "repro_case": "A07-raster16-lowbit-admitted-host",
+      "observed": "Both arms certify complete/exact and automatic absence passed although independent raw PNG16 decode proves one unequal original red channel sample. IHDR is bit depth16/color type2. Pillow exposes RGB and discards the low bits before the provider compares.",
+      "expected": "No full/absence credit from unequal originals or an unsupported original encoding. Lossy conversion cannot replace original pixels.",
+      "reach": "Direct certificate, bound state, execution coverage and automatic absence; no native/final delivery pass claimed."
+    },
+    {
+      "id": "SC08",
+      "title": "Later intersections invalidate an earlier independent witness clause",
+      "evidence": [
+        "raw/oracle-joint-witness-inconsistency.json",
+        "raw/admitted-original16-and-global-joint-oracles.json"
+      ],
+      "repro_case": "A08-joint-witness-admitted-host",
+      "observed": "Both arms accept a3-frame coherent raster chain. Link0 has only A/B witnesses. Final exact rational domains force A=[201,211), B=[210,220), so no final joint assignment makes that link disjoint. The later link has C/D and is accepted while the earlier witness clause is not rechecked.",
+      "expected": "One assignment must satisfy every original link and global identity/order constraints jointly.",
+      "reach": "Direct certificate, bound state, execution coverage, routing and automatic absence."
+    },
+    {
+      "id": "SC09",
+      "title": "Viewport-local presence/uniqueness values are treated as conflicting state values",
+      "evidence": [
+        "raw/candidate-v13.5-semantics-results.json",
+        "raw/baseline-v12.6-common-2-semantics-results.json",
+        "raw/candidate-v13.5-admitted-runtime-retry-1-results.json",
+        "raw/baseline-v12.6-common-2-admitted-runtime-results.json"
+      ],
+      "repro_case": "A11-late-presence",
+      "observed": "With a valid coherent full sweep, a target missing in early lazy frames but present late produces U for present:true/unique:true, and U rather than F for present:false. An explicit duplicate in an early frame followed by one match later produces U for unique:true instead of decisive F. Seen-early/missing-later and nonunique expectation variants also remain U.",
+      "expected": "State presence is existential over coherent original frames; absence requires complete never-present evidence; a real duplicate witness cannot be cancelled by a later single match.",
+      "reach": "Automatic typed evaluator in both common arms. Absent-all full and mixed-epoch/incomplete-negative controls behave correctly."
+    },
+    {
+      "id": "SC10",
+      "title": "Coverage-domain verification omits approved runtime host shape",
+      "evidence": [
+        "work/candidate-v13.5/admitted-runtime-retry-1/A09-forged-runtime-shape/environment.json",
+        "work/baseline-v12.6-common-2/admitted-runtime/A09-forged-runtime-shape/environment.json"
+      ],
+      "repro_case": "A09-forged-runtime-shape",
+      "observed": "Prepared approval/request/source namespace/original component copy/mock compiled log/captured and compiled host bytes match the pinned neutral domain. Coherently halving logical app/viewport/content/leaf rectangles to195x300 while retaining390x600 original PNGs is still granted full_content and absence P by both arms. The fixed approval requires logical390x600 and verified runtime shape/mapping.",
+      "expected": "Wrong runtime host shape cannot authorize full-content or absence through the fallback.",
+      "reach": "Coverage/domain/absence misclassification only. Independent environment gate is F and blocks whole final delivery; no final acceptance bypass asserted."
+    }
+  ],
+  "positive_controls": {
+    "old6_under_new_schema": [
+      "terminal geometry",
+      "stable_binding false",
+      "global native duplicate IDs including outside root",
+      "container-only anchors",
+      "off-axis content",
+      "diagnostics preserve original root through production scan"
+    ],
+    "domain_negatives": "Missing/tampered original prepared/request/source map/component/compile log/compiled host/provider all reject fallback. Unapproved actual revision queues review_source_domain before SDK.",
+    "default_candidate": "Public ui_loop native default owns failed handoff, normalized append-only source approval does not change context, actual source patch gets automatic measured completion and mandatory collector attempt, collector failure retains pending task/retest, changed oracle/host/domain blocks, removed current-source approval queues without reuse.",
+    "default_common_baseline": "Public baseline default queues unapproved actual source before collector and propagates prepared domain/original root through actual collector.",
+    "native_comparator": "Strict raw width30.000000000000007 vs expected30 remains failed while raster coverage passes."
+  },
+  "baseline_port": {
+    "source_audit": "raw/common-port-audit.json",
+    "changed_paths": 16,
+    "shared_provider_host_bytes_exact": true,
+    "original_baseline_matches_commit": "e75dd9227203dd06350a923cc249b79ff710687f",
+    "treatment_gains_backported": false,
+    "scope": "Source/AST proof only; runtime/timing gains not inferred."
+  },
+  "adjudications": {
+    "geometry": "raw/initial-expectation-adjudication.json",
+    "admitted_fixture": "raw/admitted-runtime-initial-fixture-adjudication.json",
+    "default_environment": "raw/default-first-run-environment-note.json",
+    "unresolved_root_frame": "The disjoint AX scroll-root frame observation is retained as an interpretation issue. Native ancestry is coherent; this review does not claim an additional implementation defect from that row alone."
+  },
+  "evidence_classes": {
+    "HOST": "Python file/image/evaluator/controller execution; read-only Git archive; synchronous HOST plutil inventory decoding; one sandbox-denied kern.boottime call retained.",
+    "SIMULATED": "All native geometry, observations, compiled logs/result bundles, devices/resource managers, SDK output and boot identity in the default retry. Every SDK command is intercepted in-process and never forwarded.",
+    "NATIVE": "NONE produced by this review. native_executed flags only describe dispatch into mock boundary."
+  },
+  "native_performance_business_gate": {
+    "native_runs": 0,
+    "speed_samples": 0,
+    "business_tasks": 0,
+    "qualification_or_20_percent_gate": "No native/speed credit from this review. Performance/business gates remain closed."
+  },
+  "repro": "checks/repro_existing.py reads archived original artifacts without SDK or mutations.",
+  "archive_and_closure": "RESOURCE-CLOSURE.json and raw-artifact-index.json; all owned artifacts retained and archived before closure."
+}

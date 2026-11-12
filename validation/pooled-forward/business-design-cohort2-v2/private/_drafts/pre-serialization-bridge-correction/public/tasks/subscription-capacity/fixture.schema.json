@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SubscriptionCapacityInput",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "entityID": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]+$",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647
+    },
+    "title": {
+      "type": "string"
+    },
+    "context": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "seatCount": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 2147483647
+    },
+    "teamQuota": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647
+    },
+    "scaleQuota": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647
+    },
+    "prepaidMonths": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647
+    },
+    "accountBalanceCents": {
+      "type": "integer",
+      "maximum": 2147483647,
+      "minimum": -2147483648
+    }
+  },
+  "required": [
+    "entityID",
+    "revision",
+    "title",
+    "context",
+    "notes",
+    "seatCount",
+    "teamQuota",
+    "scaleQuota",
+    "prepaidMonths",
+    "accountBalanceCents"
+  ]
+}

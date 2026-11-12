@@ -1,0 +1,32 @@
+--- qualified-candidate5/verify_benchmark.py
++++ candidate6/verify_benchmark.py
+@@ -216,7 +216,14 @@
+             save(dst.with_suffix('.driver.json'),{'argv':command,'exit_code':proc.returncode,'stdout':proc.stdout})
+             if proc.returncode:
+                 errors.append(block+'/'+arm+'/'+step+' original replay failed');continue
+-            replayed=load(dst); replays[(block,arm,step)]=replayed
++            replayed=load(dst)
++            duties=cycle.get('evidence_responsibility',{});duty_rows=duties.get('rows',[])
++            identities={'component-native-controls','component-native-callbacks','thin-bridge-decodes-calls'}
++            check(len(duty_rows)==3 and {v.get('id')for v in duty_rows}==identities
++                  and all(v.get('priority')=='must'and v.get('status')in{'passed','failed','unassessed'}for v in duty_rows),
++                  block+'/'+arm+'/'+step+' original responsibility denominator differs')
++            replayed['original_responsibility_rows']=sorted([{k:v.get(k)for k in ['id','priority','owner','method','status','expected','unit']}for v in duty_rows],key=lambda v:v['id'])
++            replays[(block,arm,step)]=replayed
+             check(replayed['native_counts']=={'passed':104,'failed':0,'unassessed':0},block+'/'+arm+'/'+step+' mandatory native discrepancy')
+             if step.startswith('F2-'):
+                 check(cycle['status']=='accepted',block+'/'+arm+'/'+step+' not accepted')
+@@ -236,9 +243,13 @@
+             def facts(v):return sorted([{k:r[k]for k in r if k!='reason'}for r in v['rows']],key=lambda r:r['id'])
+             same=facts(x)==facts(y)
+             check(same,block+'/'+step+' mandatory P/F/U or approved oracle differs')
++            source_same=x['original_responsibility_rows']==y['original_responsibility_rows']
++            check(source_same,block+'/'+step+' original mandatory responsibility P/F/U differs')
+             check(all(x[k]==y[k]for k in ['design_sha256','plan_sha256','fixtures_sha256','bridge_sha256','environment_sha256']),block+'/'+step+' input identity differs')
+             comparisons.append({'block':block,'step':step,'same_mandatory_pfu':same,
+                 'A':x['native_counts'],'B':y['native_counts'],
++                'same_original_responsibility_pfu':source_same,
++                'original_responsibility_A':x['original_responsibility_rows'],'original_responsibility_B':y['original_responsibility_rows'],
+                 'raw_reason_differences':[{'id':p['id'],'A':p['reason'],'B':q['reason']}for p,q in zip(sorted(x['rows'],key=lambda r:r['id']),sorted(y['rows'],key=lambda r:r['id']))if p['reason']!=q['reason']]})
+     check(len(episodes)==4,'All four episodes required')
+     for first,second in zip(episodes,episodes[1:]):

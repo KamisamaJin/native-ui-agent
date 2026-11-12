@@ -1,0 +1,40 @@
+package org.nativeobserver
+
+import androidx.compose.runtime.Composable
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.boolean
+import kotlinx.serialization.json.int
+import com.example.reply.ui.theme.ContrastAwareReplyTheme
+import com.example.reply.ui.components.business.*
+
+private fun JsonObject.s(k: String) = getValue(k).jsonPrimitive.content
+private fun JsonObject.i(k: String) = getValue(k).jsonPrimitive.int
+private fun JsonObject.b(k: String) = getValue(k).jsonPrimitive.boolean
+
+object ObserverBridge {
+    @Composable
+    fun Content(input: JsonObject, onEvent: (String) -> Unit) {
+        val decoded = ShipmentReleaseFixture(
+            entityId = input.s("entityId"),
+            entityTitle = input.s("entityTitle"),
+            description = input.s("description"),
+            lots = input.getValue("lots").jsonArray.map { value ->
+                val item = value.jsonObject
+                ReleaseLot(
+                    id = item.s("id"),
+                    label = item.s("label"),
+                    detail = item.s("detail"),
+                    units = item.i("units"),
+                    available = item.b("available"),
+                    holdReason = item.s("holdReason"),
+                )
+            },
+        )
+        ContrastAwareReplyTheme(darkTheme = false, dynamicColor = false) {
+            ShipmentReleasePanel(fixture = decoded, onEvent = onEvent)
+        }
+    }
+}

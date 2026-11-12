@@ -1,0 +1,670 @@
+{
+  "version": 1,
+  "scenario": "hidden-edge",
+  "business_rules_source": "reference.json#/business_rules",
+  "states": [
+    {
+      "id": "initial",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content",
+      "stimulus": "none",
+      "exact_business_state": {
+        "entity": "BK-908 · Extended assisted planning consultation with a support worker",
+        "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false
+          },
+          "slotA": {
+            "label": "Choose assisted morning",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person"
+          },
+          "slotB": {
+            "label": "Choose assisted afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose remote review",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "No visit mode · No time selected",
+        "status": "Choose a visit mode.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "in-person",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-908 · Extended assisted planning consultation with a support worker",
+        "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false
+          },
+          "slotA": {
+            "label": "Choose assisted morning",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person"
+          },
+          "slotB": {
+            "label": "Choose assisted afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose remote review",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "In person · No time selected",
+        "status": "Choose an available time for this mode.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "time-selected",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-908 · Extended assisted planning consultation with a support worker",
+        "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false
+          },
+          "slotA": {
+            "label": "Choose assisted morning",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person"
+          },
+          "slotB": {
+            "label": "Choose assisted afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose remote review",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "In person · Choose assisted morning",
+        "status": "Confirm attendee notification.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-908 · Extended assisted planning consultation with a support worker",
+        "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false
+          },
+          "slotA": {
+            "label": "Choose assisted morning",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person"
+          },
+          "slotB": {
+            "label": "Choose assisted afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose remote review",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "In person · Choose assisted morning",
+        "status": "Ready to move this appointment.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "moved",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-908 · Extended assisted planning consultation with a support worker",
+        "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": false,
+            "kind": "option",
+            "selected": true
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false
+          },
+          "slotA": {
+            "label": "Choose assisted morning",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person"
+          },
+          "slotB": {
+            "label": "Choose assisted afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose remote review",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "In person · Choose assisted morning",
+        "status": "Appointment move recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "reschedule|BK-908|in_person|Q-7"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "same-booking-preserved",
+      "input_index": 1,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "BK-908 · Extended assisted planning consultation with a support worker",
+        "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen. The replacement now permits a video visit, but the Monday assisted morning remains in-person only.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "slotA": {
+            "label": "Choose assisted morning",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person"
+          },
+          "slotB": {
+            "label": "Choose assisted afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose remote review",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "In person · Choose assisted morning",
+        "status": "Confirm attendee notification.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "mode-invalidates-time",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "targets",
+      "stimulus_action": 11,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-908 · Extended assisted planning consultation with a support worker",
+        "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen. The replacement now permits a video visit, but the Monday assisted morning remains in-person only.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "slotA": {
+            "label": "Choose assisted morning",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person"
+          },
+          "slotB": {
+            "label": "Choose assisted afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose remote review",
+            "enabled": true,
+            "kind": "option",
+            "selected": false,
+            "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Video · No time selected",
+        "status": "Choose an available time for this mode.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "remote-time",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "targets",
+      "stimulus_action": 13,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-908 · Extended assisted planning consultation with a support worker",
+        "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen. The replacement now permits a video visit, but the Monday assisted morning remains in-person only.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "slotA": {
+            "label": "Choose assisted morning",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person"
+          },
+          "slotB": {
+            "label": "Choose assisted afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose remote review",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "Video · Choose remote review",
+        "status": "Confirm attendee notification.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "ready-again",
+      "input_index": 1,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-908 · Extended assisted planning consultation with a support worker",
+        "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen. The replacement now permits a video visit, but the Monday assisted morning remains in-person only.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": true,
+            "kind": "option",
+            "selected": true
+          },
+          "slotA": {
+            "label": "Choose assisted morning",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person"
+          },
+          "slotB": {
+            "label": "Choose assisted afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose remote review",
+            "enabled": true,
+            "kind": "option",
+            "selected": true,
+            "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Video · Choose remote review",
+        "status": "Ready to move this appointment.",
+        "primary_enabled": true,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "moved-again",
+      "input_index": 1,
+      "after_action": 18,
+      "coverage": "full_content",
+      "stimulus_action": 17,
+      "stimulus": "tap",
+      "exact_business_state": {
+        "entity": "BK-908 · Extended assisted planning consultation with a support worker",
+        "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen. The replacement now permits a video visit, but the Monday assisted morning remains in-person only.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": false,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": false,
+            "kind": "option",
+            "selected": true
+          },
+          "slotA": {
+            "label": "Choose assisted morning",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person"
+          },
+          "slotB": {
+            "label": "Choose assisted afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose remote review",
+            "enabled": false,
+            "kind": "option",
+            "selected": true,
+            "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": false,
+            "kind": "toggle",
+            "selected": true
+          }
+        },
+        "summary": "Video · Choose remote review",
+        "status": "Appointment move recorded.",
+        "primary_enabled": false,
+        "submitted": true,
+        "preview": null
+      },
+      "exact_callback_interval": [
+        "reschedule|BK-908|video|Q-9"
+      ],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    },
+    {
+      "id": "changed-booking",
+      "input_index": 2,
+      "after_action": 20,
+      "coverage": "full_content",
+      "stimulus_action": 19,
+      "stimulus": "caller_update",
+      "exact_business_state": {
+        "entity": "BK-909 · New booking with reused offer IDs",
+        "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+        "controls": {
+          "inPerson": {
+            "label": "Visit in person",
+            "enabled": true,
+            "kind": "option",
+            "selected": false
+          },
+          "video": {
+            "label": "Visit by video",
+            "enabled": false,
+            "kind": "option",
+            "selected": false
+          },
+          "slotA": {
+            "label": "Choose assisted morning",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.\nAvailable · in_person"
+          },
+          "slotB": {
+            "label": "Choose assisted afternoon",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.\nFull · in_person"
+          },
+          "slotC": {
+            "label": "Choose remote review",
+            "enabled": false,
+            "kind": "option",
+            "selected": false,
+            "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.\nAvailable · video"
+          },
+          "notify": {
+            "label": "Notify the attendee",
+            "enabled": true,
+            "kind": "toggle",
+            "selected": false
+          }
+        },
+        "summary": "No visit mode · No time selected",
+        "status": "Choose a visit mode.",
+        "primary_enabled": false,
+        "submitted": false,
+        "preview": null
+      },
+      "exact_callback_interval": [],
+      "callback_gate": "Only original successfully dispatched tap/caller-update; sweeps have no business callback assertion"
+    }
+  ]
+}

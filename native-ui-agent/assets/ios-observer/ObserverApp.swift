@@ -55,7 +55,7 @@ private struct ObserverHost: View {
     }
     var body: some View {
         VStack(spacing: 8) {
-            ScrollView(.vertical) {
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 0) {
                     ObserverBridge.make(fixture: fixtures[index]) { name in
                         events.append(["event": name, "fixture_index": index, "uptime": ProcessInfo.processInfo.systemUptime])

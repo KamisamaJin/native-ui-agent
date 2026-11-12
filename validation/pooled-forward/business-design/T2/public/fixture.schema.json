@@ -1,0 +1,81 @@
+{
+  "type": "object",
+  "properties": {
+    "entityId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9-]{1,32}$"
+    },
+    "entityTitle": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "allowVideo": {
+      "type": "boolean"
+    },
+    "slots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]{1,32}$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "detail": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "modes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "in_person",
+                "video"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 2,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "detail",
+          "available",
+          "modes"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 4
+    }
+  },
+  "required": [
+    "entityId",
+    "entityTitle",
+    "description",
+    "allowVideo",
+    "slots"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AppointmentRescheduleFixture",
+  "$comment": "Unique group IDs and action labels; all UI/business decisions component-owned. No hidden-only requirement."
+}

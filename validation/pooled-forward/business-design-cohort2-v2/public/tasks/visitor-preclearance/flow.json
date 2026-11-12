@@ -1,0 +1,261 @@
+{
+  "scenario": "public-flow",
+  "states": [
+    {
+      "id": "blank",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "root-chosen",
+      "input_index": 0,
+      "after_action": 1,
+      "coverage": "targets"
+    },
+    {
+      "id": "detail-chosen",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets"
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "full_content",
+      "stimulus_action": 3
+    },
+    {
+      "id": "recorded",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5
+    },
+    {
+      "id": "long-retained",
+      "input_index": 1,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7
+    },
+    {
+      "id": "entity-replaced",
+      "input_index": 2,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9
+    },
+    {
+      "id": "alternate-root",
+      "input_index": 2,
+      "after_action": 11,
+      "coverage": "targets"
+    },
+    {
+      "id": "alternate-detail",
+      "input_index": 2,
+      "after_action": 12,
+      "coverage": "targets"
+    },
+    {
+      "id": "dependent-reset",
+      "input_index": 2,
+      "after_action": 13,
+      "coverage": "targets"
+    },
+    {
+      "id": "revision-replaced",
+      "input_index": 3,
+      "after_action": 17,
+      "coverage": "full_content",
+      "stimulus_action": 16
+    }
+  ],
+  "logical_actions": [
+    {
+      "type": "sweep",
+      "max_scrolls": 18,
+      "state_id": "blank"
+    },
+    {
+      "type": "tap",
+      "target": "root:research",
+      "reveal": true,
+      "max_steps": 18,
+      "preconditions": [
+        {
+          "target": "root:research",
+          "property": "enabled",
+          "op": "eq",
+          "expected": true
+        }
+      ],
+      "state_id": "root-chosen"
+    },
+    {
+      "type": "tap",
+      "target": "detail:research-badge",
+      "reveal": true,
+      "max_steps": 18,
+      "preconditions": [
+        {
+          "target": "detail:research-badge",
+          "property": "enabled",
+          "op": "eq",
+          "expected": true
+        }
+      ],
+      "state_id": "detail-chosen"
+    },
+    {
+      "type": "tap",
+      "target": "ack",
+      "reveal": true,
+      "max_steps": 18,
+      "preconditions": [
+        {
+          "target": "ack",
+          "property": "enabled",
+          "op": "eq",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "type": "sweep",
+      "max_scrolls": 18,
+      "state_id": "ready"
+    },
+    {
+      "type": "tap",
+      "target": "submit",
+      "reveal": true,
+      "max_steps": 18,
+      "preconditions": [
+        {
+          "target": "submit",
+          "property": "enabled",
+          "op": "eq",
+          "expected": true
+        },
+        {
+          "target": "ack",
+          "property": "selected",
+          "op": "eq",
+          "expected": true
+        }
+      ],
+      "expect_callback": "visitor|visitor-preclearance-public|4|research|research-badge|3",
+      "callback_dependencies": [
+        {
+          "action_index": 3,
+          "expected_events": []
+        }
+      ]
+    },
+    {
+      "type": "sweep",
+      "max_scrolls": 18,
+      "state_id": "recorded"
+    },
+    {
+      "type": "apply_next_fixture"
+    },
+    {
+      "type": "sweep",
+      "max_scrolls": 18,
+      "state_id": "long-retained"
+    },
+    {
+      "type": "apply_next_fixture"
+    },
+    {
+      "type": "sweep",
+      "max_scrolls": 18,
+      "state_id": "entity-replaced"
+    },
+    {
+      "type": "tap",
+      "target": "root:office",
+      "reveal": true,
+      "max_steps": 18,
+      "preconditions": [
+        {
+          "target": "root:office",
+          "property": "enabled",
+          "op": "eq",
+          "expected": true
+        }
+      ],
+      "state_id": "alternate-root"
+    },
+    {
+      "type": "tap",
+      "target": "detail:visitor-escort",
+      "reveal": true,
+      "max_steps": 18,
+      "preconditions": [
+        {
+          "target": "detail:visitor-escort",
+          "property": "enabled",
+          "op": "eq",
+          "expected": true
+        }
+      ],
+      "state_id": "alternate-detail"
+    },
+    {
+      "type": "tap",
+      "target": "root:research",
+      "reveal": true,
+      "max_steps": 18,
+      "preconditions": [
+        {
+          "target": "root:research",
+          "property": "enabled",
+          "op": "eq",
+          "expected": true
+        }
+      ],
+      "state_id": "dependent-reset"
+    },
+    {
+      "type": "tap",
+      "target": "detail:research-badge",
+      "reveal": true,
+      "max_steps": 18,
+      "preconditions": [
+        {
+          "target": "detail:research-badge",
+          "property": "enabled",
+          "op": "eq",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "type": "tap",
+      "target": "ack",
+      "reveal": true,
+      "max_steps": 18,
+      "preconditions": [
+        {
+          "target": "ack",
+          "property": "enabled",
+          "op": "eq",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "type": "apply_next_fixture"
+    },
+    {
+      "type": "sweep",
+      "max_scrolls": 18,
+      "state_id": "revision-replaced"
+    }
+  ]
+}

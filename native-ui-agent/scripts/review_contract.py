@@ -94,7 +94,7 @@ def bind(plan, lock, lock_sha, policy, policy_sha, observation, observation_sha,
         if not isinstance(indices, list) or any(type(i) is not int for i in indices) or len(set(indices)) != len(indices):
             raise ValueError('Unique original native snapshot indices required')
         requests[rid] = request
-    states = {s['id']: bound_state_evidence(observation, s) for s in plan['states']}
+    states = {s['id']: bound_state_evidence(observation, s, root) for s in plan['states']}
     decisions, findings = [], []
     for row in cat['rows']:
         found, complete, why, capture = states[row['state']]

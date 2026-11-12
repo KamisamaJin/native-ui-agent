@@ -1,0 +1,864 @@
+{
+  "initial": {
+    "entityId": "BK-908",
+    "entityTitle": "Extended assisted planning consultation with a support worker",
+    "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+    "allowVideo": false,
+    "slots": [
+      {
+        "id": "Q-7",
+        "label": "Choose assisted morning",
+        "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.",
+        "available": true,
+        "modes": [
+          "in_person"
+        ]
+      },
+      {
+        "id": "Q-8",
+        "label": "Choose assisted afternoon",
+        "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.",
+        "available": false,
+        "modes": [
+          "in_person"
+        ]
+      },
+      {
+        "id": "Q-9",
+        "label": "Choose remote review",
+        "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.",
+        "available": true,
+        "modes": [
+          "video"
+        ]
+      }
+    ]
+  },
+  "updates": [
+    {
+      "entityId": "BK-908",
+      "entityTitle": "Extended assisted planning consultation with a support worker",
+      "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen. The replacement now permits a video visit, but the Monday assisted morning remains in-person only.",
+      "allowVideo": true,
+      "slots": [
+        {
+          "id": "Q-7",
+          "label": "Choose assisted morning",
+          "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.",
+          "available": true,
+          "modes": [
+            "in_person"
+          ]
+        },
+        {
+          "id": "Q-8",
+          "label": "Choose assisted afternoon",
+          "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.",
+          "available": false,
+          "modes": [
+            "in_person"
+          ]
+        },
+        {
+          "id": "Q-9",
+          "label": "Choose remote review",
+          "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.",
+          "available": true,
+          "modes": [
+            "video"
+          ]
+        }
+      ]
+    },
+    {
+      "entityId": "BK-909",
+      "entityTitle": "New booking with reused offer IDs",
+      "description": "The attendee is arranging a support worker, accessible transport, and an interpreter for a detailed planning consultation. Keep every scheduling instruction readable: the support worker must receive the same time as the attendee, the visit mode must match the chosen offer, and the detailed review cannot be shortened to fit the screen.",
+      "allowVideo": false,
+      "slots": [
+        {
+          "id": "Q-7",
+          "label": "Choose assisted morning",
+          "detail": "Monday 09:15–10:30 in the accessible meeting room beyond the main reception. Allow the attendee time to unpack printed drawings and check the induction-loop setup.",
+          "available": true,
+          "modes": [
+            "in_person"
+          ]
+        },
+        {
+          "id": "Q-8",
+          "label": "Choose assisted afternoon",
+          "detail": "Monday 13:30–14:45. The alternate room is currently fully booked.",
+          "available": false,
+          "modes": [
+            "in_person"
+          ]
+        },
+        {
+          "id": "Q-9",
+          "label": "Choose remote review",
+          "detail": "Friday 15:15–16:30 with the same interpreter joining remotely.",
+          "available": true,
+          "modes": [
+            "video"
+          ]
+        }
+      ]
+    }
+  ],
+  "width": 390,
+  "theme": "light",
+  "direction": "ltr",
+  "canvas_color": "#FFF8F4",
+  "max_scrolls": 18,
+  "required_identifiers": [
+    "T2.surface",
+    "T2.entity",
+    "T2.description",
+    "T2.summary",
+    "T2.status",
+    "T2.slotA.detail",
+    "T2.slotB.detail",
+    "T2.slotC.detail"
+  ],
+  "dynamic_type": "large",
+  "state_capture": true,
+  "guard_protocol": 1,
+  "observation_strategy": "coalesced",
+  "execution_states": [
+    {
+      "state_id": "start",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose assisted morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose assisted afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose remote review"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "in-person",
+      "coverage": "targets",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose assisted morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose assisted afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose remote review"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "time-selected",
+      "coverage": "targets",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose assisted morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose assisted afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose remote review"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "ready",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose assisted morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose assisted afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose remote review"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "moved",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose assisted morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose assisted afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose remote review"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "same-booking-preserved",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose assisted morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose assisted afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose remote review"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "mode-invalidates-time",
+      "coverage": "targets",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose assisted morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose assisted afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose remote review"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "remote-time",
+      "coverage": "targets",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose assisted morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose assisted afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose remote review"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "ready-again",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose assisted morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose assisted afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose remote review"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "moved-again",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose assisted morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose assisted afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose remote review"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "changed-booking",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose assisted morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose assisted afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose remote review"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    }
+  ],
+  "execution_state_definitions": [
+    {
+      "id": "start",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "in-person",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1
+    },
+    {
+      "id": "time-selected",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5
+    },
+    {
+      "id": "moved",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7
+    },
+    {
+      "id": "same-booking-preserved",
+      "input_index": 1,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9
+    },
+    {
+      "id": "mode-invalidates-time",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "targets",
+      "stimulus_action": 11
+    },
+    {
+      "id": "remote-time",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "targets",
+      "stimulus_action": 13
+    },
+    {
+      "id": "ready-again",
+      "input_index": 1,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15
+    },
+    {
+      "id": "moved-again",
+      "input_index": 1,
+      "after_action": 18,
+      "coverage": "full_content",
+      "stimulus_action": 17
+    },
+    {
+      "id": "changed-booking",
+      "input_index": 2,
+      "after_action": 20,
+      "coverage": "full_content",
+      "stimulus_action": 19
+    }
+  ],
+  "execution_scope": "full",
+  "observation_targets": [
+    {
+      "label": "Appointment rescheduling offer"
+    },
+    {
+      "identifier": "T2.entity"
+    },
+    {
+      "identifier": "T2.description"
+    },
+    {
+      "identifier": "T2.summary"
+    },
+    {
+      "identifier": "T2.status"
+    },
+    {
+      "identifier": "T2.surface"
+    },
+    {
+      "label": "Visit in person"
+    },
+    {
+      "label": "Visit by video"
+    },
+    {
+      "label": "Choose assisted morning"
+    },
+    {
+      "identifier": "T2.slotA.detail"
+    },
+    {
+      "label": "Choose assisted afternoon"
+    },
+    {
+      "identifier": "T2.slotB.detail"
+    },
+    {
+      "label": "Choose remote review"
+    },
+    {
+      "identifier": "T2.slotC.detail"
+    },
+    {
+      "label": "Notify the attendee"
+    },
+    {
+      "label": "Move appointment"
+    }
+  ]
+}

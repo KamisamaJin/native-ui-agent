@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "review_id": "focused-operator-review-3",
+  "reviewed_at_utc": "2026-11-10T14:32:27.364403+00:00",
+  "verdict": "blocked-candidate-4-pinned-revision",
+  "candidate_record": "OPERATOR-CANDIDATE-4.json",
+  "pins_match_owner_candidate": true,
+  "reviewed_tools": {
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/neutral_episode.py": {
+      "sha256": "ed3884bc57e6c4b7eaba9d3022ba632bd5285f0dc32999ed25d3ad39dcbae088",
+      "bytes": 9861
+    },
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/verify_benchmark.py": {
+      "sha256": "b243f8b80fc022b82c6d42e248ed0b15aa33fa10a20c0ef18031cccf0e8e5d5c",
+      "bytes": 18886
+    },
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/native_envelope.py": {
+      "sha256": "fba05df25e527e77baa60036c352f5b142508ee37d0e4c6b97a5fad5940b41b7",
+      "bytes": 6393
+    }
+  },
+  "after_snapshot": {
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/neutral_episode.py": {
+      "sha256": "ed3884bc57e6c4b7eaba9d3022ba632bd5285f0dc32999ed25d3ad39dcbae088",
+      "bytes": 9861,
+      "same_as_review_start": true
+    },
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/verify_benchmark.py": {
+      "sha256": "d09eb31e7c681ad40aa14d2e386fac6d0ea2ee5a425744ad2c23d5d4313440c1",
+      "bytes": 19592,
+      "same_as_review_start": false
+    },
+    "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/native_envelope.py": {
+      "sha256": "fba05df25e527e77baa60036c352f5b142508ee37d0e4c6b97a5fad5940b41b7",
+      "bytes": 6393,
+      "same_as_review_start": true
+    }
+  },
+  "scope": "Focused DISJOINT HOST/SIM only; strict non-forwarding replay/Resources and pure model hooks. No actual subprocess, native/SDK/device command, timed episode, performance sample or real frozen/native-packet replay executed.",
+  "results": {
+    "primary_focused_cases": 44,
+    "primary_expected_outcomes": 40,
+    "primary_erroneous_accepts": [
+      "EMPTY-raw-request",
+      "MISSING-request-clock-start",
+      "FOREIGN-output-path",
+      "FOREIGN-outer-envelope"
+    ],
+    "primary_gate_matrix_cases": 38,
+    "direct_replay_boundary_cases": 6,
+    "earlier_interface_matrix_preserved": 38,
+    "total_test_executions": 82,
+    "real_subprocesses": 0,
+    "simulated_reduction_not_native_speed": true
+  },
+  "confirmed_blockers": [
+    {
+      "id": "O3",
+      "priority": "P1",
+      "problem": "Initial raw-request denominator remains optional",
+      "cases": [
+        "EMPTY-raw-request",
+        "MISSING-request-clock-start"
+      ],
+      "actual": "Both return0/passed:true/errors:[] with all9 result/driver records, valid nested clocks and the coherent synthetic replay.",
+      "source_citations": [
+        {
+          "path": "pinned-verify_benchmark.py",
+          "line": 50
+        },
+        {
+          "path": "pinned-verify_benchmark.py",
+          "line": 60
+        }
+      ],
+      "cause": "all(command.get(k)==v for k,v in request.items()) validates only keys that happen to exist. Empty request{} passes vacuously, and missing initial clock_start is not detected.",
+      "required_resolution": "Validate the exact required initial request key set/types and parity for every initial field; preserve rejection of conflicting or malformed values."
+    },
+    {
+      "id": "O4",
+      "priority": "P1",
+      "problem": "Recorded supervisor and output identity are not fully bound to the declared public command",
+      "cases": [
+        "FOREIGN-output-path",
+        "FOREIGN-outer-envelope"
+      ],
+      "actual": "Consistently changing the child --output in request/result/driver to an unrelated output path passes. Changing outer driver argv[2] to an unrelated supervisor path also passes. Both return0/passed:true/errors:[].",
+      "source_citations": [
+        {
+          "path": "pinned-verify_benchmark.py",
+          "line": 68
+        },
+        {
+          "path": "pinned-verify_benchmark.py",
+          "line": 71
+        },
+        {
+          "path": "pinned-verify_benchmark.py",
+          "line": 76
+        }
+      ],
+      "cause": "The gate binds selected child prefixes/config and selected outer flags, while the expected per-command output/submission/previous body and outer supervisor prefix remain unchecked. The existing canonical cycles can therefore be evaluated alongside a different recorded invocation.",
+      "required_resolution": "Reconstruct the complete expected outer supervisor prefix and allowed per-command child argv, including exact native/source-review output and submission paths, applicable previous packet/hash, final flags and supported timeout/config/record identity. Reject omissions/extras/substitution."
+    }
+  ],
+  "earlier_failures_closed": [
+    {
+      "family": "Missing command receipts",
+      "evidence": "MISSING-command-receipts now rejects with exact command/driver denominator errors"
+    },
+    {
+      "family": "Outside episode/negative/inconsistent/overlapping command clocks",
+      "evidence": "COMMAND-outside-episode, COMMAND-negative-clock, COMMAND-wall-clock-disagreement, COMMAND-overlap all reject"
+    },
+    {
+      "family": "Wrong stage placement",
+      "evidence": "COMMAND-wrong-stage-placement places the C0 command in the actual F2 time interval; it rejects. Stage identity is now derived from fixed COMMANDS names; unused extra stage labels alone are not authoritative."
+    }
+  ],
+  "relevant_controls_preserved": [
+    "Coherent new-schema9-command positive passes",
+    "Empty final or replayed source denominator rejects; three rows and one mandatory source claim remain required",
+    "Negative/nonfinite/boolean episode walls, wall1 versus56 stage seconds, negative overhead and raw-stage disagreement reject",
+    "Excess command wall, nonzero/missing wrapper result and release failure after child0 reject",
+    "ABBA overlap, retirement leftover, mandatoryU and per-rowPFU drift reject",
+    "Reason-only controlled disagreement remains visible in14 comparison records",
+    "Actual envelope with strict fake Resources reports child0/releasefailure as wrapper1; child7 as7; source mutation as1",
+    "Gate rejects actual synthetic frozen-arm tree or freeze-manifest drift before the fake replay is called",
+    "Direct replay entry rejects empty/missing/wrong tool-file identity before any injected reconstruction hook",
+    "Valid synthetic tool map reaches the responsibility reconstruction hooks; missing must source claim rejects and sourceU remains unpromoted"
+  ],
+  "measurement_and_source_independence": {
+    "command_timing": "Candidate4 envelope exports shared CLOCK_MONOTONIC start/end and exact difference, after source_after hashing, supervisor exit and synchronous recovery. Gate enforces nested stage bounds and ordered nonoverlap across fixed9 commands. These source/control facts and synthetic decisions do not demonstrate native timing.",
+    "frozen_boundary": "Gate rehashes actual synthetic arm freeze files and complete source trees before any replay. Direct replay tool-file checks were exercised with pure injected models. Actual original packet authenticity/native reconstruction and real frozen helper correctness were not independently executed in this scope.",
+    "denominators": "Native104/source3-and-one-must/environment/coverage/resource duties remain separately checked; mandatory unknowns were never rewrittenP."
+  },
+  "fixture_refinement": "The first38-case interface fixture matrix is preserved. The schema-faithful primary matrix adds actual required source-bind submission/bound-output args and A previous-packet/hash bodies to mirror neutral_episode; both matrices exhibit the same four erroneous accepts. This refines the test model, without changing operator source or requirements.",
+  "preservation": {
+    "reviewer_operator_edits": false,
+    "review2_members_reverified": 6256,
+    "review2_seal_sha256": "b9907e5324ad3ce0703328e0ab46f3077c0be58aee3211a03da6e6f8879ac708",
+    "all_prior_review2_originals_unchanged": true,
+    "live_verifier_changed_externally_by_final_snapshot": true,
+    "qualification_not_transferred_to_changed_live_bytes": true
+  },
+  "next_step": "Correct O3/O4 and run a separately pinned focused review before timed/native benchmark collection. This report applies only to candidate4 source hashes."
+}

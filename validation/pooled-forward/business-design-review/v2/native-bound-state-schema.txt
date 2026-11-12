@@ -1,0 +1,65 @@
+ 296 def bound_state_evidence(observation,state,root=None):
+ 297     """Strict source/epoch/image identity for the new independently pinned review mode."""
+ 298     found,complete,reason,capture=state_evidence(observation,state,root)
+ 299     if not found:return found,complete,reason,capture
+ 300     binding=capture.get('binding',{})if capture else{}
+ 301     valid=(isinstance(binding.get('instance'),str)and bool(binding['instance'])and
+ 302            isinstance(binding.get('input_sha256'),str)and len(binding['input_sha256'])==64 and
+ 303            type(binding.get('event_revision'))is int and binding['event_revision']>=0)
+ 304     if not valid or any(s.get('state_id')!=state['id']or s.get('binding')!=binding or
+ 305                         s.get('capture_consistent')is not True or s.get('binding_after_capture')!=binding for _,s in found):
+ 306         return [],False,'strict state/input/epoch/image identity missing or changed',capture
+ 307     return found,complete,reason,capture
+ 308 
+ 309 
+ 310 def legacy_geometry_value(snapshot, item, platform):
+ 311     """Distances between observed native bounds, not inferred style attributes.
+ 312 
+ 313     Both boxes must be in the same coherent frame. Subtracting screen positions
+ 314     across separately scrolled screenshots would produce false spacing results.
+ 315     """
+ 316     if item.get('measurement')=='layout_box':return None
+ 317     def box(selector):
+ 318         r=resolve(snapshot,selector,platform)
+ 319         node=r.get(item.get('basis','semantic'),{})
+ 320         if not r['facts'].get('unique')or not node.get('intersects_viewport'):return None
+ 321         if not node.get('fully_within_viewport',node.get('fully_visible',False)):return None
+ 322         if platform=='ios':
+ 323             f=node.get('frame',{});return [f.get('x',0),f.get('y',0),f.get('x',0)+f.get('width',0),f.get('y',0)+f.get('height',0)]if f else None
+ 324         return node.get('unclipped_bounds_dp')
+ 325     a=box(item['target'])
+ 326     if not a:return None
+ 327     p=item['property']
+ 328     if p=='width':return a[2]-a[0]
+ 329     if p=='height':return a[3]-a[1]
+ 330     b=box(item['reference_target'])
+ 331     if not b:return None
+ 332     return {'gap_x':a[0]-b[2],'gap_y':a[1]-b[3],
+ 333             'inset_left':a[0]-b[0],'inset_right':b[2]-a[2],
+ 334             'inset_top':a[1]-b[1],'inset_bottom':b[3]-a[3]}[p]
+ 335 
+ 336 
+ 337 def geometry_measurement(snapshot, item, platform):
+ 338     import native_geometry
+ 339     try:
+ 340         measured = native_geometry.measure(snapshot, item, platform, resolve)
+ 341     except (ValueError, TypeError, KeyError, OverflowError):
+ 342         return None
+ 343     if measured is not None:
+ 344         return measured
+ 345     # A malformed/present native packet must never fall back to rounded bounds.
+ 346     if platform == 'android':
+ 347         for selector in [item.get('target'), item.get('reference_target')]:
+ 348             if selector and 'native_geometry' in resolve(snapshot, selector, platform).get(item.get('basis', 'semantic'), {}):
+ 349                 return None
+ 350     value = legacy_geometry_value(snapshot, item, platform)
+ 351     return None if value is None else {'value': value, 'method': 'legacy_rounded_bounds', 'policy': 'Original strict comparator; no claimed precision repair.'}
+ 352 
+ 353 
+ 354 def geometry_value(snapshot, item, platform):
+ 355     result = geometry_measurement(snapshot, item, platform)
+ 356     return result['value'] if result else None
+ 357 
+ 358 
+ 359 def native_tree(nodes,platform):
+ 360     """One connected native identity graph; repeated records are not entities."""

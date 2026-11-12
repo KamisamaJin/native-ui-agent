@@ -1,0 +1,277 @@
+...............E................................................E..E..EEE....................................EE....E..EE.EE.EEE..........................................................
+======================================================================
+ERROR: test_invalid_execution_or_policy_is_rejected_before_sdk (test_delivery_plan.DeliveryPlanTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_delivery_plan.py", line 201, in test_invalid_execution_or_policy_is_rejected_before_sdk
+    result = execution.run_execution(value, plan, lock, lock_sha, config, bridge, root / 'native-failure', [bridge], {})
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/execution_plan.py", line 309, in run_execution
+    record['finishedAtUnix'] = time.time(); record['finishedLeaseClock'] = lease_clock(); record['host_boot_id'] = boot_identity()
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 45, in boot_identity
+    raise OSError(ctypes.get_errno(), 'Native pool host boot identity is unavailable')
+PermissionError: [Errno 1] Native pool host boot identity is unavailable
+
+======================================================================
+ERROR: test_budget_stops_actual_owned_process_and_preserves_failure (test_managed_execution.ResourceTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_managed_execution.py", line 54, in test_budget_stops_actual_owned_process_and_preserves_failure
+    resources.run([sys.executable, '-c', 'from pathlib import Path; import time; Path('+repr(str(p))+').write_bytes(b"a"*2_000_000); time.sleep(20)'], env=dict(__import__('os').environ), stdout=log)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 412, in run
+    identity = self.process_identity(self.process.pid)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 134, in process_identity
+    p = subprocess.run(['ps', '-ww', '-p', str(pid), '-o', 'lstart=', '-o', 'pgid=', '-o', 'command='], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: 'ps'
+
+======================================================================
+ERROR: test_ios_platform_without_package_still_resolves_managed_simulator (test_managed_execution.ResourceTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/pool_watch.py", line 76, in ensure
+    identity = manager.process_identity(process.pid)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 134, in process_identity
+    p = subprocess.run(['ps', '-ww', '-p', str(pid), '-o', 'lstart=', '-o', 'pgid=', '-o', 'command='], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: 'ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_managed_execution.py", line 118, in test_ios_platform_without_package_still_resolves_managed_simulator
+    options=resources.native_options(platform='ios')
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 346, in native_options
+    pool_watch.ensure(self)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/pool_watch.py", line 85, in ensure
+    manager.stop_group(process.pid); process.wait(timeout=5)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 164, in stop_group
+    output = subprocess.check_output(['ps', '-ax', '-o', 'pid=', '-o', 'pgid=', '-o', 'state='], text=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 424, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: 'ps'
+
+======================================================================
+ERROR: test_returned_command_does_not_leave_a_heartbeat_descendant (test_managed_execution.ResourceTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_managed_execution.py", line 70, in test_returned_command_does_not_leave_a_heartbeat_descendant
+    self.assertEqual(resources.run([sys.executable,'-c',body],env=dict(__import__('os').environ),stdout=log),0)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 412, in run
+    identity = self.process_identity(self.process.pid)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 134, in process_identity
+    p = subprocess.run(['ps', '-ww', '-p', str(pid), '-o', 'lstart=', '-o', 'pgid=', '-o', 'command='], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: 'ps'
+
+======================================================================
+ERROR: test_success_final_reclaims_only_owned_scratch_and_retains_evidence (test_managed_execution.ResourceTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_managed_execution.py", line 33, in test_success_final_reclaims_only_owned_scratch_and_retains_evidence
+    result = resources.run([sys.executable, '-c', 'print("actual native stand-in process")'], env=dict(__import__('os').environ), stdout=log)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 412, in run
+    identity = self.process_identity(self.process.pid)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 134, in process_identity
+    p = subprocess.run(['ps', '-ww', '-p', str(pid), '-o', 'lstart=', '-o', 'pgid=', '-o', 'command='], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: 'ps'
+
+======================================================================
+ERROR: test_timeout_retains_primary_error_and_repeat_finish_is_nonmutating (test_managed_execution.ResourceTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_managed_execution.py", line 83, in test_timeout_retains_primary_error_and_repeat_finish_is_nonmutating
+    with (self.root/'timeout.log').open('w') as log:resources.run([sys.executable,'-c','import time;time.sleep(20)'],env=dict(__import__('os').environ),stdout=log,timeout=.25)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 412, in run
+    identity = self.process_identity(self.process.pid)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 134, in process_identity
+    p = subprocess.run(['ps', '-ww', '-p', str(pid), '-o', 'lstart=', '-o', 'pgid=', '-o', 'command='], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: 'ps'
+
+======================================================================
+ERROR: test_interrupted_native_command_retains_original_stream_prefix (test_native_logging.NativeLoggingTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_native_logging.py", line 19, in test_interrupted_native_command_retains_original_stream_prefix
+    with (root/'outer.log').open('w')as outer:manager.run([sys.executable,'-B','-c',call],env=dict(os.environ),stdout=outer,timeout=1)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 412, in run
+    identity = self.process_identity(self.process.pid)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 134, in process_identity
+    p = subprocess.run(['ps', '-ww', '-p', str(pid), '-o', 'lstart=', '-o', 'pgid=', '-o', 'command='], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: 'ps'
+
+======================================================================
+ERROR: test_altered_collector_report_is_rejected_even_with_unchanged_outer_receipt (test_pooled_workflow.PlatformValidityTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 93, in test_altered_collector_report_is_rejected_even_with_unchanged_outer_receipt
+    p, receipt, ctx = self.packet()
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 49, in packet
+    'finishedLeaseClock': rm.lease_clock(), 'host_boot_id': rm.boot_identity(),
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 45, in boot_identity
+    raise OSError(ctypes.get_errno(), 'Native pool host boot identity is unavailable')
+PermissionError: [Errno 1] Native pool host boot identity is unavailable
+
+======================================================================
+ERROR: test_environment_or_oracle_change_cannot_adopt_previous_conclusions (test_pooled_workflow.PlatformValidityTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 87, in test_environment_or_oracle_change_cannot_adopt_previous_conclusions
+    p, _, ctx = self.packet()
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 49, in packet
+    'finishedLeaseClock': rm.lease_clock(), 'host_boot_id': rm.boot_identity(),
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 45, in boot_identity
+    raise OSError(ctypes.get_errno(), 'Native pool host boot identity is unavailable')
+PermissionError: [Errno 1] Native pool host boot identity is unavailable
+
+======================================================================
+ERROR: test_original_packet_preflight_reuse_and_scoped_expiry (test_pooled_workflow.PlatformValidityTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 74, in test_original_packet_preflight_reuse_and_scoped_expiry
+    p, receipt, ctx = self.packet()
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 49, in packet
+    'finishedLeaseClock': rm.lease_clock(), 'host_boot_id': rm.boot_identity(),
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 45, in boot_identity
+    raise OSError(ctypes.get_errno(), 'Native pool host boot identity is unavailable')
+PermissionError: [Errno 1] Native pool host boot identity is unavailable
+
+======================================================================
+ERROR: test_pending_failed_retest_still_rejects_new_oracle_without_open_task (test_pooled_workflow.PlatformValidityTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 188, in test_pending_failed_retest_still_rejects_new_oracle_without_open_task
+    session.complete(session.state['task'])
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/workflow_state.py", line 160, in complete
+    'submittedLeaseClock': lease_clock(), 'host_boot_id': boot_identity(),
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 45, in boot_identity
+    raise OSError(ctypes.get_errno(), 'Native pool host boot identity is unavailable')
+PermissionError: [Errno 1] Native pool host boot identity is unavailable
+
+======================================================================
+ERROR: test_repair_completion_requires_real_source_diff_and_current_task (test_pooled_workflow.PlatformValidityTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 155, in test_repair_completion_requires_real_source_diff_and_current_task
+    result = session.complete(ref, explicit=True)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/workflow_state.py", line 160, in complete
+    'submittedLeaseClock': lease_clock(), 'host_boot_id': boot_identity(),
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 45, in boot_identity
+    raise OSError(ctypes.get_errno(), 'Native pool host boot identity is unavailable')
+PermissionError: [Errno 1] Native pool host boot identity is unavailable
+
+======================================================================
+ERROR: test_revert_is_a_measured_revision_and_older_packet_cannot_close_handoff (test_pooled_workflow.PlatformValidityTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 207, in test_revert_is_a_measured_revision_and_older_packet_cannot_close_handoff
+    session.complete(ref)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/workflow_state.py", line 160, in complete
+    'submittedLeaseClock': lease_clock(), 'host_boot_id': boot_identity(),
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 45, in boot_identity
+    raise OSError(ctypes.get_errno(), 'Native pool host boot identity is unavailable')
+PermissionError: [Errno 1] Native pool host boot identity is unavailable
+
+======================================================================
+ERROR: test_unsupported_unbounded_or_missing_reuse_policy_is_not_passed (test_pooled_workflow.PlatformValidityTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 104, in test_unsupported_unbounded_or_missing_reuse_policy_is_not_passed
+    p, _, ctx = self.packet()
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 49, in packet
+    'finishedLeaseClock': rm.lease_clock(), 'host_boot_id': rm.boot_identity(),
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 45, in boot_identity
+    raise OSError(ctypes.get_errno(), 'Native pool host boot identity is unavailable')
+PermissionError: [Errno 1] Native pool host boot identity is unavailable
+
+======================================================================
+ERROR: test_actual_guardian_retires_simulated_idle_inventory_without_next_entry (test_pooled_workflow.PoolProtocolTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/pool_watch.py", line 76, in ensure
+    identity = manager.process_identity(process.pid)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 134, in process_identity
+    p = subprocess.run(['ps', '-ww', '-p', str(pid), '-o', 'lstart=', '-o', 'pgid=', '-o', 'command='], text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: 'ps'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 274, in test_actual_guardian_retires_simulated_idle_inventory_without_next_entry
+    resources.native_options(platform='ios')
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 346, in native_options
+    pool_watch.ensure(self)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/pool_watch.py", line 85, in ensure
+    manager.stop_group(process.pid); process.wait(timeout=5)
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 164, in stop_group
+    output = subprocess.check_output(['ps', '-ax', '-o', 'pid=', '-o', 'pgid=', '-o', 'state='], text=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 424, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: 'ps'
+
+======================================================================
+ERROR: test_idle_slot_reuse_exclusive_cap_monotonic_expiry_and_final_retirement (test_pooled_workflow.PoolProtocolTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 308, in test_idle_slot_reuse_exclusive_cap_monotonic_expiry_and_final_retirement
+    one = r.native_options(platform='ios')['simulator']
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 366, in native_options
+    'boot_id': boot_identity(), 'pool_idle': False, 'pool_key': key}
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 45, in boot_identity
+    raise OSError(ctypes.get_errno(), 'Native pool host boot identity is unavailable')
+PermissionError: [Errno 1] Native pool host boot identity is unavailable
+
+----------------------------------------------------------------------
+Ran 185 tests in 4.142s
+
+FAILED (errors=16)

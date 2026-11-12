@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "status": "conforming",
+  "common_host_shape_sha256": "c7fbe68e0282ea56605c3c2708fc67e15607537c8fe673ff777da6e1705bee18",
+  "files": {
+    "assets/ios-observer/ObserverApp.swift": "cfffc6a72eedff2dde17978a838b0d2897bb8386b5a369d866f39c3ace4ae5e2",
+    "assets/ios-observer/ObserverTests.swift": "33281971ff84df7eb4fee11b39721ff50f13458eec1da5be6ba9aacbec7b0d0c"
+  },
+  "approved_by": "shape-reviewer",
+  "approved_at_utc": "2026-11-11T01:03:36.374039Z",
+  "review_kind": "fresh_independent_private_initial_final_common_host_SOURCE_conformance",
+  "request_file_sha256": "f270cbbded329f73405f8ed6f3c9bfcf98b6d48ed215652be8389a665e0dbb99",
+  "frozen_roots": {
+    "control": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/baseline-v12.6-common-6",
+    "treatment": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.9"
+  },
+  "both_current_frozen_arms_byte_identical": true,
+  "original_observation": "I re-read the current ObserverApp.swift and ObserverTests.swift source. The app calls ObserverBridge.make directly as the first child of one eager VStack in its single vertical ScrollView, showsIndicators:false. The component is followed immediately by the final __observer.bottom staticText, with no later scroll content. Host padding is horizontal16/top24 and the ScrollView frame uses requested width and height600; fixed private metadata requests width390, light/ltr/large. Fixture/receipt/runtime controls are outside this region. The actual test-source full sweep calls capture(boundaryRequired:true); a reached terminal is resolved by unique native staticText query and exports the current frame and executed XCUIElement.isHittable with the input/event binding. Original raster/native registration separately rejects missing top, terminal ancestry/geometry, current hittability guard or content-end extent. This is source conformance, not an observation that any private run achieved those runtime facts.",
+  "source_locations": {
+    "ObserverApp.swift": [
+      "58-65: vertical hidden-indicator scroll, direct bridge and final sentinel",
+      "66-80: host padding/frame/geometry and scroll identity",
+      "81-94: out-of-region controls and environment injection"
+    ],
+    "ObserverTests.swift": [
+      "145-210: finite sweeps request boundary capture and retain epoch/extent metadata",
+      "258-273: unique actual terminal frame/isHittable query",
+      "331-341: original geometry encoding, epoch and boundary exports",
+      "501-715: original bounded native actions, receipts and same-process checks"
+    ]
+  },
+  "prior_provider_record_copied": false,
+  "native_execution_performed": false,
+  "runtime_conformance_claimed": false,
+  "scope": "Independent finite eager main-vertical source-shape, actual thin bridge call/import, production placement and shared host SOURCE conformance only. No business correctness, expected-outcome, design-style, native dispatch, build, runtime, pixel, coverage or behavior P verdict."
+}

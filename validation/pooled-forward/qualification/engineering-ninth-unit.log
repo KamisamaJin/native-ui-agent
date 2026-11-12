@@ -1,0 +1,50 @@
+...........................................................................................................................E...........................................................
+======================================================================
+ERROR: test_actual_guardian_retires_simulated_idle_inventory_without_next_entry (test_pooled_workflow.PoolProtocolTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 252, in test_actual_guardian_retires_simulated_idle_inventory_without_next_entry
+    self.assertFalse(journal['devices']); self.assertNotIn('pool_watch', journal)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/unittest/case.py", line 676, in assertFalse
+    raise self.failureException(msg)
+AssertionError: [{'name': 'NativeUI-ccb8a4af8f44-88050de2', 'created_at_unix': 1794306354.82226, 'last_used_unix': 1794306354.85093, 'uses': 1, 'created_monotonic': 6056936.373573, 'last_used_monotonic': 6056936.402242, 'boot_id': '1788249418:448689', 'pool_idle': True, 'pool_key': '4a01597a11c0b562444c45d8d0cec2553b1490445526d19c12e5f58f54eb90e1', 'udid': 'a446dd01-7717-4755-b8b9-d14846c2da53'}] is not false
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 202, in __enter__
+    try: fcntl.flock(self.stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+BlockingIOError: [Errno 35] Resource temporarily unavailable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 255, in test_actual_guardian_retires_simulated_idle_inventory_without_next_entry
+    with rm.Resources(config, root / 'cleanup', final=True): pass
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/scripts/resource_manager.py", line 205, in __enter__
+    raise RuntimeError('Resource lease is active; concurrent acquisition refused')
+RuntimeError: Resource lease is active; concurrent acquisition refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rex/Documents/ChatGPT/mobile-native-skill/native-ui-agent/tests/test_pooled_workflow.py", line 255, in test_actual_guardian_retires_simulated_idle_inventory_without_next_entry
+    with rm.Resources(config, root / 'cleanup', final=True): pass
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/tempfile.py", line 826, in __exit__
+    self.cleanup()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/tempfile.py", line 830, in cleanup
+    self._rmtree(self.name)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/tempfile.py", line 812, in _rmtree
+    _shutil.rmtree(name, onerror=onerror)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 718, in rmtree
+    _rmtree_safe_fd(fd, path, onerror)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 659, in _rmtree_safe_fd
+    onerror(os.rmdir, fullname, sys.exc_info())
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/shutil.py", line 657, in _rmtree_safe_fd
+    os.rmdir(entry.name, dir_fd=topfd)
+OSError: [Errno 66] Directory not empty: 'scratch'
+
+----------------------------------------------------------------------
+Ran 183 tests in 8.439s
+
+FAILED (errors=1)

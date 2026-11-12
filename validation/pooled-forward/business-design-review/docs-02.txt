@@ -1,0 +1,461 @@
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.9/references/atomic-review.md
+   1 # Contract-bound visual observations and shared acceptance
+   2 
+   3 Use this when visual findings must be auditable against an independent design.
+   4 The approved base contract still compiles through `design_contract.py`. Each
+   5 manual rule checks one aspect, rather than a sentence combining colors, wrapping,
+   6 hierarchy and state. See the complete [neutral example](../assets/atomic-example/).
+   7 
+   8 An independent owner pins a separate `policy.json` canonical SHA256 alongside the
+   9 design lock SHA256 before implementation. It names each manual rule exactly once,
+  10 its single aspect/method, and the component/host/system responsibility of its
+  11 logical target. Visual Boolean propositions come from exact typed source pointers
+  12 in the same sealed design, so `actual:true` answers an explicit approved question.
+  13 Rendered color atoms use opaque source-backed ARGB. A canvas rule must specify
+  14 which layer paints the sampled region; an ambiguous owner is a design issue to
+  15 resolve before scoring. Hashes do not establish design correctness or authorship.
+  16 
+  17 ## Submit actual observations, not rewritten expectations
+  18 
+  19 ```sh
+  20 python3 scripts/review_contract.py catalog --plan generated/plan.json \
+  21   --design-lock approved-lock.json --design-sha256 LOCK_SHA \
+  22   --policy policy.json --policy-sha256 POLICY_SHA --platform ios \
+  23   --output catalog.json
+  24 ```
+  25 
+  26 The catalog provides opaque stable `review_id` identities, original assertion IDs,
+  27 targets, explicit propositions, generated expected values/units/operators and
+  28 source provenance. Save the catalog digest from its `catalog_sha256` field.
+  29 
+  30 The reviewer submits only:
+  31 
+  32 ```json
+  33 {
+  34   "version": 1,
+  35   "catalog_sha256": "CANONICAL_CATALOG_SHA",
+  36   "observation_sha256": "EXACT_ORIGINAL_FILE_SHA",
+  37   "decisions": [
+  38     {"review_id": "FROM_CATALOG", "actual": true,
+  39      "reason": "What the original captured state actually shows",
+  40      "snapshot_indices": [3, 4]}
+  41   ]
+  42 }
+  43 ```
+  44 
+  45 Only qualitative atoms accept Boolean/unknown actuals. Missing decisions remain
+  46 unassessed. No `expected`, `unit`, `status`, operator or target override is accepted.
+  47 Screenshot identities, state/input/action epochs and actual artifacts are checked;
+  48 the tool generates evidence hashes, findings and the manual input for native checks.
+  49 
+  50 ```sh
+  51 python3 scripts/review_contract.py review --plan generated/plan.json \
+  52   --design-lock approved-lock.json --design-sha256 LOCK_SHA \
+  53   --policy policy.json --policy-sha256 POLICY_SHA --platform ios \
+  54   --observation run/observation.json --submission observations.json \
+  55   --output new-review
+  56 ```
+  57 
+  58 The output contains `catalog.json`, `manual.json`, `findings.json`, `report.json`.
+  59 `native_checks.py` can consume the bound manual with `--review-policy` and
+  60 `--review-policy-sha256`, together with the independent design lock arguments.
+  61 It reconstructs the bundle from its original requests and images. A changed
+  62 expected, status, artifact, rationale or stripped binding is rejected. Keep the
+  63 policy digest outside the implementation-edited output, just like the design lock.
+  64 
+  65 ## What rendered-color evidence establishes
+  66 
+  67 Pixel rules operate automatically on every eligible coherent state frame. The
+  68 independent sampling policy fixes a normalized rectangle inside a uniquely
+  69 resolved native semantic/control box, minimum support and pixel count, explicit
+  70 RGB channel tolerance, and fully-visible versus visible-fragment scope. The
+  71 tool recomputes native-to-PNG mapping, clips to the actual viewport, and records
+  72 the original PNG SHA256, native selector/box, pixel region and full histogram.
+  73 It never accepts AI-entered observed RGB values or chooses samples by closeness
+  74 to the expected color. RGB tolerance is not distance between packed ARGB integers.
+  75 
+  76 The assertion concerns the dominant rendered sRGB in that approved region. A
+  77 region meant to measure solid fill must be independently suitable for that role;
+  78 glyph ink, an overlaid child or a gradient may make it uninformative. Insufficient
+  79 support, conflicting values, missing mapping or unsupported color profiles stay
+  80 unknown. An eligible visible frame with unavailable measurement blocks a pass even
+  81 if another frame matches; an explicit new native viewport packet never falls back
+  82 to legacy geometry when its node mapping is missing. State/input identities and
+  83 after-capture epoch bindings must agree for all accepted evidence. Transparent expectations need a separate approved compositing model.
+  84 This is not a generic computed SwiftUI font/color/padding API, whole-canvas proof,
+  85 or physical hit-area measurement. Existing unsupported native-style cells remain.
+  86 
+  87 ## Reliable independent acceptance
+  88 
+  89 `acceptance.py` is a shared evaluator, not an extra treatment benefit. An external
+  90 environment contract fixes native dimensions, direction, theme and platform font
+  91 configuration; known Compose wire aliases are explicit. Unsupported/mismatched
+  92 environments gate acceptance to unknown while preserving raw facts.
+  93 
+  94 For iOS its fields are `width`, `height`, `direction`, `theme`, `dynamic_type`;
+  95 the current thin host offers an explicit width and a fixed600pt viewport height.
+  96 Android uses `font_scale` in place of `dynamic_type`. Dimensions default to exact
+  97 native units. The pinned Paparazzi host additionally supports an explicitly
+  98 approved `dimension_encoding: "paparazzi-float32-screen-config-v1"`: `width` and
+  99 `height` then mean requested dp. The evaluator verifies the host's Float32 input,
+ 100 Float32 multiplication by the pinned2.75 device density, truncation to integer
+ 101 screen pixels, actual native viewport/density, and serialized Float32 dp output.
+ 102 Requested390dp may thus produce1072px and389.81818dp, while each value remains
+ 103 visible in the proof. This is a provider-specific input conversion, not a product
+ 104 layout tolerance. Missing native metadata stays U and another encoding is rejected.
+ 105 See the platform environment files in the neutral example. Its example approval
+ 106 contains their canonical digests; a real design needs its own independent approval.
+ 107 
+ 108 For qualitative atoms give two independently scoped contexts the same original
+ 109 anonymous evidence and approved catalog, without each other's answers. Each
+ 110 returns `{ "review": <submission above>, "attributions": [...] }`. A failure
+ 111 attribution contains only `id`, `cause` (`product`, `infrastructure`, `observation`,
+ 112 `uncertain`), `reason`, and original state `snapshot_indices`. Artifact hashes are
+ 113 generated by the tool. The CLI requires both judge files and a separately pinned
+ 114 environment file/digest alongside the plan, policy, lock and observation arguments.
+ 115 
+ 116 ```sh
+ 117 python3 scripts/acceptance.py --plan generated/plan.json \
+ 118   --design-lock approved-lock.json --design-sha256 LOCK_SHA \
+ 119   --policy policy.json --policy-sha256 POLICY_SHA --platform ios \
+ 120   --observation run/observation.json --environment environment.ios.json \
+ 121   --environment-sha256 ENV_SHA --judge-one independent-one.json \
+ 122   --judge-two independent-two.json --output acceptance.json
+ 123 ```
+ 124 
+ 125 Validated native/pixel statuses cannot be voted away. Qualitative judgments must
+ 126 agree, otherwise the result stays unknown. A strict measured failure does not
+ 127 automatically establish a product bug: for component-owned targets both independent
+ 128 cause assessments must agree; missing or disputed attribution stays uncertain.
+ 129 Host/system responsibility remains explicit. Keep raw judgments, strict F,
+ 130 disagreements, supported product clusters and schema rejection as separate records.
+ 131 AI agreement is not human gold and may share systematic errors.
+ 132 
+ 133 Report true product alarms separately from report-schema/identity rejection.
+ 134 Never repair a sealed original finding after seeing acceptance answers. Same-cause
+ 135 manifestations and unrelated experiments must not be pooled as independent bugs.
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.9/references/state-evidence.md
+   1 # State evidence planning
+   2 
+   3 Use this when selected business states require several independent native facts,
+   4 especially after a caller replacement or when related targets are far apart.
+   5 The caller agent chooses relevant states and translates the independent design.
+   6 The compiler checks that declared matrix; it cannot establish that prose has
+   7 been translated completely or that a supplied expectation/source is correct.
+   8 
+   9 ## Compile before feedback
+  10 
+  11 Write a matrix with `version:1`, `states`, `requirements`, `required_state_ids`
+  12 and `required_requirement_ids`. Every selected state × requirement becomes a
+  13 cell. A requirement names its source and an atomic native check. A constant
+  14 `check.expected` applies across selected states; `by_state` can override expected,
+  15 target, action_index, stimulus, required_method or op. Without a default, every
+  16 applicable state needs its own expected value. `not_applicable` maps state IDs to
+  17 nonempty reasons; those cells remain in the ledger for independent review.
+  18 
+  19 ```json
+  20 {
+  21   "version":1,
+  22   "required_state_ids":["after-request","after-replacement"],
+  23   "required_requirement_ids":["status","action-enabled"],
+  24   "states":[
+  25     {"id":"after-request","input_index":0,"after_action":0,"coverage":"targets"},
+  26     {"id":"after-replacement","input_index":1,"after_action":1,"coverage":"targets"}
+  27   ],
+  28   "requirements":[
+  29     {"id":"status","source":"Independent public status contract",
+  30      "check":{"kind":"control","target":{"identifier":"actual.status"},
+  31               "property":"label","expected":"Ready"},
+  32      "by_state":{"after-replacement":{"expected":"Paused"}}},
+  33     {"id":"action-enabled","source":"Independent enablement contract",
+  34      "check":{"kind":"control","target":{"identifier":"actual.action"},
+  35               "property":"enabled","expected":true},
+  36      "by_state":{"after-replacement":{"expected":false}}}
+  37   ]
+  38 }
+  39 ```
+  40 
+  41 ```sh
+  42 python3 scripts/state_plan.py --matrix matrix.json --actions original-actions.json \
+  43   --output fresh-plan
+  44 ```
+  45 
+  46 `plan.json` contains every applicable atomic check and required ID, plus a
+  47 SHA-bound declared matrix/disposition ledger. `actions.json` adds exact state
+  48 names and deduplicated `after_targets` from relevant checks. It preserves action
+  49 routes and callback requests; it adds no business expectation to the observer.
+  50 The output directory must be fresh. Original action names that disagree with
+  51 the matrix are rejected. A state can use `stimulus_action` to identify an earlier
+  52 requested stimulus separately from its explicit full-sweep observation action.
+  53 
+  54 Choose actual producer state IDs and action indices. Initial and explicit sweep
+  55 states may use `coverage:"full_content"`. Other actions use `coverage:"targets"`.
+  56 Compilation does not insert full sweeps or establish missing native capabilities.
+  57 Preserve the matrix and plan before reviewing rendered feedback; changing an
+  58 expectation later needs a separate requirement reason, not a better test score.
+  59 
+  60 ## Collect and judge
+  61 
+  62 Run the native observer with the generated actions, then `native_checks.py` with
+  63 the generated plan. The observer records the immediate action result and original
+  64 callback interval, then observes each target. Native frames can jointly establish
+  65 facts for targets that cannot fit in one viewport. All frames must have the exact
+  66 same native input/process/event binding. Input drift, wrong state/action, torn
+  67 image/hierarchy captures and conflicting values remain U.
+  68 
+  69 Only actual matching native facts earn a verdict. The producer's
+  70 `all_targets_observed:true` flag alone is not evidence. Unseen targets cannot prove
+  71 absence without complete native full-content coverage. An oversized target may
+  72 have its center observed while full visibility remains false. Joint target frames
+  73 never establish complete content, effective padding/fonts or physical hit areas.
+  74 
+  75 Callbacks still require demonstrated requested dispatch. Current labels and
+  76 enabled/selected native facts are separate observations; a label after a blocked
+  77 action is not proof that its handler executed or that zero callbacks passed.
+  78 
+  79 The check report retains all failed and unassessed IDs and exports
+  80 `machine_findings` for failed typed-native checks, one record per actual state and
+  81 aspect. Preserve this report with its observation hash in the agent's review.
+  82 Keep manual visual findings separate; duplicate root causes can be grouped for
+  83 repair while their distinct state checks remain visible. A later shared repair
+  84 does not retroactively establish that another state was reviewed or detected.
+  85 
+  86 Multi-target navigation costs additional work. Limit targets to the independently
+  87 planned aspects relevant to that state and retain the shared scroll budget,
+  88 unavailable targets, full-state coverage and command wall time. Do not shrink
+  89 content, bypass required states or drop U rows to improve coverage or speed.
+  90 
+  91 iOS lazy containers can revise their estimated total height while scrolling.
+  92 Version 2 collection retains the original estimates and full frames. If the
+  93 existing stable-height interval proof is insufficient, `scroll_coverage.py`
+  94 requires a top-to-terminal strip of exact overlapping original pixels plus two
+  95 unambiguous, vertically distinct native leaf landmarks at every link. Landmark
+  96 traits, projected positions, viewport mapping and the process/input/event epoch
+  97 must remain coherent. Container IDs and repeated labels cannot supply identity.
+  98 The host-owned scroll indicator is hidden at rendering time in this deterministic
+  99 fixture; no original pixels are masked, resampled or given a difference tolerance.
+ 100 
+ 101 Native CGRect doubles keep their exact represented rational values. The fixed
+ 102 `native-rect-pixel-cell-enclosure-v1` model constrains positive integer rectangle
+ 103 possibilities through every edge and the original width/height. Exact full-width
+ 104 raster comparison selects a unique integer translation; geometry is never
+ 105 rounded into a different style value. Whole-state repeated identities and their
+ 106 native order must remain compatible. Terminal coverage requires the executed
+ 107 native sentinel hittability guard and actual contained root-member geometry.
+ 108 
+ 109 Fallback also requires a pinned `coverage_domain_ref` and `coverage_provider_ref`.
+ 110 They independently approve the finite source revisions and actual shared host
+ 111 shape. The tool matches the installed production subject/bridge, original native
+ 112 compile action/log and actual compiled-host bytes. An unused matching source copy
+ 113 or a self-entered shape label cannot grant coverage. Unapproved source revisions
+ 114 produce a default `review_source_domain` task before additional SDK work. Separate
+ 115 source approvals under the same immutable domain/oracle policy cannot waive a
+ 116 source change, repair completion or fresh native recheck.
+ 117 
+ 118 The receiver checks the actual runtime viewport, environment and native display
+ 119 scale against that domain. It checks the original PNG header before decoding;
+ 120 16-bit or unsupported encodings cannot be silently converted into an 8-bit pass.
+ 121 One bounded global rectangle assignment must preserve every link's original
+ 122 disjoint witnesses and whole-state native order; local pair choices alone do not
+ 123 establish a full chain.
+ 124 
+ 125 Presence is existential over the coherent bound state. A lazy node missing from
+ 126 one viewport does not contradict its later observed presence. Absence needs a
+ 127 complete sweep with no match anywhere. An observed duplicate establishes native
+ 128 nonuniqueness and is not cancelled by a later viewport containing one match.
+ 129 All original per-frame observations remain attached to the quantified result.
+ 130 Positive full-state uniqueness also requires complete native matching-domain
+ 131 coverage. A fully enumerated target query can establish only local uniqueness;
+ 132 its `complete:false` and query scope remain visible. A lone reported flat node
+ 133 does not establish query completeness. Boolean/float aliases cannot substitute
+ 134 for the protocol's integer input, action or snapshot references. An explicit
+ 135 complete empty target query can decide local absence without a whole-state
+ 136 sweep; it cannot prove whole-state absence.
+ 137 
+ 138 Native query cardinality is checked against its emitted format. Explicit query
+ 139 resolutions must be recognized. Structured trees need one connected, acyclic
+ 140 native identity graph, and Android's original semantics geometry must retain its
+ 141 version, pixel unit, density, position and integer size. Repeated records with the
+ 142 same native identity are malformed evidence, not multiple controls. Conflicting
+ 143 group counts, native nodes, identities or visibility remain unassessed with the
+ 144 original query facts attached; they do not create a product failure.
+ 145 
+ 146 `present` and `unique` quantify the actual native matching set, including an
+ 147 offscreen native entity. They do not assert visibility or activation readiness.
+ 148 Those facts retain their separate original flags, geometry and action guards.
+ 149 
+ 150 Missing originals, unsupported mappings, moving content, sparse or ambiguous
+ 151 links and unapproved domains remain unassessed. The proof describes the observed vertical
+ 152 viewport strip. It does not certify hidden branches, arbitrary asynchronous data,
+ 153 computed styles or business correctness. Coverage reconstruction requires the
+ 154 actual original image root, including when diagnosing or routing failed checks.
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/BRIEF.md
+   1 # T1 — Shipment release checklist
+   2 
+   3 PUBLIC — initial PR implementers may read this directory.
+   4 
+   5 Deliver `ShipmentReleasePanel`, a reusable additive AlertToast public SwiftUI View and Reply production Compose component. Use the exact typed API in API.md. Caller data is immutable; production owns actual UI decisions, state, and replacement transitions. `onEvent(String)` forwards local request payloads only.
+   6 
+   7 ## Business rules
+   8 
+   9 1. Every lot is displayed in caller order. An available lot toggles membership in a multi-selection. Held lots remain visible, disabled, and show their supplied hold reason; a held lot cannot be selected.
+  10 2. Initially no lots are selected and Packing list checked is off. Any selection change clears packing approval. At least one selected available lot and packing approval are required to release.
+  11 3. Summary is exactly '{N} lots selected · {U} units', where U sums current selected quantities. Status strings and punctuation are fixed by the public outcome ledger.
+  12 4. A successful release emits exactly one 'release|{entityId}|{comma-separated selected IDs in ascending Unicode lexical order}'. No other user action emits an event. A recorded release locks all controls and primary submission; duplicate submission is disabled.
+  13 5. On replacement with the same entityId, preserve only selected IDs that are still present and available, recompute quantities from replacement data, clear packing approval and recorded status, and emit no event. On a changed entityId, clear all selection, approval, and recorded status, even when labels or IDs are reused.
+  14 6. The release callback is a local request/receipt, not proof of a network shipment. No network, timer, random, async, or full application navigation is involved.
+  15 
+  16 ## Layout and style
+  17 
+  18 The annotated initial/ready SVGs are independent structural and qualitative references, not candidate renders or cross-renderer glyph pixel oracles. Native tokens in reference.json are normative. Order: heading, entity, description, prerequisite choices, dependent option rows, summary, status, final review/approval, primary. T4 puts its current preview between Preview notice and wording approval. Credit/modes/intake checks precede their dependent choices. Every section participates in one eager vertical flow. Keep all supplied text, selected decisions, disabled options and their reasons visible through natural wrapping; no ellipsis, internal scrolling, overlay, or horizontal overflow.
+  19 
+  20 The panel is opaque white,16pt/dp inset,16pt/dp radius. Option rows use12pt/dp inset,8pt/dp gaps/radius, and an empty trailing24pt/dp paint gutter. Major sections use16pt/dp gaps. Selection marks are leading. Primary fills available content width, has48pt/dp control-box height and8pt/dp radius, with its fixed centered short label. Selected rows retain selected fill when recorded state locks controls; unselected disabled rows use disabled fill. Enabled unselected rows are white. Primary uses its separately sourced enabled/disabled opaque fills; do not blend native disabled alpha over them.
+  21 
+  22 iOS uses explicit system22pt semibold heading and16pt regular body intent at Large Dynamic Type. Android reuses Reply titleLarge22sp/600 and bodyLarge16sp/400. iOS typography/layout/ink questions are qualitative source-backed atoms; no generic computed font, color, layout-box or padding extraction is claimed. Android available TextLayout font/color facts are separate native atoms. The48pt/dp primary assertion measures its actual control accessibility box, not physical OS touch area.
+  23 
+  24 ## Host, data and bridges
+  25 
+  26 Approved viewport:390logical width,600height, light, LTR; iOS Large or Android font_scale1.0. iOS host inset16horizontal/24top offers358pt child width. Android uses matching host insets at requested390x600dp,density2.75 with `paparazzi-float32-screen-config-v1`; requested390dp may serialize389.81818dp. This encoding is not product tolerance. The existing host owns scrolling. No whole-app navigation claim is made.
+  27 
+  28 Each family includes initial, same-entity and changed-entity typed payloads. The schema contains no decisions or expected state. The pinned thin bridge only decodes and calls production with the same callback; Android applies the real stock non-dynamic light theme. It has no replacement UI, business state, identity reset or synthetic callback. API placement and thin-bridge source responsibilities are separately audited.
+  29 
+  30 ## Scenarios and denominator
+  31 
+  32 Scenario `public-main` in contract.json fixes the original tap/apply_next_fixture/sweep/checkpoint route. Initial, ready/recorded, preview and replacement states have explicit full sweeps. Intermediate decision states have checkpoint/targets coverage and active local wrapping/mark/semantic/paint/callback checks. Every state has an independent after-target list. Earlier business stimuli are linked through `stimulus_action`; the compiler derives native target observation work. Whole-flow questions are scoped only to full-sweep states, without carrying an earlier pass into a target-scoped state. Every tap requires native enabled=true; toggles additionally require their exact previous selection. No direct state injection or invented action kind is allowed.
+  33 
+  34 Callbacks require actual successful original native dispatch by the requested method. Missing, disabled, blocked, wrong-method or unexecuted actions cannot establish a callback pass/fail. Disabled choices are assessed as native facts without pretending to activate them. Every successful non-submit tap has an exact empty event interval; each successful submit has the exact one-element interval; successful caller replacement is silent. Full sweep evidence is distinct from those immediate intervals.
+  35 
+  36 outcomes.json fixes exact business text, summaries, previews, disabled/selected decisions and payloads. denominator.json contains every rule×selected-state×platform/aspect cell with its exact source/operator/unit or explicit N/A reason. Native semantic facts, callbacks, rendered opaque pixels and atomic visual propositions are distinct. Unsupported iOS computed style, effective padding/glyph ink, physical hit area and whole-app concerns are N/A with reasons in reference.json#/scope, without padded mandatory U rows.
+  37 
+  38 The routes close meaningful regression dependencies: eligibility/selection changes require replacement, current content, callbacks, paint and visible cue checks; typography/business text changes require complete long-content layout checks. A repair in one state never proves another state's evidence.
+  39 
+  40 ## Local accessibility metadata
+  41 
+  42 Actions/options use exact unique natural labels. Only the panel and dynamic text fields use a small static component-local accessibilityIdentifier/testTag map in bindings.*.json. Keys contain no business record IDs and require no global registry. Dynamic text exposes its actual label; no unverified cross-platform native-value mapping is assumed. Preserve separate action/description children. The surface exposes its panel box without merging children away. Actual Button/Compose action nodes expose enabled/selected facts.
+  43 
+  44 ## Frozen identity
+  45 
+  46 Public/private contracts, references, fixtures, bridges, API/schema, policy, routes, environments, outcomes, denominator and SVGs are physically separate. Public source documents contain no private data. seal.json records canonical digests; root SEAL.sha256 fixes all five public/private families together before implementation. Hash identity is not semantic approval. An independent format/design reviewer validates compilation and scope before initial code. No expectation or tolerance may be changed after seeing candidate results.
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/API.md
+   1 # Fixed production API
+   2 
+   3 These are API declarations, not a production implementation or substitute UI.
+   4 
+   5 ```swift
+   6 import SwiftUI
+   7 // Export from the AlertToast module. All fields are public; supply public field initializers.
+   8 public struct ReleaseLot: Codable, Equatable {
+   9     public var id: String
+  10     public var label: String
+  11     public var detail: String
+  12     public var units: Int
+  13     public var available: Bool
+  14     public var holdReason: String
+  15 }
+  16 public struct ShipmentReleaseFixture: Codable, Equatable {
+  17     public var entityId: String
+  18     public var entityTitle: String
+  19     public var description: String
+  20     public var lots: [ReleaseLot]
+  21 }
+  22 public struct ShipmentReleasePanel: View {
+  23     public init(fixture: ShipmentReleaseFixture, onEvent: @escaping (String) -> Void)
+  24     public var body: some View { get }
+  25 }
+  26 ```
+  27 
+  28 ```kotlin
+  29 package com.example.reply.ui.components.business
+  30 data class ReleaseLot(
+  31     val id: String,
+  32     val label: String,
+  33     val detail: String,
+  34     val units: Int,
+  35     val available: Boolean,
+  36     val holdReason: String,
+  37 )
+  38 data class ShipmentReleaseFixture(
+  39     val entityId: String,
+  40     val entityTitle: String,
+  41     val description: String,
+  42     val lots: List<ReleaseLot>,
+  43 )
+  44 @Composable
+  45 fun ShipmentReleasePanel(fixture: ShipmentReleaseFixture, onEvent: (String) -> Unit)
+  46 ```
+  47 
+  48 fixture.schema.json is the transport contract. All fields are nonoptional. IDs/labels are unique within each group and IDs use the delimiter-safe grammar. Allowed empty strings are explicit. Fixtures supply no local selection, approval, summary, eligibility override, or expected callback.
+  49 
+  50 Production owns real business state, decision gating, and same-versus-changed entity replacement. The component is additive, exported by AlertToast on iOS and located in production app/src/main on Android. No internal ScrollView/LazyColumn, modal, popup, overlay, navigation route, timer, network, randomness, async state, or animation is needed. A single eager vertical flow fills the offered child width; the host owns scrolling.
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/ObserverBridge.swift
+   1 import Foundation
+   2 import SwiftUI
+   3 import AlertToast
+   4 
+   5 enum ObserverBridge {
+   6     static func make(fixture: [String: Any], onEvent: @escaping (String) -> Void) -> AnyView {
+   7         let bytes = try! JSONSerialization.data(withJSONObject: fixture)
+   8         let decoded = try! JSONDecoder().decode(ShipmentReleaseFixture.self, from: bytes)
+   9         return AnyView(ShipmentReleasePanel(fixture: decoded, onEvent: onEvent))
+  10     }
+  11 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/ObserverBridge.kt
+   1 package org.nativeobserver
+   2 
+   3 import androidx.compose.runtime.Composable
+   4 import kotlinx.serialization.json.JsonObject
+   5 import kotlinx.serialization.json.jsonObject
+   6 import kotlinx.serialization.json.jsonArray
+   7 import kotlinx.serialization.json.jsonPrimitive
+   8 import kotlinx.serialization.json.boolean
+   9 import kotlinx.serialization.json.int
+  10 import com.example.reply.ui.theme.ContrastAwareReplyTheme
+  11 import com.example.reply.ui.components.business.*
+  12 
+  13 private fun JsonObject.s(k: String) = getValue(k).jsonPrimitive.content
+  14 private fun JsonObject.i(k: String) = getValue(k).jsonPrimitive.int
+  15 private fun JsonObject.b(k: String) = getValue(k).jsonPrimitive.boolean
+  16 
+  17 object ObserverBridge {
+  18     @Composable
+  19     fun Content(input: JsonObject, onEvent: (String) -> Unit) {
+  20         val decoded = ShipmentReleaseFixture(
+  21             entityId = input.s("entityId"),
+  22             entityTitle = input.s("entityTitle"),
+  23             description = input.s("description"),
+  24             lots = input.getValue("lots").jsonArray.map { value ->
+  25                 val item = value.jsonObject
+  26                 ReleaseLot(
+  27                     id = item.s("id"),
+  28                     label = item.s("label"),
+  29                     detail = item.s("detail"),
+  30                     units = item.i("units"),
+  31                     available = item.b("available"),
+  32                     holdReason = item.s("holdReason"),
+  33                 )
+  34             },
+  35         )
+  36         ContrastAwareReplyTheme(darkTheme = false, dynamicColor = false) {
+  37             ShipmentReleasePanel(fixture = decoded, onEvent = onEvent)
+  38         }
+  39     }
+  40 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/PIXEL-SCOPE.md
+   1 # Frozen rendered-fill policy
+   2 
+   3 All source colors are opaque #AARRGGBB, painted by the component itself. No alpha model, added epsilon, expected override, or color-dependent region selection is permitted. Host canvas color is not scored as component paint.
+   4 
+   5 Panel: normalized [0.018,0.06,0.035,0.94] of full panel semantic box; visible_fragment; minimum12pixels; support0.95; RGB channel tolerance0. At358pt/dp width this x-strip is approximately6–12pt/dp: inside the white16pt/dp inset and outside every child. Its vertical range excludes rounded ends. Tall panels use eligible visible fragments of this same approved gutter.
+   6 
+   7 Primary: [0.04,0.25,0.10,0.75]; fully_visible; minimum20pixels; support0.95; tolerance0. This left interior band is clear of the fixed short centered label and8pt/dp corner curves. Primary labels are fixed by each task and never supplied as long caller text.
+   8 
+   9 Every option row: [0.94,0.25,0.98,0.75]; fully_visible; minimum20pixels; support0.95; tolerance0. A trailing24pt/dp gutter is intentionally free of text, marks, and icons. At326pt/dp row width the sample spans306.44–319.48, wholly inside the302–326 gutter. Labels/detail copy stop to its left; selection marks are at the leading edge. The sample excludes rounded top/bottom corners. A partial long row does not earn a fill pass where full visibility is required.
+  10 
+  11 These independently suitable regions were fixed before candidate pixels exist. They establish dominant rendered sRGB fill only, not computed SwiftUI attributes, whole-canvas coverage, text ink, typography, effective padding, or physical hit area. Insufficient eligible support remains unknown. Semantic control facts, callbacks, rendered fill atoms and qualitative visual atoms stay separate.

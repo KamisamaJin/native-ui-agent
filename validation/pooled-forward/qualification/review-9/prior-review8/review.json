@@ -1,0 +1,133 @@
+{
+  "review_id": "review-8-native-query-scope-delta",
+  "sealed_at_utc": "2026-11-10T14:09:00.952776+00:00",
+  "verdict": "NOT_QUALIFIED: five shared query-validation/cardinality failure families",
+  "candidate": "candidate-v13.7",
+  "candidate_freeze_sha256": "161e2d1881de5eeaa5c8c65a7d2e6150887ad07f79e8c1baa5816fb5d5c87e61",
+  "baseline": "baseline-v12.6-common-4",
+  "baseline_freeze_sha256": "b5929b65a9ee4073ba6ca5d02e1a00c4298fe30c3aa6643667ed5b275cf34286",
+  "criterion_seal_sha256": "c7d7a3936991a88b53a65444b184ed898345b335b3a5c7f7b8d71db9d95e2772",
+  "raw_results": {
+    "rows": 150,
+    "counts": {
+      "P": 110,
+      "F": 40
+    },
+    "files": [
+      "raw/candidate-v13.7-query-scope-results.json",
+      "raw/candidate-v13.7-query-additive-results.json",
+      "raw/candidate-v13.7-typed-regression-results.json",
+      "raw/candidate-v13.7-corrected-regression-results.json",
+      "raw/baseline-v12.6-common-4-query-scope-results.json",
+      "raw/baseline-v12.6-common-4-query-additive-results.json",
+      "raw/baseline-v12.6-common-4-typed-regression-results.json",
+      "raw/baseline-v12.6-common-4-corrected-regression-results.json",
+      "raw/candidate-v13.7-default-results.json",
+      "raw/baseline-v12.6-common-4-default-common-results.json",
+      "raw/common-port-audit.json"
+    ],
+    "confirmed_failure_rows": 28,
+    "initial_fixture_or_expectation_F_rows": 12,
+    "adjudication": "raw/harness-and-expectation-adjudications.json; original rows retained, corrected independent controls separate."
+  },
+  "confirmed_blockers": [
+    {
+      "id": "SC13",
+      "title": "Unsupported native-query formats earn completeness",
+      "repros": [
+        "ios-unsupported-query-resolution",
+        "android-provider-string-is-not-query-proof"
+      ],
+      "actual": "A non-enumerated arbitrary iOS group resolution with count1 earns local unique P. An Android singleton containing only provider string/node IDs (without emitted native geometry schema) also earns local unique P.",
+      "expected": "A reported singleton or provider label cannot establish an actually complete native matching query.",
+      "F_rows": 4
+    },
+    {
+      "id": "SC14",
+      "title": "Cyclic native parent graphs count as complete trees",
+      "repros": [
+        "ios-cycle-not-complete-native-query",
+        "android-cycle-not-complete-native-query"
+      ],
+      "actual": "Disconnected parent cycles pass native_query_complete in both platforms and grant local uniqueness P.",
+      "expected": "An impossible disconnected/cyclic structure is not a complete actual native tree.",
+      "F_rows": 4
+    },
+    {
+      "id": "SC15",
+      "title": "Repeated records of one identity become a duplicate counterexample",
+      "repros": [
+        "ios-same-entity-duplicate-record",
+        "android-same-entity-duplicate-record",
+        "ios-same-identity-record-does-not-prove-nonunique",
+        "android-same-identity-record-does-not-prove-nonunique"
+      ],
+      "actual": "The same native index/node_id repeated twice is treated as two actual matching entities: unique:true F and unique:false P.",
+      "expected": "Distinct actual entity evidence is required; one-vs-two unresolved/malformed identity retains U.",
+      "F_rows": 8
+    },
+    {
+      "id": "SC16",
+      "title": "Query header hides contradictory original native matches",
+      "repros": [
+        "ios-query-header-missing-conflicts-with-native-tree"
+      ],
+      "actual": "A valid full original native tree has a visible target, but group header missing/count0 overrides it and grants present:false P.",
+      "expected": "Contradictory bound original native evidence cannot be erased by a count header; no absence P. Original test expects U; a genuine-presence interpretation could instead refute the negative. Either way the observed P is wrong.",
+      "F_rows": 2
+    },
+    {
+      "id": "SC17",
+      "title": "Complete local empty query cannot decide local negatives",
+      "repros": [
+        "ios-local-complete-query-absence",
+        "ios-local-complete-query-zero-unique",
+        "android-local-complete-query-absence",
+        "android-local-complete-query-zero-unique",
+        "ios-explicit-empty-local-query"
+      ],
+      "actual": "Actual complete local zero-result native queries stay U for present:false/unique:false because state.complete=false, even though no full-state claim is made.",
+      "expected": "The sealed D/cardinality table decides zero matches in a complete local native domain as False; retain full-state complete:false and bounded scope.",
+      "F_rows": 10
+    }
+  ],
+  "disagreements": {
+    "SC16": "Observed absence P contradicts both withheld U and genuine-presence F interpretations. No expected value changed.",
+    "initial_12_F": "One absent-all iOS fixture removed a required raster anchor; five regression rows per arm used present:false against a genuine visible target. All original Fs remain. Corrected absent selectors preserve the intended coverage checks and pass.",
+    "SC11_SC12": "Exact old typed-reference packets reject specifically at index/action checks; incomplete full uniqueness is U and witnessed presence P under the new independently sealed boundary. Prior review7 raw SC11/12 Fs remain unchanged."
+  },
+  "positive_controls": {
+    "typed_references": "All old SC11 read-only repros and15 new full/target/bundle/legacy reference variants close correctly per arm.",
+    "native_queries": "Valid iOS complete tree and structured explicit query, actual-shaped Android semantics format, complete/full vs target/local distinction, true distinct duplicate counterexamples, mixed epochs and incomplete absence controls behave as recorded.",
+    "prior_foundation": "Separate corrected selectors confirm PNG16, original invalid joint chain, runtime/domain/compiled-host rejection. Native raw width equality remains strict. Three relevant global solver oracles plus default10000-node exhaustion close correctly.",
+    "default": "Candidate public CLI9P, baseline2P, including durable default repair/retest/source-policy context and mandatory final reconstruction of changed actual compiled host. All SDK/resource/build/output substituted non-forwarding.",
+    "port": "18 changed common paths,15 whole files identical; no pool/scoped-source/adoption/controller/build-signature gains backported."
+  },
+  "operator_review": {
+    "separate_artifact": "operator-review/OPERATOR-REVIEW.json",
+    "rows": 9,
+    "counts": {
+      "P": 5,
+      "F": 4
+    },
+    "scope": "Original pinned pre-run operator files only. Every replay/resource/command boundary synthetic; no actual episode or timing sample. Live operator fixes reported by parent are not evaluated here."
+  },
+  "independence": {
+    "skill_creator_independent_forward_guidance_applied": true,
+    "sealed_criterion_read": true,
+    "business_material_read": false,
+    "actual_new_native_results_read_or_regraded": false,
+    "parent_unit_and_native_summaries_not_used_as_proof": true,
+    "frozen_sources_and_prior_originals_unchanged": true,
+    "synthetic_ABI": "Separate independent full native tree/query records authored from existing public iOS Swift and Android Compose emitters. Original prior snapshots/images remain pinned; no actual new SDK claims."
+  },
+  "scope": "HOST Python/CLI/PNG/source execution plus wholly SIMULATED native query/runtime/source/compiled evidence, and read-only source-only benchmark-operator review.",
+  "native_performance_business_gate": {
+    "native_runs": 0,
+    "benchmark_episodes": 0,
+    "speed_samples": 0,
+    "business_tasks": 0,
+    "user_gate": "Unstarted; no qualification or performance credit from simulations."
+  },
+  "archive_and_closure": "All raw/first failures/old reports/operator sources archived before RESOURCE-CLOSURE; zero private device/SDK daemon acquired."
+}

@@ -1,0 +1,326 @@
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.9/scripts/design_contract.py
+   1 #!/usr/bin/env python3
+   2 """Seal independent typed design sources and compile assertions without value overrides.
+   3 
+   4 Hashes establish identity, not authorship or correct interpretation of prose. A
+   5 design owner must approve the typed sources before implementation and publish the
+   6 lock digest through a separate review/experiment record.
+   7 """
+   8 from __future__ import annotations
+   9 
+  10 import argparse
+  11 import copy
+  12 import hashlib
+  13 import json
+  14 import math
+  15 from pathlib import Path
+  16 
+  17 from observation_contract import validate_actions, validate_selector
+  18 
+  19 UNITS = {'pt', 'dp', 'sp', 'scalar', 'count', 'string', 'bool', 'events', 'argb'}
+  20 GEOMETRY = {'width', 'height', 'gap_x', 'gap_y', 'inset_left', 'inset_right', 'inset_top', 'inset_bottom'}
+  21 
+  22 
+  23 def canonical(value):
+  24     return json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(',', ':'), allow_nan=False).encode()
+  25 
+  26 
+  27 def digest(value):
+  28     return hashlib.sha256(canonical(value)).hexdigest()
+  29 
+  30 
+  31 def strict_json(text):
+  32     def pairs(items):
+  33         result = {}
+  34         for key, value in items:
+  35             if key in result:
+  36                 raise ValueError('Duplicate JSON key in design source: ' + key)
+  37             result[key] = value
+  38         return result
+  39     def invalid(value):
+  40         raise ValueError('Non-finite JSON literal in design source: ' + value)
+  41     return json.loads(text, object_pairs_hook=pairs, parse_constant=invalid)
+  42 
+  43 
+  44 def load(path):
+  45     return strict_json(path.read_text())
+  46 
+  47 
+  48 def pointer(value, path):
+  49     if not isinstance(path, str) or not path.startswith('/'):
+  50         raise ValueError('An exact non-root JSON Pointer is required for each expected value')
+  51     for part in path[1:].split('/'):
+  52         part = part.replace('~1', '/').replace('~0', '~')
+  53         value = value[int(part)] if isinstance(value, list) else value[part]
+  54     return copy.deepcopy(value)
+  55 
+  56 
+  57 def typed(value):
+  58     if not isinstance(value, dict) or set(value) != {'value', 'unit'} or value['unit'] not in UNITS:
+  59         raise ValueError('Every source anchor must address exactly {value, unit}')
+  60     v, unit = value['value'], value['unit']
+  61     if unit in {'pt', 'dp', 'sp', 'scalar', 'count'}:
+  62         if type(v) not in {int, float} or not math.isfinite(v) or (unit == 'count' and type(v) is not int):
+  63             raise ValueError('Finite native-unit number required')
+  64     elif unit == 'string' and not isinstance(v, str):
+  65         raise ValueError('String source required')
+  66     elif unit == 'bool' and type(v) is not bool:
+  67         raise ValueError('Boolean source required')
+  68     elif unit == 'events' and (not isinstance(v, list) or any(not isinstance(e, str) for e in v)):
+  69         raise ValueError('Ordered event-string source required')
+  70     elif unit == 'argb':
+  71         if not isinstance(v, str) or len(v) != 9 or not v.startswith('#'):
+  72             raise ValueError('Explicit #AARRGGBB color required; no implicit RGB/alpha conversion')
+  73         value['value'] = int(v[1:], 16)
+  74     return value
+  75 
+  76 
+  77 def expression(expr, sources):
+  78     if not isinstance(expr, dict):
+  79         raise ValueError('Expected values must reference sealed sources, never inline literals')
+  80     if set(expr) == {'source', 'pointer'}:
+  81         sid, anchor = expr['source'], expr['pointer']
+  82         source = sources[sid]
+  83         datum = typed(pointer(source['document'], anchor))
+  84         return datum, [{'source': sid, 'path': source['path'], 'sha256': source['sha256'],
+  85                         'pointer': anchor, 'source_datum': pointer(source['document'], anchor)}]
+  86     if set(expr) == {'operation', 'arguments'} and expr['operation'] in {'add', 'subtract', 'multiply'}:
+  87         arguments = expr['arguments']
+  88         if not isinstance(arguments, list) or len(arguments) != 2:
+  89             raise ValueError('Derivations require exactly two source-backed operands')
+  90         (a, ap), (b, bp) = [expression(v, sources) for v in arguments]
+  91         if a['unit'] not in {'pt', 'dp', 'sp', 'scalar', 'count'} or b['unit'] not in {'pt', 'dp', 'sp', 'scalar', 'count'}:
+  92             raise ValueError('Only finite numerical derivations are supported')
+  93         op = expr['operation']
+  94         if op == 'multiply':
+  95             if a['unit'] != 'scalar' and b['unit'] != 'scalar':
+  96                 raise ValueError('Multiplication needs a dimensionless source factor')
+  97             unit = b['unit'] if a['unit'] == 'scalar' else a['unit']
+  98             v = a['value'] * b['value']
+  99         else:
+ 100             if a['unit'] != b['unit']:
+ 101                 raise ValueError('No implicit pt/dp/sp conversions or mixed-unit arithmetic')
+ 102             unit = a['unit']
+ 103             v = a['value'] + b['value'] if op == 'add' else a['value'] - b['value']
+ 104         return typed({'value': v, 'unit': unit}), ap + bp
+ 105     raise ValueError('Unsupported expression or attempted inline/implementation-derived expectation')
+ 106 
+ 107 
+ 108 def validate_contract(contract, sources):
+ 109     if contract.get('version') != 1 or not contract.get('design_owner') or not contract.get('approval_reference'):
+ 110         raise ValueError('Independent design owner and separate approval reference required')
+ 111     rules = contract.get('rules', [])
+ 112     ids = [r['id'] for r in rules]
+ 113     declared = contract.get('required_rule_ids', [])
+ 114     if not isinstance(declared, list) or not ids or len(ids) != len(set(ids)) or len(declared) != len(set(declared)) or set(ids) != set(declared):
+ 115         raise ValueError('Design must declare every unique rule ID')
+ 116     if not contract.get('scenarios'):
+ 117         raise ValueError('Independently selected scenarios and states required')
+ 118     for rule in rules:
+ 119         if set(rule) - {'id', 'kind', 'target', 'reference_target', 'property', 'basis', 'measurement', 'op', 'coverage', 'allowed_methods', 'stimulus', 'required_method'}:
+ 120             raise ValueError('Design rules cannot contain literal expectations or undeclared overrides')
+ 121         if rule.get('kind') not in {'control', 'text_layout', 'geometry', 'event', 'manual'}:
+ 122             raise ValueError('Unknown design assertion kind')
+ 123         if rule.get('op', 'eq') not in {'eq', 'contains', 'gte', 'lte', 'near'}:
+ 124             raise ValueError('Unsupported comparison')
+ 125         if rule['kind'] != 'event' and not rule.get('target'):
+ 126             raise ValueError('A logical target is required, including visual assertions')
+ 127         if rule['kind'] == 'geometry' and (rule.get('property') not in GEOMETRY or rule.get('basis', 'semantic') not in {'semantic', 'control'}):
+ 128             raise ValueError('Explicit supported native-bound geometry required')
+ 129         if rule['kind'] == 'geometry':
+ 130             measurement = rule.get('measurement')
+ 131             scopes = list(measurement.values()) if isinstance(measurement, dict) and set(measurement) == {'ios', 'android'} else [measurement]
+ 132             if any(not isinstance(v, str) or v not in {'layout_box', 'accessibility_box'} for v in scopes):
+ 133                 raise ValueError('Geometry must distinguish a layout box from an accessibility box, optionally by platform')
+ 134         if rule['kind'] == 'geometry' and rule['property'] not in {'width', 'height'} and not rule.get('reference_target'):
+ 135             raise ValueError('Relational geometry needs a second logical target')
+ 136         if rule['kind'] in {'control', 'text_layout'} and not rule.get('property'):
+ 137             raise ValueError('Native assertion property required')
+ 138     for sid, scenario in contract['scenarios'].items():
+ 139         states = scenario.get('states', [])
+ 140         if not isinstance(scenario.get('actions'), list):
+ 141             raise ValueError('Independent scenario stimulus route required')
+ 142         state_ids = [s['id'] for s in states]
+ 143         if not states or len(state_ids) != len(set(state_ids)) or set(scenario.get('values', {})) != set(ids):
+ 144             raise ValueError('Every scenario must disposition every design rule')
+ 145         for rule in rules:
+ 146             selected = scenario['values'][rule['id']]
+ 147             if set(selected) != set(state_ids):
+ 148                 raise ValueError('Every rule/state cell must have an expectation or an independent N/A reason')
+ 149             for state, cell in selected.items():
+ 150                 if set(cell) == {'not_applicable'}:
+ 151                     if not isinstance(cell['not_applicable'], str) or not cell['not_applicable'].strip():
+ 152                         raise ValueError('Explicit N/A reason required')
+ 153                     continue
+ 154                 if set(cell) - {'ios', 'android', 'tolerance'} or not {'ios', 'android'} <= set(cell):
+ 155                     raise ValueError('Both native platforms need source-backed expected values')
+ 156                 for platform in ['ios', 'android']:
+ 157                     value, _ = expression(cell[platform], sources)
+ 158                     unit = value['unit']
+ 159                     allowed = ({'pt'} if platform == 'ios' else {'dp'}) if rule['kind'] == 'geometry' else None
+ 160                     if allowed and unit not in allowed:
+ 161                         raise ValueError('Native geometry unit mismatch')
+ 162                     known = {'label': 'string', 'enabled': 'bool', 'present': 'bool', 'unique': 'bool',
+ 163                              'selected': 'bool', 'font_sp': 'sp', 'font_weight': 'scalar', 'color_argb': 'argb',
+ 164                              'lines': 'count', 'overflow': 'bool', 'ellipsized': 'bool'}
+ 165                     expected_unit = 'events' if rule['kind'] == 'event' else known.get(rule.get('property'))
+ 166                     if expected_unit and unit != expected_unit:
+ 167                         raise ValueError('Property and sealed unit disagree')
+ 168                     if rule.get('op') in {'gte', 'lte', 'near'} and unit not in {'pt', 'dp', 'sp', 'scalar', 'count'}:
+ 169                         raise ValueError('Numeric comparisons require numerical units; packed colors are exact ARGB values')
+ 170                     if rule.get('op') == 'contains' and unit != 'string':
+ 171                         raise ValueError('Contains requires a string source')
+ 172                     if rule.get('op') == 'near':
+ 173                         if 'tolerance' not in cell:
+ 174                             raise ValueError('Approximate comparisons need independently sourced tolerance')
+ 175                         tolerance, _ = expression(cell['tolerance'][platform], sources)
+ 176                         if tolerance['unit'] != unit or tolerance['value'] < 0:
+ 177                             raise ValueError('Tolerance must be finite, nonnegative and in the same unit')
+ 178 
+ 179 
+ 180 def seal(contract_path, root):
+ 181     contract = load(contract_path)
+ 182     sources = {}
+ 183     for entry in contract.get('sources', []):
+ 184         if set(entry) != {'id', 'path', 'sha256'} or entry['id'] in sources:
+ 185             raise ValueError('Unique exact source records required')
+ 186         path = (root / entry['path']).resolve()
+ 187         if not path.is_relative_to(root.resolve()) or not path.is_file():
+ 188             raise ValueError('Design source must be inside the independent design root')
+ 189         raw = path.read_bytes()
+ 190         if hashlib.sha256(raw).hexdigest() != entry['sha256']:
+ 191             raise ValueError('Design source digest differs from approved source')
+ 192         sources[entry['id']] = dict(entry, document=strict_json(raw.decode()), raw_utf8=raw.decode())
+ 193     if not sources:
+ 194         raise ValueError('No independent typed sources')
+ 195     validate_contract(contract, sources)
+ 196     return {'version': 1, 'contract': contract, 'sources': sources,
+ 197             'contract_sha256': digest(contract),
+ 198             'trust_limit': 'Identity and exact typed derivation only. Authorship, design correctness and approval require a separate preimplementation review record.'}
+ 199 
+ 200 
+ 201 def validate_lock(lock, trusted_sha256):
+ 202     if not trusted_sha256 or digest(lock) != trusted_sha256:
+ 203         raise ValueError('Design lock must match a separately pinned canonical SHA256')
+ 204     if lock.get('version') != 1 or digest(lock['contract']) != lock['contract_sha256']:
+ 205         raise ValueError('Changed design contract')
+ 206     for entry in lock['contract']['sources']:
+ 207         source = lock['sources'][entry['id']]
+ 208         if any(source[k] != entry[k] for k in entry) or hashlib.sha256(source['raw_utf8'].encode()).hexdigest() != entry['sha256']:
+ 209             raise ValueError('Changed sealed source')
+ 210         if strict_json(source['raw_utf8']) != source['document']:
+ 211             raise ValueError('Source document no longer matches exact sealed bytes')
+ 212     validate_contract(lock['contract'], lock['sources'])
+ 213 
+ 214 
+ 215 def compile_contract(lock, trusted_sha256, scenario, platform, bindings, actions):
+ 216     from native_checks import validate_plan
+ 217     validate_lock(lock, trusted_sha256)
+ 218     if platform not in {'ios', 'android'}:
+ 219         raise ValueError('Native platform required')
+ 220     contract = lock['contract']
+ 221     selected = contract['scenarios'][scenario]
+ 222     states = copy.deepcopy(selected['states'])
+ 223     enriched = copy.deepcopy(actions)
+ 224     validate_actions(enriched)
+ 225     logical = {r['target'] for r in contract['rules'] if 'target' in r} | {r['reference_target'] for r in contract['rules'] if 'reference_target' in r}
+ 226     logical |= {a[field] for a in selected['actions'] for field in ['target', 'after_target'] if isinstance(a.get(field), str)}
+ 227     logical |= {c['target'] for a in selected['actions'] for c in a.get('preconditions', []) if isinstance(c.get('target'), str)}
+ 228     if set(bindings) != logical:
+ 229         raise ValueError('Bindings may only supply the complete logical-target selector map; no expected overrides')
+ 230     for selector in bindings.values():
+ 231         validate_selector(selector)
+ 232         if set(selector) - {'identifier', 'label', 'role'}:
+ 233             raise ValueError('A binding is only a native identity/role selector, never expected values or operators')
+ 234     approved_actions = copy.deepcopy(selected['actions'])
+ 235     for action in approved_actions:
+ 236         for field in ['target', 'after_target']:
+ 237             if isinstance(action.get(field), str):
+ 238                 action[field] = copy.deepcopy(bindings[action[field]])
+ 239         for condition in action.get('preconditions', []):
+ 240             if isinstance(condition.get('target'), str): condition['target'] = copy.deepcopy(bindings[condition['target']])
+ 241     if canonical(actions) != canonical(approved_actions):
+ 242         raise ValueError('Stimulus route differs from the independent design; only selectors can be bound')
+ 243     assertions, ledger = [], []
+ 244     for state in states:
+ 245         index = state.get('after_action')
+ 246         if type(index) is not int or not -1 <= index < len(enriched):
+ 247             raise ValueError('Design state/action index invalid')
+ 248         if index >= 0:
+ 249             if enriched[index].get('state_id', state['id']) != state['id']:
+ 250                 raise ValueError('Native route differs from independently selected state')
+ 251             enriched[index]['state_id'] = state['id']
+ 252         targets = []
+ 253         for rule in contract['rules']:
+ 254             cell = selected['values'][rule['id']][state['id']]
+ 255             identity = state['id'].replace('~', '~0').replace('/', '~1') + '/' + rule['id'].replace('~', '~0').replace('/', '~1')
+ 256             row = {'id': identity, 'state': state['id'], 'requirement_id': rule['id']}
+ 257             if 'not_applicable' in cell:
+ 258                 ledger.append(dict(row, disposition='not_applicable', reason=cell['not_applicable']))
+ 259                 continue
+ 260             expected, proof = expression(cell[platform], lock['sources'])
+ 261             check = {k: copy.deepcopy(v) for k, v in rule.items() if k not in {'id', 'target', 'reference_target'}}
+ 262             check.update(row, expected=expected['value'], unit=expected['unit'], expectation_provenance=proof,
+ 263                          source='design-lock:' + trusted_sha256)
+ 264             if isinstance(check.get('measurement'), dict):
+ 265                 check['measurement'] = check['measurement'][platform]
+ 266             for field in ['target', 'reference_target']:
+ 267                 if field in rule:
+ 268                     check[field] = copy.deepcopy(bindings[rule[field]])
+ 269                     if check[field] not in targets:
+ 270                         targets.append(check[field])
+ 271             if check['kind'] == 'event':
+ 272                 check.setdefault('action_index', state.get('stimulus_action', index))
+ 273             if check.get('op') == 'near':
+ 274                 tolerance, tp = expression(cell['tolerance'][platform], lock['sources'])
+ 275                 check['tolerance'] = tolerance['value']
+ 276                 check['tolerance_provenance'] = tp
+ 277             assertions.append(check)
+ 278             ledger.append(dict(row, disposition='required', provenance=proof))
+ 279         if index >= 0 and state.get('coverage') == 'targets' and targets and enriched[index].get('type') != 'sweep':
+ 280             enriched[index]['after_targets'] = targets
+ 281     plan = {'version': 1, 'states': states, 'assertions': assertions,
+ 282             'required_assertion_ids': [a['id'] for a in assertions],
+ 283             'matrix_contract': {'selected_states': [s['id'] for s in states], 'selected_requirements': contract['required_rule_ids'], 'cells': ledger},
+ 284             'design_contract': {'lock_sha256': trusted_sha256, 'scenario': scenario, 'platform': platform,
+ 285                                 'bindings': copy.deepcopy(bindings), 'base_actions': copy.deepcopy(actions)}}
+ 286     validate_plan(plan)
+ 287     validate_actions(enriched)
+ 288     return plan, enriched
+ 289 
+ 290 
+ 291 def verify_generated(plan, lock, trusted_sha256, platform):
+ 292     metadata = plan.get('design_contract', {})
+ 293     if metadata.get('lock_sha256') != trusted_sha256 or metadata.get('platform') != platform:
+ 294         raise ValueError('Generated plan is not bound to this trusted design/platform')
+ 295     expected, actions = compile_contract(lock, trusted_sha256, metadata['scenario'], platform,
+ 296                                          metadata['bindings'], metadata['base_actions'])
+ 297     if canonical(expected) != canonical(plan):
+ 298         raise ValueError('Generated assertions changed: expected value, precision, source, state or rule coverage differs')
+ 299     return actions
+ 300 
+ 301 
+ 302 def main():
+ 303     parser = argparse.ArgumentParser(description=__doc__)
+ 304     sub = parser.add_subparsers(dest='command', required=True)
+ 305     s = sub.add_parser('seal'); s.add_argument('--contract', type=Path, required=True); s.add_argument('--root', type=Path, required=True); s.add_argument('--output', type=Path, required=True)
+ 306     c = sub.add_parser('compile'); c.add_argument('--lock', type=Path, required=True); c.add_argument('--lock-sha256', required=True); c.add_argument('--scenario', required=True); c.add_argument('--platform', choices=['ios', 'android'], required=True); c.add_argument('--bindings', type=Path, required=True); c.add_argument('--actions', type=Path, required=True); c.add_argument('--output', type=Path, required=True)
+ 307     args = parser.parse_args()
+ 308     if args.output.exists():
+ 309         raise ValueError('Fresh output required; approved expectations are never overwritten')
+ 310     if args.command == 'seal':
+ 311         result = seal(args.contract, args.root)
+ 312         args.output.parent.mkdir(parents=True, exist_ok=True)
+ 313         args.output.write_text(json.dumps(result, indent=2, ensure_ascii=False, allow_nan=False) + '\n')
+ 314         print(json.dumps({'design_lock_sha256': digest(result), 'approval_reference': result['contract']['approval_reference']}))
+ 315     else:
+ 316         plan, actions = compile_contract(load(args.lock), args.lock_sha256, args.scenario, args.platform, load(args.bindings), load(args.actions))
+ 317         args.output.mkdir(parents=True)
+ 318         for name, value in [('plan.json', plan), ('actions.json', actions)]:
+ 319             (args.output / name).write_text(json.dumps(value, indent=2, ensure_ascii=False) + '\n')
+ 320         print(json.dumps({'assertions': len(plan['assertions']), 'cells': len(plan['matrix_contract']['cells']), 'design_lock_sha256': args.lock_sha256}))
+ 321 
+ 322 
+ 323 if __name__ == '__main__':
+ 324     main()

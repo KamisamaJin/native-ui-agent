@@ -1,0 +1,481 @@
+--- a/assets/ios-observer/ObserverApp.swift
++++ b/assets/ios-observer/ObserverApp.swift
+@@ -55,7 +55,7 @@
+     }
+     var body: some View {
+         VStack(spacing: 8) {
+-            ScrollView(.vertical) {
++            ScrollView(.vertical, showsIndicators: false) {
+                 VStack(alignment: .leading, spacing: 0) {
+                     ObserverBridge.make(fixture: fixtures[index]) { name in
+                         events.append(["event": name, "fixture_index": index, "uptime": ProcessInfo.processInfo.systemUptime])
+--- a/assets/ios-observer/ObserverTests.swift
++++ b/assets/ios-observer/ObserverTests.swift
+@@ -197,7 +197,13 @@
+             "max_gap": maxGap, "stable_binding": !drift, "stable_height": stableHeight, "complete": complete,
+             "observed_targets": observationTargets.filter { seenTargets.contains(key($0)) }, "return_trace": trace,
+             "scope": "Actual overlapping pixels for this input/event epoch; not a style or business pass."])
+-        if !complete { issues.append("state \(state) incomplete overlapping full-content coverage") }
++        // Estimated lazy tail height is not a terminal extent. Raw capture
++        // exports every original frame even when geometry cannot certify it.
++        // The host independently verifies the original-pixel/AX overlap chain;
++        // missing/moving/ambiguous links still block native execution coverage.
++        if !sawTop || !sawBottom || drift || maxGap > 1 {
++            issues.append("state \(state) incomplete overlapping full-content coverage")
++        }
+     }
+ 
+     func decode(_ value: String) -> Any? { guard let data = value.data(using: .utf8) else { return nil }; return try? JSONSerialization.jsonObject(with: data) }
+@@ -679,7 +685,7 @@
+         let missing = required.filter { !seen.contains($0) }
+         if !bottomReached && executionScope != "targeted" { issues.append("bottom sentinel not reached; lower content coverage incomplete") }
+         if !missing.isEmpty { issues.append("required identifiers never visible: \(missing.joined(separator: ", "))") }
+-        let result: [String: Any] = ["schema_version": 2, "state_captures": stateCaptures, "measurement_kind": "XCUIElement runtime accessibility; frames in logical screen points",
++        let result: [String: Any] = ["schema_version": 2, "coverage_protocol": 2, "state_captures": stateCaptures, "measurement_kind": "XCUIElement runtime accessibility; frames in logical screen points",
+             "guard_protocol": config["guard_protocol"] as? Int ?? 0, "guard_platform": "ios", "guard_actions": actions,
+             "snapshots": records, "steps": steps, "coverage": ["bottom_reached": bottomReached, "required_identifiers": required, "missing_identifiers": missing, "observed_identifiers": seen.sorted(), "execution_scope": executionScope],
+             "execution_scope": executionScope, "observation_strategy": coalesced ? "coalesced" : "legacy",
+--- a/scripts/scroll_coverage.py
++++ b/scripts/scroll_coverage.py
+@@ -0,0 +1,131 @@
++"""Conservative original-raster/AX overlap proof for a vertical native sweep.
++
++Estimated lazy content height is not an actual terminal extent. A changing
++estimate alone cannot establish or refute full observed scroll coverage. This
++provider requires a connected original-pixel strip and independent native leaf
++landmarks. It never infers computed styles, hidden branches or live-data closure.
++"""
++import hashlib
++import io
++import json
++import math
++from pathlib import Path
++
++
++EPS = 1e-6  # Arithmetic noise only; no image/geometry acceptance tolerance.
++
++
++def finite(values):
++    return all(type(v) in {int, float} and math.isfinite(v) for v in values)
++
++
++def rectangle(v):
++    if not isinstance(v, dict) or not finite([v.get(k) for k in ['x', 'y', 'width', 'height']]):
++        raise ValueError('Finite native rectangle required')
++    if min(v['width'], v['height']) <= 0: raise ValueError('Positive native rectangle required')
++    return v
++
++
++def anchors(snapshot):
++    nodes = snapshot.get('nodes', []); by_index = {n.get('index'): n for n in nodes}
++    if len(by_index) != len(nodes): raise ValueError('Unique AX indices required')
++    parent_indices = {n.get('parent_index') for n in nodes}
++    candidates = {}
++    for node in nodes:
++        # An identifier on a container is not a leaf/visual landmark.
++        if node['index'] in parent_indices: continue
++        lineage = []; index = node.get('parent_index'); seen = set(); in_scroll = False
++        while index in by_index and index not in seen:
++            seen.add(index); parent = by_index[index]
++            if parent.get('identifier') == '__observer.scroll': in_scroll = True; break
++            lineage.append([parent.get('role_raw'), parent.get('identifier', '')])
++            index = parent.get('parent_index')
++        if not in_scroll: continue
++        identity = node.get('identifier') or node.get('label')
++        if not identity or str(identity).startswith('__observer.'): continue
++        key = json.dumps([node.get('role_raw'), 'id' if node.get('identifier') else 'label', identity, lineage], sort_keys=True)
++        candidates.setdefault(key, []).append(node)
++    # Repeated labels/IDs never acquire identity through ordering or geometry.
++    return {key: rows[0] for key, rows in candidates.items() if len(rows) == 1 and rows[0].get('fully_within_viewport') is True}
++
++
++def certify(found, binding, root):
++    result = {'version': 1, 'method': 'original_pixels_and_native_leaf_overlap', 'complete': False, 'links': [],
++              'scope': 'Observed vertical component viewport strip in one native epoch; no hidden-branch, style, business or arbitrary asynchronous-content guarantee.'}
++    try:
++        if root is None: raise ValueError('Original screenshot root is unavailable')
++        from PIL import Image, ImageChops
++        root = Path(root).resolve()
++        if (type(binding.get('pid')) is not int or binding['pid'] <= 0 or not binding.get('instance')
++                or not isinstance(binding.get('input_sha256'), str) or len(binding['input_sha256']) != 64
++                or any(type(binding.get(k)) is not int or binding[k] < 0 for k in ['fixture_index', 'event_revision'])):
++            raise ValueError('Actual native process/input/event identity required')
++        if not found or [i for i, _ in found] != list(range(found[0][0], found[-1][0] + 1)):
++            raise ValueError('Consecutive original state snapshots required')
++        rows = []
++        for index, snap in found:
++            if snap.get('binding') != binding or snap.get('binding_after_capture') != binding or snap.get('capture_consistent') is not True:
++                raise ValueError('Native epoch/image binding drift')
++            vp = rectangle(snap.get('viewport')); content = rectangle(snap.get('runtime', {}).get('content_frame'))
++            app = rectangle(snap.get('app_frame')); pixels = snap.get('screenshot_pixels', {})
++            if any(type(pixels.get(k)) is not int or pixels[k] <= 0 for k in ['width', 'height']):
++                raise ValueError('Actual screenshot extent required')
++            sx, sy = pixels['width'] / app['width'], pixels['height'] / app['height']
++            path = (root / snap.get('screenshot', '')).resolve()
++            if not path.is_relative_to(root) or not path.is_file(): raise ValueError('Original screenshot missing/outside root')
++            raw = path.read_bytes()
++            with Image.open(io.BytesIO(raw)) as original: image = original.convert('RGBA')
++            if image.size != (pixels['width'], pixels['height']): raise ValueError('Native/image size mismatch')
++            offset = vp['y'] - content['y']
++            rows.append({'index': index, 'snap': snap, 'vp': vp, 'content': content, 'app': app, 'sx': sx, 'sy': sy,
++                         'offset': offset, 'image': image, 'sha256': hashlib.sha256(raw).hexdigest(), 'anchors': anchors(snap)})
++        first, last = rows[0], rows[-1]
++        if abs(first['offset']) > EPS: raise ValueError('Actual top extent not observed')
++        sentinel = [n for n in last['snap'].get('nodes', []) if n.get('identifier') == '__observer.bottom']
++        if len(sentinel) != 1 or sentinel[0].get('fully_within_viewport') is not True or last['snap'].get('bottom_sentinel_visible') is not True:
++            raise ValueError('Unique fully observed native terminal sentinel required')
++        if last['offset'] + last['vp']['height'] < last['content']['height'] - EPS:
++            raise ValueError('Actual terminal content extent not observed')
++        for before, after in zip(rows, rows[1:]):
++            if before['vp'] != after['vp'] or before['app'] != after['app'] or (before['sx'], before['sy']) != (after['sx'], after['sy']):
++                raise ValueError('Viewport/native-image mapping changed')
++            shift = (after['offset'] - before['offset']) * before['sy']
++            if shift <= 0 or abs(shift - round(shift)) > EPS: raise ValueError('Positive integral-pixel native scroll displacement required')
++            lower = max(before['offset'], after['offset']); upper = min(before['offset'] + before['vp']['height'], after['offset'] + after['vp']['height'])
++            if (upper - lower) * before['sy'] < 2: raise ValueError('No actual viewport pixel overlap')
++            common = sorted(set(before['anchors']) & set(after['anchors'])); matched = []
++            for key in common:
++                a, b = before['anchors'][key], after['anchors'][key]
++                if any(a.get(k) != b.get(k) for k in ['identifier', 'label', 'value', 'role_raw', 'enabled', 'selected']):
++                    raise ValueError('Shared native leaf content/traits changed')
++                af, bf = rectangle(a.get('frame')), rectangle(b.get('frame'))
++                comparisons = [(af['x'] - before['content']['x'], bf['x'] - after['content']['x']),
++                               (af['y'] - before['content']['y'], bf['y'] - after['content']['y']),
++                               (af['width'], bf['width']), (af['height'], bf['height'])]
++                if any(abs(x - y) > EPS for x, y in comparisons): raise ValueError('Native leaf reflow/projected position changed')
++                matched.append({'identity': json.loads(key), 'before_index': a['index'], 'after_index': b['index'],
++                                'content_y': af['y'] - before['content']['y']})
++            if len(matched) < 2 or len({round(a['content_y'], 6) for a in matched}) < 2:
++                raise ValueError('Two unambiguous vertically distinct shared native leaves required')
++            def overlap(row):
++                vp, app = row['vp'], row['app']
++                coordinates = [(vp['x'] - app['x']) * row['sx'],
++                               (vp['y'] + lower - row['offset'] - app['y']) * row['sy'],
++                               (vp['x'] + vp['width'] - app['x']) * row['sx'],
++                               (vp['y'] + upper - row['offset'] - app['y']) * row['sy']]
++                if any(abs(v - round(v)) > EPS for v in coordinates): raise ValueError('Viewport overlap not on actual pixel grid')
++                box = tuple(round(v) for v in coordinates)
++                if min(box[:2]) < 0 or box[2] > row['image'].width or box[3] > row['image'].height:
++                    raise ValueError('Viewport overlap outside original image')
++                return row['image'].crop(box), box
++            a, abox = overlap(before); b, bbox = overlap(after)
++            if a.size != b.size or any(channel.getbbox() is not None for channel in ImageChops.difference(a, b).split()):
++                raise ValueError('Original overlapping pixels changed; no masking/resampling/tolerance allowed')
++            result['links'].append({'before': before['index'], 'after': after['index'], 'before_image_sha256': before['sha256'],
++                                    'after_image_sha256': after['sha256'], 'before_pixels': abox, 'after_pixels': bbox,
++                                    'overlap_pixels': a.size, 'native_leaf_anchors': matched})
++        result.update(complete=True, reason='Original top-to-terminal pixel strip has coherent native leaf overlap',
++                      observed_terminal_height=last['content']['height'], estimated_heights=[r['content']['height'] for r in rows])
++    except (ValueError, OSError, KeyError, TypeError, ImportError) as exc:
++        result['reason'] = str(exc)
++    return result
+--- a/scripts/native_checks.py
++++ b/scripts/native_checks.py
+@@ -182,7 +182,7 @@
+     return result
+ 
+ 
+-def state_evidence(observation,state):
++def state_evidence(observation,state,root=None):
+     # Legacy coverage packets have no guarded route. Keep this standalone reader
+     # usable through a file loader without importing an unrelated protocol.
+     if observation.get('guard_protocol') == 1:
+@@ -200,7 +200,7 @@
+             # Legacy raw data still earns the facts actually visible in its one
+             # bound action frame; it cannot borrow frames from other actions.
+             legacy=dict(state,coverage='target')
+-            return state_evidence(observation,legacy)
++            return state_evidence(observation,legacy,root)
+         binding=step.get('binding_after',{});snapshots=observation.get('snapshots',[])
+         capture=dict(bundle,after_action=index,source='native_post_action_targets',scope='targets_only')
+         if (bundle.get('state_id')!=state['id']or step.get('state_id')!=state['id']or bundle.get('after_action')!=index
+@@ -259,12 +259,16 @@
+     end=0;gap=0
+     for a,b in sorted(intervals):gap=max(gap,a-end);end=max(end,b)
+     complete=bool(intervals)and max(heights)-min(heights)<=1 and gap<=1 and end>=max(heights)-1 and capture.get('top_reached')is True and capture.get('bottom_reached')is True and capture.get('stable_binding')is True
++    if not complete and observation.get('coverage_protocol') == 2:
++        import scroll_coverage
++        proof = scroll_coverage.certify(found, binding, root)
++        return found,proof['complete'],proof['reason'],dict(capture, coverage_proof=proof)
+     return found,complete,'native interval union complete'if complete else'incomplete per-state interval union',capture
+ 
+ 
+-def bound_state_evidence(observation,state):
++def bound_state_evidence(observation,state,root=None):
+     """Strict source/epoch/image identity for the new independently pinned review mode."""
+-    found,complete,reason,capture=state_evidence(observation,state)
++    found,complete,reason,capture=state_evidence(observation,state,root)
+     if not found:return found,complete,reason,capture
+     binding=capture.get('binding',{})if capture else{}
+     valid=(isinstance(binding.get('instance'),str)and bool(binding['instance'])and
+@@ -345,7 +349,7 @@
+         decisions[row.get('id')]=row
+     unknown=set(decisions)-{a['id']for a in plan['assertions']if a['kind']=='manual'}
+     if unknown:raise ValueError('Unplanned manual decisions')
+-    evidence={sid:(bound_state_evidence if review_policy is not None else state_evidence)(observation,spec)for sid,spec in states.items()};rows=[]
++    evidence={sid:(bound_state_evidence if review_policy is not None else state_evidence)(observation,spec,root)for sid,spec in states.items()};rows=[]
+     for item in plan['assertions']:
+         found,complete,why,capture=evidence[item['state']];status='unassessed';actual=None;reason=why;used=[];geometry_proofs=None
+         if found:
+--- a/scripts/execution_plan.py
++++ b/scripts/execution_plan.py
+@@ -114,7 +114,7 @@
+     return expected
+ 
+ 
+-def _coverage_facts(required, definitions, platform, observation):
++def _coverage_facts(required, definitions, platform, observation, root=None):
+     from native_checks import bound_state_evidence, resolve
+     missing, states = [], []
+     for entry in required:
+@@ -122,7 +122,7 @@
+         # Exact state definitions are carried in config by the CLI/runner caller
+         # below; never infer an input epoch from an arbitrary matching label.
+         parent = next(s for s in definitions if s['id'] == entry['state_id'])
+-        found, complete, reason, _ = bound_state_evidence(observation, parent)
++        found, complete, reason, capture = bound_state_evidence(observation, parent, root)
+         target_rows = []
+         for target in entry['targets']:
+             seen = []
+@@ -134,23 +134,24 @@
+             target_rows.append({'target': target, 'indices': seen, 'observed': bool(seen)})
+         good = bool(found) and (complete if entry['coverage'] == 'full_content' else True) and all(v['observed'] for v in target_rows)
+         if not good: missing.append(entry['state_id'])
+-        states.append({'state_id': entry['state_id'], 'complete': complete, 'satisfied': good, 'reason': reason, 'targets': target_rows})
++        states.append({'state_id': entry['state_id'], 'complete': complete, 'satisfied': good, 'reason': reason, 'targets': target_rows,
++                       **({'coverage_proof': capture['coverage_proof']} if capture and 'coverage_proof' in capture else {})})
+     return {'required_states': states, 'satisfied': not missing, 'missing_states': missing}
+ 
+ 
+-def coverage_receipt(execution, observation):
++def coverage_receipt(execution, observation, root=None):
+     return {'execution_sha256': execution['execution_sha256'], 'scope': execution['scope'],
+             **_coverage_facts(execution['required_coverage'], execution['config']['execution_state_definitions'],
+-                              execution['platform'], observation)}
+-
+-
+-def request_coverage_receipt(config, observation, platform, request_sha256):
++                              execution['platform'], observation, root)}
++
++
++def request_coverage_receipt(config, observation, platform, request_sha256, root=None):
+     """A collector can bind its request bytes, not the parent's approved plan."""
+     if (not isinstance(request_sha256,str)or len(request_sha256)!=64 or
+             any(c not in '0123456789abcdef' for c in request_sha256)):
+         raise ValueError('Exact request-byte SHA256 required')
+     return {'request_sha256':request_sha256,'identity_scope':'native_request','scope':config['execution_scope'],
+-            **_coverage_facts(config['execution_states'],config['execution_state_definitions'],platform,observation)}
++            **_coverage_facts(config['execution_states'],config['execution_state_definitions'],platform,observation,root)}
+ 
+ 
+ def source_fingerprint(roots):
+@@ -287,7 +288,7 @@
+             if environment is not None:
+                 save('environment-check.json', environment); record['environment_status'] = environment['status']
+                 record['environment_expectation_sha256'] = environment_sha
+-            receipt = coverage_receipt(value, observation); save('execution-coverage.json', receipt)
++            receipt = coverage_receipt(value, observation, output / 'native'); save('execution-coverage.json', receipt)
+             record['coverage_satisfied'] = receipt['satisfied']
+             manual = None
+             if policy is not None:
+--- a/scripts/ios_observe.py
++++ b/scripts/ios_observe.py
+@@ -302,7 +302,8 @@
+     env = dict(os.environ, DEVELOPER_DIR=args.developer_dir)
+     manifest = {"schema_version": 1, "status": "error", "simulator": args.simulator, "started_at": time.time(),
+                 "bridge": str(bridge), "package": str(package) if package else None, "source_hashes": {}, "image_hashes": {}, "native_test_count": 0}
+-    files = [bridge, TEMPLATES / "ObserverApp.swift", TEMPLATES / "ObserverTests.swift", Path(__file__).resolve(), CONTRACT]
++    files = [bridge, TEMPLATES / "ObserverApp.swift", TEMPLATES / "ObserverTests.swift", Path(__file__).resolve(), CONTRACT,
++             Path(__file__).with_name('scroll_coverage.py')]
+     if package:
+         files += [package / "Package.swift"] + sorted(p for p in (package / "Sources").rglob("*") if p.is_file())
+         if (package / 'Package.resolved').is_file(): files.append(package / 'Package.resolved')
+@@ -404,7 +405,7 @@
+             manifest['reset_contract'] = 'fresh_native_fixture'
+         if strategy == 'coalesced':
+             import execution_plan
+-            receipt = execution_plan.request_coverage_receipt(config, observation, 'ios', digest(Path(args.fixtures)))
++            receipt = execution_plan.request_coverage_receipt(config, observation, 'ios', digest(Path(args.fixtures)), output)
+             manifest['execution_coverage'] = receipt
+             if not receipt['satisfied']: manifest['status'] = 'failed'
+             elif config['execution_scope'] == 'targeted' and test.returncode == 0 and observation['status'] == 'passed':
+--- a/scripts/review_contract.py
++++ b/scripts/review_contract.py
+@@ -94,7 +94,7 @@
+         if not isinstance(indices, list) or any(type(i) is not int for i in indices) or len(set(indices)) != len(indices):
+             raise ValueError('Unique original native snapshot indices required')
+         requests[rid] = request
+-    states = {s['id']: bound_state_evidence(observation, s) for s in plan['states']}
++    states = {s['id']: bound_state_evidence(observation, s, root) for s in plan['states']}
+     decisions, findings = [], []
+     for row in cat['rows']:
+         found, complete, why, capture = states[row['state']]
+--- a/scripts/acceptance.py
++++ b/scripts/acceptance.py
+@@ -142,7 +142,7 @@
+             if rule is None:
+                 raise ValueError('Cause assessment references an unplanned assertion')
+             state = next(s for s in plan['states'] if s['id'] == rule['state'])
+-            allowed = {i for i, _ in native_checks.bound_state_evidence(observation, state)[0]}
++            allowed = {i for i, _ in native_checks.bound_state_evidence(observation, state, root)[0]}
+             indices = item['snapshot_indices']
+             if not isinstance(indices, list) or not indices or any(type(i) is not int for i in indices) or len(set(indices)) != len(indices) or not set(indices) <= allowed:
+                 raise ValueError('Failure cause lacks original state-scoped screenshots')
+--- a/scripts/requirement_routes.py
++++ b/scripts/requirement_routes.py
+@@ -86,7 +86,7 @@
+             'scope': 'Consumes evaluated evidence; does not certify a caller-entered report or subjective observation. Targeted feedback never establishes complete PR acceptance.'}
+ 
+ 
+-def route_findings(coverage, plan, report, observation, *, discoveries=(), execution=None):
++def route_findings(coverage, plan, report, observation, *, discoveries=(), execution=None, root=None):
+     from native_checks import bound_state_evidence
+     if design.digest(plan) != coverage['plan_sha256']:
+         raise ValueError('Coverage belongs to another parent plan')
+@@ -120,7 +120,7 @@
+                                   'assertion_ids': [rid], 'state': row['state'], 'risk': obligation['risk'],
+                                   'status': row['status'], 'reason': why})
+                     continue
+-            rule = planned[rid]; found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']])
++            rule = planned[rid]; found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']], root)
+             if row.get('reason', '').startswith('blocked_precondition:'): action = 'diagnose_action_precondition'
+             elif report.get('environment', {}).get('status', 'P') != 'P': action = 'repair_environment'
+             elif row.get('panel_disagreement'): action = 'clarify_oracle'
+--- a/scripts/locator_diagnostics.py
++++ b/scripts/locator_diagnostics.py
+@@ -6,7 +6,7 @@
+ from native_checks import bound_state_evidence, resolve, same_selector
+ 
+ 
+-def diagnose(plan, report, observation, source_roots, selected_states=None):
++def diagnose(plan, report, observation, source_roots, selected_states=None, root=None):
+     rows = {v['id']: v for v in report.get('rows', report.get('assertions', []))}
+     states = {v['id']: v for v in plan['states']}
+     selected = set(selected_states or states)
+@@ -20,7 +20,7 @@
+     for rule in plan['assertions']:
+         row = rows[rule['id']]
+         if row['status'] == 'passed' or rule['state'] not in selected: continue
+-        found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']])
++        found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']], root)
+         targets = []
+         for key in ['target', 'reference_target']:
+             if rule.get(key) and rule[key] not in targets: targets.append(rule[key])
+--- a/scripts/feedback_loop.py
++++ b/scripts/feedback_loop.py
+@@ -161,9 +161,10 @@
+     else:
+         report = {'rows': [{'id':r['id'],'state':r['state'],'status':'unassessed','reason':'No original source-bound packet'}for r in plan['assertions']]}
+     report = calibrated(config, plan, observation, report)
+-    routed = routes.route_findings(coverage, plan, report, observation, execution=execution)
++    evidence_root = Path(previous).parent / 'native' if previous and observation else None
++    routed = routes.route_findings(coverage, plan, report, observation, execution=execution, root=evidence_root)
+     selected = execution['selected_states'] if execution else None
+-    diagnostics = locator_diagnostics.diagnose(plan, report, observation, roots, selected)
++    diagnostics = locator_diagnostics.diagnose(plan, report, observation, roots, selected, root=evidence_root)
+     trace.extend(['route_findings', 'locator_diagnostics'])
+     planning = retest_plan.dispatch(coverage, plan, report, routed, changed_files=sorted(k for k in set(before)|set(now) if before.get(k)!=now.get(k)),
+                     source_before=d.digest(before), source_after=d.digest(now), final=final, selected_states=selected, visual_ids=visual, capture_available=available)
+@@ -218,8 +219,9 @@
+             value=execution; result=receipt
+             trace.append('adopt_original_full_capture')
+         report=calibrated(config,plan,observation,report)
+-        after=routes.route_findings(coverage,plan,report,observation,execution=value)
+-        after_diag=locator_diagnostics.diagnose(plan,report,observation,roots,value['selected_states'])
++        evidence_root = output / 'capture/native' if execute else Path(previous).parent / 'native'
++        after=routes.route_findings(coverage,plan,report,observation,execution=value,root=evidence_root)
++        after_diag=locator_diagnostics.diagnose(plan,report,observation,roots,value['selected_states'],root=evidence_root)
+         write(output/'after-evaluated.json',report);write(output/'after-routes.json',after);write(output/'after-diagnostics.json',after_diag)
+         trace.extend(['route_findings_after','locator_diagnostics_after'])
+         request=None
+@@ -302,7 +304,7 @@
+         review_trace='reconstruct_native_source_evidence'
+     report=calibrated(config,plan,observation,report)
+     cov=routes.audit(lock,config['design_sha256'],plan,d.load(Path(config['routes'])),config['routes_sha256'])
+-    routed=routes.route_findings(cov,plan,report,observation,execution=execution)
++    routed=routes.route_findings(cov,plan,report,observation,execution=execution,root=capture.parent/'native')
+     planning=retest_plan.dispatch(cov,plan,report,routed,changed_files=[],source_before=d.digest(before),source_after=d.digest(before),selected_states=execution['selected_states'],visual_ids=review_methods(config,plan,lock))
+     env=acceptance.environment(observation,d.load(Path(config['environment'])),execution['platform'])
+     admitted=routes.admission(cov,plan,report,execution_scope=execution['scope'],capture=receipt,environment=env)
+--- a/tests/test_scroll_coverage.py
++++ b/tests/test_scroll_coverage.py
+@@ -0,0 +1,79 @@
++"""SIMULATED raster/AX strips, independent of any application requirement."""
++import copy
++from pathlib import Path
++import sys
++import tempfile
++import unittest
++from PIL import Image, ImageDraw
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
++import scroll_coverage as coverage
++
++
++class ScrollCoverageTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name)
++        self.binding = {'pid': 42, 'instance': 'native-test-session', 'fixture_index': 0,
++                        'input_sha256': 'a' * 64, 'event_revision': 0}
++        self.canvas = Image.new('RGB', (32, 430), 'white'); draw = ImageDraw.Draw(self.canvas)
++        for row in range(42): draw.rectangle((2, row * 10 + 1, 22, row * 10 + 8), fill=((row * 17) % 256, 60, (row * 31) % 256))
++        self.found = []
++        for index, (offset, height) in enumerate([(0, 500), (90, 490), (180, 460), (270, 440), (310, 430)]):
++            file = str(index) + '.png'; self.canvas.crop((0, offset, 32, offset + 120)).save(self.root / file)
++            nodes = [{'index': 0, 'parent_index': -1, 'identifier': '__observer.scroll'}]
++            for row in range(42):
++                y = row * 10 + 1 - offset
++                nodes.append({'index': row + 1, 'parent_index': 0, 'identifier': '', 'label': 'Unique landmark ' + str(row), 'role_raw': 48,
++                              'value': None, 'enabled': True, 'selected': False,
++                              'frame': {'x': 2, 'y': y, 'width': 21, 'height': 8}, 'fully_within_viewport': 0 <= y and y + 8 <= 120})
++            if index == 4: nodes.append({'index': 99, 'parent_index': 0, 'identifier': '__observer.bottom', 'fully_within_viewport': True})
++            self.found.append((index, {'binding': self.binding, 'binding_after_capture': self.binding, 'capture_consistent': True,
++                  'viewport': {'x': 0, 'y': 0, 'width': 32, 'height': 120}, 'app_frame': {'x': 0, 'y': 0, 'width': 32, 'height': 120},
++                  'runtime': {'content_frame': {'x': 0, 'y': -offset, 'width': 32, 'height': height}},
++                  'screenshot_pixels': {'width': 32, 'height': 120}, 'screenshot': file, 'nodes': nodes,
++                  'bottom_sentinel_visible': index == 4}))
++
++    def certify(self, found=None): return coverage.certify(found or self.found, self.binding, self.root)
++
++    def test_lazy_estimate_drift_requires_exact_connected_original_pixels_and_leaves(self):
++        result = self.certify(); self.assertTrue(result['complete'], result)
++        self.assertEqual(len(result['links']), 4); self.assertEqual(result['observed_terminal_height'], 430)
++        self.assertEqual(result['estimated_heights'], [500, 490, 460, 440, 430])
++
++    def test_pixel_change_is_unknown_even_with_unchanged_native_leaves(self):
++        path = self.root / '1.png'
++        with Image.open(path) as original: im = original.convert('RGB')
++        im.putpixel((30, 5), (1, 2, 3)); im.save(path)
++        self.assertFalse(self.certify()['complete'])
++
++    def test_sparse_or_duplicate_or_container_landmarks_cannot_be_guessed(self):
++        for mode in ['sparse', 'duplicate', 'container']:
++            found = copy.deepcopy(self.found)
++            for _, s in found:
++                for n in s['nodes'][1:]:
++                    if n.get('identifier') == '__observer.bottom': continue
++                    if mode == 'sparse': n['fully_within_viewport'] = False
++                    elif mode == 'duplicate': n['label'] = 'repeated'
++                    else: s['nodes'].append({'index': 1000 + n['index'], 'parent_index': n['index'], 'identifier': ''})
++            self.assertFalse(self.certify(found)['complete'], mode)
++
++    def test_reflow_content_traits_epoch_grid_and_gap_reject(self):
++        for mode in ['geometry', 'label', 'value', 'epoch', 'grid', 'gap', 'terminal']:
++            found = copy.deepcopy(self.found); s = found[1][1]
++            if mode == 'geometry': s['nodes'][12]['frame']['y'] += 1
++            elif mode == 'label': s['nodes'][12]['identifier'] = 'fixed'; found[0][1]['nodes'][12]['identifier'] = 'fixed'; s['nodes'][12]['label'] = 'changed'
++            elif mode == 'value': s['nodes'][12]['value'] = 'changed'
++            elif mode == 'epoch': s['binding'] = dict(s['binding'], event_revision=1)
++            elif mode == 'grid': s['runtime']['content_frame']['y'] -= .25
++            elif mode == 'gap': found.pop(1)
++            else: found[-1][1]['bottom_sentinel_visible'] = False
++            self.assertFalse(self.certify(found)['complete'], mode)
++
++    def test_missing_images_root_or_epoch_never_earns_coverage(self):
++        self.assertFalse(coverage.certify(self.found, self.binding, None)['complete'])
++        self.assertFalse(coverage.certify(self.found, {}, self.root)['complete'])
++        (self.root / '2.png').unlink(); self.assertFalse(self.certify()['complete'])
++
++
++if __name__ == '__main__': unittest.main()

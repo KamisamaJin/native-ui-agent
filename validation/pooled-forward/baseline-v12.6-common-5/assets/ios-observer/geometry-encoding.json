@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "encoding_id": "native-rect-pixel-cell-enclosure-v1",
+  "purpose": "Conservative integer-raster registration compatibility only; never native style/geometry equality",
+  "numeric_transport": {
+    "allowed": [
+      "finite lossless IEEE754 binary64 JSON roundtrip",
+      "explicitly declared native binary32/integer losslessly promoted to that representation",
+      "exact native integer-pixel rectangle"
+    ],
+    "raw_fields": [
+      "x",
+      "y",
+      "width",
+      "height"
+    ],
+    "original_native_precision_and_unit_required": true,
+    "boolean_null_nonfinite_or_truncated_numeric_rejected": true,
+    "raw_values_preserved": true
+  },
+  "projection": {
+    "arithmetic": "Exact rational values of decoded native numbers and independently verified map parameters; no floating floor/ceil after cancellation",
+    "map": "u=sx*x+ox; v=sy*y+oy; a=sx*width; b=sy*height",
+    "requirements": [
+      "positive axis-aligned scale",
+      "fixed native coordinate origin and native-to-PNG provenance",
+      "no rotation/shear/fitted transform",
+      "actual viewport crop maps to integral PNG rectangle W x H",
+      "same W/H/color representation for the pair",
+      "raw native anchor strictly inside native viewport; no tolerant flag substitution"
+    ],
+    "not_source_of_truth": "A guessed image_frame, fitted density or viewport selected to improve pixel agreement"
+  },
+  "cell_enclosure": {
+    "Q": "Q(q)=[floor(q),ceil(q)]",
+    "integral_case": "singleton; do not add epsilon",
+    "meaning": "Conservative pixel-boundary enclosure of the exact recorded scalar, not measurement-error tolerance",
+    "native_fields_not_modified": true
+  },
+  "candidate_rectangle": {
+    "coordinates": "integer half-open [L,R) x [T,B)",
+    "constraints": [
+      "L in Q(u)",
+      "R in Q(u+a)",
+      "R-L in Q(a)",
+      "R > L",
+      "T in Q(v)",
+      "B in Q(v+b)",
+      "B-T in Q(b)",
+      "B > T"
+    ],
+    "direct_original_width_height_constraints_required": true,
+    "empty_set": "U"
+  },
+  "pair_compatibility": {
+    "motion": "integer (0,-D), 0 < D < H for progressing down-link",
+    "predicate": "For every eligible common identity, one common positive pixel rectangle exists in both candidate sets after translation; satisfy all edge displacement ranges AND direct sizes. Jointly preserve native order and independent non-overlapping witness boxes.",
+    "witnesses": "At least two distinct actual leaves with disjoint raw/native and selected raster vertical support; no parent-child/coincident wrapper pairs",
+    "all_common_eligible_leaves_checked": true,
+    "all_repeated_state_identities_global_intersection_required": true,
+    "attributes_and_root_membership_stable": true
+  },
+  "raster_selection": {
+    "D": "Unique integer satisfying all native constraints AND exact complete-width overlap RGBA equality",
+    "search": "Lossless exact pixel search over geometry-admissible integer candidates; rounding a float is never approval",
+    "zero_or_multiple_candidates": "U",
+    "no_masks_resampling_warps_scores_or_channel_tolerances": true
+  },
+  "claim_limit": "Pixel-compatible registration does not prove exact native rectangle equality or waive any raw geometry/design assertion. Closed-domain, epochs and actual boundaries still required."
+}

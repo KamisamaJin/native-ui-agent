@@ -1,0 +1,13 @@
+# Independent V2 representation revision
+
+The same independent author revised only frozen-format compatibility in a new directory. The original business-design270-file seal remains byte-for-byte unchanged and is retained externally as6e82784fde88cb617d1e68ee5cac6dab8514eeddd526eb77a95c34f3040dbd60. Current independent rejection and exact blocker groups are cited in REVISION-LEDGER.json; no implementing source, SDK, screenshot, performance result, prior study or candidate-specific answer was used.
+
+Business rules, public/hidden caller data, actual expected UI/business values, exact primitive visual questions, production APIs, bridges, sampling rectangles/support/tolerance, guarded stimuli and selected coverage are unchanged. State identity initial becomes start to satisfy the frozen reserved-ID rule; dimensionless font-weight unit spelling becomes scalar. EQUIVALENCE.json checks all13,358 cells and exact source/fixture/bridge/reference bytes where unchanged.
+
+The frozen compiler cannot express platform-local N/A. It remains unmodified. Each family retains its complete master denominator and explicit N/A reasons. Intended-platform namespaces contain only their actual rule universe, with an approval mapping and external runtime admission guard that pin platform, lock, plan, policy, routes, environment, fixtures and bridge. The frozen schema's mandatory unused opposite slots are parser-only; they authorize no opposite-platform run and establish no unsupported iOS native measurement. All20 wrong-platform profile attempts are rejected by that guard.
+
+All20 intended-platform profiles passed the real frozen pure seal, compile, atomic catalog, route audit, execution/guard generation and profile admission commands (120 successful CLI calls). No native run was requested. The existing execution planner's full-sweep requirement for an already approved native absence is recorded explicitly; it does not add a business requirement or silently carry a previous pass.
+
+Visual taxonomy is coarse. Every original primitive property and exact question remains single-aspect and separate. hierarchy is a broad frozen category for visual organization; clipping covers visible rounded boundaries. This grants no new computed layout/font/color capability.
+
+This is an author seal awaiting independent admission, not external approval or native acceptance. Only T*/public/ may be sent to initial implementation/repair workers. Every private family, _authoring script and hidden projection remains embargoed until ALL10 final source/selfclaim seals are verified. No hidden requirement or tolerance has been added. All five revised public and private designs are fixed together before any initial source.

@@ -1,0 +1,60 @@
+--- frozen-emitter-schema-v2.json
++++ candidate-emitter-schema-v3.json
+@@ -4,8 +4,24 @@
+     "evidence-responsibility.json",
+     "source-review-template.json",
+     "environment-check.json",
+-    "execution-coverage.json"
++    "execution-coverage.json",
++    "cycle-payload.json",
++    "handoff.json",
++    "workflow-state.json",
++    "patch-retest.json",
++    "workflow-final-state.json",
++    "capture-validity.json"
+   ],
++  "classification_basis": "Frozen SOURCE: xcresult attachment JSON is original observation data; handoff/state/payload/repair/retest/final files retain factual rows/queues. validity.context and coverage-domain input/binding are provenance controls, original raw pins/archive retained.",
++  "factual_attachment_reports": {
++    "directory": "native/attachments",
++    "excluded_basenames": [
++      "manifest.json"
++    ],
++    "optional_prefix": "capture/",
++    "scope": "direct-child",
++    "suffix": ".json"
++  },
+   "kind": "prospective-source-pinned-emitter-metadata-admission",
+   "native_outcome_kind": "independent-original-fact-operation",
+   "native_outcome_versions": [
+@@ -37,7 +53,10 @@
+     "native/actions.json",
+     "native/manifest.json",
+     "native/native-summary.json",
+-    "native/attachments/manifest.json"
++    "native/attachments/manifest.json",
++    "native/coverage-domain-input.json",
++    "native/coverage-domain-binding.json",
++    "workflow-context.json"
+   ],
+   "operation_methods": [
+     "app_launch_and_ready",
+@@ -87,7 +106,11 @@
+     "source/independent_native_v3.py": "7672ec99ca986a149d303eb8e37fb81da71edf1826c6eb1273da534945ddf722",
+     "source/material-v3.py": "4783735c450d882c7fcf62e5a1192dacafa96352fee899023a8e67a12e2e94ac",
+     "source/native_chain.py": "7c255b750389c5b5de2b90244e2952d4da55d0b3ff1819b9e0c2fbe8ce28028f",
+-    "source/resolver.py": "2a5ec0949b5a64cb3f1dc57df87b3954e1f5e1f21ea58defec3ced44b5ba8204"
++    "source/resolver.py": "2a5ec0949b5a64cb3f1dc57df87b3954e1f5e1f21ea58defec3ced44b5ba8204",
++    "source/scripts/capture_validity.py": "e1ce4392f6405076441de8829c861621dda7af5f8e9fb8e75d3aa165a134851f",
++    "source/scripts/coverage_domain.py": "1f8f9b759066f07aefbc909ee52ae449bfa934452983e4d311086ba7828dab49",
++    "source/scripts/ios_observe.py": "d611c5ed07c41d00087569e93aa5b4b2ff15b87ccd58be8fb49e3eeee326a9e0",
++    "source/scripts/workflow_state.py": "5d802f16cfbee0dff057d0caffd62f0fc2b6d33879521d485901ec3284193463"
+   },
+   "trace_methods": [
+     "admission",
+@@ -106,5 +129,5 @@
+     "route_findings",
+     "route_findings_after"
+   ],
+-  "version": 2
++  "version": 3
+ }

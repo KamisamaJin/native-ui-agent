@@ -1,0 +1,163 @@
+#!/usr/bin/env python3
+"""Replay the predeclared four native episodes and enforce the unchanged gate.
+
+No SDK calls. Native, source, environment, coverage and resource gates have
+separate denominators. Raw facts/reasons remain beside normalized P/F/U rows.
+"""
+import argparse
+import hashlib
+import inspect
+import json
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+R = Path(__file__).resolve().parent
+ORDER = [('block-1','A'),('block-1','B'),('block-2','B'),('block-2','A')]
+STEPS = [('C0-android','android'),('C0-ios','ios-cold'),
+         ('R0-android','android'),('R0-ios-cold','ios-cold'),
+         ('W1-ios','ios-warm'),('F2-ios-warm','ios-warm'),('F2-android','android')]
+
+
+def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def load(p): return json.loads(Path(p).read_text())
+def save(p,v):
+    p=Path(p);p.parent.mkdir(parents=True,exist_ok=True)
+    with p.open('x')as f:json.dump(v,f,indent=2)
+
+
+def replay(a):
+    sys.path.insert(0,str(Path(a.skill)/'scripts'))
+    import design_contract as d
+    import feedback_loop as feedback
+    import execution_plan as xp
+    import acceptance
+    c=load(a.config); plan=load(c['plan']); packet=Path(a.packet)
+    kwargs={'policy':load(c['policy']),'policy_sha':c['policy_sha256']}
+    if 'source_config' in inspect.signature(feedback.load_previous).parameters:
+        kwargs['source_config']=c
+    before,report,obs,execution,receipt=feedback.load_previous(
+        packet,sha(packet),plan,load(c['design_lock']),c['design_sha256'],
+        load(c['fixtures']),Path(c['bridge']),c['source_roots'],**kwargs)
+    cov=xp.coverage_receipt(execution,obs,packet.parent/'native')
+    assert cov==load(packet.parent/'execution-coverage.json'),'Coverage receipt did not reproduce'
+    env=acceptance.environment(obs,load(c['environment']),plan['design_contract']['platform'])
+    assert env==load(packet.parent/'environment-check.json'),'Environment did not reproduce'
+    expected={r['id']:r for r in plan['assertions']}
+    rows=report['assertions'];assert len(rows)==len(expected)==104
+    assert len({r['id']for r in rows})==len(rows) and {r['id']for r in rows}==set(expected)
+    assert report['matrix_contract']==plan['matrix_contract']
+    assert receipt['source_unchanged'] and receipt['inputs_unchanged'] and receipt['native_exit_code']==0
+    assert receipt['status']=='verified_capture' and cov['satisfied'] and env['status']=='P'
+    manifest=load(packet.parent/'native/manifest.json')
+    assert manifest['native_test_count']>0
+    # Recompute from original images/hierarchy, never from a count-only summary.
+    result={'packet':str(packet),'packet_sha256':sha(packet),'source_map':before,
+            'platform':plan['design_contract']['platform'],'design_sha256':c['design_sha256'],
+            'plan_sha256':d.digest(plan),'fixtures_sha256':sha(c['fixtures']),
+            'bridge_sha256':sha(c['bridge']),'environment_sha256':c['environment_sha256'],
+            'rows':[{**{k:r[k] for k in ['id','state','status','reason']},
+                     'requirement_id':expected[r['id']]['requirement_id'],
+                     'property':expected[r['id']].get('property'),
+                     'kind':expected[r['id']]['kind'],
+                     'unit':expected[r['id']]['unit'],
+                     'expected':expected[r['id']]['expected'],
+                     'op':expected[r['id']].get('op','eq')}for r in rows],
+            'native_counts':report['counts'],'coverage':cov,'environment':env,
+            'native_tests':manifest['native_test_count'],'passed':True}
+    save(a.output,result)
+
+
+def evaluate(a):
+    output=Path(a.output);output.mkdir(parents=True,exist_ok=False)
+    admission=load(a.admission)
+    assert admission['order']==[list(x)for x in ORDER]
+    assert admission['threshold']==0.20 and admission['required_native_atoms']==104
+    assert admission['verifier_sha256']==sha(__file__)
+    episodes=[]; errors=[]; replays={}
+    def check(good,message):
+        if not good:errors.append(message)
+    for block,arm in ORDER:
+        root=R/'cache/benchmark'/block/arm
+        if not(root/'result.json').is_file():
+            errors.append('Missing episode '+block+'/'+arm);continue
+        result=load(root/'result.json'); entry=load(root/'ADMISSION.json')
+        check(result['failed']is None,block+'/'+arm+' failed: '+str(result['failed']))
+        check(result['source_unchanged'],block+'/'+arm+' changed production source')
+        check(entry['skill_seal_sha256']==admission['arms'][arm]['freeze_sha256'],block+'/'+arm+' arm identity changed')
+        check(entry['source_map']==admission['production_files'],block+'/'+arm+' application differs')
+        check(entry['driver_sha256']==admission['driver_sha256'] and entry['envelope_sha256']==admission['envelope_sha256'],block+'/'+arm+' operator differs')
+        check([s['stage']for s in result['stages']]==['C0','R0','W1','F2'],block+'/'+arm+' stage mismatch')
+        peak=load(root/'meter.summary.json')
+        check(not peak['budget_exceeded'] and peak['sampling_error']is None,block+'/'+arm+' resource budget or sampling failure')
+        commands=[load(p)for p in sorted((root/'commands').glob('*/result.json'))]
+        episodes.append({'block':block,'arm':arm,'wall_seconds':result['collection_wall_seconds'],
+                         'started_at_unix':result['collection_started_at_unix'],'finished_at_unix':result['finished_at_unix'],
+                         'stages':result['stages'],'native_collections':sum(load(p)['native_executed']for p in(root/'evidence').glob('*/cycle.json')),
+                         'observed_peak_allocated_bytes':peak['observed_total_peak_allocated_bytes'],
+                         'actual_command_count':len(commands),'failed':result['failed']})
+        previous={}
+        for step,case in STEPS:
+            path=root/'evidence'/step/'cycle.json'
+            if not path.is_file():errors.append(block+'/'+arm+'/'+step+' missing');continue
+            cycle=load(path); config=root/'profiles'/(case+'.json');pl='android'if case=='android'else'ios'
+            if cycle.get('capture_result'):previous[pl]=Path(cycle['capture_result'])
+            packet=previous.get(pl)
+            if packet is None:errors.append(block+'/'+arm+'/'+step+' no original packet');continue
+            dst=output/(block+'-'+arm+'-'+step+'.json')
+            command=[sys.executable,'-B',str(Path(__file__).resolve()),'replay','--skill',str(R/admission['arms'][arm]['skill']),
+                     '--config',str(config),'--packet',str(packet),'--output',str(dst)]
+            proc=subprocess.run(command,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+            save(dst.with_suffix('.driver.json'),{'argv':command,'exit_code':proc.returncode,'stdout':proc.stdout})
+            if proc.returncode:
+                errors.append(block+'/'+arm+'/'+step+' original replay failed');continue
+            replayed=load(dst); replays[(block,arm,step)]=replayed
+            check(replayed['native_counts']=={'passed':104,'failed':0,'unassessed':0},block+'/'+arm+'/'+step+' mandatory native discrepancy')
+            if step.startswith('F2-'):
+                check(cycle['status']=='accepted',block+'/'+arm+'/'+step+' not accepted')
+                resources=load(path.parent/'resources.json')
+                check(not(resources['remaining_devices']or resources['remaining_directories']or resources['cleanup_errors']),block+'/'+arm+'/'+step+' retirement incomplete')
+                duties=cycle['evidence_responsibility']
+                check(not duties['blocking_claims'],block+'/'+arm+'/'+step+' responsibility unresolved')
+    comparisons=[]
+    for block in ['block-1','block-2']:
+        for step,_ in STEPS:
+            pair=[replays.get((block,arm,step))for arm in ['A','B']]
+            if any(v is None for v in pair):continue
+            x,y=pair
+            def facts(v):return sorted([{k:r[k]for k in r if k!='reason'}for r in v['rows']],key=lambda r:r['id'])
+            same=facts(x)==facts(y)
+            check(same,block+'/'+step+' mandatory P/F/U or approved oracle differs')
+            check(all(x[k]==y[k]for k in ['design_sha256','plan_sha256','fixtures_sha256','bridge_sha256','environment_sha256']),block+'/'+step+' input identity differs')
+            comparisons.append({'block':block,'step':step,'same_mandatory_pfu':same,
+                'A':x['native_counts'],'B':y['native_counts'],
+                'raw_reason_differences':[{'id':p['id'],'A':p['reason'],'B':q['reason']}for p,q in zip(sorted(x['rows'],key=lambda r:r['id']),sorted(y['rows'],key=lambda r:r['id']))if p['reason']!=q['reason']]})
+    check(len(episodes)==4,'All four episodes required')
+    for first,second in zip(episodes,episodes[1:]):
+        check(first['finished_at_unix']<=second['started_at_unix'],'AB/BA order overlapped or changed')
+    aw=sum(e['wall_seconds']for e in episodes if e['arm']=='A');bw=sum(e['wall_seconds']for e in episodes if e['arm']=='B')
+    check(aw+bw<=7200,'120 minute collection budget exceeded')
+    speedup=1-bw/aw if aw and len(episodes)==4 else None
+    check(speedup is not None and speedup>=0.20,'Measured reduction below 20% or missing')
+    blocks=[]
+    for block in ['block-1','block-2']:
+        e={v['arm']:v for v in episodes if v['block']==block}
+        if set(e)=={'A','B'}:blocks.append({'block':block,'A_seconds':e['A']['wall_seconds'],'B_seconds':e['B']['wall_seconds'],'reduction':1-e['B']['wall_seconds']/e['A']['wall_seconds']})
+    save(output/'RESULT.json',{'at_unix':time.time(),'admission_sha256':sha(a.admission),'passed':not errors,
+        'errors':errors,'episodes':episodes,'comparisons':comparisons,'A_seconds':aw,'B_seconds':bw,'reduction':speedup,
+        'blocks':blocks,'business_tasks_may_start':not errors,
+        'denominators':{'native_atoms_per_packet':104,'source_must_claims_separate':1,'environment_gate_separate':1,'state_coverage_separate':5},
+        'scope':'Four sealed local same-code episodes. Frozen native replay overhead is research validation outside default service walls; all service validation/SDK/retirement is inside episode walls. Sampled disk is a lower bound, shared SDK caches are common.'})
+    print(json.dumps({'passed':not errors,'reduction':speedup,'errors':errors}));return 0 if not errors else 1
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__);subs=p.add_subparsers(dest='action',required=True)
+    replay_parser=subs.add_parser('replay')
+    for name in ['skill','config','packet','output']:replay_parser.add_argument('--'+name,required=True)
+    gate=subs.add_parser('gate');gate.add_argument('--admission',required=True);gate.add_argument('--output',required=True)
+    a=p.parse_args();return replay(a)if a.action=='replay'else evaluate(a)
+
+
+if __name__=='__main__':raise SystemExit(main())

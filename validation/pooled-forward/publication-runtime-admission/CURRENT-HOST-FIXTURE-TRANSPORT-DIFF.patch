@@ -1,0 +1,11 @@
+--- frozen/fixture_utils.py
++++ current-host/fixture_utils.py
+@@ -39,6 +39,8 @@
+             originals[tool['freeze']['path']]=Path(tool['freeze']['path']).read_bytes()
+             for row in tool['files'].values():originals[row['path']]=Path(row['path']).read_bytes()
+         for row in inv['runtime']['files'].values():originals[row['path']]=Path(row['path']).read_bytes()
++        # Current-host transport includes separately pinned sibling wheel libraries.
++        for row in inv['runtime'].get('support_files',{}).values():originals[row['path']]=Path(row['path']).read_bytes()
+         worker=HERE/'runner/worker.py';originals[str(worker)]=worker.read_bytes()
+         mappings={}
+         for original,raw in originals.items():

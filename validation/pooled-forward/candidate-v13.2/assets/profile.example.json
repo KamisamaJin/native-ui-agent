@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "platform": "android",
+  "backend": "paparazzi",
+  "target": {
+    "description": "订单卡片：长标题、待付款状态。示例路径需按工程替换。",
+    "sources": ["app/src/main/java/com/example/orders/OrderCard.kt", "app/src/main/res"]
+  },
+  "environment": {
+    "device": "测试宿主选定的设备配置",
+    "theme": "项目主题的 light 模式",
+    "font_scale": 1,
+    "tool_versions": "从实际 Gradle、AGP、Paparazzi 版本填入"
+  },
+  "commands": [
+    {
+      "argv": [
+        "./gradlew", ":app:testDebugUnitTest",
+        "--tests", "com.example.orders.OrderCardVisualTest.longTitle",
+        "--rerun-tasks"
+      ],
+      "timeout_seconds": 900
+    }
+  ],
+  "artifacts": [
+    {
+      "base": "project",
+      "glob": "app/build/reports/paparazzi/**/EXACT-CASE-IMAGE.png",
+      "role": "actual"
+    },
+    {
+      "base": "output",
+      "glob": "native/measurements.json",
+      "role": "measurement"
+    }
+  ],
+  "protected_paths": ["app/src/test/snapshots"],
+  "checks": [
+    {
+      "id": "badge-visible",
+      "kind": "visual",
+      "description": "待付款标签可见，长标题不遮挡标签",
+      "source": "本次业务需求"
+    },
+    {
+      "id": "title-badge-gap",
+      "kind": "numeric",
+      "description": "标题 View 与标签 View 的水平间距为 8dp。仅为需求给定数值的示例。",
+      "source": "需求中明确给出的 8dp；真实需求没有数值时不能沿用此示例",
+      "measurement": "title_badge_gap",
+      "expected": 8,
+      "unit": "dp",
+      "tolerance": 0.5
+    }
+  ]
+}

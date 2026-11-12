@@ -1,0 +1,805 @@
+{
+  "initial": {
+    "entityId": "BK-320",
+    "entityTitle": "Community design review",
+    "description": "Move this appointment only after checking both the visit mode and the offered time. The attendee needs enough notice to rearrange accessible transport or prepare a quiet place for the video review.",
+    "allowVideo": true,
+    "slots": [
+      {
+        "id": "S-1",
+        "label": "Choose Tuesday morning",
+        "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.",
+        "available": true,
+        "modes": [
+          "in_person",
+          "video"
+        ]
+      },
+      {
+        "id": "S-2",
+        "label": "Choose Wednesday afternoon",
+        "detail": "Wednesday 14:00–14:45 at the town hall annex.",
+        "available": false,
+        "modes": [
+          "in_person"
+        ]
+      },
+      {
+        "id": "S-3",
+        "label": "Choose Thursday video",
+        "detail": "Thursday 16:00–16:45 with the remote design team.",
+        "available": true,
+        "modes": [
+          "video"
+        ]
+      }
+    ]
+  },
+  "updates": [
+    {
+      "entityId": "BK-320",
+      "entityTitle": "Community design review",
+      "description": "The Thursday remote slot filled while this offer was open. Keep a valid visit mode, clear an unavailable chosen time, and request a fresh attendee-notification approval for the replacement offer.",
+      "allowVideo": true,
+      "slots": [
+        {
+          "id": "S-1",
+          "label": "Choose Tuesday morning",
+          "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.",
+          "available": true,
+          "modes": [
+            "in_person",
+            "video"
+          ]
+        },
+        {
+          "id": "S-2",
+          "label": "Choose Wednesday afternoon",
+          "detail": "Wednesday 14:00–14:45 at the town hall annex.",
+          "available": false,
+          "modes": [
+            "in_person"
+          ]
+        },
+        {
+          "id": "S-3",
+          "label": "Choose Thursday video",
+          "detail": "Thursday 16:00–16:45 with the remote design team.",
+          "available": false,
+          "modes": [
+            "video"
+          ]
+        }
+      ]
+    },
+    {
+      "entityId": "BK-321",
+      "entityTitle": "Different attendee consultation",
+      "description": "A separate booking uses the same time labels. Video visits are unavailable for this attendee. Start with no visit mode, no selected time, and no notification approval.",
+      "allowVideo": false,
+      "slots": [
+        {
+          "id": "S-1",
+          "label": "Choose Tuesday morning",
+          "detail": "Tuesday 10:30–11:15. The consultation includes time for an interpreter and review of the annotated floor plan.",
+          "available": true,
+          "modes": [
+            "in_person",
+            "video"
+          ]
+        },
+        {
+          "id": "S-2",
+          "label": "Choose Wednesday afternoon",
+          "detail": "Wednesday 14:00–14:45 at the town hall annex.",
+          "available": false,
+          "modes": [
+            "in_person"
+          ]
+        },
+        {
+          "id": "S-3",
+          "label": "Choose Thursday video",
+          "detail": "Thursday 16:00–16:45 with the remote design team.",
+          "available": true,
+          "modes": [
+            "video"
+          ]
+        }
+      ]
+    }
+  ],
+  "width": 390,
+  "theme": "light",
+  "direction": "ltr",
+  "canvas_color": "#FFF8F4",
+  "max_scrolls": 18,
+  "required_identifiers": [
+    "T2.surface",
+    "T2.entity",
+    "T2.description",
+    "T2.summary",
+    "T2.status",
+    "T2.slotA.detail",
+    "T2.slotB.detail",
+    "T2.slotC.detail"
+  ],
+  "dynamic_type": "large",
+  "state_capture": true,
+  "guard_protocol": 1,
+  "observation_strategy": "coalesced",
+  "execution_states": [
+    {
+      "state_id": "start",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose Tuesday morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose Wednesday afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose Thursday video"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "video-mode",
+      "coverage": "targets",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose Tuesday morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose Wednesday afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose Thursday video"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "time-selected",
+      "coverage": "targets",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose Tuesday morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose Wednesday afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose Thursday video"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "ready",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose Tuesday morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose Wednesday afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose Thursday video"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "moved",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose Tuesday morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose Wednesday afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose Thursday video"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "same-booking-full-slot",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose Tuesday morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose Wednesday afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose Thursday video"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "new-time",
+      "coverage": "targets",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose Tuesday morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose Wednesday afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose Thursday video"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "ready-again",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose Tuesday morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose Wednesday afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose Thursday video"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "moved-again",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose Tuesday morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose Wednesday afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose Thursday video"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "changed-booking",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Appointment rescheduling offer"
+        },
+        {
+          "identifier": "T2.entity"
+        },
+        {
+          "identifier": "T2.description"
+        },
+        {
+          "identifier": "T2.summary"
+        },
+        {
+          "identifier": "T2.status"
+        },
+        {
+          "identifier": "T2.surface"
+        },
+        {
+          "label": "Visit in person"
+        },
+        {
+          "label": "Visit by video"
+        },
+        {
+          "label": "Choose Tuesday morning"
+        },
+        {
+          "identifier": "T2.slotA.detail"
+        },
+        {
+          "label": "Choose Wednesday afternoon"
+        },
+        {
+          "identifier": "T2.slotB.detail"
+        },
+        {
+          "label": "Choose Thursday video"
+        },
+        {
+          "identifier": "T2.slotC.detail"
+        },
+        {
+          "label": "Notify the attendee"
+        },
+        {
+          "label": "Move appointment"
+        }
+      ],
+      "absence_targets": []
+    }
+  ],
+  "execution_state_definitions": [
+    {
+      "id": "start",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "video-mode",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1
+    },
+    {
+      "id": "time-selected",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5
+    },
+    {
+      "id": "moved",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7
+    },
+    {
+      "id": "same-booking-full-slot",
+      "input_index": 1,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9
+    },
+    {
+      "id": "new-time",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "targets",
+      "stimulus_action": 11
+    },
+    {
+      "id": "ready-again",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "full_content",
+      "stimulus_action": 13
+    },
+    {
+      "id": "moved-again",
+      "input_index": 1,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15
+    },
+    {
+      "id": "changed-booking",
+      "input_index": 2,
+      "after_action": 18,
+      "coverage": "full_content",
+      "stimulus_action": 17
+    }
+  ],
+  "execution_scope": "full",
+  "observation_targets": [
+    {
+      "label": "Appointment rescheduling offer"
+    },
+    {
+      "identifier": "T2.entity"
+    },
+    {
+      "identifier": "T2.description"
+    },
+    {
+      "identifier": "T2.summary"
+    },
+    {
+      "identifier": "T2.status"
+    },
+    {
+      "identifier": "T2.surface"
+    },
+    {
+      "label": "Visit in person"
+    },
+    {
+      "label": "Visit by video"
+    },
+    {
+      "label": "Choose Tuesday morning"
+    },
+    {
+      "identifier": "T2.slotA.detail"
+    },
+    {
+      "label": "Choose Wednesday afternoon"
+    },
+    {
+      "identifier": "T2.slotB.detail"
+    },
+    {
+      "label": "Choose Thursday video"
+    },
+    {
+      "identifier": "T2.slotC.detail"
+    },
+    {
+      "label": "Notify the attendee"
+    },
+    {
+      "label": "Move appointment"
+    }
+  ]
+}

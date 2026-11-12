@@ -1,0 +1,144 @@
+{
+  "scenario": "episode-failed-cleanup-timeout",
+  "evidence_class": "HOST/SIM non-forwarding mock",
+  "all_times_are_simulated": true,
+  "exit_code": 1,
+  "raised": null,
+  "stdout": "{\"block\": \"block-1\", \"arm\": \"A\", \"exit_code\": 1, \"result_sha256\": \"ef2a1aba7dfe1b8098c37efccc26b56ebeacf29bd863ea29db1467d9eb7c8bfa\", \"collection_wall_seconds\": 7.0, \"clock_end\": 1007.0}\n",
+  "fake_calls": [
+    {
+      "operation": "Popen",
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review-2/cases/episode-failed-cleanup-timeout/root/neutral_episode.py",
+        "--block",
+        "block-1",
+        "--arm",
+        "A",
+        "--candidate",
+        "candidate-v13.9",
+        "--freeze",
+        "CANDIDATE-FREEZE-10.json",
+        "--baseline",
+        "baseline-v12.6",
+        "--baseline-freeze",
+        "BASELINE-FREEZE.json"
+      ],
+      "start_new_session": true,
+      "SIMULATED": true
+    },
+    {
+      "operation": "wait",
+      "pid": 710000,
+      "timeout": null
+    },
+    {
+      "operation": "poll",
+      "pid": 710000,
+      "returncode": 1
+    },
+    {
+      "operation": "cleanup",
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review-2/cases/episode-failed-cleanup-timeout/root/baseline-v12.6/scripts/ui_loop.py",
+        "cleanup-native-resources",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review-2/cases/episode-failed-cleanup-timeout/root/cache/benchmark/block-1/A/profiles/ios-warm.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review-2/cases/episode-failed-cleanup-timeout/root/operators/benchmark-run/failure-cleanup-block-1-A-ios-warm"
+      ],
+      "timeout": 180,
+      "SIMULATED": true
+    },
+    {
+      "operation": "cleanup",
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review-2/cases/episode-failed-cleanup-timeout/root/baseline-v12.6/scripts/ui_loop.py",
+        "cleanup-native-resources",
+        "--config",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review-2/cases/episode-failed-cleanup-timeout/root/cache/benchmark/block-1/A/profiles/android.json",
+        "--output",
+        "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/batch-review-2/cases/episode-failed-cleanup-timeout/root/operators/benchmark-run/failure-cleanup-block-1-A-android"
+      ],
+      "timeout": 180,
+      "SIMULATED": true
+    }
+  ],
+  "signal_controls": [
+    {
+      "operation": "signal-handler",
+      "signal": 14,
+      "handler": "expired"
+    },
+    {
+      "operation": "setitimer",
+      "duration": 7200
+    },
+    {
+      "operation": "setitimer",
+      "duration": 0
+    },
+    {
+      "operation": "signal-handler",
+      "signal": 14,
+      "handler": "SIMULATED-prior-handler"
+    }
+  ],
+  "result": {
+    "admission_sha256": "1314ee92d6422f85872bca005e5b083195f631aaeac0863da6c164ad7693b54a",
+    "failed": {
+      "type": "RuntimeError",
+      "message": "Failed episode retained: block-1/A",
+      "at_unix": 2000001007.0
+    },
+    "episodes": [
+      {
+        "block": "block-1",
+        "arm": "A",
+        "exit_code": 1,
+        "result_sha256": "ef2a1aba7dfe1b8098c37efccc26b56ebeacf29bd863ea29db1467d9eb7c8bfa",
+        "collection_wall_seconds": 7.0,
+        "clock_end": 1007.0
+      }
+    ],
+    "enclosing_wall_seconds": 190.0,
+    "scope": "All failed/cleanup wall retained. Deadline includes preparation as a conservative bound; primary collection is each enclosing episode clock. No retries."
+  },
+  "failure": {
+    "type": "RuntimeError",
+    "message": "Failed episode retained: block-1/A",
+    "at_unix": 2000001007.0
+  },
+  "checks": [
+    {
+      "id": "alarm-armed-once-and-restored",
+      "status": "P"
+    },
+    {
+      "id": "no-stale-or-foreign-group-selected",
+      "status": "P"
+    },
+    {
+      "id": "failure-stops-order-and-blocks-gate",
+      "status": "P"
+    },
+    {
+      "id": "final-failure-result-retained",
+      "status": "P"
+    },
+    {
+      "id": "known-configured-cleanup-attempted",
+      "status": "P"
+    },
+    {
+      "id": "cleanup-and-failure-wall-retained",
+      "status": "P"
+    }
+  ],
+  "status": "P"
+}

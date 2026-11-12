@@ -1,0 +1,7 @@
+{
+  "id": "active-lease-crosses-expiry-idle-retirement-reacquires",
+  "status": "F",
+  "evidence_class": "SIMULATED",
+  "error": "RuntimeError('Resource lease is active; concurrent acquisition refused')",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.1/scripts/resource_manager.py\", line 202, in __enter__\n    try: fcntl.flock(self.stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)\nBlockingIOError: [Errno 35] Resource temporarily unavailable\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-2/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-2/checks/lifecycle_checks.py\", line 48, in active_and_idle_expiry\n    with rm.Resources(config,two,final=True) as manager:new=manager.native_options('ios')['simulator']\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.1/scripts/resource_manager.py\", line 205, in __enter__\n    raise RuntimeError('Resource lease is active; concurrent acquisition refused')\nRuntimeError: Resource lease is active; concurrent acquisition refused\n"
+}

@@ -1,0 +1,613 @@
+{
+  "initial": {
+    "entityId": "INV-640",
+    "entityTitle": "Workshop materials invoice",
+    "description": "Allocate the available account credit before choosing how to settle the remaining amount. This invoice includes reusable workshop supplies, documented delivery charges, and a separate reference for the accounts team. Amounts are integer US cents; never calculate using binary floating-point money.",
+    "dueCents": 12500,
+    "creditCents": 4500,
+    "methods": [
+      {
+        "id": "bank",
+        "label": "Pay by bank transfer",
+        "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.",
+        "available": true,
+        "unavailableReason": ""
+      },
+      {
+        "id": "card",
+        "label": "Pay by company card",
+        "detail": "The company card is temporarily unavailable for this supplier.",
+        "available": false,
+        "unavailableReason": "Supplier card payments paused"
+      }
+    ]
+  },
+  "updates": [
+    {
+      "entityId": "INV-640",
+      "entityTitle": "Workshop materials invoice",
+      "description": "A corrected invoice reduced the amount due below the available credit. Keep the choice to apply credit, clamp applied credit to the new amount due, and clear a now-unnecessary payment method. Authorization must be renewed.",
+      "dueCents": 4000,
+      "creditCents": 4500,
+      "methods": [
+        {
+          "id": "bank",
+          "label": "Pay by bank transfer",
+          "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.",
+          "available": true,
+          "unavailableReason": ""
+        },
+        {
+          "id": "card",
+          "label": "Pay by company card",
+          "detail": "The company card is temporarily unavailable for this supplier.",
+          "available": false,
+          "unavailableReason": "Supplier card payments paused"
+        }
+      ]
+    },
+    {
+      "entityId": "INV-641",
+      "entityTitle": "Separate studio invoice",
+      "description": "A different invoice uses the same saved payment methods. Start without applying credit, selecting a method, or carrying authorization from the previous invoice.",
+      "dueCents": 9000,
+      "creditCents": 4500,
+      "methods": [
+        {
+          "id": "bank",
+          "label": "Pay by bank transfer",
+          "detail": "Use the verified operating account ending 0428. The payment reference must remain attached to this invoice.",
+          "available": true,
+          "unavailableReason": ""
+        },
+        {
+          "id": "card",
+          "label": "Pay by company card",
+          "detail": "The company card is temporarily unavailable for this supplier.",
+          "available": false,
+          "unavailableReason": "Supplier card payments paused"
+        }
+      ]
+    }
+  ],
+  "width": 390,
+  "theme": "light",
+  "direction": "ltr",
+  "canvas_color": "#FFF8F4",
+  "max_scrolls": 18,
+  "required_identifiers": [
+    "T3.surface",
+    "T3.entity",
+    "T3.description",
+    "T3.summary",
+    "T3.status",
+    "T3.methodA.detail",
+    "T3.methodB.detail"
+  ],
+  "dynamic_type": "large",
+  "state_capture": true,
+  "guard_protocol": 1,
+  "observation_strategy": "coalesced",
+  "execution_states": [
+    {
+      "state_id": "start",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Invoice credit-and-payment allocation"
+        },
+        {
+          "identifier": "T3.entity"
+        },
+        {
+          "identifier": "T3.description"
+        },
+        {
+          "identifier": "T3.summary"
+        },
+        {
+          "identifier": "T3.status"
+        },
+        {
+          "identifier": "T3.surface"
+        },
+        {
+          "label": "Apply account credit"
+        },
+        {
+          "label": "Pay by bank transfer"
+        },
+        {
+          "identifier": "T3.methodA.detail"
+        },
+        {
+          "label": "Pay by company card"
+        },
+        {
+          "identifier": "T3.methodB.detail"
+        },
+        {
+          "label": "I authorize this settlement"
+        },
+        {
+          "label": "Settle invoice"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "credit-applied",
+      "coverage": "targets",
+      "targets": [
+        {
+          "label": "Invoice credit-and-payment allocation"
+        },
+        {
+          "identifier": "T3.entity"
+        },
+        {
+          "identifier": "T3.description"
+        },
+        {
+          "identifier": "T3.summary"
+        },
+        {
+          "identifier": "T3.status"
+        },
+        {
+          "identifier": "T3.surface"
+        },
+        {
+          "label": "Apply account credit"
+        },
+        {
+          "label": "Pay by bank transfer"
+        },
+        {
+          "identifier": "T3.methodA.detail"
+        },
+        {
+          "label": "Pay by company card"
+        },
+        {
+          "identifier": "T3.methodB.detail"
+        },
+        {
+          "label": "I authorize this settlement"
+        },
+        {
+          "label": "Settle invoice"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "bank-selected",
+      "coverage": "targets",
+      "targets": [
+        {
+          "label": "Invoice credit-and-payment allocation"
+        },
+        {
+          "identifier": "T3.entity"
+        },
+        {
+          "identifier": "T3.description"
+        },
+        {
+          "identifier": "T3.summary"
+        },
+        {
+          "identifier": "T3.status"
+        },
+        {
+          "identifier": "T3.surface"
+        },
+        {
+          "label": "Apply account credit"
+        },
+        {
+          "label": "Pay by bank transfer"
+        },
+        {
+          "identifier": "T3.methodA.detail"
+        },
+        {
+          "label": "Pay by company card"
+        },
+        {
+          "identifier": "T3.methodB.detail"
+        },
+        {
+          "label": "I authorize this settlement"
+        },
+        {
+          "label": "Settle invoice"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "ready",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Invoice credit-and-payment allocation"
+        },
+        {
+          "identifier": "T3.entity"
+        },
+        {
+          "identifier": "T3.description"
+        },
+        {
+          "identifier": "T3.summary"
+        },
+        {
+          "identifier": "T3.status"
+        },
+        {
+          "identifier": "T3.surface"
+        },
+        {
+          "label": "Apply account credit"
+        },
+        {
+          "label": "Pay by bank transfer"
+        },
+        {
+          "identifier": "T3.methodA.detail"
+        },
+        {
+          "label": "Pay by company card"
+        },
+        {
+          "identifier": "T3.methodB.detail"
+        },
+        {
+          "label": "I authorize this settlement"
+        },
+        {
+          "label": "Settle invoice"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "settled",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Invoice credit-and-payment allocation"
+        },
+        {
+          "identifier": "T3.entity"
+        },
+        {
+          "identifier": "T3.description"
+        },
+        {
+          "identifier": "T3.summary"
+        },
+        {
+          "identifier": "T3.status"
+        },
+        {
+          "identifier": "T3.surface"
+        },
+        {
+          "label": "Apply account credit"
+        },
+        {
+          "label": "Pay by bank transfer"
+        },
+        {
+          "identifier": "T3.methodA.detail"
+        },
+        {
+          "label": "Pay by company card"
+        },
+        {
+          "identifier": "T3.methodB.detail"
+        },
+        {
+          "label": "I authorize this settlement"
+        },
+        {
+          "label": "Settle invoice"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "same-invoice-credit-only",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Invoice credit-and-payment allocation"
+        },
+        {
+          "identifier": "T3.entity"
+        },
+        {
+          "identifier": "T3.description"
+        },
+        {
+          "identifier": "T3.summary"
+        },
+        {
+          "identifier": "T3.status"
+        },
+        {
+          "identifier": "T3.surface"
+        },
+        {
+          "label": "Apply account credit"
+        },
+        {
+          "label": "Pay by bank transfer"
+        },
+        {
+          "identifier": "T3.methodA.detail"
+        },
+        {
+          "label": "Pay by company card"
+        },
+        {
+          "identifier": "T3.methodB.detail"
+        },
+        {
+          "label": "I authorize this settlement"
+        },
+        {
+          "label": "Settle invoice"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "credit-only-ready",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Invoice credit-and-payment allocation"
+        },
+        {
+          "identifier": "T3.entity"
+        },
+        {
+          "identifier": "T3.description"
+        },
+        {
+          "identifier": "T3.summary"
+        },
+        {
+          "identifier": "T3.status"
+        },
+        {
+          "identifier": "T3.surface"
+        },
+        {
+          "label": "Apply account credit"
+        },
+        {
+          "label": "Pay by bank transfer"
+        },
+        {
+          "identifier": "T3.methodA.detail"
+        },
+        {
+          "label": "Pay by company card"
+        },
+        {
+          "identifier": "T3.methodB.detail"
+        },
+        {
+          "label": "I authorize this settlement"
+        },
+        {
+          "label": "Settle invoice"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "credit-only-settled",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Invoice credit-and-payment allocation"
+        },
+        {
+          "identifier": "T3.entity"
+        },
+        {
+          "identifier": "T3.description"
+        },
+        {
+          "identifier": "T3.summary"
+        },
+        {
+          "identifier": "T3.status"
+        },
+        {
+          "identifier": "T3.surface"
+        },
+        {
+          "label": "Apply account credit"
+        },
+        {
+          "label": "Pay by bank transfer"
+        },
+        {
+          "identifier": "T3.methodA.detail"
+        },
+        {
+          "label": "Pay by company card"
+        },
+        {
+          "identifier": "T3.methodB.detail"
+        },
+        {
+          "label": "I authorize this settlement"
+        },
+        {
+          "label": "Settle invoice"
+        }
+      ],
+      "absence_targets": []
+    },
+    {
+      "state_id": "changed-invoice",
+      "coverage": "full_content",
+      "targets": [
+        {
+          "label": "Invoice credit-and-payment allocation"
+        },
+        {
+          "identifier": "T3.entity"
+        },
+        {
+          "identifier": "T3.description"
+        },
+        {
+          "identifier": "T3.summary"
+        },
+        {
+          "identifier": "T3.status"
+        },
+        {
+          "identifier": "T3.surface"
+        },
+        {
+          "label": "Apply account credit"
+        },
+        {
+          "label": "Pay by bank transfer"
+        },
+        {
+          "identifier": "T3.methodA.detail"
+        },
+        {
+          "label": "Pay by company card"
+        },
+        {
+          "identifier": "T3.methodB.detail"
+        },
+        {
+          "label": "I authorize this settlement"
+        },
+        {
+          "label": "Settle invoice"
+        }
+      ],
+      "absence_targets": []
+    }
+  ],
+  "execution_state_definitions": [
+    {
+      "id": "start",
+      "input_index": 0,
+      "after_action": 0,
+      "coverage": "full_content"
+    },
+    {
+      "id": "credit-applied",
+      "input_index": 0,
+      "after_action": 2,
+      "coverage": "targets",
+      "stimulus_action": 1
+    },
+    {
+      "id": "bank-selected",
+      "input_index": 0,
+      "after_action": 4,
+      "coverage": "targets",
+      "stimulus_action": 3
+    },
+    {
+      "id": "ready",
+      "input_index": 0,
+      "after_action": 6,
+      "coverage": "full_content",
+      "stimulus_action": 5
+    },
+    {
+      "id": "settled",
+      "input_index": 0,
+      "after_action": 8,
+      "coverage": "full_content",
+      "stimulus_action": 7
+    },
+    {
+      "id": "same-invoice-credit-only",
+      "input_index": 1,
+      "after_action": 10,
+      "coverage": "full_content",
+      "stimulus_action": 9
+    },
+    {
+      "id": "credit-only-ready",
+      "input_index": 1,
+      "after_action": 12,
+      "coverage": "full_content",
+      "stimulus_action": 11
+    },
+    {
+      "id": "credit-only-settled",
+      "input_index": 1,
+      "after_action": 14,
+      "coverage": "full_content",
+      "stimulus_action": 13
+    },
+    {
+      "id": "changed-invoice",
+      "input_index": 2,
+      "after_action": 16,
+      "coverage": "full_content",
+      "stimulus_action": 15
+    }
+  ],
+  "execution_scope": "full",
+  "observation_targets": [
+    {
+      "label": "Invoice credit-and-payment allocation"
+    },
+    {
+      "identifier": "T3.entity"
+    },
+    {
+      "identifier": "T3.description"
+    },
+    {
+      "identifier": "T3.summary"
+    },
+    {
+      "identifier": "T3.status"
+    },
+    {
+      "identifier": "T3.surface"
+    },
+    {
+      "label": "Apply account credit"
+    },
+    {
+      "label": "Pay by bank transfer"
+    },
+    {
+      "identifier": "T3.methodA.detail"
+    },
+    {
+      "label": "Pay by company card"
+    },
+    {
+      "identifier": "T3.methodB.detail"
+    },
+    {
+      "label": "I authorize this settlement"
+    },
+    {
+      "label": "Settle invoice"
+    }
+  ]
+}

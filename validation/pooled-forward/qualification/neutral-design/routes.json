@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "index": {
+    "source": "reference",
+    "pointer": "/obligations"
+  },
+  "routes": {
+    "marker": {
+      "rule_ids": [
+        "marker-label"
+      ],
+      "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+      "regression_obligations": [
+        "detail"
+      ]
+    },
+    "detail": {
+      "rule_ids": [
+        "detail-label"
+      ],
+      "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+      "regression_obligations": [
+        "marker"
+      ]
+    },
+    "counter": {
+      "rule_ids": [
+        "count-label"
+      ],
+      "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+      "regression_obligations": [
+        "caller-update",
+        "primary-callback"
+      ]
+    },
+    "controls": {
+      "rule_ids": [
+        "primary-label",
+        "primary-present",
+        "primary-unique",
+        "primary-enabled",
+        "last-label",
+        "last-present",
+        "last-unique",
+        "last-enabled"
+      ],
+      "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+      "regression_obligations": [
+        "primary-callback",
+        "last-callback"
+      ]
+    },
+    "primary-callback": {
+      "rule_ids": [
+        "primary-callback"
+      ],
+      "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+      "regression_obligations": [
+        "counter",
+        "caller-update"
+      ]
+    },
+    "caller-update": {
+      "rule_ids": [
+        "caller-update-quiet"
+      ],
+      "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+      "regression_obligations": [
+        "counter",
+        "marker",
+        "detail",
+        "complete-content"
+      ]
+    },
+    "last-callback": {
+      "rule_ids": [
+        "last-callback"
+      ],
+      "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+      "regression_obligations": [
+        "complete-content"
+      ]
+    },
+    "complete-content": {
+      "rule_ids": [
+        "detail-label",
+        "last-present",
+        "row-0-label",
+        "row-1-label",
+        "row-2-label",
+        "row-3-label",
+        "row-4-label",
+        "row-5-label",
+        "row-6-label",
+        "row-7-label",
+        "row-8-label",
+        "row-9-label",
+        "row-10-label",
+        "row-11-label",
+        "row-12-label",
+        "row-13-label",
+        "row-14-label",
+        "row-15-label",
+        "row-16-label",
+        "row-17-label"
+      ],
+      "reason": "Generated source-backed native checks plus the frozen state-local coverage and native identity gates establish only these selected facts.",
+      "regression_obligations": [
+        "last-callback",
+        "detail"
+      ]
+    },
+    "mounted-component-instance": {
+      "rule_ids": [],
+      "reason": "No documented native assertion can compare the unpredictable mounted-component token across states; retain this mandatory obligation as U. Instance present/unique checks do not prove token equality. Observer app/process/input/event checks remain separately mandatory.",
+      "regression_obligations": []
+    },
+    "instance-node-observable": {
+      "rule_ids": [
+        "instance-present",
+        "instance-unique"
+      ],
+      "reason": "Atomic native presence/uniqueness facts only; a separate mounted-component-instance MUST remains U without a cross-state token relation provider.",
+      "regression_obligations": []
+    }
+  }
+}

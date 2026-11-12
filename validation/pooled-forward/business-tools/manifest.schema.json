@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:pooled-forward:paired-business-controller:manifest:1",
+  "title": "Case-agnostic paired blind-study manifest",
+  "description": "Structural schema. The controller also enforces frozen prerequisite identity, exact all-five paired initial source identity, resource coverage, source timing, queue order, and the all-ten hidden barrier.",
+  "type": "object",
+  "required": ["version", "study_id", "run_root", "protocol", "speed_gate", "design_approval", "envelope", "tools", "tasks"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"const": 1},
+    "study_id": {"$ref": "#/$defs/name"},
+    "run_root": {"$ref": "#/$defs/path"},
+    "protocol": {"$ref": "#/$defs/reference"},
+    "speed_gate": {"$ref": "#/$defs/reference"},
+    "design_approval": {"$ref": "#/$defs/reference"},
+    "envelope": {
+      "type": "object",
+      "required": ["path", "sha256", "meter_path", "meter_sha256", "meter_spec_path", "meter_spec_sha256"],
+      "additionalProperties": false,
+      "properties": {
+        "path": {"$ref": "#/$defs/path"}, "sha256": {"$ref": "#/$defs/sha256"},
+        "meter_path": {"$ref": "#/$defs/path"}, "meter_sha256": {"$ref": "#/$defs/sha256"},
+        "meter_spec_path": {"$ref": "#/$defs/path"}, "meter_spec_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "tools": {
+      "type": "object", "minProperties": 2, "maxProperties": 2,
+      "propertyNames": {"$ref": "#/$defs/name"},
+      "additionalProperties": {
+        "type": "object", "required": ["skill_root", "api", "files"], "additionalProperties": false,
+        "properties": {
+          "skill_root": {"$ref": "#/$defs/path"},
+          "api": {"enum": ["baseline-explicit-prior", "stateful-default"]},
+          "files": {"type": "object", "minProperties": 2, "description": "Complete immutable public service dependency inventory, relative to skill_root. tool-identity generates mandatory public files.", "additionalProperties": {"$ref": "#/$defs/sha256"}}
+        }
+      }
+    },
+    "tasks": {
+      "type": "array", "minItems": 5, "maxItems": 5,
+      "items": {
+        "type": "object", "required": ["id", "arms"], "additionalProperties": false,
+        "properties": {
+          "id": {"$ref": "#/$defs/name"},
+          "arms": {"type": "object", "minProperties": 2, "maxProperties": 2, "propertyNames": {"$ref": "#/$defs/name"}, "additionalProperties": {"$ref": "#/$defs/arm"}}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "name": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"},
+    "path": {"type": "string", "pattern": "^/", "minLength": 2},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "reference": {
+      "type": "object", "required": ["path", "sha256"], "additionalProperties": false,
+      "properties": {"path": {"$ref": "#/$defs/path"}, "sha256": {"$ref": "#/$defs/sha256"}}
+    },
+    "profiles": {"type": "object", "minProperties": 2, "propertyNames": {"$ref": "#/$defs/name"}, "additionalProperties": {"$ref": "#/$defs/path"}},
+    "arm": {
+      "type": "object",
+      "required": ["tool", "workspace", "source_roots", "public_configs", "public_readset", "hidden_configs", "resource_roots"],
+      "additionalProperties": false,
+      "properties": {
+        "tool": {"$ref": "#/$defs/name"},
+        "workspace": {"$ref": "#/$defs/path"},
+        "source_roots": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/path"}},
+        "public_configs": {"$ref": "#/$defs/profiles"},
+        "profile_order": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"$ref": "#/$defs/name"}},
+        "public_readset": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/path"}},
+        "hidden_configs": {"$ref": "#/$defs/profiles"},
+        "resource_roots": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/path"}}
+      }
+    }
+  }
+}

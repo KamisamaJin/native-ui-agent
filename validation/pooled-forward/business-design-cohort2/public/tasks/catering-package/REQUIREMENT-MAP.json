@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "task": "catering-package",
+  "clauses": [
+    {
+      "id": "B01",
+      "clause": "Buffet is eligible when guestCount is at least 6 and at most buffetCapacity.",
+      "provider": "typed-native-control",
+      "rule_ids": [
+        "root-buffet-enabled"
+      ]
+    },
+    {
+      "id": "B02",
+      "clause": "Boxed is eligible when guestCount is at most boxedCapacity and vegetarianMeals is at least vegetarianGuests.",
+      "provider": "typed-native-control",
+      "rule_ids": [
+        "root-boxed-enabled"
+      ]
+    },
+    {
+      "id": "B03",
+      "clause": "Reusable service is eligible only for Buffet and when reusableSets is at least guestCount.",
+      "provider": "typed-native-control",
+      "rule_ids": [
+        "detail-reusable-enabled"
+      ]
+    },
+    {
+      "id": "B04",
+      "clause": "Compostable service is eligible for either selected eligible package when compostableSets is at least guestCount.",
+      "provider": "typed-native-control",
+      "rule_ids": [
+        "detail-compostable-enabled"
+      ]
+    },
+    {
+      "id": "S01",
+      "clause": "A fresh, changed-entity, or changed-published-revision input clears all transient selections, confirmation, and receipt.",
+      "provider": "state-bound-native-controls",
+      "rule_ids": [
+        "root-buffet-selected",
+        "root-boxed-selected",
+        "detail-reusable-selected",
+        "detail-compostable-selected",
+        "ack-selected",
+        "receipt-label",
+        "submit-enabled"
+      ]
+    },
+    {
+      "id": "S02",
+      "clause": "A different eligible root clears detail and confirmation; reselecting the same root is idempotent.",
+      "provider": "state-bound-native-controls",
+      "rule_ids": [
+        "root-buffet-selected",
+        "root-boxed-selected",
+        "detail-reusable-selected",
+        "detail-compostable-selected",
+        "ack-selected",
+        "status-label",
+        "summary-label"
+      ]
+    },
+    {
+      "id": "S03",
+      "clause": "A different eligible detail clears confirmation; confirmation toggles only when root and detail are valid.",
+      "provider": "state-bound-native-controls",
+      "rule_ids": [
+        "detail-reusable-selected",
+        "detail-compostable-selected",
+        "ack-enabled",
+        "ack-selected",
+        "submit-enabled"
+      ]
+    },
+    {
+      "id": "S04",
+      "clause": "Same-pair replacement preserves valid state/receipt, invalidates root before detail, updates display, and emits no business callback.",
+      "provider": "state-bound-native-controls-and-successful-update",
+      "rule_ids": [
+        "root-buffet-selected",
+        "root-boxed-selected",
+        "detail-reusable-selected",
+        "detail-compostable-selected",
+        "ack-selected",
+        "receipt-label",
+        "title-label",
+        "context-label",
+        "notes-label",
+        "replacement-events"
+      ]
+    },
+    {
+      "id": "S05",
+      "clause": "Successful enabled recording emits one exact ordered event, then visibly records and disables all interaction; other successful taps are quiet.",
+      "provider": "unique-successful-native-activation-and-callback",
+      "rule_ids": [
+        "submit-enabled",
+        "activation-events",
+        "receipt-label",
+        "ack-enabled",
+        "root-buffet-enabled",
+        "root-boxed-enabled",
+        "detail-reusable-enabled",
+        "detail-compostable-enabled"
+      ]
+    },
+    {
+      "id": "C01",
+      "clause": "Full caller text, exact summary/status branches and exact receipt text remain displayed after real actions and caller updates.",
+      "provider": "native-labels-plus-source-backed-visual",
+      "rule_ids": [
+        "title-label",
+        "context-label",
+        "notes-label",
+        "status-label",
+        "summary-label",
+        "receipt-label",
+        "body-wrap",
+        "content-overlap",
+        "horizontal-fit"
+      ]
+    },
+    {
+      "id": "V01",
+      "clause": "The real component uses opaque designed surface/primary/first-row fills, visible selected check, and supported control-box height.",
+      "provider": "native-pixels-and-geometry-and-Boolean-visual",
+      "rule_ids": [
+        "surface-fill",
+        "primary-fill",
+        "first-option-fill",
+        "selection-mark",
+        "primary-height",
+        "first-option-height",
+        "confirmation-height"
+      ]
+    },
+    {
+      "id": "V02",
+      "clause": "Typography follows the independent 24/15 system type intent. Android available text layout is precise; iOS uses the explicit visual hierarchy/wrapping proposition.",
+      "provider": "platform-scoped-native-or-Boolean-visual",
+      "rule_ids": [
+        "type-hierarchy",
+        "body-wrap"
+      ]
+    },
+    {
+      "id": "SRC01",
+      "clause": "Real production API is exactly the immutable input and View/composable signature in API.md.",
+      "provider": "source-review-still-unassessed",
+      "responsibility_id": "production-api"
+    },
+    {
+      "id": "SRC02",
+      "clause": "Actual bridge only decodes the fixture, applies the stock Android theme, and passes the same callback to the real component.",
+      "provider": "source-review-still-unassessed",
+      "responsibility_id": "thin-bridge"
+    },
+    {
+      "id": "SRC03",
+      "clause": "Actual additive production placement/product/package and bridge-to-production call match API.md.",
+      "provider": "source-review-still-unassessed",
+      "responsibility_id": "production-placement"
+    }
+  ],
+  "scope": "Semantic index into the sealed atomic denominators and three required source-review duties. No source or native actual is approved."
+}

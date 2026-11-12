@@ -1,0 +1,291 @@
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T4/public/API.md
+   1 # Fixed production API
+   2 
+   3 These are API declarations, not a production implementation or substitute UI.
+   4 
+   5 ```swift
+   6 import SwiftUI
+   7 // Export from the AlertToast module. All fields are public; supply public field initializers.
+   8 public struct NoticeAudience: Codable, Equatable {
+   9     public var id: String
+  10     public var label: String
+  11     public var detail: String
+  12     public var recipients: Int
+  13     public var allowed: Bool
+  14     public var blockedReason: String
+  15 }
+  16 public struct OutageNoticeFixture: Codable, Equatable {
+  17     public var entityId: String
+  18     public var entityTitle: String
+  19     public var description: String
+  20     public var subject: String
+  21     public var message: String
+  22     public var workaround: String
+  23     public var audiences: [NoticeAudience]
+  24 }
+  25 public struct OutageNoticePanel: View {
+  26     public init(fixture: OutageNoticeFixture, onEvent: @escaping (String) -> Void)
+  27     public var body: some View { get }
+  28 }
+  29 ```
+  30 
+  31 ```kotlin
+  32 package com.example.reply.ui.components.business
+  33 data class NoticeAudience(
+  34     val id: String,
+  35     val label: String,
+  36     val detail: String,
+  37     val recipients: Int,
+  38     val allowed: Boolean,
+  39     val blockedReason: String,
+  40 )
+  41 data class OutageNoticeFixture(
+  42     val entityId: String,
+  43     val entityTitle: String,
+  44     val description: String,
+  45     val subject: String,
+  46     val message: String,
+  47     val workaround: String,
+  48     val audiences: List<NoticeAudience>,
+  49 )
+  50 @Composable
+  51 fun OutageNoticePanel(fixture: OutageNoticeFixture, onEvent: (String) -> Unit)
+  52 ```
+  53 
+  54 fixture.schema.json is the transport contract. All fields are nonoptional. IDs/labels are unique within each group and IDs use the delimiter-safe grammar. Allowed empty strings are explicit. Fixtures supply no local selection, approval, summary, eligibility override, or expected callback.
+  55 
+  56 Production owns real business state, decision gating, and same-versus-changed entity replacement. The component is additive, exported by AlertToast on iOS and located in production app/src/main on Android. No internal ScrollView/LazyColumn, modal, popup, overlay, navigation route, timer, network, randomness, async state, or animation is needed. A single eager vertical flow fills the offered child width; the host owns scrolling.
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T4/public/ObserverBridge.kt
+   1 package org.nativeobserver
+   2 
+   3 import androidx.compose.runtime.Composable
+   4 import kotlinx.serialization.json.JsonObject
+   5 import kotlinx.serialization.json.jsonObject
+   6 import kotlinx.serialization.json.jsonArray
+   7 import kotlinx.serialization.json.jsonPrimitive
+   8 import kotlinx.serialization.json.boolean
+   9 import kotlinx.serialization.json.int
+  10 import com.example.reply.ui.theme.ContrastAwareReplyTheme
+  11 import com.example.reply.ui.components.business.*
+  12 
+  13 private fun JsonObject.s(k: String) = getValue(k).jsonPrimitive.content
+  14 private fun JsonObject.i(k: String) = getValue(k).jsonPrimitive.int
+  15 private fun JsonObject.b(k: String) = getValue(k).jsonPrimitive.boolean
+  16 
+  17 object ObserverBridge {
+  18     @Composable
+  19     fun Content(input: JsonObject, onEvent: (String) -> Unit) {
+  20         val decoded = OutageNoticeFixture(
+  21             entityId = input.s("entityId"),
+  22             entityTitle = input.s("entityTitle"),
+  23             description = input.s("description"),
+  24             subject = input.s("subject"),
+  25             message = input.s("message"),
+  26             workaround = input.s("workaround"),
+  27             audiences = input.getValue("audiences").jsonArray.map { value ->
+  28                 val item = value.jsonObject
+  29                 NoticeAudience(
+  30                     id = item.s("id"),
+  31                     label = item.s("label"),
+  32                     detail = item.s("detail"),
+  33                     recipients = item.i("recipients"),
+  34                     allowed = item.b("allowed"),
+  35                     blockedReason = item.s("blockedReason"),
+  36                 )
+  37             },
+  38         )
+  39         ContrastAwareReplyTheme(darkTheme = false, dynamicColor = false) {
+  40             OutageNoticePanel(fixture = decoded, onEvent = onEvent)
+  41         }
+  42     }
+  43 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T4/public/ObserverBridge.swift
+   1 import Foundation
+   2 import SwiftUI
+   3 import AlertToast
+   4 
+   5 enum ObserverBridge {
+   6     static func make(fixture: [String: Any], onEvent: @escaping (String) -> Void) -> AnyView {
+   7         let bytes = try! JSONSerialization.data(withJSONObject: fixture)
+   8         let decoded = try! JSONDecoder().decode(OutageNoticeFixture.self, from: bytes)
+   9         return AnyView(OutageNoticePanel(fixture: decoded, onEvent: onEvent))
+  10     }
+  11 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T5/public/API.md
+   1 # Fixed production API
+   2 
+   3 These are API declarations, not a production implementation or substitute UI.
+   4 
+   5 ```swift
+   6 import SwiftUI
+   7 // Export from the AlertToast module. All fields are public; supply public field initializers.
+   8 public struct EquipmentReturnFixture: Codable, Equatable {
+   9     public var entityId: String
+  10     public var entityTitle: String
+  11     public var description: String
+  12     public var dataBearing: Bool
+  13     public var restockAllowed: Bool
+  14     public var repairAllowed: Bool
+  15     public var recycleAllowed: Bool
+  16     public var restockDetail: String
+  17     public var repairDetail: String
+  18     public var recycleDetail: String
+  19 }
+  20 public struct EquipmentReturnPanel: View {
+  21     public init(fixture: EquipmentReturnFixture, onEvent: @escaping (String) -> Void)
+  22     public var body: some View { get }
+  23 }
+  24 ```
+  25 
+  26 ```kotlin
+  27 package com.example.reply.ui.components.business
+  28 data class EquipmentReturnFixture(
+  29     val entityId: String,
+  30     val entityTitle: String,
+  31     val description: String,
+  32     val dataBearing: Boolean,
+  33     val restockAllowed: Boolean,
+  34     val repairAllowed: Boolean,
+  35     val recycleAllowed: Boolean,
+  36     val restockDetail: String,
+  37     val repairDetail: String,
+  38     val recycleDetail: String,
+  39 )
+  40 @Composable
+  41 fun EquipmentReturnPanel(fixture: EquipmentReturnFixture, onEvent: (String) -> Unit)
+  42 ```
+  43 
+  44 fixture.schema.json is the transport contract. All fields are nonoptional. IDs/labels are unique within each group and IDs use the delimiter-safe grammar. Allowed empty strings are explicit. Fixtures supply no local selection, approval, summary, eligibility override, or expected callback.
+  45 
+  46 Production owns real business state, decision gating, and same-versus-changed entity replacement. The component is additive, exported by AlertToast on iOS and located in production app/src/main on Android. No internal ScrollView/LazyColumn, modal, popup, overlay, navigation route, timer, network, randomness, async state, or animation is needed. A single eager vertical flow fills the offered child width; the host owns scrolling.
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T5/public/ObserverBridge.kt
+   1 package org.nativeobserver
+   2 
+   3 import androidx.compose.runtime.Composable
+   4 import kotlinx.serialization.json.JsonObject
+   5 import kotlinx.serialization.json.jsonObject
+   6 import kotlinx.serialization.json.jsonArray
+   7 import kotlinx.serialization.json.jsonPrimitive
+   8 import kotlinx.serialization.json.boolean
+   9 import kotlinx.serialization.json.int
+  10 import com.example.reply.ui.theme.ContrastAwareReplyTheme
+  11 import com.example.reply.ui.components.business.*
+  12 
+  13 private fun JsonObject.s(k: String) = getValue(k).jsonPrimitive.content
+  14 private fun JsonObject.i(k: String) = getValue(k).jsonPrimitive.int
+  15 private fun JsonObject.b(k: String) = getValue(k).jsonPrimitive.boolean
+  16 
+  17 object ObserverBridge {
+  18     @Composable
+  19     fun Content(input: JsonObject, onEvent: (String) -> Unit) {
+  20         val decoded = EquipmentReturnFixture(
+  21             entityId = input.s("entityId"),
+  22             entityTitle = input.s("entityTitle"),
+  23             description = input.s("description"),
+  24             dataBearing = input.b("dataBearing"),
+  25             restockAllowed = input.b("restockAllowed"),
+  26             repairAllowed = input.b("repairAllowed"),
+  27             recycleAllowed = input.b("recycleAllowed"),
+  28             restockDetail = input.s("restockDetail"),
+  29             repairDetail = input.s("repairDetail"),
+  30             recycleDetail = input.s("recycleDetail"),
+  31         )
+  32         ContrastAwareReplyTheme(darkTheme = false, dynamicColor = false) {
+  33             EquipmentReturnPanel(fixture = decoded, onEvent = onEvent)
+  34         }
+  35     }
+  36 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T5/public/ObserverBridge.swift
+   1 import Foundation
+   2 import SwiftUI
+   3 import AlertToast
+   4 
+   5 enum ObserverBridge {
+   6     static func make(fixture: [String: Any], onEvent: @escaping (String) -> Void) -> AnyView {
+   7         let bytes = try! JSONSerialization.data(withJSONObject: fixture)
+   8         let decoded = try! JSONDecoder().decode(EquipmentReturnFixture.self, from: bytes)
+   9         return AnyView(EquipmentReturnPanel(fixture: decoded, onEvent: onEvent))
+  10     }
+  11 }
+
+FILE /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/business-design/T1/public/fixture.schema.json
+   1 {
+   2   "type": "object",
+   3   "properties": {
+   4     "entityId": {
+   5       "type": "string",
+   6       "pattern": "^[A-Za-z0-9-]{1,32}$"
+   7     },
+   8     "entityTitle": {
+   9       "type": "string",
+  10       "minLength": 1,
+  11       "maxLength": 500
+  12     },
+  13     "description": {
+  14       "type": "string",
+  15       "minLength": 1,
+  16       "maxLength": 500
+  17     },
+  18     "lots": {
+  19       "type": "array",
+  20       "items": {
+  21         "type": "object",
+  22         "properties": {
+  23           "id": {
+  24             "type": "string",
+  25             "pattern": "^[A-Za-z0-9-]{1,32}$"
+  26           },
+  27           "label": {
+  28             "type": "string",
+  29             "minLength": 1,
+  30             "maxLength": 500
+  31           },
+  32           "detail": {
+  33             "type": "string",
+  34             "minLength": 1,
+  35             "maxLength": 500
+  36           },
+  37           "units": {
+  38             "type": "integer",
+  39             "minimum": 1,
+  40             "maximum": 9999
+  41           },
+  42           "available": {
+  43             "type": "boolean"
+  44           },
+  45           "holdReason": {
+  46             "type": "string",
+  47             "maxLength": 500
+  48           }
+  49         },
+  50         "required": [
+  51           "id",
+  52           "label",
+  53           "detail",
+  54           "units",
+  55           "available",
+  56           "holdReason"
+  57         ],
+  58         "additionalProperties": false
+  59       },
+  60       "minItems": 1,
+  61       "maxItems": 4
+  62     }
+  63   },
+  64   "required": [
+  65     "entityId",
+  66     "entityTitle",
+  67     "description",
+  68     "lots"
+  69   ],
+  70   "additionalProperties": false,
+  71   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  72   "title": "ShipmentReleaseFixture",
+  73   "$comment": "Unique group IDs and action labels; all UI/business decisions component-owned. No hidden-only requirement."
+  74 }

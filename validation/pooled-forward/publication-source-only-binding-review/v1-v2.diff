@@ -1,0 +1,29 @@
+--- frozen/source_only_binding.py
++++ review/source_only_binding_v2.py
+@@ -62,10 +62,26 @@
+     write(output/'source-only-config.json', derived)
+     write(output/'compiled-original.json', before)
+     bound = backend.bind(derived, submission, output/'source-review-ref.json')
++    reference_bytes = safe(output/'source-review-ref.json').read_bytes()
+     current = backend.compile_contract(config, backend.d.load(Path(config['plan'])), backend.d.load(Path(config['design_lock'])))
+     need(current == before and backend.compile_contract(derived, plan, lock) == before,
+          'Original contract or approved subject bytes changed during binding')
+     evaluation = backend.evaluate(derived, before)
++    # Check the same source/compiler boundary after evaluation, before success.
++    final_plan = backend.d.load(Path(config['plan'])); final_lock = backend.d.load(Path(config['design_lock']))
++    need(backend.compile_contract(config, final_plan, final_lock) == before
++         and backend.compile_contract(derived, final_plan, final_lock) == before,
++         'Original contract or approved subject bytes changed during evaluation')
++    need(type(bound) is dict and set(bound) == {'path', 'sha256'}
++         and type(bound['path']) is str and type(bound['sha256']) is str
++         and len(bound['sha256']) == 64 and all(c in '0123456789abcdef' for c in bound['sha256']),
++         'Exact source-bound reference required')
++    bound_path = safe(bound['path'])
++    need(str(bound_path) == bound['path'] and bound_path.parent == safe(derived['source_review_store'])
++         and sha(bound_path) == bound['sha256'], 'New-store source-bound reference bytes changed or differ')
++    need(safe(output/'source-review-ref.json').read_bytes() == reference_bytes
++         and backend.d.load(output/'source-review-ref.json') == bound,
++         'Source-bound reference record bytes changed or differ')
+     rows = [row for row in evaluation['rows'] if row['method'] == 'source']
+     write(output/'source-only-evaluation.json', {
+         'version': 1, 'kind': 'independent-post-seal-source-only-evaluation',

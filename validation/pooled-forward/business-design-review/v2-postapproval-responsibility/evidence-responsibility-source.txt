@@ -1,0 +1,171 @@
+   1 #!/usr/bin/env python3
+   2 """Compile source-backed evidence responsibilities before running native SDKs.
+   3 
+   4 Type compatibility is not truth. Source review remains a bound human/agent
+   5 observation; a declaration cannot certify runtime styles, integration, or cause.
+   6 """
+   7 from __future__ import annotations
+   8 import argparse
+   9 import hashlib
+  10 import json
+  11 from pathlib import Path
+  12 import design_contract as d
+  13 
+  14 NATIVE = {'control': 'control', 'geometry': 'geometry', 'callback': 'event',
+  15           'text_layout': 'text_layout', 'visual': 'manual'}
+  16 OWNERS = {'component', 'bridge', 'integration', 'host', 'system'}
+  17 
+  18 
+  19 def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+  20 
+  21 
+  22 def compile_contract(config, plan, lock):
+  23     d.validate_lock(lock, config['design_sha256'])
+  24     d.verify_generated(plan, lock, config['design_sha256'], plan['design_contract']['platform'])
+  25     ref = config.get('responsibility_ref')
+  26     if ref is None:
+  27         # Backward-compatible component/native scope. This does not certify
+  28         # unlisted source, bridge, page, deployment, or integration requirements.
+  29         return {'version': 1, 'explicit': False, 'plan_sha256': d.digest(plan), 'claims': [], 'issues': [],
+  30                 'scope': 'Native component plan only; no external/source/integration completeness claim.'}
+  31     if set(ref) != {'source', 'pointer'}: raise ValueError('Exact independent responsibility source required')
+  32     declared = d.pointer(lock['sources'][ref['source']]['document'], ref['pointer'])
+  33     if not isinstance(declared, list) or not declared: raise ValueError('Nonempty independent evidence responsibility index required')
+  34     if len({r['id'] for r in declared}) != len(declared): raise ValueError('Duplicate evidence claim identity')
+  35     roots = [Path(v).resolve() for v in config['source_roots']]; bridge = Path(config['bridge']).resolve()
+  36     if any(Path(v).resolve().is_relative_to(p) for v in [config.get('source_review_store', '')] if v for p in roots):
+  37         raise ValueError('Source review store must be outside production roots')
+  38     subjects = config.get('evidence_subjects', {}); rows = []; issues = []
+  39     for claim in declared:
+  40         if set(claim) != {'id', 'clause', 'priority', 'owner', 'method', 'subject', 'rule_ids'}:
+  41             raise ValueError('Exact independent atomic evidence claim schema required')
+  42         if claim['owner'] not in OWNERS or claim['priority'] not in {'must', 'advisory'} or not claim['clause'].strip():
+  43             raise ValueError('Known responsibility, priority and explicit clause required')
+  44         reason = None; files = {}; assertions = []
+  45         if claim['method'] in NATIVE:
+  46             assertions = [r['id'] for r in plan['assertions'] if r.get('requirement_id') in claim['rule_ids']]
+  47             matching = [r for r in plan['assertions'] if r['id'] in assertions]
+  48             owner_ok = claim['owner'] == 'component'
+  49             if claim['method'] == 'visual':
+  50                 policy = d.load(Path(config['policy'])) if config.get('policy') else None
+  51                 if policy is None or d.digest(policy) != config.get('policy_sha256'):
+  52                     owner_ok = False
+  53                 else:
+  54                     logical = {r['id']: r.get('target') for r in lock['contract']['rules']}
+  55                     owner_ok = all(policy['ownership'].get(logical.get(rid)) == claim['owner'] for rid in claim['rule_ids'])
+  56             if (not owner_ok or not assertions or
+  57                     {r.get('requirement_id') for r in matching} != set(claim['rule_ids']) or
+  58                     any(r['kind'] != NATIVE[claim['method']] for r in matching)):
+  59                 reason = 'Native evidence type/subject does not establish the approved owner or claim kind'
+  60         elif claim['method'] == 'source':
+  61             paths = subjects.get(claim['subject'], [])
+  62             if claim['owner'] in {'host', 'system'}:
+  63                 reason = 'No verified host/system source provider; responsibility declaration alone is insufficient'
+  64             elif not isinstance(paths, list) or not paths or claim['rule_ids']:
+  65                 reason = 'Source claim needs actual subject files and cannot borrow native assertion IDs'
+  66             else:
+  67                 for raw in paths:
+  68                     p = Path(raw).resolve()
+  69                     in_component = any(p == root or p.is_relative_to(root) for root in roots)
+  70                     compatible = (in_component if claim['owner'] == 'component' else p == bridge if claim['owner'] == 'bridge' else not in_component and p != bridge)
+  71                     if not p.is_file() or not compatible:
+  72                         reason = 'Source subject responsibility differs from component/bridge/integration file boundary'; break
+  73                     files[str(p)] = sha(p)
+  74                 if not config.get('source_review_store'): reason = 'Source review requires an integration-owned append-only store'
+  75         else:
+  76             reason = 'No verified provider for this evidence method; declarations/source/AX cannot prove computed runtime styles or executed integration'
+  77         row = dict(claim, assertion_ids=assertions, files=files, expected=True, unit='bool',
+  78                    provenance={'source': ref['source'], 'pointer': ref['pointer'], 'design_lock_sha256': config['design_sha256']},
+  79                    supported=reason is None, unsupported_reason=reason)
+  80         rows.append(row)
+  81         if reason: issues.append({'id': claim['id'], 'priority': claim['priority'], 'reason': reason})
+  82     return {'version': 1, 'explicit': True, 'design_lock_sha256': config['design_sha256'],
+  83             'plan_sha256': d.digest(plan), 'source_ref': ref, 'claims': rows, 'issues': issues,
+  84             'scope': 'Capability and subject-boundary checks, not source-review truth or causal attribution.'}
+  85 
+  86 
+  87 def stored(config):
+  88     root = config.get('source_review_store')
+  89     if not root or not Path(root).is_dir(): return []
+  90     rows = []
+  91     for p in sorted(Path(root).glob('*.json')):
+  92         value = d.load(p)
+  93         if value.get('format') != 'native-ui-source-review-v1': continue
+  94         rows.append((p, value))
+  95     return rows
+  96 
+  97 
+  98 def evaluate(config, compiled, report=None):
+  99     by = {r['id']: r for r in (report or {}).get('rows', (report or {}).get('assertions', []))}
+ 100     saved = stored(config); results = []
+ 101     for claim in compiled['claims']:
+ 102         status = 'unassessed'; reason = claim['unsupported_reason']; actual = None; evidence = []
+ 103         if claim['supported'] and claim['method'] in NATIVE:
+ 104             native = [by.get(k, {'status': 'unassessed'})['status'] for k in claim['assertion_ids']]
+ 105             status = 'failed' if 'failed' in native else 'unassessed' if 'unassessed' in native else 'passed'
+ 106             reason = 'Native facts from the exact parent report; no extra attribution credit'
+ 107         elif claim['supported']:
+ 108             candidates = []
+ 109             for p, value in saved:
+ 110                 if value.get('design_lock_sha256') != compiled['design_lock_sha256']: continue
+ 111                 for row in value.get('observations', []):
+ 112                     if row['id'] == claim['id'] and row['claim_sha256'] == d.digest(claim) and row['files'] == claim['files']:
+ 113                         candidates.append((p, row))
+ 114             if candidates:
+ 115                 actuals = {r['observed'] for _, r in candidates}
+ 116                 if len(actuals) == 1:
+ 117                     actual = next(iter(actuals)); status = 'passed' if actual is True else 'failed' if actual is False else 'unassessed'
+ 118                     reason = candidates[0][1]['reason']; evidence = [{'path': str(p), 'sha256': sha(p)} for p, _ in candidates]
+ 119                 else: reason = 'Conflicting original source reviews remain unresolved'
+ 120             else: reason = 'No current subject-bound original source observation'
+ 121         results.append({'id': claim['id'], 'priority': claim['priority'], 'owner': claim['owner'], 'method': claim['method'],
+ 122                         'status': status, 'expected': True, 'unit': 'bool', 'actual': actual, 'reason': reason,
+ 123                         'assertion_ids': claim['assertion_ids'], 'evidence': evidence,
+ 124                         'attribution': 'unassessed; evidence compatibility is not proof of defect responsibility'})
+ 125     blockers = [r['id'] for r in results if r['priority'] == 'must' and r['status'] != 'passed']
+ 126     return {'version': 1, 'explicit': compiled['explicit'], 'status': 'passed' if not blockers else 'unassessed_or_failed',
+ 127             'rows': results, 'blocking_claims': blockers, 'scope': compiled['scope']}
+ 128 
+ 129 
+ 130 def template(compiled):
+ 131     return {'version': 1, 'observations': [{'id': c['id'], 'observed': None, 'reason': '', 'citations': []}
+ 132             for c in compiled['claims'] if c['method'] == 'source' and c['supported']]}
+ 133 
+ 134 
+ 135 def bind(config, submission, output):
+ 136     plan = d.load(Path(config['plan'])); lock = d.load(Path(config['design_lock'])); compiled = compile_contract(config, plan, lock)
+ 137     if set(submission) != {'version', 'observations'} or submission['version'] != 1: raise ValueError('Original actual-only source observations required')
+ 138     claims = {c['id']: c for c in compiled['claims'] if c['method'] == 'source' and c['supported']}
+ 139     if len(submission['observations']) != len({r['id'] for r in submission['observations']}): raise ValueError('Duplicate source observations')
+ 140     rows = []
+ 141     for row in submission['observations']:
+ 142         if set(row) != {'id', 'observed', 'reason', 'citations'} or row['id'] not in claims or row['observed'] not in [True, False, None] or type(row['observed']) not in {bool, type(None)}:
+ 143             raise ValueError('Known source claim, actual Boolean/null and no expected override required')
+ 144         c = claims[row['id']]
+ 145         if not row['reason'].strip() or (row['observed'] is not None and not row['citations']): raise ValueError('Source observation needs rationale and actual citations')
+ 146         for ref in row['citations']:
+ 147             if set(ref) != {'path', 'line'} or str(Path(ref['path']).resolve()) not in c['files'] or type(ref['line']) is not int or not 1 <= ref['line'] <= len(Path(ref['path']).read_text().splitlines()):
+ 148                 raise ValueError('Citation is outside the exact approved subject files')
+ 149         rows.append(dict(row, files=c['files'], claim_sha256=d.digest(c)))
+ 150     value = {'format': 'native-ui-source-review-v1', 'design_lock_sha256': config['design_sha256'], 'observations': rows,
+ 151              'scope': 'Bound actual source review; not computed runtime style or executed integration proof.'}
+ 152     root = Path(config['source_review_store']).resolve(); root.mkdir(parents=True, exist_ok=True)
+ 153     path = root / (d.digest(value) + '.json')
+ 154     if not path.exists():
+ 155         with path.open('x') as f: json.dump(value, f, indent=2)
+ 156     elif d.load(path) != value: raise ValueError('Existing source review identity differs')
+ 157     output = Path(output); output.parent.mkdir(parents=True, exist_ok=True)
+ 158     with output.open('x') as f: json.dump({'path': str(path), 'sha256': sha(path)}, f, indent=2)
+ 159     return {'path': str(path), 'sha256': sha(path)}
+ 160 
+ 161 
+ 162 def main():
+ 163     p = argparse.ArgumentParser(); p.add_argument('command', choices=['audit', 'bind']); p.add_argument('--config', type=Path, required=True)
+ 164     p.add_argument('--submission', type=Path); p.add_argument('--output', type=Path, required=True); a = p.parse_args(); config = d.load(a.config)
+ 165     if a.command == 'bind': result = bind(config, d.load(a.submission), a.output)
+ 166     else:
+ 167         result = compile_contract(config, d.load(Path(config['plan'])), d.load(Path(config['design_lock'])))
+ 168         with a.output.open('x') as f: json.dump(result, f, indent=2)
+ 169     print(json.dumps(result))
+ 170 
+ 171 if __name__ == '__main__': main()

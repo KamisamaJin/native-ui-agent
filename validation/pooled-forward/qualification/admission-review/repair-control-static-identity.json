@@ -1,0 +1,43 @@
+{
+  "results": [
+    {
+      "platform": "ios",
+      "normal_sha256": "90f68fa0652a9287d3ced24100db7aa344b68f0e12afed1b76ed0fc37064c974",
+      "control_sha256": "2bb97282add46dd07dd6d370265e371349f3da96a5e22b2ed5dbe61ad8a6e9d8",
+      "only_single_counter_increment_token_change": true,
+      "diff": [
+        "--- normal",
+        "+++ repair-control",
+        "@@ -31,7 +31,7 @@",
+        "                 .accessibilityIdentifier(\"probe.count\")",
+        " ",
+        "             Button(\"Primary native action\") {",
+        "-                taps += 1",
+        "+                taps += 2",
+        "                 onEvent(\"probe.primary\")",
+        "             }",
+        "             .frame(maxWidth: .infinity)"
+      ]
+    },
+    {
+      "platform": "android",
+      "normal_sha256": "9ddc9eff85d4b9d84469df37eae80b8779bca26af12ac3f504d575c3ff5be164",
+      "control_sha256": "1de3f6e70eba46d51eb1132c90030ff761d92375054d130359d225342745273f",
+      "only_single_counter_increment_token_change": true,
+      "diff": [
+        "--- normal",
+        "+++ repair-control",
+        "@@ -34,7 +34,7 @@",
+        "         Text(\"Tap count: $taps\", tagged(\"probe.count\"))",
+        "         Button(",
+        "             onClick = {",
+        "-                taps += 1",
+        "+                taps += 2",
+        "                 onEvent(\"probe.primary\")",
+        "             },",
+        "             modifier = tagged(\"probe.primary\").fillMaxWidth().height(48.dp)"
+      ]
+    }
+  ],
+  "scope": "Unbuilt frozen neutral source mismatch only; never native control, repair or business truth"
+}

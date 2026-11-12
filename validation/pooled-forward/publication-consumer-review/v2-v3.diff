@@ -1,0 +1,109 @@
+--- frozen/verify_publication_v2.py
++++ review/verify_publication.py
+@@ -18,7 +18,7 @@
+ ROOT = Path(__file__).resolve().parent
+ CODE_KEYS = {'cold', 'archive', 'preserve', 'session', 'session_replay', 'phase', 'projection', 'metric'}
+ INPUT_KEYS = {'cause_index', 'alarm_index', 'correspondence_seal', 'mapping_reveal',
+-              'coverage_registry', 'metric_inputs', 'metric_results'}
++              'coverage_registry', 'metric_inputs', 'metric_results', 'matcher_start'}
+ COVERAGE_SHA = 'bf0b28d507c9fa1f638e0233980ddaf4d4293745e0ac59e63205ef7d43f57baa'
+ MAPPING_SEAL_SHA = 'b7f575344dbe240ab0a2ffb041f52e5b450ccf0b77179a59633f69bc66a837c3'
+ 
+@@ -28,6 +28,18 @@
+ 
+ 
+ def sha(raw): return hashlib.sha256(raw).hexdigest()
++
++
++def strict_json(raw):
++    def pairs(items):
++        result = {}
++        for key,value in items:
++            need(key not in result, 'Duplicate publication metadata key')
++            result[key] = value
++        return result
++    def constant(value):
++        raise ValueError('Nonfinite publication metadata constant: '+value)
++    return json.loads(raw,object_pairs_hook=pairs,parse_constant=constant)
+ 
+ 
+ def relative(value):
+@@ -57,7 +69,7 @@
+ def pinned(reader, reference):
+     exact_ref(reference); raw = reader.read_bytes(reference['path'])
+     need(sha(raw) == reference['sha256'], 'Preserved original reference differs')
+-    return json.loads(raw)
++    return strict_json(raw)
+ 
+ 
+ def sealed_output(reader, reference, kind):
+@@ -93,6 +105,41 @@
+         task_ids.add(row['task']); assignment[case] = {row[label]: label for label in ['X', 'Y']}
+     need(reveal['assignment'] == assignment, 'Reveal inverts or changes the sealed assignment')
+     return assignment
++
++
++def matcher_binding(reader, inputs):
++    """Join the independently sealed output to its original neutral inputs."""
++    start = pinned(reader, inputs['matcher_start'])
++    need(type(start.get('version')) is int and start['version'] == 1
++         and start.get('kind') == 'independent-anonymous-correspondence-start'
++         and start.get('quality_adjudicated') is False and start.get('mapping_revealed') is False,
++         'Original independent matcher START required')
++    need(start.get('operator_barriers') == {'cause':inputs['cause_index'],'alarm':inputs['alarm_index']},
++         'Matcher original cause/alarm barriers differ')
++    output = start.get('output')
++    need(type(output) is str and Path(output).is_absolute() and str(Path(output)) == output
++         and str(Path(output)/'SEAL.json') == inputs['correspondence_seal']['path'],
++         'Independent consensus output is not bound to matcher START')
++    index = pinned(reader, start['index'])
++    cause = pinned(reader,inputs['cause_index']); alarm = pinned(reader,inputs['alarm_index'])
++    expected = {'Case%02d-%s'%(i,v) for i in range(1,6) for v in ['I','X','Y']}
++    need(type(index.get('version')) is int and index['version'] == 1
++         and index.get('kind') == 'neutral-all15-correspondence-input', 'Exact neutral matcher INDEX required')
++    rows = index.get('groups')
++    need(type(rows) is list and len(rows) == 15 and {r['group'] for r in rows} == expected,
++         'All fifteen original matcher input groups required')
++    for value in [cause,alarm]:
++        need(type(value.get('groups')) is list and len(value['groups']) == 15
++             and {r['group'] for r in value['groups']} == expected, 'Original barrier groups differ from matcher')
++    causes = {r['group']:r for r in cause['groups']}; alarms = {r['group']:r for r in alarm['groups']}
++    for row in rows:
++        group = row['group']; judges = row.get('judges')
++        need(type(judges) is dict and set(judges) == {'J1','J2'}, 'Matcher original role set differs')
++        for judge,refs in judges.items():
++            need(refs.get('effective_cause') == causes[group]['seals'][judge]
++                 and refs.get('alarm') == alarms[group]['seals'][judge],
++                 'Matcher INDEX changes original cause/alarm role references')
++    return start
+ 
+ 
+ def save(path, value):
+@@ -137,6 +184,7 @@
+     alarm = modules['phase'].verify_index(reader, manifest['inputs']['alarm_index'], 'alarm')
+     alarm_index = modules['phase'].original(reader, manifest['inputs']['alarm_index'])
+     need(alarm_index['first_cause_barrier'] == manifest['inputs']['cause_index'], 'Complete original predecessor differs')
++    matcher_binding(reader,manifest['inputs'])
+     members = sealed_output(reader, manifest['inputs']['correspondence_seal'], 'independent-anonymous-correspondence-seal')
+     inputs = {key: pinned(reader, ref) for key, ref in manifest['inputs'].items()
+               if key not in {'cause_index', 'alarm_index', 'correspondence_seal'}}
+@@ -153,7 +201,9 @@
+         arm: modules['metric'].summarize(metric_input['cases'], arm, metric_input['assignment'],
+             shared_costs=metric_input['shared_costs'], coverage_denominators=metric_input['coverage_denominators'])
+         for arm in ['A', 'B']}}
+-    need(calculated == inputs['metric_results'], 'Fixed metric replay differs; no result regeneration accepted')
++    need(json.dumps(calculated,sort_keys=True,separators=(',',':'),ensure_ascii=False,allow_nan=False)
++         == json.dumps(inputs['metric_results'],sort_keys=True,separators=(',',':'),ensure_ascii=False,allow_nan=False),
++         'Fixed metric replay differs; no result regeneration accepted')
+     save(output/'METRIC-REPLAY.json', calculated)
+     mapped = reader.verify_all(); reader.close()
+     result = {'version': 1, 'kind': 'pooled-forward-publication-replay', 'status': 'verified',
+@@ -177,7 +227,7 @@
+     output.mkdir(parents=True); save(output/'ENTRY.json', {'manifest': str(args.manifest.resolve()),
+         'manifest_sha256': args.manifest_sha256, 'started_at_unix': time.time(), 'native_sdk_execution': False})
+     try:
+-        result = verify(json.loads(raw), output)
++        result = verify(strict_json(raw), output)
+     except BaseException as error:
+         save(output/'FAILURE.json', {'status': 'failed', 'error_type': type(error).__name__, 'message': str(error),
+             'traceback': traceback.format_exc(), 'finished_at_unix': time.time(), 'partial_outputs_retained': True})

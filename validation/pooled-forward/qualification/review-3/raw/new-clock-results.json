@@ -1,0 +1,72 @@
+[
+  {
+    "id": "N08-kernel-clock-shared-across-processes",
+    "status": "P",
+    "evidence_class": "HOST",
+    "detail": {
+      "evidence_class": "HOST",
+      "argv": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "-B",
+        "-c",
+        "import sys,json,time; sys.path.insert(0,'/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.2/scripts'); import resource_manager as r; print(json.dumps({\"lease_clock\":r.lease_clock(),\"boot_id\":r.boot_identity(),\"python_monotonic\":time.monotonic(),\"version\":sys.version}))"
+      ],
+      "before": 6057587.369038,
+      "after": 6057587.62466,
+      "child": {
+        "lease_clock": 6057587.621772,
+        "boot_id": "1788249418:448689",
+        "python_monotonic": 0.030611583,
+        "version": "3.9.6 (default, Aug 25 2026, 21:26:21) \n[Clang 21.0.0 (clang-2100.3.34.2)]"
+      },
+      "exit_code": 0,
+      "stderr": "",
+      "host_boot_id": "1788249418:448689"
+    }
+  },
+  {
+    "id": "N09-expiry-using-shared-lease-clock",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "outcomes": {
+        "before": true,
+        "at-idle": false,
+        "wall-backwards": false,
+        "kernel-backwards": false,
+        "at-use-limit": false,
+        "at-age": false
+      },
+      "clock_provider": "actual emitted journal timestamps use resource_manager.lease_clock; this supplied decision control mocks that same provider",
+      "policy": {
+        "idle_seconds": 1,
+        "max_uses": 2,
+        "max_age_seconds": 5
+      }
+    }
+  },
+  {
+    "id": "N10-active-idle-expiry-after-durable-retirement",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "first_udid": "92B32030-CF6E-4057-8CCF-CDFC68D571D1",
+      "new_udid": "3D4D0712-53C5-49FD-85F6-C2F6F847C7E9",
+      "active_crossing_seconds": 1.2537979995831847,
+      "retirement_receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-3/work/new-active-idle-clock/evidence/lease-one/pool-retirement-d9924edbcb7c4d81b4a5578d70723834/resources.json",
+      "retirement_generation": 14,
+      "new_final_receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-3/work/new-active-idle-clock/evidence/lease-two/resources.json",
+      "limit": "All device replies SIMULATED; actual HOST guardian lock and kernel clock were exercised."
+    }
+  },
+  {
+    "id": "N11-explicit-fresh-rejects-diagnostic-intake",
+    "status": "P",
+    "evidence_class": "SIMULATED",
+    "detail": {
+      "command": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-3/raw/new-fresh-intake--incompatible-fresh-intake.command.json",
+      "stderr": "Configuration/evidence error: Diagnostic intake and explicit fresh acquisition are distinct work\n",
+      "collector_count": 0
+    }
+  }
+]

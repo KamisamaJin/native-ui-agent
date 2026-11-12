@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "scope": "neutral pre-run component-source ownership admission; no runtime proof",
+  "platforms": {
+    "ios": {
+      "module": "AlertToast",
+      "product": "AlertToast",
+      "production_install_path": "Sources/AlertToast/NativeQualificationProbe.swift",
+      "production_artifact": {
+        "path": "ios/Sources/AlertToast/NativeQualificationProbe.swift",
+        "sha256": "90f68fa0652a9287d3ced24100db7aa344b68f0e12afed1b76ed0fc37064c974",
+        "bytes": 2464
+      },
+      "component_subject": "the resolved installed production file only",
+      "bridge_artifact": {
+        "path": "ios/bridge/ObserverBridge.swift",
+        "sha256": "de3620b4a9adaf675ddb98adff3bb01a45bcd38ec43e6290a547c9cb05aea516",
+        "bytes": 782
+      },
+      "bridge_subject": "the separately installed ObserverBridge.swift, outside component subject",
+      "native_dependency_requirement": "fingerprint the actual pinned package/source dependency roots and bridge separately; this manifest is not dependency-completeness proof",
+      "runtime_availability": "iOS 14+; no deployment target change"
+    },
+    "android": {
+      "production_install_path": "app/src/main/java/org/nativequalification/NativeQualificationProbe.kt",
+      "production_package": "org.nativequalification",
+      "production_entry": "NativeQualificationProbe(marker: String, detail: String, onEvent: (String) -> Unit)",
+      "production_artifact": {
+        "path": "android/app/src/main/java/org/nativequalification/NativeQualificationProbe.kt",
+        "sha256": "9ddc9eff85d4b9d84469df37eae80b8779bca26af12ac3f504d575c3ff5be164",
+        "bytes": 2542
+      },
+      "component_subject": "the resolved installed app/src/main production file only",
+      "bridge_artifact": {
+        "path": "android/bridge/ObserverBridge.kt",
+        "sha256": "3a17e25ad3b27c8a648e4f1ea73aab3d682474ff56bca0df55c05acc1342c2b8",
+        "bytes": 810
+      },
+      "bridge_subject": "the separately installed test-source org.nativeobserver.ObserverBridge",
+      "main_dependencies": "existing compatible Compose/Material3 and standard platform classes; no JSON/serialization dependency added",
+      "native_dependency_requirement": "fingerprint the actual admitted project/main dependencies and test bridge separately; this manifest is not dependency-completeness proof"
+    }
+  },
+  "variant_installation": "base and repair-control install alternatives at the same production path in isolated checkouts; never compile both",
+  "forbidden_ownership_substitutions": [
+    "bridge-only patch for component-source repair",
+    "generated-host citations for component-source claims",
+    "test-view copy replacing imported production component"
+  ]
+}

@@ -13,17 +13,50 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install -r native-ui-agent/scripts/requirements.txt "Pillow==11.3.0"
+      - name: Verify released v13 and exact common-floor control source identities
+        run: python3 -B validation/pooled-forward/verify_sources.py
       - run: python -B -m unittest discover -s native-ui-agent/tests -v
+      - name: Publication source binding and lossless restore controls
+        run: |
+          python3 -B -m unittest discover -s validation/pooled-forward/publication-resolver -p 'test_resolver.py'
+          python3 -B -m unittest discover -s validation/pooled-forward/publication-tools -p 'test_archive.py'
+          python3 -B -m unittest discover -s validation/pooled-forward/publication-quality -p 'test_integrity.py'
+          python3 -B validation/pooled-forward/publication-audit-v2/test_audit.py
+      - name: Qualify current Linux runtime against frozen v13 mechanisms and golden evidence
+        run: bash validation/pooled-forward/publication-runtime-admission/ci-python311-v2.sh
+      - name: Verify bounded CI replay disposal, including Git checkout permissions
+        run: python3 -B validation/pooled-forward/publication-replay-cleanup/test_cleanup_v2.py --run-dir "$GITHUB_WORKSPACE/validation/pooled-forward/publication-replay-cleanup/HOST-ci-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+      - name: Replay sealed v13 native provenance, independent barriers and five-case metrics
+        run: |
+          read -r publication_sha < validation/pooled-forward/PUBLICATION.sha256
+          python3 -B validation/pooled-forward/verify_publication.py --manifest-sha256 "$publication_sha" --output "$RUNNER_TEMP/pooled-v13-replay"
+      - name: Dispose verified temporary replay payloads before historical checks
+        run: python3 -B validation/pooled-forward/publication-replay-cleanup/cleanup_v2.py --replay "$RUNNER_TEMP/pooled-v13-replay"
+      - name: Retain compact v13 replay receipts and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pooled-v13-replay-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/pooled-v13-replay/ENTRY.json
+            ${{ runner.temp }}/pooled-v13-replay/RESULT.json
+            ${{ runner.temp }}/pooled-v13-replay/FAILURE.json
+            ${{ runner.temp }}/pooled-v13-replay/RECORDED-PROVENANCE.json
+            ${{ runner.temp }}/pooled-v13-replay/METRIC-REPLAY.json
+            ${{ runner.temp }}/pooled-v13-replay/CLEANUP.json
+            ${{ runner.temp }}/pooled-v13-replay/CLEANUP-FAILED.json
+            ${{ runner.temp }}/pooled-v13-replay/CLEANUP-INTENT.json
+            ${{ runner.temp }}/pooled-v13-replay/CLEANUP-INVENTORY.json
+          if-no-files-found: warn
+          retention-days: 7
       - name: Historical publication source alias controls
         run: python3 -B -m unittest discover -s validation/publications -p 'test_historical_sources.py'
       - name: Admit exact historical aliases before expensive grading
         run: python3 -B validation/publications/check_historical_aliases.py
       - name: Managed execution neutral measurement controls
         run: python3 -B -m unittest discover -s validation/managed-forward -p 'test_measure.py'
-      - name: Managed execution original neutral probes and Android/iOS SDK evidence
-        run: python3 -B validation/managed-forward/verify_probes.py --tracked
-      - name: Managed paired business study original barriers and frozen-runtime replay
-        run: python3 -B validation/managed-forward/verify_business.py --tracked --replay
+      - name: Replay immutable v12 source, original neutral SDK evidence and paired business barriers
+        run: python3 -B validation/publications/managed-v12-replay/verify.py
       - run: python validation/feature-development/verify_evidence.py
       - run: python validation/blind-comparison/verify_evidence.py
       - run: python validation/observer-probes/verify_preflight.py

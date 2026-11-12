@@ -1,0 +1,1317 @@
+--- original/assets/ios-observer/ObserverApp.swift
++++ common/assets/ios-observer/ObserverApp.swift
+@@ -55,7 +55,7 @@
+     }
+     var body: some View {
+         VStack(spacing: 8) {
+-            ScrollView(.vertical) {
++            ScrollView(.vertical, showsIndicators: false) {
+                 VStack(alignment: .leading, spacing: 0) {
+                     ObserverBridge.make(fixture: fixtures[index]) { name in
+                         events.append(["event": name, "fixture_index": index, "uptime": ProcessInfo.processInfo.systemUptime])
+--- original/assets/ios-observer/ObserverTests.swift
++++ common/assets/ios-observer/ObserverTests.swift
+@@ -160,7 +160,7 @@
+         var sawTop = false, sawBottom = false
+         var seenTargets = Set<String>()
+         for n in 0...limit {
+-            let snap = capture("state-\(state)-scroll-\(n)")
++            let snap = capture("state-\(state)-scroll-\(n)", boundaryRequired: true)
+             let content = frame((snap["runtime"] as? [String: Any])?["content_frame"])
+             let offset = Double(viewportFrame.minY - content.minY), h = Double(content.height)
+             heights.append(h); intervals.append([max(0, offset), min(h, offset + Double(viewportFrame.height))])
+@@ -197,7 +197,13 @@
+             "max_gap": maxGap, "stable_binding": !drift, "stable_height": stableHeight, "complete": complete,
+             "observed_targets": observationTargets.filter { seenTargets.contains(key($0)) }, "return_trace": trace,
+             "scope": "Actual overlapping pixels for this input/event epoch; not a style or business pass."])
+-        if !complete { issues.append("state \(state) incomplete overlapping full-content coverage") }
++        // Estimated lazy tail height is not a terminal extent. Raw capture
++        // exports every original frame even when geometry cannot certify it.
++        // The host independently verifies the original-pixel/AX overlap chain;
++        // missing/moving/ambiguous links still block native execution coverage.
++        if !sawTop || !sawBottom || drift || maxGap > 1 {
++            issues.append("state \(state) incomplete overlapping full-content coverage")
++        }
+     }
+ 
+     func decode(_ value: String) -> Any? { guard let data = value.data(using: .utf8) else { return nil }; return try? JSONSerialization.jsonObject(with: data) }
+@@ -219,7 +225,7 @@
+     func fullyVisible(_ e: XCUIElement) -> Bool {
+         e.exists && e.frame.width > 0 && e.frame.height > 0 && viewportFrame.insetBy(dx: -0.5, dy: -0.5).contains(e.frame)
+     }
+-    func capture(_ name: String) -> [String: Any] {
++    func capture(_ name: String, boundaryRequired: Bool = false) -> [String: Any] {
+         let started = ProcessInfo.processInfo.systemUptime
+         defer { recordOperation("capture", started) }
+         // One public native snapshot carries real AX ancestry and attributes.
+@@ -252,6 +258,19 @@
+         let callbacks = nodes.first { $0["identifier"] as? String == "__observer.receipt" }.flatMap { decode($0["label"] as? String ?? "") as? [[String: Any]] } ?? []
+         let b: [String: Any] = ["pid": r["pid"] ?? NSNull(), "instance": r["instance"] ?? NSNull(), "fixture_index": r["fixture_index"] ?? NSNull(), "input_sha256": r["input_sha256"] ?? NSNull(), "event_revision": r["event_revision"] ?? NSNull()]
+         let reached = nodes.contains { $0["identifier"] as? String == "__observer.bottom" && $0["fully_within_viewport"] as? Bool == true }
++        var boundary: [String: Any] = ["queried": false, "identifier": "__observer.bottom", "binding": b]
++        if boundaryRequired && reached {
++            let query = app.staticTexts.matching(identifier: "__observer.bottom")
++            let count = query.count
++            boundary["match_count"] = count
++            if count == 1 {
++                let target = query.element(boundBy: 0)
++                boundary["frame"] = rect(target.frame)
++                boundary["hittable"] = target.isHittable
++                boundary["queried"] = true
++                boundary["method"] = "XCUIElement.isHittable"
++            }
++        }
+         bottomReached = bottomReached || reached
+         let cg = UIImage(data: shot.pngRepresentation)?.cgImage
+         // Keep the image tied to the snapshot's native epoch. A fast tree must
+@@ -292,13 +311,15 @@
+             return value
+         }
+         let record: [String: Any] = ["index": counter, "name": name, "screenshot_attachment": attachment.name!, "nodes": nodes,
++            "geometry_encoding": ["version": 1, "representation": "ieee754-binary64", "coordinate_space": "logical_screen_points",
++                                  "provider": "XCUIElementSnapshot.frame_and_native_CGRect", "mapping": "app_frame_to_original_screenshot_pixels"] as [String: Any],
+             "runtime": r, "callbacks": callbacks, "viewport": rect(viewport), "app_frame": rect(tree?.frame ?? app.frame),
+             "native_scroll_ax_frame": nodes.first { $0["identifier"] as? String == "__observer.scroll" }?["frame"] ?? NSNull(),
+             "screenshot_pixels": ["width": cg?.width ?? 0, "height": cg?.height ?? 0],
+             "state_id": activeState, "binding": b, "control_groups": observationTargets.map { snapshotGroup($0) },
+             "binding_after_capture": afterImageBinding, "capture_consistent": consistent,
+-            "performance": ["ax_snapshot_seconds": treeFinished - started, "capture_seconds": ProcessInfo.processInfo.systemUptime - started, "native_query_mode": "single_public_snapshot", "hittable_scope": "actual_dispatch_target_only"] as [String: Any],
+-            "bottom_sentinel_visible": reached]
++            "performance": ["ax_snapshot_seconds": treeFinished - started, "capture_seconds": ProcessInfo.processInfo.systemUptime - started, "native_query_mode": "single_public_snapshot", "hittable_scope": "actual_dispatch_target_and_full_sweep_terminal_boundary"] as [String: Any],
++            "bottom_sentinel_visible": reached, "bottom_boundary": boundary]
+         records.append(record); counter += 1; return record
+     }
+     func scroll(_ direction: String, fraction: Double = 0.5) {
+@@ -679,7 +700,7 @@
+         let missing = required.filter { !seen.contains($0) }
+         if !bottomReached && executionScope != "targeted" { issues.append("bottom sentinel not reached; lower content coverage incomplete") }
+         if !missing.isEmpty { issues.append("required identifiers never visible: \(missing.joined(separator: ", "))") }
+-        let result: [String: Any] = ["schema_version": 2, "state_captures": stateCaptures, "measurement_kind": "XCUIElement runtime accessibility; frames in logical screen points",
++        let result: [String: Any] = ["schema_version": 2, "coverage_protocol": 2, "state_captures": stateCaptures, "measurement_kind": "XCUIElement runtime accessibility; frames in logical screen points",
+             "guard_protocol": config["guard_protocol"] as? Int ?? 0, "guard_platform": "ios", "guard_actions": actions,
+             "snapshots": records, "steps": steps, "coverage": ["bottom_reached": bottomReached, "required_identifiers": required, "missing_identifiers": missing, "observed_identifiers": seen.sorted(), "execution_scope": executionScope],
+             "execution_scope": executionScope, "observation_strategy": coalesced ? "coalesced" : "legacy",
+--- original/assets/ios-observer/geometry-encoding.json
++++ common/assets/ios-observer/geometry-encoding.json
+@@ -0,0 +1,70 @@
++{
++  "version": 1,
++  "encoding_id": "native-rect-pixel-cell-enclosure-v1",
++  "purpose": "Conservative integer-raster registration compatibility only; never native style/geometry equality",
++  "numeric_transport": {
++    "allowed": [
++      "finite lossless IEEE754 binary64 JSON roundtrip",
++      "explicitly declared native binary32/integer losslessly promoted to that representation",
++      "exact native integer-pixel rectangle"
++    ],
++    "raw_fields": [
++      "x",
++      "y",
++      "width",
++      "height"
++    ],
++    "original_native_precision_and_unit_required": true,
++    "boolean_null_nonfinite_or_truncated_numeric_rejected": true,
++    "raw_values_preserved": true
++  },
++  "projection": {
++    "arithmetic": "Exact rational values of decoded native numbers and independently verified map parameters; no floating floor/ceil after cancellation",
++    "map": "u=sx*x+ox; v=sy*y+oy; a=sx*width; b=sy*height",
++    "requirements": [
++      "positive axis-aligned scale",
++      "fixed native coordinate origin and native-to-PNG provenance",
++      "no rotation/shear/fitted transform",
++      "actual viewport crop maps to integral PNG rectangle W x H",
++      "same W/H/color representation for the pair",
++      "raw native anchor strictly inside native viewport; no tolerant flag substitution"
++    ],
++    "not_source_of_truth": "A guessed image_frame, fitted density or viewport selected to improve pixel agreement"
++  },
++  "cell_enclosure": {
++    "Q": "Q(q)=[floor(q),ceil(q)]",
++    "integral_case": "singleton; do not add epsilon",
++    "meaning": "Conservative pixel-boundary enclosure of the exact recorded scalar, not measurement-error tolerance",
++    "native_fields_not_modified": true
++  },
++  "candidate_rectangle": {
++    "coordinates": "integer half-open [L,R) x [T,B)",
++    "constraints": [
++      "L in Q(u)",
++      "R in Q(u+a)",
++      "R-L in Q(a)",
++      "R > L",
++      "T in Q(v)",
++      "B in Q(v+b)",
++      "B-T in Q(b)",
++      "B > T"
++    ],
++    "direct_original_width_height_constraints_required": true,
++    "empty_set": "U"
++  },
++  "pair_compatibility": {
++    "motion": "integer (0,-D), 0 < D < H for progressing down-link",
++    "predicate": "For every eligible common identity, one common positive pixel rectangle exists in both candidate sets after translation; satisfy all edge displacement ranges AND direct sizes. Jointly preserve native order and independent non-overlapping witness boxes.",
++    "witnesses": "At least two distinct actual leaves with disjoint raw/native and selected raster vertical support; no parent-child/coincident wrapper pairs",
++    "all_common_eligible_leaves_checked": true,
++    "all_repeated_state_identities_global_intersection_required": true,
++    "attributes_and_root_membership_stable": true
++  },
++  "raster_selection": {
++    "D": "Unique integer satisfying all native constraints AND exact complete-width overlap RGBA equality",
++    "search": "Lossless exact pixel search over geometry-admissible integer candidates; rounding a float is never approval",
++    "zero_or_multiple_candidates": "U",
++    "no_masks_resampling_warps_scores_or_channel_tolerances": true
++  },
++  "claim_limit": "Pixel-compatible registration does not prove exact native rectangle equality or waive any raw geometry/design assertion. Closed-domain, epochs and actual boundaries still required."
++}
+--- original/assets/ios-observer/provider-conformance.json
++++ common/assets/ios-observer/provider-conformance.json
+@@ -0,0 +1 @@
++{"approval":{"canonical_sha256":"76a1234411828a2185cade516be5ae6188f084cbc23ca23d8bdc8b0e40fc5b91","encoding_canonical_sha256":"aa335ed5809a23b048a20a7d0c0f86d51bad2d936b2c21d1ae736d8ff8995a84","file_sha256":"862060a3f5fd12083ade672a8f6e007063729491006f859a32811a7cdc4cc798","path":"validation/pooled-forward/qualification/spec/lazy-coverage/encoding-domain/DOMAIN-APPROVAL.json"},"checks":[{"clause":"common.main_scroll_count/scroll_axes","id":"one-main-vertical-scroll","reason":"The host has one ScrollView(.vertical, showsIndicators:false). The exact authored component contains stacks and fixed rows/controls with no nested or off-axis scroll.","source_citations":[{"line":58,"path":"assets/ios-observer/ObserverApp.swift"},{"line":21,"path":"qualification/spec/modular-fixture/ios/Sources/AlertToast/NativeQualificationProbe.swift"},{"line":51,"path":"qualification/spec/modular-fixture/ios/Sources/AlertToast/NativeQualificationProbe.swift"}],"status":"source_conforming"},{"clause":"common.component_entry_count; ios.bridge_module/component_entry","id":"one-imported-component-entry","reason":"One ObserverBridge.make call site occupies one content entry in the host body. The exact authored bridge imports AlertToast and calls its public NativeQualificationProbe. This is one structural entry per body evaluation; SwiftUI may reevaluate the factory and no once-per-lifetime execution claim is made.","source_citations":[{"line":60,"path":"assets/ios-observer/ObserverApp.swift"},{"line":2,"path":"qualification/spec/modular-fixture/ios/bridge/ObserverBridge.swift"},{"line":15,"path":"qualification/spec/modular-fixture/ios/bridge/ObserverBridge.swift"}],"status":"source_conforming"},{"clause":"common.terminal_identifier/terminal_placement/tail_after_terminal","id":"terminal-after-entire-component","reason":"The sentinel Text follows the whole bridge result within the same VStack/scrolling flow. After it the host closes the content stack and applies layout/background measurement; no content branch follows the sentinel.","source_citations":[{"line":59,"path":"assets/ios-observer/ObserverApp.swift"},{"line":63,"path":"assets/ios-observer/ObserverApp.swift"},{"line":64,"path":"assets/ios-observer/ObserverApp.swift"},{"line":65,"path":"assets/ios-observer/ObserverApp.swift"},{"line":67,"path":"assets/ios-observer/ObserverApp.swift"}],"status":"source_conforming"},{"clause":"common.host_receipt_and_fixture_update_controls","id":"controls-outside-scroll","reason":"The scroll closes before the sibling VStack containing Apply next fixture, callback receipt and runtime metadata.","source_citations":[{"line":72,"path":"assets/ios-observer/ObserverApp.swift"},{"line":80,"path":"assets/ios-observer/ObserverApp.swift"},{"line":81,"path":"assets/ios-observer/ObserverApp.swift"},{"line":82,"path":"assets/ios-observer/ObserverApp.swift"},{"line":85,"path":"assets/ios-observer/ObserverApp.swift"},{"line":87,"path":"assets/ios-observer/ObserverApp.swift"}],"status":"source_conforming"},{"clause":"common.host_owned_scroll_indicators","id":"indicators-hidden","reason":"showsIndicators:false is a deterministic host construction parameter before native collection.","source_citations":[{"line":58,"path":"assets/ios-observer/ObserverApp.swift"}],"status":"source_conforming"},{"clause":"ios.requested_offered_width_pt/viewport_height_pt","id":"fixed-approved-viewport","reason":"The generic host consumes offeredWidth from config with default390, then fixes the scroll to that width and height600. This conformance is restricted to the approved390x600 input/environment identity; it does not admit other caller widths or prove actual screen fit.","source_citations":[{"line":26,"path":"assets/ios-observer/ObserverApp.swift"},{"line":73,"path":"assets/ios-observer/ObserverApp.swift"},{"line":529,"path":"assets/ios-observer/ObserverTests.swift"},{"line":532,"path":"assets/ios-observer/ObserverTests.swift"},{"line":533,"path":"assets/ios-observer/ObserverTests.swift"}],"status":"source_conforming"},{"clause":"ios.horizontal_content_padding_pt/top_content_padding_pt","id":"content-padding","reason":"Host content receives horizontal16 and top24 padding after the complete component/sentinel stack.","source_citations":[{"line":66,"path":"assets/ios-observer/ObserverApp.swift"},{"line":67,"path":"assets/ios-observer/ObserverApp.swift"}],"status":"source_conforming"},{"clause":"ios.theme/direction/dynamic_type","id":"fixed-approved-theme-type-direction","reason":"The host installs dynamicTypeSize, layoutDirection and preferredColorScheme from the exact approved configuration; large/light/ltr are the declared fallback values. Runtime child environment values are separately exported.","source_citations":[{"line":27,"path":"assets/ios-observer/ObserverApp.swift"},{"line":40,"path":"assets/ios-observer/ObserverApp.swift"},{"line":92,"path":"assets/ios-observer/ObserverApp.swift"},{"line":93,"path":"assets/ios-observer/ObserverApp.swift"},{"line":94,"path":"assets/ios-observer/ObserverApp.swift"},{"line":105,"path":"assets/ios-observer/ObserverApp.swift"},{"line":108,"path":"assets/ios-observer/ObserverApp.swift"}],"status":"source_conforming"},{"clause":"common.unaccounted_sticky_or_occluding_layers; closed_domain.no_async_live_network_time_or_external_content_source","id":"no-host-overlay-or-live-content","reason":"The host hierarchy uses a vertical stack, background canvas and clear GeometryReaders; there is no overlay/sticky content insertion or async/network/timer-generated UI. onAppear/onChange only update geometry metadata. Fixture index/events change at explicit native controls/callbacks. The admitted component has fixed18 rows and no async content.","source_citations":[{"line":19,"path":"assets/ios-observer/ObserverApp.swift"},{"line":21,"path":"assets/ios-observer/ObserverApp.swift"},{"line":22,"path":"assets/ios-observer/ObserverApp.swift"},{"line":60,"path":"assets/ios-observer/ObserverApp.swift"},{"line":68,"path":"assets/ios-observer/ObserverApp.swift"},{"line":76,"path":"assets/ios-observer/ObserverApp.swift"},{"line":82,"path":"assets/ios-observer/ObserverApp.swift"},{"line":91,"path":"assets/ios-observer/ObserverApp.swift"},{"line":52,"path":"qualification/spec/modular-fixture/ios/Sources/AlertToast/NativeQualificationProbe.swift"}],"status":"source_conforming"},{"clause":"ios.boundary_provider; geometry_encoding.projection.requirements","id":"native-coordinate-and-image-provenance","reason":"Host GeometryReaders export actual global-point viewport/content geometry. Tests retain one public AX snapshot ancestry, its raw frames, the original app screenshot attachment, app-frame rectangle and PNG pixel dimensions. The mapping is explicitly declared; actual origin/alignment/scale/crop validity is a runtime requirement.","source_citations":[{"line":50,"path":"assets/ios-observer/ObserverApp.swift"},{"line":52,"path":"assets/ios-observer/ObserverApp.swift"},{"line":69,"path":"assets/ios-observer/ObserverApp.swift"},{"line":77,"path":"assets/ios-observer/ObserverApp.swift"},{"line":234,"path":"assets/ios-observer/ObserverTests.swift"},{"line":238,"path":"assets/ios-observer/ObserverTests.swift"},{"line":243,"path":"assets/ios-observer/ObserverTests.swift"},{"line":245,"path":"assets/ios-observer/ObserverTests.swift"},{"line":314,"path":"assets/ios-observer/ObserverTests.swift"},{"line":316,"path":"assets/ios-observer/ObserverTests.swift"},{"line":318,"path":"assets/ios-observer/ObserverTests.swift"}],"status":"source_conforming"},{"clause":"geometry_encoding.numeric_transport.original_native_precision_and_unit_required","id":"numeric-declaration","reason":"The record explicitly declares ieee754-binary64, logical_screen_points, XCUIElementSnapshot/native_CGRect provenance and app-frame-to-original-screenshot mapping. This is source declaration and wiring, not measured runtime map proof.","source_citations":[{"line":314,"path":"assets/ios-observer/ObserverTests.swift"},{"line":315,"path":"assets/ios-observer/ObserverTests.swift"}],"status":"source_conforming"},{"clause":"geometry_encoding.numeric_transport.raw_fields/raw_values_preserved","id":"direct-finite-rect-json-transport","reason":"rect exports original x/y/width/height as Double values directly, including direct width/height rather than endpoint differences. Runtime CGRect fields also enter numerical JSON directly. Foundation JSONSerialization is used without custom decimal formatting, Float32 demotion or geometry rounding. Actual finite binary64 roundtrip behavior remains a runtime proof obligation.","source_citations":[{"line":210,"path":"assets/ios-observer/ObserverTests.swift"},{"line":254,"path":"assets/ios-observer/ObserverTests.swift"},{"line":316,"path":"assets/ios-observer/ObserverTests.swift"},{"line":488,"path":"assets/ios-observer/ObserverTests.swift"},{"line":499,"path":"assets/ios-observer/ObserverTests.swift"},{"line":711,"path":"assets/ios-observer/ObserverTests.swift"},{"line":10,"path":"assets/ios-observer/ObserverApp.swift"},{"line":50,"path":"assets/ios-observer/ObserverApp.swift"},{"line":52,"path":"assets/ios-observer/ObserverApp.swift"}],"status":"source_conforming"},{"clause":"geometry_encoding.numeric_transport.boolean_null_nonfinite_or_truncated_numeric_rejected","id":"invalid-number-unavailability","reason":"Swift rectangle fields are typed Double. Nonfinite NSNumber values become null with a diagnostic instead of fabricated finite geometry. This source review does not claim the unseen receiver rejects every invalid value; that validation remains mandatory and pending.","source_citations":[{"line":210,"path":"assets/ios-observer/ObserverTests.swift"},{"line":488,"path":"assets/ios-observer/ObserverTests.swift"},{"line":489,"path":"assets/ios-observer/ObserverTests.swift"},{"line":490,"path":"assets/ios-observer/ObserverTests.swift"},{"line":491,"path":"assets/ios-observer/ObserverTests.swift"},{"line":710,"path":"assets/ios-observer/ObserverTests.swift"}],"status":"source_conforming"},{"clause":"ios.boundary_provider","id":"executed-terminal-hittability-provider","reason":"Every full sweep calls capture with boundaryRequired:true. Only a reached terminal triggers an actual native staticText identifier query; its match_count is recorded and only count==1 exports the actual target.frame and XCUIElement.isHittable value, queried:true, method and snapshot binding. No geometry flag supplies hittability.","source_citations":[{"line":163,"path":"assets/ios-observer/ObserverTests.swift"},{"line":260,"path":"assets/ios-observer/ObserverTests.swift"},{"line":261,"path":"assets/ios-observer/ObserverTests.swift"},{"line":262,"path":"assets/ios-observer/ObserverTests.swift"},{"line":263,"path":"assets/ios-observer/ObserverTests.swift"},{"line":264,"path":"assets/ios-observer/ObserverTests.swift"},{"line":266,"path":"assets/ios-observer/ObserverTests.swift"},{"line":268,"path":"assets/ios-observer/ObserverTests.swift"},{"line":269,"path":"assets/ios-observer/ObserverTests.swift"},{"line":270,"path":"assets/ios-observer/ObserverTests.swift"},{"line":271,"path":"assets/ios-observer/ObserverTests.swift"},{"line":322,"path":"assets/ios-observer/ObserverTests.swift"}],"status":"source_conforming"},{"clause":"common.viewport_and_source_epoch_immutable_during_each_sweep; ios.boundary_provider","id":"boundary-post-query-epoch","reason":"The runtime binding/geometry read follows the original screenshot and executed boundary query, is compared to the snapshot binding/content geometry, and is retained as binding_after_capture/capture_consistent. Actual per-sweep viewport/source immutability, root membership and strict finite containment require independent raw-runtime verification.","source_citations":[{"line":243,"path":"assets/ios-observer/ObserverTests.swift"},{"line":259,"path":"assets/ios-observer/ObserverTests.swift"},{"line":261,"path":"assets/ios-observer/ObserverTests.swift"},{"line":278,"path":"assets/ios-observer/ObserverTests.swift"},{"line":279,"path":"assets/ios-observer/ObserverTests.swift"},{"line":281,"path":"assets/ios-observer/ObserverTests.swift"},{"line":282,"path":"assets/ios-observer/ObserverTests.swift"},{"line":320,"path":"assets/ios-observer/ObserverTests.swift"}],"status":"source_conforming"},{"clause":"ios.boundary_provider","id":"truthful-query-scope","reason":"The exported performance scope names both actual dispatch targets and the full-sweep terminal boundary. Non-boundary captures retain the defaultfalse switch and do not invent a queried boundary receipt.","source_citations":[{"line":228,"path":"assets/ios-observer/ObserverTests.swift"},{"line":261,"path":"assets/ios-observer/ObserverTests.swift"},{"line":321,"path":"assets/ios-observer/ObserverTests.swift"}],"status":"source_conforming"}],"common_host_shape_sha256":"0731a3a59009902116a766917232e87668bcd78d9ce077c42fd463ee7b020941","files":{"assets/ios-observer/ObserverApp.swift":"cfffc6a72eedff2dde17978a838b0d2897bb8386b5a369d866f39c3ace4ae5e2","assets/ios-observer/ObserverTests.swift":"33281971ff84df7eb4fee11b39721ff50f13458eec1da5be6ba9aacbec7b0d0c"},"initial_finding":{"preserved":true,"record":"ios-host-source-review-1.json","resolution":"Added actual unique native terminal-hittability provider to full-sweep captures, bound before the post-query runtime check; updated query-scope metadata. ObserverApp.swift unchanged.","seal":"INITIAL-SEAL.json"},"integrity_checks":[{"id":"seal-member:DOMAIN-APPROVAL.json","passed":true},{"id":"seal-member:GEOMETRY-ENCODING.md","passed":true},{"id":"seal-member:ENCODING.json","passed":true},{"id":"domain-canonical","passed":true},{"id":"shape-canonical","passed":true},{"id":"encoding-canonical","passed":true},{"id":"exact-authored:ios/Sources/AlertToast/NativeQualificationProbe.swift","passed":true},{"id":"exact-authored:ios/bridge/ObserverBridge.swift","passed":true},{"id":"exact-authored:android/app/src/main/java/org/nativequalification/NativeQualificationProbe.kt","passed":true},{"id":"exact-authored:android/bridge/ObserverBridge.kt","passed":true},{"id":"ios-cold-approved-environment-identity","passed":true},{"id":"ios-warm-approved-environment-identity","passed":true}],"limits":["Conforming is source-only and conditional on the exact admitted inputs; it is not an SDK/build/runtime/native-P result","No original failed packet or runtime result was opened or regraded","The factory is one structural component entry and may be reevaluated by SwiftUI","The new bottom_boundary record is raw guard evidence, not itself a full-content verdict; the broad tolerant visibility flag never establishes strict containment","No new helper/consumer implementation or result was inspected; normative exact rational/raster logic and any source-looking-copy rejection remain independent work"],"operations":{"SDK_commands":0,"builds":0,"helper_implementation_or_results_read":false,"native_commands":0,"prior_admission_review_untouched":true,"writes":"qualification/provider-review only"},"readset":{"native-ui-agent/assets/ios-observer/CONTRACT.md":{"bytes":10135,"sha256":"6a3dfbed7752cf3c96f27530677c1d605c95ea94f3e608fb367d7eda768036a6"},"native-ui-agent/assets/ios-observer/ObserverApp.swift":{"bytes":6222,"sha256":"cfffc6a72eedff2dde17978a838b0d2897bb8386b5a369d866f39c3ace4ae5e2"},"native-ui-agent/assets/ios-observer/ObserverTests.swift":{"bytes":52964,"sha256":"33281971ff84df7eb4fee11b39721ff50f13458eec1da5be6ba9aacbec7b0d0c"},"validation/pooled-forward/cache/qualification/profiles-v2/ios-cold.json":{"bytes":4348,"sha256":"bcbf474a3f24808c2bf07f5eb5206c48531c112bab80f19e7c06887f42586226"},"validation/pooled-forward/cache/qualification/profiles-v2/ios-warm.json":{"bytes":4348,"sha256":"e33dd3a3e0e6a22b76f440ded94e41833e1f4a1e0f94f9cf59ae6ad0451c544c"},"validation/pooled-forward/qualification/spec/lazy-coverage/encoding-domain/DOMAIN-APPROVAL.json":{"bytes":14228,"sha256":"862060a3f5fd12083ade672a8f6e007063729491006f859a32811a7cdc4cc798"},"validation/pooled-forward/qualification/spec/lazy-coverage/encoding-domain/ENCODING.json":{"bytes":3311,"sha256":"a1d3bc6102505b612ed42f603574e1316c8ad8f1af2d375691321b888c50b391"},"validation/pooled-forward/qualification/spec/lazy-coverage/encoding-domain/GEOMETRY-ENCODING.md":{"bytes":8998,"sha256":"6780f00d1e9736380dba7d857869cdad8b03ffc0a8e8ffca800da4a046a1d1fd"},"validation/pooled-forward/qualification/spec/lazy-coverage/encoding-domain/SEAL.json":{"bytes":2566,"sha256":"edd57776951d2331d79fb91fa5a8182437f3686c691a6876f5166a7692fbb5fb"},"validation/pooled-forward/qualification/spec/modular-fixture/android/app/src/main/java/org/nativequalification/NativeQualificationProbe.kt":{"bytes":2542,"sha256":"9ddc9eff85d4b9d84469df37eae80b8779bca26af12ac3f504d575c3ff5be164"},"validation/pooled-forward/qualification/spec/modular-fixture/android/bridge/ObserverBridge.kt":{"bytes":810,"sha256":"3a17e25ad3b27c8a648e4f1ea73aab3d682474ff56bca0df55c05acc1342c2b8"},"validation/pooled-forward/qualification/spec/modular-fixture/ios/Sources/AlertToast/NativeQualificationProbe.swift":{"bytes":2464,"sha256":"90f68fa0652a9287d3ced24100db7aa344b68f0e12afed1b76ed0fc37064c974"},"validation/pooled-forward/qualification/spec/modular-fixture/ios/bridge/ObserverBridge.swift":{"bytes":782,"sha256":"de3620b4a9adaf675ddb98adff3bb01a45bcd38ec43e6290a547c9cb05aea516"}},"review_id":"ios-common-host-source-conformance-2","reviewed_at_utc":"2026-11-10T11:53:13.899556+00:00","runtime_pending":true,"runtime_pending_requirements":["Actual compiled/imported production component and bridge match one exact approved revision; compiled host copies and pinned original build records match these source hashes","Both comparison arms use these exact same common foundation bytes","Resolved fixtures/actions/approved environment and actual390x600 viewport/child environment match the fixed approval","Actual source/viewport immutability and state/process/input/event coherence during each full sweep","Actual native top/root/terminal membership, unique terminal guard execution with hittable:true, strict finite native containment and snapshot/guard-frame agreement","Finite original-precision numeric JSON roundtrip, fixed coordinate origin, positive axis-aligned native-to-original-PNG scale/map, integral crop and matching raw raster geometry","Independent consumer rejection of invalid/null/nonfinite/truncated/ambiguous/moving evidence; no unsupported geometry flag can substitute for actual native truth","Exact-rational cell-enclosure, full-width lossless overlap, global identity/order/witness and raster-certificate implementation correctness; no helper implementation/results were read","All original104 assertions/five states, coverage/current-source/validity/source-review/resource gates, exact A/B judgments and speed/business gates remain separate"],"scope":"Independent source-only conformance to the sealed common host shape and source-level finite numeric transport for the exact approved neutral390x600 iOS fixture; no runtime coverage or algorithm acceptance.","source_citations":{"boundary-post-query-epoch":[{"line":243,"path":"assets/ios-observer/ObserverTests.swift"},{"line":259,"path":"assets/ios-observer/ObserverTests.swift"},{"line":261,"path":"assets/ios-observer/ObserverTests.swift"},{"line":278,"path":"assets/ios-observer/ObserverTests.swift"},{"line":279,"path":"assets/ios-observer/ObserverTests.swift"},{"line":281,"path":"assets/ios-observer/ObserverTests.swift"},{"line":282,"path":"assets/ios-observer/ObserverTests.swift"},{"line":320,"path":"assets/ios-observer/ObserverTests.swift"}],"content-padding":[{"line":66,"path":"assets/ios-observer/ObserverApp.swift"},{"line":67,"path":"assets/ios-observer/ObserverApp.swift"}],"controls-outside-scroll":[{"line":72,"path":"assets/ios-observer/ObserverApp.swift"},{"line":80,"path":"assets/ios-observer/ObserverApp.swift"},{"line":81,"path":"assets/ios-observer/ObserverApp.swift"},{"line":82,"path":"assets/ios-observer/ObserverApp.swift"},{"line":85,"path":"assets/ios-observer/ObserverApp.swift"},{"line":87,"path":"assets/ios-observer/ObserverApp.swift"}],"direct-finite-rect-json-transport":[{"line":210,"path":"assets/ios-observer/ObserverTests.swift"},{"line":254,"path":"assets/ios-observer/ObserverTests.swift"},{"line":316,"path":"assets/ios-observer/ObserverTests.swift"},{"line":488,"path":"assets/ios-observer/ObserverTests.swift"},{"line":499,"path":"assets/ios-observer/ObserverTests.swift"},{"line":711,"path":"assets/ios-observer/ObserverTests.swift"},{"line":10,"path":"assets/ios-observer/ObserverApp.swift"},{"line":50,"path":"assets/ios-observer/ObserverApp.swift"},{"line":52,"path":"assets/ios-observer/ObserverApp.swift"}],"executed-terminal-hittability-provider":[{"line":163,"path":"assets/ios-observer/ObserverTests.swift"},{"line":260,"path":"assets/ios-observer/ObserverTests.swift"},{"line":261,"path":"assets/ios-observer/ObserverTests.swift"},{"line":262,"path":"assets/ios-observer/ObserverTests.swift"},{"line":263,"path":"assets/ios-observer/ObserverTests.swift"},{"line":264,"path":"assets/ios-observer/ObserverTests.swift"},{"line":266,"path":"assets/ios-observer/ObserverTests.swift"},{"line":268,"path":"assets/ios-observer/ObserverTests.swift"},{"line":269,"path":"assets/ios-observer/ObserverTests.swift"},{"line":270,"path":"assets/ios-observer/ObserverTests.swift"},{"line":271,"path":"assets/ios-observer/ObserverTests.swift"},{"line":322,"path":"assets/ios-observer/ObserverTests.swift"}],"fixed-approved-theme-type-direction":[{"line":27,"path":"assets/ios-observer/ObserverApp.swift"},{"line":40,"path":"assets/ios-observer/ObserverApp.swift"},{"line":92,"path":"assets/ios-observer/ObserverApp.swift"},{"line":93,"path":"assets/ios-observer/ObserverApp.swift"},{"line":94,"path":"assets/ios-observer/ObserverApp.swift"},{"line":105,"path":"assets/ios-observer/ObserverApp.swift"},{"line":108,"path":"assets/ios-observer/ObserverApp.swift"}],"fixed-approved-viewport":[{"line":26,"path":"assets/ios-observer/ObserverApp.swift"},{"line":73,"path":"assets/ios-observer/ObserverApp.swift"},{"line":529,"path":"assets/ios-observer/ObserverTests.swift"},{"line":532,"path":"assets/ios-observer/ObserverTests.swift"},{"line":533,"path":"assets/ios-observer/ObserverTests.swift"}],"indicators-hidden":[{"line":58,"path":"assets/ios-observer/ObserverApp.swift"}],"invalid-number-unavailability":[{"line":210,"path":"assets/ios-observer/ObserverTests.swift"},{"line":488,"path":"assets/ios-observer/ObserverTests.swift"},{"line":489,"path":"assets/ios-observer/ObserverTests.swift"},{"line":490,"path":"assets/ios-observer/ObserverTests.swift"},{"line":491,"path":"assets/ios-observer/ObserverTests.swift"},{"line":710,"path":"assets/ios-observer/ObserverTests.swift"}],"native-coordinate-and-image-provenance":[{"line":50,"path":"assets/ios-observer/ObserverApp.swift"},{"line":52,"path":"assets/ios-observer/ObserverApp.swift"},{"line":69,"path":"assets/ios-observer/ObserverApp.swift"},{"line":77,"path":"assets/ios-observer/ObserverApp.swift"},{"line":234,"path":"assets/ios-observer/ObserverTests.swift"},{"line":238,"path":"assets/ios-observer/ObserverTests.swift"},{"line":243,"path":"assets/ios-observer/ObserverTests.swift"},{"line":245,"path":"assets/ios-observer/ObserverTests.swift"},{"line":314,"path":"assets/ios-observer/ObserverTests.swift"},{"line":316,"path":"assets/ios-observer/ObserverTests.swift"},{"line":318,"path":"assets/ios-observer/ObserverTests.swift"}],"no-host-overlay-or-live-content":[{"line":19,"path":"assets/ios-observer/ObserverApp.swift"},{"line":21,"path":"assets/ios-observer/ObserverApp.swift"},{"line":22,"path":"assets/ios-observer/ObserverApp.swift"},{"line":60,"path":"assets/ios-observer/ObserverApp.swift"},{"line":68,"path":"assets/ios-observer/ObserverApp.swift"},{"line":76,"path":"assets/ios-observer/ObserverApp.swift"},{"line":82,"path":"assets/ios-observer/ObserverApp.swift"},{"line":91,"path":"assets/ios-observer/ObserverApp.swift"},{"line":52,"path":"qualification/spec/modular-fixture/ios/Sources/AlertToast/NativeQualificationProbe.swift"}],"numeric-declaration":[{"line":314,"path":"assets/ios-observer/ObserverTests.swift"},{"line":315,"path":"assets/ios-observer/ObserverTests.swift"}],"one-imported-component-entry":[{"line":60,"path":"assets/ios-observer/ObserverApp.swift"},{"line":2,"path":"qualification/spec/modular-fixture/ios/bridge/ObserverBridge.swift"},{"line":15,"path":"qualification/spec/modular-fixture/ios/bridge/ObserverBridge.swift"}],"one-main-vertical-scroll":[{"line":58,"path":"assets/ios-observer/ObserverApp.swift"},{"line":21,"path":"qualification/spec/modular-fixture/ios/Sources/AlertToast/NativeQualificationProbe.swift"},{"line":51,"path":"qualification/spec/modular-fixture/ios/Sources/AlertToast/NativeQualificationProbe.swift"}],"terminal-after-entire-component":[{"line":59,"path":"assets/ios-observer/ObserverApp.swift"},{"line":63,"path":"assets/ios-observer/ObserverApp.swift"},{"line":64,"path":"assets/ios-observer/ObserverApp.swift"},{"line":65,"path":"assets/ios-observer/ObserverApp.swift"},{"line":67,"path":"assets/ios-observer/ObserverApp.swift"}],"truthful-query-scope":[{"line":228,"path":"assets/ios-observer/ObserverTests.swift"},{"line":261,"path":"assets/ios-observer/ObserverTests.swift"},{"line":321,"path":"assets/ios-observer/ObserverTests.swift"}]},"status":"conforming","unsupported_source_clauses":[],"version":1}--- original/references/state-evidence.md
++++ common/references/state-evidence.md
+@@ -87,3 +87,68 @@
+ planned aspects relevant to that state and retain the shared scroll budget,
+ unavailable targets, full-state coverage and command wall time. Do not shrink
+ content, bypass required states or drop U rows to improve coverage or speed.
++
++iOS lazy containers can revise their estimated total height while scrolling.
++Version 2 collection retains the original estimates and full frames. If the
++existing stable-height interval proof is insufficient, `scroll_coverage.py`
++requires a top-to-terminal strip of exact overlapping original pixels plus two
++unambiguous, vertically distinct native leaf landmarks at every link. Landmark
++traits, projected positions, viewport mapping and the process/input/event epoch
++must remain coherent. Container IDs and repeated labels cannot supply identity.
++The host-owned scroll indicator is hidden at rendering time in this deterministic
++fixture; no original pixels are masked, resampled or given a difference tolerance.
++
++Native CGRect doubles keep their exact represented rational values. The fixed
++`native-rect-pixel-cell-enclosure-v1` model constrains positive integer rectangle
++possibilities through every edge and the original width/height. Exact full-width
++raster comparison selects a unique integer translation; geometry is never
++rounded into a different style value. Whole-state repeated identities and their
++native order must remain compatible. Terminal coverage requires the executed
++native sentinel hittability guard and actual contained root-member geometry.
++
++Fallback also requires a pinned `coverage_domain_ref` and `coverage_provider_ref`.
++They independently approve the finite source revisions and actual shared host
++shape. The tool matches the installed production subject/bridge, original native
++compile action/log and actual compiled-host bytes. An unused matching source copy
++or a self-entered shape label cannot grant coverage. Unapproved source revisions
++produce a default `review_source_domain` task before additional SDK work. Separate
++source approvals under the same immutable domain/oracle policy cannot waive a
++source change, repair completion or fresh native recheck.
++
++The receiver checks the actual runtime viewport, environment and native display
++scale against that domain. It checks the original PNG header before decoding;
++16-bit or unsupported encodings cannot be silently converted into an 8-bit pass.
++One bounded global rectangle assignment must preserve every link's original
++disjoint witnesses and whole-state native order; local pair choices alone do not
++establish a full chain.
++
++Presence is existential over the coherent bound state. A lazy node missing from
++one viewport does not contradict its later observed presence. Absence needs a
++complete sweep with no match anywhere. An observed duplicate establishes native
++nonuniqueness and is not cancelled by a later viewport containing one match.
++All original per-frame observations remain attached to the quantified result.
++Positive full-state uniqueness also requires complete native matching-domain
++coverage. A fully enumerated target query can establish only local uniqueness;
++its `complete:false` and query scope remain visible. A lone reported flat node
++does not establish query completeness. Boolean/float aliases cannot substitute
++for the protocol's integer input, action or snapshot references. An explicit
++complete empty target query can decide local absence without a whole-state
++sweep; it cannot prove whole-state absence.
++
++Native query cardinality is checked against its emitted format. Explicit query
++resolutions must be recognized. Structured trees need one connected, acyclic
++native identity graph, and Android's original semantics geometry must retain its
++version, pixel unit, density, position and integer size. Repeated records with the
++same native identity are malformed evidence, not multiple controls. Conflicting
++group counts, native nodes, identities or visibility remain unassessed with the
++original query facts attached; they do not create a product failure.
++
++`present` and `unique` quantify the actual native matching set, including an
++offscreen native entity. They do not assert visibility or activation readiness.
++Those facts retain their separate original flags, geometry and action guards.
++
++Missing originals, unsupported mappings, moving content, sparse or ambiguous
++links and unapproved domains remain unassessed. The proof describes the observed vertical
++viewport strip. It does not certify hidden branches, arbitrary asynchronous data,
++computed styles or business correctness. Coverage reconstruction requires the
++actual original image root, including when diagnosing or routing failed checks.
+--- original/scripts/acceptance.py
++++ common/scripts/acceptance.py
+@@ -142,7 +142,7 @@
+             if rule is None:
+                 raise ValueError('Cause assessment references an unplanned assertion')
+             state = next(s for s in plan['states'] if s['id'] == rule['state'])
+-            allowed = {i for i, _ in native_checks.bound_state_evidence(observation, state)[0]}
++            allowed = {i for i, _ in native_checks.bound_state_evidence(observation, state, root)[0]}
+             indices = item['snapshot_indices']
+             if not isinstance(indices, list) or not indices or any(type(i) is not int for i in indices) or len(set(indices)) != len(indices) or not set(indices) <= allowed:
+                 raise ValueError('Failure cause lacks original state-scoped screenshots')
+--- original/scripts/coverage_domain.py
++++ common/scripts/coverage_domain.py
+@@ -0,0 +1,188 @@
++"""Pinned independent closed-domain/source admission, separate from pixel proof."""
++import copy
++import hashlib
++import json
++from pathlib import Path
++import shutil
++from fractions import Fraction
++import math
++
++SUPPORTED_ENCODING_SHA256='aa335ed5809a23b048a20a7d0c0f86d51bad2d936b2c21d1ae736d8ff8995a84'
++import design_contract as d
++
++
++def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
++def save(p,v):
++    with Path(p).open('x') as f: json.dump(v,f,indent=2)
++
++
++class DomainReviewRequired(ValueError):
++    def __init__(self,component,approval):
++        super().__init__('Current source needs an independent closed-domain approval')
++        self.task = {'kind':'review_source_domain','component':component,'approval_policy_sha256':d.digest(policy(approval)),
++                     'design_lock_sha256':approval['binds']['design_lock_sha256'],
++                     'reason':str(self),'status':'unassessed','scope':'Review finite closed main-scroll scope of actual current source; no behavioral verdict or oracle changes.'}
++
++
++def pinned(ref):
++    if not isinstance(ref,dict) or set(ref) != {'path','sha256'}: raise ValueError('Independent coverage approval reference required')
++    value = d.load(Path(ref['path']))
++    if d.digest(value) != ref['sha256']: raise ValueError('Pinned independent coverage approval differs')
++    return value
++
++
++def policy(value):
++    """Current source approvals are observations, never editable design rules.
++
++    Appending a separately approved source revision cannot waive its measured
++    source diff/fresh retest. Changing any closed-domain/host/oracle policy can.
++    """
++    value = copy.deepcopy(value)
++    for k in ['approved_at_utc','approved_by']: value.pop(k,None)
++    for platform in value['platforms'].values(): platform.pop('approved_component_revisions',None)
++    return value
++
++
++def prepare(config,plan,lock):
++    if not config.get('coverage_domain_ref'): return None
++    approval = pinned(config['coverage_domain_ref']); platform = plan['design_contract']['platform']
++    if type(approval.get('version')) is not int or approval['version']!=1 or approval['binds']['design_lock_sha256'] != config['design_sha256'] or d.digest(lock) != config['design_sha256']:
++        raise ValueError('Coverage domain belongs to another independent design')
++    if (d.digest(approval['common_host_shape'])!=approval['common_host_shape_sha256']
++            or d.digest(approval['geometry_encoding'])!=approval['geometry_encoding_sha256']
++            or approval['geometry_encoding_sha256']!=SUPPORTED_ENCODING_SHA256):
++        raise ValueError('Coverage domain shape/geometry encoding is inconsistent or unsupported')
++    if approval['binds']['required_native_assertions'] != len(plan['assertions']) or approval['binds']['selected_state_ids'] != [s['id']for s in plan['states']]:
++        raise ValueError('Coverage domain state/assertion scope differs')
++    if approval['binds']['full_content_state_ids'] != [s['id']for s in plan['states']if s.get('coverage')=='full_content']:
++        raise ValueError('Coverage domain full-state scope differs')
++    if approval['binds']['environment_'+platform+'_canonical_sha256'] != config['environment_sha256']:
++        raise ValueError('Coverage domain environment differs')
++    fixtures = d.load(Path(config['fixtures'])); definition = approval['platforms'][platform]
++    offered = [v for v in approval['approved_inputs'].values()if v['platform']==platform and v['fixture_canonical_sha256']==d.digest(fixtures)]
++    if len(offered)!=1 or offered[0]['fixture_file_sha256']!=sha(config['fixtures']): raise ValueError('Exact approved domain fixture required')
++    bridge = Path(config['bridge']).resolve()
++    if sha(bridge)!=definition['exact_bridge']['sha256'] or sha(bridge)!=offered[0]['launch_bridge_sha256']:
++        raise ValueError('Exact domain bridge required')
++    project = Path(config['native_options']['package'if platform=='ios'else'project']).resolve()
++    component = (project / definition['component_install_path']).resolve()
++    if not component.is_relative_to(project) or not any(component.is_relative_to(Path(v).resolve())for v in config['source_roots']):
++        raise ValueError('Domain component is outside actual installed production roots')
++    subjects = config.get('evidence_subjects',{}); actual = approval['actual_subject_binding']
++    if list(map(lambda v:str(Path(v).resolve()),subjects.get(actual['component_subject'],[]))) != [str(component)] or list(map(lambda v:str(Path(v).resolve()),subjects.get(actual['bridge_subject'],[]))) != [str(bridge)]:
++        raise ValueError('Unused/foreign domain subject cannot substitute for actual imported component')
++    revisions = [k for k,v in definition['approved_component_revisions'].items()if v['sha256']==sha(component) and v['bytes']==component.stat().st_size]
++    if len(revisions)!=1: raise DomainReviewRequired({'path':str(component),'sha256':sha(component)},approval)
++    provider = pinned(config.get('coverage_provider_ref')); root = Path(__file__).resolve().parents[1]
++    if type(provider.get('version'))is not int or provider['version']!=1 or provider.get('status')!='conforming' or provider['common_host_shape_sha256']!=approval['common_host_shape_sha256']:
++        raise ValueError('Independently reviewed current host conformance required')
++    host_files = provider['files']
++    if set(host_files) != {'assets/ios-observer/ObserverApp.swift','assets/ios-observer/ObserverTests.swift'} or any(sha(root/rel)!=expected for rel,expected in host_files.items()):
++        raise ValueError('Actual host differs from independently reviewed provider')
++    if platform=='ios' and config['native_options'].get('product','AlertToast')!=definition['product']: raise ValueError('Actual imported domain product differs')
++    return {'version':1,'approval':approval,'approval_sha256':d.digest(approval),'policy_sha256':d.digest(policy(approval)),
++            'provider':provider,'provider_sha256':d.digest(provider),'platform':platform,'revision':revisions[0],
++            'component':{'path':str(component),'sha256':sha(component)},'bridge':{'path':str(bridge),'sha256':sha(bridge)},
++            'scope':'Independent finite domain/source approval only; no behavior pass, old-capture waiver or raster proof.'}
++
++
++def complete(value,manifest,output):
++    """Bind the real compiled subject and byte-identical reviewed host after SDK."""
++    output = Path(output); approval = value['approval']; component = value['component']; platform = value['platform']
++    if platform!='ios': raise ValueError('This original-build coverage provider currently supports iOS')
++    if manifest['source_hashes'].get(component['path'])!=component['sha256'] or manifest['source_hashes'].get(value['bridge']['path'])!=value['bridge']['sha256']:
++        raise ValueError('Actual native source namespace differs from approved domain')
++    log = output/'compiled-build.log'; module = approval['platforms'][platform]['module']
++    lines = log.read_text().replace('\\ ',' ').splitlines()
++    matches = [s for s in lines if s.startswith('SwiftCompile ') and ' '+component['path']+" (in target '"+module+"' " in s]
++    if not matches: raise ValueError('Approved component has no original native compile action')
++    for relative,expected in value['provider']['files'].items():
++        if relative.startswith('assets/ios-observer/'):
++            p = output/'tool-sources'/Path(relative).name
++            compiled = output/'compiled-project'/Path(relative).name
++            if sha(p)!=expected or sha(compiled)!=expected: raise ValueError('Actually compiled/rendered host differs from reviewed provider')
++    if sha(component['path'])!=component['sha256'] or sha(value['bridge']['path'])!=value['bridge']['sha256']:
++        raise ValueError('Domain subject changed during native capture')
++    save(output/'coverage-domain-input.json',value)
++    shutil.copy2(component['path'],output/'coverage-domain-component.swift')
++    save(output/'coverage-domain-binding.json',{'version':1,'status':'bound_actual_compiled_source','approval_sha256':value['approval_sha256'],
++          'provider_sha256':value['provider_sha256'],'policy_sha256':value['policy_sha256'],'component_sha256':component['sha256'],
++          'compiled_build_log_sha256':sha(log),'compile_actions':matches,'platform':platform})
++
++
++def requested(root):
++    if root is None:return False
++    root=Path(root)
++    if any((root/name).exists()for name in ['coverage-domain-input.json','coverage-domain-binding.json']):return True
++    parent=root.parent
++    if (parent/'coverage-domain-prepared.json').exists():return True
++    request=parent/'request.json'
++    return request.is_file()and 'coverage-domain-prepared.json'in d.load(request).get('input_hashes',{})
++
++
++def verify_packet(root,found=None):
++    """Reconstruct domain permission from original files, not an observed flag."""
++    if root is None: raise ValueError('coverage_domain: original domain evidence unavailable')
++    root = Path(root); value = d.load(root/'coverage-domain-input.json'); binding = d.load(root/'coverage-domain-binding.json')
++    approval = value['approval']; provider = value['provider']; component = value['component']
++    parent = root.parent; request = d.load(parent/'request.json'); plan = d.load(parent/'parent-plan.json')
++    prepared = parent/'coverage-domain-prepared.json'; before = d.load(parent/'source-before.json')
++    if (d.digest(plan)!=request['parent_plan_sha256'] or approval['binds']['design_lock_sha256']!=plan['design_contract']['lock_sha256']
++            or value!=d.load(prepared) or sha(prepared)!=request['input_hashes'].get('coverage-domain-prepared.json')
++            or d.digest(before)!=request['source_sha256']):
++        raise ValueError('coverage_domain: independent parent/request/source binding differs')
++    namespaces = []
++    for index,raw in enumerate(request['source_roots']):
++        source_root = Path(raw).resolve(); actual = Path(component['path']).resolve()
++        if actual.is_relative_to(source_root):
++            key = str(index)+'/'+str(actual.relative_to(source_root))
++            if before.get(key)==component['sha256']: namespaces.append(key)
++    if not namespaces or value.get('platform')!='ios' or binding.get('platform')!='ios':
++        raise ValueError('coverage_domain: original actual production source namespace unavailable')
++    if d.digest(approval)!=value['approval_sha256'] or d.digest(provider)!=value['provider_sha256'] or d.digest(policy(approval))!=value['policy_sha256']:
++        raise ValueError('coverage_domain: original approval/provider changed')
++    if (d.digest(approval['common_host_shape'])!=approval['common_host_shape_sha256']
++            or d.digest(approval['geometry_encoding'])!=SUPPORTED_ENCODING_SHA256 or approval['geometry_encoding_sha256']!=SUPPORTED_ENCODING_SHA256):
++        raise ValueError('coverage_domain: original shape/encoding is inconsistent or unsupported')
++    if (binding.get('status')!='bound_actual_compiled_source' or binding['approval_sha256']!=value['approval_sha256']
++            or binding['provider_sha256']!=value['provider_sha256'] or binding['policy_sha256']!=value['policy_sha256']
++            or binding['component_sha256']!=component['sha256'] or sha(root/'coverage-domain-component.swift')!=component['sha256']):
++        raise ValueError('coverage_domain: original actual subject binding differs')
++    definition = approval['platforms']['ios']
++    if component['sha256'] not in {v['sha256']for v in definition['approved_component_revisions'].values()}:
++        raise ValueError('coverage_domain: original source revision unapproved')
++    log = root/'compiled-build.log'
++    if sha(log)!=binding['compiled_build_log_sha256']: raise ValueError('coverage_domain: original compiled build log changed')
++    actions = [s for s in log.read_text().replace('\\ ',' ').splitlines()if s.startswith('SwiftCompile ')and ' '+component['path']+" (in target '"+definition['module']+"' " in s]
++    if not actions or actions!=binding['compile_actions']: raise ValueError('coverage_domain: original compile action missing/changed')
++    if (provider.get('status')!='conforming' or provider['common_host_shape_sha256']!=approval['common_host_shape_sha256']
++            or set(provider['files'])!={'assets/ios-observer/ObserverApp.swift','assets/ios-observer/ObserverTests.swift'}):
++        raise ValueError('coverage_domain: reviewed host conformance absent')
++    for relative,expected in provider['files'].items():
++        if relative.startswith('assets/ios-observer/'):
++            if sha(root/'tool-sources'/Path(relative).name)!=expected or sha(root/'compiled-project'/Path(relative).name)!=expected:
++                raise ValueError('coverage_domain: captured/compiled host changed')
++    runtime_status='not_requested_source_only'
++    if found is not None:
++        if not found:raise ValueError('coverage_domain: actual runtime shape is unavailable')
++        shape=approval['common_host_shape']['ios']
++        def exact(value):
++            if type(value)not in{int,float}or not math.isfinite(value):raise ValueError('coverage_domain: finite native runtime dimension required')
++            return Fraction(value)
++        for _,snapshot in found:
++            runtime=snapshot.get('runtime',{});viewport=snapshot.get('viewport',{});actual=runtime.get('actual_environment',{})
++            width=shape['requested_offered_width_pt'];height=shape['viewport_height_pt']
++            if (exact(viewport.get('width'))!=exact(width)or exact(viewport.get('height'))!=exact(height)
++                    or exact(runtime.get('offered_width'))!=exact(width)or exact(runtime.get('viewport_height'))!=exact(height)
++                    or runtime.get('viewport')!=viewport):
++                raise ValueError('coverage_domain: actual runtime viewport differs from independent approved host shape')
++            if any(runtime.get(k)!=shape[k]or actual.get(k)!=shape[k]for k in ['theme','direction','dynamic_type']):
++                raise ValueError('coverage_domain: actual runtime environment differs from independent approved shape')
++            app=snapshot.get('app_frame',{});pixels=snapshot.get('screenshot_pixels',{})
++            scale=exact(runtime.get('screen_scale'))
++            if (scale<=0 or exact(app.get('width'))<=0 or exact(app.get('height'))<=0 or exact(actual.get('display_scale'))!=scale or exact(pixels.get('width'))/exact(app.get('width'))!=scale
++                    or exact(pixels.get('height'))/exact(app.get('height'))!=scale):
++                raise ValueError('coverage_domain: actual native display/image scale mapping differs')
++        runtime_status='matched_approved_shape_and_native_scale'
++    return {'approval_sha256':value['approval_sha256'],'policy_sha256':value['policy_sha256'],'component_sha256':component['sha256'],
++            'provider_sha256':value['provider_sha256'],'scope':approval['scope'],'runtime_shape_status':runtime_status}
+--- original/scripts/execution_plan.py
++++ common/scripts/execution_plan.py
+@@ -114,7 +114,7 @@
+     return expected
+ 
+ 
+-def _coverage_facts(required, definitions, platform, observation):
++def _coverage_facts(required, definitions, platform, observation, root=None):
+     from native_checks import bound_state_evidence, resolve
+     missing, states = [], []
+     for entry in required:
+@@ -122,7 +122,7 @@
+         # Exact state definitions are carried in config by the CLI/runner caller
+         # below; never infer an input epoch from an arbitrary matching label.
+         parent = next(s for s in definitions if s['id'] == entry['state_id'])
+-        found, complete, reason, _ = bound_state_evidence(observation, parent)
++        found, complete, reason, capture = bound_state_evidence(observation, parent, root)
+         target_rows = []
+         for target in entry['targets']:
+             seen = []
+@@ -134,23 +134,24 @@
+             target_rows.append({'target': target, 'indices': seen, 'observed': bool(seen)})
+         good = bool(found) and (complete if entry['coverage'] == 'full_content' else True) and all(v['observed'] for v in target_rows)
+         if not good: missing.append(entry['state_id'])
+-        states.append({'state_id': entry['state_id'], 'complete': complete, 'satisfied': good, 'reason': reason, 'targets': target_rows})
++        states.append({'state_id': entry['state_id'], 'complete': complete, 'satisfied': good, 'reason': reason, 'targets': target_rows,
++                       **({'coverage_proof': capture['coverage_proof']} if capture and 'coverage_proof' in capture else {})})
+     return {'required_states': states, 'satisfied': not missing, 'missing_states': missing}
+ 
+ 
+-def coverage_receipt(execution, observation):
++def coverage_receipt(execution, observation, root=None):
+     return {'execution_sha256': execution['execution_sha256'], 'scope': execution['scope'],
+             **_coverage_facts(execution['required_coverage'], execution['config']['execution_state_definitions'],
+-                              execution['platform'], observation)}
+-
+-
+-def request_coverage_receipt(config, observation, platform, request_sha256):
++                              execution['platform'], observation, root)}
++
++
++def request_coverage_receipt(config, observation, platform, request_sha256, root=None):
+     """A collector can bind its request bytes, not the parent's approved plan."""
+     if (not isinstance(request_sha256,str)or len(request_sha256)!=64 or
+             any(c not in '0123456789abcdef' for c in request_sha256)):
+         raise ValueError('Exact request-byte SHA256 required')
+     return {'request_sha256':request_sha256,'identity_scope':'native_request','scope':config['execution_scope'],
+-            **_coverage_facts(config['execution_states'],config['execution_state_definitions'],platform,observation)}
++            **_coverage_facts(config['execution_states'],config['execution_state_definitions'],platform,observation,root)}
+ 
+ 
+ def source_fingerprint(roots):
+@@ -176,7 +177,7 @@
+             raise ValueError('Original capture image missing, replaced or outside native output')
+ 
+ 
+-def run_execution(value, plan, lock, lock_sha, fixtures, bridge, output, source_roots, native_options, *, policy=None, policy_sha=None, expected_environment=None, environment_sha=None, resources=None):
++def run_execution(value, plan, lock, lock_sha, fixtures, bridge, output, source_roots, native_options, *, policy=None, policy_sha=None, expected_environment=None, environment_sha=None, resources=None, domain_approval=None):
+     bridge = Path(bridge).resolve(); output = Path(output).resolve()
+     bridge_sha = hashlib.sha256(bridge.read_bytes()).hexdigest()
+     verify_execution(value, plan, lock, lock_sha, fixtures, bridge_sha)
+@@ -211,10 +212,15 @@
+                '--actions', str(output / 'actions.json'), '--output', str(output / 'native')]
+     for key, item in native_options.items():
+         if item is not None: command += ['--' + key, str(item)]
++    if domain_approval is not None and value['platform']=='ios':
++        save('coverage-domain-prepared.json',domain_approval)
++        command += ['--coverage-domain',str(output/'coverage-domain-prepared.json')]
+     record = {'version': 1, 'startedAtUnix': time.time(), 'execution_sha256': value['execution_sha256'],
+               'parent_plan_sha256': design.digest(plan),
+               'source_sha256': design.digest(before), 'source_roots': list(map(str, roots)), 'argv': command,
+               'scope': value['scope'], 'input_hashes': {name: hashlib.sha256((output / name).read_bytes()).hexdigest() for name in ['fixtures.json', 'actions.json']}}
++    if domain_approval is not None and value['platform']=='ios':
++        record['input_hashes']['coverage-domain-prepared.json'] = hashlib.sha256((output/'coverage-domain-prepared.json').read_bytes()).hexdigest()
+     tool_root = Path(__file__).resolve().parents[1]
+     tool_paths = list((tool_root/'scripts').glob('*.py')) + list((tool_root/'assets/ios-observer').glob('*.swift')) + list((tool_root/'assets/android-observer').glob('*.kt'))
+     record['tool_files'] = {str(p.relative_to(tool_root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(tool_paths)}
+@@ -252,7 +258,7 @@
+             if environment is not None:
+                 save('environment-check.json', environment); record['environment_status'] = environment['status']
+                 record['environment_expectation_sha256'] = environment_sha
+-            receipt = coverage_receipt(value, observation); save('execution-coverage.json', receipt)
++            receipt = coverage_receipt(value, observation, output / 'native'); save('execution-coverage.json', receipt)
+             record['coverage_satisfied'] = receipt['satisfied']
+             manual = None
+             if policy is not None:
+--- original/scripts/feedback_loop.py
++++ common/scripts/feedback_loop.py
+@@ -137,9 +137,10 @@
+     else:
+         report = {'rows': [{'id':r['id'],'state':r['state'],'status':'unassessed','reason':'No original source-bound packet'}for r in plan['assertions']]}
+     report = calibrated(config, plan, observation, report)
+-    routed = routes.route_findings(coverage, plan, report, observation, execution=execution)
++    evidence_root = Path(previous).parent / 'native' if previous and observation else None
++    routed = routes.route_findings(coverage, plan, report, observation, execution=execution, root=evidence_root)
+     selected = execution['selected_states'] if execution else None
+-    diagnostics = locator_diagnostics.diagnose(plan, report, observation, roots, selected)
++    diagnostics = locator_diagnostics.diagnose(plan, report, observation, roots, selected, root=evidence_root)
+     trace.extend(['route_findings', 'locator_diagnostics'])
+     planning = retest_plan.dispatch(coverage, plan, report, routed, changed_files=sorted(k for k in set(before)|set(now) if before.get(k)!=now.get(k)),
+                     source_before=d.digest(before), source_after=d.digest(now), final=final, selected_states=selected, visual_ids=visual, capture_available=available)
+@@ -168,19 +169,28 @@
+     result=None; value=None
+     execute=bool(planning['states']) and not intake and not blocked
+     status='blocked_repeated_unchanged_evidence'if blocked else planning['status']
++    domain_approval=None; domain_tasks=[]
++    if execute and config.get('coverage_domain_ref'):
++        import coverage_domain
++        try: domain_approval=coverage_domain.prepare(config,plan,lock)
++        except coverage_domain.DomainReviewRequired as error:
++            domain_tasks=[error.task];execute=False;status='review_source_domain'
++            write(output/'coverage-domain-task.json',error.task)
++            trace.append('coverage_domain.review_source_required')
+     if execute:
+         value=xp.compile_execution(plan,lock,lock_sha,fixtures,sha(bridge),launch_ref=config['launch_ref'],states=planning['states'])
+         trace.append('execution_plan.compile_execution')
+         result=xp.run_execution(value,plan,lock,lock_sha,fixtures,bridge,output/'capture',roots,config['native_options'],
+-                 policy=policy,policy_sha=config.get('policy_sha256'),expected_environment=d.load(Path(config['environment'])),environment_sha=config['environment_sha256'],resources=resources)
++                 policy=policy,policy_sha=config.get('policy_sha256'),expected_environment=d.load(Path(config['environment'])),environment_sha=config['environment_sha256'],resources=resources,domain_approval=domain_approval)
+         trace.append('execution_plan.run_execution')
+         if result.get('automatic_sha256') and not result.get('evidence_error'):
+             report=d.load(output/'capture/automatic.json');observation=d.load(output/'capture/native/observation.json')
+         else:
+             report={'rows':[{'id':r['id'],'state':r['state'],'status':'unassessed','reason':'Native acquisition incomplete'}for r in plan['assertions']]};observation={}
+         report=calibrated(config,plan,observation,report)
+-        after=routes.route_findings(coverage,plan,report,observation,execution=value)
+-        after_diag=locator_diagnostics.diagnose(plan,report,observation,roots,value['selected_states'])
++        evidence_root = output / 'capture/native'
++        after=routes.route_findings(coverage,plan,report,observation,execution=value,root=evidence_root)
++        after_diag=locator_diagnostics.diagnose(plan,report,observation,roots,value['selected_states'],root=evidence_root)
+         write(output/'after-evaluated.json',report);write(output/'after-routes.json',after);write(output/'after-diagnostics.json',after_diag)
+         trace.extend(['route_findings_after','locator_diagnostics_after'])
+         request=None
+@@ -206,7 +216,7 @@
+               'signature':signature,'native_executed':execute,'trace':trace,'final':final,'intake':intake,'status':status,
+               'capture_result':str(output/'capture/result.json')if result else None,'capture_sha256':sha(output/'capture/result.json')if result else None,
+               'review_result':review_result,'source_sha256':d.digest(now),'review_current_source':bool(review_result and d.digest(before)==d.digest(now)),
+-              'evidence_responsibility':responsibilities, 'source_tasks':source_tasks,
++              'evidence_responsibility':responsibilities, 'source_tasks':source_tasks,'domain_tasks':domain_tasks,
+               'scope':'Work-kind dispatch is mandatory. Historical reviews guide scope only; current acceptance requires fresh full-final native evidence plus exact bound actuals.'}
+     return decision
+ 
+@@ -226,6 +236,8 @@
+     capture=cycle_path.parent/'capture/result.json'
+     if sha(capture)!=cycle['capture_sha256']:raise ValueError('Final capture changed')
+     plan,lock,policy,packet=evidence_review.original(config,capture,cycle['capture_sha256'])
++    if config.get('coverage_domain_ref'):
++        __import__('coverage_domain').prepare(config,plan,lock)
+     before,original_report,observation,execution,receipt=packet
+     if d.digest(xp.source_fingerprint(config['source_roots']))!=d.digest(before):raise ValueError('Review of old source cannot accept edited source')
+     registered=evidence_review.discover(config,cycle['capture_sha256'])
+@@ -242,7 +254,7 @@
+         review_trace='reconstruct_native_source_evidence'
+     report=calibrated(config,plan,observation,report)
+     cov=routes.audit(lock,config['design_sha256'],plan,d.load(Path(config['routes'])),config['routes_sha256'])
+-    routed=routes.route_findings(cov,plan,report,observation,execution=execution)
++    routed=routes.route_findings(cov,plan,report,observation,execution=execution,root=capture.parent/'native')
+     planning=retest_plan.dispatch(cov,plan,report,routed,changed_files=[],source_before=d.digest(before),source_after=d.digest(before),selected_states=execution['selected_states'],visual_ids=review_methods(config,plan,lock))
+     env=acceptance.environment(observation,d.load(Path(config['environment'])),execution['platform'])
+     admitted=routes.admission(cov,plan,report,execution_scope=execution['scope'],capture=receipt,environment=env)
+--- original/scripts/ios_observe.py
++++ common/scripts/ios_observe.py
+@@ -146,7 +146,7 @@
+     return hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
+ 
+ 
+-def validate_cached_build(entry: Path, record: dict, signature: str) -> Path:
++def validate_cached_build(entry: Path, record: dict, signature: str, *, require_compile_log=False) -> Path:
+     if record.get('signature') != signature or not record.get('artifacts'):
+         raise ValueError('Build cache identity missing or differs')
+     for relative, expected in record['artifacts'].items():
+@@ -156,6 +156,10 @@
+     runfile = (entry / record['runfile']).resolve()
+     if not runfile.is_relative_to(entry.resolve()) or not runfile.is_file():
+         raise ValueError('Build cache test plan unavailable')
++    if require_compile_log:
++        relative = record.get('compiled_build_log')
++        if not isinstance(relative,str) or relative not in record['artifacts']:
++            raise ValueError('Original compiled build log missing from verified cache inventory')
+     return runfile
+ 
+ 
+@@ -178,11 +182,12 @@
+         ready = entry / 'ready.json'
+         if cache and ready.exists():
+             record = json.loads(ready.read_text())
+-            runfile = validate_cached_build(entry, record, signature)
++            runfile = validate_cached_build(entry, record, signature, require_compile_log=True)
+             manifest['build_cache'] = {'hit': True, 'signature': signature, 'toolchain': toolchain,
+                                        'record_sha256': digest(ready), 'artifacts': record['artifacts'],
+                                        'entry': str(entry), 'original_build_command': record['build_command']}
+             manifest['build_exit_code'] = 0
++            shutil.copy2(entry / record['compiled_build_log'], output / 'compiled-build.log')
+             shutil.copytree(entry / record['project'], output / 'compiled-project')
+             (output / 'build.log').write_text('Validated content-addressed build reuse; no build command executed for this capture.\n' + json.dumps(manifest['build_cache'], indent=2))
+             return runfile
+@@ -201,13 +206,15 @@
+         manifest['build_exit_code'] = build.returncode
+         if cache: shutil.copy2(output / 'build.log', work / 'build.log')
+         if build.returncode: raise RuntimeError('Native build failed; see build.log')
++        shutil.copy2(output / 'build.log', output / 'compiled-build.log')
+         runs = list((derived / 'Build/Products').glob('*.xctestrun'))
+         if len(runs) != 1: raise RuntimeError('Expected one compiled xctestrun')
+         if cache:
+             artifacts = {str(p.relative_to(entry)): digest(p) for folder in [derived / 'Build/Products', project.parent]
+                          for p in folder.rglob('*') if p.is_file()}
++            artifacts[str((work/'build.log').relative_to(entry))] = digest(work/'build.log')
+             record = {'signature': signature, 'runfile': str(runs[0].relative_to(entry)),
+-                      'project': str(project.parent.relative_to(entry)),
++                      'project': str(project.parent.relative_to(entry)), 'compiled_build_log':str((work/'build.log').relative_to(entry)),
+                       'artifacts': artifacts, 'build_command': argv, 'source_hashes': manifest['source_hashes']}
+             ready.write_text(json.dumps(record, indent=2) + '\n')
+             manifest['build_cache'] = {'hit': False, 'signature': signature, 'entry': str(entry),
+@@ -270,7 +277,8 @@
+     env = dict(os.environ, DEVELOPER_DIR=args.developer_dir)
+     manifest = {"schema_version": 1, "status": "error", "simulator": args.simulator, "started_at": time.time(),
+                 "bridge": str(bridge), "package": str(package) if package else None, "source_hashes": {}, "image_hashes": {}, "native_test_count": 0}
+-    files = [bridge, TEMPLATES / "ObserverApp.swift", TEMPLATES / "ObserverTests.swift", Path(__file__).resolve(), CONTRACT]
++    files = [bridge, TEMPLATES / "ObserverApp.swift", TEMPLATES / "ObserverTests.swift", Path(__file__).resolve(), CONTRACT,
++             Path(__file__).with_name('scroll_coverage.py'), Path(__file__).with_name('coverage_domain.py')]
+     if package:
+         files += [package / "Package.swift"] + sorted(p for p in (package / "Sources").rglob("*") if p.is_file())
+         if (package / 'Package.resolved').is_file(): files.append(package / 'Package.resolved')
+@@ -366,14 +374,18 @@
+         manifest["screenshot_pixels"] = observation["snapshots"][0]["screenshot_pixels"]
+         complete = coverage_status(observation["coverage"]) == "passed"
+         manifest["status"] = "passed" if test.returncode == 0 and manifest["native_test_count"] > 0 and observation["status"] == "passed" and complete else "failed"
++        if getattr(args,'coverage_domain',None) and test.returncode == 0 and manifest['native_test_count'] > 0:
++            import coverage_domain
++            coverage_domain.complete(json.loads(Path(args.coverage_domain).read_text()),manifest,output)
+         if strategy == 'coalesced':
+             import execution_plan
+-            receipt = execution_plan.request_coverage_receipt(config, observation, 'ios', digest(Path(args.fixtures)))
++            receipt = execution_plan.request_coverage_receipt(config, observation, 'ios', digest(Path(args.fixtures)), output)
+             manifest['execution_coverage'] = receipt
+             if not receipt['satisfied']: manifest['status'] = 'failed'
+             elif config['execution_scope'] == 'targeted' and test.returncode == 0 and observation['status'] == 'passed':
+                 manifest['status'] = 'captured_partial'
+     except Exception as exc:
++        manifest['status'] = 'error'
+         manifest["error"] = str(exc)
+     manifest["finished_at"] = time.time()
+     (output / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
+@@ -397,6 +409,7 @@
+     p.add_argument("--developer-dir", default="/Applications/Xcode.app/Contents/Developer")
+     p.add_argument("--sdk", default="iphonesimulator")
+     p.add_argument("--build-cache", help="Optional content-addressed compiled-build cache; fixtures and evidence are always fresh")
++    p.add_argument('--coverage-domain',help='Controller-prepared independently pinned closed-domain/source admission')
+     args = parser.parse_args()
+     try: return run(args)
+     except (ValueError, OSError) as exc:
+--- original/scripts/locator_diagnostics.py
++++ common/scripts/locator_diagnostics.py
+@@ -6,13 +6,13 @@
+ from native_checks import bound_state_evidence, resolve, same_selector
+ 
+ 
+-def diagnose(plan, report, observation, source_roots, selected_states=None):
++def diagnose(plan, report, observation, source_roots, selected_states=None, root=None):
+     rows = {v['id']: v for v in report.get('rows', report.get('assertions', []))}
+     states = {v['id']: v for v in plan['states']}
+     selected = set(selected_states or states)
+     source_files = []
+-    for root in map(Path, source_roots):
+-        for path in sorted(root.rglob('*')) if root.is_dir() else [root]:
++    for source_root in map(Path, source_roots):
++        for path in sorted(source_root.rglob('*')) if source_root.is_dir() else [source_root]:
+             if path.is_file() and not path.is_symlink() and path.suffix in {'.swift', '.kt', '.java', '.xml', '.m', '.mm'}:
+                 try: source_files.append((path, path.read_text(), hashlib.sha256(path.read_bytes()).hexdigest()))
+                 except (UnicodeError, OSError): continue
+@@ -20,7 +20,7 @@
+     for rule in plan['assertions']:
+         row = rows[rule['id']]
+         if row['status'] == 'passed' or rule['state'] not in selected: continue
+-        found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']])
++        found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']], root)
+         targets = []
+         for key in ['target', 'reference_target']:
+             if rule.get(key) and rule[key] not in targets: targets.append(rule[key])
+--- original/scripts/native_checks.py
++++ common/scripts/native_checks.py
+@@ -182,7 +182,11 @@
+     return result
+ 
+ 
+-def state_evidence(observation,state):
++def state_evidence(observation,state,root=None):
++    if type(state.get('input_index'))is not int or state['input_index']<0:
++        return [],False,'state input index must be an integer',None
++    if 'after_action'in state and type(state['after_action'])is not int:
++        return [],False,'state action checkpoint must be an integer',None
+     # Legacy coverage packets have no guarded route. Keep this standalone reader
+     # usable through a file loader without importing an unrelated protocol.
+     if observation.get('guard_protocol') == 1:
+@@ -200,15 +204,16 @@
+             # Legacy raw data still earns the facts actually visible in its one
+             # bound action frame; it cannot borrow frames from other actions.
+             legacy=dict(state,coverage='target')
+-            return state_evidence(observation,legacy)
++            return state_evidence(observation,legacy,root)
+         binding=step.get('binding_after',{});snapshots=observation.get('snapshots',[])
+         capture=dict(bundle,after_action=index,source='native_post_action_targets',scope='targets_only')
+-        if (bundle.get('state_id')!=state['id']or step.get('state_id')!=state['id']or bundle.get('after_action')!=index
++        if (bundle.get('state_id')!=state['id']or step.get('state_id')!=state['id']or type(bundle.get('after_action'))is not int or bundle['after_action']!=index
+                 or not binding or bundle.get('binding')!=binding
+                 or bundle.get('binding_after_observation')!=binding
+                 or bundle.get('binding_stable')is not True):
+             return [],False,'target observation input/process/event binding drift',capture
+-        if binding.get('fixture_index',binding.get('input_index'))!=state['input_index']:
++        actual_input=binding.get('fixture_index',binding.get('input_index'))
++        if type(actual_input)is not int or actual_input!=state['input_index']:
+             return [],False,'target observation has different caller input',capture
+         if not binding.get('instance')or not binding.get('input_sha256')or type(binding.get('event_revision'))is not int:
+             return [],False,'target observation lacks native epoch identity',capture
+@@ -227,27 +232,36 @@
+         return found,False,'bound multi-target evidence; no full-content coverage claim',capture
+     if not captures and state.get('coverage')=='target':
+         index=state.get('after_action');steps=observation.get('steps',[])
+-        if not isinstance(index,int)or not 0<=index<len(steps):return [],False,'missing native action checkpoint',None
++        if type(index)is not int or not 0<=index<len(steps):return [],False,'missing native action checkpoint',None
+         step=steps[index];snap_index=step.get('after',step.get('snapshot'));snapshots=observation.get('snapshots',[])
+-        if not isinstance(snap_index,int)or not 0<=snap_index<len(snapshots):return [],False,'invalid native action snapshot',None
++        if type(snap_index)is not int or not 0<=snap_index<len(snapshots):return [],False,'invalid native action snapshot',None
+         snapshot=snapshots[snap_index];binding=step.get('binding_after')
+         if snapshot.get('capture_consistent') is False:return [],False,'native image/hierarchy epoch changed during capture',None
+         if step.get('state_id')!=state['id']or snapshot.get('state_id')!=state['id']or not binding or snapshot.get('binding')!=binding:
+             return [],False,'action checkpoint state/binding mismatch',None
+-        if binding.get('fixture_index',binding.get('input_index'))!=state['input_index']:return [],False,'action checkpoint has different input',None
++        actual_input=binding.get('fixture_index',binding.get('input_index'))
++        if type(actual_input)is not int or actual_input!=state['input_index']:return [],False,'action checkpoint has different input',None
+         capture={'state_id':state['id'],'binding':binding,'snapshot_indices':[snap_index],'after_action':index,'source':'native_action_checkpoint','scope':'target_only'}
+         return [(snap_index,snapshot)],False,'native action checkpoint; no full-content coverage claim',capture
+     if len(captures)!=1:return [],False,'missing or duplicate state capture',None
+     capture=captures[0];binding=capture.get('binding',{})
+     actual_index=binding.get('fixture_index',binding.get('input_index'))
+-    if actual_index!=state['input_index']:return [],False,'state is bound to different caller input',capture
+-    if 'after_action'in state and capture.get('after_action')!=state['after_action']:
++    if type(actual_index)is not int or actual_index!=state['input_index']:return [],False,'state is bound to different caller input',capture
++    if 'after_action'in state and (type(capture.get('after_action'))is not int or capture['after_action']!=state['after_action']):
+         return [],False,'state is bound to different action checkpoint',capture
+     snapshots=observation.get('snapshots',[]);indices=capture.get('snapshot_indices',[])
+-    if not indices or any(not isinstance(i,int)or i<0 or i>=len(snapshots)for i in indices):return [],False,'invalid state snapshot indices',capture
++    if (not isinstance(indices,list)or not indices or any(type(i)is not int or i<0 or i>=len(snapshots)for i in indices)
++            or len(indices)!=len(set(indices))):return [],False,'invalid state snapshot indices',capture
+     found=[(i,snapshots[i])for i in indices]
+     if any(s.get('capture_consistent') is False for _,s in found):return [],False,'native image/hierarchy epoch changed during capture',capture
+     if any(s.get('binding')!=binding for _,s in found):return [],False,'snapshot binding drift',capture
++    if observation.get('coverage_protocol') == 2 and capture.get('stable_binding') is not True:
++        return found,False,'producer reports unstable state binding',capture
++    if observation.get('coverage_protocol') == 2:
++        import scroll_coverage
++        try: scroll_coverage.native_rows(found, binding)
++        except (ValueError, KeyError, TypeError, OverflowError) as error:
++            return found,False,str(error),capture
+     # Recompute geometry coverage; the producer's complete:true alone is not proof.
+     intervals=[];heights=[]
+     for _,snapshot in found:
+@@ -259,12 +273,29 @@
+     end=0;gap=0
+     for a,b in sorted(intervals):gap=max(gap,a-end);end=max(end,b)
+     complete=bool(intervals)and max(heights)-min(heights)<=1 and gap<=1 and end>=max(heights)-1 and capture.get('top_reached')is True and capture.get('bottom_reached')is True and capture.get('stable_binding')is True
++    if not complete and observation.get('coverage_protocol') == 2:
++        import scroll_coverage
++        proof = scroll_coverage.certify(found, binding, root)
++        if proof['complete']:
++            import coverage_domain
++            try: proof['domain_admission'] = coverage_domain.verify_packet(root,found)
++            except (ValueError,OSError,KeyError,TypeError) as error:
++                proof.update(complete=False,reason='coverage_domain: '+str(error))
++        return found,proof['complete'],proof['reason'],dict(capture, coverage_proof=proof)
++    if complete and observation.get('coverage_protocol')==2:
++        import coverage_domain
++        try:
++            if coverage_domain.requested(root):
++                domain=coverage_domain.verify_packet(root,found)
++                capture=dict(capture,coverage_domain=domain)
++        except (ValueError,OSError,KeyError,TypeError) as error:
++            return found,False,'coverage_domain: '+str(error),capture
+     return found,complete,'native interval union complete'if complete else'incomplete per-state interval union',capture
+ 
+ 
+-def bound_state_evidence(observation,state):
++def bound_state_evidence(observation,state,root=None):
+     """Strict source/epoch/image identity for the new independently pinned review mode."""
+-    found,complete,reason,capture=state_evidence(observation,state)
++    found,complete,reason,capture=state_evidence(observation,state,root)
+     if not found:return found,complete,reason,capture
+     binding=capture.get('binding',{})if capture else{}
+     valid=(isinstance(binding.get('instance'),str)and bool(binding['instance'])and
+@@ -325,6 +356,126 @@
+     return result['value'] if result else None
+ 
+ 
++def native_tree(nodes,platform):
++    """One connected native identity graph; repeated records are not entities."""
++    key,parent=('index','parent_index')if platform=='ios'else('node_id','parent_id')
++    if not nodes or any(type(n.get(key))is not int or type(n.get(parent))is not int for n in nodes):return False
++    ids=[n[key]for n in nodes]
++    if len(set(ids))!=len(ids)or -1 in ids:return False
++    by_id={n[key]:n for n in nodes};roots=[n for n in nodes if n[parent]==-1]
++    if len(roots)!=1 or (platform=='ios'and(type(roots[0].get('role_raw'))is not int or roots[0]['role_raw']!=2)):return False
++    root=roots[0][key];closed={root}
++    for start in ids:
++        seen=set();cursor=start
++        while cursor not in closed:
++            if cursor in seen or cursor not in by_id:return False
++            seen.add(cursor);cursor=by_id[cursor][parent]
++        closed.update(seen)
++    return True
++
++
++def native_query_evidence(snapshot,target,platform):
++    """Read the emitted query schema and cross-check all redundant native facts.
++
++    A legacy explicit query can report cardinality without a full tree. A flat
++    node can witness presence, but only a recognized complete query/domain can
++    establish absence or positive uniqueness. Malformed identities or conflicting
++    group/tree counts never become a product failure.
++    """
++    import math
++    result={'valid':False,'complete':False,'count':None,'visible':False,'duplicate':False,'reason':'Malformed native query'}
++    nodes=snapshot.get('nodes',[])
++    if not isinstance(nodes,list)or any(not isinstance(n,dict)for n in nodes):return result
++    key,parent=('index','parent_index')if platform=='ios'else('node_id','parent_id')
++    structured=bool(nodes)and any(key in n or parent in n for n in nodes)
++    tree=native_tree(nodes,platform)if structured else False
++    if structured and not tree:return dict(result,reason='Native identity graph is duplicated, disconnected, cyclic or ill typed')
++    full_tree=False
++    if platform=='ios':
++        performance=snapshot.get('performance',{})
++        if not isinstance(performance,dict):return result
++        if performance.get('native_query_mode')=='single_public_snapshot':
++            if not tree:return dict(result,reason='Public snapshot lacks a connected native application tree')
++            full_tree=True
++    elif platform=='android':
++        viewport=snapshot.get('native_viewport_px',{})
++        if not isinstance(viewport,dict):return result
++        density=viewport.get('density')
++        finite=lambda v:type(v)in{int,float}and math.isfinite(v)
++        geometry_ok=(tree and all(type(viewport.get(k))is int and viewport[k]>0 for k in ['width','height'])
++                     and finite(density)and density>0)
++        for n in nodes:
++            g=n.get('native_geometry',{})
++            if not isinstance(g,dict):return result
++            pos=g.get('position_px');size=g.get('size_px')
++            geometry_ok=geometry_ok and (type(g.get('version'))is int and g['version']==1
++                and g.get('provider')=='compose_semantics_int_size'and g.get('coordinate_unit')=='px'
++                and finite(g.get('density'))and g['density']==density
++                and isinstance(pos,list)and len(pos)==2 and all(finite(v)for v in pos)
++                and isinstance(size,list)and len(size)==2 and all(type(v)is int and v>=0 for v in size))
++        if structured and not geometry_ok:return dict(result,reason='Native semantics query lacks its emitted pixel geometry schema')
++        full_tree=bool(geometry_ok)
++    else:return dict(result,reason='Unknown native query platform')
++    matches=[n for n in nodes if same_selector(n,target)]
++    groups=snapshot.get('control_groups',[])if platform=='ios'else[]
++    if not isinstance(groups,list)or any(not isinstance(g,dict)for g in groups):return result
++    groups=[g for g in groups if g.get('selector')==target]
++    if len(groups)>1:return dict(result,reason='Duplicate explicit native queries')
++    explicit=False;count=len(matches);visible=any(n.get('intersects_viewport')is True for n in matches)
++    if groups:
++        g=groups[0];count=g.get('match_count');resolution=g.get('resolution')
++        known=(type(count)is int and count>=0 and
++               ((resolution=='missing'and count==0)or(resolution=='ambiguous_semantic'and count>1)
++                or(resolution in{'unique_native_control','no_native_control','ambiguous_native_controls','offscreen_not_resolved'}and count==1)))
++        if not known:return dict(result,reason='Unsupported or inconsistent explicit native query result')
++        semantic=g.get('semantic',{})
++        if count!=1 and semantic:return dict(result,reason='Non-singleton query carries a contradictory singleton semantic')
++        if count==1 and (not isinstance(semantic,dict)or not same_selector(semantic,target)):
++            return dict(result,reason='Explicit query semantic differs from its selector')
++        if resolution=='offscreen_not_resolved'and semantic.get('intersects_viewport')is not False:
++            return dict(result,reason='Offscreen query contradicts its visibility')
++        if nodes and count!=len(matches):return dict(result,reason='Explicit query cardinality contradicts original native nodes')
++        if nodes and count==1:
++            if structured and semantic.get(key)!=matches[0].get(key):return dict(result,reason='Explicit query identity contradicts original native node')
++            if semantic.get('intersects_viewport')is not matches[0].get('intersects_viewport'):
++                return dict(result,reason='Explicit query visibility contradicts original native node')
++        visible=visible or (count==1 and semantic.get('intersects_viewport')is True)
++        explicit=True
++    return {'valid':True,'complete':explicit or full_tree,'count':count,'visible':visible,
++            'duplicate':count>1 and (explicit or structured),'reason':'Consistent emitted native query facts'}
++
++
++def native_query_complete(snapshot,target,platform):
++    query=native_query_evidence(snapshot,target,platform)
++    return query['valid']and query['complete']
++
++
++def quantified_presence(found,complete,target,platform,prop,*,full_scope=True):
++    """Lazy non-realization in one viewport is not absence from a bound state."""
++    samples=[];singletons=[];duplicates=[];present=[];queries=[]
++    for index,snapshot in found:
++        resolved=resolve(snapshot,target,platform);query=native_query_evidence(snapshot,target,platform);queries.append(query)
++        samples.append({'snapshot':index,'resolution':resolved,'query':query,'viewport_local':True})
++        if not query['valid']:continue
++        if query['count']>0:present.append(index)
++        if query['duplicate']:duplicates.append(index)
++        if query['count']==1:singletons.append(index)
++    value=None;used=[]
++    if not all(q['valid']for q in queries):reason='Malformed or contradictory native query; raw facts retained'
++    elif prop=='present' and present:
++        value=True;used=present;reason='Native presence witnessed within this bound state'
++    elif prop=='unique' and duplicates:
++        value=False;used=duplicates;reason='Multiple native matches witnessed within this bound state'
++    elif prop=='unique' and singletons and (complete or not full_scope) and all(q['complete']for q in queries):
++        value=True;used=singletons;reason='Unique native matches witnessed; no observed duplicate in this bound state'
++    elif (complete or not full_scope) and not present and all(q['complete']for q in queries):
++        value=False;used=[i for i,_ in found];reason='No native match across the complete bound state'
++    else:reason='Presence/uniqueness or complete state absence is not established'
++    return value,used,{'quantifier':'exists_in_bound_state'if prop=='present'else'unique_native_match_in_bound_state',
++                      'value':value,'complete_state':complete,'scope':'full_state_native_domain'if full_scope else'bound_target_native_query',
++                      'samples':samples},reason
++
++
+ def evaluate(plan, observation, platform, manual=None, root=None, observation_sha256=None, design_lock=None, design_sha256=None, review_policy=None, review_policy_sha256=None):
+     if (design_lock is None)!=(design_sha256 is None):raise ValueError('Trusted design requires both external lock and pinned digest')
+     if design_lock is not None and 'design_contract'not in plan:raise ValueError('Trusted design mode rejects a stripped or legacy unverified plan')
+@@ -345,21 +496,22 @@
+         decisions[row.get('id')]=row
+     unknown=set(decisions)-{a['id']for a in plan['assertions']if a['kind']=='manual'}
+     if unknown:raise ValueError('Unplanned manual decisions')
+-    evidence={sid:(bound_state_evidence if review_policy is not None else state_evidence)(observation,spec)for sid,spec in states.items()};rows=[]
++    evidence={sid:(bound_state_evidence if review_policy is not None else state_evidence)(observation,spec,root)for sid,spec in states.items()};rows=[]
+     for item in plan['assertions']:
+         found,complete,why,capture=evidence[item['state']];status='unassessed';actual=None;reason=why;used=[];geometry_proofs=None
+         if found:
+             kind=item['kind']
+-            if kind=='control':
++            if kind=='control' and item['property'] in {'present','unique'}:
++                full_scope=states[item['state']].get('coverage','full_content')not in{'target','targets'}
++                value,used,actual,reason=quantified_presence(found,complete,item['target'],platform,item['property'],full_scope=full_scope)
++                if value is not None:
++                    status='passed' if compare(value,item['expected'],item.get('op','eq'),item.get('tolerance')) else 'failed'
++            elif kind=='control':
+                 values=[]
+                 for index,snapshot in found:
+                     resolved=resolve(snapshot,item['target'],platform);facts=resolved['facts'];prop=item['property']
+                     semantic=resolved['semantic'];visible=semantic.get('intersects_viewport',False)
+-                    if prop in {'present','unique'}:
+-                        if facts.get('unique') and visible:values.append((index,facts[prop],resolved))
+-                        elif complete and not facts.get('present'):values.append((index,False,resolved))
+-                        elif facts.get('present')and not facts.get('unique'):values.append((index,facts[prop],resolved))
+-                    elif prop=='label' and visible and facts.get('unique'):values.append((index,facts.get('label'),resolved))
++                    if prop=='label' and visible and facts.get('unique'):values.append((index,facts.get('label'),resolved))
+                     elif visible and resolved['resolution']=='unique_native_control'and prop in facts and facts[prop]is not None:
+                         values.append((index,facts[prop],resolved))
+                 if values:
+--- original/scripts/requirement_routes.py
++++ common/scripts/requirement_routes.py
+@@ -86,7 +86,7 @@
+             'scope': 'Consumes evaluated evidence; does not certify a caller-entered report or subjective observation. Targeted feedback never establishes complete PR acceptance.'}
+ 
+ 
+-def route_findings(coverage, plan, report, observation, *, discoveries=(), execution=None):
++def route_findings(coverage, plan, report, observation, *, discoveries=(), execution=None, root=None):
+     from native_checks import bound_state_evidence
+     if design.digest(plan) != coverage['plan_sha256']:
+         raise ValueError('Coverage belongs to another parent plan')
+@@ -120,7 +120,7 @@
+                                   'assertion_ids': [rid], 'state': row['state'], 'risk': obligation['risk'],
+                                   'status': row['status'], 'reason': why})
+                     continue
+-            rule = planned[rid]; found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']])
++            rule = planned[rid]; found, complete, reason, _ = bound_state_evidence(observation, states[rule['state']], root)
+             if row.get('reason', '').startswith('blocked_precondition:'): action = 'diagnose_action_precondition'
+             elif report.get('environment', {}).get('status', 'P') != 'P': action = 'repair_environment'
+             elif row.get('panel_disagreement'): action = 'clarify_oracle'
+@@ -186,6 +186,6 @@
+             execution = design.load(a.execution)
+             execution_plan.verify_execution(execution, plan, design.load(a.design_lock), a.design_sha256,
+                                             design.load(a.fixtures), hashlib.sha256(a.bridge.read_bytes()).hexdigest())
+-        result = route_findings(cov, plan, design.load(a.report), design.load(a.observation), discoveries=design.load(a.discoveries) if a.discoveries else [], execution=execution)
++        result = route_findings(cov, plan, design.load(a.report), design.load(a.observation), discoveries=design.load(a.discoveries) if a.discoveries else [], execution=execution, root=a.observation.parent)
+     with a.output.open('x') as stream: stream.write(__import__('json').dumps(result, indent=2, ensure_ascii=False) + '\n')
+ if __name__ == '__main__': main()
+--- original/scripts/review_contract.py
++++ common/scripts/review_contract.py
+@@ -94,7 +94,7 @@
+         if not isinstance(indices, list) or any(type(i) is not int for i in indices) or len(set(indices)) != len(indices):
+             raise ValueError('Unique original native snapshot indices required')
+         requests[rid] = request
+-    states = {s['id']: bound_state_evidence(observation, s) for s in plan['states']}
++    states = {s['id']: bound_state_evidence(observation, s, root) for s in plan['states']}
+     decisions, findings = [], []
+     for row in cat['rows']:
+         found, complete, why, capture = states[row['state']]
+--- original/scripts/scroll_coverage.py
++++ common/scripts/scroll_coverage.py
+@@ -0,0 +1,287 @@
++"""Original-raster strip registration with exact rational native pixel-cell bounds.
++
++This is pixel-registration compatibility, never native geometry/style equality.
++Closed-domain admission is separate from the observed-strip certificate. Raw
++native metrics and their independently approved assertion tolerances are intact.
++"""
++import hashlib
++import io
++import json
++import math
++import struct
++from fractions import Fraction
++from pathlib import Path
++
++LEAF_ROLES = {9, 48}  # Actual XCUI button/static-text leaves; never a wrapper.
++NATIVE_ENCODING = {'version': 1, 'representation': 'ieee754-binary64', 'coordinate_space': 'logical_screen_points',
++                   'provider': 'XCUIElementSnapshot.frame_and_native_CGRect', 'mapping': 'app_frame_to_original_screenshot_pixels'}
++
++
++def number(v):
++    if type(v) not in {int, float} or not math.isfinite(v): raise ValueError('Finite IEEE64/integer native coordinate required')
++    return Fraction(v)
++
++
++def rectangle(v):
++    if not isinstance(v, dict) or set(v) != {'x', 'y', 'width', 'height'}:
++        raise ValueError('Exact native rectangle required')
++    r = {k: number(v[k]) for k in v}
++    if min(r['width'], r['height']) <= 0: raise ValueError('Positive native rectangle required')
++    return r
++
++
++def inside(box, vp):
++    return box['x'] >= vp['x'] and box['y'] >= vp['y'] and box['x'] + box['width'] <= vp['x'] + vp['width'] and box['y'] + box['height'] <= vp['y'] + vp['height']
++
++
++def cells(value): return math.floor(value), math.ceil(value)
++def integers(a, b): return set(range(max(a[0], b[0]), min(a[1], b[1]) + 1))
++
++
++def lineage(node, by_index):
++    result = []; seen = set(); index = node.get('parent_index')
++    while index in by_index and index not in seen:
++        seen.add(index); parent = by_index[index]
++        if parent.get('identifier') == '__observer.scroll': return result
++        result.append([parent.get('role_raw'), parent.get('identifier', '')]); index = parent.get('parent_index')
++    return None
++
++
++def native_rows(found, binding):
++    if (type(binding.get('pid')) is not int or binding['pid'] <= 0 or not isinstance(binding.get('instance'),str) or not binding['instance']
++            or not isinstance(binding.get('input_sha256'), str) or len(binding['input_sha256']) != 64
++            or any(type(binding.get(k)) is not int or binding[k] < 0 for k in ['fixture_index', 'event_revision'])):
++        raise ValueError('Actual native process/input/event identity required')
++    if not found or [i for i, _ in found] != list(range(found[0][0], found[-1][0] + 1)):
++        raise ValueError('Consecutive original state snapshots required')
++    rows = []
++    for index, snap in found:
++        encoding=snap.get('geometry_encoding')
++        if encoding != NATIVE_ENCODING or type(encoding.get('version')) is not int: raise ValueError('Explicit supported lossless native geometry encoding required')
++        if snap.get('binding') != binding or snap.get('binding_after_capture') != binding or snap.get('capture_consistent') is not True:
++            raise ValueError('Native epoch/image binding drift')
++        vp = rectangle(snap.get('viewport')); content = rectangle(snap.get('runtime', {}).get('content_frame'))
++        app = rectangle(snap.get('app_frame')); pixels = snap.get('screenshot_pixels', {})
++        if any(type(pixels.get(k)) is not int or pixels[k] <= 0 for k in ['width', 'height']): raise ValueError('Actual screenshot extent required')
++        sx, sy = Fraction(pixels['width'], app['width']), Fraction(pixels['height'], app['height'])
++        edges = ((vp['x']-app['x'])*sx,(vp['y']-app['y'])*sy,(vp['x']+vp['width']-app['x'])*sx,(vp['y']+vp['height']-app['y'])*sy)
++        if any(q.denominator != 1 for q in edges): raise ValueError('Original viewport must map to an integral pixel rectangle')
++        box = tuple(int(q) for q in edges)
++        if min(box[:2]) < 0 or box[2] > pixels['width'] or box[3] > pixels['height']: raise ValueError('Viewport outside original image')
++        if content['x'] < vp['x'] or content['x'] + content['width'] > vp['x'] + vp['width']:
++            raise ValueError('Content includes unsupported off-axis extent')
++        nodes = snap.get('nodes', []); by_index = {n.get('index'): n for n in nodes}
++        if (any(type(n.get('index'))is not int or type(n.get('parent_index'))is not int for n in nodes)
++                or len(by_index) != len(nodes) or len([n for n in nodes if n.get('identifier') == '__observer.scroll']) != 1):
++            raise ValueError('Unique native scroll root and AX indices required')
++        parents = {n.get('parent_index') for n in nodes}; groups = {}; global_ids = {}
++        for node in nodes:
++            if node.get('identifier'):
++                identity_key = json.dumps(['id', node['identifier']])
++                global_ids[identity_key] = global_ids.get(identity_key,0)+1
++        for node in nodes:
++            if node.get('index') in parents or node.get('role_raw') not in LEAF_ROLES: continue
++            ancestry = lineage(node, by_index)
++            if ancestry is None: continue
++            identity = node.get('identifier') or node.get('label')
++            if not identity or str(identity).startswith('__observer.'): continue
++            # Native IDs are globally unique, regardless of role/container.
++            key = json.dumps(['id', identity] if node.get('identifier') else ['label', node.get('role_raw'), identity])
++            groups.setdefault(key, []).append(dict(node, _lineage=ancestry))
++        offset = (vp['y'] - content['y']) * sy
++        rows.append({'index': index, 'snap': snap, 'vp': vp, 'content': content, 'app': app, 'sx': sx, 'sy': sy,
++                     'viewport_pixels': box, 'offset_cells': cells(offset), 'groups': groups, 'global_ids': global_ids})
++    first, last = rows[0], rows[-1]
++    if first['vp']['y'] != first['content']['y']: raise ValueError('Actual top extent not observed')
++    sentinel = [n for n in last['snap'].get('nodes', []) if n.get('identifier') == '__observer.bottom']
++    if len(sentinel) != 1 or sentinel[0].get('fully_within_viewport') is not True or last['snap'].get('bottom_sentinel_visible') is not True:
++        raise ValueError('Unique fully observed native terminal sentinel required')
++    by_index = {n.get('index'): n for n in last['snap']['nodes']}
++    if lineage(sentinel[0], by_index) is None or not inside(rectangle(sentinel[0].get('frame')), last['vp']):
++        raise ValueError('Actual terminal sentinel geometry/root membership not established')
++    boundary = last['snap'].get('bottom_boundary',{})
++    if (boundary.get('queried') is not True or type(boundary.get('match_count'))is not int or boundary.get('match_count')!=1 or boundary.get('hittable') is not True
++            or boundary.get('method')!='XCUIElement.isHittable' or boundary.get('binding')!=binding
++            or boundary.get('identifier')!='__observer.bottom' or not inside(rectangle(boundary.get('frame')),last['vp'])):
++        raise ValueError('Executed unique current native terminal hittability guard is unavailable')
++    if not (solutions(projected(last,sentinel[0],0)) & solutions(projected(last,boundary,0))):
++        raise ValueError('Native terminal guard geometry conflicts with original snapshot')
++    terminal = (last['content']['y'] + last['content']['height'] - last['app']['y']) * last['sy']
++    if math.ceil(terminal) > last['viewport_pixels'][3]: raise ValueError('Actual terminal content extent not observed')
++    ambiguous = {key for row in rows for key, values in row['groups'].items() if len(values) != 1}
++    ambiguous.update(key for row in rows for key,count in row['global_ids'].items() if count != 1)
++    for row in rows:
++        row['anchors'] = {key: values[0] for key, values in row['groups'].items() if key not in ambiguous
++                          and values[0].get('fully_within_viewport') is True and inside(rectangle(values[0].get('frame')), row['vp'])}
++    return rows
++
++
++def projected(row, node, registered):
++    r = rectangle(node.get('frame')); app = row['app']; sx, sy = row['sx'], row['sy']; vp = row['viewport_pixels']
++    return {'left': cells((r['x']-app['x'])*sx - vp[0]), 'right': cells((r['x']+r['width']-app['x'])*sx - vp[0]),
++            'top': cells((r['y']-app['y'])*sy - vp[1] + registered),
++            'bottom': cells((r['y']+r['height']-app['y'])*sy - vp[1] + registered),
++            'width': cells(r['width']*sx), 'height': cells(r['height']*sy)}
++
++
++def solutions(projection):
++    p = projection; result = set()
++    for left in range(p['left'][0], p['left'][1]+1):
++        for right in range(p['right'][0], p['right'][1]+1):
++            if not p['width'][0] <= right-left <= p['width'][1] or right <= left: continue
++            for top in range(p['top'][0], p['top'][1]+1):
++                for bottom in range(p['bottom'][0], p['bottom'][1]+1):
++                    if p['height'][0] <= bottom-top <= p['height'][1] and bottom > top: result.add((left, top, right, bottom))
++    return result
++
++
++def traits(node): return {k: node.get(k) for k in ['identifier', 'label', 'value', 'role_raw', 'enabled', 'selected', '_lineage']}
++
++
++def disjoint(a,b):return a[3]<=b[1] or b[3]<=a[1]
++
++
++def joint_assignment(registry,links,orders,max_nodes=10000):
++    """One world rectangle per identity must support ALL original links jointly."""
++    domains={k:set(v['rectangles'])for k,v in registry.items()}
++    clauses=[link['witness_pairs']for link in links]
++    def relation(a,b,order):return a[1]<=b[1] if order<0 else a[1]>=b[1]
++    def narrow(values):
++        values={k:set(v)for k,v in values.items()};changed=True
++        def constrain(a,b,predicate):
++            nonlocal changed
++            av={x for x in values[a]if any(predicate(x,y)for y in values[b])}
++            bv={y for y in values[b]if any(predicate(x,y)for x in av)}
++            if not av or not bv:return False
++            if av!=values[a]or bv!=values[b]:changed=True
++            values[a]=av;values[b]=bv;return True
++        while changed:
++            changed=False
++            for (a,b),order in orders.items():
++                if order and not constrain(a,b,lambda x,y:relation(x,y,order)):return None
++            for clause in clauses:
++                possible=[(a,b)for a,b in clause if any(disjoint(x,y)for x in values[a]for y in values[b])]
++                if not possible:return None
++                if len(possible)==1 and not constrain(*possible[0],disjoint):return None
++        return values
++    def satisfied(chosen):
++        return (all(not order or relation(chosen[a],chosen[b],order)for(a,b),order in orders.items())
++                and all(any(disjoint(chosen[a],chosen[b])for a,b in clause)for clause in clauses))
++    stack=[domains];visited=0
++    while stack and visited<max_nodes:
++        current=narrow(stack.pop());visited+=1
++        if current is None:continue
++        chosen={k:min(v)for k,v in current.items()}
++        if satisfied(chosen):return{'status':'jointly_consistent','assignment':chosen,'visited_nodes':visited,'max_nodes':max_nodes}
++        keys=set()
++        for(a,b),order in orders.items():
++            if order and not relation(chosen[a],chosen[b],order):keys.update([a,b])
++        for clause in clauses:
++            if not any(disjoint(chosen[a],chosen[b])for a,b in clause):
++                for pair in clause:keys.update(pair)
++        choices=[k for k in keys if len(current[k])>1]
++        if not choices:continue
++        key=min(choices,key=lambda k:(len(current[k]),k))
++        for value in sorted(current[key],reverse=True):
++            branch=dict(current);branch[key]={value};stack.append(branch)
++    return{'status':'search_budget_exhausted'if stack else'inconsistent','assignment':None,'visited_nodes':visited,'max_nodes':max_nodes}
++
++
++def extend(registry, row, registered, orderings):
++    current = dict(registry); orders = dict(orderings)
++    keys = sorted(row['anchors'])
++    for i,key in enumerate(keys):
++        for other in keys[i+1:]:
++            a = number(row['anchors'][key]['frame']['y']); b = number(row['anchors'][other]['frame']['y'])
++            order = (a > b) - (a < b)
++            if (key,other) in orders and orders[(key,other)] != order: raise ValueError('Repeated native leaf order changed')
++            orders[(key,other)] = order
++    for key, node in row['anchors'].items():
++        possible = solutions(projected(row, node, registered)); attributes = traits(node)
++        if key in current:
++            previous = current[key]
++            if previous['traits'] != attributes: raise ValueError('Repeated native leaf traits/root/order changed')
++            possible &= previous['rectangles']
++        if not possible: raise ValueError('Repeated native leaf edge/width/height enclosures contradict registration')
++        current[key] = {'traits': attributes, 'rectangles': possible}
++    return current,orders
++
++
++def certify(found, binding, root):
++    result = {'version': 2, 'proof_strategy': 'observed-strip-chain-1', 'geometry_encoding': 'native-rect-pixel-cell-enclosure-v1',
++              'complete': False, 'links': [], 'scope': 'Observed closed main-scroll viewport strip; no native geometry/style equality or hidden/live/off-axis branch guarantee.'}
++    try:
++        if root is None: raise ValueError('Original screenshot root is unavailable')
++        from PIL import Image, ImageChops
++        root = Path(root).resolve(); rows = native_rows(found, binding)
++        encoding = None
++        for row in rows:
++            path = (root / row['snap'].get('screenshot', '')).resolve()
++            if not path.is_relative_to(root) or not path.is_file(): raise ValueError('Original screenshot missing/outside root')
++            raw = path.read_bytes()
++            if (len(raw)<33 or raw[:8]!=b'\x89PNG\r\n\x1a\n' or raw[8:16]!=b'\x00\x00\x00\rIHDR'
++                    or raw[24]!=8 or raw[25]not in {2,6} or raw[26:28]!=b'\x00\x00'):
++                raise ValueError('Original PNG IHDR must declare lossless 8-bit RGB/RGBA; no decoder downconversion')
++            native_size=struct.unpack('>II',raw[16:24])
++            with Image.open(io.BytesIO(raw)) as original:
++                if (original.format!='PNG' or original.mode!=({2:'RGB',6:'RGBA'}[raw[25]]) or original.size!=native_size
++                        or getattr(original,'n_frames',1)!=1): raise ValueError('Supported lossless single-frame 8-bit RGB/RGBA PNG required')
++                info = {'mode': original.mode, 'icc_sha256': hashlib.sha256(original.info['icc_profile']).hexdigest() if original.info.get('icc_profile') else None,
++                        'gamma': original.info.get('gamma'), 'srgb': original.info.get('srgb'),'transparency':original.info.get('transparency')}
++                if encoding is not None and info != encoding: raise ValueError('Original image color/alpha encodings differ')
++                encoding = info; row['image'] = original.convert('RGBA')
++            if row['image'].size != (row['snap']['screenshot_pixels']['width'], row['snap']['screenshot_pixels']['height']): raise ValueError('Native/image size mismatch')
++            row['image_sha256'] = hashlib.sha256(raw).hexdigest()
++        registered = 0; registry,orders = extend({}, rows[0], 0, {})
++        for before, after in zip(rows, rows[1:]):
++            if before['vp'] != after['vp'] or before['app'] != after['app'] or before['viewport_pixels'] != after['viewport_pixels'] or (before['sx'],before['sy']) != (after['sx'],after['sy']):
++                raise ValueError('Viewport/native-image mapping changed')
++            vp = before['viewport_pixels']; width, height = vp[2]-vp[0], vp[3]-vp[1]
++            common = sorted(set(before['anchors']) & set(after['anchors']))
++            if len(common) < 2: raise ValueError('Two globally unique native typed leaves required')
++            lo = max(1, after['offset_cells'][0] - before['offset_cells'][1]); hi = min(height-1, after['offset_cells'][1] - before['offset_cells'][0])
++            # Raw native enclosure candidates only constrain the lossless raster
++            # search. They never choose a translation or alter a style rule.
++            candidates = []; valid = []
++            for delta in range(lo, hi+1):
++                row = {'translation_pixels': delta}; candidates.append(row)
++                try:
++                    new_registry,new_orders = extend(registry, after, registered+delta, orders)
++                    witnesses = []
++                    for key in common:
++                        if traits(before['anchors'][key]) != traits(after['anchors'][key]): raise ValueError('Adjacent native leaf traits differ')
++                        choices = solutions(projected(before,before['anchors'][key],registered)) & new_registry[key]['rectangles']
++                        if not choices: raise ValueError('Adjacent native leaf geometry enclosures contradict motion')
++                        witnesses.append({'identity': json.loads(key), 'before_index': before['anchors'][key]['index'],
++                                          'after_index': after['anchors'][key]['index'], 'common_pixel_rectangles': sorted(choices)})
++                    def disjoint_native(ka,kb):
++                        for r in [before,after]:
++                            a,b = (rectangle(r['anchors'][key]['frame']) for key in [ka,kb])
++                            if not (a['y']+a['height'] <= b['y'] or b['y']+b['height'] <= a['y']): return False
++                        return True
++                    pairs=[(common[i],common[j])for i,w in enumerate(witnesses)for j,z in enumerate(witnesses)if j>i
++                           and disjoint_native(common[i],common[j])and any(disjoint(a,b)for a in w['common_pixel_rectangles']for b in z['common_pixel_rectangles'])]
++                    if not pairs:
++                        raise ValueError('Two vertically non-overlapping witness rectangles required')
++                    abox = (vp[0],vp[1]+delta,vp[2],vp[3]); bbox = (vp[0],vp[1],vp[2],vp[3]-delta)
++                    a = before['image'].crop(abox); b = after['image'].crop(bbox)
++                    channels = ImageChops.difference(a,b).split(); boxes = [c.getbbox() for c in channels]
++                    row.update(before_pixels=abox,after_pixels=bbox,overlap_pixels=a.size,
++                               before_strip_sha256=hashlib.sha256(a.tobytes()).hexdigest(),after_strip_sha256=hashlib.sha256(b.tobytes()).hexdigest(),
++                               channel_difference_bounds=boxes,exact=not any(boxes))
++                    if any(boxes): raise ValueError('Original full-width overlapping pixels differ')
++                    row['native_leaf_witnesses'] = witnesses;row['witness_pairs']=pairs;valid.append((delta,new_registry,new_orders,row))
++                except ValueError as exc: row['rejection_reason'] = str(exc)
++            result['links'].append({'before':before['index'],'after':after['index'], 'before_image_sha256':before['image_sha256'],
++                                    'after_image_sha256':after['image_sha256'],'candidate_translations':candidates})
++            if len(valid) != 1: raise ValueError('Unique exact raster translation with all native enclosures not established')
++            delta,registry,orders,proof = valid[0]; registered += delta
++            result['links'][-1].update(unique_translation_pixels=delta,registered_end_pixels=registered+height,witness_pairs=proof['witness_pairs'])
++        result['joint_witness_assignment']=joint_assignment(registry,result['links'],orders)
++        if result['joint_witness_assignment']['assignment'] is None:raise ValueError('One joint disjoint-witness assignment for all original links is not established')
++        result.update(complete=True,reason='Original top-to-terminal raster strip has unique coherent native leaf registration',
++                      observed_terminal_height=rows[-1]['snap']['runtime']['content_frame']['height'],
++                      estimated_heights=[r['snap']['runtime']['content_frame']['height'] for r in rows],image_encoding=encoding,
++                      repeated_leaf_compatible_rectangles={k:sorted(v['rectangles'])for k,v in registry.items()})
++    except (ValueError,OSError,KeyError,TypeError,ImportError,OverflowError) as exc: result['reason'] = str(exc)
++    return result

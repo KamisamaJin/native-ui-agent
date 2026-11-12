@@ -1,0 +1,1014 @@
+{
+  "review_id": "review-1-candidate-v13.0",
+  "sealed_at_utc": "2026-11-10T09:54:35.260095+00:00",
+  "verdict": "CORRECTNESS BLOCKED: three demonstrated controller/host blockers; native and performance qualification not evaluated",
+  "scope": {
+    "candidate": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.0",
+    "candidate_unchanged": {
+      "same": true,
+      "before_manifest_sha256": "615d57b416df61200ec64c1a18e5906b88da2ef8823ff120208bff4873b00bca",
+      "files": 77,
+      "differing_paths": []
+    },
+    "protocol": "pooled-native-qualification-1+a1",
+    "spec_source": "qualification/spec/PROTOCOL.md + AMENDMENT-1.md + EFFECTIVE-SEAL.json",
+    "allowed_evidence": [
+      "HOST",
+      "SIMULATED",
+      "DOCUMENTED"
+    ],
+    "native_runs": 0,
+    "native_performance_samples": 0,
+    "business_tasks_created": 0,
+    "historical_validation_or_product_results_read": false,
+    "live_native_ui_agent_files_modified": false
+  },
+  "method": {
+    "default_entry": "Unchanged candidate scripts/ui_loop.py main via checks/default_cli.py; only Resources.run SDK subprocess boundary replaced by supplied simulated collector. Private PATH xcrun is non-forwarding and rejects unsupported commands. Real Resources.run used only for own HOST Python process tests.",
+    "meaning_of_native_executed": "Candidate field native_executed=true records dispatch to the supplied simulated boundary; it never means NATIVE in this review.",
+    "hash_limit": "Hashes establish bytes/identity, not correct design interpretation, native authenticity or independent authorship.",
+    "read_only_queries": "Simulated xcrun runtime/device inventory calls are retained in work/simulated-inventory.json; zero collectors is distinguished from zero command calls.",
+    "qualification_limit": "No A/B arm admission, real SDK availability, native coverage/session/rendering/deletion or performance gate can be established here."
+  },
+  "primary_probe_counts": {
+    "total": 47,
+    "raw_P": 36,
+    "raw_F": 11,
+    "raw_U": 0,
+    "note": "Raw assertions preserved. Count is not a native PFU score or count of independent bugs. Triage below distinguishes confirmed failures, disputed interpretation, and harness/unavailable evidence."
+  },
+  "additional_reproduction": {
+    "root": "work/reproductions/initial-proof",
+    "result": "P4/F1 confirms initial B01 unchanged, outside primary count",
+    "native_runs": 0
+  },
+  "confirmed_blockers": [
+    {
+      "id": "B01",
+      "priority": "blocking",
+      "status": "F",
+      "evidence_class": "SIMULATED",
+      "title": "Explicit --fresh is ignored by the ordinary feedback path",
+      "repro": [
+        "Run a complete default feedback cycle.",
+        "Run the same default native command with --fresh and unchanged source/config, without --final."
+      ],
+      "actual": "status=feedback_complete, native_executed=false, no new collector invocation or packet. --final --fresh does create a new simulated packet.",
+      "required": "AMENDMENT-1 C07 distinguishes explicit new collection from ordinary finalization; CLI --fresh help promises a new packet.",
+      "evidence": [
+        "raw/default-path-v2--explicit-fresh-nonfinal.command.json",
+        "work/default-path-v2/evidence/explicit-fresh-nonfinal/cycle.json",
+        "work/reproductions/initial-proof/raw/default-path-v2--explicit-fresh-nonfinal.command.json"
+      ],
+      "source": [
+        "scripts/ui_loop.py",
+        "scripts/workflow_state.py",
+        "scripts/feedback_loop.py"
+      ]
+    },
+    {
+      "id": "B02",
+      "priority": "blocking",
+      "status": "F",
+      "evidence_class": "SIMULATED",
+      "title": "Original-packet adoption does not bind complete inner artifacts",
+      "repro": [
+        "Generate/register a full successful controlled packet and retain its result.json digest independently.",
+        "Preserve the entire original packet in a pristine archive. Alter a working packet native/manifest.json to native_test_count=0, reset_contract=none and session=FOREIGN-SESSION.",
+        "Request ordinary default native --final using the registered handle."
+      ],
+      "actual": "accepted, capture_reused=true, native_executed=false and zero simulated collectors. The original result.json digest stayed unchanged. Independent canonical native.log substitution and execution-coverage.json satisfied=false/all states missing controls also accepted.",
+      "required": "AMENDMENT-1 full eligibility 1 and PROTOCOL C05 require complete byte integrity/coherent native provenance and rejection of altered inner proof; rehashing only an outer receipt is insufficient.",
+      "evidence": [
+        "raw/tamper-manifest-mutation.json",
+        "raw/pristine-tamper-manifest.tar",
+        "raw/tamper-manifest--final-on-altered-packet.command.json",
+        "work/tamper-manifest/evidence/final-on-altered-packet/cycle.json",
+        "raw/tamper-native-log-mutation.json",
+        "work/tamper-native-log/evidence/final-after-log-substitution/cycle.json",
+        "work/tamper-contradictory-coverage/evidence/final-after-coverage-contradiction/cycle.json"
+      ],
+      "source": [
+        "scripts/execution_plan.py",
+        "scripts/feedback_loop.py",
+        "scripts/capture_validity.py"
+      ]
+    },
+    {
+      "id": "B03",
+      "priority": "blocking",
+      "status": "F",
+      "evidence_class": [
+        "HOST",
+        "SIMULATED"
+      ],
+      "title": "Persisted monotonic timestamps have different epochs across host Python3.9 processes",
+      "repro": [
+        "Run the HOST cross-process clock probe with /Library/Developer/CommandLineTools/usr/bin/python3 (3.9.6).",
+        "Run two compatible default feedback captures with the same owner/type/runtime and a source edit that requires a fresh app capture."
+      ],
+      "actual": "Parent monotonic pre-delay=0.03102075 and post-delay=0.536007541; a child launched afterward reports 0.008098333 on the same host/boot. The compatible pool key remains equal but the next default process retires the first simulated UUID and creates another, create_count=2 within roughly 0.24 wall seconds under default 300-second idle policy.",
+      "required": "PROTOCOL L01/L04 require compatible before-expiry reuse and finite safe clock semantics; row retention alone does not demonstrate reuse.",
+      "evidence": [
+        "raw/host-monotonic-cross-process.json",
+        "raw/pool-consecutive-compatible-repro.json",
+        "work/pool-consecutive-compatible/evidence/compatible-first/resources.json",
+        "work/pool-consecutive-compatible/evidence/compatible-second/resource-events.jsonl"
+      ],
+      "source": [
+        "scripts/resource_manager.py",
+        "scripts/pool_watch.py"
+      ]
+    }
+  ],
+  "interpretation_disputes": [
+    {
+      "id": "I01",
+      "original_status": "F",
+      "current_status": "disputed; not assumed P and not counted as confirmed blocker",
+      "raw_result": "raw/extended-results.json",
+      "receipt": "work/repair-omitted-completion/evidence/post-edit-without-tool/patch-completion.json",
+      "fact": "No separate complete-native-repair CLI call occurred. The default service measured changed files, emitted explicit_worker_completion=false receipt, dispatched a new collector and accepted later full final. Missing and tampered proof are independently rejected.",
+      "basis": "Literal PROTOCOL H03 mentions omitted tool completion; parent requested semantic distinction between absent proof and absence of a separate optional worker invocation. No changed protocol or intended implementation answer was imported."
+    }
+  ],
+  "setup_and_evidence_limitations": [
+    "Initial sandbox ps denial prevented any collector; raw/default-path--first.command.json retained as environment evidence. Authorized host escalation used afterward.",
+    "Initial qualification harness used reserved state ID initial; setup rejected before behavioral/native run. Partial fixture and setup-failures.txt retained.",
+    "Second setup boundary lacked Python method self; failed before simulated collector; raw/default-path-host-access--first.command.json retained. Fixed harness only.",
+    "All later behavioral first failures remain in first-failures with command logs and original source snapshots. Intentional packet corruption retains pristine original archives/before bytes.",
+    "The reused-output control reused its raw command label; the second refusal transcript occupies raw/existing-output--first.command.json. Original request, cycle, source/inputs, timestamps and all output bytes remain in that capture; original first process stdout/stderr is unavailable for this single control.",
+    "Active-idle reacquisition raced guardian cleanup and failed boundedly; no native expiry or retry-to-pass claim is made.",
+    "Failed retirement during Resources.__enter__ leaves service-error and original journal but no new resources.json; unavailable receipt is U even though nonacceptance is demonstrated.",
+    "The auxiliary original-native-result.txt control is synthetic and noncanonical; canonical native.log and native/manifest.json controls support B02 independently.",
+    "Full true compiler dependency completeness, native source/current-code validity, real app freshness, semantic/physical touch equivalence, font/padding/color interpretation and native full-content coverage remain U."
+  ],
+  "scenario_results": [
+    {
+      "id": "L01",
+      "controller_status": "F",
+      "evidence_class": [
+        "HOST",
+        "SIMULATED"
+      ],
+      "native_status": "U",
+      "detail": "Default pool enabled and a row retained; compatible cross-process reuse fails B03. New app/session IDs exist only in supplied simulations."
+    },
+    {
+      "id": "L02",
+      "controller_status": "P partial",
+      "evidence_class": [
+        "HOST",
+        "SIMULATED"
+      ],
+      "native_status": "U",
+      "detail": "Runtime incompatibility retires/replaces simulated UUID; copied root ownership rejected. Native inventory/toolchain compatibility unavailable."
+    },
+    {
+      "id": "L03",
+      "controller_status": "P partial",
+      "evidence_class": "HOST",
+      "native_status": "U",
+      "detail": "Actual same-root concurrent lock refusal and separate-owner independence; no native cap/exclusivity proof."
+    },
+    {
+      "id": "L04",
+      "controller_status": "U",
+      "evidence_class": [
+        "HOST",
+        "SIMULATED"
+      ],
+      "native_status": "U",
+      "detail": "Pure controlled before/at expiry, reverse wall/monotonic and max-use boundaries pass. Actual host persisted epochs fail B03. Active/idle probe ended on expected possible guardian lock contention; no native idle-expiry qualification."
+    },
+    {
+      "id": "L05",
+      "controller_status": "P partial",
+      "evidence_class": [
+        "HOST",
+        "SIMULATED"
+      ],
+      "native_status": "U",
+      "detail": "Default final/adoption and explicit cleanup close private scratch and simulated devices. Timeout/error paths retain evidence, source and borrowed files. Native deletion unavailable."
+    },
+    {
+      "id": "L06",
+      "controller_status": "P partial",
+      "evidence_class": "HOST",
+      "native_status": "U",
+      "detail": "Actual caller-supplied build-path sentinel preserved through timeout/cleanup. No native borrowed-device lifecycle claim."
+    },
+    {
+      "id": "L07",
+      "controller_status": "P partial",
+      "evidence_class": "HOST",
+      "native_status": "U",
+      "detail": "Own dispatched private launcher/child SIGKILL recovery, exact process identity and copied-journal-root rejection pass. Native recovery unavailable."
+    },
+    {
+      "id": "L08",
+      "controller_status": "P/U partial",
+      "evidence_class": [
+        "HOST",
+        "SIMULATED"
+      ],
+      "native_status": "U",
+      "detail": "Primary collector plus simulated delete error retained separately and no accepted cycle. Entry-path deletion failure is unaccepted but lacks a new resources.json (R2 U). Unsupported SDK/native/space cases remain U."
+    },
+    {
+      "id": "C01",
+      "controller_status": "P partial",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "Unchanged default routing performs zero collectors and retains original evidence. Read-only runtime identity queries still occur; zero collector work is not reported as zero simctl calls."
+    },
+    {
+      "id": "C02",
+      "controller_status": "P positive path; blocked by B02",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "Ordinary final reuses original full feedback bytes, closes private resources, then original bound source review can finish with zero collectors. Complete-package integrity is independently broken."
+    },
+    {
+      "id": "C03",
+      "controller_status": "P partial",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "Missing mandatory state keeps exact 2-row denominator (P1/U1), cannot finalize, and requires new complete collection. This is rejection/dispatch proof only."
+    },
+    {
+      "id": "C04",
+      "controller_status": "P/U partial",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "Torn hierarchy/image epoch retains both mandatory U and no acceptance. Real button/callback/caller-update/full-scroll native facts are not evaluated here."
+    },
+    {
+      "id": "C05",
+      "controller_status": "F",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "Pinned frame tamper rejects; inner manifest, canonical log and coverage tamper are accepted (B02). Original archive and hashes retained."
+    },
+    {
+      "id": "C06",
+      "controller_status": "P partial",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "Device retirement and evidence lifetime are separate in positive ordinary-final/source-only closure. Actual native historical-package credibility remains U."
+    },
+    {
+      "id": "C07",
+      "controller_status": "F",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "--final --fresh performs supplied new collector; --fresh alone silently does not (B01). Wrong fixture blocks and approved environment drift reacquires. No genuine fresh-native claim."
+    },
+    {
+      "id": "D01",
+      "controller_status": "P partial",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "iOS-only source edit invalidates iOS while unchanged Android evidence routes; same basename exists in distinct platform roots."
+    },
+    {
+      "id": "D02",
+      "controller_status": "P partial",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "Android-only source edit invalidates Android while unchanged iOS evidence routes."
+    },
+    {
+      "id": "D03",
+      "controller_status": "P partial",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "Shared source edit requires both collectors."
+    },
+    {
+      "id": "D04",
+      "controller_status": "P partial",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "Predeclared unbound output leaves original eligible."
+    },
+    {
+      "id": "D05",
+      "controller_status": "P/U partial",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "Android build input changes only Android. Fixture drift blocks sealed approval; environment drift reacquires. Complete external compiler/toolchain dependency closure U."
+    },
+    {
+      "id": "D06",
+      "controller_status": "U",
+      "evidence_class": "DOCUMENTED",
+      "native_status": "U",
+      "detail": "Safe cross-oracle handling requirement retained; no authentic cross-oracle packet evaluated. No old verdict credit asserted."
+    },
+    {
+      "id": "D07",
+      "controller_status": "P partial",
+      "evidence_class": [
+        "HOST",
+        "SIMULATED"
+      ],
+      "native_status": "U",
+      "detail": "Deleted iOS input invalidates only iOS; relevant source symlink demands explicit dependency provider and refuses reuse. Full undeclared dependency absence U."
+    },
+    {
+      "id": "H01",
+      "controller_status": "P partial",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "Default demonstrated controlled mismatch emits task with exact failed IDs/state/frame/capture/source hashes and diagnostic references. No real repair-worker independence/native product F claim."
+    },
+    {
+      "id": "H02",
+      "controller_status": "P partial",
+      "evidence_class": [
+        "HOST",
+        "SIMULATED"
+      ],
+      "native_status": "U",
+      "detail": "Tool measures actual private source edit, binds task, rejects no-change/duplicate and requests a new simulated native recheck; completed new full packet may finalize. Not native repaired-product proof."
+    },
+    {
+      "id": "H03",
+      "controller_status": "P controls / I01 disputed",
+      "evidence_class": "SIMULATED",
+      "native_status": "U",
+      "detail": "Missing or tampered measured completion proof blocks. No-change/duplicate completion rejects. Omitting a separate CLI invocation produces an automatic measured task-bound receipt and fresh recheck; original literal-H03 F preserved and interpretation disputed."
+    },
+    {
+      "id": "H04",
+      "controller_status": "P partial",
+      "evidence_class": [
+        "HOST",
+        "SIMULATED"
+      ],
+      "native_status": "U",
+      "detail": "Missing/bound/conflicting source reviews block/close/stay U appropriately with no collector. Editing only an integration source-duty file invalidates only its source observation, and rebind closes original native packet."
+    }
+  ],
+  "primary_raw_results": [
+    {
+      "id": "default-feedback-retains-bounded-pool",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/default-path-v2/evidence/first/cycle.json",
+        "status": "feedback_complete",
+        "pool": {
+          "enabled": true,
+          "idle_seconds": 300,
+          "max_uses": 12,
+          "max_age_seconds": 3600,
+          "disposition": "idle_owned_pool"
+        },
+        "simulated_collection_count": 1
+      },
+      "result_file": "raw/initial-results.json"
+    },
+    {
+      "id": "unchanged-default-routes-without-collector",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/default-path-v2/evidence/unchanged/cycle.json",
+        "status": "feedback_complete",
+        "collector_count": 0
+      },
+      "result_file": "raw/initial-results.json"
+    },
+    {
+      "id": "ordinary-final-adopts-original-full-feedback-and-retires",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/default-path-v2/evidence/final-adopt/cycle.json",
+        "original_sha256": "0f8fc6eed295c60f1eacca5abba3d0ef8ae628517210f9229f3616b6f389d4ca",
+        "collector_count": 0,
+        "cleanup": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/default-path-v2/evidence/final-adopt/resources.json"
+      },
+      "result_file": "raw/initial-results.json"
+    },
+    {
+      "id": "explicit-final-fresh-forces-new-packet",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/default-path-v2/evidence/explicit-final-fresh/cycle.json",
+        "collector_count": 1
+      },
+      "result_file": "raw/initial-results.json"
+    },
+    {
+      "id": "explicit-fresh-without-final",
+      "status": "F",
+      "evidence_class": "SIMULATED",
+      "error": "AssertionError('documented --fresh request returned feedback_complete with no new packet')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/run_checks.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/run_checks.py\", line 68, in fresh_nonfinal\n    assert_that(value['native_executed'] and record['simulated_collection_count']==1,'documented --fresh request returned '+value['status']+' with no new packet')\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/run_checks.py\", line 34, in assert_that\n    if not v:raise AssertionError(reason)\nAssertionError: documented --fresh request returned feedback_complete with no new packet\n",
+      "result_file": "raw/initial-results.json",
+      "review_interpretation": "confirmed",
+      "issue": "B01"
+    },
+    {
+      "id": "source-ios-only-scoped-invalidation",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "changed_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-ios/production/ios/Component.swift",
+        "before_sha256": "15f25cf11ae365721544d927007afdac0236c627aefc21756c533719cacaa934",
+        "after_sha256": "0f5f7a9d136221342752cb02c48ece08c920af9b6844ae3ec7de7b793359395c",
+        "platform_results": {
+          "ios": {
+            "native_executed": true,
+            "status": "awaiting_source_repair",
+            "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-ios/evidence/ios-after-edit/cycle.json"
+          },
+          "android": {
+            "native_executed": false,
+            "status": "feedback_complete",
+            "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-ios/evidence/android-after-edit/cycle.json"
+          }
+        }
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "source-android-only-scoped-invalidation",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "changed_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-android/production/android/Component.kt",
+        "before_sha256": "15f25cf11ae365721544d927007afdac0236c627aefc21756c533719cacaa934",
+        "after_sha256": "0f5f7a9d136221342752cb02c48ece08c920af9b6844ae3ec7de7b793359395c",
+        "platform_results": {
+          "ios": {
+            "native_executed": false,
+            "status": "feedback_complete",
+            "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-android/evidence/ios-after-edit/cycle.json"
+          },
+          "android": {
+            "native_executed": true,
+            "status": "awaiting_source_repair",
+            "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-android/evidence/android-after-edit/cycle.json"
+          }
+        }
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "shared-source-invalidates-both",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "changed_path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-shared/production/shared/Shared.txt",
+        "before_sha256": "15f25cf11ae365721544d927007afdac0236c627aefc21756c533719cacaa934",
+        "after_sha256": "0f5f7a9d136221342752cb02c48ece08c920af9b6844ae3ec7de7b793359395c",
+        "platform_results": {
+          "ios": {
+            "native_executed": true,
+            "status": "feedback_complete",
+            "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-shared/evidence/ios-after-edit/cycle.json"
+          },
+          "android": {
+            "native_executed": true,
+            "status": "feedback_complete",
+            "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-shared/evidence/android-after-edit/cycle.json"
+          }
+        }
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "unbound-output-retains-evidence",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-irrelevant/evidence/after-unbound-output/cycle.json",
+        "collector_count": 0
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "build-option-invalidates-only-android",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "ios": {
+          "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-build/evidence/ios-after-build-change/cycle.json",
+          "native_executed": false
+        },
+        "android": {
+          "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-build/evidence/android-after-build-change/cycle.json",
+          "native_executed": true
+        }
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "capture-frame-tamper-rejected",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/tamper-frame/evidence/final-on-altered-packet/cycle.json",
+        "exit_code": 2,
+        "accepted": false,
+        "collector_count": 0,
+        "mutation": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/tamper-frame-mutation.json"
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "capture-manifest-tamper-rejected",
+      "status": "F",
+      "evidence_class": "SIMULATED",
+      "error": "AssertionError('altered native/manifest.json was accepted with collector_count=0; {\"cycle\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/tamper-manifest/evidence/final-on-altered-packet/cycle.json\", \"exit_code\": 0, \"accepted\": true, \"collector_count\": 0, \"mutation\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/tamper-manifest-mutation.json\"}')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/extended_checks.py\", line 67, in <lambda>\n    check('capture-manifest-tamper-rejected',lambda:tamper('manifest','native/manifest.json'))\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/extended_checks.py\", line 64, in tamper\n    assert_that(not accepted,'altered '+relative+' was accepted with collector_count='+str(record['simulated_collection_count'])+'; '+json.dumps(detail))\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 34, in assert_that\n    if not v:raise AssertionError(reason)\nAssertionError: altered native/manifest.json was accepted with collector_count=0; {\"cycle\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/tamper-manifest/evidence/final-on-altered-packet/cycle.json\", \"exit_code\": 0, \"accepted\": true, \"collector_count\": 0, \"mutation\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/tamper-manifest-mutation.json\"}\n",
+      "result_file": "raw/extended-results.json",
+      "review_interpretation": "confirmed",
+      "issue": "B02"
+    },
+    {
+      "id": "capture-native-result-tamper-rejected",
+      "status": "F",
+      "evidence_class": "SIMULATED",
+      "error": "AssertionError('altered native/original-native-result.txt was accepted with collector_count=0; {\"cycle\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/tamper-native-result/evidence/final-on-altered-packet/cycle.json\", \"exit_code\": 0, \"accepted\": true, \"collector_count\": 0, \"mutation\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/tamper-native-result-mutation.json\"}')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/extended_checks.py\", line 68, in <lambda>\n    check('capture-native-result-tamper-rejected',lambda:tamper('native-result','native/original-native-result.txt'))\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/extended_checks.py\", line 64, in tamper\n    assert_that(not accepted,'altered '+relative+' was accepted with collector_count='+str(record['simulated_collection_count'])+'; '+json.dumps(detail))\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 34, in assert_that\n    if not v:raise AssertionError(reason)\nAssertionError: altered native/original-native-result.txt was accepted with collector_count=0; {\"cycle\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/tamper-native-result/evidence/final-on-altered-packet/cycle.json\", \"exit_code\": 0, \"accepted\": true, \"collector_count\": 0, \"mutation\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/tamper-native-result-mutation.json\"}\n",
+      "result_file": "raw/extended-results.json",
+      "review_interpretation": "limited auxiliary-artifact probe; synthetic noncanonical result file, not a standalone native-format claim",
+      "issue": "B02-support"
+    },
+    {
+      "id": "capture-execution-coverage-tamper-rejected",
+      "status": "F",
+      "evidence_class": "SIMULATED",
+      "error": "AssertionError('altered execution-coverage.json was accepted with collector_count=0; {\"cycle\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/tamper-coverage/evidence/final-on-altered-packet/cycle.json\", \"exit_code\": 0, \"accepted\": true, \"collector_count\": 0, \"mutation\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/tamper-coverage-mutation.json\"}')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/extended_checks.py\", line 69, in <lambda>\n    check('capture-execution-coverage-tamper-rejected',lambda:tamper('coverage','execution-coverage.json'))\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/extended_checks.py\", line 64, in tamper\n    assert_that(not accepted,'altered '+relative+' was accepted with collector_count='+str(record['simulated_collection_count'])+'; '+json.dumps(detail))\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 34, in assert_that\n    if not v:raise AssertionError(reason)\nAssertionError: altered execution-coverage.json was accepted with collector_count=0; {\"cycle\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/tamper-coverage/evidence/final-on-altered-packet/cycle.json\", \"exit_code\": 0, \"accepted\": true, \"collector_count\": 0, \"mutation\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/tamper-coverage-mutation.json\"}\n",
+      "result_file": "raw/extended-results.json",
+      "review_interpretation": "confirmed original-byte integrity gap; substantive coverage contradiction separately reproduced",
+      "issue": "B02"
+    },
+    {
+      "id": "wrong-input-drift-reacquires-or-blocks",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/drift-input/evidence/final-on-drift/cycle.json",
+        "exit_code": 2,
+        "collector_count": 0,
+        "status": null,
+        "stderr": "Configuration/evidence error: Fixture, bridge, scenario or platform differs from independently sealed launch approval\n"
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "wrong-environment-drift-reacquires-or-blocks",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/drift-environment/evidence/final-on-drift/cycle.json",
+        "exit_code": 0,
+        "collector_count": 1,
+        "status": "accepted",
+        "stderr": ""
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "repair-default-task-emitted",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "task": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/repair-handoff/evidence/original-failure/repair-task.json",
+        "task_sha256": "4465f00713557511acbea13fa7de4d9fa926c33852daeccc8f73963beb6cc76b",
+        "failed_ids": [
+          "opening/label",
+          "second/label"
+        ]
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "repair-no-change-completion-rejected",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "command": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/repair-handoff--false-completion.command.json"
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "repair-tool-completion-measures-patch",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/repair-handoff/evidence/valid-completion/completion.json",
+        "before_sha256": "88cefcb0bd0e0c2af9889af152d9db2f994f8744d7c4dbf2b64d100392b58f52",
+        "after_sha256": "15f25cf11ae365721544d927007afdac0236c627aefc21756c533719cacaa934",
+        "changed": [
+          "0/Component.swift"
+        ]
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "repair-duplicate-completion-rejected",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "command": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/repair-handoff--duplicate-completion.command.json"
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "repair-fresh-recheck-required",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "recheck": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/repair-handoff/evidence/post-repair/cycle.json",
+        "final": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/repair-handoff/evidence/final-post-repair/cycle.json",
+        "collector_count_after_repair": 1
+      },
+      "result_file": "raw/extended-results.json"
+    },
+    {
+      "id": "repair-without-explicit-tool-completion",
+      "status": "F",
+      "evidence_class": "SIMULATED",
+      "error": "AssertionError('omitted completion tool was automatically recorded as patched, fresh simulated recheck ran, and final accepted; /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/repair-omitted-completion/evidence/post-edit-without-tool/patch-completion.json')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/extended_checks.py\", line 125, in omitted_completion\n    assert_that(not (fv['status']=='accepted' and completion and not completion['explicit_worker_completion']), 'omitted completion tool was automatically recorded as patched, fresh simulated recheck ran, and final accepted; '+str(o/'patch-completion.json'))\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 34, in assert_that\n    if not v:raise AssertionError(reason)\nAssertionError: omitted completion tool was automatically recorded as patched, fresh simulated recheck ran, and final accepted; /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/repair-omitted-completion/evidence/post-edit-without-tool/patch-completion.json\n",
+      "result_file": "raw/extended-results.json",
+      "review_interpretation": "protocol interpretation disputed; retain original literal-H03 F. A measured task-bound receipt and mandatory fresh recheck were emitted automatically; missing/tampered proof tests separately pass",
+      "issue": "I01"
+    },
+    {
+      "id": "real-host-lock-exclusion-and-owner-independence",
+      "status": "P",
+      "evidence_class": "HOST",
+      "detail": {
+        "same_root_contender_exit": 1,
+        "separate_owner_exit": 0,
+        "reconcile_receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/host-locks/evidence/reconcile/resources.json"
+      },
+      "result_file": "raw/host-results.json"
+    },
+    {
+      "id": "owned-host-command-timeout-and-borrowed-preservation",
+      "status": "P",
+      "evidence_class": "HOST",
+      "detail": {
+        "receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/host-timeout/evidence/timeout/resources.json",
+        "primary_error": {
+          "type": "TimeoutExpired",
+          "message": "Command '['/Library/Developer/CommandLineTools/usr/bin/python3', '-B', '-c', \"from pathlib import Path; import os,time; Path('/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/host-timeout/child.ready').write_text(str(os.getpid())); time.sleep(120)\"]' timed out after 0.6 seconds"
+        },
+        "borrowed_sha256": "4c2e177f7cfacbd62a794b70d8198d078f135ff9ce61effe9e516a372bbc807a"
+      },
+      "result_file": "raw/host-results.json"
+    },
+    {
+      "id": "interrupted-private-host-command-reconciles",
+      "status": "P",
+      "evidence_class": "HOST",
+      "detail": {
+        "recovery_receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/host-interruption/evidence/recovery/resources.json",
+        "event_log": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/host-interruption/evidence/recovery/resource-events.jsonl",
+        "tracked_pid": 13776,
+        "child_pid": 13780,
+        "post_process_output": ""
+      },
+      "result_file": "raw/host-results.json"
+    },
+    {
+      "id": "copied-resource-journal-root-rejected",
+      "status": "P",
+      "evidence_class": "HOST",
+      "detail": {
+        "raw": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/host-copied-root--copied-root-cleanup.host.json",
+        "preserved_sha256": "2bd65707f7c47f04ae0eafd1c22735459b12efb9bee90786499af5a803a04aa1"
+      },
+      "result_file": "raw/host-results.json"
+    },
+    {
+      "id": "incompatible-runtime-retires-before-replacement",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "first_udid": "A1D9BCFE-7A15-45B8-B060-6858991FEA3B",
+        "second_udid": "A4360FA7-90A7-4BFD-88C0-6D4F197ED450",
+        "runtime": "SIMULATED.runtime2",
+        "resources": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/pool-incompatible/evidence/runtime-two/resources.json"
+      },
+      "result_file": "raw/lifecycle-results.json"
+    },
+    {
+      "id": "pool-expiry-boundaries",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "policy": {
+          "idle_seconds": 1,
+          "max_uses": 2,
+          "max_age_seconds": 5
+        },
+        "outcomes": {
+          "before": true,
+          "at-idle": false,
+          "wall-backwards": false,
+          "monotonic-backwards": false,
+          "at-use-limit": false,
+          "at-age": false
+        }
+      },
+      "result_file": "raw/lifecycle-results.json"
+    },
+    {
+      "id": "active-lease-crosses-expiry-idle-retirement-reacquires",
+      "status": "F",
+      "evidence_class": "SIMULATED",
+      "error": "RuntimeError('Resource lease is active; concurrent acquisition refused')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.0/scripts/resource_manager.py\", line 191, in __enter__\n    try: fcntl.flock(self.stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)\nBlockingIOError: [Errno 35] Resource temporarily unavailable\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/lifecycle_checks.py\", line 48, in active_and_idle_expiry\n    with rm.Resources(config,two,final=True) as manager:new=manager.native_options('ios')['simulator']\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.0/scripts/resource_manager.py\", line 194, in __enter__\n    raise RuntimeError('Resource lease is active; concurrent acquisition refused')\nRuntimeError: Resource lease is active; concurrent acquisition refused\n",
+      "result_file": "raw/lifecycle-results.json",
+      "review_interpretation": "probe limitation: reacquisition raced the guardian final cleanup lock after inventory deletion. Bounded refusal is permitted; no native expiry claim. First failure retained",
+      "issue": "U-L04"
+    },
+    {
+      "id": "failed-retirement-blocks-acceptance",
+      "status": "F",
+      "evidence_class": "SIMULATED",
+      "error": "FileNotFoundError(2, 'No such file or directory')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/lifecycle_checks.py\", line 57, in retire_failure\n    receipt=d.load(o/'resources.json')\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/candidate-v13.0/scripts/design_contract.py\", line 45, in load\n    return strict_json(path.read_text())\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1256, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1242, in open\n    return io.open(self, mode, buffering, encoding, errors, newline,\n  File \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py\", line 1110, in _opener\n    return self._accessor.open(self, flags, mode)\nFileNotFoundError: [Errno 2] No such file or directory: '/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/retirement-failure/evidence/final-delete-fails/resources.json'\n",
+      "result_file": "raw/lifecycle-results.json",
+      "review_interpretation": "probe expected resources.json, which was unavailable when cleanup failed during __enter__. Original service-error and journal remain, no accepted cycle; later focused check confirms rejection. R2 receipt completeness U",
+      "issue": "U-L08"
+    },
+    {
+      "id": "primary-error-and-cleanup-error-preserved",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "resource_receipt": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/primary-cleanup-failure/evidence/primary-and-cleanup-fail/resources.json",
+        "service_error": {
+          "type": "OSError",
+          "message": "SIMULATED primary collector failure",
+          "at_unix": 1794303772.240614,
+          "status": "not_accepted"
+        },
+        "cleanup_errors": [
+          "Owned simulator command failed: SIMULATED delete failure\n"
+        ]
+      },
+      "result_file": "raw/lifecycle-results.json"
+    },
+    {
+      "id": "reused-output-preserves-evidence",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "original_files": 72,
+        "exit_code": 2
+      },
+      "result_file": "raw/lifecycle-results.json"
+    },
+    {
+      "id": "source-duty-missing-blocks-final",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/source-duty/evidence/final-missing-source/cycle.json",
+        "status": "review_source",
+        "blocking": [
+          "source-duty"
+        ]
+      },
+      "result_file": "raw/source-results.json"
+    },
+    {
+      "id": "source-duty-bound-current-closes-original",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "completion": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/source-duty/evidence/finish-current-source/completion.json",
+        "source_receipt": {
+          "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/source-duty/source-reviews/ios/b38ea8a432e9c47d3486725f1c85c699375b748d2057f1014bb93515953214ad.json",
+          "sha256": "0e30202caef87f2ee09ccc42a4a1db5b2be0853c41c759fa5d977e82fdf52590"
+        },
+        "collector_count": 0
+      },
+      "result_file": "raw/source-results.json"
+    },
+    {
+      "id": "source-duty-conflict-stays-unresolved",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "completion": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/source-duty/evidence/finish-conflicting-source/completion.json",
+        "source_receipt": {
+          "path": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/source-duty/source-reviews/ios/ae295e39562909f6371229a656f9bf10d399f76d73528673e7121110dde5899c.json",
+          "sha256": "604f0f2d457e54915cf2ca3579bdf8c3563ba88a037aaf4ce3b7b3f0e90f0807"
+        },
+        "row": {
+          "id": "source-duty",
+          "priority": "must",
+          "owner": "component",
+          "method": "source",
+          "status": "unassessed",
+          "expected": true,
+          "unit": "bool",
+          "actual": null,
+          "reason": "Conflicting original source reviews remain unresolved",
+          "assertion_ids": [],
+          "evidence": [],
+          "attribution": "unassessed; evidence compatibility is not proof of defect responsibility"
+        }
+      },
+      "result_file": "raw/source-results.json"
+    },
+    {
+      "id": "missing-completion-proof-blocks-default",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "raw": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/repair-proof-missing--next-with-missing-proof.command.json",
+        "original_proof": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/original-repair-completion-missing.json",
+        "stderr": "Configuration/evidence error: [Errno 2] No such file or directory: '/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/repair-proof-missing/workflow/completions/b5e536d3de92462e9b8b317475bf2477.json'\n"
+      },
+      "result_file": "raw/source-results.json"
+    },
+    {
+      "id": "tampered-completion-proof-blocks-default",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "raw": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/repair-proof-tampered--next-with-tampered-proof.command.json",
+        "original_proof": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/original-repair-completion-tampered.json",
+        "stderr": "Configuration/evidence error: Pinned workflow artifact changed: /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/repair-proof-tampered/workflow/completions/a424ecde115a4055822d11e75ceacaab.json\n"
+      },
+      "result_file": "raw/source-results.json"
+    },
+    {
+      "id": "persisted-host-monotonic-epochs-comparable",
+      "status": "F",
+      "evidence_class": "HOST",
+      "error": "AssertionError('fresh child monotonic 0.008098333 is earlier than parent pre-delay 0.03102075; stored elapsed values cannot be compared across these processes')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/focused_checks.py\", line 13, in clock_epochs\n    assert_that(child['monotonic']>=parent_before,'fresh child monotonic '+str(child['monotonic'])+' is earlier than parent pre-delay '+str(parent_before)+'; stored elapsed values cannot be compared across these processes')\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 34, in assert_that\n    if not v:raise AssertionError(reason)\nAssertionError: fresh child monotonic 0.008098333 is earlier than parent pre-delay 0.03102075; stored elapsed values cannot be compared across these processes\n",
+      "result_file": "raw/focused-results.json",
+      "review_interpretation": "actual HOST prerequisite failure under Python3.9.6; controller consequence separately reproduced",
+      "issue": "B03"
+    },
+    {
+      "id": "cross-process-default-compatible-pool-reuse",
+      "status": "F",
+      "evidence_class": "SIMULATED",
+      "error": "AssertionError('compatible feedback pool was recreated; {\"evidence_class\": \"SIMULATED\", \"first\": {\"name\": \"NativeUI-16dc099cd65c-cabf651d\", \"created_at_unix\": 1794303880.73645, \"last_used_unix\": 1794303880.808011, \"uses\": 1, \"created_monotonic\": 0.150890708, \"last_used_monotonic\": 0.222451083, \"boot_id\": \"1788249418:448689\", \"pool_idle\": true, \"pool_key\": \"ae0bf212f26b4a727b99b9bd189b022c57258ce254c86c4e53e20bf6ccdf50e4\", \"udid\": \"34229F28-3822-4F14-B58A-98563C64770E\"}, \"second\": {\"name\": \"NativeUI-16dc099cd65c-2ba84070\", \"created_at_unix\": 1794303880.971624, \"last_used_unix\": 1794303881.042828, \"uses\": 1, \"created_monotonic\": 0.150084125, \"last_used_monotonic\": 0.221287458, \"boot_id\": \"1788249418:448689\", \"pool_idle\": true, \"pool_key\": \"ae0bf212f26b4a727b99b9bd189b022c57258ce254c86c4e53e20bf6ccdf50e4\", \"udid\": \"51EBC0C8-66DD-4894-AEB5-4272EA684A95\"}, \"source_path\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/pool-consecutive-compatible/production/ios/Component.swift\", \"source_before_sha256\": \"15f25cf11ae365721544d927007afdac0236c627aefc21756c533719cacaa934\", \"source_after_sha256\": \"15b1f3673991189deded1ecf65cd1db090d3efbc556074fcbf343f856004347e\", \"second_resource_events\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/pool-consecutive-compatible/evidence/compatible-second/resource-events.jsonl\", \"create_count\": 2, \"removed_count\": 1, \"first_receipt\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/pool-consecutive-compatible/evidence/compatible-first/resources.json\", \"second_receipt\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/pool-consecutive-compatible/evidence/compatible-second/resources.json\"}')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/focused_checks.py\", line 26, in compatible_reuse\n    assert_that(first['udid']==second['udid'] and detail['create_count']==1,'compatible feedback pool was recreated; '+json.dumps(detail))\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 34, in assert_that\n    if not v:raise AssertionError(reason)\nAssertionError: compatible feedback pool was recreated; {\"evidence_class\": \"SIMULATED\", \"first\": {\"name\": \"NativeUI-16dc099cd65c-cabf651d\", \"created_at_unix\": 1794303880.73645, \"last_used_unix\": 1794303880.808011, \"uses\": 1, \"created_monotonic\": 0.150890708, \"last_used_monotonic\": 0.222451083, \"boot_id\": \"1788249418:448689\", \"pool_idle\": true, \"pool_key\": \"ae0bf212f26b4a727b99b9bd189b022c57258ce254c86c4e53e20bf6ccdf50e4\", \"udid\": \"34229F28-3822-4F14-B58A-98563C64770E\"}, \"second\": {\"name\": \"NativeUI-16dc099cd65c-2ba84070\", \"created_at_unix\": 1794303880.971624, \"last_used_unix\": 1794303881.042828, \"uses\": 1, \"created_monotonic\": 0.150084125, \"last_used_monotonic\": 0.221287458, \"boot_id\": \"1788249418:448689\", \"pool_idle\": true, \"pool_key\": \"ae0bf212f26b4a727b99b9bd189b022c57258ce254c86c4e53e20bf6ccdf50e4\", \"udid\": \"51EBC0C8-66DD-4894-AEB5-4272EA684A95\"}, \"source_path\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/pool-consecutive-compatible/production/ios/Component.swift\", \"source_before_sha256\": \"15f25cf11ae365721544d927007afdac0236c627aefc21756c533719cacaa934\", \"source_after_sha256\": \"15b1f3673991189deded1ecf65cd1db090d3efbc556074fcbf343f856004347e\", \"second_resource_events\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/pool-consecutive-compatible/evidence/compatible-second/resource-events.jsonl\", \"create_count\": 2, \"removed_count\": 1, \"first_receipt\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/pool-consecutive-compatible/evidence/compatible-first/resources.json\", \"second_receipt\": \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/pool-consecutive-compatible/evidence/compatible-second/resources.json\"}\n",
+      "result_file": "raw/focused-results.json",
+      "review_interpretation": "confirmed SIMULATED resource decision failure with actual HOST clock behavior",
+      "issue": "B03"
+    },
+    {
+      "id": "failed-retirement-remains-unaccepted-entry-path",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "acceptance_gate": "P",
+        "resource_receipt": "U: resources.json absent because cleanup failed in __enter__",
+        "service_error": {
+          "type": "RuntimeError",
+          "message": "Owned simulator command failed: SIMULATED delete failure\n",
+          "at_unix": 1794303771.961461,
+          "status": "not_accepted"
+        },
+        "original_first_assertion_failure": "retained in lifecycle-results.json; it expected a resource receipt instead of distinguishing the unavailable fact"
+      },
+      "result_file": "raw/focused-results.json"
+    },
+    {
+      "id": "canonical-native-log-tamper-rejected",
+      "status": "F",
+      "evidence_class": "SIMULATED",
+      "error": "AssertionError('original raw native.log replaced but accepted with 0 new collectors; /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/tamper-native-log/evidence/final-after-log-substitution/cycle.json')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/focused_checks.py\", line 49, in raw_log_integrity\n    assert_that(not(value and value['status']=='accepted'),'original raw native.log replaced but accepted with '+str(record['simulated_collection_count'])+' new collectors; '+str(out/'cycle.json'))\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 34, in assert_that\n    if not v:raise AssertionError(reason)\nAssertionError: original raw native.log replaced but accepted with 0 new collectors; /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/tamper-native-log/evidence/final-after-log-substitution/cycle.json\n",
+      "result_file": "raw/focused-results.json",
+      "review_interpretation": "confirmed",
+      "issue": "B02"
+    },
+    {
+      "id": "contradictory-inner-coverage-tamper-rejected",
+      "status": "F",
+      "evidence_class": "SIMULATED",
+      "error": "AssertionError('inner execution coverage now declares every state missing but original packet accepted; /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/tamper-contradictory-coverage/evidence/final-after-coverage-contradiction/cycle.json')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 26, in check\n    detail=fn();r={'id':name,'status':'P','evidence_class':evidence,'detail':detail}\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/focused_checks.py\", line 61, in contradiction_coverage\n    assert_that(not(value and value['status']=='accepted'),'inner execution coverage now declares every state missing but original packet accepted; '+str(out/'cycle.json'))\n  File \"/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/harness.py\", line 34, in assert_that\n    if not v:raise AssertionError(reason)\nAssertionError: inner execution coverage now declares every state missing but original packet accepted; /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/tamper-contradictory-coverage/evidence/final-after-coverage-contradiction/cycle.json\n",
+      "result_file": "raw/focused-results.json",
+      "review_interpretation": "confirmed",
+      "issue": "B02"
+    },
+    {
+      "id": "source-only-claim-edit-invalidates-only-source-layer",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "before_sha256": "15f25cf11ae365721544d927007afdac0236c627aefc21756c533719cacaa934",
+        "after_sha256": "3481fd49dd03f3268045712cf48627e80d5b497001efca30350be0f7853d5af5",
+        "original_final": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/source-only-layer/evidence/first-final/cycle.json",
+        "source_drift_cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/source-only-layer/evidence/final-source-duty-drift/cycle.json",
+        "completion": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/source-only-layer/evidence/finish-rebound-source/completion.json",
+        "native_collection_after_source_only_edit": 0
+      },
+      "result_file": "raw/layer-results.json"
+    },
+    {
+      "id": "deleted-ios-source-invalidates-only-ios",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "ios": {
+          "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-deleted-file/evidence/ios-after-deletion/cycle.json",
+          "native_executed": true
+        },
+        "android": {
+          "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/dependency-deleted-file/evidence/android-after-deletion/cycle.json",
+          "native_executed": false
+        }
+      },
+      "result_file": "raw/layer-results.json"
+    },
+    {
+      "id": "unknown-source-alias-rejects-current-credit",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "command": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/raw/dependency-symlink--final-with-unknown-alias.command.json",
+        "stderr": "Configuration/evidence error: Production source symlink needs an explicit dependency provider\n",
+        "collector_count": 0
+      },
+      "result_file": "raw/layer-results.json"
+    },
+    {
+      "id": "incomplete-full-packet-retains-U-and-reacquires",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "initial_capture": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/coverage-incomplete/evidence/missing-second-state/capture/result.json",
+        "incomplete_final": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/coverage-incomplete/evidence/final-still-incomplete/cycle.json",
+        "new_complete_final": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/coverage-incomplete/evidence/final-reacquire-complete/cycle.json",
+        "mandatory_count": 2,
+        "raw_incomplete_status_counts": {
+          "passed": 1,
+          "failed": 0,
+          "unassessed": 1
+        }
+      },
+      "result_file": "raw/coverage-results.json"
+    },
+    {
+      "id": "torn-epoch-retains-all-mandatory-U",
+      "status": "P",
+      "evidence_class": "SIMULATED",
+      "detail": {
+        "cycle": "/Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/coverage-torn/evidence/torn-native-epoch/cycle.json",
+        "counts": {
+          "passed": 0,
+          "failed": 0,
+          "unassessed": 2
+        },
+        "reasons": [
+          "native image/hierarchy epoch changed during capture",
+          "native image/hierarchy epoch changed during capture"
+        ]
+      },
+      "result_file": "raw/coverage-results.json"
+    }
+  ],
+  "resource_closure": {
+    "audit": "raw/final-cleanup-audit.json",
+    "roots_examined": 41,
+    "cleanup_errors": 0,
+    "simulated_inventory_remaining_at_audit": 0,
+    "additional_coverage_and_reproduction_roots": "Closed by each final/explicit-cleanup receipt; final native/device simulated inventories are empty. Intentionally damaged copied-root snapshot retained as evidence.",
+    "real_device_resources_created": 0
+  },
+  "performance_gate": {
+    "status": "could_not_be_evaluated",
+    "threshold": 0.2,
+    "formula": "1 - sum(B machine-collection walls) / sum(A machine-collection walls)",
+    "A_episodes": 0,
+    "B_episodes": 0,
+    "same_code_same_coverage_identity": "U",
+    "mandatory_U_increase": "U",
+    "required_native_coverage": "U",
+    "speed_claim": null,
+    "business_task_admission": "No five new blind business tasks were created; native correctness and measured same-code/same-coverage gate remain outstanding."
+  },
+  "reproduction": {
+    "entry": "checks/reproduce.py",
+    "example": "/Library/Developer/CommandLineTools/usr/bin/python3 -B /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/checks/reproduce.py --suite initial --output /Users/rex/Documents/ChatGPT/mobile-native-skill/validation/pooled-forward/qualification/review-1/work/reproductions/NEW_UNIQUE_ROOT",
+    "rule": "Use a fresh positively owned child; existing evidence directories are intentionally rejected. Host process access may require authorized escalation; native calls remain simulated.",
+    "validated": "work/reproductions/initial-proof/raw/reproduction-command.json"
+  },
+  "artifact_index": "raw-artifact-index.json",
+  "seal": "SEAL.json"
+}
