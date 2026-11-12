@@ -39,3 +39,5 @@
 - `operators/terminal-scratch-cleanup-v1/FAILED.json`、`v2/FAILED.json`及`v3/FAILED.json`：分别保留APFS分配块数变化、只读边界父目录和父级先于子级要求为空的预检中断。普通文件删除前仍要求精确原字节/身份；最终只清理原inode空目录，并立即恢复外层父目录原权限，完成回执位于 `operators/terminal-scratch-cleanup-v4/END.json`。
 
 - `operators/final-publication-replay-external-pin-failure-v1.json`：一次操作命令传入了错误字面SHA，消费者在创建输出之前正确拒绝。随后从原 `PUBLICATION.sha256` 读取实际外部pin，未改清单、证据或评估器。
+
+- `operators/ci-final-23fc8d2f-failure-v1/`：正式main首轮CI的真实33P/1F原日志保留。Path.chmod在3.11经全局os.chmod派发，夹具自身触发了被测禁止钩子。新testv3只改夹具的原子创建方式；helper、禁止条件和预期拒绝不改。实际本地34P与旧失败/新拒绝的派发回归、1,688个原控制文件完整归档及自动清理均保留；仍需最终Linux CI。

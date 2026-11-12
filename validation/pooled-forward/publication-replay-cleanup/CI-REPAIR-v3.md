@@ -1,0 +1,7 @@
+# CI fixture dispatch repair
+
+The original final run [43133896792](https://github.com/KamisamaJin/native-ui-agent/actions/runs/43133896792) passed source identities,213 production unit tests, publication controls and Linux runtime admission, then reported33P/1F in the synthetic cleanup controls. The only failed case was `member-preempt`: its own `Path.chmod` hit the globally mocked `os.chmod` prohibition before exercising the intended helper rejection.
+
+[CPython v3.11.18 Path.chmod](https://github.com/python/cpython/blob/v3.11.18/Lib/pathlib.py) delegates to `os.chmod`; the local3.9 cached accessor dispatch did not hit that same mock. `test_cleanup_v3.py` creates the hostile replacement with0444 at creation through a fresh `O_CREAT|O_EXCL|O_NOFOLLOW` descriptor and writes its test bytes through that descriptor. It no longer needs fixture chmod during the patched interval. The helper, prohibition, expected rejection and originalv2 bytes remain unchanged.
+
+All34 controls pass on actual local3.9. A separate dispatch shim reproduces the old test failure, then confirms the new fixture reaches the unchanged helper's real replacement rejection; it is explicitly not an actual Linux run. Final GitHub CI remains the runtime check. The complete tiny controls were archived and byte-verified before both temporary roots were removed; original33P/1F CI logs and metadata are retained. No study manifest, production code, thresholds, original judgments or five-task metric changed.

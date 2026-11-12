@@ -25,7 +25,7 @@ jobs:
       - name: Qualify current Linux runtime against frozen v13 mechanisms and golden evidence
         run: bash validation/pooled-forward/publication-runtime-admission/ci-python311-v2.sh
       - name: Verify bounded CI replay disposal, including Git checkout permissions
-        run: python3 -B validation/pooled-forward/publication-replay-cleanup/test_cleanup_v2.py --run-dir "$GITHUB_WORKSPACE/validation/pooled-forward/publication-replay-cleanup/HOST-ci-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+        run: python3 -B validation/pooled-forward/publication-replay-cleanup/test_cleanup_v3.py --run-dir "$GITHUB_WORKSPACE/validation/pooled-forward/publication-replay-cleanup/HOST-ci-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
       - name: Replay sealed v13 native provenance, independent barriers and five-case metrics
         run: |
           read -r publication_sha < validation/pooled-forward/PUBLICATION.sha256
@@ -47,6 +47,12 @@ jobs:
             ${{ runner.temp }}/pooled-v13-replay/CLEANUP-FAILED.json
             ${{ runner.temp }}/pooled-v13-replay/CLEANUP-INTENT.json
             ${{ runner.temp }}/pooled-v13-replay/CLEANUP-INVENTORY.json
+            ${{ github.workspace }}/validation/pooled-forward/publication-replay-cleanup/HOST-ci-${{ github.run_id }}-${{ github.run_attempt }}/ENTRY.json
+            ${{ github.workspace }}/validation/pooled-forward/publication-replay-cleanup/HOST-ci-${{ github.run_id }}-${{ github.run_attempt }}/RESULT.json
+            ${{ github.workspace }}/validation/pooled-forward/publication-replay-cleanup/HOST-ci-${{ github.run_id }}-${{ github.run_attempt }}/CASES/*/RESULT.json
+            ${{ github.workspace }}/validation/pooled-forward/publication-replay-cleanup/HOST-ci-${{ github.run_id }}-${{ github.run_attempt }}/CASES/*/COMMAND.json
+            ${{ github.workspace }}/validation/pooled-forward/publication-replay-cleanup/HOST-ci-${{ github.run_id }}-${{ github.run_attempt }}/CASES/*/stdout.txt
+            ${{ github.workspace }}/validation/pooled-forward/publication-replay-cleanup/HOST-ci-${{ github.run_id }}-${{ github.run_attempt }}/CASES/*/stderr.txt
           if-no-files-found: warn
           retention-days: 7
       - name: Historical publication source alias controls
